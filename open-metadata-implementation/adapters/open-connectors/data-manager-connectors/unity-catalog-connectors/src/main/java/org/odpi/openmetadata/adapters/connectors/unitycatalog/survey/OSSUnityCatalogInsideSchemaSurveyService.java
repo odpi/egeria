@@ -36,7 +36,7 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException a problem within the discovery service.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override

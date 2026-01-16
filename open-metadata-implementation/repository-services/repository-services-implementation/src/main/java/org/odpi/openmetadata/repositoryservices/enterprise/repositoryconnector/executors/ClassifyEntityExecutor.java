@@ -193,7 +193,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
      *
      * @return EntityDetail showing the updated entity.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
@@ -234,7 +234,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
      * @return Classification newly added classification into the entity.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid

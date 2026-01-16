@@ -211,7 +211,7 @@ public class FeedbackManagerResource
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in the metadata repository or
+     * PropertyServerException - a problem updating the element properties in the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/remove")
@@ -242,7 +242,7 @@ public class FeedbackManagerResource
      *
      * @return element stubs list or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/by-tag/{tagGUID}/retrieve")
@@ -274,7 +274,7 @@ public class FeedbackManagerResource
      *
      * @return tag object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/retrieve")
@@ -303,7 +303,7 @@ public class FeedbackManagerResource
      * @param requestBody name of tag.
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/by-name")
@@ -331,7 +331,7 @@ public class FeedbackManagerResource
      *
      * @return list of comment objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/comments/by-search-string")
@@ -360,7 +360,7 @@ public class FeedbackManagerResource
      *
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/by-search-string")
@@ -389,7 +389,7 @@ public class FeedbackManagerResource
      *
      * @return list of tag objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/private/by-search-string")
@@ -449,7 +449,7 @@ public class FeedbackManagerResource
      * @param requestBody optional effective time
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/comments/{commentGUID}/retrieve")
@@ -479,7 +479,7 @@ public class FeedbackManagerResource
      * @param requestBody optional effective time
      * @return list of ratings or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/ratings/retrieve")
@@ -508,7 +508,7 @@ public class FeedbackManagerResource
      * @param requestBody optional effective time
      * @return list of likes or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/likes/retrieve")
@@ -537,7 +537,7 @@ public class FeedbackManagerResource
      * @param requestBody optional effective time
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
@@ -566,7 +566,7 @@ public class FeedbackManagerResource
      * @param requestBody optional effective time
      * @return list of informal tags or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/tags/retrieve")
@@ -723,7 +723,7 @@ public class FeedbackManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -756,7 +756,7 @@ public class FeedbackManagerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -787,7 +787,7 @@ public class FeedbackManagerResource
      *
      * @return boolean or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/update")
@@ -824,7 +824,7 @@ public class FeedbackManagerResource
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/note-logs")
@@ -853,7 +853,7 @@ public class FeedbackManagerResource
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/note-logs")
@@ -913,7 +913,7 @@ public class FeedbackManagerResource
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
 
@@ -945,7 +945,7 @@ public class FeedbackManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -975,7 +975,7 @@ public class FeedbackManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1004,7 +1004,7 @@ public class FeedbackManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1034,7 +1034,7 @@ public class FeedbackManagerResource
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/{noteLogGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1069,7 +1069,7 @@ public class FeedbackManagerResource
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/{noteLogGUID}/notes/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

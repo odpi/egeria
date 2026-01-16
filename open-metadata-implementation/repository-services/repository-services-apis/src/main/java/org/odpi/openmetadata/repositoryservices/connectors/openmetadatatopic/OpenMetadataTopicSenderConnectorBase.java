@@ -22,7 +22,7 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
      * @param event event as a string
      * @return a completable future with the sendEvent result
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
+     * @throws ConnectorCheckedException a problem with the embedded event bus connector(s).
      */
     protected CompletableFuture<Void> sendEvent(String event) throws InvalidParameterException,
                                                   ConnectorCheckedException

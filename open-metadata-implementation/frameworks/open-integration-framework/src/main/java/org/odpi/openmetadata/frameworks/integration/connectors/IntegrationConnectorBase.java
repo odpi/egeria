@@ -139,7 +139,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      * refresh.
      *
      * @param catalogTargetIntegrator the integration component that will process each catalog target
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     protected void refreshCatalogTargets(CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
     {
@@ -199,7 +199,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      *
      * @param catalogTargetEventProcessor the integration component that will process each catalog target
      * @param event event to process
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     protected void passEventToCatalogTargets(CatalogTargetEventProcessor catalogTargetEventProcessor,
                                              OpenMetadataOutTopicEvent   event) throws ConnectorCheckedException

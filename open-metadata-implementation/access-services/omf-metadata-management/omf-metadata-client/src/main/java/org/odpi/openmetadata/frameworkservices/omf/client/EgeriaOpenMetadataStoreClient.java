@@ -27,7 +27,7 @@ public class EgeriaOpenMetadataStoreClient extends OpenMetadataClientBase
      * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public EgeriaOpenMetadataStoreClient(String   serverName,
@@ -51,7 +51,7 @@ public class EgeriaOpenMetadataStoreClient extends OpenMetadataClientBase
      * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public EgeriaOpenMetadataStoreClient(String                             serverName,

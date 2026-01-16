@@ -83,7 +83,7 @@ public class ActorManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -251,7 +251,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -281,7 +281,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -312,7 +312,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/{actorProfileGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -348,7 +348,7 @@ public class ActorManagerResource
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{actorProfileGUID}/contribution-records")
@@ -409,7 +409,7 @@ public class ActorManagerResource
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
 
@@ -441,7 +441,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/contribution-records/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -471,7 +471,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/contribution-records/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -500,7 +500,7 @@ public class ActorManagerResource
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/contribution-records/{contributionRecordGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -563,7 +563,7 @@ public class ActorManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/from-template","/solution-roles/from-template"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -876,7 +876,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/by-name","/solution-roles/by-name"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -906,7 +906,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/by-search-string", "/solution-roles/by-search-string"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -937,7 +937,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/{actorRoleGUID}/retrieve","/solution-roles/{actorRoleGUID}/retrieve"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -999,7 +999,7 @@ public class ActorManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1265,7 +1265,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1295,7 +1295,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1327,7 +1327,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1390,7 +1390,7 @@ public class ActorManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/contact-details/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1553,7 +1553,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/contact-details/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1583,7 +1583,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/contact-details/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1614,7 +1614,7 @@ public class ActorManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/contact-details/{contactDetailsGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

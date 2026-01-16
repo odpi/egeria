@@ -199,7 +199,7 @@ public class ProcessBuilder extends AssetBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
+     * @throws InvalidParameterException a problem with the properties
      */
     @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException

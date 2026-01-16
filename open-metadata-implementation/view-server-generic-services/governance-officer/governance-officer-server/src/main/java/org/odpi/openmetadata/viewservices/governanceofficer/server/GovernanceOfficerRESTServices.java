@@ -118,7 +118,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGovernanceDefinitionFromTemplate(String              serverName,
                                                                String              urlMarker,
@@ -1172,7 +1172,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getGovernanceDefinitionsByName(String            serverName,
                                                                            String            urlMarker,
@@ -1227,7 +1227,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getGovernanceDefinitionByGUID(String             serverName,
                                                                          String             urlMarker,
@@ -1283,7 +1283,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String             serverName,
                                                                                 String             urlMarker,
@@ -1361,7 +1361,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findGovernanceDefinitions(String                  serverName,
                                                                       String                  urlMarker,

@@ -154,7 +154,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createExternalIdFromTemplate(TemplateOptions        templateOptions,
                                                String                 templateGUID,
@@ -511,7 +511,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getExternalIdsForElement(String       elementGUID,
                                                                   QueryOptions queryOptions) throws InvalidParameterException,
@@ -532,7 +532,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findExternalIds(String        searchString,
                                                          SearchOptions searchOptions) throws InvalidParameterException,

@@ -54,7 +54,7 @@ public class MetadataExplorerResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -84,7 +84,7 @@ public class MetadataExplorerResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -112,7 +112,7 @@ public class MetadataExplorerResource
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -139,7 +139,7 @@ public class MetadataExplorerResource
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/history")
@@ -169,7 +169,7 @@ public class MetadataExplorerResource
      * @param requestBody the time window required
      * @return list of classifications or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/classifications/{classificationName}/history")
@@ -200,7 +200,7 @@ public class MetadataExplorerResource
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -230,7 +230,7 @@ public class MetadataExplorerResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
@@ -262,7 +262,7 @@ public class MetadataExplorerResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-domain/{anchorDomainName}")
@@ -294,7 +294,7 @@ public class MetadataExplorerResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
 
@@ -327,7 +327,7 @@ public class MetadataExplorerResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/any-type")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -367,7 +367,7 @@ public class MetadataExplorerResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -409,7 +409,7 @@ public class MetadataExplorerResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -445,7 +445,7 @@ public class MetadataExplorerResource
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
@@ -480,7 +480,7 @@ public class MetadataExplorerResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -517,7 +517,7 @@ public class MetadataExplorerResource
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-conditions")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -546,7 +546,7 @@ public class MetadataExplorerResource
      * @return a list of relationships - null means no matching relationships - or
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-search-conditions")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -575,7 +575,7 @@ public class MetadataExplorerResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-guid/{relationshipGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -605,7 +605,7 @@ public class MetadataExplorerResource
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/relationships/{relationshipGUID}/history")

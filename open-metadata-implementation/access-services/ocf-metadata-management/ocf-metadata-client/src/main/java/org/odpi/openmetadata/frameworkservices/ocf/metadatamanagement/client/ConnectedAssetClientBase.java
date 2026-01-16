@@ -38,7 +38,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param maxPageSize maximum page size for this process
      * @param auditLog destination for log messages
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
@@ -148,7 +148,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @return Connection retrieved from property server.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws PropertyServerException a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionByName(OCFRESTClient  restClient,

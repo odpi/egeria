@@ -14,8 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * OpenMetadataRootConverter provides common methods for transferring relevant properties from an Open Metadata
- * Element object into a bean that inherits from OpenMetadataRootProperties.  This is the converter that is
- * used for most types.
+ * Element object into a bean that inherits from OpenMetadataRootProperties.
  */
 public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase<B>
 {
@@ -36,13 +35,13 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
 
     /**
      * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
-     * a one to one correspondence with the repository instances.
+     * a one-to-one correspondence with the repository instances.
      *
      * @param beanClass name of the class to create
      * @param openMetadataElement openMetadataElement containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the entity supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>            beanClass,
@@ -75,13 +74,13 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
 
     /**
      * Using the supplied relatedMetadataElement, return a new instance of the bean. This is used for most beans that have
-     * a one to one correspondence with the repository instances.
+     * a one-to-one correspondence with the repository instances.
      *
      * @param beanClass name of the class to create
      * @param relatedMetadataElement relatedMetadataElement containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the relatedMetadataElement supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>               beanClass,
@@ -108,7 +107,7 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>                 beanClass,

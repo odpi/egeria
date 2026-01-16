@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.api;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * MultiLanguageInterface enables translations of the string properties of a metadata element to be created, maintained and retrieved.
@@ -19,14 +21,16 @@ public interface MultiLanguageInterface
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier of the element that this translation is related to
+     * @param initialClassifications    map of classifications to add to the new translation
      * @param translationDetail properties of the translation
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     void setTranslation(String            userId,
                         String            elementGUID,
+                        Map<String, ClassificationProperties> initialClassifications,
                         TranslationDetailProperties translationDetail) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
@@ -42,7 +46,7 @@ public interface MultiLanguageInterface
      *
      * @throws InvalidParameterException  the language is null or not known or not unique (add locale)
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     void clearTranslation(String userId,
                           String elementGUID,
@@ -64,7 +68,7 @@ public interface MultiLanguageInterface
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     TranslationDetailProperties getTranslation(String userId,
                                                String elementGUID,
@@ -86,7 +90,7 @@ public interface MultiLanguageInterface
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     List<TranslationDetailProperties> getTranslations(String userId,
                                                       String elementGUID,

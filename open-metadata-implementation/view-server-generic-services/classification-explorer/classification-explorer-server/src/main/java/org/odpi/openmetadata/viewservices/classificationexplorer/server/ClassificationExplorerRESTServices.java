@@ -1392,7 +1392,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElementResponse getMetadataElementByGUID(String         serverName,
                                                                     String         urlMarker,
@@ -1437,7 +1437,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElementResponse getMetadataElementByUniqueName(String                     serverName,
                                                                           String                     urlMarker,
@@ -1498,7 +1498,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String                     serverName,
                                                            String                     urlMarker,
@@ -1560,7 +1560,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getElements(String             serverName,
                                                         String             urlMarker,
@@ -1611,7 +1611,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findRootElements(String          serverName,
                                                              String          urlMarker,
@@ -1663,7 +1663,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getElementsByPropertyValue(String                      serverName,
                                                                        String                      urlMarker,
@@ -1719,7 +1719,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findElementsByPropertyValue(String                      serverName,
                                                                         String                      urlMarker,
@@ -1881,7 +1881,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getElementsByClassification(String         serverName,
                                                                         String         urlMarker,
@@ -1929,7 +1929,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getElementsByClassificationWithPropertyValue(String                      serverName,
                                                                                          String                      urlMarker,
@@ -1990,7 +1990,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findElementsByClassificationWithPropertyValue(String                      serverName,
                                                                                           String                      urlMarker,
@@ -2049,7 +2049,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getRelatedElements(String         serverName,
                                                                       String         urlMarker,
@@ -2132,7 +2132,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getRelatedElementsWithPropertyValue(String                      serverName,
                                                                                        String                      urlMarker,
@@ -2203,7 +2203,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findRelatedElementsWithPropertyValue(String                      serverName,
                                                                                         String                      urlMarker,
@@ -2269,7 +2269,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public MetadataRelationshipSummariesResponse getRelationships(String             serverName,
                                                                   String             urlMarker,
@@ -2326,7 +2326,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                      serverName,
                                                                                    String                      urlMarker,
@@ -2392,7 +2392,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                      serverName,
                                                                                     String                      urlMarker,
@@ -2457,7 +2457,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ElementHeaderResponse retrieveInstanceForGUID(String             serverName,
                                                          String             urlMarker,
@@ -2512,7 +2512,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getElementsByCategory(String            serverName,
                                                                   String            urlMarker,
@@ -2570,7 +2570,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return search keyword properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementResponse getSearchKeywordByGUID(String         serverName,
@@ -2617,7 +2617,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSearchKeywordsByKeyword(String                  serverName,
                                                                        String                  urlMarker,
@@ -2671,7 +2671,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSearchKeywords(String                  serverName,
                                                                String                  urlMarker,

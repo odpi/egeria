@@ -36,7 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Builds element properties for classification property beans
+ * Builds element properties for classification property beans.  The aim is to extract the properties from the
+ * specialist classification beans.  It is only necessary to process beans that add new properties.
  */
 public class OpenMetadataClassificationBuilder
 {
@@ -44,7 +45,7 @@ public class OpenMetadataClassificationBuilder
 
 
     /**
-     * Convert the properties beans into Element properties beans.  This is a bit fiddly in order to ensure the
+     * Convert the properties beans into Element properties beans.  This is a bit fiddly to ensure the
      * effectivity dates are properly included for each classification.
      *
      * @param classificationPropertiesMap map of classification name to classification bean
@@ -56,7 +57,7 @@ public class OpenMetadataClassificationBuilder
         {
             Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
-            for (String classificationName: classificationPropertiesMap.keySet())
+            for (String classificationName : classificationPropertiesMap.keySet())
             {
                 if ((classificationName != null) && (classificationPropertiesMap.get(classificationName) != null))
                 {
@@ -272,8 +273,8 @@ public class OpenMetadataClassificationBuilder
             else if (properties instanceof DataScopeProperties dataScopeProperties)
             {
                 elementProperties = propertyHelper.addFloatProperty(elementProperties,
-                                                                     OpenMetadataProperty.MAX_LONGITUDE.name,
-                                                                     dataScopeProperties.getMaxLongitude());
+                                                                    OpenMetadataProperty.MAX_LONGITUDE.name,
+                                                                    dataScopeProperties.getMaxLongitude());
                 elementProperties = propertyHelper.addFloatProperty(elementProperties,
                                                                     OpenMetadataProperty.MIN_LONGITUDE.name,
                                                                     dataScopeProperties.getMinLongitude());
@@ -585,8 +586,8 @@ public class OpenMetadataClassificationBuilder
                                                                      OpenMetadataProperty.FIXED_VALUE.name,
                                                                      typeEmbeddedAttributeProperties.getFixedValue());
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                     typeEmbeddedAttributeProperties.getAdditionalProperties());
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        typeEmbeddedAttributeProperties.getAdditionalProperties());
 
             }
             else if (properties instanceof ZoneMembershipProperties zoneMembershipProperties)
@@ -597,7 +598,7 @@ public class OpenMetadataClassificationBuilder
             }
 
 
-                elementProperties = propertyHelper.addPropertyMap(elementProperties,
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
                                                               classificationBeanProperties.getExtendedProperties());
 
             return elementProperties;

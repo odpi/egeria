@@ -213,7 +213,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
-     * @throws ConnectorCheckedException there is a problem initializing the Connector
+     * @throws ConnectorCheckedException a problem initializing the Connector
      */
     @Override
      public synchronized void addRemoteConnection(String         cohortName,
@@ -273,7 +273,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
         /*
          * First test that this connection represents an OMRSRepositoryConnector.  If it does not then an exception
-         * is thrown by getOMRSRepositoryConnector() to tell the caller there is a problem.
+         * is thrown by getOMRSRepositoryConnector() to tell the caller a problem.
          */
         OMRSRepositoryConnector remoteConnector = this.getOMRSRepositoryConnector(remoteConnection,
                                                                                   remoteServerName,
@@ -714,7 +714,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         catch (Exception  error)
         {
             /*
-             * If there is a problem initializing the connector then the ConnectorBroker will have created a
+             * If a problem initializing the connector then the ConnectorBroker will have created a
              * detailed exception already.  The only error case that this method has introduced is the cast
              * of the Connector to OMRSRepositoryConnector.  This could occur if the connector configured is a valid
              * OCF Connector but not an OMRSRepositoryConnector.

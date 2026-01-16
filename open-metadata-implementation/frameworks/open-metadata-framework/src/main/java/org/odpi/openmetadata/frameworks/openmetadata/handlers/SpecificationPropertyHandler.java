@@ -167,7 +167,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      * @return unique identifier of new specification property
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public String setUpSpecificationProperty(String                    userId,
                                              String                    elementGUID,
@@ -227,7 +227,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void deleteSpecificationProperty(String        userId,
                                             String        specificationPropertyGUID,
@@ -265,7 +265,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return specification property properties
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElement getSpecificationPropertyByGUID(String     userId,
@@ -361,7 +361,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findSpecificationProperties(String        userId,
                                                                      String        searchString,

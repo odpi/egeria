@@ -116,7 +116,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createAssetFromTemplate(String              serverName,
                                                 String              urlMarker,
@@ -284,7 +284,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getAssetsByName(String            serverName,
                                                             String            urlMarker,
@@ -394,7 +394,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getAssetByGUID(String             serverName,
                                                           String             urlMarker,
@@ -440,7 +440,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findAssets(String            serverName,
                                                        String            urlMarker,
@@ -662,7 +662,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse deployITAsset(String                     serverName,
                                       String                     urlMarker,
@@ -727,7 +727,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse unDeployITAsset(String                        serverName,
                                         String                        urlMarker,
@@ -778,7 +778,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse linkSoftwareCapability(String                     serverName,
                                                String                     urlMarker,
@@ -843,7 +843,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachSoftwareCapability(String                        serverName,
                                                  String                        urlMarker,
@@ -1003,7 +1003,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse linkDataSetContent(String                     serverName,
                                            String                     urlMarker,
@@ -1068,7 +1068,7 @@ public class AssetMakerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachDataSetContent(String                        serverName,
                                              String                        urlMarker,
@@ -1144,13 +1144,13 @@ public class AssetMakerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setGUID(handler.createAction(userId,
+                                                      requestBody.getInitialClassifications(),
+                                                      requestBody.getProperties(),
                                                       requestBody.getOriginatorGUID(),
                                                       requestBody.getActionSponsorGUID(),
                                                       requestBody.getAssignToActorGUID(),
                                                       requestBody,
-                                                      requestBody.getInitialClassifications(),
-                                                      requestBody.getNewActionTargets(),
-                                                      requestBody.getProperties()));
+                                                      requestBody.getNewActionTargets()));
             }
             else
             {

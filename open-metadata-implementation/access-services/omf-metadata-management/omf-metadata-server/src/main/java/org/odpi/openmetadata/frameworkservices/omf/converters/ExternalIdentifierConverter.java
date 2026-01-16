@@ -44,7 +44,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
      * @param entity entity containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>     beanClass,
@@ -64,7 +64,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>     beanClass,
@@ -95,7 +95,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewComplexBean(Class<B>           beanClass,
@@ -197,7 +197,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     @Override

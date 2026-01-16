@@ -96,7 +96,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/from-template
 Authorization: Bearer {{token}}
@@ -285,7 +285,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-name
 Authorization: Bearer {{token}}
@@ -315,7 +315,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-search-string
 Authorization: Bearer {{token}}
@@ -349,7 +349,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -383,7 +383,7 @@ Content-Type: application/json
 #
 # @return guid for new tag or
 # InvalidParameterException - one of the parameters is invalid or
-# PropertyServerException - there is a problem retrieving information from the property server(s) or
+# PropertyServerException - a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/contribution-records
@@ -494,7 +494,7 @@ Content-Type: application/json
 #
 # @return void or
 # InvalidParameterException - one of the parameters is invalid or
-# PropertyServerException - there is a problem retrieving information from the property server(s) or
+# PropertyServerException - a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{{contributionRecordGUID}}/delete
@@ -523,7 +523,7 @@ Content-Type: application/json
 # @return list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-search-string
 Authorization: Bearer {{token}}
@@ -558,7 +558,7 @@ Content-Type: application/json
 # @return list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-search-string
 Authorization: Bearer {{token}}
@@ -585,7 +585,7 @@ Content-Type: application/json
 # @return list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-name
 Authorization: Bearer {{token}}
@@ -618,7 +618,7 @@ Content-Type: application/json
 # @return requested metadata element or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{{contributionRecordGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -707,7 +707,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/from-template
 Authorization: Bearer {{token}}
@@ -1028,7 +1028,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-name
 Authorization: Bearer {{token}}
@@ -1058,7 +1058,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string
 Authorization: Bearer {{token}}
@@ -1096,7 +1096,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{actorRoleGUID}}/retrieve"})
 Authorization: Bearer {{token}}
@@ -1185,7 +1185,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/from-template
 Authorization: Bearer {{token}}
@@ -1467,7 +1467,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-name
 Authorization: Bearer {{token}}
@@ -1497,7 +1497,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
 Authorization: Bearer {{token}}
@@ -1531,7 +1531,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -1626,7 +1626,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/from-template
 Authorization: Bearer {{token}}
@@ -1816,7 +1816,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-name
 Authorization: Bearer {{token}}
@@ -1846,7 +1846,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-search-string
 Authorization: Bearer {{token}}
@@ -1880,7 +1880,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/retrieve
 Authorization: Bearer {{token}}

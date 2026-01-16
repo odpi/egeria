@@ -90,7 +90,7 @@ public class ClientConstructorTest
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     private void testMetadataSourceClient(String   serverName,
@@ -114,7 +114,7 @@ public class ClientConstructorTest
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     private void testDatabaseManagerClient(String   serverName,
@@ -138,7 +138,7 @@ public class ClientConstructorTest
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     private void testFilesAndFoldersClient(String   serverName,
@@ -162,7 +162,7 @@ public class ClientConstructorTest
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     private void testDataManagerEventClient(String   serverName,

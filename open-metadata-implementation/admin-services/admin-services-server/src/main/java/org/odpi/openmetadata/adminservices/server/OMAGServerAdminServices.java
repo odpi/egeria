@@ -3886,7 +3886,7 @@ public class OMAGServerAdminServices extends TokenController
      * @param destinationPlatform  location of the platform where the config is to be deployed to
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration or
+     * OMAGConfigurationErrorException a problem using the supplied configuration or
      * InvalidParameterException invalid serverName or destinationPlatform parameter.
      */
     public VoidResponse deployOMAGServerConfig(String         serverName,

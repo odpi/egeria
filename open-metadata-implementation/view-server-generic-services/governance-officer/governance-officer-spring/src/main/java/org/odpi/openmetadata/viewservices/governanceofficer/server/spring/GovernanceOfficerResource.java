@@ -84,7 +84,7 @@ public class GovernanceOfficerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -631,7 +631,7 @@ public class GovernanceOfficerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -661,7 +661,7 @@ public class GovernanceOfficerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -692,7 +692,7 @@ public class GovernanceOfficerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -732,7 +732,7 @@ public class GovernanceOfficerResource
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
     @SecurityRequirement(name = "BearerAuthorization")

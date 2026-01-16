@@ -84,7 +84,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      * Return the contents of the archive.
      *
      * @return OpenMetadataArchive object
-     * @throws RepositoryErrorException there is a problem accessing the archive
+     * @throws RepositoryErrorException a problem accessing the archive
      */
     @Override
     public OpenMetadataArchive getArchiveContents() throws RepositoryErrorException

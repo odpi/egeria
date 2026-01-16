@@ -32,7 +32,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -246,7 +246,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      */
     @Override
     public  void disconnect() throws ConnectorCheckedException

@@ -292,7 +292,7 @@ public class OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     protected String createElementFromTemplate(String                 userId,
                                                TemplateOptions        templateOptions,
@@ -1815,7 +1815,7 @@ public class OpenMetadataHandlerBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getRootElementByUniqueName(String     userId,
                                                               String     uniqueName,
@@ -1846,7 +1846,7 @@ public class OpenMetadataHandlerBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getLineageElementByUniqueName(String     userId,
                                                                  String     uniqueName,
@@ -1876,7 +1876,7 @@ public class OpenMetadataHandlerBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getDeletedElementByUniqueName(String     userId,
                                                                  String     uniqueName,

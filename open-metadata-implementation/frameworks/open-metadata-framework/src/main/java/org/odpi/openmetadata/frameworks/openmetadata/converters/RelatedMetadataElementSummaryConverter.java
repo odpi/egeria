@@ -41,7 +41,7 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
      * @param relatedMetadataElement openMetadataElement containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>               beanClass,
@@ -97,7 +97,7 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
      * @param relatedMetadataElements list of relatedMetadataElements containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                     beanClass,
                                List<RelatedMetadataElement> relatedMetadataElements,

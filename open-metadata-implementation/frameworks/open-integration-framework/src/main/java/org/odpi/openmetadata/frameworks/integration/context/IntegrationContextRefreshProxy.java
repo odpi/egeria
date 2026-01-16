@@ -32,7 +32,7 @@ public class IntegrationContextRefreshProxy
      * @param refreshInProgress boolean flag
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     public void setRefreshInProgress(boolean refreshInProgress) throws InvalidParameterException,
                                                                        PropertyServerException,

@@ -84,7 +84,7 @@ public class AssetMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -176,7 +176,7 @@ public class AssetMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -205,7 +205,7 @@ public class AssetMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -235,7 +235,7 @@ public class AssetMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/{assetGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -391,7 +391,7 @@ public class AssetMakerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/assets/{assetGUID}/deployed-on/{destinationGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -424,7 +424,7 @@ public class AssetMakerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/assets/{assetGUID}/deployed-on/{destinationGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -457,7 +457,7 @@ public class AssetMakerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/assets/{assetGUID}/supported-software-capabilities/{capabilityGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -490,7 +490,7 @@ public class AssetMakerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/assets/{assetGUID}/supported-software-capabilities/{capabilityGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -585,7 +585,7 @@ public class AssetMakerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/data-sets/{dataSetGUID}/data-set-content/{dataContentAssetGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -618,7 +618,7 @@ public class AssetMakerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping("/data-sets/{dataSetGUID}/data-set-content/{dataContentAssetGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")

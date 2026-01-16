@@ -821,7 +821,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws PropertyServerException a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addAssetConnection(String              userId,
@@ -990,7 +990,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTime                  the time that the retrieved elements must be effective for
      * @param methodName                     calling method
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem adding the connection properties to the property server.
+     * @throws PropertyServerException    a problem adding the connection properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void createConnection(String              userId,
@@ -1189,7 +1189,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connection properties to the property server.
+     * @throws PropertyServerException a problem adding the connection properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   updateConnection(String              userId,

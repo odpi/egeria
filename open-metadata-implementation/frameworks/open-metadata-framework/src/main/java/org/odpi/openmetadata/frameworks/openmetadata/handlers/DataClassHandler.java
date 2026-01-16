@@ -93,7 +93,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createDataClassFromTemplate(String                 userId,
                                               TemplateOptions        templateOptions,
@@ -372,7 +372,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
      * @param searchOptions multiple options to control the query
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findDataClasses(String        userId,
                                                          String        searchString,

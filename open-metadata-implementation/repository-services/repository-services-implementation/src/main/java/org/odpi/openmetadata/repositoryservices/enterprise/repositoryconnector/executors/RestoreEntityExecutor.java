@@ -113,7 +113,7 @@ public class RestoreEntityExecutor extends RepositoryExecutorBase
      *
      * @return EntityDetail showing the restored entity header, properties and classifications.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored

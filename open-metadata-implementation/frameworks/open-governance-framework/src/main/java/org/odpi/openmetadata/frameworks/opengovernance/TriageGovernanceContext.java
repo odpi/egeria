@@ -34,7 +34,7 @@ public interface TriageGovernanceContext extends GovernanceContext
      * @return unique identifier of new to do element
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a to do
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
      */
     String openToDo(String toDoQualifiedName,
                     String title,

@@ -48,7 +48,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the survey service.
+     * @throws ConnectorCheckedException a problem within the survey service.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override

@@ -74,7 +74,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -106,7 +106,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -137,7 +137,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -168,7 +168,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -245,7 +245,7 @@ public class GlossaryManagerResource
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -268,7 +268,7 @@ public class GlossaryManagerResource
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/from-template/{templateGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -291,7 +291,7 @@ public class GlossaryManagerResource
      * @return  boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -315,7 +315,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update/from-template/{templateGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -340,7 +340,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/move-to/{glossaryGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -384,7 +384,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -411,7 +411,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -438,7 +438,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -464,7 +464,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -488,7 +488,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -512,7 +512,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -537,7 +537,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -561,7 +561,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -584,7 +584,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity/remove")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -608,7 +608,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -631,7 +631,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -655,7 +655,7 @@ public class GlossaryManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -680,7 +680,7 @@ public class GlossaryManagerResource
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -707,7 +707,7 @@ public class GlossaryManagerResource
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -729,7 +729,7 @@ public class GlossaryManagerResource
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}")
     @SecurityRequirement(name = "BearerAuthorization")

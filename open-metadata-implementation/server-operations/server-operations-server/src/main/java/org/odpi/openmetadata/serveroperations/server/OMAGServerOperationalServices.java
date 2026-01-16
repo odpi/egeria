@@ -73,7 +73,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @return success message or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateAutoStartServerListWithStoredConfig(String       userId,
                                                                               List<String> serverNames)
@@ -134,7 +134,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithStoredConfig(String userId,
                                                            String delegatingUserId,
@@ -168,7 +168,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithStoredConfig(String serverName,
                                                            String delegatingUserId)
@@ -293,7 +293,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithSuppliedConfig(String           serverName,
                                                              String           delegatingUserId,
@@ -342,7 +342,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithSuppliedConfig(String           userId,
                                                              String           delegatingUserId,

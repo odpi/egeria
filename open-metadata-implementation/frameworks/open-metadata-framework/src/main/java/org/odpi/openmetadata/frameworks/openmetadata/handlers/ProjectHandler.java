@@ -118,7 +118,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createProjectFromTemplate(String                 userId,
                                             TemplateOptions        templateOptions,
@@ -150,7 +150,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public boolean updateProject(String            userId,
                                  String            projectGUID,
@@ -182,7 +182,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupProjectDependency(String                      userId,
                                        String                      projectGUID,
@@ -219,7 +219,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearProjectDependency(String        userId,
                                        String        projectGUID,
@@ -255,7 +255,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupProjectHierarchy(String                     userId,
                                       String                     projectGUID,
@@ -292,7 +292,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearProjectHierarchy(String        userId,
                                       String        projectGUID,
@@ -328,7 +328,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupProjectTeam(String                    userId,
                                  String                    projectGUID,
@@ -365,7 +365,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearProjectTeam(String        userId,
                                  String        projectGUID,
@@ -399,7 +399,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void deleteProject(String        userId,
                               String        projectGUID,
@@ -498,7 +498,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootHierarchy getProjectInContext(String       userId,
                                                          String       projectGUID,
@@ -547,7 +547,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @return list of connected governance definitions not yet processed
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     private List<OpenMetadataRootHierarchy> getRelatedProjects(String                      userId,
                                                                OpenMetadataRootHierarchy   startingProject,
@@ -651,7 +651,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @return list of connected governance definitions not yet processed
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     private List<OpenMetadataRootHierarchy> getSubProjects(String                      userId,
                                                            OpenMetadataRootHierarchy   startingProject,
@@ -861,7 +861,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findProjects(String        userId,
                                                       String        searchString,
@@ -887,7 +887,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getProjectsByName(String       userId,
                                                            String       name,
@@ -920,7 +920,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElement getProjectByGUID(String     userId,
                                                     String     projectGUID,

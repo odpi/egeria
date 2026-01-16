@@ -34,7 +34,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createAsset(String assetTypeName,
                        String qualifiedName,
@@ -58,7 +58,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createAsset(String            assetTypeName,
                        String            qualifiedName,
@@ -85,7 +85,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createAssetFromTemplate(String templateGUID,
                                    String qualifiedName,
@@ -113,7 +113,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createAssetFromTemplate(String            assetTypeName,
                                    String            templateGUID,
@@ -138,7 +138,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createProcess(String        processTypeName,
                          String        qualifiedName,
@@ -163,7 +163,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createProcess(String            processTypeName,
                          String            qualifiedName,
@@ -189,7 +189,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createProcessFromTemplate(String        templateGUID,
                                      String        qualifiedName,
@@ -215,7 +215,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createProcessFromTemplate(String            templateGUID,
                                      String            qualifiedName,
@@ -241,7 +241,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createChildProcess(String        processTypeName,
                               String        qualifiedName,
@@ -268,7 +268,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     String createChildProcess(String            processTypeName,
                               String            qualifiedName,
@@ -294,7 +294,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the processGUID or qualified name is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createPort(String   processGUID,
                       String   qualifiedName,
@@ -315,7 +315,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException one of the GUIDs is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createLineageRelationship(String sourceElementGUID,
                                      String targetElementGUID) throws InvalidParameterException,
@@ -344,7 +344,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException one of the GUIDs is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createLineageRelationship(String relationshipName,
                                      String sourceElementGUID,

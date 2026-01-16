@@ -706,7 +706,7 @@ public class ClassificationExplorerResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -736,7 +736,7 @@ public class ClassificationExplorerResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -764,7 +764,7 @@ public class ClassificationExplorerResource
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/guid-by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -792,7 +792,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-type")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -820,7 +820,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-complex-query")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -848,7 +848,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -878,7 +878,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-property-value-search")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -968,7 +968,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1000,7 +1000,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}/with-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1033,7 +1033,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}/with-property-value-search")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1066,7 +1066,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1100,7 +1100,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1137,7 +1137,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1176,7 +1176,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-property-value-search")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1208,7 +1208,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1236,7 +1236,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/{relationshipTypeName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1266,7 +1266,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/with-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1296,7 +1296,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/{relationshipTypeName}/with-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1327,7 +1327,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/with-property-value-search")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1358,7 +1358,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/{relationshipTypeName}/with-property-value-search")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1387,7 +1387,7 @@ public class ClassificationExplorerResource
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/guids/{guid}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1414,7 +1414,7 @@ public class ClassificationExplorerResource
      *
      * @return list of search keyword objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/by-category")
@@ -1443,7 +1443,7 @@ public class ClassificationExplorerResource
      *
      * @return list of search keyword objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/search-keywords/by-search-string")
@@ -1472,7 +1472,7 @@ public class ClassificationExplorerResource
      *
      * @return list of search keyword objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/search-keywords/by-keyword")
@@ -1501,7 +1501,7 @@ public class ClassificationExplorerResource
      * @param requestBody optional effective time
      * @return search keyword properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/search-keywords/{searchKeywordGUID}/retrieve")

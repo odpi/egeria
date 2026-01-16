@@ -108,7 +108,7 @@ public class ReferenceDataRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createValidValueDefinitionFromTemplate(String              serverName,
                                                                TemplateRequestBody requestBody)
@@ -1134,7 +1134,7 @@ public class ReferenceDataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getValidValueDefinitionsByName(String            serverName,
                                                                            FilterRequestBody requestBody)
@@ -1185,7 +1185,7 @@ public class ReferenceDataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getValidValueDefinitionByGUID(String             serverName,
                                                                          String             validValueDefinitionGUID,
@@ -1229,7 +1229,7 @@ public class ReferenceDataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findValidValueDefinitions(String                  serverName,
                                                                       SearchStringRequestBody requestBody)

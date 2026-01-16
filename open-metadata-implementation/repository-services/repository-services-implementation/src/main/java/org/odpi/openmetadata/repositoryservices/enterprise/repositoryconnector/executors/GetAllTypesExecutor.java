@@ -108,7 +108,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      *
      * @return TypeDefGallery  List of different categories of TypeDefs.
      * @throws InvalidParameterException the userId is null
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGallery getResults() throws InvalidParameterException,

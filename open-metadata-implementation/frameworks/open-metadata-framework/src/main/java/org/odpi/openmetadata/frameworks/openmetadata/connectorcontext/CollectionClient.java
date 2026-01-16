@@ -127,7 +127,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createCollectionFromTemplate(TemplateOptions        templateOptions,
                                                String                 templateGUID,
@@ -950,7 +950,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findCollections(String        searchString,
                                                          SearchOptions searchOptions) throws InvalidParameterException,
@@ -1011,7 +1011,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @return glossary root element or null
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElement getGlossaryForTerm(OpenMetadataRootElement glossaryTerm) throws InvalidParameterException,
                                                                                                     PropertyServerException,
@@ -1092,7 +1092,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param membershipProperties  properties describing the membership characteristics.
      * @param elementGUID           unique identifier of the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addToCollection(String                         collectionGUID,
@@ -1114,7 +1114,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param updateOptions        provides a structure for the additional options when updating a relationship.
      * @param membershipProperties properties describing the membership characteristics.
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCollectionMembership(String                         collectionGUID,
@@ -1152,7 +1152,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param elementGUID    unique identifier of the element.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeFromCollection(String        collectionGUID,

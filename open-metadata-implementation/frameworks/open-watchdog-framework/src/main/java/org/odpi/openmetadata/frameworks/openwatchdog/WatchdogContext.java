@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -164,7 +165,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * @return string guid
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     public OpenMetadataRootElement getNotificationType() throws UserNotAuthorizedException,
                                                                 InvalidParameterException,
@@ -278,7 +279,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * @return string guid
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     public List<OpenMetadataRootElement> getMonitoredResources() throws UserNotAuthorizedException,
                                                                         InvalidParameterException,
@@ -305,7 +306,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * @return string guid
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     public List<OpenMetadataRootElement> getNotificationSubscribers() throws UserNotAuthorizedException,
                                                                              InvalidParameterException,
@@ -330,20 +331,22 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * Create a notification/action for one of the subscribers.
      *
      * @param subscriberGUID unique identifier of the subscriber
+     * @param initialClassifications classification to add to the action
      * @param notificationProperties properties for the notification
      * @param requestParameters properties to pass to the next governance service
      * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
-    public void notifySubscriber(String                 subscriberGUID,
-                                 NotificationProperties notificationProperties,
-                                 Map<String, String>    requestParameters,
-                                 List<NewActionTarget>  newActionTargets)  throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void notifySubscriber(String                                subscriberGUID,
+                                 Map<String, ClassificationProperties> initialClassifications,
+                                 NotificationProperties                notificationProperties,
+                                 Map<String, String>                   requestParameters,
+                                 List<NewActionTarget>                 newActionTargets)  throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName = "notifySubscriber";
 
@@ -351,8 +354,10 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
 
         if (notificationTypeGUID != null)
         {
+
             this.notificationHandler.notifySubscriber(connectorUserId,
                                                       subscriberGUID,
+                                                      initialClassifications,
                                                       notificationProperties,
                                                       notificationTypeGUID,
                                                       requestParameters,
@@ -363,22 +368,24 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
 
 
     /**
-     * Create a notification/action for each of the subscribers.
+     * Create a notification/action for each subscriber.
      *
+     * @param initialClassifications classification to add to the action
      * @param notificationProperties properties for the notification
-     * @param requestParameters properties to pass to the next governance service
-     * @param newActionTargets map of action target names to GUIDs for the resulting engine action
-     *
-     * @throws InvalidParameterException the completion status is null
+     * @param requestParameters      properties to pass to the next governance service
+     * @param newActionTargets       map of action target names to GUIDs for the resulting engine action
+     * @param newSubscriberStatus    status of the subscriber after the notification
+     * @throws InvalidParameterException  the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public void notifySubscribers(NotificationProperties notificationProperties,
-                                  Map<String, String>    requestParameters,
-                                  List<NewActionTarget>  newActionTargets,
-                                  ActivityStatus         newSubscriberStatus) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void notifySubscribers(Map<String, ClassificationProperties> initialClassifications,
+                                  NotificationProperties                notificationProperties,
+                                  Map<String, String>                   requestParameters,
+                                  List<NewActionTarget>                 newActionTargets,
+                                  ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "notifySubscribers";
 
@@ -387,6 +394,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
         if (notificationTypeGUID != null)
         {
             this.notificationHandler.notifySubscribers(connectorUserId,
+                                                       initialClassifications,
                                                        notificationProperties,
                                                        notificationTypeGUID,
                                                        requestParameters,
@@ -462,7 +470,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public void recordCompletionStatus(CompletionStatus          status,
                                        List<String>              outputGuards,
@@ -503,7 +511,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public  void recordCompletionStatus(CompletionStatus      status,
                                         List<String>          outputGuards,

@@ -25,7 +25,7 @@ public interface OMRSConnectionConsumer
      * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
-     * @throws ConnectorCheckedException there is a problem initializing the Connector
+     * @throws ConnectorCheckedException a problem initializing the Connector
      */
     void addRemoteConnection(String         cohortName,
                              String         remoteServerName,

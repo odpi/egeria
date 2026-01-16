@@ -50,7 +50,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
      * @return guid of new feedback element
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String addFeedbackToElement(String                userId,
@@ -109,7 +109,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
      * @param methodName calling method
      * @return relationship and entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected OpenMetadataRootElement getFeedbackForUser(String       userId,

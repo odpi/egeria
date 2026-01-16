@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class NotificationSubscriberProperties extends LabeledRelationshipProperties
 {
     private ActivityStatus activityStatus = ActivityStatus.IN_PROGRESS;
-
+    private List<String>   zoneMembership = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         if (template != null)
         {
             this.activityStatus = template.getActivityStatus();
+            this.zoneMembership = template.getZoneMembership();
         }
     }
 
@@ -77,6 +79,26 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     }
 
 
+    /**
+     * Return the list of zone names
+     *
+     * @return string name
+     */
+    public List<String> getZoneMembership()
+    {
+        return zoneMembership;
+    }
+
+
+    /**
+     * Set up the list of zone names
+     *
+     * @param zoneMembership string name
+     */
+    public void setZoneMembership(List<String> zoneMembership)
+    {
+        this.zoneMembership = zoneMembership;
+    }
 
 
     /**
@@ -89,10 +111,9 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     {
         return "NotificationSubscriberProperties{" +
                 "status=" + activityStatus +
+                "zoneMembership=" + zoneMembership +
                 "} " + super.toString();
     }
-
-
 
 
     /**
@@ -117,7 +138,8 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
             return false;
         }
         NotificationSubscriberProperties that = (NotificationSubscriberProperties) objectToCompare;
-        return  activityStatus == that.activityStatus;
+        return  activityStatus == that.activityStatus &&
+                Objects.equals(zoneMembership, that.zoneMembership);
     }
 
 
@@ -129,6 +151,6 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus);
+        return Objects.hash(super.hashCode(), activityStatus, zoneMembership);
     }
 }

@@ -81,7 +81,7 @@ public class DataDesignerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -239,7 +239,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -267,7 +267,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -296,7 +296,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/{dataStructureGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -358,7 +358,7 @@ public class DataDesignerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -516,7 +516,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -544,7 +544,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -573,7 +573,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/{dataFieldGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -636,7 +636,7 @@ public class DataDesignerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -862,7 +862,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -890,7 +890,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -919,7 +919,7 @@ public class DataDesignerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/{dataClassGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

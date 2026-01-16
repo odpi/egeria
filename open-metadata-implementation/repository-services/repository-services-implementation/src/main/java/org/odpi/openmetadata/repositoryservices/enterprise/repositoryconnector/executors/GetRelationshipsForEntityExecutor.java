@@ -234,7 +234,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * @throws PropertyErrorException the sequencing property is not valid for the attached classifications.

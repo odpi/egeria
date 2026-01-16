@@ -513,7 +513,7 @@ public class OMRSMetadataHighwayManager
 
 
     /**
-     * Create a connector to the cohort registry store. If there is a problem with the connection information
+     * Create a connector to the cohort registry store. If a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
      * @param cohortName name of the cohort that this registry store is for
@@ -552,7 +552,7 @@ public class OMRSMetadataHighwayManager
     /**
      * Creates a topic connector using information from the supplied topic connection.  This connector supported
      * the Open Connector Framework (OCF) so it is possible to configure different connector implementations for
-     * different event/messaging infrastructure.   If there is a problem with the connection information
+     * different event/messaging infrastructure.   If a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
      * @param cohortName name of the cohort that this registry store is for

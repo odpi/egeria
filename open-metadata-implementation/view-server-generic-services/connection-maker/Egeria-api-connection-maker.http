@@ -105,7 +105,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/from-template
 Authorization: Bearer {{token}}
@@ -540,7 +540,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/by-name
 Authorization: Bearer {{token}}
@@ -570,7 +570,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/by-search-string
 Authorization: Bearer {{token}}
@@ -604,7 +604,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/{{connectionGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -693,7 +693,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/from-template
 Authorization: Bearer {{token}}
@@ -823,7 +823,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-name
 Authorization: Bearer {{token}}
@@ -853,7 +853,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-search-string
 Authorization: Bearer {{token}}
@@ -887,7 +887,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/retrieve"})
 Authorization: Bearer {{token}}
@@ -976,7 +976,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/from-template
 Authorization: Bearer {{token}}
@@ -1106,7 +1106,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-name
 Authorization: Bearer {{token}}
@@ -1136,7 +1136,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-network-address
 Authorization: Bearer {{token}}
@@ -1165,7 +1165,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/endpoints/retrieve
 Authorization: Bearer {{token}}
@@ -1193,7 +1193,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-search-string
 Authorization: Bearer {{token}}
@@ -1227,7 +1227,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/retrieve
 Authorization: Bearer {{token}}

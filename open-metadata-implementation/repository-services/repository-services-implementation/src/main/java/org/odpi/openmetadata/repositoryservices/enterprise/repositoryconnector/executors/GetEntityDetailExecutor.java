@@ -204,7 +204,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      * @param returnDeletedClassifications should classifications in deleted status be returned?
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -231,7 +231,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      *
      * @return EntityDetail structure.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
@@ -276,7 +276,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      *
      * @return EntityDetail structure.
      * @throws InvalidParameterException the guid or date is null or the date is for a future time.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.

@@ -11,16 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorC
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -31,13 +22,11 @@ import java.util.Map;
  */
 public  class StewardshipAction extends ConnectorContextClientBase
 {
-    private final OpenMetadataClient     openMetadataClient;
     private final ActionControlInterface actionControlInterface;
-    private final String                 originatorGUID;
 
 
     /**
-     * Constructor for connector context client.
+     * Constructor for the connector context client.
      *
      * @param parentContext connector's context
      * @param localServerName local server where this client is running - used for error handling
@@ -46,10 +35,9 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @param connectorGUID the unique identifier that represents this connector in open metadata
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
      * @param externalSourceName unique name of the software server capability for the source of metadata
-     * @param openMetadataClient client to access the open metadata store
      * @param openGovernanceClient client to access governance functions
      * @param auditLog logging destination
-     * @param maxPageSize max number of elements that can be returned on a query
+     * @param maxPageSize max elements that can be returned on a query
      */
     public StewardshipAction(ConnectorContextBase parentContext,
                              String               localServerName,
@@ -58,7 +46,6 @@ public  class StewardshipAction extends ConnectorContextClientBase
                              String               connectorGUID,
                              String               externalSourceGUID,
                              String               externalSourceName,
-                             OpenMetadataClient   openMetadataClient,
                              OpenGovernanceClient openGovernanceClient,
                              AuditLog             auditLog,
                              int                  maxPageSize)
@@ -73,94 +60,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
               auditLog,
               maxPageSize);
 
-        this.openMetadataClient     = openMetadataClient;
         this.actionControlInterface = openGovernanceClient;
-        this.originatorGUID         = connectorGUID;
-    }
-
-
-    /**
-     * Create an incident report to capture the situation detected by this governance action service.
-     * This incident report will be processed by other governance activities.
-     *
-     * @param properties unique identifier to give this new incident report and description of the situation
-     * @param impactedResources details of the resources impacted by this situation
-     * @param previousIncidents links to previous incident reports covering this situation
-     * @param originatorGUID the unique identifier of the person or process that created the incident
-     *
-     * @return unique identifier of the resulting incident report
-     * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public String createIncidentReport(IncidentReportProperties                properties,
-                                       Map<String, ImpactedResourceProperties> impactedResources,
-                                       Map<String, ReportDependencyProperties> previousIncidents,
-                                       String                                  originatorGUID) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        return openMetadataClient.createIncidentReport(connectorUserId,
-                                                       properties,
-                                                       impactedResources,
-                                                       previousIncidents,
-                                                       originatorGUID);
-    }
-
-
-    /**
-     * Create a "To Do" request for someone to work on.
-     *
-     * @param properties unique name for the to do plus additional properties
-     * @param assignToGUID unique identifier the Actor element for the recipient
-     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @return unique identifier of new to do element
-     *
-     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    public String openToDo(ToDoProperties        properties,
-                           String                assignToGUID,
-                           String                sponsorGUID,
-                           List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        return openMetadataClient.openToDo(connectorUserId, properties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
-    }
-
-
-    /**
-     * Create a new context event
-     *
-     * @param anchorGUID unique identifier for the context event's anchor element
-     * @param parentContextEvents which context events should be linked as parents (guid->relationship properties)
-     * @param childContextEvents which context events should be linked as children (guid->relationship properties)
-     * @param relatedContextEvents which context events should be linked as related (guid->relationship properties)
-     * @param impactedElements which elements are impacted by this context event (guid->relationship properties)
-     * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->relationship properties)
-     * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs)
-     * @param contextEventProperties properties for the context event itself
-     * @return guid of the new context event
-     * @throws InvalidParameterException one of the properties are invalid
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    public String registerContextEvent(String                                       anchorGUID,
-                                       Map<String, DependentContextEventProperties> parentContextEvents,
-                                       Map<String, DependentContextEventProperties> childContextEvents,
-                                       Map<String, RelatedContextEventProperties>   relatedContextEvents,
-                                       Map<String, ContextEventImpactProperties>    impactedElements,
-                                       Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
-                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs,
-                                       ContextEventProperties                       contextEventProperties) throws InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   PropertyServerException
-    {
-        return openMetadataClient.registerContextEvent(connectorUserId, anchorGUID, parentContextEvents, childContextEvents, relatedContextEvents, impactedElements, effectedDataResourceGUIDs, contextEventEvidenceGUIDs, contextEventProperties);
     }
 
 
@@ -189,7 +89,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException  a problem with the metadata store
      */
     public String initiateEngineAction(String                qualifiedName,
                                        int                   domainIdentifier,
@@ -229,7 +129,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
                                                List<String>          actionSourceGUIDs,
@@ -261,7 +161,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException the caller is not authorized to create a governance action process
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String initiateGovernanceActionProcess(String                processQualifiedName,
                                                   List<String>          actionSourceGUIDs,

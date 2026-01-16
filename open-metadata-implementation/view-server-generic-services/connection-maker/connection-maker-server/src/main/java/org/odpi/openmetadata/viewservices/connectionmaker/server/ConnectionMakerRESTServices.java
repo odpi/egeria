@@ -112,7 +112,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createConnectionFromTemplate(String              serverName,
                                                      String              urlMarker,
@@ -940,7 +940,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getConnectionsByName(String            serverName,
                                                                  String            urlMarker,
@@ -993,7 +993,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getConnectionByGUID(String             serverName,
                                                                String             urlMarker,
@@ -1038,7 +1038,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findConnections(String                  serverName,
                                                             String                  urlMarker,
@@ -1155,7 +1155,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createConnectorTypeFromTemplate(String              serverName,
                                                         String              urlMarker,
@@ -1320,7 +1320,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getConnectorTypesByName(String            serverName,
                                                                     String            urlMarker,
@@ -1374,7 +1374,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getConnectorTypesByConnectorProvider(String            serverName,
                                                                                  String            urlMarker,
@@ -1427,7 +1427,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getConnectorTypeByGUID(String             serverName,
                                                                   String             urlMarker,
@@ -1473,7 +1473,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findConnectorTypes(String                  serverName,
                                                                String                  urlMarker,
@@ -1589,7 +1589,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createEndpointFromTemplate(String              serverName,
                                                    String              urlMarker,
@@ -1764,7 +1764,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsByName(String            serverName,
                                                                String            urlMarker,
@@ -1817,7 +1817,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsForInfrastructure(String             serverName,
                                                                           String             urlMarker,
@@ -1871,7 +1871,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsByNetworkAddress(String            serverName,
                                                                          String            urlMarker,
@@ -1924,7 +1924,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getEndpointByGUID(String             serverName,
                                                              String             urlMarker,
@@ -1970,7 +1970,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findEndpoints(String                  serverName,
                                                           String                  urlMarker,

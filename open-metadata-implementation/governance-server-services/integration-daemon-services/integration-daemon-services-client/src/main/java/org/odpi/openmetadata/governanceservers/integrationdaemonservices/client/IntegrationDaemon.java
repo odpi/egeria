@@ -52,7 +52,7 @@ public class IntegrationDaemon
      * @param delegatingUserId external userId making request
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public IntegrationDaemon(String   serverName,
@@ -79,7 +79,7 @@ public class IntegrationDaemon
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public IntegrationDaemon(String                             serverName,
@@ -450,7 +450,7 @@ public class IntegrationDaemon
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException the caller is not authorized to call the service
-     * @throws PropertyServerException there is a problem processing the request
+     * @throws PropertyServerException a problem processing the request
      */
     public void publishOpenLineageEvent(OpenLineage.RunEvent event) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -478,7 +478,7 @@ public class IntegrationDaemon
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException the caller is not authorized to call the service
-     * @throws PropertyServerException there is a problem processing the request
+     * @throws PropertyServerException a problem processing the request
      */
     public void publishOpenLineageEvent(String event) throws InvalidParameterException,
                                                              UserNotAuthorizedException,

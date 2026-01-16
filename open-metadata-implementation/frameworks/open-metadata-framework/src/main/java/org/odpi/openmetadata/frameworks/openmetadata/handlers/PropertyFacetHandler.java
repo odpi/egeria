@@ -57,7 +57,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      * @return guid of new property facet.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addPropertyFacetToElement(String                                userId,
@@ -103,7 +103,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updatePropertyFacet(String                  userId,
@@ -130,7 +130,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      * @param deleteOptions options for a delete request
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public void deletePropertyFacet(String        userId,
@@ -151,7 +151,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return property facet properties
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElement getPropertyFacetByGUID(String     userId,
@@ -212,7 +212,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findPropertyFacets(String        userId,
                                                             String        searchString,

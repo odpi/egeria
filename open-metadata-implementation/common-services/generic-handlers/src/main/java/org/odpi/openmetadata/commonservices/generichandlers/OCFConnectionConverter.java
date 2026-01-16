@@ -44,7 +44,7 @@ public class OCFConnectionConverter<B> extends OMFConverter<B>
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     @SuppressWarnings(value = "unchecked")

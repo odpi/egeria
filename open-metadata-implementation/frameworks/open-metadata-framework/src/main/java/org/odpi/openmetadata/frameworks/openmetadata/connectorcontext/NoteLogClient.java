@@ -71,7 +71,7 @@ public class NoteLogClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public  String createNoteLog(String                                elementGUID,
                                  MetadataSourceOptions                 metadataSourceOptions,
@@ -105,7 +105,7 @@ public class NoteLogClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createNoteLogFromTemplate(TemplateOptions        templateOptions,
                                             String                 templateGUID,
@@ -224,7 +224,7 @@ public class NoteLogClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findNoteLogs(String        searchString,
                                                       SearchOptions searchOptions) throws InvalidParameterException,
@@ -242,7 +242,7 @@ public class NoteLogClient extends ConnectorContextClientBase
      * @param queryOptions multiple options to control the query
      * @return list of tags
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getNoteLogsForElement(String       elementGUID,

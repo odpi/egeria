@@ -137,7 +137,7 @@ public class GovernanceContextResource
      * @return void or
      *  InvalidParameterException the action target GUID is not recognized
      *  UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     *  PropertyServerException there is a problem connecting to the metadata store
+     *  PropertyServerException a problem connecting to the metadata store
      */
     @PostMapping(path = "/engine-actions/action-targets/update")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -162,7 +162,7 @@ public class GovernanceContextResource
      * @return void or
      *  InvalidParameterException the completion status is null
      *  UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     *  PropertyServerException there is a problem connecting to the metadata store
+     *  PropertyServerException a problem connecting to the metadata store
      */
     @PostMapping(path = "/engine-actions/{governanceActionGUID}/completion-status")
     @SecurityRequirement(name = "BearerAuthorization")

@@ -23,7 +23,7 @@ public interface CSVFileStore extends BasicFileStore
      * not recommended for very large files.
      *
      * @return count
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException unable to find, open or scan the file.
      */
     long     getRecordCount() throws FileException, FileReadException;
@@ -35,7 +35,7 @@ public interface CSVFileStore extends BasicFileStore
      * connection object used to create a connector instance.
      *
      * @return a list of column names
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException unable to retrieve the column names
      */
     List<String> getColumnNames() throws FileException, FileReadException;
@@ -47,7 +47,7 @@ public interface CSVFileStore extends BasicFileStore
      *
      * @param rowNumber long
      * @return List of strings, each string is the value from the column.
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
     List<String>      readRecord(long  rowNumber) throws FileException, FileReadException;

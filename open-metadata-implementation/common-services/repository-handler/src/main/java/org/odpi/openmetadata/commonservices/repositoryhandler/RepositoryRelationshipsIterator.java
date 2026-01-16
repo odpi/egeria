@@ -183,7 +183,7 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
      * @return boolean flag
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
+     * @throws PropertyServerException a problem in the repository
      */
     public boolean  moreToReceive() throws InvalidParameterException,
                                            UserNotAuthorizedException,
@@ -260,7 +260,7 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
      * @return relationship or null
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
+     * @throws PropertyServerException a problem in the repository
      */
     public Relationship  getNext() throws InvalidParameterException,
                                           UserNotAuthorizedException,

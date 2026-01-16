@@ -4048,7 +4048,7 @@ public class OpenMetadataTypesArchive1_2
         final String                     end2AttributeDescription     = "Accumulated notifications.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -7327,6 +7327,7 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ACTIVITY_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_MEMBERSHIP));
 
         relationshipDef.setPropertiesDefinition(properties);
 

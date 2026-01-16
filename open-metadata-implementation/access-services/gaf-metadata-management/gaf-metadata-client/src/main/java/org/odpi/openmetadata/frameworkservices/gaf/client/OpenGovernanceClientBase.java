@@ -43,7 +43,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param maxPageSize           pre-initialized parameter limit
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenGovernanceClientBase(String   serverName,
@@ -90,7 +90,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateEngineAction(String                userId,
@@ -167,7 +167,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateGovernanceActionType(String                userId,
@@ -226,7 +226,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException the caller is not authorized to create a governance action process
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateGovernanceActionProcess(String                userId,
@@ -393,7 +393,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     @Override
     public GovernanceActionProcessGraph getGovernanceActionProcessGraph(String userId,

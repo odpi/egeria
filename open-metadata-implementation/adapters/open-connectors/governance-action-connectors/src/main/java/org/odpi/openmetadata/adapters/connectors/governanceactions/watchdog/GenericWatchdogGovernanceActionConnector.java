@@ -46,7 +46,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
      * be sure to call super.start() at the start of your overriding version.
      *
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      */
     void start(String defaultTypeName) throws ConnectorCheckedException, UserNotAuthorizedException
     {
@@ -434,7 +434,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      */
     @Override
     public  void disconnect() throws ConnectorCheckedException

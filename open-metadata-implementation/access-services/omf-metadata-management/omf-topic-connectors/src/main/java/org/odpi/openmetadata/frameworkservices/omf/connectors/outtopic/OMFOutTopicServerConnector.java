@@ -29,7 +29,7 @@ public class OMFOutTopicServerConnector extends OpenMetadataTopicSenderConnector
      *
      * @param event event object
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
+     * @throws ConnectorCheckedException a problem with the embedded event bus connector(s).
      */
     public void sendEvent(OpenMetadataOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {

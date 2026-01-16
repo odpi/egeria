@@ -210,7 +210,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
+     * @throws InvalidParameterException a problem with the properties
      */
     @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
@@ -366,7 +366,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
+     * @throws InvalidParameterException a problem with the properties
      */
     InstanceProperties getClaimInstanceProperties(String  methodName) throws InvalidParameterException
     {
@@ -402,7 +402,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
+     * @throws InvalidParameterException a problem with the properties
      */
     InstanceProperties getCancelInstanceProperties(String  methodName) throws InvalidParameterException
     {
@@ -443,7 +443,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
      * @param completionMessage message to describe completion results or reasons for failure
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
+     * @throws InvalidParameterException a problem with the properties
      */
     InstanceProperties getCompletionInstanceProperties(InstanceProperties properties,
                                                        int                actionStatus,

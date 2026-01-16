@@ -139,11 +139,11 @@ public enum OpenMetadataType
      * An open metadata entity that has lifecycle states to support an authoring workflow..
      */
     AUTHORED_REFERENCEABLE("136c2bef-29bd-4f1d-b320-7ef679bbb99d",
-                  "AuthoredReferenceable",
-                  OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
-                  "97ed3470-dfaa-449c-b205-c22e203512b6",
-                  "An open metadata entity that has lifecycle states to support an authoring workflow.",
-                  AuthoredReferenceableProperties.class),
+                           "AuthoredReferenceable",
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
+                           "97ed3470-dfaa-449c-b205-c22e203512b6",
+                           "An open metadata entity that has lifecycle states to support an authoring workflow.",
+                           AuthoredReferenceableProperties.class),
 
 
     /**
@@ -448,12 +448,12 @@ public enum OpenMetadataType
     /**
      * Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).
      */
-    RESOURCE_LIST_RELATIONSHIP ("73cf5658-6a73-4ebc-8f4d-44fdfac0b437",
-                                "ResourceList",
-                                OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
-                                "cb027494-8de7-43cc-845c-57d4f0bbf6d5",
-                                "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).",
-                                ResourceListProperties.class),
+    RESOURCE_LIST_RELATIONSHIP("73cf5658-6a73-4ebc-8f4d-44fdfac0b437",
+                               "ResourceList",
+                               OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
+                               "cb027494-8de7-43cc-845c-57d4f0bbf6d5",
+                               "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).",
+                               ResourceListProperties.class),
 
     /**
      * Additional properties that support a particular vendor or service.
@@ -1858,7 +1858,8 @@ public enum OpenMetadataType
              "NoteLog",
              OpenMetadataWikiPages.MODEL_0160_NOTES,
              "cd8b86b2-115d-4a74-a6f3-8f3001a03c58",
-             "An ordered list of related notes."),
+             "An ordered list of related notes.",
+             NoteLogProperties.class),
 
     /**
      * Links a note log to an item.
@@ -1867,7 +1868,8 @@ public enum OpenMetadataType
                                    "AttachedNoteLog",
                                    OpenMetadataWikiPages.MODEL_0160_NOTES,
                                    "6ea034cf-f669-480b-ab7e-5be658420a4e",
-                                   "Links a note log to an item."),
+                                   "Links a note log to an item.",
+                                   AttachedNoteLogProperties.class),
 
     /**
      * Link between a note log and one of its note log entries.
@@ -1876,7 +1878,8 @@ public enum OpenMetadataType
                                          "AttachedNoteLogEntry",
                                          OpenMetadataWikiPages.MODEL_0160_NOTES,
                                          "b91a2d26-566b-4795-baea-78097556c227",
-                                         "Link between a note log and one of its note log entries."),
+                                         "Link between a note log and one of its note log entries.",
+                                         AttachedNoteLogEntryProperties.class),
 
     /**
      * A person adding notes to a note log.
@@ -1885,7 +1888,8 @@ public enum OpenMetadataType
                     "NoteLogAuthor",
                     OpenMetadataWikiPages.MODEL_0160_NOTES,
                     "58213b72-68b7-4259-938c-f0f5c59396b0",
-                    "A person adding notes to a note log."),
+                    "A person adding notes to a note log.",
+                    NoteLogAuthorProperties.class),
 
 
     /* ============================================================================================================================*/
@@ -2023,11 +2027,11 @@ public enum OpenMetadataType
      * Collection of related data, not necessarily stored together.
      */
     TABULAR_DATA_SET("3b6a6cda-8721-47ba-afc6-1a2786e04f77",
-             "TabularDataSet",
-             OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
-             "d0417daa-2839-4acd-aaaf-28e6ca49e992",
-             "A collection of data organized as tabular data.",
-             TabularDataSetProperties.class),
+                     "TabularDataSet",
+                     OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
+                     "d0417daa-2839-4acd-aaaf-28e6ca49e992",
+                     "A collection of data organized as tabular data.",
+                     TabularDataSetProperties.class),
 
 
     /**
@@ -3002,7 +3006,6 @@ public enum OpenMetadataType
                           "8f4f3146-0c21-4754-b2d3-41e04c519226",
                           "Defines an aspect of the governance program.",
                           GovernanceDefinitionProperties.class),
-
 
 
     /**
@@ -4188,8 +4191,6 @@ public enum OpenMetadataType
                                   RegulationCertificationTypeProperties.class),
 
 
-
-
     /**
      * A detailed description of the effect of some data processing.
      */
@@ -4920,11 +4921,11 @@ public enum OpenMetadataType
      * A reference data value defined by a valid value definition.
      */
     REFERENCE_DATA_SET("7e269621-5dee-41be-9f04-e57c52b60221",
-                         "ReferenceDataSet",
-                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                         "98eec679-b279-4aae-acdc-a85afee48883",
-                         "A reference data set defined by a valid value definition.",
-                         ReferenceDataSetProperties.class),
+                       "ReferenceDataSet",
+                       OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                       "98eec679-b279-4aae-acdc-a85afee48883",
+                       "A reference data set defined by a valid value definition.",
+                       ReferenceDataSetProperties.class),
 
     /**
      * A valid metadata value defined by a valid value definition.
@@ -4940,21 +4941,21 @@ public enum OpenMetadataType
      * A valid metadata value defined by a valid value definition.
      */
     TECHNOLOGY_TYPE("43b849bf-771d-429a-8663-fbfce5361025",
-                         "TechnologyType",
-                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                         "772a900b-cc0a-4da3-ae73-48cc98888a2f",
-                         "A valid metadata value describing a technology type stored in the deployedImplementationType attribute.",
-                         TechnologyTypeProperties.class),
+                    "TechnologyType",
+                    OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                    "772a900b-cc0a-4da3-ae73-48cc98888a2f",
+                    "A valid metadata value describing a technology type stored in the deployedImplementationType attribute.",
+                    TechnologyTypeProperties.class),
 
     /**
      * A valid metadata value defined by a valid value definition.
      */
     SPECIFICATION_PROPERTY_VALUE("707222c6-4f26-4b87-b481-5a5ac003ea99",
-                         "SpecificationPropertyValue",
-                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                         "26670cc5-ad39-40e3-87f4-6f265ccf084a",
-                         "A description of a property that can be supplied to the linked element to control its operation.",
-                         SpecificationPropertyValueProperties.class),
+                                 "SpecificationPropertyValue",
+                                 OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                 "26670cc5-ad39-40e3-87f4-6f265ccf084a",
+                                 "A description of a property that can be supplied to the linked element to control its operation.",
+                                 SpecificationPropertyValueProperties.class),
 
     /**
      * An asset that contains trusted values for use as reference data.
@@ -5316,7 +5317,6 @@ public enum OpenMetadataType
                                         OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
                                         "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
                                         "Link between data structure and an equivalent schema type."),
-
 
 
     /**
@@ -5986,22 +5986,22 @@ public enum OpenMetadataType
     ;
 
 
-    public final String typeGUID;
-    public final String typeName;
-    public final String wikiURL;
-    public final String descriptionGUID;
-    public final String description;
+    public final String   typeGUID;
+    public final String   typeName;
+    public final String   wikiURL;
+    public final String   descriptionGUID;
+    public final String   description;
     public final Class<?> beanClass;
 
 
     /**
      * Create an enum for a type without a declared bean class.
      *
-     * @param typeGUID unique identifier of the type
-     * @param typeName unique name of the type
-     * @param wikiURL link to the documentation
+     * @param typeGUID        unique identifier of the type
+     * @param typeName        unique name of the type
+     * @param wikiURL         link to the documentation
      * @param descriptionGUID unique identifier of the valid value for this type
-     * @param description description of this type
+     * @param description     description of this type
      */
     OpenMetadataType(String typeGUID,
                      String typeName,
@@ -6021,18 +6021,18 @@ public enum OpenMetadataType
     /**
      * Create an enum for a type without a declared bean class.
      *
-     * @param typeGUID unique identifier of the type
-     * @param typeName unique name of the type
-     * @param wikiURL link to the documentation
+     * @param typeGUID        unique identifier of the type
+     * @param typeName        unique name of the type
+     * @param wikiURL         link to the documentation
      * @param descriptionGUID unique identifier of the valid value for this type
-     * @param description description of this type
-     * @param beanClass class of the bean that maps the attributes of the type
+     * @param description     description of this type
+     * @param beanClass       class of the bean that maps the attributes of the type
      */
-    OpenMetadataType(String typeGUID,
-                     String typeName,
-                     String wikiURL,
-                     String descriptionGUID,
-                     String description,
+    OpenMetadataType(String   typeGUID,
+                     String   typeName,
+                     String   wikiURL,
+                     String   descriptionGUID,
+                     String   description,
                      Class<?> beanClass)
     {
         this.typeGUID        = typeGUID;

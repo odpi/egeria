@@ -21,7 +21,7 @@ public abstract class SurveyActionPipelineConnector extends SurveyActionServiceC
     /**
      * Start the pipeline.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException a problem within the discovery service.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
@@ -50,7 +50,7 @@ public abstract class SurveyActionPipelineConnector extends SurveyActionServiceC
     /**
      * This implementation provides an inline sequential invocation of the supplied discovery services.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException a problem within the discovery service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     protected abstract void runSurveyPipeline() throws ConnectorCheckedException, UserNotAuthorizedException;

@@ -294,7 +294,7 @@ public class OMRSOperationalServices
      * is taken as is.  Any configuration errors are reported as exceptions.
      *
      * @param repositoryServicesConfig current configuration values
-     * @throws RepositoryErrorException there is a problem accessing an open metadata archive
+     * @throws RepositoryErrorException a problem accessing an open metadata archive
      */
     public void initializeCohortMember(RepositoryServicesConfig repositoryServicesConfig) throws RepositoryErrorException
     {
@@ -645,7 +645,7 @@ public class OMRSOperationalServices
 
     /**
      * Return the connector to the Enterprise OMRS Topic.  If null is returned it means the Enterprise OMRS Topic
-     * is not needed.  A configuration error exception is thrown if there is a problem with the connection properties
+     * is not needed.  A configuration error exception is thrown if a problem with the connection properties
      *
      * @param enterpriseAccessConfig configuration from the OMAG server
      * @return connector to the Enterprise OMRS Topic or null
@@ -674,7 +674,7 @@ public class OMRSOperationalServices
 
     /**
      * Return the connector to the Remote Enterprise OMRS Topic.  If null is returned it means the Remote Enterprise OMRS Topic
-     * is not needed.  A configuration error exception is thrown if there is a problem with the connection properties
+     * is not needed.  A configuration error exception is thrown if a problem with the connection properties
      *
      * @param enterpriseAccessConfig configuration from the OMAG server
      * @return connector to the Remote Enterprise OMRS Topic or null
@@ -970,7 +970,7 @@ public class OMRSOperationalServices
      * @param openMetadataArchiveConnection connection to the archive
      * @param archiveSource descriptive name of the archive source
      * @throws InvalidParameterException the archive resource is not found
-     * @throws RepositoryErrorException there is a problem with the archive manager
+     * @throws RepositoryErrorException a problem with the archive manager
      */
     public void addOpenMetadataArchive(String        serverName,
                                        Connection    openMetadataArchiveConnection,
@@ -1004,7 +1004,7 @@ public class OMRSOperationalServices
      * @param openMetadataArchive content the archive
      * @param archiveSource descriptive name of the archive source
      * @throws InvalidParameterException the archive resource is not found
-     * @throws RepositoryErrorException there is a problem with the archive manager
+     * @throws RepositoryErrorException a problem with the archive manager
      */
     public void addOpenMetadataArchive(String                   serverName,
                                        OpenMetadataArchiveStore openMetadataArchive,
@@ -1172,7 +1172,7 @@ public class OMRSOperationalServices
     /**
      * Creates a topic connector using information from the supplied topic connection.  This connector supported
      * the Open Connector Framework (OCF) so it is possible to configure different connector implementations for
-     * different event/messaging infrastructure.   If there is a problem with the connection information
+     * different event/messaging infrastructure.   If a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
      * @param sourceName name of the user of this topic
@@ -1209,7 +1209,7 @@ public class OMRSOperationalServices
 
     /**
      * Return the connector to an open metadata archive store.  Each connector instance can access a single
-     * open metadata archive.  If there is a problem with the connection information
+     * open metadata archive.  If a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
      * @param openMetadataArchiveStoreConnection properties used to create the connection
@@ -1342,7 +1342,7 @@ public class OMRSOperationalServices
         catch (Exception  error)
         {
             /*
-             * If there is a problem initializing the connector then the ConnectorBroker will have created a
+             * If a problem initializing the connector then the ConnectorBroker will have created a
              * detailed exception already.  The only error case that this method has introduced is the cast
              * of the Connector to OMRSRepositoryConnector.  This could occur if the connector configured is a valid
              * OCF Connector but not an OMRSRepositoryConnector.

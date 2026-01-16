@@ -189,7 +189,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                              hosting the metadata collection.

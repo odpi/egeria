@@ -61,7 +61,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-value/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -100,7 +100,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-map-name/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -142,7 +142,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-map-value/{propertyName}/{mapName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -181,7 +181,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-value/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -218,7 +218,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-map-name/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -256,7 +256,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-map-value/{propertyName}/{mapName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -293,7 +293,7 @@ public class ValidMetadataOMVSResource
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-value/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -326,7 +326,7 @@ public class ValidMetadataOMVSResource
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-map-name/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -360,7 +360,7 @@ public class ValidMetadataOMVSResource
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-map-value/{propertyName}/{mapName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -394,7 +394,7 @@ public class ValidMetadataOMVSResource
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/get-value/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -427,7 +427,7 @@ public class ValidMetadataOMVSResource
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/get-map-name/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -461,7 +461,7 @@ public class ValidMetadataOMVSResource
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/get-map-value/{propertyName}/{mapName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -496,7 +496,7 @@ public class ValidMetadataOMVSResource
      * @return list of valid values defined for the property or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/get-valid-metadata-values/{propertyName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -533,7 +533,7 @@ public class ValidMetadataOMVSResource
      * @return list of valid values defined for the property or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/{propertyName}/consistent-metadata-values")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -576,7 +576,7 @@ public class ValidMetadataOMVSResource
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/{propertyName1}/consistent-metadata-values/{propertyName2}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -627,7 +627,7 @@ public class ValidMetadataOMVSResource
      * @param urlMarker  view service URL marker
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types")
@@ -653,7 +653,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/entity-defs")
@@ -679,7 +679,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/relationship-defs")
@@ -705,7 +705,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/classification-defs")
@@ -733,7 +733,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/sub-types/{typeName}")
@@ -761,7 +761,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/{typeName}/attached-relationships")
@@ -789,7 +789,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/{typeName}/attached-classifications")
@@ -817,7 +817,7 @@ public class ValidMetadataOMVSResource
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -933,7 +933,7 @@ public class ValidMetadataOMVSResource
      *
      * @return list of specification property objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/specification-properties/by-search-string")
@@ -963,7 +963,7 @@ public class ValidMetadataOMVSResource
      *
      * @return list of specification property objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/specification-properties/by-type")
@@ -993,7 +993,7 @@ public class ValidMetadataOMVSResource
      *
      * @return list of specification property objects or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/specification-properties/by-name")
@@ -1022,7 +1022,7 @@ public class ValidMetadataOMVSResource
      * @param requestBody optional effective time
      * @return specification property properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/specification-properties/{specificationPropertyGUID}/retrieve")

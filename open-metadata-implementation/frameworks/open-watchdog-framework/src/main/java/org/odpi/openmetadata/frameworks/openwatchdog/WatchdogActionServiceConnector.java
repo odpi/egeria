@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /**
- * WatchdogActionServiceConnector describes a specific type of connector that is responsible for monitoring for
+ * WatchdogActionServiceConnector describes a connector that monitors for
  * a specific notification type.  Information about the notification type to support is passed in the watchdog context.
  */
 public abstract class WatchdogActionServiceConnector extends ConnectorBase implements WatchdogActionService,
@@ -53,7 +53,7 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
 
     /**
-     * Return the component description that is used by this connector in the audit log.
+     * Return the component description used by this connector in the audit log.
      *
      * @return id, name, description, wiki page URL.
      */
@@ -101,7 +101,7 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
      * Set up details of the notification type to monitor.
      *
      * @param watchdogContext information about the asset to analyze and the results of analysis of
-     *                      other watchdog action service request.  Partial results from other watchdog action
+     *                      another watchdog action service request.  Partial results from other watchdog action
      *                      services run as part of the same watchdog action service request may also be
      *                      stored in the newAnnotations list.
      */
@@ -125,10 +125,10 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
     /**
      * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is where the function of the watchdog action service is implemented.
-     * This is a standard method from the Open Connector Framework (OCF) so
+     * This is a standard method from the Open Connector Framework (OCF), so
      * be sure to call super.start() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the watchdog action service.
+     * @throws ConnectorCheckedException a problem within the watchdog action service.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
@@ -168,13 +168,15 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
     /**
      * This method is called each time a requested event is received from the open metadata repositories.
-     * It is called for events received after this listener is registered until the watchdog governance
-     * service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED or it is stopped by an administrator shutting down
+     * It is called for events received after this listener is registered.  It stops processing events when
+     * the watchdog governance
+     * service sets its status in the context as ACTIONED, INVALID, IGNORED, or FAILED,
+     * or the connector is stopped by an administrator shutting down
      * the hosting server or this service explicitly.
      *
      * @param event event containing details of a change to an open metadata element.
      *
-     * @throws GovernanceServiceException reports that the event can not be processed (this is logged but
+     * @throws GovernanceServiceException reports that the event cannot be processed (this is logged but
      *                                    no other action is taken).  The listener will continue to be
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.

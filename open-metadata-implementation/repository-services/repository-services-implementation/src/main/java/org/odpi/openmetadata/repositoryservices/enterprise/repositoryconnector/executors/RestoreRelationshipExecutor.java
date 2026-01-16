@@ -113,7 +113,7 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
      *
      * @return Relationship structure with the restored header, requested entities and properties.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.

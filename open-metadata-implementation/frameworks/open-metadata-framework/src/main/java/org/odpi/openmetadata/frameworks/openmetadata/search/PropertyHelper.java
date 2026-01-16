@@ -704,7 +704,7 @@ public class PropertyHelper
      *
      * @param relatedElement from the repository
      * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement) throws PropertyServerException

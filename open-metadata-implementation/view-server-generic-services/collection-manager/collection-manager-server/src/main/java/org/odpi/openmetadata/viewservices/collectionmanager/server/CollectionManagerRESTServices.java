@@ -478,7 +478,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createCollectionFromTemplate(String              serverName,
                                                      String              urlMarker,
@@ -1364,7 +1364,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setEditingCollection(String                       serverName,
                                              String                       urlMarker,
@@ -1430,7 +1430,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearEditingCollection(String                    serverName,
                                                String                    urlMarker,
@@ -1479,7 +1479,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setStagingCollection(String                       serverName,
                                              String                       urlMarker,
@@ -1545,7 +1545,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearStagingCollection(String                    serverName,
                                                String                    urlMarker,
@@ -1594,7 +1594,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setScopingCollection(String                       serverName,
                                              String                       urlMarker,
@@ -1660,7 +1660,7 @@ public class CollectionManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearScopingCollection(String                    serverName,
                                                String                    urlMarker,
@@ -1850,7 +1850,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse addToCollection(String                  serverName,
@@ -1929,7 +1929,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateCollectionMembership(String                        serverName,
@@ -2009,7 +2009,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")

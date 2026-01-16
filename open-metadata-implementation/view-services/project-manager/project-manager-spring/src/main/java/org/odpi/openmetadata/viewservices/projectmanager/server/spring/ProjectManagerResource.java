@@ -343,7 +343,7 @@ public class ProjectManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/projects/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -430,7 +430,7 @@ public class ProjectManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/projects/{projectGUID}/members/{actorGUID}/attach")
@@ -461,7 +461,7 @@ public class ProjectManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/projects/{projectGUID}/members/{actorGUID}/detach")
@@ -493,7 +493,7 @@ public class ProjectManagerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/projects/{projectGUID}/project-hierarchies/{managedProjectGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -523,7 +523,7 @@ public class ProjectManagerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/projects/{projectGUID}/project-hierarchies/{managedProjectGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -554,7 +554,7 @@ public class ProjectManagerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/projects/{projectGUID}/project-dependencies/{dependsOnProjectGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -584,7 +584,7 @@ public class ProjectManagerResource
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/projects/{projectGUID}/project-dependencies/{dependsOnProjectGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")

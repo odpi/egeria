@@ -48,7 +48,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
+     * PropertyServerException - a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -110,7 +110,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
+     * PropertyServerException - a problem updating the element properties in
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -157,7 +157,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return list of ratings or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementsResponse getAttachedRatings(String             serverName,
@@ -204,7 +204,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
+     * PropertyServerException - a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -267,7 +267,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
+     * PropertyServerException - a problem updating the element properties in
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -315,7 +315,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return list of likes or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementsResponse getAttachedLikes(String             serverName,
@@ -362,7 +362,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return elementGUID for new comment object or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
+     * PropertyServerException - a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -489,7 +489,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setupAcceptedAnswer(String                     serverName,
                                             String                     urlMarker,
@@ -539,7 +539,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearAcceptedAnswer(String            serverName,
                                             String            urlMarker,
@@ -587,7 +587,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
+     * PropertyServerException - a problem updating the element properties in
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -634,7 +634,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementResponse getCommentByGUID(String         serverName,
@@ -680,7 +680,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementsResponse getAttachedComments(String             serverName,
@@ -727,7 +727,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findComments(String                  serverName,
                                                          String                  urlMarker,
@@ -780,7 +780,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createInformalTag(String                serverName,
@@ -836,7 +836,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return boolean or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public BooleanResponse   updateTagDescription(String                   serverName,
@@ -897,7 +897,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   deleteTag(String            serverName,
@@ -944,7 +944,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return Tag object or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getTag(String         serverName,
@@ -990,7 +990,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return tag list or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getTagsByName(String            serverName, 
@@ -1044,7 +1044,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return tag list or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse findTags(String                  serverName, 
@@ -1098,7 +1098,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return tag list or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse findMyTags(String                  serverName, 
@@ -1154,7 +1154,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   addTagToElement(String                    serverName,
@@ -1203,7 +1203,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   removeTagFromElement(String            serverName,
@@ -1252,7 +1252,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return element stubs list or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getElementsByTag(String             serverName,
@@ -1298,7 +1298,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return list of tags or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementsResponse getAttachedTags(String             serverName, 
@@ -1350,7 +1350,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createNoteLog(String                 serverName,
@@ -1410,7 +1410,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createNoteLog(String                serverName,
@@ -1534,7 +1534,7 @@ public class FeedbackManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   deleteNoteLog(String            serverName,
@@ -1582,7 +1582,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findNoteLogs(String                  serverName, 
                                                          String                  urlMarker, 
@@ -1636,7 +1636,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getNoteLogsByName(String            serverName, 
                                                               String            urlMarker, 
@@ -1691,7 +1691,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getNoteLogsForElement(String             serverName, 
                                                                   String             urlMarker, 
@@ -1740,7 +1740,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getNoteLogByGUID(String         serverName, 
                                                             String         urlMarker, 
@@ -1792,7 +1792,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getNotesForNoteLog(String             serverName,
                                                                String             urlMarker,

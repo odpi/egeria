@@ -36,7 +36,7 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param maxPageSize maximum page size for this process
      * @param auditLog destination for log messages
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClient(String   serverName,

@@ -50,7 +50,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
                                                                 String             elementGUID,
@@ -96,7 +96,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementResponse getMetadataElementByUniqueName(String                serverName,
                                                                       String                urlMarker,
@@ -151,7 +151,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String                serverName,
                                                            String                urlMarker,
@@ -207,7 +207,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
                                                                   String             urlMarker,
@@ -255,7 +255,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching classifications (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public AttachedClassificationsResponse getClassificationHistory(String             serverName,
                                                                     String             urlMarker,
@@ -302,7 +302,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  urlMarker,
@@ -361,7 +361,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
                                                              String                  urlMarker,
@@ -420,7 +420,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
                                                                       String                  urlMarker,
@@ -479,7 +479,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
                                                                      String                  urlMarker,
@@ -538,7 +538,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public RelatedMetadataElementListResponse getRelatedMetadataElements(String             serverName,
                                                                          String             elementGUID,
@@ -591,7 +591,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
@@ -641,7 +641,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse getMetadataElementRelationships(String             serverName,
                                                                                 String             metadataElementAtEnd1GUID,
@@ -693,7 +693,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
                                                              String          urlMarker,
@@ -748,7 +748,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return a list of relationships - null means no matching relationships - or
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
                                                                                          String                      urlMarker,
@@ -805,7 +805,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
     public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
@@ -855,7 +855,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
                                                                        String             urlMarker,

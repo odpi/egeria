@@ -50,7 +50,7 @@ public class MyProfileRESTServices extends TokenController
      *
      * @return profile response object or null or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getMyProfile(String serverName)
@@ -260,7 +260,7 @@ public class MyProfileRESTServices extends TokenController
      *
      * @return profile response object or null or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse addMyProfile(String                serverName,

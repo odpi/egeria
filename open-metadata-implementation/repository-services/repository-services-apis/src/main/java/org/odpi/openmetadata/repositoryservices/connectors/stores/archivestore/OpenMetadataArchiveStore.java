@@ -33,7 +33,7 @@ public interface OpenMetadataArchiveStore
      * Return the contents of the archive.
      *
      * @return OpenMetadataArchive object
-     * @throws RepositoryErrorException there is a problem accessing the archive
+     * @throws RepositoryErrorException a problem accessing the archive
      */
     OpenMetadataArchive getArchiveContents() throws RepositoryErrorException;
 

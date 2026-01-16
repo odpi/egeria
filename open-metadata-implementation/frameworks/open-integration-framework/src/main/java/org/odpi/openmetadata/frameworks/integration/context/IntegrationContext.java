@@ -127,7 +127,6 @@ public class IntegrationContext extends ConnectorContextBase
                                                                 connectorGUID,
                                                                 externalSourceGUID,
                                                                 externalSourceName,
-                                                                openMetadataClient,
                                                                 openGovernanceClient,
                                                                 auditLog,
                                                                 maxPageSize);
@@ -381,7 +380,7 @@ public class IntegrationContext extends ConnectorContextBase
      * @return null or unique identifier of the associated software capability
      * @throws InvalidParameterException the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     private String getMetadataSourceGUID(String                  metadataSourceQualifiedName,
                                          OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,

@@ -541,7 +541,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
     /**
-     * Register a new remote connection with the OMRSConnectionConsumer.  If there is a problem with the
+     * Register a new remote connection with the OMRSConnectionConsumer.  If a problem with the
      * remote connection, a bad connection registry event is sent to the remote repository.
      *
      * @param remoteMetadataCollectionId id of the remote repository's metadata collection

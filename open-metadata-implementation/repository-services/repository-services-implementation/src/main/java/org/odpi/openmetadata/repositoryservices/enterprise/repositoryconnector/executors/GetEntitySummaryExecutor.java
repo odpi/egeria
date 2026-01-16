@@ -121,7 +121,7 @@ public class GetEntitySummaryExecutor extends GetEntityExecutor
      *
      * @return EntitySummary structure
      * @throws InvalidParameterException the guid is null
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.

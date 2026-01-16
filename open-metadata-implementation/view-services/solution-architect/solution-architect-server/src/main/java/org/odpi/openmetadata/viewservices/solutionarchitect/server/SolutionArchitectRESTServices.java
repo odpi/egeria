@@ -114,7 +114,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createInformationSupplyChainFromTemplate(String              serverName,
                                                                  TemplateRequestBody requestBody)
@@ -532,7 +532,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getInformationSupplyChainsByName(String            serverName,
                                                                             boolean           addImplementation,
@@ -587,7 +587,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findInformationSupplyChains(String                  serverName,
                                                                         boolean                 addImplementation,
@@ -646,7 +646,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getInformationSupplyChainByGUID(String         serverName,
                                                                            String         informationSupplyChainGUID,
@@ -757,7 +757,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createSolutionBlueprintFromTemplate(String              serverName,
                                                             TemplateRequestBody requestBody)
@@ -1168,7 +1168,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSolutionBlueprintsByName(String            serverName,
                                                                         FilterRequestBody requestBody)
@@ -1221,7 +1221,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(String         serverName,
                                                                       String         solutionBlueprintGUID,
@@ -1267,7 +1267,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSolutionBlueprints(String                  serverName,
                                                                    SearchStringRequestBody requestBody)
@@ -1506,7 +1506,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createSolutionComponentFromTemplate(String              serverName,
                                                             TemplateRequestBody requestBody)
@@ -1921,7 +1921,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSolutionComponentsByName(String            serverName,
                                                                         FilterRequestBody requestBody)
@@ -1974,7 +1974,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getSolutionComponentByGUID(String         serverName,
                                                                       String         solutionComponentGUID,
@@ -2019,7 +2019,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSolutionComponents(String                  serverName,
                                                                    SearchStringRequestBody requestBody)
@@ -2070,7 +2070,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public RelatedMetadataElementsResponse getSolutionComponentImplementations(String             serverName,
                                                                                String             solutionComponentGUID,

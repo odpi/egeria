@@ -221,7 +221,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param userId calling user
      * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository.
      */
     @Override
     public String getMetadataCollectionId(String   userId) throws RepositoryErrorException
@@ -253,7 +253,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse List of different categories of type definitions.
      * @throws InvalidParameterException the userId is null
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -277,7 +277,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param name   name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGallery list.
      * @throws InvalidParameterException  the name of the TypeDef is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -300,7 +300,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param category enum value for the category of TypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -323,7 +323,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param category enum value for the category of an AttributeTypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -346,7 +346,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the matchCriteria is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -372,7 +372,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -398,7 +398,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -421,7 +421,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid   String unique id of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -447,7 +447,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid   String unique id of the TypeDef
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -473,7 +473,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param name   String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the name is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -499,7 +499,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param name   String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the name is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -524,7 +524,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId   unique identifier for requesting user.
      * @param newTypes TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
      * @throws InvalidParameterException     the new TypeDef is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotSupportedException  the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException         the TypeDef is already stored in the repository.
@@ -557,7 +557,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId     unique identifier for requesting user.
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @throws InvalidParameterException     the new TypeDef is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotSupportedException  the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException         the TypeDef is already stored in the repository.
@@ -590,7 +590,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId              unique identifier for requesting user.
      * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
      * @throws InvalidParameterException     the new TypeDef is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotSupportedException  the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException         the TypeDef is already stored in the repository.
@@ -624,7 +624,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDef TypeDef structure describing the TypeDef to test.
      * @return boolean true means the TypeDef matches the local definition false means the TypeDef is not known.
      * @throws InvalidParameterException    the TypeDef is null.
-     * @throws RepositoryErrorException     there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException     a problem communicating with the metadata repository where
      *                                      the metadata collection is stored.
      * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException     the new TypeDef conflicts with an existing TypeDef.
@@ -654,7 +654,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
      * @return boolean true means the TypeDef matches the local definition false means the TypeDef is not known.
      * @throws InvalidParameterException    the TypeDef is null.
-     * @throws RepositoryErrorException     there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException     a problem communicating with the metadata repository where
      *                                      the metadata collection is stored.
      * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException     the new TypeDef conflicts with an existing TypeDef.
@@ -685,7 +685,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefPatch TypeDef patch describing change to TypeDef.
      * @return updated TypeDef
      * @throws InvalidParameterException     the TypeDefPatch is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested TypeDef is not found in the metadata collection.
      * @throws PatchErrorException           the TypeDef can not be updated because the supplied patch is incompatible
@@ -717,7 +717,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
      * @param obsoleteTypeDefName String unique name for the TypeDef.
      * @throws InvalidParameterException     the one of TypeDef identifiers is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested TypeDef is not found in the metadata collection.
      * @throws TypeDefInUseException         the TypeDef can not be deleted because there are instances of this type in
@@ -751,7 +751,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
      * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
      * @throws InvalidParameterException     the one of AttributeTypeDef identifiers is null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested AttributeTypeDef is not found in the metadata collection.
      * @throws TypeDefInUseException         the AttributeTypeDef can not be deleted because there are instances of this type in
@@ -789,7 +789,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newTypeDefName      new name for this TypeDef.
      * @return typeDef new values for this TypeDef, including the new guid/name.
      * @throws InvalidParameterException     one of the parameters is invalid or null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the TypeDef identified by the original guid/name is not found
      *                                       in the metadata collection.
@@ -826,7 +826,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newAttributeTypeDefName      new name for this AttributeTypeDef.
      * @return attributeTypeDef new values for this AttributeTypeDef, including the new guid/name.
      * @throws InvalidParameterException     one of the parameters is invalid or null.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the AttributeTypeDef identified by the original guid/name is not
      *                                       found in the metadata collection.
@@ -868,7 +868,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid   String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -893,7 +893,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid   String unique identifier for the entity
      * @return EntitySummary structure
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException    the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -919,7 +919,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid   String unique identifier for the entity.
      * @return EntityDetail structure.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException    the requested entity instance is not known in the metadata collection.
      * @throws EntityProxyOnlyException   the requested entity instance is only a proxy in the metadata collection.
@@ -948,7 +948,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return EntityDetail structure.
      * @throws InvalidParameterException     the guid or date is null, or the asOfTime property is for a future time
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws EntityNotKnownException       the requested entity instance is not known in the metadata collection
      *                                       at the time requested.
@@ -988,7 +988,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -1033,7 +1033,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<Classification>} of each historical version of the entity's classification within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support history.
@@ -1083,7 +1083,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException     a parameter is invalid or null.
      * @throws TypeErrorException            the type guid passed on the request is not known by the
      *                                       metadata collection.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws EntityNotKnownException       the requested entity instance is not known in the metadata collection.
      * @throws PropertyErrorException        the sequencing property is not valid for the attached classifications.
@@ -1150,7 +1150,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity.
@@ -1221,7 +1221,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity.
@@ -1294,7 +1294,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws ClassificationErrorException the classification request is not known to the metadata collection.
      * @throws PropertyErrorException the properties specified are not valid for the requested type of
@@ -1369,7 +1369,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity.
@@ -1421,7 +1421,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid String unique identifier for the relationship.
      * @return relationship details if the relationship is found in the metadata collection; otherwise return null.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -1445,7 +1445,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param guid String unique identifier for the relationship.
      * @return a relationship structure.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
      *                                         the requested GUID stored.
@@ -1473,7 +1473,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return Relationship structure.
      * @throws InvalidParameterException the guid or date is null or the asOfTime property is for a future time.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -1511,7 +1511,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
      *                                       at the time requested.
@@ -1565,7 +1565,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
@@ -1635,7 +1635,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
@@ -1704,9 +1704,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws PropertyErrorException a problem with one of the other parameters.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1760,7 +1760,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                              hosting the metadata collection.
@@ -1829,7 +1829,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                              hosting the metadata collection.
@@ -1896,7 +1896,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityProxy details of entity to add.
      * @throws InvalidParameterException the entity proxy is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws FunctionNotSupportedException the repository does not support entity proxies as first class elements.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1939,7 +1939,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param properties a list of properties to change.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1989,7 +1989,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param entityGUID String unique identifier (guid) for the entity.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support undo.
@@ -2042,7 +2042,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
      * @return deleted entity
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -2094,7 +2094,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName unique name of the type of the entity to purge.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
@@ -2142,7 +2142,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @return EntityDetail showing the restored entity header, properties and classifications.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored
@@ -2192,7 +2192,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classificationProperties list of properties to set in the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
@@ -2251,7 +2251,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return Classification newly added classification
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity proxy was not found and could not be created
      * @throws ClassificationErrorException the requested classification is either not known or not valid
@@ -2311,7 +2311,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classificationProperties list of properties to set in the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
@@ -2385,7 +2385,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return Classification newly added classification
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
@@ -2451,7 +2451,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classificationName String name for the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not set on the entity.
@@ -2501,7 +2501,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classificationName String name for the classification.
      * @return Classification showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity proxy was not found and could not be created
      * @throws ClassificationErrorException the requested classification is not set on the entity.
@@ -2552,7 +2552,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param properties list of properties for the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not attached to the classification.
@@ -2607,7 +2607,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param properties list of properties for the classification.
      * @return Classification showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not attached to the classification.
@@ -2663,7 +2663,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -2737,7 +2737,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param initialStatus initial status; typically DRAFT, PREPARED or ACTIVE.
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -2806,7 +2806,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param properties list of the properties to update.
      * @return Resulting relationship structure with the new properties set.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -2856,7 +2856,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @return Relationship structure with the new current header, requested entities and properties.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support undo.
@@ -2907,7 +2907,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
      * @return deleted relationship
      * @throws InvalidParameterException one of the parameters is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -2957,7 +2957,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName unique name of the type of the relationship to purge.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @throws InvalidParameterException one of the parameters is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
@@ -3006,7 +3006,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @return Relationship structure with the restored header, requested entities and properties.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
@@ -3064,7 +3064,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newEntityGUID new unique identifier for the entity.
      * @return entity new values for this entity, including the new guid.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
@@ -3117,7 +3117,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newTypeDefSummary details of this entity's new TypeDef.
      * @return entity new values for this entity, including the new type information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3179,7 +3179,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
@@ -3241,7 +3241,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newRelationshipGUID  the new unique identifier for the relationship.
      * @return relationship new values for this relationship, including the new guid.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection.
@@ -3295,7 +3295,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newTypeDefSummary details of this relationship's new TypeDef.
      * @return relationship new values for this relationship, including the new type information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3356,7 +3356,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection.
@@ -3419,7 +3419,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param entity details of the entity to save.
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3475,7 +3475,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity is not recognized by this repository
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
@@ -3523,7 +3523,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity is not recognized by this repository
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
@@ -3571,7 +3571,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param entity details of the entity to purge.
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3627,7 +3627,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param entity details of the entity to purge.
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3686,7 +3686,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the new home repository.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws HomeEntityException the entity belongs to the local repository so creating a reference
@@ -3739,7 +3739,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName unique name of requested entity's TypeDef.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws HomeEntityException the entity belongs to the local repository so creating a reference
@@ -3791,7 +3791,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classification classification to save.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type.
@@ -3848,7 +3848,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param classification classification to save.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type.
@@ -3908,7 +3908,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -3964,7 +3964,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -4015,7 +4015,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param relationship relationship to save.
      * @throws InvalidParameterException the relationship is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -4074,7 +4074,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param relationship relationship to purge.
      * @throws InvalidParameterException the relationship is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -4133,7 +4133,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param relationship relationship to purge.
      * @throws InvalidParameterException the relationship is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
@@ -4195,7 +4195,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identifier is not recognized.
      * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
@@ -4249,7 +4249,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identifier is not recognized.
      * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
@@ -4301,7 +4301,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting server.
      * @param instances instances to save.
      * @throws InvalidParameterException the relationship is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.

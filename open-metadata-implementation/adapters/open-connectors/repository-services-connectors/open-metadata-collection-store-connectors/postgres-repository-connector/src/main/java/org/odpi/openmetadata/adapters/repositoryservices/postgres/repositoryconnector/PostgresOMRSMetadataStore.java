@@ -208,7 +208,7 @@ class PostgresOMRSMetadataStore
      *                 unrestricted return results size.
      * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
      * collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<EntityDetail> findEntitiesByPropertyValue(String                entityTypeGUID,
@@ -281,7 +281,7 @@ class PostgresOMRSMetadataStore
      *                 unrestricted return results size.
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<EntityDetail> findEntitiesByProperty(String                    entityTypeGUID,
@@ -354,7 +354,7 @@ class PostgresOMRSMetadataStore
      *                 unrestricted return results size.
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<EntityDetail> findEntities(String                    entityTypeGUID,
@@ -428,7 +428,7 @@ class PostgresOMRSMetadataStore
      *                 unrestricted return results size.
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<EntityDetail> findEntitiesByClassification(String                    entityTypeGUID,
@@ -577,7 +577,7 @@ class PostgresOMRSMetadataStore
      * @param pageSize -- the maximum number of result classifications that can be returned on this request.  Zero means
      *                 unrestricted return results size.
      * @return Relationships list.  Null means no relationships associated with the entity.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      */
     List<Relationship> getRelationshipsForEntity(String                     entityGUID,
@@ -665,7 +665,7 @@ class PostgresOMRSMetadataStore
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
      * @return a list of relationships.  Null means no matching relationships.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<Relationship> findRelationships(String                    relationshipTypeGUID,
@@ -724,7 +724,7 @@ class PostgresOMRSMetadataStore
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
      * @return a list of relationships.  Null means no matching relationships.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      */
     List<Relationship> findRelationshipsByProperty(String                    relationshipTypeGUID,
@@ -783,7 +783,7 @@ class PostgresOMRSMetadataStore
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
      * @return a list of relationships.  Null means no matching relationships.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      */
     List<Relationship> findRelationshipsByPropertyValue(String                    relationshipTypeGUID,

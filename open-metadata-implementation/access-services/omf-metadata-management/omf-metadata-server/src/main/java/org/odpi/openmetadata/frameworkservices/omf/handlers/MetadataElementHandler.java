@@ -114,7 +114,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public B getMetadataElementByGUID(String       userId,
                                       String       elementGUID,
@@ -156,7 +156,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param methodName calling method
      *
      * @return metadata element properties
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public B getMetadataElementFromEntity(EntityDetail entityDetail,
                                           String       methodName) throws PropertyServerException
@@ -229,7 +229,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public B getMetadataElementByUniqueName(String              userId,
                                             String              uniqueName,
@@ -316,7 +316,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public String getMetadataElementGUIDByUniqueName(String              userId,
                                                      String              uniqueName,
@@ -386,7 +386,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<B> findMetadataElementsWithString(String              userId,
                                                   String              searchString,
@@ -457,7 +457,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<B> getMetadataElementsByType(String              userId,
                                              String              requestedTypeName,
@@ -526,7 +526,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
                                                                    EntityDetail        startingEntity,
@@ -677,7 +677,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
                                                                           String              metadataElementAtEnd1GUID,
@@ -772,7 +772,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<B> findMetadataElements(String                userId,
                                         String                metadataElementTypeName,
@@ -1380,7 +1380,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public  List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
                                                                                     String              relationshipTypeName,
@@ -1460,7 +1460,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<OpenMetadataRelationship> getRelationshipsByType(String              userId,
                                                                  String              typeName,
@@ -1606,7 +1606,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String createMetadataElementInStore(String                            userId,
                                                String                            externalSourceGUID,
@@ -1807,7 +1807,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void createParentRelationships(String               userId,
                                            String               externalSourceGUID,
@@ -1930,7 +1930,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String createMetadataElementFromTemplate(String                         userId,
                                                     String                         externalSourceGUID,
@@ -2183,7 +2183,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public boolean updateMetadataElementInStore(String            userId,
                                                 String            externalSourceGUID,
@@ -2238,7 +2238,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void publishMetadataElement(String        userId,
                                        String        externalSourceGUID,
@@ -2283,7 +2283,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void withdrawMetadataElement(String        userId,
                                         String        externalSourceGUID,
@@ -2330,7 +2330,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateMetadataElementEffectivityInStore(String        userId,
                                                         String        externalSourceGUID,
@@ -2381,7 +2381,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public  void deleteMetadataElementInStore(String       userId,
                                               String       externalSourceGUID,
@@ -2432,7 +2432,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public  void archiveMetadataElementInStore(String           userId,
                                               String            externalSourceGUID,
@@ -2511,7 +2511,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void classifyMetadataElementInStore(String               userId,
                                                String               externalSourceGUID,
@@ -2601,7 +2601,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public  void reclassifyMetadataElementInStore(String            userId,
                                                   String            externalSourceGUID,
@@ -2671,7 +2671,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateClassificationStatusInStore(String       userId,
                                                   String       externalSourceGUID,
@@ -2734,7 +2734,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public  void declassifyMetadataElementInStore(String       userId,
                                                   String       externalSourceGUID,
@@ -2801,7 +2801,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String createRelatedElementsInStore(String               userId,
                                                String               externalSourceGUID,
@@ -2978,7 +2978,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateRelatedElementsInStore(String            userId,
                                              String            externalSourceGUID,
@@ -3035,7 +3035,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public  void updateRelatedElementsStatusInStore(String       userId,
                                                     String       externalSourceGUID,
@@ -3084,7 +3084,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @SuppressWarnings(value = "unused")
     public void deleteRelationshipInStore(String       userId,

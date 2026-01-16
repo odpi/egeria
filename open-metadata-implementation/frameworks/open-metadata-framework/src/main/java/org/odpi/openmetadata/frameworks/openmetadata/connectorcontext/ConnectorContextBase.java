@@ -11,10 +11,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FilesListenerManager;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ContextEventHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
@@ -47,6 +50,8 @@ public class ConnectorContextBase
     protected final String                  egeriaRelease  = "6.0-SNAPSHOT";
 
     protected final OpenMetadataClient      openMetadataClient;
+    protected final AssetHandler            assetHandler;
+    protected final ContextEventHandler     contextEventHandler;
 
     protected final String                  localServerName;
     protected final String                  localServiceName;
@@ -66,9 +71,9 @@ public class ConnectorContextBase
     private   final FilesListenerManager listenerManager;
 
 
-    protected final OpenMetadataStore       openMetadataStore;
-    protected final OpenMetadataTypesClient openMetadataTypesClient;
-    private final   ActorProfileClient      actorProfileClient;
+    protected final OpenMetadataStore              openMetadataStore;
+    protected final OpenMetadataTypesClient        openMetadataTypesClient;
+    private final   ActorProfileClient             actorProfileClient;
     private final   ActorRoleClient                actorRoleClient;
     private final   AnnotationClient               annotationClient;
     private final   AssetClient                    assetClient;
@@ -161,6 +166,8 @@ public class ConnectorContextBase
         this.generateIntegrationReport = generateIntegrationReport;
 
         this.openMetadataClient        = openMetadataClient;
+        this.assetHandler              = new AssetHandler(localServerName, auditLog,localServiceName, openMetadataClient);
+        this.contextEventHandler       = new ContextEventHandler(localServerName, auditLog,localServiceName, openMetadataClient);
 
         this.openMetadataStore = new OpenMetadataStore(this,
                                                        localServerName,
@@ -1474,7 +1481,7 @@ public class ConnectorContextBase
      *
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     public void publishReport() throws InvalidParameterException,
                                        UserNotAuthorizedException,
@@ -1689,33 +1696,35 @@ public class ConnectorContextBase
     }
 
 
-
     /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *
-     * @param properties unique identifier to give this new incident report and description of the situation
-     * @param impactedResources details of the resources impacted by this situation
-     * @param previousIncidents links to previous incident reports covering this situation
-     *
+     * @param properties             unique identifier to give this new incident report and description of the situation
+     * @param initialClassifications classification to add to the action
+     * @param impactedResources      details of the resources impacted by this situation
+     * @param previousIncidents      links to previous incident reports covering this situation
      * @return unique identifier of the resulting incident report
-     *
-     * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws InvalidParameterException  null or non-unique qualified name for the incident report
+     * @throws UserNotAuthorizedException this connector is not authorized to create an incident report
+     * @throws PropertyServerException    a problem with the metadata store
      */
     public String createIncidentReport(IncidentReportProperties                properties,
+                                       Map<String, ClassificationProperties>   initialClassifications,
                                        Map<String, ImpactedResourceProperties> impactedResources,
                                        Map<String, ReportDependencyProperties> previousIncidents) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return openMetadataClient.createIncidentReport(connectorUserId,
-                                                       properties,
-                                                       impactedResources,
-                                                       previousIncidents,
-                                                       connectorGUID);
+        return assetHandler.createIncidentReport(connectorUserId,
+                                                 initialClassifications,
+                                                 properties,
+                                                 impactedResources,
+                                                 previousIncidents,
+                                                 connectorGUID);
     }
+
+
 
     /**
      * Create a To-Do request for someone to work on.
@@ -1731,7 +1740,7 @@ public class ConnectorContextBase
      * @return unique identifier of new to do element
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a to-do
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
      */
     public String openToDo(String toDoQualifiedName,
                            String title,
@@ -1772,7 +1781,8 @@ public class ConnectorContextBase
         toDoProperties.setPriority(priority);
         toDoProperties.setDueTime(dueDate);
 
-        return this.openToDo(toDoProperties,
+        return this.openToDo(null,
+                             toDoProperties,
                              assignToGUID,
                              null,
                              actionTargets);
@@ -1780,27 +1790,60 @@ public class ConnectorContextBase
 
 
     /**
-     * Create a "To Do" request for someone to work on.
+     * Create a "To-Do" request for someone to work on.
      *
-     * @param properties unique name for the to do plus other properties
+     * @param initialClassifications classification to add to the action
+     * @param properties unique name for the to-do plus other properties
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param actionTargets the list of elements that should be acted upon
      *
-     * @return unique identifier of new to do element
+     * @return unique identifier of the new to-do element
      *
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
      */
-    public String openToDo(ToDoProperties        properties,
-                           String                assignToGUID,
-                           String                sponsorGUID,
-                           List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public String openToDo(Map<String, ClassificationProperties> initialClassifications,
+                           ToDoProperties                        properties,
+                           String                                assignToGUID,
+                           String                                sponsorGUID,
+                           List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
-        return openMetadataClient.openToDo(connectorUserId, properties, assignToGUID, sponsorGUID, connectorGUID, actionTargets);
+        return assetHandler.openToDo(connectorUserId, initialClassifications, properties, assignToGUID, sponsorGUID, connectorGUID, actionTargets);
+    }
+
+
+    /**
+     * Create an entry in a note log.
+     *
+     * @param openMetadataTypeName type of action to create
+     * @param initialClassifications classification to add to the action
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param noteLogGUID unique identifier of the note log
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    public String createNoteLogEntry(String                                openMetadataTypeName,
+                                     Map<String, ClassificationProperties> initialClassifications,
+                                     ActionProperties                      properties,
+                                     String                                actionSourceGUID,
+                                     List<String>                          actionCauseGUIDs,
+                                     String                                noteLogGUID,
+                                     List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return assetHandler.createNoteLogEntry(connectorUserId, openMetadataTypeName, initialClassifications, properties, actionSourceGUID, actionCauseGUIDs, noteLogGUID, actionTargets);
     }
 
 
@@ -1815,31 +1858,34 @@ public class ConnectorContextBase
      * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->effectivity dates)
      * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs-> effectivity dates)
      * @param contextEventProperties properties for the context event itself
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @return guid of the new context event
      * @throws InvalidParameterException one of the properties are invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
      */
     public String registerContextEvent(String                                       anchorGUID,
+                                       Map<String, ClassificationProperties>        initialClassifications,
+                                       ContextEventProperties                       contextEventProperties,
                                        Map<String, DependentContextEventProperties> parentContextEvents,
                                        Map<String, DependentContextEventProperties> childContextEvents,
                                        Map<String, RelatedContextEventProperties>   relatedContextEvents,
                                        Map<String, ContextEventImpactProperties>    impactedElements,
                                        Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
-                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs,
-                                       ContextEventProperties                       contextEventProperties) throws InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   PropertyServerException
+                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
     {
-        return openMetadataClient.registerContextEvent(connectorUserId,
-                                                       anchorGUID,
-                                                       parentContextEvents,
-                                                       childContextEvents,
-                                                       relatedContextEvents,
-                                                       impactedElements,
-                                                       effectedDataResourceGUIDs,
-                                                       contextEventEvidenceGUIDs,
-                                                       contextEventProperties);
+        return contextEventHandler.registerContextEvent(connectorUserId,
+                                                        anchorGUID,
+                                                        initialClassifications,
+                                                        contextEventProperties,
+                                                        parentContextEvents,
+                                                        childContextEvents,
+                                                        relatedContextEvents,
+                                                        impactedElements,
+                                                        effectedDataResourceGUIDs,
+                                                        contextEventEvidenceGUIDs);
     }
 
 

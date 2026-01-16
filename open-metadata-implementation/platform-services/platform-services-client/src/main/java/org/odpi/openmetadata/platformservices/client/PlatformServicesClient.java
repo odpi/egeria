@@ -56,7 +56,7 @@ public class PlatformServicesClient
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public PlatformServicesClient(String   platformName,
@@ -82,7 +82,7 @@ public class PlatformServicesClient
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public PlatformServicesClient(String                             platformName,
@@ -104,7 +104,7 @@ public class PlatformServicesClient
      * @return start date/time
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public Date getPlatformStartTime() throws InvalidParameterException,
                                               PropertyServerException,
@@ -124,7 +124,7 @@ public class PlatformServicesClient
      * Return details of when the platform was built.
      *
      * @return start date/time
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public BuildProperties getPlatformBuildProperties() throws PropertyServerException
     {
@@ -140,7 +140,7 @@ public class PlatformServicesClient
      * Return public details about the platform.
      *
      * @return start date/time
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public PublicProperties getPublicProperties() throws PropertyServerException
     {
@@ -159,7 +159,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String getPlatformOrigin() throws InvalidParameterException,
                                              UserNotAuthorizedException,
@@ -180,7 +180,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String getPlatformOrganizationName() throws InvalidParameterException,
                                                                UserNotAuthorizedException,
@@ -275,7 +275,7 @@ public class PlatformServicesClient
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id (from bearer token) is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
 
     public ConnectorType getConnectorType(String connectorProviderClassName) throws InvalidParameterException,
@@ -302,7 +302,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user user id (from bearer token) is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAccessServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -325,7 +325,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getEngineServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -348,7 +348,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getViewServices() throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -371,7 +371,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getGovernanceServices() throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
@@ -394,7 +394,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getCommonServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -418,7 +418,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAllServices() throws InvalidParameterException,
                                                                UserNotAuthorizedException,
@@ -607,7 +607,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getKnownServers() throws InvalidParameterException,
                                                  UserNotAuthorizedException,
@@ -632,7 +632,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public boolean isServerKnown(String   serverName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -655,7 +655,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getActiveServers() throws InvalidParameterException,
                                                   UserNotAuthorizedException,
@@ -681,7 +681,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ServerStatus getServerStatus(String serverName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -766,7 +766,7 @@ public class PlatformServicesClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getActiveServicesForServer(String   serverName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,

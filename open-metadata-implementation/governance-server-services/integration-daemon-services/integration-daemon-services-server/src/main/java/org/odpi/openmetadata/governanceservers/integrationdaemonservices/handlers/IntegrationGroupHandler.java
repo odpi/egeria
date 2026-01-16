@@ -187,7 +187,7 @@ public class IntegrationGroupHandler
 
         /*
          * Begin by extracting the properties for the integration group from the metadata server.
-         * This method throws exceptions if there is a problem retrieving the integration group properties.
+         * This method throws exceptions if a problem retrieving the integration group properties.
          */
         this.integrationGroupElement = configurationClient.getIntegrationGroupByName(serverUserId, integrationGroupName);
 

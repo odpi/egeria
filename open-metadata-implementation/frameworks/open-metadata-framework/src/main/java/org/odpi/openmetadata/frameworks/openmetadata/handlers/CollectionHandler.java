@@ -387,7 +387,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createCollectionFromTemplate(String                 userId,
                                                TemplateOptions        templateOptions,
@@ -1853,7 +1853,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param membershipProperties  properties describing the membership characteristics.
      * @param elementGUID           unique identifier of the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addToCollection(String                         userId,
@@ -1902,7 +1902,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param updateOptions        provides a structure for the additional options when updating a relationship.
      * @param membershipProperties properties describing the membership characteristics.
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCollectionMembership(String                         userId,
@@ -1965,7 +1965,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param elementGUID    unique identifier of the element.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeFromCollection(String        userId,

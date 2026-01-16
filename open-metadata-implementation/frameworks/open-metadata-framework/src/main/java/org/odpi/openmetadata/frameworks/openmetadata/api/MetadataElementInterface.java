@@ -29,7 +29,7 @@ public interface MetadataElementInterface
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataElement getMetadataElementByGUID(String     userId,
                                                  String     elementGUID,
@@ -49,7 +49,7 @@ public interface MetadataElementInterface
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataElement getMetadataElementByUniqueName(String     userId,
                                                        String     uniqueName,
@@ -70,7 +70,7 @@ public interface MetadataElementInterface
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataElement getDeletedElementByUniqueName(String  userId,
                                                       String  uniqueName,
@@ -89,7 +89,7 @@ public interface MetadataElementInterface
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     String getMetadataElementGUIDByUniqueName(String     userId,
                                               String     uniqueName,
@@ -109,7 +109,7 @@ public interface MetadataElementInterface
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<OpenMetadataElement> findMetadataElementsWithString(String        userId,
                                                              String        searchString,
@@ -131,7 +131,7 @@ public interface MetadataElementInterface
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     AnchorSearchMatches findElementsForAnchor(String              userId,
                                               String              searchString,
@@ -154,7 +154,7 @@ public interface MetadataElementInterface
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<AnchorSearchMatches> findElementsInAnchorDomain(String        userId,
                                                          String        searchString,
@@ -177,7 +177,7 @@ public interface MetadataElementInterface
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<AnchorSearchMatches> findElementsInAnchorScope(String        userId,
                                                         String        searchString,
@@ -199,7 +199,7 @@ public interface MetadataElementInterface
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     RelatedMetadataElementList getRelatedMetadataElements(String       userId,
                                                           String       elementGUID,
@@ -224,7 +224,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store or multiple relationships have been returned
+     * @throws PropertyServerException    a problem accessing the metadata store or multiple relationships have been returned
      */
     RelatedMetadataElement getRelatedMetadataElement(String     userId,
                                                      String     elementGUID,
@@ -246,7 +246,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     OpenMetadataElementGraph getAnchoredElementsGraph(String       userId,
                                                       String       elementGUID,
@@ -265,7 +265,7 @@ public interface MetadataElementInterface
      * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<OpenMetadataElement> getMetadataElementHistory(String                 userId,
                                                         String                 elementGUID,
@@ -285,7 +285,7 @@ public interface MetadataElementInterface
      * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<AttachedClassification> getClassificationHistory(String                 userId,
                                                           String                 elementGUID,
@@ -306,7 +306,7 @@ public interface MetadataElementInterface
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
                                                                  String              metadataElementAtEnd1GUID,
@@ -327,7 +327,7 @@ public interface MetadataElementInterface
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     List<OpenMetadataElement> findMetadataElements(String                userId,
                                                    SearchProperties      searchProperties,
@@ -349,7 +349,7 @@ public interface MetadataElementInterface
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
                                                                           String           relationshipTypeName,
@@ -369,7 +369,7 @@ public interface MetadataElementInterface
      * @return relationship properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataRelationship getRelationshipByGUID(String     userId,
                                                    String     relationshipGUID,
@@ -388,7 +388,7 @@ public interface MetadataElementInterface
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     OpenMetadataRelationshipList getRelationshipHistory(String                 userId,
                                                         String                 relationshipGUID,
@@ -411,7 +411,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElementInStore(String               userId,
                                         String               metadataElementTypeName,
@@ -436,7 +436,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElementInStore(String               userId,
                                         String               externalSourceGUID,
@@ -463,7 +463,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElementInStore(String                            userId,
                                         String                            metadataElementTypeName,
@@ -495,7 +495,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElementFromTemplate(String               userId,
                                              String               metadataElementTypeName,
@@ -521,7 +521,7 @@ public interface MetadataElementInterface
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     boolean updateMetadataElementInStore(String            userId,
                                          String            metadataElementGUID,
@@ -540,7 +540,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
    void publishMetadataElement(String                userId,
                                String                metadataElementGUID,
@@ -558,7 +558,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     void withdrawMetadataElement(String                userId,
                                  String                metadataElementGUID,
@@ -578,7 +578,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateMetadataElementEffectivityInStore(String                userId,
                                                  String                metadataElementGUID,
@@ -598,7 +598,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void deleteMetadataElementInStore(String        userId,
                                       String        metadataElementGUID,
@@ -615,7 +615,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void archiveMetadataElementInStore(String        userId,
                                        String        metadataElementGUID,
@@ -638,7 +638,7 @@ public interface MetadataElementInterface
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void classifyMetadataElementInStore(String                userId,
                                         String                metadataElementGUID,
@@ -661,7 +661,7 @@ public interface MetadataElementInterface
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void reclassifyMetadataElementInStore(String            userId,
                                           String            metadataElementGUID,
@@ -685,7 +685,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateClassificationEffectivityInStore(String                userId,
                                                 String                metadataElementGUID,
@@ -707,7 +707,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void declassifyMetadataElementInStore(String                userId,
                                           String                metadataElementGUID,
@@ -735,7 +735,7 @@ public interface MetadataElementInterface
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createRelatedElementsInStore(String                userId,
                                         String                relationshipTypeName,
@@ -758,7 +758,7 @@ public interface MetadataElementInterface
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateRelationshipInStore(String            userId,
                                    String            relationshipGUID,
@@ -781,7 +781,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateRelatedElementsInStore(String            userId,
                                       String            relationshipTypeName,
@@ -805,7 +805,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateRelationshipEffectivityInStore(String                userId,
                                               String                relationshipGUID,
@@ -825,7 +825,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void deleteRelationshipInStore(String        userId,
                                    String        relationshipGUID,
@@ -845,7 +845,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void detachRelatedElementsInStore(String        userId,
                                       String        relationshipTypeName,

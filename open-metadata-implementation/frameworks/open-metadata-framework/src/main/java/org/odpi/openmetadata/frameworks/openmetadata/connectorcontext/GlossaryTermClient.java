@@ -133,7 +133,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createGlossaryTermFromTemplate(TemplateOptions        templateOptions,
                                                  String                 templateGUID,
@@ -191,7 +191,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateGlossaryTermFromTemplate(String                    glossaryTermGUID,
                                                String                    templateGUID,
@@ -531,7 +531,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findGlossaryTerms(String              searchString,
                                                            SearchOptions       queryOptions) throws InvalidParameterException,

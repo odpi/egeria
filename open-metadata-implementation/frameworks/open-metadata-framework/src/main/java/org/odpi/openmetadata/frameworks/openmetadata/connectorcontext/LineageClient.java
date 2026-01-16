@@ -65,7 +65,7 @@ public class LineageClient extends ConnectorContextClientBase
      * @return guid of lineage relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String linkLineage(String                        elementOneGUID,
                               String                        elementTwoGUID,
@@ -92,7 +92,7 @@ public class LineageClient extends ConnectorContextClientBase
      * @param properties properties of the relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateLineage(String                        lineageRelationshipGUID,
                               UpdateOptions                 updateOptions,
@@ -115,7 +115,7 @@ public class LineageClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void detachLineage(String        lineageRelationshipGUID,
                               DeleteOptions deleteOptions) throws InvalidParameterException,

@@ -186,7 +186,7 @@ public class OpenGovernanceRESTServices
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String             serverName,
                                                                                 String             userId,
@@ -629,7 +629,7 @@ public class OpenGovernanceRESTServices
      * @return first process step element
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws PropertyServerException the user is not authorized to issue this request
-     * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException a problem reported in the open metadata server(s)
      */
     private FirstGovernanceActionProcessStepElement getFirstProcessStepElement(String serverName,
                                                                                String userId,
@@ -693,7 +693,7 @@ public class OpenGovernanceRESTServices
      * @return first process step element
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws PropertyServerException the user is not authorized to issue this request
-     * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException a problem reported in the open metadata server(s)
      */
     private FirstGovernanceActionProcessStepElement getFirstEngineStepElement(String serverName,
                                                                               String userId,
@@ -1061,7 +1061,7 @@ public class OpenGovernanceRESTServices
      * @return void or
      *  InvalidParameterException the action target GUID is not recognized
      *  UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     *  PropertyServerException there is a problem connecting to the metadata store
+     *  PropertyServerException a problem connecting to the metadata store
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse updateActionTargetStatus(String                        serverName,
@@ -1125,7 +1125,7 @@ public class OpenGovernanceRESTServices
      * @return void or
      *  InvalidParameterException the completion status is null
      *  UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     *  PropertyServerException there is a problem connecting to the metadata store
+     *  PropertyServerException a problem connecting to the metadata store
      */
     public VoidResponse recordCompletionStatus(String                      serverName,
                                                String                      userId,
@@ -1192,7 +1192,7 @@ public class OpenGovernanceRESTServices
      * @return unique identifier of the governance action or
      *  InvalidParameterException null qualified name
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateEngineAction(String                          serverName,
                                              String                          userId,
@@ -1291,7 +1291,7 @@ public class OpenGovernanceRESTServices
      * @return unique identifier of the first governance action of the process or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionType(String                                  serverName,
                                                      String                                  userId,
@@ -1348,7 +1348,7 @@ public class OpenGovernanceRESTServices
      * @return unique identifier of the governance action process instance or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
                                                         String                             userId,

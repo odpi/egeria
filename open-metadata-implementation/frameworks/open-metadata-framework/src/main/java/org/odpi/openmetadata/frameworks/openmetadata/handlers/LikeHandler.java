@@ -51,7 +51,7 @@ public class LikeHandler extends FeedbackHandler
      * @return unique identifier of the new like element
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addLikeToElement(String                            userId,
@@ -82,7 +82,7 @@ public class LikeHandler extends FeedbackHandler
      * @return guid of like
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String removeLikeFromElement(String                userId,
@@ -123,7 +123,7 @@ public class LikeHandler extends FeedbackHandler
      *
      * @return list of likes
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getAttachedLikes(String       userId,

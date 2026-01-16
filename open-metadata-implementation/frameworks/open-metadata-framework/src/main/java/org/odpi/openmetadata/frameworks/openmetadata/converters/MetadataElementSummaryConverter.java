@@ -39,7 +39,7 @@ public class MetadataElementSummaryConverter<B> extends OpenMetadataConverterBas
      * @param openMetadataElement openMetadataElement containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>            beanClass,
@@ -85,7 +85,7 @@ public class MetadataElementSummaryConverter<B> extends OpenMetadataConverterBas
      * @param openMetadataElements list of openMetadataElements containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                  beanClass,
                                List<OpenMetadataElement> openMetadataElements,

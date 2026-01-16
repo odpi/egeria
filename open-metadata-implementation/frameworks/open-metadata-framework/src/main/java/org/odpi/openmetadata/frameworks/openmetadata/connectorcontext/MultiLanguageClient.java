@@ -7,9 +7,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * MultiLanguageClient enables translations of the string properties of a metadata element to be created, maintained and retrieved.
@@ -54,18 +56,20 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      * Create or update the translation for a particular language/locale for a metadata element.
      *
      * @param elementGUID unique identifier of the element that this translation is related to
+     * @param initialClassifications classification to add to the translation
      * @param translationDetail properties of the translation
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
-    public  void setTranslation(String            elementGUID,
-                                TranslationDetailProperties translationDetail) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public  void setTranslation(String                                elementGUID,
+                                Map<String, ClassificationProperties> initialClassifications,
+                                TranslationDetailProperties           translationDetail) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
-        openMetadataClient.setTranslation(connectorUserId, elementGUID, translationDetail);
+        openMetadataClient.setTranslation(connectorUserId, elementGUID, initialClassifications, translationDetail);
     }
 
 
@@ -78,7 +82,7 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the language is null or not known or not unique (add locale)
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearTranslation(String elementGUID,
                                  String language,
@@ -101,7 +105,7 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public TranslationDetailProperties getTranslation(String elementGUID,
                                                       String language,
@@ -124,7 +128,7 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<TranslationDetailProperties> getTranslations(String elementGUID,
                                                              int    startFrom,

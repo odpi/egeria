@@ -497,7 +497,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getMeanings(String               userId,
                                                      String               elementGUID,
@@ -551,7 +551,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     private List<OpenMetadataRootElement> getSemanticRelationships(String               userId,
                                                                    String               elementGUID,
@@ -756,7 +756,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSemanticAssignees(String                       userId,
                                                                   String                       glossaryTermGUID,
@@ -801,7 +801,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getGovernedByDefinitions(String              userId,
                                                                       String              elementGUID,
@@ -837,7 +837,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getGovernedElements(String              userId,
                                                                  String              governanceDefinitionGUID,
@@ -874,7 +874,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSourceElements(String              userId,
                                                                String              elementGUID,
@@ -911,7 +911,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElementsSourcedFrom(String              userId,
                                                                     String              elementGUID,
@@ -947,7 +947,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getScopes(String              userId,
                                                        String              elementGUID,
@@ -983,7 +983,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getScopedElements(String              userId,
                                                                String              scopeGUID,
@@ -1019,7 +1019,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getResourceList(String              userId,
                                                              String              elementGUID,
@@ -1055,7 +1055,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSupportedByResource(String              userId,
                                                                     String              resourceGUID,
@@ -1090,7 +1090,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getLicensedElements(String              userId,
                                                              String              licenseTypeGUID,
@@ -1124,7 +1124,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getLicenses(String       userId,
                                                          String       elementGUID,
@@ -1158,7 +1158,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getCertifiedElements(String              userId,
                                                                   String              certificationTypeGUID,
@@ -1193,7 +1193,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getCertifications(String              userId,
                                                                String              elementGUID,
@@ -1232,7 +1232,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setImpactClassification(String                             userId,
                                         String                             elementGUID,
@@ -1258,7 +1258,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearImpactClassification(String                userId,
                                           String                elementGUID,
@@ -1285,7 +1285,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConfidenceClassification(String                             userId,
                                             String                             elementGUID,
@@ -1312,7 +1312,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConfidenceClassification(String                userId,
                                               String                elementGUID,
@@ -1338,7 +1338,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setCriticalityClassification(String                             userId,
                                              String                             elementGUID,
@@ -1365,7 +1365,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearCriticalityClassification(String                 userId,
                                                String                 elementGUID,
@@ -1393,7 +1393,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConfidentialityClassification(String                             userId,
                                                  String                             elementGUID,
@@ -1420,7 +1420,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConfidentialityClassification(String                userId,
                                                    String                elementGUID,
@@ -1448,7 +1448,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setRetentionClassification(String                            userId,
                                            String                            elementGUID,
@@ -1475,7 +1475,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearRetentionClassification(String                userId,
                                              String                elementGUID,
@@ -1863,7 +1863,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupSemanticAssignment(String                       userId,
                                         String                       elementGUID,
@@ -1892,7 +1892,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearSemanticAssignment(String        userId,
                                         String        elementGUID,
@@ -1927,7 +1927,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addScopeToElement(String             userId,
                                   String             elementGUID,
@@ -1964,7 +1964,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeScopeFromElement(String        userId,
                                        String        elementGUID,
@@ -2071,7 +2071,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addResourceListToElement(String                 userId,
                                          String                 elementGUID,
@@ -2100,7 +2100,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeResourceListFromElement(String        userId,
                                               String        elementGUID,
@@ -2135,7 +2135,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addMoreInformationToElement(String                    userId,
                                             String                    elementGUID,
@@ -2164,7 +2164,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeMoreInformationFromElement(String        userId,
                                                  String        elementGUID,
@@ -2200,7 +2200,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return metadata element properties
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElement getMetadataElementByUniqueName(String     userId,
                                                                   String     uniqueName,
@@ -2232,7 +2232,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElementsByPropertyValue(String       userId,
                                                                     String       propertyValue,
@@ -2270,7 +2270,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findElementsByPropertyValue(String              userId,
                                                                      String              propertyValue,
@@ -2418,7 +2418,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElementsByClassification(String              userId,
                                                                      String              classificationName,
@@ -2462,7 +2462,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findElementsByClassificationWithPropertyValue(String              userId,
                                                                                        String              classificationName,
@@ -2506,7 +2506,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getRelatedElements(String              userId,
                                                             String              elementGUID,
@@ -2607,7 +2607,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findRelatedElementsWithPropertyValue(String              userId,
                                                                                   String              elementGUID,
@@ -2703,7 +2703,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public MetadataRelationshipSummaryList   getRelationships(String              userId,
                                                               String              relationshipTypeName,
@@ -2750,7 +2750,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public MetadataRelationshipSummaryList findRelationshipsWithPropertyValue(String              userId,
                                                                               String              relationshipTypeName,
@@ -2795,7 +2795,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of matching elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ElementHeader retrieveInstanceForGUID(String     userId,
                                                  String     guid,
@@ -2835,7 +2835,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return metadata element properties
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElement getMetadataElementByGUID(String     userId,
                                                             String     elementGUID,
@@ -2867,7 +2867,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String getMetadataElementGUIDByUniqueName(String     userId,
                                                      String     uniqueName,
@@ -2889,7 +2889,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of element summaries
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElements(String       userId,
                                                      QueryOptions queryOptions) throws InvalidParameterException,
@@ -2919,7 +2919,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of root elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findRootElements(String                userId,
                                                           SearchProperties      searchProperties,
@@ -2951,7 +2951,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElementsByClassification(String       userId,
                                                                      String       classificationName,
@@ -2983,7 +2983,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<MetadataRelationshipSummary> getRelationships(String         userId,
                                                               String         relationshipTypeName,
@@ -3019,7 +3019,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConsolidatedDuplicateClassification(String                          userId,
                                                        String                          elementGUID,
@@ -3045,7 +3045,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConsolidatedDuplicateClassification(String                userId,
                                                          String                elementGUID,
@@ -3072,7 +3072,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void linkConsolidatedDuplicateToSourceElement(String                              userId,
                                                          String                              elementGUID,
@@ -3101,7 +3101,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlinkConsolidatedDuplicateFromSourceElement(String        userId,
                                                              String        elementGUID,
@@ -3136,7 +3136,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setKnownDuplicateClassification(String                   userId,
                                                 String                   elementGUID,
@@ -3162,7 +3162,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearKnownDuplicateClassification(String                userId,
                                                   String                elementGUID,
@@ -3189,7 +3189,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void linkElementsAsPeerDuplicates(String                      userId,
                                              String                      elementGUID,
@@ -3218,7 +3218,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlinkElementsAsPeerDuplicates(String        userId,
                                                String        elementGUID,

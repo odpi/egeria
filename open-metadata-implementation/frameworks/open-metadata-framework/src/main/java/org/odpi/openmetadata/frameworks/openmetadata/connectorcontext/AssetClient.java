@@ -128,17 +128,17 @@ public class AssetClient extends ConnectorContextClientBase
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public String createAction(String                                originatorGUID,
+    public String createAction(Map<String, ClassificationProperties> initialClassifications,
+                               ActionProperties                      properties,
+                               String                                originatorGUID,
                                String                                actionSponsorGUID,
                                String                                assignToActorGUID,
                                AnchorOptions                         anchorOptions,
-                               Map<String, ClassificationProperties> initialClassifications,
-                               List<NewActionTarget>                 newActionTargets,
-                               ActionProperties                      properties) throws InvalidParameterException,
+                               List<NewActionTarget>                 newActionTargets) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        return assetHandler.createAction(connectorUserId, originatorGUID, actionSponsorGUID, assignToActorGUID, anchorOptions, initialClassifications, newActionTargets, properties);
+        return assetHandler.createAction(connectorUserId, initialClassifications, properties, originatorGUID, actionSponsorGUID, assignToActorGUID, anchorOptions, newActionTargets);
     }
 
 
@@ -156,7 +156,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createAssetFromTemplate(TemplateOptions        templateOptions,
                                           String                 templateGUID,
@@ -190,7 +190,7 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
      * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     * @throws PropertyServerException a problem in the remote server running the partner OMAS
      */
     public String setUpMetadataSource(String                metadataSourceQualifiedName,
                                       String                ownerGUID,
@@ -862,7 +862,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findAssets(String        searchString,
                                                     SearchOptions searchOptions) throws InvalidParameterException,
@@ -883,7 +883,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param elementGUID           unique identifier of the target element.
      * @return relationship GUID
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addCatalogTarget(String                  integrationConnectorGUID,
@@ -964,7 +964,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param elementGUID    unique identifier of the element.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeCatalogTarget(String        integrationConnectorGUID,
@@ -983,7 +983,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param relationshipGUID unique identifier of the relationship.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeCatalogTarget(String        relationshipGUID,

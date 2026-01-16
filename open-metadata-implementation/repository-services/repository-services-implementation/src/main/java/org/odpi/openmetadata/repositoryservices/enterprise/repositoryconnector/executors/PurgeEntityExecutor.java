@@ -116,7 +116,7 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
      * Return the result of the execution.  Hopefully this is a result - but may be an exception
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged

@@ -657,7 +657,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException  the GUID is not recognized or the paging values are invalid or
-     * @throws PropertyServerException  there is a problem retrieving the instances from the property server or
+     * @throws PropertyServerException  a problem retrieving the instances from the property server or
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForSchemaType(String  userId,
@@ -908,7 +908,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForSchemaAttribute(String  userId,
@@ -989,7 +989,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForConnection(String  userId,
@@ -1051,7 +1051,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForEndpoint(String  userId,
@@ -1170,7 +1170,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForLike(String  userId,
@@ -1231,7 +1231,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForRating(String  userId,
@@ -1292,7 +1292,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForSurveyReport(String  userId,
@@ -1354,7 +1354,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForAnnotation(String  userId,
@@ -1421,7 +1421,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForAnnotationReview(String  userId,
@@ -1479,7 +1479,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the repositories or
+     * @throws PropertyServerException - a problem retrieving the asset properties from the repositories or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private AnchorIdentifiers getAnchorGUIDForDataField(String  userId,
@@ -1547,7 +1547,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws PropertyServerException  a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private AnchorIdentifiers getAnchorGUIDForComment(String  userId,
@@ -1631,7 +1631,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws PropertyServerException  a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private AnchorIdentifiers getAnchorGUIDForGlossaryTerm(String  userId,
@@ -1711,7 +1711,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws PropertyServerException  a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private AnchorIdentifiers getAnchorGUIDForISCSegment(String  userId,
@@ -2069,7 +2069,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return newAnchorGUID we derive the anchor from the target element and then return it. Note this value can be null if there is no anchor.
      *
      * @throws InvalidParameterException probably the type of the entity is not correct
-     * @throws PropertyServerException there is a problem with the repository
+     * @throws PropertyServerException a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     String reEvaluateAnchorGUID(String targetGUID,
@@ -2193,7 +2193,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @return the new anchor GUID
      *
      * @throws InvalidParameterException probably the type of the entity is not correct
-     * @throws PropertyServerException there is a problem with the repository
+     * @throws PropertyServerException a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     String reEvaluateAnchorGUID(String       targetGUID,
@@ -2256,7 +2256,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @param methodName       calling method
      * @return anchor identifiers
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public AnchorIdentifiers getAnchorGUIDForEntity(EntityDetail connectToEntity,

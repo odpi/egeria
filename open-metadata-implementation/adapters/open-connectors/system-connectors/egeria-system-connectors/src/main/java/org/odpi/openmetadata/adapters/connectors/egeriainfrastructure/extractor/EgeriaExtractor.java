@@ -178,7 +178,7 @@ public class EgeriaExtractor
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
 
     public ConnectorType getConnectorType(String connectorProviderClassName) throws InvalidParameterException,
@@ -196,7 +196,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAccessServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -213,7 +213,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getEngineServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -230,7 +230,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getViewServices() throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
@@ -247,7 +247,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAllServices() throws InvalidParameterException,
                                                                UserNotAuthorizedException,
@@ -405,7 +405,7 @@ public class EgeriaExtractor
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      *
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean connectToCohort(String cohortName) throws InvalidParameterException,
@@ -432,7 +432,7 @@ public class EgeriaExtractor
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
@@ -458,7 +458,7 @@ public class EgeriaExtractor
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,
@@ -595,7 +595,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ServerStatus getServerStatus() throws InvalidParameterException,
                                                  UserNotAuthorizedException,
@@ -661,7 +661,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getActiveServices() throws InvalidParameterException,
                                                    UserNotAuthorizedException,
@@ -1291,7 +1291,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException the caller is not authorized to call the service
-     * @throws PropertyServerException there is a problem processing the request
+     * @throws PropertyServerException a problem processing the request
      */
     public void publishOpenLineageEvent(String event) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -1311,7 +1311,7 @@ public class EgeriaExtractor
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException the caller is not authorized to call the service
-     * @throws PropertyServerException there is a problem processing the request
+     * @throws PropertyServerException a problem processing the request
      */
     public void publishOpenLineageEvent(OpenLineage.RunEvent event) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,

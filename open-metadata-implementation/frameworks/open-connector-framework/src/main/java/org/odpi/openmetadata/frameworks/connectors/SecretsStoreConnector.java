@@ -170,7 +170,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      *
      * @param secretName name of the secret.
      * @return secret
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     abstract public String getSecret(String secretName) throws ConnectorCheckedException;
 
@@ -179,7 +179,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * Retrieve the refresh time from the secrets store.
      *
      * @return how long the secrets can be cached - 0 means indefinitely
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     abstract public long   getRefreshTimeInterval() throws ConnectorCheckedException;
 
@@ -189,7 +189,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      *
      * @param userId userId for the lookup
      * @return associated user details or null
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     public UserAccount getUser(String userId) throws ConnectorCheckedException
     {
@@ -201,7 +201,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * Retrieve any user definitions stored in the secrets collection.
      *
      * @return map of userIds to user details
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     public Map<String, UserAccount> getUsers() throws ConnectorCheckedException
     {
@@ -214,7 +214,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      *
      * @param listName name of a list
      * @return corresponding named list or null
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     public NamedList getNamedList(String listName) throws  ConnectorCheckedException
     {
@@ -226,7 +226,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * Return all of the known named lists in this collection
      *
      * @return map of named lists in this collection
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     public Map<String, NamedList> getNamedLists() throws ConnectorCheckedException
     {

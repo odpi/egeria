@@ -178,7 +178,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @return boolean flag
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
+     * @throws PropertyServerException a problem in the repository
      */
     @Override
     public boolean  moreToReceive() throws InvalidParameterException,

@@ -31,7 +31,7 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
      * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     IntegrationDaemonServicesRESTClient(String   serverName,
@@ -53,7 +53,7 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     IntegrationDaemonServicesRESTClient(String                             serverName,

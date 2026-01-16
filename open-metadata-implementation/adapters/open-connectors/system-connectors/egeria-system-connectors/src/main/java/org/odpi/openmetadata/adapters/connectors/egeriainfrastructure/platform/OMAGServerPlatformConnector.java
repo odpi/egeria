@@ -183,7 +183,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
 
     public ConnectorType getConnectorType(String connectorProviderClassName) throws InvalidParameterException,
@@ -202,7 +202,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAccessServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -219,7 +219,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getEngineServices() throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -236,7 +236,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getViewServices() throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -253,7 +253,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<RegisteredOMAGService> getAllServices() throws InvalidParameterException,
                                                                UserNotAuthorizedException,

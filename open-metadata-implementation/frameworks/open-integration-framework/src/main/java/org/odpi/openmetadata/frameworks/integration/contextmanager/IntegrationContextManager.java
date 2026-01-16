@@ -136,7 +136,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      *
      * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
      * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     * @throws PropertyServerException a problem in the remote server running the partner OMAS
      */
     protected String setUpMetadataSource(String metadataSourceQualifiedName,
                                          String connectorId,

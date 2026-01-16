@@ -65,7 +65,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse setUpValidMetadataValue(String             serverName,
                                                 String             urlMarker,
@@ -128,7 +128,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse setUpValidMetadataMapName(String             serverName,
                                                   String             urlMarker,
@@ -192,7 +192,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse setUpValidMetadataMapValue(String             serverName,
                                                    String             urlMarker,
@@ -254,7 +254,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse clearValidMetadataValue(String                   serverName,
                                                 String                   urlMarker,
@@ -309,7 +309,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse clearValidMetadataMapName(String                   serverName,
                                                   String                   urlMarker,
@@ -365,7 +365,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse clearValidMetadataMapValue(String                   serverName,
                                                    String                   urlMarker,
@@ -421,7 +421,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public BooleanResponse validateMetadataValue(String serverName,
                                                  String urlMarker,
@@ -473,7 +473,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public BooleanResponse validateMetadataMapName(String serverName,
                                                    String urlMarker,
@@ -526,7 +526,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public BooleanResponse validateMetadataMapValue(String serverName,
                                                     String urlMarker,
@@ -580,7 +580,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueResponse getValidMetadataValue(String serverName,
                                                             String urlMarker,
@@ -632,7 +632,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueResponse getValidMetadataMapName(String serverName,
                                                               String urlMarker,
@@ -685,7 +685,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return specific valid value definition or none if there is no definition stored or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueResponse getValidMetadataMapValue(String serverName,
                                                                String urlMarker,
@@ -740,7 +740,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return list of valid values defined for the property or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueListResponse getValidMetadataValues(String serverName,
                                                                  String urlMarker,
@@ -797,7 +797,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return list of valid values defined for the property or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueListResponse getConsistentMetadataValues(String serverName,
                                                                       String urlMarker,
@@ -861,7 +861,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  the property name is null or not known.
      * UserNotAuthorizedException the service is not able to create/access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse setConsistentMetadataValues(String          serverName,
@@ -923,7 +923,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGalleryResponse getAllTypes(String serverName,
@@ -973,7 +973,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getTypeDefsByCategory(String                      serverName,
@@ -1019,7 +1019,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the typeName is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getSubTypes(String serverName,
@@ -1064,7 +1064,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getValidRelationshipTypes(String serverName,
@@ -1178,7 +1178,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getValidClassificationTypes(String serverName,
@@ -1261,7 +1261,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1350,7 +1350,7 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @return elementGUID for new specification property object or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
+     * PropertyServerException - a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -1406,7 +1406,7 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
+     * PropertyServerException - a problem updating the element properties in
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -1454,7 +1454,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @param requestBody optional effective time
      * @return specification property properties or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  PropertyServerException a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementResponse getSpecificationPropertyByGUID(String         serverName,
@@ -1503,7 +1503,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSpecificationPropertiesByName(String            serverName,
                                                                              String            urlMarker,
@@ -1560,7 +1560,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSpecificationPropertiesByType(String                  serverName,
                                                                              String                  urlMarker,
@@ -1616,7 +1616,7 @@ public class ValidMetadataRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSpecificationProperties(String                  serverName,
                                                                         String                  urlMarker,

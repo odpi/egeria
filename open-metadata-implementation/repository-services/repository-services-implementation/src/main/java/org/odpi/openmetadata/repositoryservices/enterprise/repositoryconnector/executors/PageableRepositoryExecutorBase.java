@@ -78,7 +78,7 @@ abstract class PageableRepositoryExecutorBase extends CloneableRepositoryExecuto
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.

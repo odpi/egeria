@@ -95,7 +95,7 @@ public class OMRSArchiveManager
      * @param localMetadataCollectionId unique identifier of the local repository
      * @param repositoryContentManager typeDef processor for the local repository
      * @param instanceProcessor  instance processor for the local repository
-     * @throws RepositoryErrorException there is a problem accessing the archive
+     * @throws RepositoryErrorException a problem accessing the archive
      */
     public void setLocalRepository(String                           localMetadataCollectionId,
                                    OMRSRepositoryContentManager     repositoryContentManager,
@@ -126,7 +126,7 @@ public class OMRSArchiveManager
      *
      * @param archiveStore  new open metadata archive to process
      * @param archiveSource source of the archive
-     * @throws RepositoryErrorException there is a problem accessing the archive
+     * @throws RepositoryErrorException a problem accessing the archive
      */
     public void addOpenMetadataArchive(OpenMetadataArchiveStore archiveStore,
                                        String                   archiveSource) throws RepositoryErrorException
@@ -158,7 +158,7 @@ public class OMRSArchiveManager
      * @param archiveSource source of the archive - such as file name
      * @param typeDefProcessor receiver of new TypeDefs
      * @param instanceProcessor receiver of new instances
-     * @throws RepositoryErrorException there is a problem accessing the archive
+     * @throws RepositoryErrorException a problem accessing the archive
      */
     private void processOpenMetadataArchiveStore(OpenMetadataArchiveStore             archiveStore,
                                                  String                               archiveSource,

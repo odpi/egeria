@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class ContextEventHandler extends OpenMetadataHandlerBase
     /**
      * Create a new context event.
      *
-     * @param userId                       userId of user making request.
+     * @param userId    calling user
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties                   properties for the new element.
@@ -77,6 +78,294 @@ public class ContextEventHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create a new context event
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier for the context event's anchor element
+     * @param parentContextEvents which context events should be linked as parents (guid->relationship properties)
+     * @param childContextEvents which context events should be linked as children (guid->relationship properties)
+     * @param relatedContextEvents which context events should be linked as related (guid->relationship properties)
+     * @param impactedElements which elements are impacted by this context event (guid->relationship properties)
+     * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->relationship properties)
+     * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs)
+     * @param contextEventProperties properties for the context event itself
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @return guid of the new context event
+     * @throws InvalidParameterException one of the properties are invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    public String registerContextEvent(String                                       userId,
+                                       String                                       anchorGUID,
+                                       Map<String, ClassificationProperties>        initialClassifications,
+                                       ContextEventProperties                       contextEventProperties,
+                                       Map<String, DependentContextEventProperties> parentContextEvents,
+                                       Map<String, DependentContextEventProperties> childContextEvents,
+                                       Map<String, RelatedContextEventProperties>   relatedContextEvents,
+                                       Map<String, ContextEventImpactProperties>    impactedElements,
+                                       Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
+                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        final String methodName = "registerContextEvent";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        /*
+         * The qualified name is needed.
+         */
+        if (contextEventProperties == null)
+        {
+            propertyHelper.validateMandatoryName(null, qualifiedNameParameterName, methodName);
+            // not reached
+            return null;
+        }
+        else
+        {
+            propertyHelper.validateMandatoryName(contextEventProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+            /*
+             * Set up the API options
+             */
+            MakeAnchorOptions metadataSourceOptions = new MakeAnchorOptions();
+            metadataSourceOptions.setEffectiveTime(new Date());
+            metadataSourceOptions.setForLineage(true);
+            metadataSourceOptions.setMakeAnchor(false);
+
+            /*
+             * Create the to do entity
+             */
+            ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            contextEventProperties.getQualifiedName());
+
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, contextEventProperties.getDisplayName());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, contextEventProperties.getDescription());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.CATEGORY.name, contextEventProperties.getCategory());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.EVENT_EFFECT.name, contextEventProperties.getEventEffect());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_START_DATE.name, contextEventProperties.getPlannedStartDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_START_DATE.name, contextEventProperties.getActualStartDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_COMPLETION_DATE.name, contextEventProperties.getPlannedCompletionDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name, contextEventProperties.getActualCompletionDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_FROM.name, contextEventProperties.getReferenceEffectiveFrom());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_TO.name, contextEventProperties.getReferenceEffectiveTo());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.PLANNED_DURATION.name, contextEventProperties.getPlannedDuration());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.ACTUAL_DURATION.name, contextEventProperties.getActualDuration());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.REPEAT_INTERVAL.name, contextEventProperties.getRepeatInterval());
+            properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, contextEventProperties.getAdditionalProperties());
+
+            NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+            newElementOptions.setAnchorGUID(anchorGUID);
+            newElementOptions.setIsOwnAnchor((anchorGUID == null));
+
+            NewElementProperties newElementProperties = new NewElementProperties(properties);
+            newElementProperties.setEffectiveFrom(contextEventProperties.getEffectiveFrom());
+            newElementProperties.setEffectiveTo(contextEventProperties.getEffectiveTo());
+
+            String contextEventGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                                      OpenMetadataType.CONTEXT_EVENT.typeName,
+                                                                                      newElementOptions,
+                                                                                      classificationBuilder.getInitialClassifications(initialClassifications),
+                                                                                      newElementProperties,
+                                                                                      null);
+
+            if (contextEventGUID != null)
+            {
+                if (parentContextEvents != null)
+                {
+                    for (String guid : parentContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            DependentContextEventProperties suppliedRelationshipProperties = parentContextEvents.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
+
+                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
+                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                relationshipProperties);
+                            }
+                            else
+                            {
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                null);
+                            }
+                        }
+                    }
+                }
+
+                if (childContextEvents != null)
+                {
+                    for (String guid : childContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            DependentContextEventProperties suppliedRelationshipProperties = childContextEvents.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
+
+                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
+                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                contextEventGUID,
+                                                                                guid,
+                                                                                metadataSourceOptions,
+                                                                                relationshipProperties);
+                            }
+                            else
+                            {
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                contextEventGUID,
+                                                                                guid,
+                                                                                metadataSourceOptions,
+                                                                                null);
+                            }
+                        }
+                    }
+                }
+
+                if (relatedContextEvents != null)
+                {
+                    for (String guid : relatedContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelatedContextEventProperties suppliedRelationshipProperties = relatedContextEvents.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
+
+                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
+                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                relationshipProperties);
+                            }
+                            else
+                            {
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                null);
+                            }
+                        }
+                    }
+                }
+
+                if (impactedElements != null)
+                {
+                    for (String guid : impactedElements.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            ContextEventImpactProperties suppliedRelationshipProperties = impactedElements.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
+
+                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
+                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                relationshipProperties);
+                            }
+                            else
+                            {
+                                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                                OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
+                                                                                guid,
+                                                                                contextEventGUID,
+                                                                                metadataSourceOptions,
+                                                                                null);
+                            }
+                        }
+                    }
+                }
+
+                if (effectedDataResourceGUIDs != null)
+                {
+                    for (String guid : effectedDataResourceGUIDs.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelationshipProperties suppliedRelationshipProperties = effectedDataResourceGUIDs.get(guid);
+
+                            NewElementProperties relationshipProperties = relationshipBuilder.getNewElementProperties(suppliedRelationshipProperties);
+                            relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                            relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                            openMetadataClient.createRelatedElementsInStore(userId,
+                                                                            OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName,
+                                                                            guid,
+                                                                            contextEventGUID,
+                                                                            metadataSourceOptions,
+                                                                            relationshipProperties);
+                        }
+                    }
+                }
+
+                if (contextEventEvidenceGUIDs != null)
+                {
+                    for (String guid : contextEventEvidenceGUIDs.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelationshipProperties suppliedRelationshipProperties = contextEventEvidenceGUIDs.get(guid);
+
+                            NewElementProperties relationshipProperties = relationshipBuilder.getNewElementProperties(suppliedRelationshipProperties);
+                            relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
+                            relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
+
+                            openMetadataClient.createRelatedElementsInStore(userId,
+                                                                            OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName,
+                                                                            contextEventGUID,
+                                                                            guid,
+                                                                            metadataSourceOptions,
+                                                                            relationshipProperties);
+                        }
+                    }
+                }
+            }
+
+            return contextEventGUID;
+        }
+    }
+
+
+    /**
      * Create a new metadata element to represent a context event using an existing  element as a template.
      * The template defines additional classifications and relationships that should be added to the new context event.
      *
@@ -92,7 +381,7 @@ public class ContextEventHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createContextEventFromTemplate(String                 userId,
                                                  TemplateOptions        templateOptions,
@@ -586,7 +875,7 @@ public class ContextEventHandler extends OpenMetadataHandlerBase
      * @param searchOptions multiple options to control the query
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findContextEvents(String        userId,
                                                            String        searchString,

@@ -95,7 +95,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/from-template
 Authorization: Bearer {{token}}
@@ -217,7 +217,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
 Authorization: Bearer {{token}}
@@ -255,7 +255,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
 Authorization: Bearer {{token}}
@@ -297,7 +297,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -800,7 +800,7 @@ Content-Type: application/json
 # @return  void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{infrastructureAssetGUID}}/deployed-on/{{destinationGUID}}/attach
 Authorization: Bearer {{token}}
@@ -837,7 +837,7 @@ Content-Type: application/json
 # @return void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{infrastructureAssetGUID}}/deployed-on/{{destinationGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -864,7 +864,7 @@ Content-Type: application/json
 # @return  void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{infrastructureAssetGUID}}/supported-software-capabilities/{{capabilityGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -900,7 +900,7 @@ Content-Type: application/json
 # @return void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{infrastructureAssetGUID}}/supported-software-capabilities/{{capabilityGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1007,7 +1007,7 @@ Content-Type: application/json
 # @return  void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-sets/{{dataSetGUID}}/data-set-content/{{dataContentAssetGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1043,7 +1043,7 @@ Content-Type: application/json
 # @return void or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
-# PropertyServerException    there is a problem reported in the open metadata server(s)
+# PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-sets/{{dataSetGUID}}/data-set-content/{{dataContentAssetGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json

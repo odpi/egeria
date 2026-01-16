@@ -57,7 +57,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-actions/{governanceActionGUID}/action-targets/{elementGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -88,7 +88,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-actions/{governanceActionGUID}/action-targets/{elementGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -118,7 +118,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-types/{governanceActionTypeGUID}/governance-engine-executor/{governanceEngineGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -148,7 +148,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-types/{governanceActionTypeGUID}/governance-engine-executor/{governanceEngineGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -179,7 +179,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{processStepGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -209,7 +209,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{firstProcessStepGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -240,7 +240,7 @@ public class  ActionAuthorResource
      * @return unique identifier of the new link or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-process-steps/{currentProcessStepGUID}/next-process-steps/{nextProcessStepGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -270,7 +270,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-process-steps/next-process-steps/{nextProcessStepLinkGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -298,7 +298,7 @@ public class  ActionAuthorResource
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to issue this request or
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-action-process-steps/next-process-step/{relationshipGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")

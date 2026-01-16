@@ -84,7 +84,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param methodName calling method
      * @return unique identifier of the new bean
      * @throws InvalidParameterException one of the parameters is invalid
-     * @throws PropertyServerException there is a problem in the repository services
+     * @throws PropertyServerException a problem in the repository services
      * @throws UserNotAuthorizedException the user is not authorized to access one of the elements.
      */
     public String createBeanFromTemplate(String                        userId,
@@ -249,7 +249,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      *
      * @return current progress of the template replication
      * @throws InvalidParameterException one of the parameters is invalid
-     * @throws PropertyServerException there is a problem in the repository services
+     * @throws PropertyServerException a problem in the repository services
      * @throws UserNotAuthorizedException the user is not authorized to access one of the elements.
      */
     @SuppressWarnings(value = "unused")

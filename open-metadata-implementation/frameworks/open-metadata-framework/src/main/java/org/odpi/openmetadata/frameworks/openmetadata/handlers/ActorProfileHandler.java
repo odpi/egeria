@@ -131,7 +131,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createActorProfileFromTemplate(String                 userId,
                                                  TemplateOptions        templateOptions,
@@ -656,7 +656,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findActorProfiles(String        userId,
                                                            String        searchString,

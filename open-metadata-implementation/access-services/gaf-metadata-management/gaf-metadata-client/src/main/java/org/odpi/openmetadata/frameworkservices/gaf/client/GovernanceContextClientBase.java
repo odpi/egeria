@@ -50,7 +50,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @param maxPageSize           pre-initialized parameter limit
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public GovernanceContextClientBase(String   serverName,
@@ -249,7 +249,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public void updateActionTargetStatus(String             userId,
@@ -297,7 +297,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public void recordCompletionStatus(String                userId,

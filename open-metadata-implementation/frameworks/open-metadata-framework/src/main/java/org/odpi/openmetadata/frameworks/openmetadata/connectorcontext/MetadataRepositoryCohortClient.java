@@ -103,7 +103,7 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createMetadataRepositoryCohortFromTemplate(TemplateOptions        templateOptions,
                                                              String                 templateGUID,
@@ -263,7 +263,7 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findMetadataRepositoryCohorts(String        searchString,
                                                                        SearchOptions searchOptions) throws InvalidParameterException,

@@ -148,7 +148,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      *
      * @return OMRSAuditLogReport report containing audit log
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public List<AuditLogRecordSeverity> getSeverityList() throws InvalidParameterException,
@@ -192,7 +192,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      *
      * @return OMRSAuditLogReport report containing audit log
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public OMRSAuditLogReport getAuditLogReport() throws InvalidParameterException,

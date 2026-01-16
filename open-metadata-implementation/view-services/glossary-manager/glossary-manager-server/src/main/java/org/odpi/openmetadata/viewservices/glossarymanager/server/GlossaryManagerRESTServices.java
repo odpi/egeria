@@ -66,7 +66,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsTaxonomy(String                    serverName,
                                               String                    glossaryGUID,
@@ -130,7 +130,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsTaxonomy(String                    serverName,
                                                 String                    glossaryGUID,
@@ -179,7 +179,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsCanonical(String                    serverName,
                                                String                    glossaryGUID,
@@ -243,7 +243,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsCanonical(String                    serverName,
                                                  String                    glossaryGUID,
@@ -402,7 +402,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryTerm(String              serverName,
                                            NewElementRequestBody requestBody)
@@ -466,7 +466,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryTermFromTemplate(String              serverName,
                                                        String              templateGUID,
@@ -524,7 +524,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public BooleanResponse updateGlossaryTerm(String                         serverName,
                                               String                    glossaryTermGUID,
@@ -586,7 +586,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossaryTermFromTemplate(String                        serverName,
                                                        String                        glossaryTermGUID,
@@ -641,7 +641,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse moveGlossaryTerm(String                        serverName,
                                          String                        glossaryTermGUID,
@@ -736,7 +736,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setupTermRelationship(String                  serverName,
                                               String                  glossaryTermOneGUID,
@@ -805,7 +805,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse updateTermRelationship(String                        serverName,
                                                String                        glossaryTermOneGUID,
@@ -875,7 +875,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermRelationship(String                        serverName,
                                               String                        glossaryTermOneGUID,
@@ -928,7 +928,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsAbstractConcept(String                    serverName,
                                                  String                    glossaryTermGUID,
@@ -992,7 +992,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsAbstractConcept(String                    serverName,
                                                    String                    glossaryTermGUID,
@@ -1038,7 +1038,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsDataValue(String                    serverName,
                                            String                    glossaryTermGUID,
@@ -1102,7 +1102,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsDataValue(String                    serverName,
                                              String                    glossaryTermGUID,
@@ -1148,7 +1148,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsActivity(String                    serverName,
                                           String                    glossaryTermGUID,
@@ -1212,7 +1212,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsActivity(String                    serverName,
                                             String                    glossaryTermGUID,
@@ -1258,7 +1258,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsContext(String                    serverName,
                                          String                    glossaryTermGUID,
@@ -1322,7 +1322,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsContext(String                    serverName,
                                            String                    glossaryTermGUID,
@@ -1369,7 +1369,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse deleteGlossaryTerm(String                   serverName,
                                            String                   glossaryTermGUID,
@@ -1417,7 +1417,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findGlossaryTerms(String                  serverName,
                                                               SearchStringRequestBody requestBody)
@@ -1472,7 +1472,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse   getGlossaryTermsByName(String            serverName,
                                                                      FilterRequestBody requestBody)
@@ -1524,7 +1524,7 @@ public class GlossaryManagerRESTServices extends TokenController
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getGlossaryTermByGUID(String             serverName,
                                                                  String             guid,

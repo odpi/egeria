@@ -98,7 +98,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      * @throws UserNotAuthorizedException the connector was disconnected so stop refresh processing
      */
     public void refresh() throws ConnectorCheckedException, UserNotAuthorizedException
@@ -124,7 +124,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     /**
      * Ensure that the metadata collection identifiers are properly set up.
      *
-     * @throws ConnectorCheckedException there is a problem retrieving the server definitions.
+     * @throws ConnectorCheckedException a problem retrieving the server definitions.
      */
     protected void setUpMetadataSource() throws ConnectorCheckedException
     {
@@ -317,7 +317,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     /**
      * Ensure that the named software capability type is properly set up.
      *
-     * @throws ConnectorCheckedException there is a problem retrieving the server definitions.
+     * @throws ConnectorCheckedException a problem retrieving the server definitions.
      */
     protected String setUpSoftwareCapability(String softwareCapabilityTypeName) throws ConnectorCheckedException
     {

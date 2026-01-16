@@ -103,30 +103,6 @@ public interface ProductDefinition
 
 
     /**
-     * Return the project manager for the product.
-     *
-     * @return description of the product manager
-     */
-    ProductRoleDefinition getProductManager();
-
-
-    /**
-     * Return the project developer for the product.
-     *
-     * @return description of the product developer
-     */
-    ProductRoleDefinition getProductDeveloper();
-
-
-    /**
-     * Return the project support for the product.
-     *
-     * @return description of the product support
-     */
-    ProductRoleDefinition getProductSupport();
-
-
-    /**
      * Return the list of subscription types supported by this product.
      *
      * @return list

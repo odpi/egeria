@@ -294,7 +294,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ServerStatus getServerStatus() throws InvalidParameterException,
                                                  UserNotAuthorizedException,
@@ -345,7 +345,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getActiveServices() throws InvalidParameterException,
                                                    UserNotAuthorizedException,
@@ -366,7 +366,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      *
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean connectToCohort(String cohortName) throws InvalidParameterException,
@@ -384,7 +384,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
@@ -401,7 +401,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,

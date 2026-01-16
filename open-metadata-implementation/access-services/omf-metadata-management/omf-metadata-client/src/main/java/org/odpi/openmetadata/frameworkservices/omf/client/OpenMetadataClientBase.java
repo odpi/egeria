@@ -15,16 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -65,7 +56,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenMetadataClientBase(String   serverName,
@@ -97,7 +88,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenMetadataClientBase(String                             serverName,
@@ -148,7 +139,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDefGallery  List of different categories of type definitions.
      *
      * @throws InvalidParameterException  the userId is null
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -189,7 +180,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -236,7 +227,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return AttributeTypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -274,7 +265,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * describing the TypeDef's category and properties.
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -313,7 +304,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * has no known subtypes
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -349,7 +340,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -386,7 +377,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -423,7 +414,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -460,7 +451,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -498,7 +489,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public OpenMetadataElement getMetadataElementByGUID(String     userId,
@@ -539,7 +530,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public OpenMetadataElement getMetadataElementByUniqueName(String     userId,
@@ -592,7 +583,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public String getMetadataElementGUIDByUniqueName(String     userId,
@@ -663,7 +654,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
@@ -715,7 +706,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException  the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public AnchorSearchMatches findElementsForAnchor(String       userId,
@@ -765,7 +756,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public List<AnchorSearchMatches> findElementsInAnchorDomain(String        userId,
@@ -814,7 +805,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public List<AnchorSearchMatches> findElementsInAnchorScope(String        userId,
@@ -862,7 +853,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public   RelatedMetadataElementList getRelatedMetadataElements(String       userId,
@@ -923,7 +914,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public OpenMetadataElementGraph getAnchoredElementsGraph(String       userId,
@@ -966,7 +957,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store or multiple relationships have been returned
+     * @throws PropertyServerException    a problem accessing the metadata store or multiple relationships have been returned
      */
     @Override
     public RelatedMetadataElement getRelatedMetadataElement(String     userId,
@@ -1034,7 +1025,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  List<OpenMetadataElement> getMetadataElementHistory(String                 userId,
@@ -1073,7 +1064,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  List<AttachedClassification> getClassificationHistory(String                 userId,
@@ -1114,7 +1105,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public   OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
@@ -1176,7 +1167,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public List<OpenMetadataElement> findMetadataElements(String                userId,
@@ -1219,7 +1210,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
@@ -1259,7 +1250,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return relationship properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public OpenMetadataRelationship getRelationshipByGUID(String     userId,
@@ -1298,7 +1289,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  OpenMetadataRelationshipList getRelationshipHistory(String                 userId,
@@ -1343,7 +1334,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createMetadataElementInStore(String                            userId,
@@ -1404,7 +1395,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createMetadataElementFromTemplate(String               userId,
@@ -1463,7 +1454,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public boolean updateMetadataElementInStore(String            userId,
@@ -1504,7 +1495,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void publishMetadataElement(String                userId,
@@ -1538,7 +1529,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void withdrawMetadataElement(String                userId,
@@ -1576,7 +1567,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void updateMetadataElementEffectivityInStore(String                userId,
@@ -1617,7 +1608,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void deleteMetadataElementInStore(String        userId,
@@ -1653,7 +1644,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public void archiveMetadataElementInStore(String                userId,
@@ -1701,7 +1692,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                    valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void classifyMetadataElementInStore(String                userId,
@@ -1747,7 +1738,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                    valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void reclassifyMetadataElementInStore(String            userId,
@@ -1794,7 +1785,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void updateClassificationEffectivityInStore(String                userId,
@@ -1840,7 +1831,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public void declassifyMetadataElementInStore(String                userId,
@@ -1888,7 +1879,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws InvalidParameterException  the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public String createRelatedElementsInStore(String                userId,
@@ -1939,7 +1930,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public void updateRelationshipInStore(String            userId,
@@ -1982,7 +1973,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public void updateRelatedElementsInStore(String            userId,
@@ -2043,7 +2034,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public  void updateRelationshipEffectivityInStore(String                userId,
@@ -2084,7 +2075,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public void deleteRelationshipInStore(String        userId,
@@ -2123,7 +2114,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public void detachRelatedElementsInStore(String        userId,
@@ -2171,742 +2162,21 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
-     * Create an incident report to capture the situation detected by the caller.
-     * This incident report will be processed by other governance activities.
-     *
-     * @param userId caller's userId
-     * @param properties unique identifier to give this new incident report and description of the situation
-     * @param impactedResources details of the resources impacted by this situation
-     * @param previousIncidents links to previous incident reports covering this situation
-     * @param originatorGUID the unique identifier of the person or process that created the incident
-     *
-     * @return unique identifier of the resulting incident report
-     * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public  String createIncidentReport(String                                  userId,
-                                        IncidentReportProperties                properties,
-                                        Map<String, ImpactedResourceProperties> impactedResources,
-                                        Map<String, ReportDependencyProperties> previousIncidents,
-                                        String                                  originatorGUID) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
-    {
-        final String methodName = "createIncidentReport";
-        final String propertiesParameterName = "properties";
-        final String originatorParameterName = "originatorGUID";
-        final String qualifiedNameParameterName = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(originatorGUID, originatorParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        /*
-         * Set up the API options
-         */
-        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
-        makeAnchorOptions.setEffectiveTime(new Date());
-        makeAnchorOptions.setForLineage(true);
-        makeAnchorOptions.setMakeAnchor(false);
-
-
-        /*
-         * Create the incident report entity
-         */
-        ElementProperties elementProperties = elementBuilder.getElementProperties(properties);
-
-        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
-
-        newElementOptions.setIsOwnAnchor(true);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentGUID(originatorGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORT_ORIGINATOR.typeName);
-
-        String incidentReportGUID = this.createMetadataElementInStore(userId,
-                                                                      OpenMetadataType.INCIDENT_REPORT.typeName,
-                                                                      newElementOptions,
-                                                                      null,
-                                                                      new NewElementProperties(elementProperties),
-                                                                      null);
-
-        if (incidentReportGUID != null)
-        {
-            if (impactedResources != null)
-            {
-                for (String resourceGUID : impactedResources.keySet())
-                {
-                    if (resourceGUID != null)
-                    {
-                        ImpactedResourceProperties relationshipProperties = impactedResources.get(resourceGUID);
-
-                        this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
-                                                          resourceGUID,
-                                                          incidentReportGUID,
-                                                          makeAnchorOptions,
-                                                          new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
-                    }
-                }
-            }
-
-            if (previousIncidents != null)
-            {
-                for (String previousIncidentGUID : previousIncidents.keySet())
-                {
-                    if (previousIncidentGUID != null)
-                    {
-                        ReportDependencyProperties relationshipProperties = previousIncidents.get(previousIncidentGUID);
-
-                        this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                          previousIncidentGUID,
-                                                          incidentReportGUID,
-                                                          makeAnchorOptions,
-                                                          new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
-                    }
-                }
-            }
-        }
-
-        return incidentReportGUID;
-    }
-
-
-    /**
-     * Create an action request for someone to work on.
-     *
-     * @param userId caller's userId
-     * @param openMetadataTypeName type of action to create
-     * @param properties properties of the action
-     * @param actionSourceGUID unique identifier of the source of the action
-     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
-     * @param assignToGUID unique identifier of the Actor element for the recipient
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @return unique identifier of new action element
-     *
-     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    @Override
-    public String createActorAction(String                userId,
-                                    String                openMetadataTypeName,
-                                    NewElementProperties  properties,
-                                    String                actionSourceGUID,
-                                    List<String>          actionCauseGUIDs,
-                                    String                assignToGUID,
-                                    List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        return this.createAction(userId,
-                                 openMetadataTypeName,
-                                 properties,
-                                 actionSourceGUID,
-                                 actionCauseGUIDs,
-                                 assignToGUID,
-                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                 actionTargets);
-    }
-
-
-    /**
-     * Create an entry in a note log.
-     *
-     * @param userId caller's userId
-     * @param openMetadataTypeName type of action to create
-     * @param properties properties of the action
-     * @param actionSourceGUID unique identifier of the source of the action
-     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
-     * @param noteLogGUID unique identifier of the note log
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @return unique identifier of new action element
-     *
-     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    @Override
-    public String createNoteLogEntry(String                userId,
-                                     String                openMetadataTypeName,
-                                     NewElementProperties  properties,
-                                     String                actionSourceGUID,
-                                     List<String>          actionCauseGUIDs,
-                                     String                noteLogGUID,
-                                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        return this.createAction(userId,
-                                 openMetadataTypeName,
-                                 properties,
-                                 actionSourceGUID,
-                                 actionCauseGUIDs,
-                                 noteLogGUID,
-                                 OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
-                                 actionTargets);
-    }
-
-
-
-    /**
-     * Create an action request for someone to work on.
-     *
-     * @param userId caller's userId
-     * @param openMetadataTypeName type of action to create
-     * @param properties properties of the action
-     * @param actionSourceGUID unique identifier of the source of the action
-     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
-     * @param assignToGUID unique identifier of the Actor element for the recipient
-     * @param assignToRelationshipTypeName typeName of the relationship
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @return unique identifier of new action element
-     *
-     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    private String createAction(String                userId,
-                                String                openMetadataTypeName,
-                                NewElementProperties  properties,
-                                String                actionSourceGUID,
-                                List<String>          actionCauseGUIDs,
-                                String                assignToGUID,
-                                String                assignToRelationshipTypeName,
-                                List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        final String methodName = "createAction";
-        final String propertiesParameterName = "properties";
-
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
-
-        /*
-         * Set up the API options
-         */
-        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
-        makeAnchorOptions.setEffectiveTime(new Date());
-        makeAnchorOptions.setForLineage(true);
-        makeAnchorOptions.setMakeAnchor(false);
-
-        /*
-         * Create the action entity
-         */
-
-        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
-
-        if (actionSourceGUID != null)
-        {
-            newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorGUID(actionSourceGUID);
-            newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(actionSourceGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
-        }
-        else
-        {
-            newElementOptions.setIsOwnAnchor(true);
-        }
-
-        String actionGUID = this.createMetadataElementInStore(userId,
-                                                              openMetadataTypeName,
-                                                              newElementOptions,
-                                                              null,
-                                                              properties,
-                                                              null);
-
-        if (actionGUID != null)
-        {
-            if (actionTargets != null)
-            {
-                /*
-                 * Link the action to the items to work on
-                 */
-                for (NewActionTarget actionTarget : actionTargets)
-                {
-                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
-                    {
-                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
-                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                                                                    actionTarget.getActionTargetName());
-
-                        this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                          actionGUID,
-                                                          actionTarget.getActionTargetGUID(),
-                                                          makeAnchorOptions,
-                                                          new NewElementProperties(relationshipProperties));
-                    }
-                }
-            }
-
-            if (assignToGUID != null)
-            {
-                /*
-                 * Link the action and the person assigned to complete the work
-                 */
-                this.createRelatedElementsInStore(userId,
-                                                  assignToRelationshipTypeName,
-                                                  assignToGUID,
-                                                  actionGUID,
-                                                  makeAnchorOptions,
-                                                  new NewElementProperties(propertyHelper.addStringProperty(null,
-                                                                                                            OpenMetadataProperty.ASSIGNMENT_TYPE.name,
-                                                                                                            AssignmentType.CONTRIBUTOR.getName())));
-            }
-
-            if (actionCauseGUIDs != null)
-            {
-                for (String actionCauseGUID : actionCauseGUIDs)
-                {
-                    if (actionCauseGUID != null)
-                    {
-                        /*
-                         * Link the action and its cause.
-                         */
-                        this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
-                                                          actionCauseGUID,
-                                                          actionGUID,
-                                                          makeAnchorOptions,
-                                                          null);
-                    }
-                }
-            }
-        }
-
-        return actionGUID;
-    }
-
-
-    /**
-     * Create a "To Do" request for someone to work on.
-     *
-     * @param userId caller's userId
-     * @param properties unique name for the to do plus additional  properties
-     * @param assignToGUID unique identifier of the Actor element for the recipient
-     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
-     * @param originatorGUID unique identifier of the source of the to do
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @return unique identifier of new to do element
-     *
-     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    @Override
-    public String openToDo(String                userId,
-                           ToDoProperties        properties,
-                           String                assignToGUID,
-                           String                sponsorGUID,
-                           String                originatorGUID,
-                           List<NewActionTarget> actionTargets) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        final String methodName                 = "openToDo";
-        final String assignToParameterName      = "assignToGUID";
-        final String propertiesParameterName    = "properties";
-        final String originatorParameterName    = "originatorGUID";
-        final String qualifiedNameParameterName = "qualifiedName";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(originatorGUID, originatorParameterName, methodName);
-        propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
-        propertyHelper.validateMandatoryName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-
-        /*
-         * Set up the API options
-         */
-        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
-        makeAnchorOptions.setEffectiveTime(new Date());
-        makeAnchorOptions.setForLineage(true);
-        makeAnchorOptions.setMakeAnchor(false);
-
-
-        /*
-         * Create the to do entity
-         */
-        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
-
-        newElementOptions.setIsOwnAnchor(true);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentGUID(assignToGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
-
-        String toDoGUID = this.createMetadataElementInStore(userId,
-                                                            OpenMetadataType.TO_DO.typeName,
-                                                            newElementOptions,
-                                                            null,
-                                                            new NewElementProperties(elementBuilder.getElementProperties(properties)),
-                                                            null);
-
-        if (toDoGUID != null)
-        {
-            if (actionTargets != null)
-            {
-                for (NewActionTarget actionTarget : actionTargets)
-                {
-                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
-                    {
-                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
-                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                                                                    actionTarget.getActionTargetName());
-
-                        this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                          toDoGUID,
-                                                          actionTarget.getActionTargetGUID(),
-                                                          makeAnchorOptions,
-                                                          new NewElementProperties(relationshipProperties));
-                    }
-                }
-            }
-
-            if (sponsorGUID != null)
-            {
-                /*
-                 * Link the "to do" and the sponsor
-                 */
-                this.createRelatedElementsInStore(userId,
-                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                  sponsorGUID,
-                                                  toDoGUID,
-                                                  makeAnchorOptions,
-                                                  new NewElementProperties(propertyHelper.addStringProperty(null,
-                                                                                                            OpenMetadataProperty.ASSIGNMENT_TYPE.name,
-                                                                                                            AssignmentType.SPONSOR.getName())));
-            }
-
-            if (originatorGUID != null)
-            {
-                /*
-                 * Link the "to do" and the originator
-                 */
-                this.createRelatedElementsInStore(userId,
-                                                  OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
-                                                  originatorGUID,
-                                                  toDoGUID,
-                                                  makeAnchorOptions,
-                                                  null);
-            }
-        }
-
-        return toDoGUID;
-    }
-
-
-    /**
-     * Create a new context event
-     *
-     * @param userId calling user
-     * @param anchorGUID unique identifier for the context event's anchor element
-     * @param parentContextEvents which context events should be linked as parents (guid->relationship properties)
-     * @param childContextEvents which context events should be linked as children (guid->relationship properties)
-     * @param relatedContextEvents which context events should be linked as related (guid->relationship properties)
-     * @param impactedElements which elements are impacted by this context event (guid->relationship properties)
-     * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->relationship properties)
-     * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs)
-     * @param contextEventProperties properties for the context event itself
-     * @return guid of the new context event
-     * @throws InvalidParameterException one of the properties are invalid
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    @Override
-    public String registerContextEvent(String                                       userId,
-                                       String                                       anchorGUID,
-                                       Map<String, DependentContextEventProperties> parentContextEvents,
-                                       Map<String, DependentContextEventProperties> childContextEvents,
-                                       Map<String, RelatedContextEventProperties>   relatedContextEvents,
-                                       Map<String, ContextEventImpactProperties>    impactedElements,
-                                       Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
-                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs,
-                                       ContextEventProperties                       contextEventProperties) throws InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   PropertyServerException
-    {
-        final String methodName = "registerContextEvent";
-        final String qualifiedNameParameterName = "qualifiedName";
-
-        /*
-         * The qualified name is needed.
-         */
-        if (contextEventProperties == null)
-        {
-            propertyHelper.validateMandatoryName(null, qualifiedNameParameterName, methodName);
-            // not reached
-            return null;
-        }
-        else
-        {
-            propertyHelper.validateMandatoryName(contextEventProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-            /*
-             * Set up the API options
-             */
-            MakeAnchorOptions metadataSourceOptions = new MakeAnchorOptions();
-            metadataSourceOptions.setEffectiveTime(new Date());
-            metadataSourceOptions.setForLineage(true);
-            metadataSourceOptions.setMakeAnchor(false);
-
-            /*
-             * Create the to do entity
-             */
-            ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            contextEventProperties.getQualifiedName());
-
-            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, contextEventProperties.getDisplayName());
-            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, contextEventProperties.getDescription());
-            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.CATEGORY.name, contextEventProperties.getCategory());
-            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.EVENT_EFFECT.name, contextEventProperties.getEventEffect());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_START_DATE.name, contextEventProperties.getPlannedStartDate());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_START_DATE.name, contextEventProperties.getActualStartDate());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_COMPLETION_DATE.name, contextEventProperties.getPlannedCompletionDate());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name, contextEventProperties.getActualCompletionDate());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_FROM.name, contextEventProperties.getReferenceEffectiveFrom());
-            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_TO.name, contextEventProperties.getReferenceEffectiveTo());
-            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.PLANNED_DURATION.name, contextEventProperties.getPlannedDuration());
-            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.ACTUAL_DURATION.name, contextEventProperties.getActualDuration());
-            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.REPEAT_INTERVAL.name, contextEventProperties.getRepeatInterval());
-            properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, contextEventProperties.getAdditionalProperties());
-
-            NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
-            newElementOptions.setAnchorGUID(anchorGUID);
-            newElementOptions.setIsOwnAnchor((anchorGUID == null));
-
-            NewElementProperties newElementProperties = new NewElementProperties(properties);
-            newElementProperties.setEffectiveFrom(contextEventProperties.getEffectiveFrom());
-            newElementProperties.setEffectiveTo(contextEventProperties.getEffectiveTo());
-
-            String contextEventGUID = this.createMetadataElementInStore(userId,
-                                                                        OpenMetadataType.CONTEXT_EVENT.typeName,
-                                                                        newElementOptions,
-                                                                        null,
-                                                                        newElementProperties,
-                                                                        null);
-
-            if (contextEventGUID != null)
-            {
-                if (parentContextEvents != null)
-                {
-                    for (String guid : parentContextEvents.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            DependentContextEventProperties suppliedRelationshipProperties = parentContextEvents.get(guid);
-                            
-                            if (suppliedRelationshipProperties != null)
-                            {
-                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
-
-                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
-                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  relationshipProperties);
-                            }
-                            else
-                            {
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  null);
-                            }
-                        }
-                    }
-                }
-
-                if (childContextEvents != null)
-                {
-                    for (String guid : childContextEvents.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            DependentContextEventProperties suppliedRelationshipProperties = childContextEvents.get(guid);
-
-                            if (suppliedRelationshipProperties != null)
-                            {
-                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
-
-                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
-                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  contextEventGUID,
-                                                                  guid,
-                                                                  metadataSourceOptions,
-                                                                  relationshipProperties);
-                            }
-                            else
-                            {
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  contextEventGUID,
-                                                                  guid,
-                                                                  metadataSourceOptions,
-                                                                  null);
-                            }
-                        }
-                    }
-                }
-
-                if (relatedContextEvents != null)
-                {
-                    for (String guid : relatedContextEvents.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            RelatedContextEventProperties suppliedRelationshipProperties = relatedContextEvents.get(guid);
-
-                            if (suppliedRelationshipProperties != null)
-                            {
-                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
-
-                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
-                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  relationshipProperties);
-                            }
-                            else
-                            {
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  null);
-                            }
-                        }
-                    }
-                }
-
-                if (impactedElements != null)
-                {
-                    for (String guid : impactedElements.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            ContextEventImpactProperties suppliedRelationshipProperties = impactedElements.get(guid);
-
-                            if (suppliedRelationshipProperties != null)
-                            {
-                                ElementProperties elementProperties = relationshipBuilder.getElementProperties(suppliedRelationshipProperties);
-
-                                NewElementProperties relationshipProperties = new NewElementProperties(elementProperties);
-                                relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                                relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  relationshipProperties);
-                            }
-                            else
-                            {
-                                this.createRelatedElementsInStore(userId,
-                                                                  OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
-                                                                  guid,
-                                                                  contextEventGUID,
-                                                                  metadataSourceOptions,
-                                                                  null);
-                            }
-                        }
-                    }
-                }
-
-                if (effectedDataResourceGUIDs != null)
-                {
-                    for (String guid : effectedDataResourceGUIDs.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            RelationshipProperties suppliedRelationshipProperties = effectedDataResourceGUIDs.get(guid);
-
-                            NewElementProperties relationshipProperties = relationshipBuilder.getNewElementProperties(suppliedRelationshipProperties);
-                            relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                            relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                            this.createRelatedElementsInStore(userId,
-                                                              OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName,
-                                                              guid,
-                                                              contextEventGUID,
-                                                              metadataSourceOptions,
-                                                              relationshipProperties);
-                        }
-                    }
-                }
-
-                if (contextEventEvidenceGUIDs != null)
-                {
-                    for (String guid : contextEventEvidenceGUIDs.keySet())
-                    {
-                        if (guid != null)
-                        {
-                            RelationshipProperties suppliedRelationshipProperties = contextEventEvidenceGUIDs.get(guid);
-
-                            NewElementProperties relationshipProperties = relationshipBuilder.getNewElementProperties(suppliedRelationshipProperties);
-                            relationshipProperties.setEffectiveFrom(suppliedRelationshipProperties.getEffectiveFrom());
-                            relationshipProperties.setEffectiveTo(suppliedRelationshipProperties.getEffectiveTo());
-
-                            this.createRelatedElementsInStore(userId,
-                                                              OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName,
-                                                              contextEventGUID,
-                                                              guid,
-                                                              metadataSourceOptions,
-                                                              relationshipProperties);
-                        }
-                    }
-                }
-            }
-
-            return contextEventGUID;
-        }
-    }
-
-
-    /**
      * Create or update the translation for a particular language/locale for a metadata element.
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier of the element that this translation is related to
+     * @param initialClassifications    map of classifications to add to the new action
      * @param translationDetail properties of the translation
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public void setTranslation(String            userId,
                                String            elementGUID,
+                               Map<String, ClassificationProperties> initialClassifications,
                                TranslationDetailProperties translationDetail) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -2939,7 +2209,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the language is null or not known or not unique (add locale)
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public void clearTranslation(String userId,
@@ -2981,7 +2251,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public TranslationDetailProperties getTranslation(String userId,
@@ -3024,7 +2294,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @throws InvalidParameterException  the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the service is not able to access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public List<TranslationDetailProperties> getTranslations(String userId,
@@ -3069,6 +2339,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization issue
      */
+    @Override
     public Map<String, List<SpecificationProperty>> getSpecification(String userId,
                                                                      String elementGUID) throws InvalidParameterException,
                                                                                                 PropertyServerException,

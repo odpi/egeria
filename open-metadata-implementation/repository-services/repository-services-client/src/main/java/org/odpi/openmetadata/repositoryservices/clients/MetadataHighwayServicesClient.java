@@ -143,7 +143,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      *
      * @return List of CohortDescription object describing cohorts
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public List<CohortDescription> getCohortDescriptions() throws InvalidParameterException,
@@ -189,7 +189,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param cohortName the name of the cohort
      * @return MemberRegistration local registration
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
 
@@ -243,7 +243,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      *
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean connectToCohort(String cohortName) throws InvalidParameterException,
@@ -291,7 +291,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param cohortName the name of the cohort
      * @return MemberRegistration local registration
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public List<MemberRegistration> getRemoteRegistrations(String cohortName) throws InvalidParameterException,
@@ -340,7 +340,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
@@ -388,7 +388,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
     public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,

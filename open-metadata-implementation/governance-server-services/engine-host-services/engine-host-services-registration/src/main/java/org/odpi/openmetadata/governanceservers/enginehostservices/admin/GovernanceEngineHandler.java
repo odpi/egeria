@@ -183,7 +183,7 @@ public abstract class GovernanceEngineHandler
 
         /*
          * Begin by extracting the properties for the governance engine from the metadata server.
-         * This method throws exceptions if there is a problem retrieving the governance engine properties.
+         * This method throws exceptions if a problem retrieving the governance engine properties.
          */
         this.governanceEngineElement = configurationClient.getGovernanceEngineByName(engineUserId, governanceEngineName);
 

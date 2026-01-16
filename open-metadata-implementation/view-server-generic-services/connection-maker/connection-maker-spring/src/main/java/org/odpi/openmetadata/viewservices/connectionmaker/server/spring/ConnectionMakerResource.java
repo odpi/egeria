@@ -83,7 +83,7 @@ public class ConnectionMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -537,7 +537,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -567,7 +567,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -598,7 +598,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/{connectionGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -660,7 +660,7 @@ public class ConnectionMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -756,7 +756,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -788,7 +788,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/by-connector-provider-class-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -818,7 +818,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -849,7 +849,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/{connectorTypeGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -911,7 +911,7 @@ public class ConnectionMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1005,7 +1005,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1036,7 +1036,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-network-address")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1068,7 +1068,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/{infrastructureGUID}/endpoints/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1098,7 +1098,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1129,7 +1129,7 @@ public class ConnectionMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

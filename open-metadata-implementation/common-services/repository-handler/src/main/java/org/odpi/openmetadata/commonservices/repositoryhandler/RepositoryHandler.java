@@ -5489,7 +5489,7 @@ public class RepositoryHandler
      * @return updated relationship
      *
      * @throws InvalidParameterException bad properties
-     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws PropertyServerException a problem communicating with the repository.
      * @throws UserNotAuthorizedException security access problem
      */
     public Relationship updateRelationshipProperties(String             userId,
@@ -5557,7 +5557,7 @@ public class RepositoryHandler
      * @param relationshipProperties new properties for relationship
      * @param methodName name of calling method.
      *
-     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws PropertyServerException a problem communicating with the repository.
      * @throws UserNotAuthorizedException security access problem
      */
 

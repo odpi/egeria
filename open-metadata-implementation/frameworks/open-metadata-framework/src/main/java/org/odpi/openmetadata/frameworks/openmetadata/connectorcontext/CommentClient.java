@@ -67,7 +67,7 @@ public class CommentClient extends ConnectorContextClientBase
      * @return guid of new comment.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addCommentToElement(String                                elementGUID,
@@ -97,7 +97,7 @@ public class CommentClient extends ConnectorContextClientBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateComment(String            commentGUID,
@@ -126,7 +126,7 @@ public class CommentClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupAcceptedAnswer(String            questionCommentGUID,
                                     String            answerCommentGUID,
@@ -150,7 +150,7 @@ public class CommentClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearAcceptedAnswer(String        questionCommentGUID,
                                     String        answerCommentGUID,
@@ -169,7 +169,7 @@ public class CommentClient extends ConnectorContextClientBase
      * @param deleteOptions options for a delete request
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public void deleteComment(String        commentGUID,
@@ -193,7 +193,7 @@ public class CommentClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return comment properties
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElement getCommentByGUID(String     commentGUID,
@@ -213,7 +213,7 @@ public class CommentClient extends ConnectorContextClientBase
      *
      * @return list of comments
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement> getAttachedComments(String       elementGUID,
@@ -234,7 +234,7 @@ public class CommentClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findComments(String        searchString,
                                                       SearchOptions searchOptions) throws InvalidParameterException,

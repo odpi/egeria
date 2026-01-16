@@ -96,7 +96,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/from-template
 Authorization: Bearer {{token}}
@@ -220,7 +220,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/by-name
 Authorization: Bearer {{token}}
@@ -250,7 +250,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/by-search-string
 Authorization: Bearer {{token}}
@@ -284,7 +284,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/retrieve
 Authorization: Bearer {{token}}
@@ -368,7 +368,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/from-template
 Authorization: Bearer {{token}}
@@ -496,7 +496,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/by-name
 Authorization: Bearer {{token}}
@@ -526,7 +526,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/by-search-string
 Authorization: Bearer {{token}}
@@ -560,7 +560,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/retrieve"})
 Authorization: Bearer {{token}}

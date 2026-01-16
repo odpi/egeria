@@ -180,7 +180,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
      * This method performs two sweeps. It first retrieves the glossary elements from Egeria and synchronizes them with Apache Atlas.
      * The second sweep works through the glossaries in Apache Atlas and ensures that none have been missed out by the first sweep.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException
@@ -1520,7 +1520,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
      *
      * @param atlasGlossaryMember element to determine the glossary for
      * @return atlas glossary or null
-     * @throws PropertyServerException there is a problem communicating with Apache Atlas
+     * @throws PropertyServerException a problem communicating with Apache Atlas
      */
     private OpenMetadataRootElement getEgeriaDestinationGlossaryForAtlasEntity(AtlasEntityWithExtInfo atlasGlossaryMember) throws PropertyServerException
     {

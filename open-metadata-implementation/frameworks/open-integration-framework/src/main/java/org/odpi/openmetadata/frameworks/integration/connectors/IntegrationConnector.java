@@ -57,7 +57,7 @@ public interface IntegrationConnector
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     void refresh() throws ConnectorCheckedException, UserNotAuthorizedException;

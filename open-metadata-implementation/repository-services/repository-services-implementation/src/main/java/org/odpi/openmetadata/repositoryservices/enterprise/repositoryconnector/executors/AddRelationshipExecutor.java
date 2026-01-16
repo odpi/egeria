@@ -213,7 +213,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
      *
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws InvalidParameterException   one of the parameters is invalid or null.
-     * @throws RepositoryErrorException    there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException    a problem communicating with the metadata repository where
      *                                     the metadata collection is stored.
      * @throws TypeErrorException          the requested type is not known, or not supported in the metadata repository
      *                                     hosting the metadata collection.
