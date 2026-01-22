@@ -35,7 +35,7 @@ public class ElementSupplementProperties extends ClassificationBeanProperties
      *
      * @param template template object to copy.
      */
-    public ElementSupplementProperties(ClassificationBeanProperties template)
+    public ElementSupplementProperties(ElementSupplementProperties template)
     {
         super(template);
     }

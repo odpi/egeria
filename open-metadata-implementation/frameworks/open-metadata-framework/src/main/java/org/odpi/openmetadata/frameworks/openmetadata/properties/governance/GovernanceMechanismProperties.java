@@ -34,7 +34,7 @@ public class GovernanceMechanismProperties extends SupportingDefinitionPropertie
      *
      * @param template object to copy
      */
-    public GovernanceMechanismProperties(SupportingDefinitionProperties template)
+    public GovernanceMechanismProperties(GovernanceMechanismProperties template)
     {
         super(template);
     }

@@ -33,10 +33,23 @@ public class LogFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
-    public LogFileProperties(DataFileProperties template)
+    public LogFileProperties(LogFileProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public LogFileProperties(DataFileProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.LOG_FILE.typeName;
+    }
+
 
     /**
      * JSON-style toString

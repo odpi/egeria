@@ -36,7 +36,7 @@ public class PortDelegationProperties extends RelationshipBeanProperties
      *
      * @param template template to copy.
      */
-    public PortDelegationProperties(RelationshipBeanProperties template)
+    public PortDelegationProperties(PortDelegationProperties template)
     {
         super(template);
     }

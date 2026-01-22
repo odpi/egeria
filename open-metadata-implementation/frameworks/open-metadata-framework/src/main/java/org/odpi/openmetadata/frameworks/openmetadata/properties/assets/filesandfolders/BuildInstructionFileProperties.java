@@ -34,9 +34,21 @@ public class BuildInstructionFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public BuildInstructionFileProperties(BuildInstructionFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public BuildInstructionFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName;
     }
 
 

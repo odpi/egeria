@@ -35,10 +35,23 @@ public class RecentAccessProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public RecentAccessProperties(CollectionProperties template)
+    public RecentAccessProperties(RecentAccessProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public RecentAccessProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.RECENT_ACCESS_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

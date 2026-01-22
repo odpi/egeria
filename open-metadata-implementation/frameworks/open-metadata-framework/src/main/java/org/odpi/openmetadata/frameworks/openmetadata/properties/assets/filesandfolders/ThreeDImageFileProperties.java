@@ -34,9 +34,22 @@ public class ThreeDImageFileProperties extends MediaFileProperties
      *
      * @param template object to copy
      */
+    public ThreeDImageFileProperties(ThreeDImageFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public ThreeDImageFileProperties(MediaFileProperties template)
     {
         super(template);
+
+        super.typeName = OpenMetadataType.THREE_D_IMAGE_FILE.typeName;
     }
 
 

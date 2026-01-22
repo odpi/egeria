@@ -34,9 +34,21 @@ public class SourceCodeFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public SourceCodeFileProperties(SourceCodeFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public SourceCodeFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SOURCE_CODE_FILE.typeName;
     }
 
 

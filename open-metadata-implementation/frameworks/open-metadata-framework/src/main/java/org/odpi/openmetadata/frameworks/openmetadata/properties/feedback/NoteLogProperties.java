@@ -35,6 +35,17 @@ public class NoteLogProperties extends ReferenceableProperties
      *
      * @param template note log to copy
      */
+    public NoteLogProperties(NoteLogProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template note log to copy
+     */
     public NoteLogProperties(ReferenceableProperties template)
     {
         super(template);

@@ -52,8 +52,8 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
             resourceCreateTime       = template.getResourceCreateTime();
             resourceUpdateTime       = template.getResourceUpdateTime();
             resourceLastAccessedTime = template.getResourceLastAccessedTime();
-            size         = template.getSize();
-            encodingType = template.getEncodingType();
+            size                     = template.getSize();
+            encodingType             = template.getEncodingType();
         }
     }
 

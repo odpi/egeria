@@ -34,7 +34,7 @@ public class SolutionComponentPortProperties extends RoledRelationshipProperties
      *
      * @param template object to copy
      */
-    public SolutionComponentPortProperties(RoledRelationshipProperties template)
+    public SolutionComponentPortProperties(SolutionComponentPortProperties template)
     {
         super(template);
     }

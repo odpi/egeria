@@ -34,9 +34,21 @@ public class DataDictionaryProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public DataDictionaryProperties(DataDictionaryProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public DataDictionaryProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName;
     }
 
 

@@ -35,7 +35,7 @@ public class DataValueProperties extends ClassificationBeanProperties
      *
      * @param template template object to copy.
      */
-    public DataValueProperties(ClassificationBeanProperties template)
+    public DataValueProperties(DataValueProperties template)
     {
         super(template);
     }

@@ -34,7 +34,7 @@ public class SolutionBlueprintProperties extends DesignModelProperties
      *
      * @param template object to copy
      */
-    public SolutionBlueprintProperties(DesignModelProperties template)
+    public SolutionBlueprintProperties(SolutionBlueprintProperties template)
     {
         super(template);
     }

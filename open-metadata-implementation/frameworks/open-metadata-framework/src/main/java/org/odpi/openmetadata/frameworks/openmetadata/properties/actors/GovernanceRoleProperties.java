@@ -58,7 +58,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
 
         if (template != null)
         {
-            this.domainIdentifier     = template.getDomainIdentifier();
+            this.domainIdentifier = template.getDomainIdentifier();
         }
     }
 

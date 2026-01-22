@@ -34,9 +34,21 @@ public class SurveyActionServiceProperties extends GovernanceServiceProperties
      *
      * @param template template object to copy.
      */
+    public SurveyActionServiceProperties(SurveyActionServiceProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
     public SurveyActionServiceProperties(DeployedConnectorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
     }
 
 
@@ -48,6 +60,7 @@ public class SurveyActionServiceProperties extends GovernanceServiceProperties
     public SurveyActionServiceProperties(DeployedSoftwareComponentProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
     }
 
 
@@ -59,6 +72,7 @@ public class SurveyActionServiceProperties extends GovernanceServiceProperties
     public SurveyActionServiceProperties(GovernanceServiceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
     }
 
 

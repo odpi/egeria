@@ -34,7 +34,7 @@ public class GovernanceResponseProperties extends SupportingDefinitionProperties
      *
      * @param template object to copy
      */
-    public GovernanceResponseProperties(SupportingDefinitionProperties template)
+    public GovernanceResponseProperties(GovernanceResponseProperties template)
     {
         super(template);
     }

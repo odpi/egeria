@@ -38,9 +38,21 @@ public class ReferenceDataValueProperties extends ValidValueDefinitionProperties
      *
      * @param template object to copy
      */
+    public ReferenceDataValueProperties(ReferenceDataValueProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ReferenceDataValueProperties(ValidValueDefinitionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.REFERENCE_DATA_VALUE.typeName;
     }
 
 

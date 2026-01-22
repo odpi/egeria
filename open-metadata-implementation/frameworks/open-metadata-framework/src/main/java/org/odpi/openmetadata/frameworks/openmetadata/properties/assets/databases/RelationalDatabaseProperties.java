@@ -34,11 +34,22 @@ public class RelationalDatabaseProperties extends DatabaseProperties
      *
      * @param template object to copy
      */
-    public RelationalDatabaseProperties(DatabaseProperties template)
+    public RelationalDatabaseProperties(RelationalDatabaseProperties template)
     {
         super(template);
     }
 
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public RelationalDatabaseProperties(DatabaseProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.RELATIONAL_DATABASE.typeName;
+    }
 
     /**
      * Standard toString method.

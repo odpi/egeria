@@ -48,6 +48,7 @@ public class SoftwareServiceProperties extends SoftwareCapabilityProperties
     public SoftwareServiceProperties(SoftwareCapabilityProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SOFTWARE_SERVICE.typeName;
     }
 
 

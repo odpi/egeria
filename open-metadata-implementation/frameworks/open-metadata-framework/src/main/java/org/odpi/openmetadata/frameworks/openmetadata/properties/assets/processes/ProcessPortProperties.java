@@ -36,7 +36,7 @@ public class ProcessPortProperties extends RelationshipBeanProperties
      *
      * @param template template to copy.
      */
-    public ProcessPortProperties(RelationshipBeanProperties template)
+    public ProcessPortProperties(ProcessPortProperties template)
     {
         super(template);
     }

@@ -35,10 +35,23 @@ public class HomeCollectionProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public HomeCollectionProperties(CollectionProperties template)
+    public HomeCollectionProperties(HomeCollectionProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public HomeCollectionProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.HOME_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

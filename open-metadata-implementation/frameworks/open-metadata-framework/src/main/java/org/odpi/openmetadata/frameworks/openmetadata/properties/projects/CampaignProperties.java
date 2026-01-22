@@ -36,10 +36,11 @@ public class CampaignProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public CampaignProperties(ClassificationBeanProperties template)
+    public CampaignProperties(CampaignProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

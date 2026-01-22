@@ -118,7 +118,7 @@ Content-Type: application/json
 
 
 ###
-# @name find community note logs that have "OpenMetadataProductCatalog" in their properties
+# @name find community note logs that have "OpenMetadataDigitalProduct" in their properties
 # Retrieve the list of note log metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-search-string
 Authorization: Bearer {{token}}
@@ -126,7 +126,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "OpenMetadataProductCatalog",
+  "searchString" : "OpenMetadataDigitalProduct",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,

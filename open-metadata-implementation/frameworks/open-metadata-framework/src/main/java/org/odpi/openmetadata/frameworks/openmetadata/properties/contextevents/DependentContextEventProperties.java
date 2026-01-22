@@ -36,7 +36,7 @@ public class DependentContextEventProperties extends LabeledRelationshipProperti
      *
      * @param template object to copy
      */
-    public DependentContextEventProperties(LabeledRelationshipProperties template)
+    public DependentContextEventProperties(DependentContextEventProperties template)
     {
         super (template);
     }

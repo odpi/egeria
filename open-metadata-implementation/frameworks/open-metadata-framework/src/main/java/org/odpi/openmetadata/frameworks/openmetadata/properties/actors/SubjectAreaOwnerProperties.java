@@ -33,9 +33,21 @@ public class SubjectAreaOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public SubjectAreaOwnerProperties(SubjectAreaOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public SubjectAreaOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SUBJECT_AREA_OWNER.typeName;
     }
 
 

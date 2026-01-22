@@ -34,7 +34,7 @@ public class ApplicationProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public ApplicationProperties(SoftwareCapabilityProperties template)
+    public ApplicationProperties(ApplicationProperties template)
     {
         super(template);
     }

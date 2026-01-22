@@ -34,9 +34,21 @@ public class AudioFileProperties extends MediaFileProperties
      *
      * @param template object to copy
      */
+    public AudioFileProperties(AudioFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public AudioFileProperties(MediaFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.AUDIO_FILE.typeName;
     }
 
 

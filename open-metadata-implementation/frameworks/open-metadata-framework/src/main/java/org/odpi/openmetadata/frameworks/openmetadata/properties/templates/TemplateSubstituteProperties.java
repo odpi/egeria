@@ -34,7 +34,7 @@ public class TemplateSubstituteProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public TemplateSubstituteProperties(ClassificationBeanProperties template)
+    public TemplateSubstituteProperties(TemplateSubstituteProperties template)
     {
         super(template);
     }

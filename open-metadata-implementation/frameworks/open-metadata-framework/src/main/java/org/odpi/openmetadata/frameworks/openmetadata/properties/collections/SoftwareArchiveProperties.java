@@ -35,10 +35,23 @@ public class SoftwareArchiveProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public SoftwareArchiveProperties(CollectionProperties template)
+    public SoftwareArchiveProperties(SoftwareArchiveProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public SoftwareArchiveProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.SOFTWARE_ARCHIVE.typeName;
+    }
+
 
     /**
      * Standard toString method.

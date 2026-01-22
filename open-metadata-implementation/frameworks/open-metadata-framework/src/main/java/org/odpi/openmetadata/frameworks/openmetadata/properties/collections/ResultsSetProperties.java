@@ -35,10 +35,23 @@ public class ResultsSetProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public ResultsSetProperties(CollectionProperties template)
+    public ResultsSetProperties(ResultsSetProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public ResultsSetProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.RESULTS_SET_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

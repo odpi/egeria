@@ -37,7 +37,7 @@ public class ContextEventForTimelineEffectsProperties extends LabeledRelationshi
      *
      * @param template object to copy
      */
-    public ContextEventForTimelineEffectsProperties(LabeledRelationshipProperties template)
+    public ContextEventForTimelineEffectsProperties(ContextEventForTimelineEffectsProperties template)
     {
         super (template);
     }

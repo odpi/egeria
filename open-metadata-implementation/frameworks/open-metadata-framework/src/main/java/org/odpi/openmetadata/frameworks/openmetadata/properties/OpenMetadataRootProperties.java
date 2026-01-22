@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
@@ -30,6 +31,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RatingProperties.class, name = "RatingProperties"),
                 @JsonSubTypes.Type(value = ReferenceableProperties.class, name = "ReferenceableProperties"),
                 @JsonSubTypes.Type(value = SearchKeywordProperties.class, name = "SearchKeywordProperties"),
+                @JsonSubTypes.Type(value = TranslationDetailProperties.class, name = "TranslationDetailProperties"),
         })
 public class OpenMetadataRootProperties extends EntityProperties
 {

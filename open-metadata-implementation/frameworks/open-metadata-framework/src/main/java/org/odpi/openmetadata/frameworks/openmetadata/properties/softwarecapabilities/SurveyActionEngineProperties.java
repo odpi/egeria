@@ -36,6 +36,7 @@ public class SurveyActionEngineProperties extends GovernanceEngineProperties
     public SurveyActionEngineProperties(GovernanceEngineProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SURVEY_ACTION_ENGINE.typeName;
     }
 
 
@@ -44,7 +45,7 @@ public class SurveyActionEngineProperties extends GovernanceEngineProperties
      *
      * @param template template object to copy.
      */
-    public SurveyActionEngineProperties(EngineProperties template)
+    public SurveyActionEngineProperties(SurveyActionEngineProperties template)
     {
         super(template);
     }

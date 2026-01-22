@@ -39,6 +39,7 @@ public class CriticalityProperties extends GovernanceClassificationProperties
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

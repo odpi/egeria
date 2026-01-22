@@ -34,9 +34,21 @@ public class ArchiveFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public ArchiveFileProperties(ArchiveFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public ArchiveFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.ARCHIVE_FILE.typeName;
     }
 
 

@@ -40,7 +40,7 @@ public class SchemaElementProperties extends AuthoredReferenceableProperties
      *
      * @param template object to copy
      */
-    public SchemaElementProperties(AuthoredReferenceableProperties template)
+    public SchemaElementProperties(SchemaElementProperties template)
     {
         super(template);
     }

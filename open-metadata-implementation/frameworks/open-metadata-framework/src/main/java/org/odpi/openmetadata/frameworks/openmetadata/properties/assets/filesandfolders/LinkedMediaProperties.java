@@ -39,6 +39,7 @@ public class LinkedMediaProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

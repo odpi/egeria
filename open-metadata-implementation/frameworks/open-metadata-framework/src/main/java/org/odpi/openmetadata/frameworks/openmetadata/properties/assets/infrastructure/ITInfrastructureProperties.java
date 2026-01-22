@@ -49,6 +49,7 @@ public class ITInfrastructureProperties extends InfrastructureProperties
         super(template);
     }
 
+
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
@@ -57,7 +58,9 @@ public class ITInfrastructureProperties extends InfrastructureProperties
     public ITInfrastructureProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
     }
+
 
     /**
      * Standard toString method.

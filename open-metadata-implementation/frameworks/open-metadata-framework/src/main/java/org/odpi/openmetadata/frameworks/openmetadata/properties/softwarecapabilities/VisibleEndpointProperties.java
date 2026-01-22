@@ -34,10 +34,11 @@ public class VisibleEndpointProperties extends RelationshipBeanProperties
      *
      * @param template Connection to copy
      */
-    public VisibleEndpointProperties(RelationshipBeanProperties template)
+    public VisibleEndpointProperties(VisibleEndpointProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method. Note SecuredProperties and other credential type properties are not displayed.

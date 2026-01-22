@@ -34,6 +34,17 @@ public class SpecificationPropertyValueProperties extends ValidValueDefinitionPr
      *
      * @param template object to copy
      */
+    public SpecificationPropertyValueProperties(SpecificationPropertyValueProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public SpecificationPropertyValueProperties(ValidValueDefinitionProperties template)
     {
         super(template);

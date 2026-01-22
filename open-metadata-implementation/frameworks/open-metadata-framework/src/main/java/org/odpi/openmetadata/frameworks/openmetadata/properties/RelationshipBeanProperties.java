@@ -118,7 +118,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PeerDuplicateLinkProperties.class, name = "PeerDuplicateLinkProperties"),
                 @JsonSubTypes.Type(value = EmbeddedConnectionProperties.class, name = "EmbeddedConnectionProperties"),
                 @JsonSubTypes.Type(value = ExternalIdLinkProperties.class, name = "ExternalIdLinkProperties"),
-                @JsonSubTypes.Type(value = FeedbackProperties.class, name = "FeedbackProperties"),
                 @JsonSubTypes.Type(value = FolderHierarchyProperties.class, name = "FolderHierarchyProperties"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermRelationshipProperties.class, name = "GlossaryTermRelationshipProperties"),

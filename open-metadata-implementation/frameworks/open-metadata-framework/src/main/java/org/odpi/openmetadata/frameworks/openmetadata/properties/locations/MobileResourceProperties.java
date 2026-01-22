@@ -34,7 +34,7 @@ public class MobileResourceProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public MobileResourceProperties(ClassificationBeanProperties template)
+    public MobileResourceProperties(MobileResourceProperties template)
     {
         super(template);
     }

@@ -35,7 +35,7 @@ public class AbstractConceptProperties extends ClassificationBeanProperties
      *
      * @param template template object to copy.
      */
-    public AbstractConceptProperties(ClassificationBeanProperties template)
+    public AbstractConceptProperties(AbstractConceptProperties template)
     {
         super(template);
     }

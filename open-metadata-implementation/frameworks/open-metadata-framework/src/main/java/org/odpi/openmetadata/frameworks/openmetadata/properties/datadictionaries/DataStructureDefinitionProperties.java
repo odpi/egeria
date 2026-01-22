@@ -36,7 +36,7 @@ public class DataStructureDefinitionProperties extends LabeledRelationshipProper
      *
      * @param template template object to copy.
      */
-    public DataStructureDefinitionProperties(LabeledRelationshipProperties template)
+    public DataStructureDefinitionProperties(DataStructureDefinitionProperties template)
     {
         super(template);
     }

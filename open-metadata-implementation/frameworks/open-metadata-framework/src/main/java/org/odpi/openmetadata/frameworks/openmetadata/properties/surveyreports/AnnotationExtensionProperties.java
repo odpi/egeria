@@ -34,7 +34,7 @@ public class AnnotationExtensionProperties extends RelationshipBeanProperties
      *
      * @param template template object to copy.
      */
-    public AnnotationExtensionProperties(RelationshipBeanProperties template)
+    public AnnotationExtensionProperties(AnnotationExtensionProperties template)
     {
         super(template);
     }

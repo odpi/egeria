@@ -33,9 +33,21 @@ public class ToDoProperties extends ActionProperties
      *
      * @param template object to copy
      */
+    public ToDoProperties(ToDoProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ToDoProperties(ActionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TO_DO.typeName;
     }
 
 

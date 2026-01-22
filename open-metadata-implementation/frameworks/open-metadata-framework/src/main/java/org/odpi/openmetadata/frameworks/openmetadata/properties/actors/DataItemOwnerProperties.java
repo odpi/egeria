@@ -33,9 +33,21 @@ public class DataItemOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public DataItemOwnerProperties(DataItemOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public DataItemOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_ITEM_OWNER.typeName;
     }
 
 

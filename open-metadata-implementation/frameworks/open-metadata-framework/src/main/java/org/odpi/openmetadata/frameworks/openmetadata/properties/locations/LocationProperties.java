@@ -36,7 +36,7 @@ public class LocationProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public LocationProperties(ReferenceableProperties template)
+    public LocationProperties(LocationProperties template)
     {
         super(template);
     }

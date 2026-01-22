@@ -35,10 +35,23 @@ public class ReferenceListProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public ReferenceListProperties(CollectionProperties template)
+    public ReferenceListProperties(ReferenceListProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public ReferenceListProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.REFERENCE_LIST_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

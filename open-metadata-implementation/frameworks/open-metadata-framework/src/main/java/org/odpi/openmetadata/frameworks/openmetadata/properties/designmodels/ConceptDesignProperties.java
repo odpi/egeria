@@ -34,7 +34,7 @@ public class ConceptDesignProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public ConceptDesignProperties(LabeledRelationshipProperties template)
+    public ConceptDesignProperties(ConceptDesignProperties template)
     {
         super(template);
     }

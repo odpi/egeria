@@ -35,7 +35,7 @@ public class TypedByConceptBeadProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public TypedByConceptBeadProperties(RoledRelationshipProperties template)
+    public TypedByConceptBeadProperties(TypedByConceptBeadProperties template)
     {
         super(template);
     }

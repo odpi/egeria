@@ -35,9 +35,21 @@ public class DataFileCollectionProperties extends DataSetProperties
      *
      * @param template object to copy
      */
+    public DataFileCollectionProperties(DataFileCollectionProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public DataFileCollectionProperties(DataSetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_FILE_COLLECTION.typeName;
     }
 
 

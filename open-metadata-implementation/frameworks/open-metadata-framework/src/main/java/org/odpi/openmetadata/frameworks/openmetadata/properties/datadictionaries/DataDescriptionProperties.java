@@ -35,7 +35,7 @@ public class DataDescriptionProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public DataDescriptionProperties(LabeledRelationshipProperties template)
+    public DataDescriptionProperties(DataDescriptionProperties template)
     {
         super(template);
     }

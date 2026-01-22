@@ -37,10 +37,11 @@ public class ReferenceDataProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public ReferenceDataProperties(ClassificationBeanProperties template)
+    public ReferenceDataProperties(ReferenceDataProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

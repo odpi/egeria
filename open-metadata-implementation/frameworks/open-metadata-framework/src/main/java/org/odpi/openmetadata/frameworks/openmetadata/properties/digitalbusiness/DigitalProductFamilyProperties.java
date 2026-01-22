@@ -34,11 +34,22 @@ public class DigitalProductFamilyProperties extends DigitalProductProperties
      *
      * @param template template object to copy.
      */
-    public DigitalProductFamilyProperties(DigitalProductProperties template)
+    public DigitalProductFamilyProperties(DigitalProductFamilyProperties template)
     {
         super(template);
     }
 
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template template object to copy.
+     */
+    public DigitalProductFamilyProperties(DigitalProductProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName;
+    }
 
 
     /**

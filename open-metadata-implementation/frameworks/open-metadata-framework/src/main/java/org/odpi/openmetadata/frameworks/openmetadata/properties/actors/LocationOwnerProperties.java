@@ -33,9 +33,21 @@ public class LocationOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public LocationOwnerProperties(LocationOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public LocationOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.LOCATION_OWNER.typeName;
     }
 
 

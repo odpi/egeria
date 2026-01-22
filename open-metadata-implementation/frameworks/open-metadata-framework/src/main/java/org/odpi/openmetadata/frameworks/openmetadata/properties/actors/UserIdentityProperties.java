@@ -42,6 +42,7 @@ public class UserIdentityProperties extends ActorProperties
     public UserIdentityProperties(ActorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.USER_IDENTITY.typeName;
     }
 
 

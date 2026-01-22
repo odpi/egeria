@@ -44,9 +44,21 @@ public class DesignModelProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public DesignModelProperties(DesignModelProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public DesignModelProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DESIGN_MODEL.typeName;
     }
 
 

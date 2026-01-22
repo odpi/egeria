@@ -34,9 +34,21 @@ public class YAMLFileProperties extends PropertiesFileProperties
      *
      * @param template object to copy
      */
+    public YAMLFileProperties(YAMLFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public YAMLFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.YAML_FILE.typeName;
     }
 
 

@@ -1,13 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
+package org.odpi.openmetadata.frameworks.openmetadata.search;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties;
 
 import java.util.Objects;
 
@@ -22,14 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanticAssignmentQueryProperties extends FindProperties
 {
-    private String                       expression               = null;
+    private String               expression               = null;
     private String               description              = null;
     private TermAssignmentStatus status                   = TermAssignmentStatus.VALIDATED;
     private boolean              returnSpecificConfidence = false;
-    private int                          confidence               = 0;
-    private String                       createdBy                = null;
-    private String                       steward                  = null;
-    private String                       source                   = null;
+    private int                  confidence               = 0;
+    private String               createdBy                = null;
+    private String               steward                  = null;
+    private String               source                   = null;
 
 
     /**

@@ -37,7 +37,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.DigitalProductManagerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -100,6 +99,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
     private final List<NewActionTarget> notificationWatchdogTargets = new ArrayList<>();
 
+    String baudotEngineActionGUID = null;
+
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -151,21 +152,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             communityNoteLogs     = this.getCommunityNoteLogs();
             dataFields            = this.getDataFields();
             products              = this.getProducts();
-
-            /*
-             * The engine action for the watchdog notification serve is started before the monitored resource
-             * and subscribers are attached to ensure the notification watchdog sees their attachment events and
-             * sends out the welcome messages.
-             */
-            String engineActionGUID = this.activateNotificationWatchdog();
-
-            if (engineActionGUID != null)
-            {
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.BARDOT_STARTED.getMessageDefinition(connectorName,
-                                                                                          engineActionGUID,
-                                                                                          Integer.toString(notificationWatchdogTargets.size())));
-            }
         }
         catch (Exception error)
         {
@@ -196,6 +182,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     @Override
     public void refresh() throws ConnectorCheckedException, UserNotAuthorizedException
     {
+        final String methodName = "refresh";
+
         /*
          * Determine the existing catalog targets - these are tabular data sources that are set up.
          */
@@ -217,6 +205,28 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         harvestValidMetadataValues(existingDataSources);
         harvestReferenceDataSets(existingDataSources);
+
+        /*
+         * The engine action for the watchdog notification serve is started before the monitored resource
+         * and subscribers are attached to ensure the notification watchdog sees their attachment events and
+         * sends out the welcome messages.
+         */
+        if (baudotEngineActionGUID == null)
+        {
+            try
+            {
+                baudotEngineActionGUID = this.activateSubscriptionManager();
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  error.getClass().getName(),
+                                                                                                  methodName,
+                                                                                                  error.getMessage()),
+                                      error);
+            }
+        }
 
         /*
          * Refresh all the harvested tabular data sources, looking for data changes.
@@ -918,18 +928,24 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                         notificationTypeProperties,
                                                                                         null);
 
+        if ((productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.getNotificationInterval() == 0))
+        {
+            /*
+             * Only need to register the resource with notification types that use changes to the resource to determine
+             * when to issue a notification to the subscribers.
+             */
+            MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
-        MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
+            monitoredResourceProperties.setLabel("product asset");
+            monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
 
-        monitoredResourceProperties.setLabel("product asset");
-        monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
-
-        notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
+            notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
+        }
 
         NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
 
         /*
-         * Link any note log only to leaf products.
+         * Only link note log to leaf products.
          */
         if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
         {
@@ -939,6 +955,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
         }
 
+        /*
+         * Every product has a product manager.  They receive notifications to enable monitoring of product activity.
+         */
         if (productManagerGUID != null)
         {
             notificationSubscriberProperties.setLabel("product manager notifications");
@@ -1206,82 +1225,107 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
 
                 /*
-                 * Get connection to copy
+                 * Get secrets store connection used by this connector
                  */
                 Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
+                String     secretsStoreConnectionGUID = secretsConnectorConnection.getGUID();
 
-                /*
-                 * Create secret store connection
-                 */
-                ConnectionProperties secretsStoreConnection = new ConnectionProperties();
-                secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
-                secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
-                secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
-                secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
-
-                if (secretsConnectorConnection.getConfigurationProperties() != null)
+                if (secretsStoreConnectionGUID == null)
                 {
-                    Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
-                    secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                    /*
+                     * Create the secret store connection from this connector's secrets store connection.
+                     */
+                    ConnectionProperties secretsStoreConnection = new ConnectionProperties();
+                    secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
+                    secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
+                    secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
+                    secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+                    if (secretsConnectorConnection.getConfigurationProperties() != null)
+                    {
+                        Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
+                        secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                    }
+
+                    /*
+                     * Embed secrets store connection in product connection.
+                     */
+                    EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                    embeddedConnectionProperties.setDisplayName(purpose);
+
+                    secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                             secretsStoreConnection.getTypeName(),
+                                                                                                             secretsStoreConnection.getDisplayName(),
+                                                                                                             secretsStoreConnectionGUID));
+
+                    /*
+                     * Link connector type to connection.
+                     */
+                    connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
+                                                                 secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                 new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                                 null);
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                secretsStoreConnection.getTypeName(),
+                                                                                                secretsStoreConnectionGUID,
+                                                                                                OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                                secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                                OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+
+                    /*
+                     * Add secrets store location as an endpoint.
+                     */
+                    EndpointProperties secretsStoreEndpoint = new EndpointProperties();
+                    secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
+                    secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
+                    secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
+
+                    newElementOptions.setParentAtEnd1(true);
+                    newElementOptions.setParentGUID(secretsStoreConnectionGUID);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+                    String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                             secretsStoreEndpoint.getTypeName(),
+                                                                                                             secretsStoreEndpoint.getDisplayName(),
+                                                                                                             secretsStoreEndpointGUID));
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                secretsStoreConnection.getTypeName(),
+                                                                                                secretsStoreConnectionGUID,
+                                                                                                secretsStoreEndpoint.getTypeName(),
+                                                                                                secretsStoreEndpointGUID,
+                                                                                                OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
                 }
+                else
+                {
+                    /*
+                     * Embed this connector's secrets store connection in product asset connection.
+                     */
+                    EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                    embeddedConnectionProperties.setDisplayName(purpose);
 
-                /*
-                 * Embed secrets store connection in product connection.
-                 */
-                EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
-                embeddedConnectionProperties.setDisplayName(purpose);
+                    connectionClient.linkEmbeddedConnection(connectionGUID,
+                                                            secretsStoreConnectionGUID,
+                                                            new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                            embeddedConnectionProperties);
 
-                String secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
-
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         secretsStoreConnection.getTypeName(),
-                                                                                                         secretsStoreConnection.getDisplayName(),
-                                                                                                         secretsStoreConnectionGUID));
-
-                /*
-                 * Link connector type to connection.
-                 */
-                connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
-                                                             secretsConnectorConnection.getConnectorType().getGUID(),
-                                                             new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                             null);
-
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            secretsStoreConnection.getTypeName(),
-                                                                                            secretsStoreConnectionGUID,
-                                                                                            OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                            secretsConnectorConnection.getConnectorType().getGUID(),
-                                                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
-
-                /*
-                 * Add secrets store location as an endpoint.
-                 */
-                EndpointProperties secretsStoreEndpoint = new EndpointProperties();
-                secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
-                secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
-                secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
-
-                newElementOptions.setParentAtEnd1(true);
-                newElementOptions.setParentGUID(secretsStoreConnectionGUID);
-                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-                String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
-
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         secretsStoreEndpoint.getTypeName(),
-                                                                                                         secretsStoreEndpoint.getDisplayName(),
-                                                                                                         secretsStoreEndpointGUID));
-
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            secretsStoreConnection.getTypeName(),
-                                                                                            secretsStoreConnectionGUID,
-                                                                                            secretsStoreEndpoint.getTypeName(),
-                                                                                            secretsStoreEndpointGUID,
-                                                                                            OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                connectionProperties.getTypeName(),
+                                                                                                connectionGUID,
+                                                                                                OpenMetadataType.CONNECTION.typeName,
+                                                                                                secretsStoreConnectionGUID,
+                                                                                                OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
+                }
             }
 
 
@@ -1428,10 +1472,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private String activateNotificationWatchdog() throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    private String activateSubscriptionManager() throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
+        final String methodName = "activateNotificationWatchdog";
+
         GovernanceDefinitionClient governanceActionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
@@ -1445,7 +1491,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
             {
-                return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
+                String engineActionGUID = integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
                                                                                               Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
                                                                                               Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
                                                                                               notificationWatchdogTargets,
@@ -1453,6 +1499,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                               null,
                                                                                               connectorName,
                                                                                               null);
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.BARDOT_STARTED.getMessageDefinition(connectorName,
+                                                                                          engineActionGUID,
+                                                                                          Integer.toString(notificationWatchdogTargets.size())));
+
+                return engineActionGUID;
             }
         }
         else

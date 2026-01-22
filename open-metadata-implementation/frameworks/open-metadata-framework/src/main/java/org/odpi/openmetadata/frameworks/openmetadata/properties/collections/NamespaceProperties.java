@@ -35,10 +35,23 @@ public class NamespaceProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public NamespaceProperties(CollectionProperties template)
+    public NamespaceProperties(NamespaceProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public NamespaceProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.NAMESPACE_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

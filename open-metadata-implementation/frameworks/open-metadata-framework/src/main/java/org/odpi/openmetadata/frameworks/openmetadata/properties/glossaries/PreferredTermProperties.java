@@ -38,6 +38,7 @@ public class PreferredTermProperties extends GlossaryTermRelationshipProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

@@ -276,6 +276,25 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 
+###
+# @name setUpValidMetadataValue - deployedImplementationType
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/deployedImplementationType
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Sinclair Spectrum",
+  "description": "Personal desktop machine from 1980s",
+  "preferredValue": "Sinclair Spectrum",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# =====================================================================================================================
+
 
 ###
 # @name getValidMetadataValue - clinical-trial

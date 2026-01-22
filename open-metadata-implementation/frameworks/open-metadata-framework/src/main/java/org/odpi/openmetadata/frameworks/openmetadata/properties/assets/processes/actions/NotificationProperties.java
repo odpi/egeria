@@ -37,9 +37,21 @@ public class NotificationProperties extends ActionProperties
      *
      * @param template object to copy
      */
+    public NotificationProperties(NotificationProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public NotificationProperties(ActionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.NOTIFICATION.typeName;
     }
 
 

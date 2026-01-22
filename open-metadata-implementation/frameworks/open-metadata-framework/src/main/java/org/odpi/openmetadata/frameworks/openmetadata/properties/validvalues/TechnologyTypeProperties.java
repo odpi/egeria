@@ -34,9 +34,21 @@ public class TechnologyTypeProperties extends ValidMetadataValueProperties
      *
      * @param template object to copy
      */
+    public TechnologyTypeProperties(TechnologyTypeProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public TechnologyTypeProperties(ValidValueDefinitionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TECHNOLOGY_TYPE.typeName;
     }
 
 

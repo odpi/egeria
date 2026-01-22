@@ -29,7 +29,6 @@ public class LineageBoundaryProperties  extends LineageRelationshipProperties
     private Map<String, Integer> hops = null;
 
 
-
     /**
      * Default constructor
      */

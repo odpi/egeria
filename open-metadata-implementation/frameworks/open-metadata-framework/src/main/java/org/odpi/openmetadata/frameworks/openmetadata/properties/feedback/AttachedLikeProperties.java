@@ -40,6 +40,7 @@ public class AttachedLikeProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

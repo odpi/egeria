@@ -34,9 +34,21 @@ public class KeyStoreFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public KeyStoreFileProperties(KeyStoreFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public KeyStoreFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.KEY_STORE_FILE.typeName;
     }
 
 

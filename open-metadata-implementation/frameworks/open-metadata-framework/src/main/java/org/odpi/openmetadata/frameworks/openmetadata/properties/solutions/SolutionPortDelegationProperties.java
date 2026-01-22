@@ -34,7 +34,7 @@ public class SolutionPortDelegationProperties extends RoledRelationshipPropertie
      *
      * @param template object to copy
      */
-    public SolutionPortDelegationProperties(RoledRelationshipProperties template)
+    public SolutionPortDelegationProperties(SolutionPortDelegationProperties template)
     {
         super(template);
     }

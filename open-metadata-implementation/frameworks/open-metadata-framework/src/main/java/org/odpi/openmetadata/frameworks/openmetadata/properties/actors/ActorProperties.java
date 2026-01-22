@@ -42,9 +42,22 @@ public class ActorProperties extends ReferenceableProperties
      *
      * @param template object being copied
      */
+    public ActorProperties(ActorProperties template)
+    {
+        super (template);
+    }
+
+
+
+    /**
+     * Copy/clone Constructor - the resulting object.
+     *
+     * @param template object being copied
+     */
     public ActorProperties(ReferenceableProperties template)
     {
         super (template);
+        super.typeName = OpenMetadataType.ACTOR.typeName;
     }
 
 

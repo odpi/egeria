@@ -71,6 +71,7 @@ public class LikeProperties extends OpenMetadataRootProperties
         this.emoji = emoji;
     }
 
+
     /**
      * Standard toString method.
      *

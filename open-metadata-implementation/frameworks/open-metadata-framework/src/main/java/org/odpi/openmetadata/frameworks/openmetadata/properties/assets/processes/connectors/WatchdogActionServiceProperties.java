@@ -34,9 +34,21 @@ public class WatchdogActionServiceProperties extends GovernanceServiceProperties
      *
      * @param template template object to copy.
      */
+    public WatchdogActionServiceProperties(WatchdogActionServiceProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
     public WatchdogActionServiceProperties(DeployedConnectorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName;
     }
 
 
@@ -48,6 +60,7 @@ public class WatchdogActionServiceProperties extends GovernanceServiceProperties
     public WatchdogActionServiceProperties(DeployedSoftwareComponentProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName;
     }
 
 
@@ -59,6 +72,7 @@ public class WatchdogActionServiceProperties extends GovernanceServiceProperties
     public WatchdogActionServiceProperties(GovernanceServiceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName;
     }
 
 

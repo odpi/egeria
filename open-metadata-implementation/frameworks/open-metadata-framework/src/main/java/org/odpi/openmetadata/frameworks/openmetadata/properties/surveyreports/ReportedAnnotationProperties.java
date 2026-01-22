@@ -35,7 +35,7 @@ public class ReportedAnnotationProperties extends RelationshipBeanProperties
      *
      * @param template template object to copy.
      */
-    public ReportedAnnotationProperties(RelationshipBeanProperties template)
+    public ReportedAnnotationProperties(ReportedAnnotationProperties template)
     {
         super(template);
     }

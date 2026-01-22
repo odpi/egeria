@@ -83,6 +83,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateSubstituteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -5970,7 +5971,7 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the language property from the supplied element properties.
+     * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5983,6 +5984,50 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeStringProperty(localServiceName,
                                                        OpenMetadataProperty.LANGUAGE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeLocale(ElementProperties elementProperties)
+    {
+        final String methodName = "removeLocale";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.LOCALE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeLanguageCode(ElementProperties elementProperties)
+    {
+        final String methodName = "removeLanguageCode";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.LANGUAGE_CODE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -8545,7 +8590,7 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract the additionalValues property from the supplied element properties.
+     * Extract the property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesImplementation relationship
      * @return map of name-value pairs
@@ -8558,6 +8603,28 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeStringMapFromProperty(localServiceName,
                                                               OpenMetadataProperty.ADDITIONAL_VALUES.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of name-value pairs
+     */
+    protected Map<String, String> removeAdditionalTranslations(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAdditionalValues";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.ADDITIONAL_TRANSLATIONS.name,
                                                               elementProperties,
                                                               methodName);
         }
@@ -15116,6 +15183,17 @@ public class OpenMetadataPropertyConverterBase
                 ((ReferenceableProperties)beanProperties).setCategory(this.removeCategory(elementProperties));
                 ((ReferenceableProperties)beanProperties).setURL(this.removeURL(elementProperties));
                 ((ReferenceableProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TRANSLATION_DETAIL.typeName))
+            {
+                beanProperties = new TranslationDetailProperties();
+
+                ((TranslationDetailProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
+                ((TranslationDetailProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
+                ((TranslationDetailProperties)beanProperties).setLanguage(this.removeLanguage(elementProperties));
+                ((TranslationDetailProperties)beanProperties).setLanguageCode(this.removeLanguageCode(elementProperties));
+                ((TranslationDetailProperties)beanProperties).setLocale(this.removeLocale(elementProperties));
+                ((TranslationDetailProperties)beanProperties).setAdditionalTranslations(this.removeAdditionalTranslations(elementProperties));
             }
             else
             {

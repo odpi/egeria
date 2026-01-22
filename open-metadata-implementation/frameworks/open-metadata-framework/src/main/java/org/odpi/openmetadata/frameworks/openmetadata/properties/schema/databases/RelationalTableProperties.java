@@ -35,9 +35,21 @@ public class RelationalTableProperties extends SchemaAttributeProperties
      *
      * @param template object to copy
      */
+    public RelationalTableProperties(RelationalTableProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public RelationalTableProperties(SchemaAttributeProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.RELATIONAL_TABLE.typeName;
     }
 
 

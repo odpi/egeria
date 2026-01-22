@@ -36,7 +36,7 @@ public class LineageMappingProperties extends LineageRelationshipProperties
      *
      * @param template element to copy
      */
-    public LineageMappingProperties(LineageRelationshipProperties template)
+    public LineageMappingProperties(LineageMappingProperties template)
     {
         super(template);
     }

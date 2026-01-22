@@ -57,6 +57,7 @@ public class HostProperties extends ITInfrastructureProperties
     public HostProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.HOST.typeName;
     }
 
 

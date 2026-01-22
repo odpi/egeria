@@ -34,9 +34,21 @@ public class PortImplementationProperties extends PortProperties
      *
      * @param template object to copy
      */
+    public PortImplementationProperties(PortImplementationProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public PortImplementationProperties(PortProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.PORT_IMPLEMENTATION.typeName;
     }
 
 

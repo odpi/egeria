@@ -35,9 +35,21 @@ public class VirtualContainerProperties extends HostProperties
      *
      * @param template object to copy
      */
+    public VirtualContainerProperties(VirtualContainerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public VirtualContainerProperties(HostProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VIRTUAL_CONTAINER.typeName;
     }
 
 
@@ -49,6 +61,7 @@ public class VirtualContainerProperties extends HostProperties
     public VirtualContainerProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VIRTUAL_CONTAINER.typeName;
     }
 
 

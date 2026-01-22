@@ -52,11 +52,6 @@ public class SurveyReportProperties extends ReportProperties
     }
 
 
-
-
-
-
-
     /**
      * Return the parameters used to drive the discovery service's analysis.
      *

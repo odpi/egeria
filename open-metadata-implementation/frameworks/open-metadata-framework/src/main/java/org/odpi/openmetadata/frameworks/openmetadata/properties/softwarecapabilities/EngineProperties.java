@@ -44,7 +44,7 @@ public class EngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public EngineProperties(SoftwareCapabilityProperties template)
+    public EngineProperties(EngineProperties template)
     {
         super(template);
     }

@@ -38,6 +38,7 @@ public class SynonymProperties extends GlossaryTermRelationshipProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

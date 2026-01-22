@@ -34,9 +34,21 @@ public class ExternalDataSourceProperties extends ExternalReferenceProperties
      *
      * @param template element to copy
      */
+    public ExternalDataSourceProperties(ExternalDataSourceProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template element to copy
+     */
     public ExternalDataSourceProperties(ExternalReferenceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.EXTERNAL_DATA_SOURCE.typeName;
     }
 
 

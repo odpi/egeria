@@ -333,7 +333,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
                                                                                                           null);
 
         /*
-         * The valid value set will either be created, or updated depending on whether it exists or not.
+         * The valid value set will either be created or updated depending on whether it exists or not.
          * Convert the supplied properties into the appropriate bean.
          */
         ValidMetadataValueProperties validMetadataValueProperties = getValidMetadataProperties(typeName, propertyName, mapName, validMetadataValue);
@@ -347,6 +347,10 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
              */
             String parentSetGUID = this.getParentSet(userId, propertyName);
 
+            if (propertyName.equals(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+            {
+                validMetadataValueProperties = new TechnologyTypeProperties(validMetadataValueProperties);
+            }
 
             NewElementOptions newElementOptions = new NewElementOptions();
 

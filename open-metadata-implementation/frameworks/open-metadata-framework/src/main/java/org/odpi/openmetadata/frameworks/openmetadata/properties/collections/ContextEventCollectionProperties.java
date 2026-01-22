@@ -35,9 +35,21 @@ public class ContextEventCollectionProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public ContextEventCollectionProperties(ContextEventCollectionProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public ContextEventCollectionProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT_COLLECTION.typeName;
     }
 
 

@@ -153,6 +153,8 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                                       error);
             }
 
+            completed = true;
+
             throw new GovernanceServiceException(GovernanceActionConnectorsErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
                                                                                                                                       error.getClass().getName(),
                                                                                                                                       error.getMessage()),
@@ -505,35 +507,6 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                                                                                                                                        nestedError.getClass().getName(),
                                                                                                                                        nestedError.getMessage()),
                                               nestedError);
-                    }
-                }
-            }
-
-            if (completed)
-            {
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(WatchdogActionGuard.MONITORING_COMPLETED.getName());
-
-                    AuditLogMessageDefinition completionMessage = GovernanceActionConnectorsAuditCode.SERVICE_COMPLETED_SUCCESSFULLY.getMessageDefinition(watchdogActionServiceName);
-                    auditLog.logMessage(methodName, completionMessage);
-
-                    watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_COMPLETED.getCompletionStatus(),
-                                                           outputGuards,
-                                                           null,
-                                                           null,
-                                                           completionMessage);
-                }
-                catch (Exception error)
-                {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                                       error.getClass().getName(),
-                                                                                                                                       error.getMessage()),
-                                              error);
                     }
                 }
             }

@@ -34,7 +34,7 @@ public class LicenseTypeProperties extends TermsAndConditionsProperties
      *
      * @param template object to copy
      */
-    public LicenseTypeProperties(TermsAndConditionsProperties template)
+    public LicenseTypeProperties(LicenseTypeProperties template)
     {
         super(template);
     }

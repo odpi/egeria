@@ -40,6 +40,7 @@ public class LinkedExternalSchemaTypeProperties extends RelationshipBeanProperti
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

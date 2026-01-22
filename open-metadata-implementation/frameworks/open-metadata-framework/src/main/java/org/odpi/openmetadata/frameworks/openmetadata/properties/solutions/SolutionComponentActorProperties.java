@@ -34,7 +34,7 @@ public class SolutionComponentActorProperties extends RoledRelationshipPropertie
      *
      * @param template object to copy
      */
-    public SolutionComponentActorProperties(RoledRelationshipProperties template)
+    public SolutionComponentActorProperties(SolutionComponentActorProperties template)
     {
         super(template);
     }

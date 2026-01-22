@@ -33,7 +33,7 @@ public class ConceptModelProperties extends DesignModelProperties
      *
      * @param template object to copy
      */
-    public ConceptModelProperties(DesignModelProperties template)
+    public ConceptModelProperties(ConceptModelProperties template)
     {
         super(template);
     }

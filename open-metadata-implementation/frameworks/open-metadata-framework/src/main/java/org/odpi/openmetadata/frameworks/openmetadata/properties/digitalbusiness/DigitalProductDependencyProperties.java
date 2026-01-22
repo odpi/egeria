@@ -35,7 +35,7 @@ public class DigitalProductDependencyProperties extends LineageRelationshipPrope
      *
      * @param template template object to copy.
      */
-    public DigitalProductDependencyProperties(LineageRelationshipProperties template)
+    public DigitalProductDependencyProperties(DigitalProductDependencyProperties template)
     {
         super(template);
     }

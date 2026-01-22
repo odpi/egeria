@@ -50,7 +50,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
 
         if (template != null)
         {
-            waitTime         = template.getWaitTime();
+            waitTime = template.getWaitTime();
         }
     }
 

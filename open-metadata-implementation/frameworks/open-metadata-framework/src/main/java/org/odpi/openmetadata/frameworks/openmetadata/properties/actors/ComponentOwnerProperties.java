@@ -33,9 +33,21 @@ public class ComponentOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public ComponentOwnerProperties(ComponentOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public ComponentOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COMPONENT_OWNER.typeName;
     }
 
 

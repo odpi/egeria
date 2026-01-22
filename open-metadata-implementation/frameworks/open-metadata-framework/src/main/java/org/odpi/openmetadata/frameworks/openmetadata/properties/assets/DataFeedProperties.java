@@ -55,6 +55,7 @@ public class DataFeedProperties extends DataAssetProperties
     public DataFeedProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_FEED.typeName;
     }
 
 

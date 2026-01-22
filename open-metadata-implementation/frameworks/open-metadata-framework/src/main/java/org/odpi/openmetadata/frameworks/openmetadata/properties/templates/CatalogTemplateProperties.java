@@ -35,7 +35,7 @@ public class CatalogTemplateProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public CatalogTemplateProperties(LabeledRelationshipProperties template)
+    public CatalogTemplateProperties(CatalogTemplateProperties template)
     {
         super(template);
     }

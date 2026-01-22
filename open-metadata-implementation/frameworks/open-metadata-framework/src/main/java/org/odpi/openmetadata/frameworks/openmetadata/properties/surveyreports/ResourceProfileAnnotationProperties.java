@@ -66,24 +66,24 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
         if (template != null)
         {
             profilePropertyNames = template.getProfilePropertyNames();
-            length = template.getLength();
-            inferredDataType = template.getInferredDataType();
-            inferredFormat = template.getInferredFormat();
-            inferredLength = template.getInferredLength();
-            inferredPrecision = template.getInferredPrecision();
-            inferredScale = template.getInferredScale();
-            profileStartDate = template.getProfileStartDate();
-            profileEndDate = template.getProfileEndDate();
-            profileProperties = template.getProfileProperties();
-            profileFlags = template.getProfileFlags();
-            profileDates = template.getProfileDates();
-            profileCounts = template.getProfileCounts();
-            profileDoubles = template.getProfileDoubles();
-            valueList = template.getValueList();
-            valueCount = template.getValueCount();
-            valueRangeFrom = template.getValueRangeFrom();
-            valueRangeTo = template.getValueRangeTo();
-            averageValue = template.getAverageValue();
+            length               = template.getLength();
+            inferredDataType     = template.getInferredDataType();
+            inferredFormat       = template.getInferredFormat();
+            inferredLength       = template.getInferredLength();
+            inferredPrecision    = template.getInferredPrecision();
+            inferredScale        = template.getInferredScale();
+            profileStartDate     = template.getProfileStartDate();
+            profileEndDate       = template.getProfileEndDate();
+            profileProperties    = template.getProfileProperties();
+            profileFlags         = template.getProfileFlags();
+            profileDates         = template.getProfileDates();
+            profileCounts        = template.getProfileCounts();
+            profileDoubles       = template.getProfileDoubles();
+            valueList            = template.getValueList();
+            valueCount           = template.getValueCount();
+            valueRangeFrom       = template.getValueRangeFrom();
+            valueRangeTo         = template.getValueRangeTo();
+            averageValue         = template.getAverageValue();
         }
     }
 

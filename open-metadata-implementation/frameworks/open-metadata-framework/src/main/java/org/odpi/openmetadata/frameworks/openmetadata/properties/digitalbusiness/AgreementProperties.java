@@ -41,11 +41,22 @@ public class AgreementProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public AgreementProperties(CollectionProperties template)
+    public AgreementProperties(AgreementProperties template)
     {
         super(template);
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public AgreementProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.AGREEMENT.typeName;
+    }
 
 
     /**

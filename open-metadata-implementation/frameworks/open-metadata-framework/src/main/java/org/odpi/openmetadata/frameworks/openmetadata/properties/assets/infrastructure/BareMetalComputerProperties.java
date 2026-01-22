@@ -35,9 +35,21 @@ public class BareMetalComputerProperties extends HostProperties
      *
      * @param template object to copy
      */
+    public BareMetalComputerProperties(BareMetalComputerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public BareMetalComputerProperties(HostProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.BARE_METAL_COMPUTER.typeName;
     }
 
 
@@ -49,6 +61,7 @@ public class BareMetalComputerProperties extends HostProperties
     public BareMetalComputerProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.BARE_METAL_COMPUTER.typeName;
     }
 
 

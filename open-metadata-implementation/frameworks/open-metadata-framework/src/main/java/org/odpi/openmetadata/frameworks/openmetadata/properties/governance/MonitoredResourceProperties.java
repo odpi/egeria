@@ -34,7 +34,7 @@ public class MonitoredResourceProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public MonitoredResourceProperties(LabeledRelationshipProperties template)
+    public MonitoredResourceProperties(MonitoredResourceProperties template)
     {
         super(template);
     }

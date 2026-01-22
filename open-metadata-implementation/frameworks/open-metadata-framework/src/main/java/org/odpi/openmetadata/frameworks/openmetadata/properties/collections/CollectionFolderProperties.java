@@ -35,9 +35,21 @@ public class CollectionFolderProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public CollectionFolderProperties(CollectionFolderProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public CollectionFolderProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COLLECTION_FOLDER.typeName;
     }
 
     /**

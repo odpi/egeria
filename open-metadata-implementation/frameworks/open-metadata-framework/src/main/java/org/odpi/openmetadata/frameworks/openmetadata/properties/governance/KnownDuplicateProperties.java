@@ -36,10 +36,11 @@ public class KnownDuplicateProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public KnownDuplicateProperties(ClassificationBeanProperties template)
+    public KnownDuplicateProperties(KnownDuplicateProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

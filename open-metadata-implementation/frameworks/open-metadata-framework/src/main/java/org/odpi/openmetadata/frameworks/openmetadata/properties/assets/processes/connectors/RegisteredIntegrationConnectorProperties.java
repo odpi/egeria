@@ -59,8 +59,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
             connectorUserId                  = template.getConnectorUserId();
             metadataSourceQualifiedName      = template.getMetadataSourceQualifiedName();
             startDate                        = template.getStartDate();
-            refreshTimeInterval      = template.getRefreshTimeInterval();
-            connectorShutdownDate    = template.getConnectorShutdownDate();
+            refreshTimeInterval              = template.getRefreshTimeInterval();
+            connectorShutdownDate            = template.getConnectorShutdownDate();
             permittedSynchronization         = template.getPermittedSynchronization();
             generateConnectorActivityReports = template.getGenerateConnectorActivityReports();
         }
@@ -69,7 +69,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
 
     /**
      * Return the name of the connector.  This name is used for routing refresh calls to the connector as well
-     * as being used for diagnostics.  Ideally it should be unique amongst the connectors for the integration service.
+     * as being used for diagnostics.  Ideally, it should be unique amongst the connectors for the integration service.
      *
      * @return String name
      */

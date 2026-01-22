@@ -40,6 +40,7 @@ public class MapToElementTypeProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

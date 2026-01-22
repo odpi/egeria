@@ -36,7 +36,7 @@ import java.util.*;
  * WatchdogContext provides a watchdog action service with access to information about
  * the watchdog request along with access to the open metadata repository interfaces.
  */
-public class WatchdogContext extends ConnectorContextBase implements WatchdogEventInterface
+public class WatchdogContext extends ConnectorContextBase
 {
     private final String                    requestType;
     private final Map<String, String>       requestParameters;
@@ -236,26 +236,22 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
-    @Override
     public void registerListener(WatchdogGovernanceListener  listener,
                                  List<OpenMetadataEventType> interestingEventTypes,
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
     {
-        watchdogEventClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        watchdogEventClient.registerListener(connectorName, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
     /**
      * Unregister the listener permanently from the event infrastructure.
      */
-    @Override
     public void disconnectListener()
     {
-        watchdogEventClient.disconnectListener();
+        watchdogEventClient.disconnectListener(connectorName);
     }
-
-
 
 
     /**

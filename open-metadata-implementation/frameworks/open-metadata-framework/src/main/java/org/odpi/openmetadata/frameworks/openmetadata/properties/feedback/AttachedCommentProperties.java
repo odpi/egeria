@@ -40,6 +40,7 @@ public class AttachedCommentProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

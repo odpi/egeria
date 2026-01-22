@@ -40,6 +40,7 @@ public class AttachedNoteLogProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

@@ -40,6 +40,7 @@ public class SearchKeywordLinkProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

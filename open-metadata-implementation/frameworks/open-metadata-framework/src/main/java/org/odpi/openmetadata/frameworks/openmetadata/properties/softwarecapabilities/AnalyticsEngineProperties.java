@@ -34,7 +34,7 @@ public class AnalyticsEngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public AnalyticsEngineProperties(SoftwareCapabilityProperties template)
+    public AnalyticsEngineProperties(AnalyticsEngineProperties template)
     {
         super(template);
     }

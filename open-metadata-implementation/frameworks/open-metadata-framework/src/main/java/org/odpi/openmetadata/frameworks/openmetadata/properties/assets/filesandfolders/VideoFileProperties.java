@@ -34,9 +34,21 @@ public class VideoFileProperties extends MediaFileProperties
      *
      * @param template object to copy
      */
+    public VideoFileProperties(VideoFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public VideoFileProperties(MediaFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VIDEO_FILE.typeName;
     }
 
 

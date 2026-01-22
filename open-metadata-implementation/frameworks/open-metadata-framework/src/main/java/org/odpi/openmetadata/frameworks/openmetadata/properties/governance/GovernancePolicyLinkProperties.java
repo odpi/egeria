@@ -34,7 +34,7 @@ public class GovernancePolicyLinkProperties extends PeerDefinitionProperties
      *
      * @param template object to copy
      */
-    public GovernancePolicyLinkProperties(PeerDefinitionProperties template)
+    public GovernancePolicyLinkProperties(GovernancePolicyLinkProperties template)
     {
         super(template);
     }

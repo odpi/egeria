@@ -34,9 +34,21 @@ public class FunctionCallProperties extends TransientEmbeddedProcessProperties
      *
      * @param template object to copy
      */
+    public FunctionCallProperties(FunctionCallProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public FunctionCallProperties(TransientEmbeddedProcessProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.FUNCTION_CALL.typeName;
     }
 
 

@@ -33,9 +33,21 @@ public class ConceptBeadProperties extends ConceptModelElementProperties
      *
      * @param template object to copy
      */
+    public ConceptBeadProperties(ConceptBeadProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ConceptBeadProperties(ConceptModelElementProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.CONCEPT_BEAD.typeName;
     }
 
 

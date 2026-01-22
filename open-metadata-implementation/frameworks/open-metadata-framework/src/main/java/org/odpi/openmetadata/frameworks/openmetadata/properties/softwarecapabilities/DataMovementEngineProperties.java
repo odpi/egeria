@@ -34,7 +34,7 @@ public class DataMovementEngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public DataMovementEngineProperties(SoftwareCapabilityProperties template)
+    public DataMovementEngineProperties(DataMovementEngineProperties template)
     {
         super(template);
     }

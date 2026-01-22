@@ -34,7 +34,7 @@ public class DiscoveredSchemaTypeProperties extends RelationshipBeanProperties
      *
      * @param template template object to copy.
      */
-    public DiscoveredSchemaTypeProperties(RelationshipBeanProperties template)
+    public DiscoveredSchemaTypeProperties(DiscoveredSchemaTypeProperties template)
     {
         super(template);
     }

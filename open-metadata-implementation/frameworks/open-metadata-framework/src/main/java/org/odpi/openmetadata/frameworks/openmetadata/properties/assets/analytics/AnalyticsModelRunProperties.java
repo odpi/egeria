@@ -35,9 +35,21 @@ public class AnalyticsModelRunProperties extends TransientEmbeddedProcessPropert
      *
      * @param template object to copy
      */
+    public AnalyticsModelRunProperties(AnalyticsModelRunProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public AnalyticsModelRunProperties(TransientEmbeddedProcessProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.ANALYTICS_MODEL_RUN.typeName;
     }
 
 

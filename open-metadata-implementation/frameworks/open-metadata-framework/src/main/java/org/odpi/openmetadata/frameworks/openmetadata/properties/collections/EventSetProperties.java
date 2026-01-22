@@ -35,10 +35,23 @@ public class EventSetProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public EventSetProperties(CollectionProperties template)
+    public EventSetProperties(EventSetProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public EventSetProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.EVENT_SET_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

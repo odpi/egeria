@@ -50,6 +50,7 @@ public class ActorRoleProperties extends ActorProperties
     public ActorRoleProperties(ActorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.ACTOR_ROLE.typeName;
     }
 
 

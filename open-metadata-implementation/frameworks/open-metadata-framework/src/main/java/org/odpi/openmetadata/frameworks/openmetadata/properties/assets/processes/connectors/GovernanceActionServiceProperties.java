@@ -34,9 +34,21 @@ public class GovernanceActionServiceProperties extends GovernanceServiceProperti
      *
      * @param template template object to copy.
      */
+    public GovernanceActionServiceProperties(GovernanceActionServiceProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
     public GovernanceActionServiceProperties(DeployedSoftwareComponentProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
     }
 
 
@@ -48,6 +60,7 @@ public class GovernanceActionServiceProperties extends GovernanceServiceProperti
     public GovernanceActionServiceProperties(DeployedConnectorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
     }
 
 
@@ -60,6 +73,7 @@ public class GovernanceActionServiceProperties extends GovernanceServiceProperti
     public GovernanceActionServiceProperties(GovernanceServiceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
     }
 
 
