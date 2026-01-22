@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">JacquardCatalogTargetProcessor</span>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></span></div>
 <div class="block">Calculates the last time an update was made to the tabular data set that is the target and if it has changes since
- the last refresh (or this is the first refresh), the GovernanceMeasurements classification is updated with the latest update time.
+ the last refresh (or this is the first refresh), the DataScope classification is updated with the latest update time.
  This will be detected as a change to the catalog target by any monitoring process.</div>
 </section>
 <section class="summary">
@@ -219,12 +219,12 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Check whether the data set has changed since the last refresh.  If it has then update the asset's
- GovernanceMeasurement classification.</div>
+ DataScope classification.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is not able to refresh the metadata.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is unable to refresh the metadata.</dd>
 </dl>
 </section>
 </li>

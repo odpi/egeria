@@ -85,13 +85,13 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">JacquardAuditCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a>&gt;
 implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
-<div class="block">The DistributeKafkaAuditCode is used to define the message content for the OMRS Audit Log.
+<div class="block">The JacquardAuditCode is used to define the message content for the Audit Log.
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
-     <li>Severity - is this an event, decision, action, error or exception</li>
+     <li>Severity - is this an event, decision, action, error, or exception</li>
      <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
-     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
+     <li>Additional Information - further parameters and data for the audit message (optional)</li>
      <li>SystemAction - describes the result of the situation</li>
      <li>UserAction - describes how a user should correct the situation</li>
  </ul></div>
@@ -119,29 +119,37 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#BARDOT_STARTED" class="member-name-link">BARDOT_STARTED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CREATED_SUPPORTING_DEFINITION" class="member-name-link">CREATED_SUPPORTING_DEFINITION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CREATED_SUPPORTING_DEFINITION" class="member-name-link">CREATED_SUPPORTING_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0010 - The {0} integration connector has created a new {1} supporting definition with GUID {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATA_SET_UPDATE_DETECTED" class="member-name-link">DATA_SET_UPDATE_DETECTED</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">JACQUARD-HARVESTER-0003 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#LINKING_ELEMENTS" class="member-name-link">LINKING_ELEMENTS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DATA_SET_UPDATE_DETECTED" class="member-name-link">DATA_SET_UPDATE_DETECTED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0004 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LINKING_ELEMENTS" class="member-name-link">LINKING_ELEMENTS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_OPEN_METADATA_PRODUCT" class="member-name-link">NEW_OPEN_METADATA_PRODUCT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_OPEN_METADATA_PRODUCT" class="member-name-link">NEW_OPEN_METADATA_PRODUCT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0012 - The {0} integration connector has created a new digital product {1} called {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_CREATION_DATE" class="member-name-link">NO_CREATION_DATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">JACQUARD-HARVESTER-0003 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no createTime column</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#NO_LAST_UPDATE_DATE" class="member-name-link">NO_LAST_UPDATE_DATE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} is unable to determine if tabular data source {1} has changed since it has no last update time column</div>
+<div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#RETRIEVED_VALID_VALUE_PRODUCT" class="member-name-link">RETRIEVED_VALID_VALUE_PRODUCT</a></code></div>
 <div class="col-last odd-row-color">
@@ -238,14 +246,21 @@ the order they are declared.</div>
 <section class="detail" id="NO_LAST_UPDATE_DATE">
 <h3>NO_LAST_UPDATE_DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">NO_LAST_UPDATE_DATE</span></div>
-<div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} is unable to determine if tabular data source {1} has changed since it has no last update time column</div>
+<div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_CREATION_DATE">
+<h3>NO_CREATION_DATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">NO_CREATION_DATE</span></div>
+<div class="block">JACQUARD-HARVESTER-0003 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no createTime column</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_SET_UPDATE_DETECTED">
 <h3>DATA_SET_UPDATE_DETECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">DATA_SET_UPDATE_DETECTED</span></div>
-<div class="block">JACQUARD-HARVESTER-0003 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}</div>
+<div class="block">JACQUARD-HARVESTER-0004 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}</div>
 </section>
 </li>
 <li>
@@ -253,6 +268,13 @@ the order they are declared.</div>
 <h3>BAD_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">BAD_CONFIGURATION</span></div>
 <div class="block">JACQUARD-HARVESTER-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BARDOT_STARTED">
+<h3>BARDOT_STARTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">BARDOT_STARTED</span></div>
+<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets</div>
 </section>
 </li>
 <li>

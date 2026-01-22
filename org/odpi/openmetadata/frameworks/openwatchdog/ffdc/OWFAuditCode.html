@@ -119,8 +119,12 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last even-row-color">
 <div class="block">OPEN-WATCHDOG-0002 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_SUBSCRIBER" class="member-name-link">WRONG_TYPE_OF_SUBSCRIBER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#IGNORING_NOTIFICATION_TYPES" class="member-name-link">IGNORING_NOTIFICATION_TYPES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_SUBSCRIBER" class="member-name-link">WRONG_TYPE_OF_SUBSCRIBER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-WATCHDOG-0001 - Subscriber {0} is of type {1} but watchdog action service {2} only supports the following subscriber type(s): {3}</div>
 </div>
 </div>
@@ -195,6 +199,13 @@ the order they are declared.</div>
 <h3>DISCONNECT_DETECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">DISCONNECT_DETECTED</span></div>
 <div class="block">OPEN-WATCHDOG-0002 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IGNORING_NOTIFICATION_TYPES">
+<h3>IGNORING_NOTIFICATION_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_NOTIFICATION_TYPES</span></div>
+<div class="block">OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}</div>
 </section>
 </li>
 </ul>

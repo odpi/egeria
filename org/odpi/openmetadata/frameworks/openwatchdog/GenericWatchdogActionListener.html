@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector)" class="member-name-link">GenericWatchdogActionListener</a><wbr>(<a href="WatchdogActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogActionServiceConnector</a>&nbsp;connector)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Construct the listener that is registered with the GovernanceContext.</div>
+<div class="block">Construct the listener registered with the GovernanceContext.</div>
 </div>
 </div>
 </section>
@@ -136,7 +136,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector)">
 <h3>GenericWatchdogActionListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GenericWatchdogActionListener</span><wbr><span class="parameters">(<a href="WatchdogActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogActionServiceConnector</a>&nbsp;connector)</span></div>
-<div class="block">Construct the listener that is registered with the GovernanceContext.</div>
+<div class="block">Construct the listener registered with the GovernanceContext.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connector</code> - connector to delegate all events to</dd>
@@ -158,15 +158,15 @@ loadScripts(document, 'script');</script>
                   throws <span class="exceptions"><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></span></div>
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.
  It is called for events received after this listener is registered until the watchdog governance
- service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED, or it is stopped by
- an administrator shutting down the hosting server or this service explicitly.</div>
+ service sets its status in the context as ACTIONED, INVALID, IGNORED, or FAILED, or it is stopped by
+ an administrator shutting down the hosting server or cancelling this service.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../opengovernance/WatchdogGovernanceListener.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in class&nbsp;<code><a href="../opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>event</code> - event containing details of a change to an open metadata element.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></code> - reports that the event can not be processed (this is logged but
+<dd><code><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></code> - reports that the event cannot be processed (this is logged but
                                     no other action is taken).  The listener will continue to be
                                     called until the watchdog governance action service declares it is complete
                                     or administrator action shuts down the service.</dd>

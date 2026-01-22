@@ -18,6 +18,9 @@ org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ffdc
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc
+org.odpi.openmetadata.adapters.connectors.babbage
+org.odpi.openmetadata.adapters.connectors.baudot
+org.odpi.openmetadata.adapters.connectors.baudot.ffdc
 org.odpi.openmetadata.adapters.connectors.controls
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
@@ -45,11 +48,9 @@ org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys
 org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.ffdc
 org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.schema
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
-org.odpi.openmetadata.adapters.connectors.governanceactions.notifications
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
 org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
-org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
@@ -110,6 +111,7 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc
+org.odpi.openmetadata.adapters.connectors.subscriptions
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
@@ -290,6 +292,7 @@ org.odpi.openmetadata.frameworks.opengovernance.client
 org.odpi.openmetadata.frameworks.opengovernance.connectorcontext
 org.odpi.openmetadata.frameworks.opengovernance.controls
 org.odpi.openmetadata.frameworks.opengovernance.ffdc
+org.odpi.openmetadata.frameworks.opengovernance.handlers
 org.odpi.openmetadata.frameworks.opengovernance.mermaid
 org.odpi.openmetadata.frameworks.opengovernance.properties
 org.odpi.openmetadata.frameworks.openmetadata.api
@@ -370,7 +373,6 @@ org.odpi.openmetadata.frameworks.opensurvey.measurements
 org.odpi.openmetadata.frameworks.openwatchdog
 org.odpi.openmetadata.frameworks.openwatchdog.controls
 org.odpi.openmetadata.frameworks.openwatchdog.ffdc
-org.odpi.openmetadata.frameworks.openwatchdog.handlers
 org.odpi.openmetadata.frameworkservices.gaf.admin
 org.odpi.openmetadata.frameworkservices.gaf.client
 org.odpi.openmetadata.frameworkservices.gaf.client.rest

@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../adapters/connectors/organizationinsight/karmapoints/KarmaPointAwardsServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">KarmaPointAwardsServiceProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/notifications/MonitoredResourceNotificationServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">MonitoredResourceNotificationServiceProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/notifications/OneTimeNotificationServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">OneTimeNotificationServiceProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/notifications/PeriodicRefreshNotificationServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">PeriodicRefreshNotificationServiceProvider</a></code></dd>
+<dd><code><a href="../../adapters/connectors/baudot/BaudotSubscriptionManagementProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.baudot">BaudotSubscriptionManagementProvider</a></code>, <code><a href="../../adapters/connectors/organizationinsight/karmapoints/KarmaPointAwardsServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">KarmaPointAwardsServiceProvider</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">WatchdogActionServiceProvider</span>
@@ -120,6 +120,12 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">WatchdogActionServiceProvider</a>()</code></div>
 <div class="col-last even-row-color">
 <div class="block">Base provider for all watchdog action services.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition,java.lang.String,java.util.List)" class="member-name-link">WatchdogActionServiceProvider</a><wbr>(<a href="../connectors/OpenConnectorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.connectors">OpenConnectorDefinition</a>&nbsp;openConnectorDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recognizedConfigurationPropertyNames)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Constructor for an open connector provider.</div>
 </div>
 </div>
 </section>
@@ -157,6 +163,21 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">WatchdogActionServiceProvider</span>()</div>
 <div class="block">Base provider for all watchdog action services.  Sets up reasonable defaults that
  the individual service implementation can either accept or override.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition,java.lang.String,java.util.List)">
+<h3>WatchdogActionServiceProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">WatchdogActionServiceProvider</span><wbr><span class="parameters">(<a href="../connectors/OpenConnectorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.connectors">OpenConnectorDefinition</a>&nbsp;openConnectorDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recognizedConfigurationPropertyNames)</span></div>
+<div class="block">Constructor for an open connector provider.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openConnectorDescription</code> - connector definition</dd>
+<dd><code>connectorClassName</code> - connector class name</dd>
+<dd><code>recognizedConfigurationPropertyNames</code> - list of recognized configuration property names</dd>
+</dl>
 </section>
 </li>
 </ul>

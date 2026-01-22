@@ -84,7 +84,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ProductSubscriptionDefinition</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>&gt;</span></div>
-<div class="block">The ProductSubscriptionDefinition describes the types of subscription supported by the open metadata product catalog.</div>
+<div class="block">The ProductSubscriptionDefinition describes the types of subscription supported by the Open Metadata Digital Product Catalog.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -115,7 +115,11 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#ONGOING_UPDATE" class="member-name-link">ONGOING_UPDATE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">This subscription delivers data updates to the target destination within on hour of receiving the new data.</div>
+<div class="block">This subscription delivers data updates to the target destination within an hour of receiving the new data.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#WEEKLY_REFRESH_SUBSCRIPTION" class="member-name-link">WEEKLY_REFRESH_SUBSCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">This subscription delivers the data to the target destination once a week.</div>
 </div>
 </div>
 </section>
@@ -156,22 +160,39 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the optional classification.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceLevelObjective()" class="member-name-link">getServiceLevelObjective</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumNotificationInterval()" class="member-name-link">getMinimumNotificationInterval</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the minimum minutes between notifications.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultipleNotificationsPermitted()" class="member-name-link">getMultipleNotificationsPermitted</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether multiple notifications are permitted.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationInterval()" class="member-name-link">getNotificationInterval</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the minutes between notifications.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceLevelObjective()" class="member-name-link">getServiceLevelObjective</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the description of the service level objectives (SLO).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">String containing the definition values</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -210,10 +231,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="WEEKLY_REFRESH_SUBSCRIPTION">
+<h3>WEEKLY_REFRESH_SUBSCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">WEEKLY_REFRESH_SUBSCRIPTION</span></div>
+<div class="block">This subscription delivers the data to the target destination once a week.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="ONGOING_UPDATE">
 <h3>ONGOING_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">ONGOING_UPDATE</span></div>
-<div class="block">This subscription delivers data updates to the target destination within on hour of receiving the new data.</div>
+<div class="block">This subscription delivers data updates to the target destination within an hour of receiving the new data.</div>
 </section>
 </li>
 </ul>
@@ -314,6 +342,47 @@ not permitted.)</div>
 <section class="detail" id="getServiceLevelObjective()">
 <h3>getServiceLevelObjective</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a></span>&nbsp;<span class="element-name">getServiceLevelObjective</span>()</div>
+<div class="block">Return the description of the service level objectives (SLO).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>governance definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMultipleNotificationsPermitted()">
+<h3>getMultipleNotificationsPermitted</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getMultipleNotificationsPermitted</span>()</div>
+<div class="block">Return whether multiple notifications are permitted.  If false, only one notification will be sent out
+ to a subscriber.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMinimumNotificationInterval()">
+<h3>getMinimumNotificationInterval</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMinimumNotificationInterval</span>()</div>
+<div class="block">Return the minimum minutes between notifications.  If 0, notifications are sent out whenever the
+ appropriate condition is detected.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>minute count</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNotificationInterval()">
+<h3>getNotificationInterval</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getNotificationInterval</span>()</div>
+<div class="block">Return the minutes between notifications.  If null, notifications are driven by other events,
+ such as a change to a monitored resource.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>minute count</dd>
+</dl>
 </section>
 </li>
 <li>
