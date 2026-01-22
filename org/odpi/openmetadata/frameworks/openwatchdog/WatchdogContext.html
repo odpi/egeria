@@ -77,14 +77,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">WatchdogContext</span>
-<span class="extends-implements">extends <a href="../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>
-implements <a href="../opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></span></div>
+<span class="extends-implements">extends <a href="../openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></span></div>
 <div class="block">WatchdogContext provides a watchdog action service with access to information about
  the watchdog request along with access to the open metadata repository interfaces.</div>
 </section>
@@ -447,8 +442,6 @@ implements <a href="../opengovernance/client/WatchdogEventInterface.html" title=
  for metadata element types, the type of the relationship for related elements events and the name of the classification
  for classification events.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../opengovernance/client/WatchdogEventInterface.html#registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener object to receive events</dd>
 <dd><code>interestingEventTypes</code> - types of events that should be passed to the listener</dd>
@@ -464,10 +457,6 @@ implements <a href="../opengovernance/client/WatchdogEventInterface.html" title=
 <h3>disconnectListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnectListener</span>()</div>
 <div class="block">Unregister the listener permanently from the event infrastructure.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../opengovernance/client/WatchdogEventInterface.html#disconnectListener()">disconnectListener</a></code>&nbsp;in interface&nbsp;<code><a href="../opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
-</dl>
 </section>
 </li>
 <li>

@@ -111,9 +111,6 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="col-last even-row-color">
 <div class="block">Manages registered listeners</div>
 </div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#listenerId" class="member-name-link">listenerId</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
@@ -162,7 +159,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="block">Request that execution of a governance action is allocated to the caller.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnectListener()" class="member-name-link">disconnectListener</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnectListener(java.lang.String)" class="member-name-link">disconnectListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called during the disconnect processing of the watchdog governance action service.</div>
 </div>
@@ -186,7 +183,8 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="../../../frameworks/opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
+ <a href="../../../frameworks/opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/events/OpenMetadataEventType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</code></div>
@@ -194,8 +192,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata store.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager,java.lang.String)" class="member-name-link">setListenerManager</a><wbr>(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager)" class="member-name-link">setListenerManager</a><wbr>(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the listener manager.</div>
 </div>
@@ -246,12 +243,6 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="block">Manages registered listeners</div>
 </section>
 </li>
-<li>
-<section class="detail" id="listenerId">
-<h3>listenerId</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">listenerId</span></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -296,22 +287,21 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager,java.lang.String)">
+<section class="detail" id="setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager)">
 <h3>setListenerManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setListenerManager</span><wbr><span class="parameters">(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</span></div>
-<div class="block">Set up the listener manager.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setListenerManager</span><wbr><span class="parameters">(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager)</span></div>
+<div class="block">Set up the listener manager.  Called once for each governance engine handler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>governanceListenerManager</code> - aggregates listeners from governance services</dd>
-<dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">
+<section class="detail" id="registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">
 <h3>registerListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../../../frameworks/opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
+ <a href="../../../frameworks/opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/events/OpenMetadataEventType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</span>
@@ -329,25 +319,28 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
  If the listener parameter is null, no more events are passed to the listener.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html#registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener object to receive events</dd>
 <dd><code>interestingEventTypes</code> - types of events that should be passed to the listener</dd>
 <dd><code>interestingMetadataTypes</code> - types of elements that are the subject of the interesting event types</dd>
 <dd><code>specificInstance</code> - unique identifier of a specific instance to watch for</dd>
+<dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one or more of the type names are unrecognized</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="disconnectListener()">
+<section class="detail" id="disconnectListener(java.lang.String)">
 <h3>disconnectListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnectListener</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnectListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</span></div>
 <div class="block">Called during the disconnect processing of the watchdog governance action service.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html#disconnectListener()">disconnectListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html#disconnectListener(java.lang.String)">disconnectListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
 </dl>
 </section>
 </li>

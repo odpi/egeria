@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../frameworkservices/gaf/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../openwatchdog/WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a></code></dd>
+<dd><code><a href="../../../frameworkservices/gaf/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">WatchdogEventInterface</span></div>
@@ -94,12 +94,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#disconnectListener()" class="member-name-link">disconnectListener</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#disconnectListener(java.lang.String)" class="member-name-link">disconnectListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Unregister the listener from the event infrastructure.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="../WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
+ <a href="../WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/events/OpenMetadataEventType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</code></div>
@@ -121,9 +122,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">
+<section class="detail" id="registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">
 <h3>registerListener</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
+ <a href="../WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/events/OpenMetadataEventType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</span>
@@ -141,6 +143,7 @@ loadScripts(document, 'script');</script>
  If the listener parameter is null, no more events are passed to the listener.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
 <dd><code>listener</code> - listener object to receive events</dd>
 <dd><code>interestingEventTypes</code> - types of events that should be passed to the listener</dd>
 <dd><code>interestingMetadataTypes</code> - types of elements that are the subject of the interesting event types</dd>
@@ -151,10 +154,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="disconnectListener()">
+<section class="detail" id="disconnectListener(java.lang.String)">
 <h3>disconnectListener</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">disconnectListener</span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">disconnectListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</span></div>
 <div class="block">Unregister the listener from the event infrastructure.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
+</dl>
 </section>
 </li>
 </ul>

@@ -138,7 +138,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first odd-row-color"><code><a href="#CONFIGURATION_LISTENER_REGISTERED" class="member-name-link">CONFIGURATION_LISTENER_REGISTERED</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0}.</div>
+<div class="block">ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0} and governance engine {1}.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_CANCELLED" class="member-name-link">ENGINE_ACTION_CANCELLED</a></code></div>
 <div class="col-last even-row-color">
@@ -250,7 +250,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first even-row-color"><code><a href="#RESTART_SERVICE_ERROR" class="member-name-link">RESTART_SERVICE_ERROR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
+<div class="block">ENGINE-HOST-SERVICES-2001 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
 <div class="col-last odd-row-color">
@@ -552,8 +552,8 @@ the order they are declared.</div>
 <section class="detail" id="CONFIGURATION_LISTENER_REGISTERED">
 <h3>CONFIGURATION_LISTENER_REGISTERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_LISTENER_REGISTERED</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0}.
- It will receive configuration updates from metadata server {1}</div>
+<div class="block">ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0} and governance engine {1}.
+ It will receive configuration updates from metadata access server {2}</div>
 </section>
 </li>
 <li>
@@ -676,7 +676,7 @@ the order they are declared.</div>
 <section class="detail" id="RESTART_SERVICE_ERROR">
 <h3>RESTART_SERVICE_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">RESTART_SERVICE_ERROR</span></div>
-<div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
+<div class="block">ENGINE-HOST-SERVICES-2001 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
 </section>
 </li>
 <li>
