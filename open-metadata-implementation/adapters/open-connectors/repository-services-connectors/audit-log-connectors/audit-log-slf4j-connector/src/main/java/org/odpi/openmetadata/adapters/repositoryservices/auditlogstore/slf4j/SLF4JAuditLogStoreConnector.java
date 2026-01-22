@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j;
 
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -44,8 +44,8 @@ public class SLF4JAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 
         if (super.isSupportedSeverity(logRecord))
         {
-            if ((OMRSAuditLogRecordSeverity.ERROR.getName().equals(logRecord.getSeverity())) ||
-                (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity())))
+            if ((AuditLogRecordSeverityLevel.ERROR.getName().equals(logRecord.getSeverity())) ||
+                (AuditLogRecordSeverityLevel.EXCEPTION.getName().equals(logRecord.getSeverity())))
             {
                 log.error(logRecord.getOriginator().getServerName() + logRecord.getGUID() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
                 if (logRecord.getExceptionClassName() != null)

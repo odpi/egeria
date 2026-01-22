@@ -35,11 +35,11 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                 "Verify that the start up sequence goes on to initialize the configured repository governance engines."),
 
     /**
-     * OMES-REPOSITORY-GOVERNANCE-0012 - The Repository Governance OMES is unable to initialize a new instance of itself in server {0}; error message is {1}
+     * OMES-REPOSITORY-GOVERNANCE-0012 - The Repository Governance OMES cannot initialize a new instance of itself in server {0}; error message is {1}
      */
     SERVICE_INSTANCE_FAILURE("OMES-REPOSITORY-GOVERNANCE-0012",
                              AuditLogRecordSeverityLevel.ERROR,
-                             "The Repository Governance OMES is unable to initialize a new instance of itself in server {0}; error message is {1}",
+                             "The Repository Governance OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its repository governance services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
@@ -101,21 +101,21 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                            "It is possible to query the result of the repository governance request through the Governance Engine OMAS's REST API."),
 
     /**
-     * OMES-REPOSITORY-GOVERNANCE-0020 - Repository Governance OMES in server {0} is unable to start any repository governance engines
+     * OMES-REPOSITORY-GOVERNANCE-0020 - Repository Governance OMES in server {0} cannot start any repository governance engines
      */
     NO_REPOSITORY_GOVERNANCE_ENGINES_STARTED("OMES-REPOSITORY-GOVERNANCE-0020",
                                              AuditLogRecordSeverityLevel.ERROR,
-                                             "Repository Governance OMES in server {0} is unable to start any repository governance engines",
+                                             "Repository Governance OMES in server {0} cannot start any repository governance engines",
                                              "The engine service is not able to run any repository governance requests.  It fails to start.",
                                              "Add the configuration for at least one repository governance engine to this engine service."),
 
     /**
-     * OMES-REPOSITORY-GOVERNANCE-0021 - RepositoryGovernance engine {0} is unable to update the status for repository governance service {1}.  
+     * OMES-REPOSITORY-GOVERNANCE-0021 - RepositoryGovernance engine {0} cannot update the status for repository governance service {1}.  
      * The exception was {2} with error message {3}
      */
     EXC_ON_ERROR_STATUS_UPDATE("OMES-REPOSITORY-GOVERNANCE-0021",
                                  AuditLogRecordSeverityLevel.EXCEPTION,
-                                 "RepositoryGovernance engine {0} is unable to update the status for repository governance service {1}.  The exception was {2} with error " +
+                                 "RepositoryGovernance engine {0} cannot update the status for repository governance service {1}.  The exception was {2} with error " +
                                        "message {3}",
                                  "The server is not able to record the failed result for a repository governance request. The repository governance report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the repository governance request."),

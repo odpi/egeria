@@ -36,7 +36,7 @@ public enum OSFAuditCode implements AuditLogMessageSet
     WRONG_TYPE_OF_CONNECTOR("OPEN-SURVEY-0002",
                             AuditLogRecordSeverityLevel.ERROR,
                             "The {0} Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                            "The survey is unable to continue since it is unable to work with the supplied connector.",
+                            "The survey cannot continue since it cannot work with the supplied connector.",
                             "Use the details from the error message to determine the class of the connector.  " +
                                     "Update the connector type associated with its Connection in the metadata store."),
 
@@ -89,7 +89,7 @@ public enum OSFAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.ERROR,
         "Asset {0} has a root schema of type {1} but survey action service {2} only supports the following root schema type(s): {3}",
                              "The survey action service terminates because it can not proceed.",
-                             "The caller has requested a governance request type that is unable to process a root schema for an asset because its type is unsupported." +
+                             "The caller has requested a governance request type that cannot process a root schema for an asset because its type is unsupported." +
                                      "  This problem could be resolved by issuing the survey request with " +
                                      "a governance request type that is compatible with the asset's schema, or changing the survey action service " +
                                      "associated with the governance request type to one that supports this type of schema."),
@@ -100,7 +100,7 @@ public enum OSFAuditCode implements AuditLogMessageSet
     NO_SCHEMA("OPEN-SURVEY-0008",
               AuditLogRecordSeverityLevel.ERROR,
               "The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached",
-              "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema.",
+              "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema.",
               "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
 
     /**
@@ -109,7 +109,7 @@ public enum OSFAuditCode implements AuditLogMessageSet
     NO_SCHEMA_ATTRIBUTES("OPEN-SURVEY-0009",
               AuditLogRecordSeverityLevel.ERROR,
               "The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached",
-              "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
+              "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
               "Update the asset to include the desired schema attributes and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
 
 

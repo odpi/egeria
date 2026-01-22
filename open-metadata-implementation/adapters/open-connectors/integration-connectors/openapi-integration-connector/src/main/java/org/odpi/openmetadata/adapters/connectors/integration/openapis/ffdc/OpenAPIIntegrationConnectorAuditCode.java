@@ -90,7 +90,7 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
 
     MISSING_TEMPLATE("OPEN-API-INTEGRATION-CONNECTOR-0015",
                      AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}",
+                     "The {0} integration connector cannot retrieve the DataFile template with qualified name: {1}",
                      "The metadata element for the template is not found in the open metadata repositories.  " +
                              "The template name was configured for the connector.  This means that files should be catalogued " +
                              "using the template.  Since the template is missing, files are not being catalogued.",
@@ -107,7 +107,7 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION( "OPEN-API-INTEGRATION-CONNECTOR-0029",
                           AuditLogRecordSeverityLevel.EXCEPTION,
                           "The {0} integration connector received an unexpected exception {1} in method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more APIs.",
+                         "The connector cannot catalog one or more APIs.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     CLIENT_SIDE_REST_API_ERROR( "OPEN-API-INTEGRATION-CONNECTOR-0030",

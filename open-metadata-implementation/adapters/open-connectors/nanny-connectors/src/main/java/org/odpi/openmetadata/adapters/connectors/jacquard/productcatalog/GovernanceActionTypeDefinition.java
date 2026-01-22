@@ -6,28 +6,16 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
 /**
  * Defines the guids and request types for the governance action types that are used in the
- * Open Metadata Product Catalog.  They are set up in the core content pack and then customised
+ * Open Metadata Digital Product Catalog.  They are set up in the core content pack and then customised
  * by the harvester.
  */
 public enum GovernanceActionTypeDefinition
 {
     /**
-     * monitored-resource-notification
+     * baudot-subscription-manager
      */
-    MONITORED_RESOURCE_WATCHDOG("monitored-resource-notification",
-                                "9c6e08d6-a081-4482-a173-1ae7baf3faf1"),
-
-    /**
-     * periodic-refresh-notification
-     */
-    PERIODIC_REFRESH_WATCHDOG("periodic-refresh-notification",
-                              "581439e8-c49d-42f2-bd4a-2070b31db8f0"),
-
-    /**
-     * one-time-notification
-     */
-    ONE_TIME_NOTIFICATION("one-time-notification",
-                          "e1f5aa39-41d0-4894-aa6d-407fe1189fcd"),
+    BAUDOT_SUBSCRIPTION_MANAGER("baudot-subscription-manager",
+                                "5910a207-0da0-4694-afcb-9037c82fef33"),
 
     /**
      * award-karma-points

@@ -99,7 +99,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
     {
         if (openMetadataRelationships != null)
         {
-            return this.getNewBeans(beanClass, openMetadataRelationships.getElementList(), methodName);
+            return this.getNewBeans(beanClass, openMetadataRelationships.getRelationships(), methodName);
         }
 
         return null;

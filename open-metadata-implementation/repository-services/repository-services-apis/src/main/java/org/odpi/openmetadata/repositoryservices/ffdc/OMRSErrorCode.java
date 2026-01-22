@@ -35,7 +35,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_IN_USE(400, "OMRS-REPOSITORY-400-001",
             "Unable to delete the TypeDef {0} (guid = {1}) since it is still in use in the open metadata repository {2}",
-            "The system is unable to delete the TypeDef because there are still instances in the metadata repository that are using it.",
+            "The system cannot delete the TypeDef because there are still instances in the metadata repository that are using it.",
             "Remove the existing instances from the open metadata repositories and try the delete again."),
 
     /**
@@ -43,7 +43,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ATTRIBUTE_TYPEDEF_IN_USE(400, "OMRS-REPOSITORY-400-002",
             "Unable to delete the AttributeTypeDef {0} (guid = {1}) since it is still in use in the open metadata repository {2}",
-            "The system is unable to delete the AttributeTypeDef because there are still instances in the metadata repository that are using it.",
+            "The system cannot delete the AttributeTypeDef because there are still instances in the metadata repository that are using it.",
             "Remove the instances that have properties of this type from the open metadata repositories and try the delete again."),
 
     /**
@@ -51,7 +51,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_ALREADY_DEFINED(400, "OMRS-REPOSITORY-400-003",
             "Unable to add the TypeDef {0} (guid = {1}) since it is already defined in the open metadata repository {2}",
-            "The system is unable to add the TypeDef to its repository because it is already defined.",
+            "The system cannot add the TypeDef to its repository because it is already defined.",
             "Validate that the existing type definition is as required.  It is possible to patch the TypeDef, or delete it and re-define it."),
 
     /**
@@ -59,7 +59,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ATTRIBUTE_TYPEDEF_ALREADY_DEFINED(400, "OMRS-REPOSITORY-400-004",
             "Unable to add the AttributeTypeDef {0} (guid = {1}) since it is already defined in the open metadata repository {2}",
-            "The system is unable to delete the AttributeTypeDef because because it is already defined.",
+            "The system cannot delete the AttributeTypeDef because because it is already defined.",
             "Validate that the existing attribute type definition is as required.  It is not possible to patch the AttributeTypeDef so " +
                                               "re-define it with a new name."),
 
@@ -68,14 +68,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_CLASSIFICATION(400, "OMRS-REPOSITORY-400-005",
             "Classification {0} is not a recognized classification type by open metadata repository {1}",
-            "The system is unable to create a new classification for an entity because the open metadata repository does not recognize the classification type.",
+            "The system cannot create a new classification for an entity because the open metadata repository does not recognize the classification type.",
             "Create a ClassificationDef for the classification and retry the request."),
 
     /**
-     * OMRS-REPOSITORY-400-006 - Open metadata repository {0} is unable to assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity
+     * OMRS-REPOSITORY-400-006 - Open metadata repository {0} cannot assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity
      */
     INVALID_CLASSIFICATION_FOR_ENTITY(400, "OMRS-REPOSITORY-400-006",
-            "Open metadata repository {0} is unable to assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity",
+            "Open metadata repository {0} cannot assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity",
             "The system is not able to classify an entity since the ClassificationDef for the classification does not list the entity type, or one of its super-types.",
             "Update the ClassificationDef to include the entity's type and rerun the request. Alternatively use a different classification."),
 
@@ -84,7 +84,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_TYPEDEF_NAME(400, "OMRS-REPOSITORY-400-007",
             "A null TypeDef name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the TypeDef name is needed.",
+            "The system cannot perform the request because the TypeDef name is needed.",
             "Correct the caller's code to include the TypeDef name and retry the request."),
 
     /**
@@ -92,7 +92,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_ATTRIBUTE_TYPEDEF_NAME(400, "OMRS-REPOSITORY-400-008",
             "A null AttributeTypeDef name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the AttributeTypeDef name is needed.",
+            "The system cannot perform the request because the AttributeTypeDef name is needed.",
             "Correct the caller's code to include the AttributeTypeDef name and retry the request."),
 
     /**
@@ -100,7 +100,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_TYPEDEF_CATEGORY(400, "OMRS-REPOSITORY-400-009",
             "A null TypeDef category has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the TypeDef category is needed.",
+            "The system cannot perform the request because the TypeDef category is needed.",
             "Correct the caller's code and retry the request."),
 
     /**
@@ -108,7 +108,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_ATTRIBUTE_TYPEDEF_CATEGORY(400, "OMRS-REPOSITORY-400-010",
             "A null AttributeTypeDef category has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the AttributeTypeDef category is needed.",
+            "The system cannot perform the request because the AttributeTypeDef category is needed.",
             "Fix the caller's code and try the request again."),
 
     /**
@@ -116,7 +116,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_MATCH_CRITERIA(400, "OMRS-REPOSITORY-400-011",
             "A null list of match criteria properties has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the match criteria is needed.",
+            "The system cannot perform the request because the match criteria is needed.",
             "Correct the calling code and retry the request."),
 
     /**
@@ -124,7 +124,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_EXTERNAL_ID(400, "OMRS-REPOSITORY-400-012",
             "Null values for all the parameters describing an external id for a standard has been passed on a {0} request to open metadata repository {1}",
-            "The system is unable to perform the request because at least one of the values are needed.",
+            "The system cannot perform the request because at least one of the values are needed.",
             "Correct the caller's code and repeat the request."),
 
     /**
@@ -132,7 +132,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_SEARCH_CRITERIA(400, "OMRS-REPOSITORY-400-013",
             "A null search criteria has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the search criteria is needed.",
+            "The system cannot perform the request because the search criteria is needed.",
             "Correct the caller's code and repeat the request again."),
 
     /**
@@ -140,7 +140,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_GUID(400, "OMRS-REPOSITORY-400-014",
             "A null unique identifier (guid) has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the unique identifier is needed.",
+            "The system cannot perform the request because the unique identifier is needed.",
             "Fix the calling code and retry the request."),
 
     /**
@@ -148,7 +148,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_TYPEDEF(400, "OMRS-REPOSITORY-400-015",
             "A null TypeDef has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the TypeDef is needed.",
+            "The system cannot perform the request because the TypeDef is needed.",
             "Correct the calling code and try the request again."),
 
     /**
@@ -156,7 +156,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_ATTRIBUTE_TYPEDEF(400, "OMRS-REPOSITORY-400-016",
             "A null AttributeTypeDef has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the AttributeTypeDef is needed.",
+            "The system cannot perform the request because the AttributeTypeDef is needed.",
             "Correct the caller's source code and try the request once done."),
 
     /**
@@ -172,7 +172,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_ATTRIBUTE_TYPEDEF(400, "OMRS-REPOSITORY-400-018",
             "An invalid AttributeTypeDef {0} (guid={1}) has been passed as the {2} parameter on a {3} request to open metadata repository {4}. Full AttributeTypeDef is {5}",
-            "The system is unable to perform the request as the AttributeTypeDef is needed.",
+            "The system cannot perform the request as the AttributeTypeDef is needed.",
             "Correct the caller's source code and repeat the request."),
 
     /**
@@ -180,7 +180,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_TYPEDEF(400, "OMRS-REPOSITORY-400-019",
             "A null TypeDef has been passed as the {0} parameter on a {1} request to the open metadata repository {2}",
-            "The system is unable to perform the request because the TypeDef is needed to perform the operation.",
+            "The system cannot perform the request because the TypeDef is needed to perform the operation.",
             "Fix the invoking code and retry the request."),
 
     /**
@@ -188,7 +188,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_ATTRIBUTE_TYPEDEF(400, "OMRS-REPOSITORY-400-020",
             "A null AttributeTypeDef has been passed as the {0} parameter on a {1} request to the open metadata repository {2}",
-            "The system is unable to perform the request because the AttributeTypeDef is needed to perform the operation.",
+            "The system cannot perform the request because the AttributeTypeDef is needed to perform the operation.",
             "Correct the invoking source code and retry the request."),
 
     /**
@@ -196,7 +196,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_TYPEDEF_GALLERY(400, "OMRS-REPOSITORY-400-021",
             "A null TypeDefGalleryResponse object has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the TypeDefGalleryResponse should contain the information to process.",
+            "The system cannot perform the request because the TypeDefGalleryResponse should contain the information to process.",
             "Fix the invocation of this call and retry the request."),
 
     /**
@@ -204,7 +204,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_TYPEDEF_IDENTIFIER(400, "OMRS-REPOSITORY-400-022",
             "A null unique identifier (guid) for a TypeDef object has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the identifier for the TypeDef is needed to proceed.",
+            "The system cannot perform the request because the identifier for the TypeDef is needed to proceed.",
             "Fix the invocation in the caller's code and retry the request."),
 
     /**
@@ -220,7 +220,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_ATTRIBUTE_TYPEDEF_IDENTIFIER(400, "OMRS-REPOSITORY-400-024",
             "A null unique identifier (guid) for a AttributeTypeDef object has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the identifier for the AttributeTypeDef is needed to proceed.",
+            "The system cannot perform the request because the identifier for the AttributeTypeDef is needed to proceed.",
             "Correct the caller's code and try the request again."),
 
     /**
@@ -228,7 +228,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_METADATA_COLLECTION(400, "OMRS-REPOSITORY-400-025",
             "Local metadata repository has not initialized correctly because it was unable to create its metadata collection",
-            "The metadata collection object provides access to the storage, or remote metadata service that is supporting the repository.  The system is unable to process requests for this repository without a metadata collection.",
+            "The metadata collection object provides access to the storage, or remote metadata service that is supporting the repository.  The system cannot process requests for this repository without a metadata collection.",
             "The repository connector for the local repository has not initialized correctly.  This may be an " +
                     "error in the repository connector's logic, or a missing or incorrect property in the connector's connection object stored in " +
                     "the server's configuration document, or a missing resource, or permission needed by the connector.  The repository connector should " +
@@ -242,7 +242,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_CLASSIFICATION_NAME(400, "OMRS-REPOSITORY-400-026",
             "A null classification name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to access the local metadata repository.",
+            "The system cannot access the local metadata repository.",
             "The classification name is supplied by the caller to the API. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -258,7 +258,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_PROPERTY_FOR_TYPE(400, "OMRS-REPOSITORY-400-028",
             "A property called {0} has been proposed for a metadata instance of category {1} and type {2}; it is not supported for this type in open metadata repository {3}",
-            "The system is unable to store the metadata instance in the metadata repository because the properties listed do not match the supplied type definition.",
+            "The system cannot store the metadata instance in the metadata repository because the properties listed do not match the supplied type definition.",
             "Verify that the property name is spelt correctly and the correct type has been used. Correct the call to the metadata repository and retry."),
 
     /**
@@ -266,7 +266,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_PROPERTIES_FOR_TYPE(400, "OMRS-REPOSITORY-400-029",
             "Properties have been proposed for a new metadata instance of category {0} and type {1}; properties not supported for this type in open metadata repository {2}",
-            "The system is unable to store the metadata instance in the metadata repository as the properties listed do not match the supplied type definition.",
+            "The system cannot store the metadata instance in the metadata repository as the properties listed do not match the supplied type definition.",
             "Verify that the property name is spelt correctly and the correct type has been used. Fix the call to the metadata repository and retry."),
 
     /**
@@ -274,7 +274,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_PROPERTY_TYPE(400, "OMRS-REPOSITORY-400-030",
             "A property called {0} of type {1} has been proposed for a new metadata instance of category {2} and type {3}; this property should be of type {4} in open metadata repository {5}",
-            "The system is unable to store the metadata instance in the metadata repository since the properties listed do not match the supplied type definition.",
+            "The system cannot store the metadata instance in the metadata repository since the properties listed do not match the supplied type definition.",
             "Check that the property name is spelt correctly and the correct type has been used. Correct the call to the metadata repository and retry."),
 
     /**
@@ -282,7 +282,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_PROPERTY_NAME_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-031",
             "A null property name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to process the metadata instance.",
+            "The system cannot process the metadata instance.",
             "The property name is supplied by the caller to the API. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -298,7 +298,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_PROPERTY_TYPE_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-033",
             "A null property type has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to correctly process the metadata instance.",
+            "The system cannot correctly process the metadata instance.",
             "The property type is supplied by the caller to the API. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -306,7 +306,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_TYPEDEF_ID_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-034",
             "A invalid TypeDef unique identifier (guid) has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to perform the request because the unique identifier is required.",
+            "The system cannot perform the request because the unique identifier is required.",
             "Fix the caller's code and try the request again when done."),
 
     /**
@@ -314,7 +314,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_INSTANCE_STATUS(400, "OMRS-REPOSITORY-400-035",
             "An instance status of {0} has been passed as the {1} parameter on a {2} request to open metadata repository {3} but this status is not valid for an instance of type {4}",
-            "The system is unable to process this request.",
+            "The system cannot process this request.",
             "The instance status is supplied by the caller to the API. This call needs to be corrected before the server can complete this operation successfully."),
 
     /**
@@ -322,7 +322,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_INSTANCE_STATUS(400, "OMRS-REPOSITORY-400-036",
             "A null instance status has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to process the metadata instance request.",
+            "The system cannot process the metadata instance request.",
             "The instance status is supplied by the caller to the API. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -330,7 +330,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_NEW_PROPERTIES(400, "OMRS-REPOSITORY-400-037",
             "No properties have been passed on the {0} parameter on a {1} request to open metadata repository {2}",
-            "The system is unable to process this metadata instance request.",
+            "The system cannot process this metadata instance request.",
             "The instance status is supplied by the caller to the API. This call needs to be fixed before the server can operate correctly."),
 
     /**
@@ -347,7 +347,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     BAD_TYPEDEF_IDS_FOR_DELETE(400, "OMRS-REPOSITORY-400-039",
             "Incompatible TypeDef unique identifiers (name={0}, guid{1}) have been passed on a {2} request for instance {3} to open metadata " +
                     "repository {4}",
-            "The system is unable to perform the request because the unique identifiers are needed.",
+            "The system cannot perform the request because the unique identifiers are needed.",
             "Correct the caller's code to provide compatible type identifiers and retry the request."),
 
     /**
@@ -355,7 +355,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_PROPERTY_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-040",
             "Unexpected exception {0} occurred when comparing properties against a search string of {1} during the {2} operation from {3}. Error message was {4}",
-            "The system is unable to perform the request because the unique identifier must be provided.",
+            "The system cannot perform the request because the unique identifier must be provided.",
             "Correct the error in the requesting code and retry."),
 
     /**
@@ -363,7 +363,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_REFERENCE_INSTANCE(400, "OMRS-REPOSITORY-400-041",
             "A null reference instance has been passed to repository {0} during the {1} in the {2} parameter",
-            "The system is unable to perform the request because the instance is needed.",
+            "The system cannot perform the request because the instance is needed.",
             "The reference instance comes from another server.  Look for errors in the audit log and validate that the message passing " +
                                     "protocol levels are compatible. If nothing is obviously wrong with the set up, " +
                                     "raise a Github issue or ask for help on the dev mailing list."),
@@ -373,7 +373,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_ENTITY_PROXY(400, "OMRS-REPOSITORY-400-043",
             "A null entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation",
-            "The system is unable to perform the request because the entity proxy is needed.",
+            "The system cannot perform the request because the entity proxy is needed.",
             "Correct the caller's code to supply the entity proxy and retry the request."),
 
     /**
@@ -381,7 +381,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     LOCAL_ENTITY_PROXY(400, "OMRS-REPOSITORY-400-044",
             "An entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation which has the local repository as its home",
-            "The system is unable to perform the request because the entity proxy should represent an entity that is homed in another repository.",
+            "The system cannot perform the request because the entity proxy should represent an entity that is homed in another repository.",
             "Correct the bug in the caller's code and retry the request."),
 
     /**
@@ -389,7 +389,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INSTANCE_ALREADY_DELETED(400, "OMRS-REPOSITORY-400-045",
             "A {0} request has been made to repository {1} for an instance {2} that is already deleted",
-            "The system is unable to perform the request because the instance is in the wrong state.",
+            "The system cannot perform the request because the instance is in the wrong state.",
             "Try a different request or a different instance."),
 
     /**
@@ -397,7 +397,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INSTANCE_NOT_DELETED(400, "OMRS-REPOSITORY-400-046",
             "A {0} request has been made to repository {1} for an instance {2} that is not deleted",
-            "The system is unable to perform the request since the instance is in the wrong state.",
+            "The system cannot perform the request since the instance is in the wrong state.",
             "Try again with a different request or specify a different instance."),
 
     /**
@@ -407,7 +407,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     INVALID_RELATIONSHIP_ENDS(400, "OMRS-REPOSITORY-400-047",
             "A {0} request has been made to repository {1} for a relationship that has one or more ends of the wrong or invalid type.  " +
                     "Relationship type is {2}; entity proxy {3} for end 1 is of type {4} rather than {5} and entity proxy {6} for end 2 is of type {7} rather than {8}",
-            "The system is unable to perform the request because the instance has invalid values.",
+            "The system cannot perform the request because the instance has invalid values.",
             "Correct the caller's code and attempt the request again."),
 
     /**
@@ -415,7 +415,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ENTITY_NOT_CLASSIFIED(400, "OMRS-REPOSITORY-400-048",
             "A {0} request has been made to repository {1} to access a non-existent classification {2} from entity {3}",
-            "The system is unable to perform the request as the instance has a missing classification.",
+            "The system cannot perform the request as the instance has a missing classification.",
             "Correct the caller's code and reattempt the request."),
 
     /**
@@ -423,7 +423,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_TYPEDEF_PATCH(400, "OMRS-REPOSITORY-400-049",
             "A null TypeDef patch has been passed on the {0} operation of repository {1}",
-            "The system is unable to perform the request because it needs the patch to process the update.",
+            "The system cannot perform the request because it needs the patch to process the update.",
             "Correct the calling code and reattempt the request."),
 
     /**
@@ -431,7 +431,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NEGATIVE_PAGE_SIZE(400, "OMRS-REPOSITORY-400-050",
             "A negative pageSize of {0} has been passed on the {0} parameter of a {1} request to open metadata repository {2}",
-            "The system is unable to process the request.",
+            "The system cannot process the request.",
             "The pageSize parameter is supplied by the caller to the API. This call needs to be corrected before the server will operate correctly."),
 
     /**
@@ -439,7 +439,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ENTITY_PROXY_ONLY(400, "OMRS-REPOSITORY-400-051",
             "A request for entity {0} has been passed to repository {1} as the {2} parameter of the {3} operation but only an entity proxy has been found",
-            "The system is unable to return all the details of the entity.  It can only supply an entity summary.",
+            "The system cannot return all the details of the entity.  It can only supply an entity summary.",
             "The fact that the system has a proxy means that the entity exists in one of the members of the connected cohorts.  " +
                               "The repository where it is located may be unavailable, or the entity has been deleted " +
                               "but the delete request has not propagated through to this repository."),
@@ -449,7 +449,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_ENTITY_FROM_STORE(400, "OMRS-REPOSITORY-400-052",
             "The entity {0} retrieved from repository {1} during the {2} operation has invalid contents: {3}",
-            "The system is unable to continue processing the request.",
+            "The system cannot continue processing the request.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Raise a Github issue to get this fixed."),
 
     /**
@@ -465,7 +465,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_INSTANCE_METADATA_COLLECTION_ID(400, "OMRS-REPOSITORY-400-054",
             "The element {0} retrieved from repository {1} during the {2} operation has a null metadata collection id in its header: {3}",
-            "The system is unable to process the request further because the element has an invalid header.",
+            "The system cannot process the request further because the element has an invalid header.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Open a Github issue to get this fixed."),
 
     /**
@@ -481,7 +481,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_HOME_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-056",
             "The OMRS repository connector operation {0} from the OMRS Enterprise Repository Services can not locate the home repository connector for instance {1} located in metadata collection {2}",
-            "The system is unable to proceed with processing this request.",
+            "The system cannot proceed with processing this request.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Raise a Github issue in order to get this fixed."),
 
     /**
@@ -497,7 +497,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     BAD_DELETE_INSTANCE_STATUS(400, "OMRS-REPOSITORY-400-058",
             "An instance status of {0} has been passed as the {1} parameter on a {2} request to open metadata repository {3} however this status is not valid for an instance of type {4}",
-            "The system is unable to process the request because this status is only for use by the open metadata repository services (OMRS).",
+            "The system cannot process the request because this status is only for use by the open metadata repository services (OMRS).",
             "The instance status is supplied by the caller to the API. This call needs to be changed to either a delete of purge request."),
 
     /**
@@ -505,7 +505,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     VERIFY_CONFLICT_DETECTED(400, "OMRS-REPOSITORY-400-059",
             "Type definition with guid {0} and name {1} conflicts with an existing type definition in open metadata repository {2}",
-            "The system is unable to verify the supplied type definition because has different values from the type already defined in the repository.",
+            "The system cannot verify the supplied type definition because has different values from the type already defined in the repository.",
             "Review the supplied and stored types to locate the conflict and then ensure they are aligned by patching or deleting one of the type definitions."),
 
     /**
@@ -513,7 +513,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_PARAMETER(400, "OMRS-REPOSITORY-400-060",
             "The repository helper method {0} has been called with a null parameter",
-            "The system is unable to process the request because it needs the parameter value.",
+            "The system cannot process the request because it needs the parameter value.",
             "This is probably a logic error in Egeria. Raise a git issue to get this investigated and fixed."),
 
     /**
@@ -521,7 +521,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_INSTANCE(400, "OMRS-REPOSITORY-400-061",
             "An invalid instance has been detected by repository helper method {0}.  The instance is {1}",
-            "The system is unable to work with the supplied instance because key values are missing from its contents.",
+            "The system cannot work with the supplied instance because key values are missing from its contents.",
             "This is probably a logic error in Egeria. Raise a GitHub issue to get this investigated and fixed."),
 
     /**
@@ -533,36 +533,36 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Review the error message and other diagnostics created at the same time."),
 
     /**
-     * OMRS-REPOSITORY-400-063 - Method {0} is unable to request a refresh of instance {1} as it is a local member of metadata collection {2} in repository {3}
+     * OMRS-REPOSITORY-400-063 - Method {0} cannot request a refresh of instance {1} as it is a local member of metadata collection {2} in repository {3}
      */
     HOME_REFRESH(400, "OMRS-REPOSITORY-400-063",
-            "Method {0} is unable to request a refresh of instance {1} as it is a local member of metadata collection {2} in repository {3}",
+            "Method {0} cannot request a refresh of instance {1} as it is a local member of metadata collection {2} in repository {3}",
             "The system can not continue to action the request.",
             "Review the error messages and other diagnostics created at the same time."),
 
     /**
-     * OMRS-REPOSITORY-400-064 - Method {0} is unable to locate an instance with guid {1} in the archive
+     * OMRS-REPOSITORY-400-064 - Method {0} cannot locate an instance with guid {1} in the archive
      */
     UNKNOWN_GUID(400, "OMRS-REPOSITORY-400-064",
-            "Method {0} is unable to locate an instance with guid {1} in the archive",
-            "The system is unable to process the incoming request.",
+            "Method {0} cannot locate an instance with guid {1} in the archive",
+            "The system cannot process the incoming request.",
             "Check the error message and other diagnostics created at the same time."),
 
     /**
-     * OMRS-REPOSITORY-400-065 - Method {0} is unable to accept the new type definition {1} from {2} because it has a header version of {3} which is greater than this repository can support ({4})
+     * OMRS-REPOSITORY-400-065 - Method {0} cannot accept the new type definition {1} from {2} because it has a header version of {3} which is greater than this repository can support ({4})
      */
     UNSUPPORTED_TYPE_HEADER_VERSION(400, "OMRS-REPOSITORY-400-065",
-            "Method {0} is unable to accept the new type definition {1} from {2} because it has a header version of {3} which is greater than this repository can support ({4})",
+            "Method {0} cannot accept the new type definition {1} from {2} because it has a header version of {3} which is greater than this repository can support ({4})",
             "The system will not to process this request.",
-            "The repository is sharing metadata with a repository of greater capability and the local repository is unable to work with its types.  It may be time to upgrade the local repository."),
+            "The repository is sharing metadata with a repository of greater capability and the local repository cannot work with its types.  It may be time to upgrade the local repository."),
 
     /**
-     * OMRS-REPOSITORY-400-066 - Method {0} is unable to accept the new {1} instance from {2} with guid {3} and type {4} because it has a header version of {5} which is greater than this repository can support ({6})
+     * OMRS-REPOSITORY-400-066 - Method {0} cannot accept the new {1} instance from {2} with guid {3} and type {4} because it has a header version of {5} which is greater than this repository can support ({6})
      */
     UNSUPPORTED_INSTANCE_HEADER_VERSION(400, "OMRS-REPOSITORY-400-066",
-            "Method {0} is unable to accept the new {1} instance from {2} with guid {3} and type {4} because it has a header version of {5} which is greater than this repository can support ({6})",
-            "The system is unable to process the call.",
-            "The repository is sharing metadata with a repository of higher capability and the local repository is unable to work with its types.  It may be time to upgrade the local repository."),
+            "Method {0} cannot accept the new {1} instance from {2} with guid {3} and type {4} because it has a header version of {5} which is greater than this repository can support ({6})",
+            "The system cannot process the call.",
+            "The repository is sharing metadata with a repository of higher capability and the local repository cannot work with its types.  It may be time to upgrade the local repository."),
 
     /**
      * OMRS-REPOSITORY-400-067 - Method {0} has detected invalid version values in TypeDef patch from {1}. The updateToVersion {2} is
@@ -571,7 +571,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     INVALID_PATCH_VERSION(400, "OMRS-REPOSITORY-400-067",
             "Method {0} has detected invalid version values in TypeDef patch from {1}. The updateToVersion {2} is less " +
                                   "than the applyToVersion {3}.  This is the contents of the patch {4}",
-            "The system is unable to process the patch because it is invalid.",
+            "The system cannot process the patch because it is invalid.",
             "Correct the source of the patch and then try reloading it."),
 
     /**
@@ -581,7 +581,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     INCOMPATIBLE_PATCH_VERSION(400, "OMRS-REPOSITORY-400-068",
             "Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} " +
                                   "and the active TypeDef's version is {3}. This is the contents of the patch {4}",
-            "The system is unable to process the patch because it is for a future version of the type.  This means there is at least one missing " +
+            "The system cannot process the patch because it is for a future version of the type.  This means there is at least one missing " +
                                        "patch that needs to be applied first",
             "Locate and load the previous versions of the patch and then try reloading this one."),
 
@@ -592,7 +592,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     NULL_MANDATORY_PATCH_FIELD(400, "OMRS-REPOSITORY-400-069",
             "Method {0} has detected that a TypeDef patch from {1} has the mandatory field {2} set to null which is invalid. This is " +
                                   "the contents of the patch {3}",
-            "The system is unable to process the patch as it is invalid.",
+            "The system cannot process the patch as it is invalid.",
             "Correct the source of the patch and then try loading it again."),
 
     /**
@@ -602,7 +602,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     INCOMPATIBLE_PROPERTY_PATCH(400, "OMRS-REPOSITORY-400-070",
             "Method {0} has detected that a TypeDef patch from {1} attempts to change the type of property {2} " +
                                        "from {3} to {4}. This is the contents of the patch {5}",
-            "The system is unable to process the patch since it is invalid.",
+            "The system cannot process the patch since it is invalid.",
             "Correct the source of the patch and then try reloading it again."),
 
     /**
@@ -610,7 +610,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_AUDIT_LOG_DESTINATIONS(400, "OMRS-REPOSITORY-400-071",
             "The Open Metadata Repository Services (OMRS) has been called to initialize with no audit log destinations defined for server {0}",
-            "The local server is unable to continue without an audit log.",
+            "The local server cannot continue without an audit log.",
             "Add at least one audit log destination to the server configuration."),
 
     /**
@@ -641,7 +641,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_PROPERTY_SEARCH(400, "OMRS-REPOSITORY-400-074",
             "An invalid list of property-based search conditions was provided: nestedConditions is mutually exclusive with property, operator, value",
-            "The system is unable to process the requested search because the provided options are mutually-exclusive.",
+            "The system cannot process the requested search because the provided options are mutually-exclusive.",
             "Review the request payload and provide only a nestedConditions or a property, operator, value payload for each property-based condition object in the list of conditions."),
 
     /**
@@ -649,7 +649,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_CLASSIFICATION_SEARCH(400, "OMRS-REPOSITORY-400-075",
             "An invalid list of classification-based search conditions was provided: name of the classification is mandatory",
-            "The system is unable to process the requested search because a classification name was not provided.",
+            "The system cannot process the requested search because a classification name was not provided.",
             "Review the request payload and provide at least a classification name for each classification-based condition object in the list of conditions."),
 
     /**
@@ -657,7 +657,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_LIST_CONDITION(400, "OMRS-REPOSITORY-400-076",
             "An invalid list was provided for the value of an IN operator",
-            "The system is unable to process the requested search because an ArrayPropertyValue is required as the value for the IN operator.",
+            "The system cannot process the requested search because an ArrayPropertyValue is required as the value for the IN operator.",
             "Review the request payload and ensure that an ArrayPropertyValue is provided when using the IN operator."),
 
     /**
@@ -665,7 +665,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_LIKE_CONDITION(400, "OMRS-REPOSITORY-400-077",
             "An invalid string was provided for the value of a LIKE operator",
-            "The system is unable to process the requested search because only a string is permitted as the value for the LIKE operator.",
+            "The system cannot process the requested search because only a string is permitted as the value for the LIKE operator.",
             "Review the request payload and ensure that a PrimitivePropertyValue of type OM_PRIMITIVE_TYPE_STRING is provided when using the LIKE operator."),
 
     /**
@@ -673,7 +673,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     INVALID_NUMERIC_CONDITION(400, "OMRS-REPOSITORY-400-078",
             "An invalid string was provided for the value of the {0} operator",
-            "The system is unable to process the requested search because only a date or number is permitted as the value for the provided operator.",
+            "The system cannot process the requested search because only a date or number is permitted as the value for the provided operator.",
             "Review the request payload and ensure that a PrimitivePropertyValue of a date or numeric type is provided when using the provided operator."),
 
     /**
@@ -681,7 +681,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_NOT_SUBTYPE(400, "OMRS-REPOSITORY-400-079",
             "The provided subtype {0} is not a subtype of typedef {1}",
-            "The system is unable to process the requested search because the specified subtype is not a known subtype of the provided type.",
+            "The system cannot process the requested search because the specified subtype is not a known subtype of the provided type.",
             "Review the request payload and ensure that the list of subtypes includes only valid subtypes for the provided entity type."),
 
     /**
@@ -689,7 +689,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     UNSUPPORTED_CLASSIFICATION(400, "OMRS-REPOSITORY-400-080",
             "Classification {0} is not a supported classification type in open metadata repository {1}",
-            "The supplied classification is valid.  However, the system is unable to maintain the " +
+            "The supplied classification is valid.  However, the system cannot maintain the " +
                                        "classification for an entity in this repository because it does not support the classification type.  " +
                                        "The system will attempt to store the classification in another member of the cohort",
             "Ensure there is at least one repository in the cohort that supports this classification type."),
@@ -699,7 +699,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ENTITY_ALREADY_CLASSIFIED(400, "OMRS-REPOSITORY-400-081",
                           "A {0} request has been made to repository {1} to add a classification {2} to entity {3} when this entity is already classified",
-                          "The system is unable to perform the request as only one classification of a specific type is permitted.",
+                          "The system cannot perform the request as only one classification of a specific type is permitted.",
                           "Use the updateClassificationProperties to make changed to an existing classification."),
 
     /**
@@ -707,7 +707,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_HOME_FOR_CLASSIFICATION(400, "OMRS-REPOSITORY-400-082",
                          "The OMRS repository connector operation {0} from the OMRS Enterprise Repository Services can not locate the home repository connector for classification {1} located in metadata collection {2}",
-                         "The system is unable to proceed with processing this classification update request because it does not know which repository to call.",
+                         "The system cannot proceed with processing this classification update request because it does not know which repository to call.",
                          "This error suggests there is a logic error in either this repository, or the home repository for the classification. " +
                                  "Note this may be different from the home repository for the entity.  Raise a Github issue in order to get this fixed."),
 
@@ -752,10 +752,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Recode the call to the property object with a valid property name and retry."),
 
     /**
-     * OMRS-PROPERTIES-400-004 - {0} is unable to add a new element to location {1} of an array of size {2} value
+     * OMRS-PROPERTIES-400-004 - {0} cannot add a new element to location {1} of an array of size {2} value
      */
     ARRAY_OUT_OF_BOUNDS(400, "OMRS-PROPERTIES-400-004",
-            "{0} is unable to add a new element to location {1} of an array of size {2} value",
+            "{0} cannot add a new element to location {1} of an array of size {2} value",
             "There is an error in the update of an ArrayPropertyValue.",
             "Recode the call to the property object with a valid element location and retry."),
 
@@ -788,7 +788,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     REPOSITORY_URL_NULL(400, "OMRS-REST-CONNECTOR-400-001",
             "The connection passed in the cohort registration event does not contain the root URL for calling the server's REST API",
-            "The system is unable to connect to the open metadata repository to retrieve metadata.",
+            "The system cannot connect to the open metadata repository to retrieve metadata.",
             "Retry the cohort registration when the connection configuration for this repository is corrected.  " +
                                 "If the server is running in an OMAG platform then the configuration of the LocalRepositoryRemoteConnection needs correcting."),
 
@@ -797,7 +797,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     REPOSITORY_URL_MALFORMED(400, "OMRS-CONNECTOR-400-001",
             "The Open Metadata Repository Server URL {0} is not in a recognized format",
-            "The system is unable to connect to the open metadata repository to retrieve metadata properties.",
+            "The system cannot connect to the open metadata repository to retrieve metadata properties.",
             "Retry the request when the connection configuration for this repository is corrected."),
 
     /**
@@ -805,7 +805,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_OMRS_CONNECTION(400, "OMRS-CONNECTOR-400-003",
             "The connection passed to the EnterpriseOMRSRepositoryConnector is null",
-            "The system is unable to populate the EnterpriseOMRSRepositoryConnector object because it needs the connection to identify the repository.",
+            "The system cannot populate the EnterpriseOMRSRepositoryConnector object because it needs the connection to identify the repository.",
             "Look for other error messages to identify what may have caused this error.  When the issue is resolved, retry the request."),
 
     /**
@@ -848,7 +848,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_REGISTRY_STORE(400, "OMRS-COHORT-REGISTRY-404-001",
             "The Open Metadata Repository Cohort Registry Store for cohort {0} is not available",
-            "The system is unable to process registration requests from the open metadata repository cohort.",
+            "The system cannot process registration requests from the open metadata repository cohort.",
             "Correct the configuration for the registry store connection in the server configuration. " +
             "Retry the request when the registry store configuration is correct."),
 
@@ -859,7 +859,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     INVALID_LOCAL_METADATA_COLLECTION_ID(400, "OMRS-COHORT-REGISTRY-400-002",
             "The Open Metadata Repository Cohort {0} is not available to server {1} because the local " +
                     "metadata collection id has been changed from {2} to {3} since this server registered with the cohort",
-            "The system is unable to connect with other members of the cohort while this incompatibility exists.",
+            "The system cannot connect with other members of the cohort while this incompatibility exists.",
             "If there is no reason for the change of local metadata collection id (this is the normal case) " +
                     "change the local metadata collection id back to its original valid in the server configuration. " +
                     "If the local metadata collection id must be changed (due to a conflict for example) " +
@@ -873,7 +873,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_ARCHIVE_STORE(400, "OMRS-ARCHIVE-MANAGER-400-001",
             "An open metadata archive configured for server {0} is not accessible",
-             "The system is unable to process the contents of this open metadata archive.  " +
+             "The system cannot process the contents of this open metadata archive.  " +
                                "Other services may fail if they were dependent on this open metadata archive.",
              "Correct the configuration for the open metadata archive connection in the server configuration. " +
                                  "Retry the request when the open metadata archive configuration is correct."),
@@ -883,7 +883,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_EVENT_MAPPER(400, "OMRS-LOCAL-REPOSITORY-400-001",
              "The repository event mapper configured for the local repository for server {0} is not accessible",
-             "The system is unable to create the repository event mapper which means that events from the " +
+             "The system cannot create the repository event mapper which means that events from the " +
                               "local repository will not be captured and processed.  " +
                               "Other services may fail if they were dependent on this event notification.",
              "Correct the configuration for the repository event mapper connection in the server configuration. " +
@@ -905,7 +905,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     CONFLICTING_ENTERPRISE_TYPEDEFS(400, "OMRS-ENTERPRISE-REPOSITORY-400-001",
             "Conflicting TypeDefs have been detected",
-            "The system is unable to create a reliable list of TypeDefs for the enterprise.",
+            "The system cannot create a reliable list of TypeDefs for the enterprise.",
             "Details of the conflicts and the steps necessary to repair the situation can be found in the audit log. " +
                                   "Retry the request when the cohort configuration is correct."),
 
@@ -914,7 +914,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_TYPEDEFS_DEFINED(400, "OMRS-ENTERPRISE-REPOSITORY-400-002",
             "No TypeDefs have been defined in any of the connected repositories",
-            "The system is unable to create a list of TypeDefs for the enterprise.",
+            "The system cannot create a list of TypeDefs for the enterprise.",
             "Look for errors in the set up of the repositories in the audit log and verify that TypeDefs are configured. " +
                                             "Retry the request when the cohort configuration is correct."),
 
@@ -1032,7 +1032,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-001",
             "There are no Audit Log destinations configured for server {0}",
-            "The system is unable to support diagnostic and audit logging because it has not been configured with any audit log destinations.",
+            "The system cannot support diagnostic and audit logging because it has not been configured with any audit log destinations.",
             "Add the configuration for at least one audit log destination in the server configuration. " +
                           "Retry the request when the audit log configuration is correct."),
 
@@ -1041,7 +1041,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-002",
             "An Audit Log destination for server {0} is not correctly configured and a {1} exception occurred with message {2}",
-            "The system is unable to send diagnostic and audit information to one of the configured audit log destinations because the supplied " +
+            "The system cannot send diagnostic and audit information to one of the configured audit log destinations because the supplied " +
                                  "connector failed to initialize.",
             "Correct the configuration for the audit log store connection in the server configuration. " +
                                  "Retry the request when the audit log store configuration is correct."),
@@ -1075,7 +1075,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     CAN_NOT_QUERY_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-006",
             "The Audit Log destination {0} is not able to support queries",
-            "The system is unable to process the query request and throws the FunctionNotSupportedException.",
+            "The system cannot process the query request and throws the FunctionNotSupportedException.",
             "If queries on the audit log are required, then add a new audit log destination that supports queries and restart the server."),
 
     /**
@@ -1083,7 +1083,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     AUDIT_LOG_STORE_NOT_AVAILABLE(400, "OMRS-AUDIT-LOG-400-007",
             "The Audit Log destination {0} is not available.  The error returned was {1}",
-            "The system is unable to store any diagnostics or audit information to this destination because it is currently unavailable.",
+            "The system cannot store any diagnostics or audit information to this destination because it is currently unavailable.",
             "Restart or correct the configuration of this audit log destination."),
 
     /**
@@ -1091,7 +1091,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     AUDIT_LOG_RECORD_NOT_JSON_ENABLED(400, "OMRS-AUDIT-LOG-400-008",
             "The Audit log destination {0} is not able to convert an audit log record to JSON format",
-            "The system is unable to store the log record to this destination because it is not able to" +
+            "The system cannot store the log record to this destination because it is not able to" +
                                               " convert its contents into a suitable format.",
             "Investigate and correct the cause of the conversion failure."),
 
@@ -1100,15 +1100,15 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ARCHIVE_MANAGER_NOT_ACTIVE(400, "OMRS-AUDIT-LOG-400-009",
                                       "The archive manager is not active in server {0}.  Redirect the load request to a metadata access store",
-                                      "The system is unable to load an open metadata archive because the archive manager is not active in this server.",
+                                      "The system cannot load an open metadata archive because the archive manager is not active in this server.",
                                       "Redirect the load request to a metadata access store."),
 
     /**
-     * OMRS-REPOSITORY-404-001 - The open metadata repository connector for server {0} is not active and is unable to service the {1} request
+     * OMRS-REPOSITORY-404-001 - The open metadata repository connector for server {0} is not active and cannot service the {1} request
      */
     REPOSITORY_NOT_AVAILABLE(404, "OMRS-REPOSITORY-404-001",
-            "The open metadata repository connector for server {0} is not active and is unable to service the {1} request",
-            "The system is unable to retrieve any metadata properties from this repository.",
+            "The open metadata repository connector for server {0} is not active and cannot service the {1} request",
+            "The system cannot retrieve any metadata properties from this repository.",
             "Retry the request when the repository connector is active."),
 
     /**
@@ -1116,7 +1116,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ENTITY_NOT_KNOWN(404, "OMRS-REPOSITORY-404-002",
             "The entity identified with guid {0} passed on the {1} call is not known to the open metadata repository {2}",
-            "The system is unable to retrieve the properties for the requested entity because the supplied guid is not recognized.",
+            "The system cannot retrieve the properties for the requested entity because the supplied guid is not recognized.",
             "The guid is supplied by the caller to the server.  It may have a logic problem that has corrupted the guid, or the entity has been deleted since the guid was retrieved."),
 
     /**
@@ -1124,7 +1124,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     RELATIONSHIP_NOT_KNOWN(404, "OMRS-REPOSITORY-404-003",
             "The relationship identified with guid {0} passed on the {1} call is not known to the open metadata repository {2}",
-            "The system is unable to process the request for the requested relationship because the supplied guid is not recognized.",
+            "The system cannot process the request for the requested relationship because the supplied guid is not recognized.",
             "The guid is supplied by the caller to the OMRS.  It may have a logic problem that has corrupted the guid, or the " +
                                    "relationship has been deleted since the guid was retrieved.  " +
                                    "It is necessary to understand the logic of the caller to determine if this is a problem."),
@@ -1134,7 +1134,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_NOT_KNOWN(404, "OMRS-REPOSITORY-404-004",
             "The TypeDef {0} (guid = {1}) passed on the {2} parameter of the {3} operation is not known to the open metadata repository {4}",
-            "The system is unable to retrieve the properties for the requested TypeDef because the supplied identifier is not recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef because the supplied identifier is not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the typedef has been deleted since the identifier was retrieved."),
 
     /**
@@ -1142,7 +1142,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_NOT_KNOWN_FOR_INSTANCE(404, "OMRS-REPOSITORY-404-005",
             "The TypeDef {0} of category {1} passed by the {2} operation is not known to the open metadata repository {3}",
-            "The system is unable to retrieve the properties for the requested TypeDef since the supplied identifier is not recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef since the supplied identifier is not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the typedef may have been deleted since the identifier was retrieved."),
 
     /**
@@ -1150,7 +1150,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ATTRIBUTE_TYPEDEF_NOT_KNOWN(404, "OMRS-REPOSITORY-404-006",
             "The AttributeTypeDef {0} (guid = {1}) passed on the {2} call is not known to the open metadata repository {3}",
-            "The system is unable to retrieve the properties for the requested TypeDef as the supplied identifier is not recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef as the supplied identifier is not recognized.",
             "The identifier is supplied by the caller.  It may have a logic issue that has corrupted the identifier, or the typedef has been deleted since the identifier was retrieved."),
 
     /**
@@ -1158,7 +1158,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_ID_NOT_KNOWN(404, "OMRS-REPOSITORY-404-007",
             "The TypeDef unique identifier {0} passed as parameter {1} on a {2} request to open metadata repository {3} is not known to this repository",
-            "The system is unable to retrieve the properties for the requested TypeDef because the supplied identifiers have not been recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef because the supplied identifiers have not been recognized.",
             "The identifier is supplied by the caller.  It may have a logic defect that has corrupted the identifier, or the TypeDef has been deleted since the identifier was retrieved."),
 
     /**
@@ -1166,7 +1166,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN(404, "OMRS-REPOSITORY-404-008",
             "The AttributeTypeDef {0} (guid {1}) passed on a {2} request to open metadata repository {3} is not known to this repository",
-            "The system is unable to retrieve the properties for the requested AttributeTypeDef because the supplied identifiers are not recognized.",
+            "The system cannot retrieve the properties for the requested AttributeTypeDef because the supplied identifiers are not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the AttributeTypeDef has been deleted since the identifier was retrieved."),
 
     /**
@@ -1174,7 +1174,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     TYPEDEF_NAME_NOT_KNOWN(404, "OMRS-REPOSITORY-404-009",
             "The TypeDef unique name {0} passed on a {1} request to open metadata repository {2} is not known to this repository",
-            "The system is unable to retrieve the properties for the requested TypeDef because the supplied identifiers are not recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef because the supplied identifiers are not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the TypeDef has been deleted since the identifier was retrieved."),
 
     /**
@@ -1182,7 +1182,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN(404, "OMRS-REPOSITORY-404-010",
             "The TypeDef unique name {0} passed on a {1} request to open metadata repository {2} is not known to the repository",
-            "The system is unable to retrieve the properties for the requested TypeDef as the supplied identifiers are not recognized.",
+            "The system cannot retrieve the properties for the requested TypeDef as the supplied identifiers are not recognized.",
             "The identifier is supplied by the caller.  It may have a logic problem that has corrupted the identifier, or the TypeDef may have been deleted since the identifier was retrieved."),
 
     /**
@@ -1190,7 +1190,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     RELATIONSHIP_NOT_FOUND(404, "OMRS-REPOSITORY-404-011",
                            "The relationship identified with guid {0} passed on the {1} call is not found to the open metadata repository {2}",
-                           "The system is unable to retrieve the properties for the requested relationship because the supplied guid is not recognized.",
+                           "The system cannot retrieve the properties for the requested relationship because the supplied guid is not recognized.",
                            "The guid is supplied by the caller to the OMRS.  It may have a logic problem that has corrupted the guid, or the relationship has been deleted since the guid was retrieved."),
 
     /**
@@ -1198,7 +1198,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     RELATIONSHIP_SOFT_DELETED(404, "OMRS-REPOSITORY-404-012",
                            "The {0} relationship identified with guid {1} passed on the {2} call is soft-deleted in the open metadata repository {3}",
-                           "The system is unable to retrieve the properties for the requested relationship because the supplied guid is for a " +
+                           "The system cannot retrieve the properties for the requested relationship because the supplied guid is for a " +
                                       "relationship that has already been deleted.",
                            "The guid is supplied by the caller to the OMRS.  It is most likely to be a timing issue where the" +
                                       " relationship was deleted by another process since the guid was retrieved.  " +
@@ -1210,7 +1210,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     ENTITY_SOFT_DELETED(404, "OMRS-REPOSITORY-404-013",
                               "The {0} entity identified with guid {1} passed on the {2} call is soft-deleted in the open metadata repository {3}",
-                              "The system is unable to retrieve the properties for the requested entity because the supplied guid is for a " +
+                              "The system cannot retrieve the properties for the requested entity because the supplied guid is for a " +
                                       "entity that has already been deleted.",
                               "The guid is supplied by the caller to the OMRS.  It is most likely to be a timing issue where the" +
                                       " entity was deleted by another process since the guid was retrieved.  " +
@@ -1242,10 +1242,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Review the other error messages to determine the source of the error.  When resolved, retry the request."),
 
     /**
-     * OMRS-METADATA-HIGHWAY-404-002 - The local server is unable to disconnect from an open metadata repository cohort {0}
+     * OMRS-METADATA-HIGHWAY-404-002 - The local server cannot disconnect from an open metadata repository cohort {0}
      */
     COHORT_DISCONNECT_FAILED(404, "OMRS-METADATA-HIGHWAY-404-002",
-            "The local server is unable to disconnect from an open metadata repository cohort {0}",
+            "The local server cannot disconnect from an open metadata repository cohort {0}",
             "The underlying cause of this error is reported in previous exceptions.",
             "Check the other error messages to determine the source of the error.  When these are resolved, retry the request."),
 
@@ -1254,7 +1254,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     DUPLICATE_COHORT_NAME(400, "OMRS-METADATA-HIGHWAY-404-003",
             "There are more than one cohort configurations with the same name of {0}",
-            "The system is unable to connect to more than one cohort with the same name.",
+            "The system cannot connect to more than one cohort with the same name.",
             "Correct the configuration for the cohorts in the server configuration. " +
                                   "Retry the request when the cohort configuration is correct."),
 
@@ -1275,10 +1275,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Retry the request when the repository server is available."),
 
     /**
-     * OMRS-METADATA-HIGHWAY-404-004 - The local server is unable to initiate a connection to the cohort {0} when starting up
+     * OMRS-METADATA-HIGHWAY-404-004 - The local server cannot initiate a connection to the cohort {0} when starting up
      */
     COHORT_STARTUP_ERROR(404, "OMRS-METADATA-HIGHWAY-404-004",
-            "The local server is unable to initiate a connection to the cohort {0} when starting up",
+            "The local server cannot initiate a connection to the cohort {0} when starting up",
             "The server will now cancel startup, and shutdown.",
             "Check the other error messages to determine the source of the error. When these are resolved, retry the request."),
 
@@ -1612,10 +1612,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Report this to the Egeria team via a GitHub issue so that it can be investigated and fixed."),
 
     /**
-     * OMRS-TOPIC-CONNECTOR-500-003 - Connector {0} is unable to send a null event
+     * OMRS-TOPIC-CONNECTOR-500-003 - Connector {0} cannot send a null event
      */
     OMRS_TOPIC_SEND_NULL_EVENT(500, "OMRS-TOPIC-CONNECTOR-500-003",
-             "Connector {0} is unable to send a null event",
+             "Connector {0} cannot send a null event",
              "There is an internal problem in the open metadata repository code logic.",
              "Report this to the Egeria team via a GitHub issue so that it can be checked and fixed."),
 
@@ -1625,7 +1625,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     NULL_CONNECTOR_RETURNED(500, "OMRS-TOPIC-CONNECTOR-500-006",
              "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
                                     " running in OMAG Server at {2}",
-             "The system is unable to create a connector which means some of its services will not work.",
+             "The system cannot create a connector which means some of its services will not work.",
              "This problem is likely to be caused by an incorrect connection object.  Check the settings on the remoteEnterpriseTopicConnection in the server configuration " +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
@@ -1636,7 +1636,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     WRONG_TYPE_OF_CONNECTOR(500, "OMRS-TOPIC-CONNECTOR-500-007",
              "The connector generated from the connection named {0} return by the {1} service running in OMAG Server at {2} is " +
                                     "not of the required type. It should be an instance of {3}",
-             "The system is unable to create the required connector which means some of its services will not work.",
+             "The system cannot create the required connector which means some of its services will not work.",
              "Verify that the OMAG server is running and the OMAS service is correctly configured."),
 
     /**
@@ -1815,7 +1815,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_LOCAL_REPOSITORY(503, "OMRS-REST-API-503-001",
             "There is no local repository to support REST API call {0}",
-            "The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.",
+            "The server has received a call on its open metadata repository REST API services but cannot process it because the local repository is not active.",
             "Ensure that the open metadata services have been activated in the server. If they are active and the server is supposed to have a local repository, correct the server's configuration document to include a local repository and restart the server."),
 
     /**
@@ -1823,7 +1823,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_ENTERPRISE_REPOSITORY(503, "OMRS-REST-API-503-002",
             "There is no enterprise repository to support REST API call {0}",
-            "The server has received a call on its open metadata enterprise repository REST API services but is unable to process it because the enterprise repository services are not active.",
+            "The server has received a call on its open metadata enterprise repository REST API services but cannot process it because the enterprise repository services are not active.",
             "Ensure that the enterprise repository services have been activated in the server. If they are active and the server is supposed to have the enterprise repository services, correct the server's configuration document to include these services and restart the server."),
 
     /**
@@ -1831,7 +1831,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NO_METADATA_HIGHWAY(503, "OMRS-REST-API-503-003",
             "There is no metadata highway to support REST API call {0}",
-            "The server has received a call on its metadata highway REST API services but is unable to process it because the metadata highway services are not active.",
+            "The server has received a call on its metadata highway REST API services but cannot process it because the metadata highway services are not active.",
             "Ensure that the metadata highway services have been activated in the server. If they are supposed to be active, correct the server's configuration document to include these services and restart the server."),
 
     /**

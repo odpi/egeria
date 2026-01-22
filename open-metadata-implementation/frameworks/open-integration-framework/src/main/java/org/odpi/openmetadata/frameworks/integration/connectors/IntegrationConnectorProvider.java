@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -142,7 +141,7 @@ public class IntegrationConnectorProvider extends OpenConnectorProviderBase
     /**
      * Return the list of supported catalog target types for this connector.
      *
-     * @return list of catalog target name to open metadata type name.  Map is empty if no catalog target types are defined.
+     * @return list of catalog target name to open metadata type name.  List is empty if no catalog target types are defined.
      */
     public List<CatalogTargetType> getCatalogTargets() { return catalogTargets; }
 }

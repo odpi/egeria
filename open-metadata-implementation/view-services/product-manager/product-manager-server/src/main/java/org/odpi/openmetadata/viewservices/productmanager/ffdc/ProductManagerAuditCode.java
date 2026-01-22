@@ -49,11 +49,11 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Product Manager OMVS."),
 
     /**
-     * OMVS-PRODUCT-MANAGER-0004 The Product Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     * OMVS-PRODUCT-MANAGER-0004 The Product Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("OMVS-PRODUCT-MANAGER-0004",
                              AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Product Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
+                         "The Product Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

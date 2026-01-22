@@ -30,7 +30,7 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
      */
     NULL_URL(400, "APACHE-KAFKA-REST-CONNECTOR-400-001",
                      "Apache Kafka Admin connector {0} has been configured without the URL to Apache Kafka",
-                     "The connector is unable to contact the Apache Kafka server.",
+                     "The connector cannot contact the Apache Kafka server.",
                      "The Apache Kafka URL is configured in the Apache Kafka Admin connector's connection endpoint in the address property.  Typically it is the host name and port where Apache Kafka is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group."),
 
     /**
@@ -38,7 +38,7 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-KAFKA-REST-CONNECTOR-500-001",
                          "The {0} Apache Kafka Admin connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements.",
+                         "The connector cannot catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

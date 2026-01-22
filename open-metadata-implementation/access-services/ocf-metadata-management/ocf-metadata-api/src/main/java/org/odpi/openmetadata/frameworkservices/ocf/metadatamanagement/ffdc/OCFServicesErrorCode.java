@@ -30,7 +30,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTION_PARAMETER(400, "CONNECTED-ASSET-SERVICES-400-001",
                               "The connection value passed on the {0} parameter of the {1} operation is null",
-                              "The system is unable to process the request without this value.",
+                              "The system cannot process the request without this value.",
                               "Correct the code in the caller to provide the name."),
 
     /**
@@ -38,45 +38,45 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
      */
     NO_ASSET_PROPERTIES(400, "CONNECTED-ASSET-SERVICES-400-002",
                         "The request for the properties of asset {0} failed with the following message returned: {1}",
-                        "The system is unable to process the request.",
+                        "The system cannot process the request.",
                         "Use the information in the message to understand the nature of the problem and once it is resolved, retry the request."),
 
     /**
-     * CONNECTED-ASSET-SERVICES-400-003 - Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null
+     * CONNECTED-ASSET-SERVICES-400-003 - Service {0} cannot process one of the classifications supplied on the {1} call because the classification name is null
      */
     NULL_CLASSIFICATION_NAME(400, "CONNECTED-ASSET-SERVICES-400-003",
-                             "Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null",
-                             "The system is unable to create a new instance because the classification might be important.",
+                             "Service {0} cannot process one of the classifications supplied on the {1} call because the classification name is null",
+                             "The system cannot create a new instance because the classification might be important.",
                              "Correct the list of classifications passed with this request."),
 
     /**
-     * CONNECTED-ASSET-SERVICES-400-004 - Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}
+     * CONNECTED-ASSET-SERVICES-400-004 - Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}
      */
     BAD_CLASSIFICATION_PROPERTIES(400, "CONNECTED-ASSET-SERVICES-400-004",
-                                  "Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}",
-                                  "The system is unable to create a new instance with invalid properties in any of the classifications.",
+                                  "Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}",
+                                  "The system cannot create a new instance with invalid properties in any of the classifications.",
                                   "Correct the classification parameters passed with this request."),
 
     /**
-     * CONNECTED-ASSET-SERVICES-400-005 - Service {0} is unable to process the properties supplied to method {1} because the
+     * CONNECTED-ASSET-SERVICES-400-005 - Service {0} cannot process the properties supplied to method {1} because the
      * requested owner {2} ({3}) is not a recognized software server capability.  The associated error message is: {4}
      */
     INTEGRATOR_NOT_RETURNED(400, "CONNECTED-ASSET-SERVICES-400-005",
-                                  "Service {0} is unable to process the properties supplied to method {1} because the requested owner {2} ({3}) is " +
+                                  "Service {0} cannot process the properties supplied to method {1} because the requested owner {2} ({3}) is " +
                                           "not a recognized software server capability.  The associated error message is: {4}",
-                                  "The system is unable to create a new instance in the metadata repository with an invalid integrator specified as" +
+                                  "The system cannot create a new instance in the metadata repository with an invalid integrator specified as" +
                                     " the owner.",
                                   "Ensure the request includes the unique identifiers for a valid software server capability entity to represent " +
                                     "the integrator and retry the request."),
 
     /**
-     * CONNECTED-ASSET-SERVICES-400-006 - Service {0} is unable to process the properties supplied to method {1} because the unique name {2}
+     * CONNECTED-ASSET-SERVICES-400-006 - Service {0} cannot process the properties supplied to method {1} because the unique name {2}
      * given for the requested owner does not match the unique name of {3} returned in software server capability {4}
      */
     BAD_INTEGRATOR_NAME(400, "CONNECTED-ASSET-SERVICES-400-006",
-                        "Service {0} is unable to process the properties supplied to method {1} because the unique name {2} given for the " +
+                        "Service {0} cannot process the properties supplied to method {1} because the unique name {2} given for the " +
                                 "requested owner does not match the unique name of {3} returned in software server capability {4}",
-                        "The system is unable to create a new instance with an invalid integrator specified as the owner.",
+                        "The system cannot create a new instance with an invalid integrator specified as the owner.",
                         "Retry the request with a matching the unique identifier and name for a valid software server capability entity to " +
                                 "represent the owner of the new instance."),
 
@@ -85,7 +85,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_INITIALIZED(404, "CONNECTED-ASSET-SERVICES-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
-                         "The system is unable to connect to an open metadata repository.",
+                         "The system cannot connect to an open metadata repository.",
                          "Check that the server where the Open Connector Framework metadata services are running is initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
 
@@ -96,7 +96,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
     NULL_CONNECTOR_RETURNED(500, "CONNECTED-ASSET-SERVICES-500-001",
                             "The requested connector for connection named {0} has not been created.  The connection was provided by the OCF service" +
                                     " running in OMAG Server {1} at {2}",
-                            "The system is unable to create a connector which means some of its services will not work.",
+                            "The system cannot create a connector which means some of its services will not work.",
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
@@ -107,7 +107,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
     WRONG_TYPE_OF_CONNECTOR(500, "CONNECTED-ASSET-SERVICES-500-002",
                             "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
-                            "The system is unable to create the required connector which means some of its services will not work.",
+                            "The system cannot create the required connector which means some of its services will not work.",
                             "Verify that the OMAG server is running and the OMAS service is correctly configured."),
 
     ;

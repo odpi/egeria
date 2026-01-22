@@ -159,11 +159,11 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                         "Verify that the start up sequence goes on to initialize the configured engine services and engines."),
 
     /**
-     * ENGINE-HOST-SERVICES-0013 - Engine service {0} in engine host {1} is unable to start any governance engines
+     * ENGINE-HOST-SERVICES-0013 - Engine service {0} in engine host {1} cannot start any governance engines
      */
     ENGINE_SERVICE_NULL_HANDLERS("ENGINE-HOST-SERVICES-0013",
                                  AuditLogRecordSeverityLevel.ERROR,
-                                 "Engine service {0} in engine host {1} is unable to start any governance engines",
+                                 "Engine service {0} in engine host {1} cannot start any governance engines",
                                  "The server is not able to run any governance requests.  It fails to start.",
                                  "Correct the configuration for the engine service to ensure it has at least one valid governance engine."),
 
@@ -236,7 +236,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                     AuditLogRecordSeverityLevel.EXCEPTION,
                           "Engine host server {0} failed to start.  The exception was {1} with message: {2}",
                           "The server encountered a problem and has halted initialization of its services.",
-                          "Diagnose why the service is unable to start using the messages logged to the audit log."),
+                          "Diagnose why the service cannot start using the messages logged to the audit log."),
 
     /**
      * ENGINE-HOST-SERVICES-0021 - Governance engine {0} in engine host server {1} is configured to process governance requests of type {2}
@@ -275,12 +275,12 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
 
 
     /**
-     * ENGINE-HOST-SERVICES-0024 - Governance engine {0} is unable to update the status for governance service {1}.  The exception was {2} with error
+     * ENGINE-HOST-SERVICES-0024 - Governance engine {0} cannot update the status for governance service {1}.  The exception was {2} with error
      * message {3}
      */
     EXC_ON_ERROR_STATUS_UPDATE("ENGINE-HOST-SERVICES-0024",
                                AuditLogRecordSeverityLevel.EXCEPTION,
-                               "Governance engine {0} is unable to update the status for governance service {1}.  The exception was {2} with error " +
+                               "Governance engine {0} cannot update the status for governance service {1}.  The exception was {2} with error " +
                                        "message {3}",
                                "The server is not able to record the failed result for a governance request. The governance report status is not updated.",
                                "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the governance request."),
@@ -371,7 +371,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.INFO,
                                 "Failed to refresh configuration for governance engine {0}'s registered governance service {1}, registered with the " +
                                         " properties {2}.  The exception was {3} with error message {4}",
-                                "The governance engine is unable to process governance request types for the failed governance service.",
+                                "The governance engine cannot process governance request types for the failed governance service.",
                                 "Review the error messages and resolve the cause of the problem.  " +
                                         "Then, either wait for the engine host services to refresh the configuration, or issue the refreshConfig " +
                                         "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
@@ -383,7 +383,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     GOVERNANCE_ENGINE_NO_CONFIG("ENGINE-HOST-SERVICES-0031",
                                 AuditLogRecordSeverityLevel.ERROR,
                                "Failed to refresh configuration for governance engine {0}.  The exception was {1} with error message {2}",
-                               "The governance engine is unable to process any governance requests until its configuration can be retrieved.",
+                               "The governance engine cannot process any governance requests until its configuration can be retrieved.",
                                "Review the error messages and resolve the cause of the problem.  " +
                                        "Either wait for the engine host services to refresh the configuration, or issue the refreshConfig " +
                                        "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
@@ -416,7 +416,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     ENGINE_ACTION_FAILED("ENGINE-HOST-SERVICES-0034",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "Failed to execute engine action for governance engine {0}.  The exception was {1} with error message {2}",
-                         "The governance engine is unable to process the engine action request.  The exception explains the " +
+                         "The governance engine cannot process the engine action request.  The exception explains the " +
                                      "reason. The engine action has been marked as FAILED.",
                          "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                      "retry the governance action by updating its status back to REQUESTED status."),
@@ -427,7 +427,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     ENGINE_ACTION_SCAN_FAILED("ENGINE-HOST-SERVICES-0035",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "Failed to retrieve active engine actions.  The exception was {0} with error message {1}",
-                         "The engine host is unable to retrieve the active engine actions from the metadata access server as part of its regular scan for work.",
+                         "The engine host cannot retrieve the active engine actions from the metadata access server as part of its regular scan for work.",
                          "Review the error messages and resolve the cause of the problem.  Once resolved, the engine host should retry its scan as part of its normal refresh processing. " +
                                       "However, if the problem was in hte engine host, you may need to restart it to clear the problem."),
 
@@ -447,7 +447,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("ENGINE-HOST-SERVICES-0037",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} governance engine handler for {1} has received an unexpected {2} exception during method {3}; the error message was: {4}",
-                         "The service is unable to process the current request.",
+                         "The service cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

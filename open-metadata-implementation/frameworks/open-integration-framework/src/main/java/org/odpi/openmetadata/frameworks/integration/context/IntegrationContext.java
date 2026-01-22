@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListe
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.NotificationManagerClient;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
@@ -41,12 +42,13 @@ public class IntegrationContext extends ConnectorContextBase
     protected final OpenMetadataEventClient    openMetadataEventClient;
     private final   OpenLineageListenerManager openLineageListenerManager;
 
-    protected final OpenGovernanceClient    openGovernanceClient;
-    protected final ConnectedAssetClient    connectedAssetClient;
-    protected final GovernanceConfiguration governanceConfiguration;
-    protected final StewardshipAction       stewardshipAction;
-    private final   ConnectedAssetContext    connectedAssetContext;
-    private   final Map<String, String> externalSourceCache = new HashMap<>();
+    protected final OpenGovernanceClient      openGovernanceClient;
+    protected final ConnectedAssetClient      connectedAssetClient;
+    protected final GovernanceConfiguration   governanceConfiguration;
+    protected final StewardshipAction         stewardshipAction;
+    protected final NotificationManagerClient notificationManagerClient;
+    private final   ConnectedAssetContext     connectedAssetContext;
+    private final   Map<String, String>       externalSourceCache = new HashMap<>();
 
     protected final PermittedSynchronization permittedSynchronization;
 
@@ -130,6 +132,18 @@ public class IntegrationContext extends ConnectorContextBase
                                                                 openGovernanceClient,
                                                                 auditLog,
                                                                 maxPageSize);
+
+        this.notificationManagerClient = new NotificationManagerClient(this,
+                                                                       localServerName,
+                                                                       localServiceName,
+                                                                       connectorUserId,
+                                                                       connectorGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       openMetadataClient,
+                                                                       openGovernanceClient,
+                                                                       auditLog,
+                                                                       maxPageSize);
     }
 
 
@@ -313,13 +327,24 @@ public class IntegrationContext extends ConnectorContextBase
 
 
     /**
-     * Return the connected asset context that support an integration connector working with assets and their connectors.
+     * Return the stewardship action that support an integration connector activating governance actions.
      *
-     * @return connected asset context
+     * @return stewardship action
      */
     public StewardshipAction getStewardshipAction()
     {
         return stewardshipAction;
+    }
+
+
+    /**
+     * Return the notification manager that support working with notification types, monitored resources, and subscribers.
+     *
+     * @return notification manager
+     */
+    public NotificationManagerClient getNotificationManager()
+    {
+        return notificationManagerClient;
     }
 
 

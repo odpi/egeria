@@ -213,6 +213,10 @@ public class OpenMetadataRelationshipBuilder
                     elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                               OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                               notificationSubscriberProperties.getZoneMembership());
+
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.LAST_NOTIFICATION.name,
+                                                                       notificationSubscriberProperties.getLastNotification());
                 }
                 else if (properties instanceof ReferenceableFacetProperties referenceableFacetProperties)
                 {

@@ -1798,6 +1798,11 @@ public enum OpenMetadataProperty
     MISSION("mission", DataType.STRING, DataType.STRING.getName(), "The high-level goal of the activity.", "To share new data science techniques.", "cb870681-de85-406b-bea6-6d138777cfe9"),
 
     /**
+     * The measures used to assess the success of the project.
+     */
+    SUCCESS_CRITERIA("successCriteria", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "The measures used to assess the success of the project.", "The customer satisfaction index increases by 20%.", "7ba5b44d-6174-4e62-a9d7-e22d4d65bb2a"),
+
+    /**
      * Private properties accessible only to the connector.
      */
     SECURED_PROPERTIES("securedProperties", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getName(), "Private properties accessible only to the connector.", null, "b1b3e2dd-0ad1-4466-884b-697cf6333382"),
@@ -2228,6 +2233,31 @@ public enum OpenMetadataProperty
      * Should the service/connector create integration reports based on its activity? (Default is true.)
      */
     GENERATE_CONNECTOR_ACTIVITY_REPORT("generateConnectorActivityReports", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
+
+    /**
+     * Defines whether multiple notifications may be sent to a subscriber.  The default is true.
+     */
+    MULTIPLE_NOTIFICATIONS_PERMITTED("multipleNotificationsPermitted", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Defines whether multiple notifications may be sent to a subscriber.  The default is true.", "true", "b8e84c95-73b4-4bbc-9da6-26fc2b4f72c6"),
+
+    /**
+     * Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).
+     */
+    NOTIFICATION_INTERVAL("notificationInterval", DataType.LONG, DataType.LONG.getName(), "Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).", "60", "e4fed721-659f-4367-9c88-d70534cd8801"),
+
+    /**
+     * Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.
+     */
+    MINIMUM_NOTIFICATION_INTERVAL("minimumNotificationInterval", DataType.LONG, DataType.LONG.getName(), "Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.", "60", "c04eb336-14ba-4b35-b751-618265b32e1c"),
+
+    /**
+     * Records the next time a scheduled notification is to be sent to the active subscribers.
+     */
+    NEXT_SCHEDULED_NOTIFICATION("nextScheduledNotification", DataType.DATE, DataType.DATE.getName(), "Records the next time a scheduled notification is to be sent to the active subscribers.", null, "1ea5863c-f86f-4bf5-83ee-6ae0cd397af4"),
+
+    /**
+     * Records the last time a notification was sent to a subscriber.
+     */
+    LAST_NOTIFICATION("lastNotification", DataType.DATE, DataType.DATE.getName(), "Records the last time a notification was sent to a subscriber.", null, "55745cc8-5a36-4d07-b4f6-17c74081a010"),
 
     /**
      * The name of the attribute that the reference data assignment represents.

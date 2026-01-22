@@ -81,9 +81,11 @@ Content-Type: application/json
 {
   "class" : "NewRelationshipRequestBody",
   "properties": {
-    "class": "MonitoredResourceProperties",
+    "class": "NotificationSubscriberProperties",
     "label" : "",
     "description" : "",
+    "activityStatus" : "IN_PROGRESS",
+    "zoneMembership" : [ "zone1"],
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },

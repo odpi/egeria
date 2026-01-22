@@ -290,9 +290,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                              null,
                                                                                                                              workingSearchOptions);
 
-            while ((personRoleAppointments != null) && (personRoleAppointments.getElementList() != null))
+            while ((personRoleAppointments != null) && (personRoleAppointments.getRelationships() != null))
             {
-                for (OpenMetadataRelationship personRoleAppointment : personRoleAppointments.getElementList())
+                for (OpenMetadataRelationship personRoleAppointment : personRoleAppointments.getRelationships())
                 {
                     if (personRoleAppointment != null)
                     {

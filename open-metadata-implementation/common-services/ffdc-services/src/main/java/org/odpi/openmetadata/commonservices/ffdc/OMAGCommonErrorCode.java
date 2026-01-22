@@ -32,7 +32,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     SERVER_URL_NOT_SPECIFIED(400, "OMAG-COMMON-400-001",
                              "The OMAG Server Platform URL is null",
-                             "The system is unable to identify the OMAG Server Platform.",
+                             "The system cannot identify the OMAG Server Platform.",
                              "Create a new client and pass the URL for the server on the constructor."),
 
 
@@ -41,7 +41,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     SERVER_URL_MALFORMED(400, "OMAG-COMMON-400-002",
                          "The OMAS Server URL {0} is not in a recognized format",
-                         "The system is unable to connect to the OMAG Server Platform to fulfill any requests.",
+                         "The system cannot connect to the OMAG Server Platform to fulfill any requests.",
                          "Create a new client and pass the correct URL for the server on the constructor."),
 
     /**
@@ -49,7 +49,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     SERVER_NAME_NOT_SPECIFIED(400, "OMAG-COMMON-400-003",
                               "The OMAG Server name is null",
-                              "The system is unable to locate to the OMAG Server to fulfill any request.",
+                              "The system cannot locate to the OMAG Server to fulfill any request.",
                               "Create a new client and pass the correct name for the server on the constructor."),
 
     /**
@@ -57,7 +57,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_USER_ID(400, "OMAG-COMMON-400-004",
                  "The user identifier (user id) passed on the {0} operation is null",
-                 "The system is unable to process the request without a user id.",
+                 "The system cannot process the request without a user id.",
                  "Correct the code in the caller to provide the user id."),
 
     /**
@@ -65,7 +65,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_GUID(400, "OMAG-COMMON-400-005",
               "The unique identifier (guid) passed on the {0} parameter of the {1} operation is null",
-              "The system is unable to process the request without a guid.",
+              "The system cannot process the request without a guid.",
               "Correct the code in the caller to provide the guid."),
 
     /**
@@ -73,7 +73,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_NAME(400, "OMAG-COMMON-400-006",
               "The name passed on the {0} parameter of the {1} operation is null",
-              "The system is unable to process the request without a name.",
+              "The system cannot process the request without a name.",
               "Correct the code in the caller to provide the name on the parameter."),
 
     /**
@@ -81,7 +81,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_ARRAY_PARAMETER(400, "OMAG-COMMON-400-007",
                          "The array value passed on the {0} parameter of the {1} operation is null or empty",
-                         "The system is unable to process the request without this value.",
+                         "The system cannot process the request without this value.",
                          "Correct the code in the caller to provide the array."),
 
     /**
@@ -89,7 +89,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NEGATIVE_START_FROM(400, "OMAG-COMMON-400-008",
             "The starting point for the results {0}, passed on the {1} parameter of the {2} operation, is negative",
-            "The system is unable to process the request with this invalid value.  It should be zero for the start of the values, or a number greater than 0 to start partway down the list",
+            "The system cannot process the request with this invalid value.  It should be zero for the start of the values, or a number greater than 0 to start partway down the list",
             "Correct the code in the caller to provide a non-negative value for the starting point."),
 
     /**
@@ -97,7 +97,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NEGATIVE_PAGE_SIZE(400, "OMAG-COMMON-400-009",
                         "The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative",
-                        "The system is unable to process the request with this invalid value.  It should be zero to return all the result, or greater than zero to set a maximum",
+                        "The system cannot process the request with this invalid value.  It should be zero to return all the result, or greater than zero to set a maximum",
                         "Correct the code in the caller to provide a non-negative value for the page size."),
 
     /**
@@ -105,7 +105,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     MAX_PAGE_SIZE(400, "OMAG-COMMON-400-010",
             "The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}",
-            "The system is unable to process the request with this page size value.",
+            "The system cannot process the request with this page size value.",
             "Correct the code in the caller to provide a smaller page size ."),
 
     /**
@@ -113,7 +113,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTION_PARAMETER(400, "OMAG-COMMON-400-011",
                               "The connection object passed on the {0} parameter of the {1} operation is null",
-                              "The system is unable to process the request without this connection.",
+                              "The system cannot process the request without this connection.",
                               "Correct the code in the caller to provide the connection."),
 
     /**
@@ -121,7 +121,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_ENUM(400, "OMAG-COMMON-400-012",
               "The enumeration value passed on the {0} parameter of the {1} operation is null",
-              "The system is unable to process the request without this enumeration value.",
+              "The system cannot process the request without this enumeration value.",
               "Correct the code in the caller to provide the enumeration value."),
 
     /**
@@ -129,7 +129,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_TEXT(400, "OMAG-COMMON-400-013",
               "The text field value passed on the {0} parameter of the {1} operation is null",
-              "The system is unable to process the request without this text field value.",
+              "The system cannot process the request without this text field value.",
               "Correct the code in the caller to provide a value in the text field."),
 
     /**
@@ -137,7 +137,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_LOCAL_SERVER_NAME(400, "OMAG-COMMON-400-014",
                            "OMAG server has been called with a null local server name",
-                           "The system is unable to configure the local server without knowing what it is called.",
+                           "The system cannot configure the local server without knowing what it is called.",
                            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -145,7 +145,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_OBJECT(400, "OMAG-COMMON-400-015",
                 "The object passed on the {0} parameter of the {1} operation is null",
-                "The system is unable to process the request without this object.",
+                "The system cannot process the request without this object.",
                 "Correct the code in the caller to provide the object."),
 
     /**
@@ -153,7 +153,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(400, "OMAG-COMMON-400-016",
                          "An unexpected {0} exception was caught by {1}; error message was {2}",
-                         "The system is unable to process the request and has returned an exception to the caller.",
+                         "The system cannot process the request and has returned an exception to the caller.",
                          "Review the error message.  Also look up its full message definition which includes the system action " +
                                  "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
                                  "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
@@ -164,7 +164,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NO_REQUEST_BODY(400, "OMAG-COMMON-400-017",
                     "An request by user {0} to method {1} on server {2} had no request body",
-                    "The system is unable to process the request without the request body since it contains key information.",
+                    "The system cannot process the request without the request body since it contains key information.",
                     "Update the caller to provide the request body."),
 
     /**
@@ -172,7 +172,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     UNRECOGNIZED_TYPE_NAME(400, "OMAG-COMMON-400-018",
                     "The type name {0} passed on method {1} of service {2} is not recognized",
-                    "The system is unable to process the request because it does not understand the type.",
+                    "The system cannot process the request because it does not understand the type.",
                     "Update the caller to provide a correct type name."),
 
     /**
@@ -180,7 +180,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     BAD_SUB_TYPE_NAME(400, "OMAG-COMMON-400-019",
                     "The type name {0} passed on method {1} of service {2} is not a sub-type of {3}",
-                    "The system is unable to process the request because one of the parameters is not of the right type.",
+                    "The system cannot process the request because one of the parameters is not of the right type.",
                     "Update the caller to provide a valid type name for this request."),
 
     /**
@@ -188,7 +188,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NOT_IN_THE_ZONE(400, "OMAG-COMMON-400-020",
                       "Element {0} is not recognized by the {1} service",
-                      "The system is unable to process the request because it can not retrieve the element.",
+                      "The system cannot process the request because it can not retrieve the element.",
                       "Update the caller to provide a recognized identifier."),
 
     /**
@@ -196,7 +196,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_ELEMENT(400, "OMAG-COMMON-400-021",
                     "The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server",
-                    "The system is unable to process the request because the identifier is invalid.",
+                    "The system cannot process the request because the identifier is invalid.",
                     "Update the caller to provide a correct identifier."),
 
     /**
@@ -204,15 +204,15 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_SEARCH_STRING(400, "OMAG-COMMON-400-022",
               "The search string passed on the {0} parameter of the {1} operation is null",
-              "The system is unable to process the request without a search string.",
+              "The system cannot process the request without a search string.",
               "Correct the code in the caller to provide the search string."),
 
     /**
-     * OMAG-COMMON-400-023 - Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.
+     * OMAG-COMMON-400-023 - Method {0} of service {1} cannot delete {2} identified by {3} because it is still in use.
      */
     CANNOT_DELETE_ELEMENT_IN_USE(400, "OMAG-COMMON-400-023",
-              "Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use",
-              "The system is unable to process the request because it may cause other processing to fail.",
+              "Method {0} of service {1} cannot delete {2} identified by {3} because it is still in use",
+              "The system cannot process the request because it may cause other processing to fail.",
               "Ensure the element is no longer in use before retrying the operation."),
 
     /**
@@ -220,7 +220,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTOR_TYPE_PARAMETER(400, "OMAG-COMMON-400-024",
              "The connection object passed on the {0} parameter of the {1} operation has a null connector type",
-             "The system is unable to process the request without knowing the type of the connector that the connection object is requesting.",
+             "The system cannot process the request without knowing the type of the connector that the connection object is requesting.",
              "Correct the code in the caller to provide the connector type embedded in the connection."),
 
     /**
@@ -230,7 +230,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     WRONG_METADATA_COLLECTION_FOR_UPDATE(400, "OMAG-COMMON-400-025",
               "Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5} " +
                       "(GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})",
-              "The system is unable to process the request because it belongs to a metadata collection that this request is not permitted to update.",
+              "The system cannot process the request because it belongs to a metadata collection that this request is not permitted to update.",
               "The ability to update an instance in a metadata collection is determined by the type of collection. Some APIs" +
                         "support the updating of metadata instances owned by a repository in the local cohort, whilst " +
                         "other APIs support the updating of metadata instances from external metadata collections. If the API " +
@@ -240,22 +240,22 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                         "and metadata collection values necessary to make the request successful."),
 
     /**
-     * OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} is unable to proceed
+     * OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} cannot proceed
      */
     WRONG_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
-               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} is unable to proceed",
-               "The system is unable to process the request because the requested object is not anchored to the expected element.",
+               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} cannot proceed",
+               "The system cannot process the request because the requested object is not anchored to the expected element.",
                "Check the code in the caller to verify it is providing either the correct identifier of the object or the correct" +
                        "anchor identifier since this is the most likely cause of the error.  However, it is possible that there is an " +
                        "error in the way that the anchor GUID was set up in the element.  If this is the case, it is necessary to trace " +
                        "back to find how the element was created and then look at where the error was introduced."),
 
     /**
-     * OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed
+     * OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} cannot proceed
      */
     NOT_ANCHOR_ELEMENT(400, "OMAG-COMMON-400-027",
-                    "The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed",
-                    "The system is unable to process the request because the requested object is not an anchor entity.",
+                    "The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} cannot proceed",
+                    "The system cannot process the request because the requested object is not an anchor entity.",
                     "Correct the code in the caller to issue the request against this element's anchor object and retry."),
 
     /**
@@ -263,7 +263,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     INVALID_SEARCH_STRING(400, "OMAG-COMMON-400-028",
                        "The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}",
-                       "The system is unable to process the request with this search string.",
+                       "The system cannot process the request with this search string.",
                        "Correct the code in the caller to provide a valid regular expression search string."),
 
     /**
@@ -271,7 +271,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     INVALID_PROPERTIES_OBJECT(400, "OMAG-COMMON-400-029",
                           "The properties object passed on the {0} operation is either null or not of the correct {1} class",
-                          "The system is unable to proceed because it can not interpret the properties needed to execute the request.",
+                          "The system cannot proceed because it can not interpret the properties needed to execute the request.",
                           "Correct the code in the caller to provide a valid properties object."),
 
     /**
@@ -279,7 +279,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     INVALID_CALL_FOR_SERVER(400, "OMAG-COMMON-400-030",
                               "The {0} operation is only supported by {1} servers and server {2} is a {3}",
-                              "The system is unable to proceed because the server called does not support the request.",
+                              "The system cannot proceed because the server called does not support the request.",
                               "Correct the code in the caller to call the correct server."),
 
     /**
@@ -287,7 +287,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     NO_REQUEST_BODY_FOR_CLASS(400, "OMAG-COMMON-400-031",
                     "A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}",
-                    "The system is unable to process the request without the request body since it contains key information.  It returns with an exception.",
+                    "The system cannot process the request without the request body since it contains key information.  It returns with an exception.",
                     "Update the caller to provide the request body of the recommended type."),
 
     /**
@@ -295,7 +295,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     INVALID_PARAMETER(400, "OMAG-COMMON-400-032",
                 "The value passed on the {0} parameter of the {1} operation is invalid",
-                "The system is unable to process the request without a valid value for this parameter.",
+                "The system cannot process the request without a valid value for this parameter.",
                 "Correct the code in the caller to provide a valid value."),
 
 
@@ -315,7 +315,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     UNIQUE_NAME_ALREADY_IN_USE(409, "OMAG-COMMON-409-001",
                                "Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is " +
                                        "defined as a unique property and value {4} is not available for use",
-                               "The system is unable to process the request because the unique property for this new entity " +
+                               "The system cannot process the request because the unique property for this new entity " +
                                        "is not permitted either because it is a reserved value, or it is already in use.",
                                "Retry the request with a different unique parameter name."),
 

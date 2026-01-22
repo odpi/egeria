@@ -9,6 +9,7 @@ import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActi
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.NotificationManagerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -16,8 +17,8 @@ import org.odpi.openmetadata.frameworks.opengovernance.*;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
@@ -133,6 +134,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               governanceContextClient,
                                                                               governanceContextClient,
                                                                               connectedAssetClient,
+                                                                              governanceContextClient,
                                                                               governanceContextClient,
                                                                               governanceContextClient);
 

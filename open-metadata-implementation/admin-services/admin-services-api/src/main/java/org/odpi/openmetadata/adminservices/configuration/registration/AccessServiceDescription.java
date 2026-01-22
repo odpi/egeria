@@ -14,7 +14,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Common metadata services for the Open Connector Framework (OCF).
      */
-    OCF_METADATA_MANAGEMENT          (182,
+    OCF_METADATA_MANAGEMENT          (100,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Connected Asset Services",
                                       "connected-asset",
@@ -26,7 +26,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Support governance action services.
      */
-    GAF_METADATA_MANAGEMENT          (184,
+    GAF_METADATA_MANAGEMENT          (101,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Governance Framework Services",
                                       "open-governance-service",
@@ -37,7 +37,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).
      */
-    OMF_METADATA_MANAGEMENT     (188,
+    OMF_METADATA_MANAGEMENT     (102,
                                  ComponentDevelopmentStatus.STABLE,
                                  "Open Metadata Store Services",
                                  "open-metadata-store",

@@ -30,20 +30,20 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                                "Check that this is an appropriate database for the connector to be accessing."),
 
     /**
-     * JDBC-INTEGRATION-CONNECTOR-0002 - Connector {0} is unable to extract metadata for database {1}
+     * JDBC-INTEGRATION-CONNECTOR-0002 - Connector {0} cannot extract metadata for database {1}
      */
     CONNECTION_FAILED("JDBC-INTEGRATION-CONNECTOR-0002",
                                AuditLogRecordSeverityLevel.ERROR,
-                               "Connector {0} is unable to connect to database {1}; the {2} exception returned a message of {3}",
+                               "Connector {0} cannot connect to database {1}; the {2} exception returned a message of {3}",
                                "The connector requested a connection to the database and the exception occurred.",
                                "Check the set up of the open metadata connection attached to the database asset, or directly to this connector.  Are the userId and password correct?  Is the jdbc connection string specified in the endpoint's address correct?  Is the database server set up correctly to receive the connection request?"),
 
     /**
-     * JDBC-INTEGRATION-CONNECTOR-0001 - Connector {0} is unable to extract metadata for database {1}
+     * JDBC-INTEGRATION-CONNECTOR-0001 - Connector {0} cannot extract metadata for database {1}
      */
     EXITING_ON_CONNECTION_FAIL("JDBC-INTEGRATION-CONNECTOR-0001",
                                AuditLogRecordSeverityLevel.ERROR,
-                               "Connector {0} is unable to extract metadata for database {1}",
+                               "Connector {0} cannot extract metadata for database {1}",
                                "Stopping metadata extraction for this database.",
                                "Investigate audit log for additional messages that describes the source of the error."),
 
@@ -62,7 +62,7 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("JDBC-INTEGRATION-CONNECTOR-0003",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The JDBC Integration Connector {0} received an unexpected {1} exception during method {2} while working with database {3}; the error message was: {4}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     EXITING_ON_INTEGRATION_CONTEXT_FAIL("JDBC-INTEGRATION-CONNECTOR-0004",

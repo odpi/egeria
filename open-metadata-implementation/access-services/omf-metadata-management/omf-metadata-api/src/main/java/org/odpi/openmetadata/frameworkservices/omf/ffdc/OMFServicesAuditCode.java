@@ -152,7 +152,7 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
     PROCESS_EVENT_EXCEPTION("OMF-SERVICES-0014",
                             AuditLogRecordSeverityLevel.EXCEPTION,
                             "Event {0} could not be published due to {1} exception with message: {2}",
-                            "The system is unable to publish the event to the OMF Services' OutTopic.",
+                            "The system cannot publish the event to the OMF Services' OutTopic.",
                             "Verify the topic configuration and that the event broker is running."),
 
     /**
@@ -161,7 +161,7 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
     PARSE_EVENT_EXCEPTION("OMF-SERVICES-0015",
                           AuditLogRecordSeverityLevel.EXCEPTION,
                           "Inbound event {0} could not be parsed. IOException included the following message: {1}",
-                          "The system is unable to process the event received on the OMF Services in topic.",
+                          "The system cannot process the event received on the OMF Services in topic.",
                           "Verify the content and structure of the in topic event.  Check that it includes the correct class name key"),
     
     /**

@@ -18,7 +18,7 @@ public enum EngineServiceDescription
     /**
      * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.
      */
-    GOVERNANCE_ACTION_OMES(401,
+    GOVERNANCE_ACTION_OMES(120,
                            ComponentDevelopmentStatus.STABLE,
                            "Governance Action",
                            "Governance Action OMES",
@@ -35,7 +35,7 @@ public enum EngineServiceDescription
     /**
      * Dynamically govern open metadata repositories in the connected cohorts.
      */
-    REPOSITORY_GOVERNANCE_OMES(402,
+    REPOSITORY_GOVERNANCE_OMES(122,
                                ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                "Repository Governance",
                                "Repository Governance OMES",
@@ -53,7 +53,7 @@ public enum EngineServiceDescription
      * Analyses the content of an asset's real world counterpart (resource), generates annotations
      * in a survey report that is attached to the asset in the open metadata repositories.
      */
-    SURVEY_ACTION_OMES(404,
+    SURVEY_ACTION_OMES(124,
                        ComponentDevelopmentStatus.STABLE,
                        "Survey Action",
                        "Survey Action OMES",
@@ -70,7 +70,7 @@ public enum EngineServiceDescription
     /**
      * Monitors for particular situations/events and notifies registered subscribers.
      */
-    WATCHDOG_ACTION_OMES(405,
+    WATCHDOG_ACTION_OMES(125,
                        ComponentDevelopmentStatus.STABLE,
                        "Watchdog Action",
                        "Watchdog Action OMES",

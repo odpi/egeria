@@ -289,7 +289,7 @@ public class CSVFileReaderSample
         }
         catch (FileReadException error)
         {
-            System.out.println("The connector is unable to retrieve the requested record because the file is too short.");
+            System.out.println("The connector cannot retrieve the requested record because the file is too short.");
         }
         catch (Exception exception)
         {

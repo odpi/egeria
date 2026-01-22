@@ -89,7 +89,7 @@ public enum OpenMetadataEventType
      *
      * @param eventTypeCode - int identifier used for indexing based on the enum.
      * @param eventTypeName - string name used for messages that include the enum.
-     * @param eventTypeDescription - default description for the enum value - used when natural resource
+     * @param eventTypeDescription - default description for the enum value - used when external resource
      *                                     bundle is not available.
      */
     OpenMetadataEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -1135,6 +1136,68 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     {
         stewardshipManagementHandler.clearGovernanceMeasurements(connectorUserId, elementGUID, metadataSourceOptions);
     }
+
+
+    /**
+     * Add the data scope classification for an element.
+     *
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param properties details of the ownership
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addDataScopeClassification(String                elementGUID,
+                                            DataScopeProperties   properties,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        stewardshipManagementHandler.addDataScopeClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Update the data scope classification for an element.
+     *
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param updateOptions  options to control access to open metadata
+     * @param properties details of the ownership
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateDataScopeClassification(String              elementGUID,
+                                              DataScopeProperties properties,
+                                              UpdateOptions       updateOptions) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        stewardshipManagementHandler.updateDataScopeClassification(connectorUserId, elementGUID, properties, updateOptions);
+    }
+
+
+    /**
+     * Remove the data scope classification from an element.
+     *
+     * @param elementGUID element where the classification needs to be removed.
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void clearDataScopeClassification(String                elementGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        stewardshipManagementHandler.clearDataScopeClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
 
 
     /**

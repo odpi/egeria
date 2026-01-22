@@ -9,12 +9,12 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDa
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.ffdc.PostgreSQLAuditLogErrorCode;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.schema.AuditLogColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.schema.AuditLogTable;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -201,7 +201,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                logRecord.getOriginatorProperties().get("organizationName"),
                                logRecord.getOriginatorProperties().get("metadataCollectionId"));
 
-                if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.ACTIVITY.getOrdinal())
+                if (logRecord.getSeverityCode() == AuditLogRecordSeverityLevel.ACTIVITY.getOrdinal())
                 {
                     if (ASSET_ACTIVITY_CREATE.equals(logRecord.getMessageId()))
                     {
@@ -353,7 +353,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                    logRecord.getGUID(),
                                    logRecord.getThreadId());
 
-                    if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.EXCEPTION.getOrdinal())
+                    if (logRecord.getSeverityCode() == AuditLogRecordSeverityLevel.EXCEPTION.getOrdinal())
                     {
                         syncEgeriaException(databaseConnection,
                                             logRecord.getGUID(),

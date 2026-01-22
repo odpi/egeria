@@ -29,7 +29,7 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
 {
     ERROR_SENDING_EVENT(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-001 ",
             "An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2}",
-            "The system is unable to send the event.",
+            "The system cannot send the event.",
             "Review the exception that was returned from the send."),
 
     ERROR_ATTEMPTING_KAFKA_INITIALIZATION(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-002 ",
@@ -39,7 +39,7 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
 
     ERROR_CONNECTING_KAFKA_PRODUCER(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-003 ",
             "Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0}",
-            "Egeria is unable to produce events",
+            "Egeria cannot produce events",
             "Ensure that the Kafka service is available and that the connection properties are valid."),
 
     ;

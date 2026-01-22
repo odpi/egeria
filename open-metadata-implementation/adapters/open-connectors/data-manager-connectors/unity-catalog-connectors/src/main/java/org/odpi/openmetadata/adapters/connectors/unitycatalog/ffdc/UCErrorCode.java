@@ -30,7 +30,7 @@ public enum UCErrorCode implements ExceptionMessageSet
      */
     NULL_URL(400, "UNITY-CATALOG-CONNECTOR-400-001",
                      "Connection {0} has been configured without the URL to the Unity Catalog (UC)",
-                     "The connector is unable to start because the endpoint of its connection has a null address property.",
+                     "The connector cannot start because the endpoint of its connection has a null address property.",
                      "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
 
     /**
@@ -38,7 +38,7 @@ public enum UCErrorCode implements ExceptionMessageSet
      */
     MISSING_PROPERTY_NAME(400, "UNITY-CATALOG-CONNECTOR-400-002",
                          "The {0} Unity Catalog Connector has not been supplied with a {1} property value",
-                         "The connector is unable to continue because it is not sure which elements to work on.",
+                         "The connector cannot continue because it is not sure which elements to work on.",
                          "Add this property to either the connector's configuration properties (or if it is a governance service, to the request parameters) and retry the request."),
 
 
@@ -47,7 +47,7 @@ public enum UCErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "UNITY-CATALOG-CONNECTOR-500-001",
                          "The {0} Unity Catalog (UC) connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

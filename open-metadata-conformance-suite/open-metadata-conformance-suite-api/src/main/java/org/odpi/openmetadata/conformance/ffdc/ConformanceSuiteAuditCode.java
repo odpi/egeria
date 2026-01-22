@@ -48,11 +48,11 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
              "Ensure that the cohort is operating correctly and the technology under test joins the same cohort as the conformance suite."),
 
     /**
-     * CONFORMANCE-SUITE-0009 - The Open Metadata Conformance Workbench {0} is unable to run its tests; error message is {1}
+     * CONFORMANCE-SUITE-0009 - The Open Metadata Conformance Workbench {0} cannot run its tests; error message is {1}
      */
     WORKBENCH_FAILURE("CONFORMANCE-SUITE-0009",
                       AuditLogRecordSeverityLevel.ERROR,
-             "The Open Metadata Conformance Workbench {0} is unable to run its tests; error message is {1}",
+             "The Open Metadata Conformance Workbench {0} cannot run its tests; error message is {1}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
@@ -139,7 +139,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
     TUT_LEFT_COHORT("CONFORMANCE-SUITE-0018",
                     AuditLogRecordSeverityLevel.INFO,
              "The technology under test with server name {0} and metadata collection id {1} has left the cohort",
-             "The Open Metadata Conformance Suite is unable to run any more tests.",
+             "The Open Metadata Conformance Suite cannot run any more tests.",
              "Extract the conformance report from the conformance suite to determine if the tests were successful."),
 
     /**

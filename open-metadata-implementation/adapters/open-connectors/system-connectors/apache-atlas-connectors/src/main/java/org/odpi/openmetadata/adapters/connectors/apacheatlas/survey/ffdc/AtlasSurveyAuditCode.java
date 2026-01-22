@@ -26,7 +26,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} Apache Atlas Survey Action Service received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to continue to profile Apache Atlas.",
+                         "The connector cannot continue to profile Apache Atlas.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
 
@@ -36,7 +36,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
     WRONG_REST_CONNECTOR("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0002",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Apache Atlas Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                         "The connector is unable to continue to profile Apache Atlas because it can not call its REST API.",
+                         "The connector cannot continue to profile Apache Atlas because it can not call its REST API.",
                          "Use the details from the error message to determine the class of the connector.  " +
                                  "Update the connector type associated with Apache Atlas's Connection in the metadata store."),
 
@@ -47,7 +47,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
     WRONG_ROOT_SCHEMA_TYPE("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0003",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The root schema type for Apache Atlas Software Server {0} is of type {1} rather than {2}. Apache Atlas Survey Connector {3} is not able to continue with its schema analysis.  The existing schema type properties are {4}",
-                         "The connector is unable to continue to define the schema for the Apache Atlas Server based on its defined types because it is unable to understand the existing root schema type.",
+                         "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot understand the existing root schema type.",
                          "Use the details from the error message to determine the origin and reason for the existing schema type.  If it is correct then disable the schema analysis of this survey action service.  It the existing root schema type should not be present, then delete it, and re-run the failed survey action service."),
 
     /**
@@ -56,7 +56,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
     MISSING_ASSET_UNIVERSE("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0004",
                            AuditLogRecordSeverityLevel.ERROR,
                            "The asset universe for Apache Atlas Software Server is null. Apache Atlas Survey Connector {0} is not able to continue with its schema analysis",
-                           "The connector is unable to continue to define the schema for the Apache Atlas Server based on its defined types because it is unable to access the existing root schema type from the asset universe because it is null.",
+                           "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot access the existing root schema type from the asset universe because it is null.",
                            "Use the details from the error message to determine the asset universe being null.  Correct the error and re-run the failed survey action service."),
 
 

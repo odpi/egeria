@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * RepositoryErrorException provides a checked exception for reporting situations where the metadata
- * repository hosting a metadata collection is unable to perform a request.
+ * repository hosting a metadata collection cannot perform a request.
  * The OMRSErrorCode adds specific details for the cause/effect of the error.
  */
 public class RepositoryErrorException extends PropertyServerException

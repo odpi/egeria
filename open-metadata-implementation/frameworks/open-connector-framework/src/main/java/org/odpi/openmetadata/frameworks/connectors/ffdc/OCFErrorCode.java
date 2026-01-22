@@ -33,7 +33,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTION(400, "OCF-CONNECTION-400-001",
             "Null connection object passed on request for new connector instance",
-            "The system is unable to create the requested connector instance without the connection information that describes which type of connector is required.",
+            "The system cannot create the requested connector instance without the connection information that describes which type of connector is required.",
             "Recode call to system to include a correctly formatted connection object and retry the request."),
 
     /**
@@ -41,7 +41,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     UNNAMED_CONNECTION(400, "OCF-CONNECTION-400-002",
             "Unnamed connection object passed to requested action {0}",
-            "The system is unable to perform the requested action without a connection name.",
+            "The system cannot perform the requested action without a connection name.",
             "Update connection configuration to include a value for at least one of the following name properties: qualifiedName, displayName, guid. Then retry the request."),
 
     /**
@@ -49,7 +49,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTOR_TYPE(400, "OCF-CONNECTION-400-003",
             "Null connectorType property passed in connection {0}",
-            "The system is unable to create the requested connector instance without information on the type of connection required.",
+            "The system cannot create the requested connector instance without information on the type of connection required.",
             "Update the connection configuration to include a valid connectorType definition.  Then retry the request."),
 
     /**
@@ -57,7 +57,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-004",
             "Null Connector Provider passed in connection {0}",
-            "The system is unable to create the requested connector instance without information on the type of connection required.",
+            "The system cannot create the requested connector instance without information on the type of connection required.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -65,7 +65,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-005",
             "Unknown Connector Provider class {0} passed in connection {1}",
-            "The system is unable to create the requested connector instance because the Connector Provider's class is not known to the JVM.  This may be because the Connector Provider's jar is not installed in the local JVM or the wrong Java class name has been configured in the connection.",
+            "The system cannot create the requested connector instance because the Connector Provider's class is not known to the JVM.  This may be because the Connector Provider's jar is not installed in the local JVM or the wrong Java class name has been configured in the connection.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -73,7 +73,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NOT_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-006",
             "Class {0} passed in connection {1} is not a Connector Provider",
-            "The system is unable to create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider.",
+            "The system cannot create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -81,7 +81,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008",
             "Connector Provider class {0} passed in connection {1} resulted in a {2} exception with error message of {3}",
-            "The system is unable to create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
+            "The system cannot create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -89,7 +89,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_ENDPOINT_IN_CONNECTION(400, "OCF-CONNECTION-400-009",
             "Null endpoint detected in connection {0}",
-            "The system is unable to initialize the requested connector because the endpoint information in the connection is missing.",
+            "The system cannot initialize the requested connector because the endpoint information in the connection is missing.",
             "Add the endpoint information into the connection object and retry the request."),
 
     /**
@@ -97,12 +97,12 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     MALFORMED_ENDPOINT(400, "OCF-CONNECTION-400-010",
             "The endpoint attribute {0} in connection {1} is set to \"{2}\" which is invalid",
-            "The system is unable to initialize the requested connector because the endpoint information in the connection is not formatted correctly for this type of connection.",
+            "The system cannot initialize the requested connector because the endpoint information in the connection is not formatted correctly for this type of connection.",
             "Correct the endpoint information into the connection object and retry the request."),
 
     MALFORMED_DATE_CONFIGURATION_PROPERTY(400, "OCF-CONNECTION-400-011",
                        "The {0} configuration property of {1} is set to an invalid date format.  Use dd/MM/yyyy/hh:mm:ss",
-                       "The system is unable to initialize the requested connector because the configuration property in the connection is not formatted correctly.",
+                       "The system cannot initialize the requested connector because the configuration property in the connection is not formatted correctly.",
                        "Correct the configuration property into the connection object and retry the request."),
 
     /**
@@ -221,7 +221,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     INVALID_ROOT_SCHEMA_TYPE(400, "OCF-CONNECTOR-400-006",
                              "Asset {0} has a root schema of type {1} but connector {2} only supports the following root schema type(s): {3}",
                              "The connector terminates because it can not proceed.",
-                             "The caller has requested a governance request type that is unable to process a root schema for an asset because its type is unsupported." +
+                             "The caller has requested a governance request type that cannot process a root schema for an asset because its type is unsupported." +
                                      "  This problem could be resolved by issuing the survey request with " +
                                      "a governance request type that is compatible with the asset's schema, or changing the connector " +
                                      "associated with the governance request type to one that supports this type of schema."),
@@ -243,20 +243,20 @@ public enum OCFErrorCode implements ExceptionMessageSet
                 "Ensure the resource is correctly identified in the asset. Rerun this request when the resource is created."),
 
     /**
-     * OCF-CONNECTOR-400-009 - The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied
+     * OCF-CONNECTOR-400-009 - The {0} connector cannot proceed with is processing of {1} because the configuration property called {2} was not supplied
      */
     MISSING_CONFIGURATION_PROPERTY(400, "OCF-CONNECTOR-400-009",
-                                   "The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied",
+                                   "The {0} connector cannot proceed with is processing of {1} because the configuration property called {2} was not supplied",
                                    "The connector stop processing the named element.",
                                    "Update the source of the configuration properties.  This is typically in the connector's connection.  However, the configuration properties may be overridden by, say, the CatalogTarget relationship linking the connector to the resource it is processing."),
 
 
     /**
-     * OCF-CONNECTOR-400-010 - The {0} connector is unable to proceed with is processing because the endpoint address is null
+     * OCF-CONNECTOR-400-010 - The {0} connector cannot proceed with is processing because the endpoint address is null
      */
     MISSING_ENDPOINT_ADDRESS(400, "OCF-CONNECTOR-400-010",
-                                   "The {0} connector is unable to proceed with is processing because the endpoint address is null",
-                                   "The connector is unable to access the digital resource it is supposed to connect to.",
+                                   "The {0} connector cannot proceed with is processing because the endpoint address is null",
+                                   "The connector cannot access the digital resource it is supposed to connect to.",
                                    "Update the source of the endpoint.  This may be from a template or from a connector."),
 
 
@@ -347,7 +347,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTOR_CLASS(500, "OCF-CONNECTOR-500-006",
             "The class name for the connector is not set up",
-            "The system is unable to create the requested connector instance without the name of the Java class for the connector.",
+            "The system cannot create the requested connector instance without the name of the Java class for the connector.",
             "Update the implementation of the connector provider to ensure the connector's java class is initialized correctly"),
 
     /**
@@ -355,7 +355,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_CONNECTOR(500,"OCF-CONNECTOR-500-007",
             "Unknown Connector Java class {0} for Connector {1}",
-            "The system is unable to create the requested connector instance because the Connector's class is not known to the JVM.  This may be because the Connector Provider's jar is not installed in the local JVM or the wrong Java class name has been configured in the connection.",
+            "The system cannot create the requested connector instance because the Connector's class is not known to the JVM.  This may be because the Connector Provider's jar is not installed in the local JVM or the wrong Java class name has been configured in the connection.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -363,7 +363,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NOT_CONNECTOR(500,"OCF-CONNECTOR-500-008",
             "Java class {0} for connector named {1} does not implement the Connector interface",
-            "The system is unable to create the requested connector instance because the Connector's class does not implement org.odpi.openmetadata.Connector.",
+            "The system cannot create the requested connector instance because the Connector's class does not implement org.odpi.openmetadata.Connector.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     /**
@@ -371,7 +371,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     INCOMPLETE_CONNECTOR(500,"OCF-CONNECTOR-500-009",
             "Unable to load Connector Java class {0}",
-            "The system is unable to create the requested connector instance because the Connector's class is failing to load in the JVM.  This has resulted in an exception in the class loader.",
+            "The system cannot create the requested connector instance because the Connector's class is failing to load in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process. Then retry the request."),
 
     /**
@@ -379,7 +379,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     INVALID_CONNECTOR(500, "OCF-CONNECTION-500-010",
             "Invalid Connector class {0} for connector {1}; resulting exception {2} produced message {3}",
-            "The system is unable to create the requested connector instance because the Connector's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
+            "The system cannot create the requested connector instance because the Connector's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Then retry the request."),
 
     /**
@@ -395,7 +395,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NOT_VIRTUAL_CONNECTOR(500,"OCF-CONNECTOR-500-012",
             "Java class {0} is not a VirtualConnector and so can not support VirtualConnection {1}",
-            "The system is unable to create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector.",
+            "The system cannot create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
     ;

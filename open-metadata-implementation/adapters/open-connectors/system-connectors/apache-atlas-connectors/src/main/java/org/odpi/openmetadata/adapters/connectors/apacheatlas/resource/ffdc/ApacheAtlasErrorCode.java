@@ -68,7 +68,7 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-REST-CONNECTOR-500-001",
                          "The {0} Apache Atlas REST connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements.",
+                         "The connector cannot catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

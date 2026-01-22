@@ -212,7 +212,7 @@ Content-Type: application/json
 # Returns the list of templates for servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all server templates are returned.
 
- POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

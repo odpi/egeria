@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
- * The ProductFolderDefinition describes the different folders in the Open Metadata Product Catalog.
+ * The ProductFolderDefinition describes the different folders in the Open Metadata Digital Product Catalog.
  * This includes the top-level folder for the whole catalog.
  */
 public enum ProductFolderDefinition
@@ -27,7 +27,7 @@ public enum ProductFolderDefinition
              null,
              TOP_LEVEL,
              "Open Metadata Digital Product Glossary",
-             "Terminology used in the open metadata digital product catalog.",
+             "Terminology used in the Open Metadata Digital Product Catalog.",
              null),
 
     /**

@@ -38,7 +38,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     BAD_SEARCH_PROPERTY(400, "POSTGRES-REPOSITORY-CONNECTOR-400-002",
                    "The {0} postgreSQL repository connector has detected an incompatible search property with operator {1}: {2}",
-                   "The search method is unable to match the supplied property with the supplied operator.",
+                   "The search method cannot match the supplied property with the supplied operator.",
                    "Correct the values supplied on the search so that single values are supplied with single value operators such as 'Equal' and multiple values are supplied on multi-value operators such as 'In'."),
 
     /**
@@ -54,7 +54,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-REPOSITORY-CONNECTOR-500-001",
                          "The {0} postgreSQL repository connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -62,7 +62,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     MISSING_MAPPING_VALUE(500, "POSTGRES-REPOSITORY-CONNECTOR-500-002",
                          "The postgreSQL repository connector is missing {0} value during method {1} in mapper {2}",
-                         "The connector is unable to process the current request because of an internal sequencing error.",
+                         "The connector cannot process the current request because of an internal sequencing error.",
                          "Use a trace to determine why one of the mapper was called in the wrong sequence."),
 
     /**
@@ -70,7 +70,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     MISSING_REPOSITORY_VALUE(500, "POSTGRES-REPOSITORY-CONNECTOR-500-003",
                              "The {0} postgreSQL repository connector detected a missing value for column {1} during method {2} in mapper {3}; row values are: {4}",
-                             "The connector is unable to process the current request because of a missing value in the database.",
+                             "The connector cannot process the current request because of a missing value in the database.",
                              "Investigate the contents of the database and the SQL requests used to populate it."),
 
     /**
@@ -78,7 +78,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     INVALID_REPOSITORY_VALUE(500, "POSTGRES-REPOSITORY-CONNECTOR-500-004",
                              "The {0} postgreSQL repository connector detected an invalid value for column {1} during method {2} in mapper {3}; row values are: {4}",
-                             "The connector is unable to process the current request because of an incorrect value in the database.",
+                             "The connector cannot process the current request because of an incorrect value in the database.",
                              "This is a logic error since only valid values should make it into the database.  Investigate the contents of the database and the SQL requests used to populate it."),
 
     /**

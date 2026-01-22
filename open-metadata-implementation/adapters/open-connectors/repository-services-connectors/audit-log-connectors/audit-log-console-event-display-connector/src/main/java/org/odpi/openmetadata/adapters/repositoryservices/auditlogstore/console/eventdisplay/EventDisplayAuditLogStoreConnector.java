@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.eventdisplay;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -34,7 +34,7 @@ public class EventDisplayAuditLogStoreConnector extends OMRSAuditLogStoreConnect
 
         super.validateLogRecord(logRecord, methodName);
 
-        if (OMRSAuditLogRecordSeverity.EVENT.getName().equals(logRecord.getSeverity()))
+        if (AuditLogRecordSeverityLevel.EVENT.getName().equals(logRecord.getSeverity()))
         {
             if (logRecord.getAdditionalInformation() != null)
             {

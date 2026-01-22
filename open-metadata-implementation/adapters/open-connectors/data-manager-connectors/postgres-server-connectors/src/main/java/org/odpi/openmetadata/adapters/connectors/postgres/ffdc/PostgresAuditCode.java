@@ -27,15 +27,15 @@ public enum PostgresAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("POSTGRES-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The PostgreSQL connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * POSTGRES-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for PostgreSQL Database Server {1}
+     * POSTGRES-CONNECTOR-0002 - The {0} survey action service cannot retrieve details of any databases for PostgreSQL Database Server {1}
      */
     NO_DATABASES( "POSTGRES-CONNECTOR-0002",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} survey action service is unable to retrieve details of any databases for PostgreSQL Database Server {1} ({2})",
+                       "The {0} survey action service cannot retrieve details of any databases for PostgreSQL Database Server {1} ({2})",
                        "The survey terminates.",
                        "This may not be an error if there are no user database on the database server.  If there are, check the permissions associated with the database userId."),
 

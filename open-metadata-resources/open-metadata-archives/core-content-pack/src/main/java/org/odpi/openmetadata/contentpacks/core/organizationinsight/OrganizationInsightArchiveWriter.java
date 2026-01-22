@@ -60,7 +60,7 @@ public class OrganizationInsightArchiveWriter extends ContentPackBaseArchiveWrit
         this.addSolutionLinkingWires(ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK);
 
         /*
-         * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
+         * Saving the GUIDs means that the guids in the archive are stable between runs of the archive writer.
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();

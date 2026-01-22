@@ -1829,9 +1829,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                                                           OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                           queryOptions);
 
-        if ((linkedResources != null) && (linkedResources.getElementList() != null))
+        if ((linkedResources != null) && (linkedResources.getRelationships() != null))
         {
-            for (OpenMetadataRelationship relatedMetadataElement : linkedResources.getElementList())
+            for (OpenMetadataRelationship relatedMetadataElement : linkedResources.getRelationships())
             {
                 if (relatedMetadataElement != null)
                 {

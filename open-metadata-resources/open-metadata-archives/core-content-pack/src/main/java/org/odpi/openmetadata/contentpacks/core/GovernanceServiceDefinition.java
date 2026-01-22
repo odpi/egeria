@@ -6,9 +6,7 @@ package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.MonitoredResourceNotificationServiceProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.OneTimeNotificationServiceProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.PeriodicRefreshNotificationServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.baudot.BaudotSubscriptionManagementProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.ProvisionTabularDataSetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
@@ -16,8 +14,8 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Q
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.CancelSubscriptionGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.CreateSubscriptionGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.KarmaPointAwardsServiceProvider;
@@ -351,7 +349,7 @@ public enum GovernanceServiceDefinition
                          new CreateSubscriptionGovernanceActionProvider(),
                          ResourceUse.CREATE_SUBSCRIPTION,
                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
-                         ContentPackDefinition.CORE_CONTENT_PACK),
+                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
      * Remove an existing digital subscription.
@@ -362,40 +360,18 @@ public enum GovernanceServiceDefinition
                         new CancelSubscriptionGovernanceActionProvider(),
                         ResourceUse.CANCEL_SUBSCRIPTION,
                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
-                        ContentPackDefinition.CORE_CONTENT_PACK),
+                        ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
-     * A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.
+     * A Watchdog Action Service that notifies subscribers of Open Metadata Digital Products that the condition set out in the subscription has occurred.
      */
-    MONITORED_RESOURCE_NOTIFICATION("a63080e3-a9f7-47a7-b4ea-2594ac86a86b",
-                                    "monitored-resource-notification-governance-service",
-                                    "A Watchdog Action Service that detects changes to monitored elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.",
-                                    new MonitoredResourceNotificationServiceProvider(),
+    BAUDOT_SUBSCRIPTION_MANAGER("8b4e7a99-651e-4c54-b8ec-3615786c8394",
+                                    "baudot-subscription-manager-governance-service",
+                                    "A Watchdog Action Service that notifies subscribers of Open Metadata Digital Products that the condition set out in the subscription has occurred.",
+                                    new BaudotSubscriptionManagementProvider(),
                                     ResourceUse.INFORM_STEWARD,
                                     DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                                    ContentPackDefinition.CORE_CONTENT_PACK),
-
-    /**
-     * A Watchdog Action Service that periodically notifies all subscribers to the notification type.
-     */
-    PERIODIC_REFRESH_NOTIFICATION("8a978f60-9f32-48ae-9c38-1063a7c4f69e",
-                                  "periodic-refresh-notification-governance-service",
-                                  "A Watchdog Action Service that periodically notifies all subscribers to the notification type.",
-                                    new PeriodicRefreshNotificationServiceProvider(),
-                                    ResourceUse.INFORM_STEWARD,
-                                    DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                                    ContentPackDefinition.CORE_CONTENT_PACK),
-
-    /**
-     * A Watchdog Action Service that periodically notifies all subscribers to the notification type.
-     */
-    ONE_TIME_NOTIFICATION("79e09d77-4bb1-410c-8aea-ffff32380cdf",
-                          "one-time-notification-governance-service",
-                          "A Watchdog Action Service that notifies all subscribers to the notification type once only.",
-                          new OneTimeNotificationServiceProvider(),
-                          ResourceUse.INFORM_STEWARD,
-                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                          ContentPackDefinition.CORE_CONTENT_PACK),
+                                    ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
      * A Watchdog Action Service that listens for changes to open metadata and awards karma points to the user making the change.

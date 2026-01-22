@@ -123,7 +123,7 @@ public class ConnectorActivityReportWriter
             {
                 ConnectorActivityReportProperties report = new ConnectorActivityReportProperties();
 
-                report.setQualifiedName(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName + "::" + connectorId + "::" + connectorName + "::" + new Date());
+                report.setQualifiedName(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName + "::" + connectorId + "::" + connectorName + "::" + new Date() + " (" + new Date().getTime() + ")");
                 report.setServerName(serverName);
                 report.setConnectorId(connectorId);
                 report.setConnectorName(connectorName);

@@ -152,7 +152,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                             processGUID = existingProcess.getElementHeader().getGUID();
 
-                            if ((existingProcess.getProperties() instanceof  ProcessProperties properties ) && (properties).getDescription() == null)
+                            if ((existingProcess.getProperties() instanceof ProcessProperties properties ) && (properties).getDescription() == null)
                             {
                                 if (job.getFacets() != null)
                                 {
@@ -188,7 +188,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                             OpenLineageParentRunFacetJob parentJob = run.getFacets().getParent().getJob();
                             OpenLineageParentRunFacetRun parentRun = run.getFacets().getParent().getRun();
 
-                            if (parentJob != null)
+                            if ((parentJob != null) && (parentJob.getName() != null))
                             {
                                 parentProcessName = parentJob.getName();
 

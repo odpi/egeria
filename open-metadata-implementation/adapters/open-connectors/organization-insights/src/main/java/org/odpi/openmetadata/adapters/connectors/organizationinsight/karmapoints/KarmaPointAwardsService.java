@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * KarmaPointAwardsService fills in the contribution record for an actor profile.  The aim is to
- * perform this update as cheaply as possible and so some values are cached.
+ * perform this update as cheaply as possible, and so some values are cached.
  * Any strangeness in the metadata elements is ignored in the interest of speed.
  * The updates are synchronized to reduce the chance of updating the same contribution record simultaneously
  * in multiple threads.

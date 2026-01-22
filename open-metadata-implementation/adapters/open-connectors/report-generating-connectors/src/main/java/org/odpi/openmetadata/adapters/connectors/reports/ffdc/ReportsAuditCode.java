@@ -27,7 +27,7 @@ public enum ReportsAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("REPORT-GENERATORS-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The report generating service {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The service is unable to process the current request.",
+                         "The service cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

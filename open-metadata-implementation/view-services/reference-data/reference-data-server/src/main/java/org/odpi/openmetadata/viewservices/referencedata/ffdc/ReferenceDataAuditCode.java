@@ -49,11 +49,11 @@ public enum ReferenceDataAuditCode implements AuditLogMessageSet
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Reference Data OMVS."),
 
     /**
-     * OMVS-REFERENCE-DATA-0004 The Reference Data Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     * OMVS-REFERENCE-DATA-0004 The Reference Data Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("OMVS-REFERENCE-DATA-0004",
                              AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Reference Data Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
+                         "The Reference Data Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

@@ -344,9 +344,9 @@ public class InformationSupplyChainHandler extends CollectionHandler
                                                                                                                             searchProperties,
                                                                                                                             workingQueryOptions);
 
-                while ((relationshipList != null) && (relationshipList.getElementList() != null))
+                while ((relationshipList != null) && (relationshipList.getRelationships() != null))
                 {
-                    lineageRelationships.addAll(relationshipList.getElementList());
+                    lineageRelationships.addAll(relationshipList.getRelationships());
 
                     workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
 

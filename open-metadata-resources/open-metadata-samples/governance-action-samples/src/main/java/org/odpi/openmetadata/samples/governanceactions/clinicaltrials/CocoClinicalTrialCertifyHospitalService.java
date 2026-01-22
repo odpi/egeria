@@ -200,7 +200,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                                                                                                                                        startFrom,
                                                                                                                                        governanceContext.getMaxPageSize());
 
-        if ((existingCertifications == null) || (existingCertifications.getElementList() == null))
+        if ((existingCertifications == null) || (existingCertifications.getRelationships() == null))
         {
             PersonContactDetails custodianContactDetails = super.getContactDetailsForPersonGUID(custodianGUID);
 
@@ -237,7 +237,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                                                                                  OpenMetadataProperty.COVERAGE_START.name,
                                                                                  new Date());
 
-            for (OpenMetadataRelationship certification : existingCertifications.getElementList())
+            for (OpenMetadataRelationship certification : existingCertifications.getRelationships())
             {
                 if (certification != null)
                 {

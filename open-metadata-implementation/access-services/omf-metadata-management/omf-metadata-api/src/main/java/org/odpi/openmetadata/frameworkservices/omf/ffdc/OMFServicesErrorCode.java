@@ -41,7 +41,7 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_INITIALIZED(404, "OMF-SERVICES-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
-                         "The system is unable to connect to the open metadata property server.",
+                         "The system cannot connect to the open metadata property server.",
                          "Check that the server where the Open Metadata Store Services are running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
 
@@ -51,7 +51,7 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
      */
     MULTIPLE_RELATIONSHIPS_FOUND(404, "OMF-SERVICES-409-001",
                          "Multiple {0} relationships are attached to metadata element {1}",
-                         "This relationship type is a singleton, which means that only once relationship of this type can be attached to an element.  The system is unable to retrieve the singleton relationship because there are more than one relationship defined.",
+                         "This relationship type is a singleton, which means that only once relationship of this type can be attached to an element.  The system cannot retrieve the singleton relationship because there are more than one relationship defined.",
                          "Using a different method, retrieve all of the relationships of this type for this element and either delete/archive the relationships no longer needed, or adjust their effectivity date(s) so that only one relationship is effective at any one time."),
 
 
@@ -80,7 +80,7 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     NULL_CONNECTOR_RETURNED(500, "OMF-SERVICES-500-006",
                             "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
                                     " running in OMAG Server {2} at {3}",
-                            "The system is unable to create a connector which means some of its services will not work.",
+                            "The system cannot create a connector which means some of its services will not work.",
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
@@ -91,7 +91,7 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     WRONG_TYPE_OF_CONNECTOR(500, "OMF-SERVICES-500-007",
                             "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
-                            "The system is unable to create the required connector which means some of its services will not work.",
+                            "The system cannot create the required connector which means some of its services will not work.",
                             "Verify that the OMAG server is running and the OMAS service is correctly configured."),
 
     /**

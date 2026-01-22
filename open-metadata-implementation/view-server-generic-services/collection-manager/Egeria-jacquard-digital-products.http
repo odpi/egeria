@@ -67,7 +67,7 @@ Content-Type: application/json
   "ignoreCase" : true
 }
 
-> {% set("digitalProductGUID", response.body.elements); %}
+
 
 
 ###
@@ -125,7 +125,7 @@ Content-Type: application/json
 
 
 ###
-# @name getCollectionsByName (restricted by classificationName)
+# @name get digital roducts by name
 # Returns the list of collections with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
 Authorization: Bearer {{token}}
@@ -133,18 +133,11 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "DataJourneyProject:Data Acquisition Journey:{{projectName}}:ActivityFolder:Potential Data Sources",
-  "includeOnlyClassifiedElements" : ["RootCollection"],
-  "startFrom" : 0,
-  "pageSize": 0,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
+  "metadataElementTypeName": "DigitalProduct",
+  "filter" : "contentStatus Valid Values"
 }
+
+> {% set("digitalProductGUID", response.body.elements); %}
 
 ###
 # @name getCollectionsByCategory

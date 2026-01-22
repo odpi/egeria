@@ -32,7 +32,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-001",
             "The file name is null in the Connection object {0}",
-            "The connector is unable to open the structure file because the name of the file is not passed in the Connection object.",
+            "The connector cannot open the structure file because the name of the file is not passed in the Connection object.",
             "The name of the file should be set up in the address property of the connection's Endpoint object."),
 
     /**
@@ -40,7 +40,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     DIRECTORY_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-002",
             "The file {0} given in Connection object {1} is a directory",
-            "The connector is unable to work with a directory.",
+            "The connector cannot work with a directory.",
             "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -48,7 +48,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_READABLE(400, "CSV-FILE-CONNECTOR-400-003",
             "The file {0} given in Connection object {1} is not readable",
-            "The connector is unable to open the file.",
+            "The connector cannot open the file.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -56,7 +56,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_TOO_SHORT(400, "CSV-FILE-CONNECTOR-400-004",
             "File {0} does not have {1} rows",
-            "The connector is unable to retrieve the requested record because the file is too short.",
+            "The connector cannot retrieve the requested record because the file is too short.",
             "Ensure the record number requested is within the size of the file.  Method getRecordCount will provide information on the number of data records in the file"),
 
     /**
@@ -64,7 +64,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_FOUND(404, "CSV-FILE-CONNECTOR-404-001",
              "The file named {0} in the Connection object {1} does not exist",
-             "The connector is unable to open the structure file.",
+             "The connector cannot open the structure file.",
              "Add an existing file to the address property of the connection's Endpoint object."),
 
     /**
@@ -72,7 +72,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_IO_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-001",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the structure file.",
+             "The connector cannot process the structure file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -80,7 +80,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     FIXED_COLUMN_NAMES(500, "CSV-FILE-CONNECTOR-500-002",
                                     "The connector cannot change its column names because they are fixed in the connector's configuration",
-                                    "The connector is unable to process the new column descriptions.",
+                                    "The connector cannot process the new column descriptions.",
                                     "Remove the column names definition from the configuration properties to enable new column names to be specified."),
 
     /**
@@ -88,7 +88,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     NO_EMBEDDED_FILE_STORE(500, "CSV-FILE-CONNECTOR-500-003",
                                    "Connection {0} has been configured without the embedded CSV File Store connection",
-                                   "The connector is unable to start because it does not have the connector that manages the file.",
+                                   "The connector cannot start because it does not have the connector that manages the file.",
                                    "Update the connection to include the embedded connection needed to work with CSV files."),
 
     /**
@@ -96,7 +96,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-004",
                                  "The {0} CSV File connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                                 "The connector is unable to process the current request.",
+                                 "The connector cannot process the current request.",
                                  "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

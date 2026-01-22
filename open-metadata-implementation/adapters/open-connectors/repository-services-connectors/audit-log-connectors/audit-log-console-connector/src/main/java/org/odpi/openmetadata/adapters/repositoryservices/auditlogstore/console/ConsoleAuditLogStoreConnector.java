@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -38,7 +38,7 @@ public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBas
         {
             System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
 
-            if (OMRSAuditLogRecordSeverity.EXCEPTION.getName().equals(logRecord.getSeverity()))
+            if (AuditLogRecordSeverityLevel.EXCEPTION.getName().equals(logRecord.getSeverity()))
             {
                 if (logRecord.getExceptionClassName() != null)
                 {

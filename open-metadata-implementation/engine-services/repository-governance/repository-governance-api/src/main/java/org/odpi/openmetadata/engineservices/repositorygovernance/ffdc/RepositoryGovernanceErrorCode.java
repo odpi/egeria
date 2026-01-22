@@ -81,12 +81,12 @@ public enum RepositoryGovernanceErrorCode implements ExceptionMessageSet
                                           "configuration of the Repository Governance OMES.  Once the cause is resolved, restart the server."),
 
     NO_REPOSITORY_GOVERNANCE_ENGINES_STARTED(400,"OMES-REPOSITORY-GOVERNANCE-400-012 ",
-             "Repository Governance OMES in server {0} is unable to start any repository governance engines",
+             "Repository Governance OMES in server {0} cannot start any repository governance engines",
              "The server is not able to run any repository governance requests.  It fails to start.",
              "Add the configuration for at least one repository governance engine to this Repository Governance OMES."),
 
     NO_REPOSITORY_GOVERNANCE_ENGINE_CLIENT(400,"OMES-REPOSITORY-GOVERNANCE-400-013 ",
-                                 "Repository Governance OMES in server {0} is unable to start a client to the OMRS for repository governance engine {1}.  The " +
+                                 "Repository Governance OMES in server {0} cannot start a client to the OMRS for repository governance engine {1}.  The " +
                                          "exception was {2} and the error message was {3}",
                                  "The server is not able to run any repository governance requests.  It fails to start.",
                                  "Using the information in the error message, correct the server configuration and restart the server."),
@@ -150,7 +150,7 @@ public enum RepositoryGovernanceErrorCode implements ExceptionMessageSet
                                    "invalid configuration.  Raise an issue to get help to fix it"),
 
     REPOSITORY_GOVERNANCE_ENGINE_NOT_INITIALIZED(400,"OMES-REPOSITORY-GOVERNANCE-400-024 ",
-             "Repository Governance OMES in server {0} is unable to pass a repository governance request to repository governance engine {1} because this repository governance engine has not " +
+             "Repository Governance OMES in server {0} cannot pass a repository governance request to repository governance engine {1} because this repository governance engine has not " +
                                              "retrieved its configuration from the metadata server",
                                      "The repository governance engine is not able to run any repository governance requests until it is able to retrieve its configuration.",
                                      "Use the configuration interface of the OMRS to create a definition of at least one repository governance" +

@@ -291,7 +291,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
                 archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                            leaderRoleQName,
-                                           "Community Leader",
+                                           "Community Leader of " + communityDefinition.getDisplayName(),
                                            null,
                                            null,
                                            "Community",
@@ -314,7 +314,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
                 archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                            memberRoleQName,
-                                           "CommunityMember",
+                                           "Community Member of " + communityDefinition.getDisplayName(),
                                            null,
                                            null,
                                            "Community",

@@ -76,7 +76,7 @@ public class ConnectorContextBase
     private final   ActorProfileClient             actorProfileClient;
     private final   ActorRoleClient                actorRoleClient;
     private final   AnnotationClient               annotationClient;
-    private final   AssetClient                    assetClient;
+    protected final AssetClient                    assetClient;
     private final   ClassificationManagerClient    classificationManagerClient;
     private final   CollectionClient               collectionClient;
     private final   CommentClient                  commentClient;

@@ -32,7 +32,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     BAD_SERVER_SECURITY_CONNECTION(400, "OMAG-MULTI-TENANT-400-001",
             "The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}",
-            "The system is unable to validate the users issuing requests to this server.",
+            "The system cannot validate the users issuing requests to this server.",
             "Review the error message to determine the cause of the problem."),
 
 
@@ -41,14 +41,14 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     SERVICES_NOT_SHUTDOWN(400, "OMAG-MULTI-TENANT-400-002",
             "The OMAG server {0} has been requested to shutdown but the following services are still running: {1}",
-            "The system is unable to shutdown the server correctly.",
+            "The system cannot shutdown the server correctly.",
             "Review other error messages to determine the cause of the problem.  This is likely to be a logic error in the services listed in the message"),
 
     /**
-     * OMAG-MULTI-TENANT-400-003 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
+     * OMAG-MULTI-TENANT-400-003 - Method {0} called on behalf of the {1} service cannot create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
      */
     NO_TOPIC_INFORMATION(400,"OMAG-MULTI-TENANT-400-003",
-                         "Method {0} called on behalf of the {1} service is unable to create a client-side open " +
+                         "Method {0} called on behalf of the {1} service cannot create a client-side open " +
                                  "metadata topic connection because the topic name is not configured in the configuration for this service.",
                          "This is a configuration error and an exception is sent to the requester.",
                          "Correct the configuration of the access service to include the name of the topic."),
@@ -66,7 +66,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     INVALID_URL_MARKER(400, "OMAG-MULTI-TENANT-400-005",
                        "The URL marker {0} is not recognized",
-                       "The system is unable to continue with the request because the supplied URL marker does not match the registered services.",
+                       "The system cannot continue with the request because the supplied URL marker does not match the registered services.",
                        "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform."),
 
     /**
@@ -74,7 +74,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     UNCONFIGURED_URL_MARKER(400, "OMAG-MULTI-TENANT-400-006",
                        "Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured",
-                       "The system is unable to continue with the request because the supplied URL marker does not match the configured view services.  This generic service is running only as a support service for other, configured services.",
+                       "The system cannot continue with the request because the supplied URL marker does not match the configured view services.  This generic service is running only as a support service for other, configured services.",
                        "Update the parameters passed on the request to use a URL Marker for a configured view service, or add this view service to the configuration document for this server."),
 
     /**
@@ -82,7 +82,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",
                          "The OMAG Server {0} is not available to service a request from user {1}",
-                         "The system is unable to process the request because the server is not running on the called platform.",
+                         "The system cannot process the request because the server is not running on the called platform.",
                          "Verify that the correct server is being called on the correct platform and that this server is running. " +
                                  "Retry the request when the server is available."),
 
@@ -91,7 +91,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     SERVICE_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-002",
             "The {0} service is not available on OMAG Server {1} to handle a request from user {2}",
-            "The system is unable to process the request because the service is not available.",
+            "The system cannot process the request because the service is not available.",
             "Verify that the correct server is being called on the correct platform and that the requested service is configured to run there.  " +
                                   "Once the correct environment is in place, retry the request."),
 
@@ -100,7 +100,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     SERVER_NAME_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-003",
             "The server name is not available for the {0} operation",
-            "The system is unable to return the server name because it is not available.",
+            "The system cannot return the server name because it is not available.",
             "Check that the server where the access service is running initialized correctly.  " +
                             "Correct any errors discovered and retry the request when the open metadata services are available."),
 
@@ -109,7 +109,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_INITIALIZED(404, "OMAG-MULTI-TENANT-404-004",
             "The open metadata repository services are not initialized for the {0} operation",
-            "The system is unable to connect to the open metadata repository services because they are not running in this server.",
+            "The system cannot connect to the open metadata repository services because they are not running in this server.",
             "Check that the server where the called service is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
 
@@ -118,7 +118,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-005",
             "The open metadata repository services are not available for the {0} operation",
-            "The system is unable to connect to the open metadata repository services because they are not in the correct state to be called.",
+            "The system cannot connect to the open metadata repository services because they are not in the correct state to be called.",
             "Check that the server where the called service is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata repository services are available."),
 
@@ -129,7 +129,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     INVALID_BEAN_CLASS(500, "OMAG-MULTI-TENANT-500-001",
                        "An unsupported bean class named {0} was passed to the OMAG Server Platform by the {1} request for open metadata view service {2} on " +
                                "server {3}; error message was: {4}",
-                       "The system is unable to process the request because it is not able to instantiate the bean.",
+                       "The system cannot process the request because it is not able to instantiate the bean.",
                        "Correct the code that initializes the converter during server start up."),
 
 

@@ -68,17 +68,17 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.ERROR,
                 "The {0} governance action service has been called without a source file name to work with",
                 "The provisioning governance action service connector is designed to manage files on request.  " +
-                        "It is unable to operate without the name of the source file and so it terminates with a FAILED completion status.",
+                        "It cannot operate without the name of the source file and so it terminates with a FAILED completion status.",
                 "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
                         "relationship.  Correct the information passed to the governance service and rerun the request."),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
+     * GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service cannot provision file {1} 
      * to {2} destination folder using {3} file pattern
      */
     FILE_PATTERN_FULL("GOVERNANCE-ACTION-CONNECTORS-0006",
                       AuditLogRecordSeverityLevel.ERROR,
-                      "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern",
+                      "The {0} governance action service cannot provision file {1} to {2} destination folder using {3} file pattern",
                       "This message is logged and the governance action is marked as failed",
                       "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
                                       "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern."),
@@ -139,7 +139,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.INFO,
                          "The {0} governance action service detected that asset {1} has {2} linked connections for asset {3} and is not sure " +
                                  "which one to use since they have inconsistent networkAddress properties in their endpoint",
-                         "Since the governance action service is unable to choose an appropriate endpoint, it " +
+                         "Since the governance action service cannot choose an appropriate endpoint, it " +
                                  "will use the qualified name of the asset as the path name to work with.",
                          "The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
                                  "qualified name embedded in it.  Follow the instructions for this message."),
@@ -268,12 +268,12 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                    "connector in the integration daemon once the original cause of the error has been corrected."),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0023 - The {0} governance action service is unable to retrieve the template {1} configured in property {2}.  
+     * GOVERNANCE-ACTION-CONNECTORS-0023 - The {0} governance action service cannot retrieve the template {1} configured in property {2}.  
      * The asset {3} was created without a template
      */
     MISSING_TEMPLATE("GOVERNANCE-ACTION-CONNECTORS-0023",
                      AuditLogRecordSeverityLevel.ERROR,
-                               "The {0} governance action service is unable to retrieve the template {1} configured in property {2}.",
+                               "The {0} governance action service cannot retrieve the template {1} configured in property {2}.",
                                "The asset is created with the supplied parameters.",
                                "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template."),
 
@@ -407,7 +407,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0037",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The governance service {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The service is unable to process the current request.",
+                         "The service cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

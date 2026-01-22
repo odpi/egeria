@@ -78,11 +78,11 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                 "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
 
     /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0015 - The {0} integration connector is unable to retrieve the Topic template with qualified name: {1}
+     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0015 - The {0} integration connector cannot retrieve the Topic template with qualified name: {1}
      */
     MISSING_TEMPLATE("APACHE-KAFKA-INTEGRATION-CONNECTOR-0015",
                      AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector is unable to retrieve the Topic template with qualified name: {1}",
+                     "The {0} integration connector cannot retrieve the Topic template with qualified name: {1}",
                      "The metadata element for the template is not found in the open metadata repositories.  " +
                              "The template name was configured for the connector.  This means that topics should be catalogued " +
                              "using the template.  Since the template is missing, topics are not being catalogued.",
@@ -146,7 +146,7 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION( "APACHE-KAFKA-INTEGRATION-CONNECTOR-0021",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
-                         "The connector is unable to catalog one or more topics.",
+                         "The connector cannot catalog one or more topics.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

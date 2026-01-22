@@ -925,7 +925,7 @@ public class AssetMakerResource
 
 
     /**
-     * Retrieve the "Actions" that are chained off of a sponsor's element.
+     * Retrieve the "Actions" that are chained of a sponsor's element.
      *
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
@@ -952,6 +952,37 @@ public class AssetMakerResource
                                                                  ActivityStatusRequestBody requestBody)
     {
         return restAPI.getActionsForSponsor(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the "Actions" that are chained off a requester's element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to start with
+     * @param requestBody     status of the action (null means current active)
+     *
+     * @return list of action beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/elements/{elementGUID}/requested/actions")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getActionsFromRequester",
+            description="Retrieve the actions that are chained off of a sponsor's element.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public OpenMetadataRootElementsResponse getActionsFromRequester(@PathVariable String                serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @PathVariable String                elementGUID,
+                                                                    @RequestBody  (required = false)
+                                                                        ActivityStatusRequestBody requestBody)
+    {
+        return restAPI.getActionsFromRequester(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -1096,7 +1127,7 @@ public class AssetMakerResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
-    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
+    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getCatalogTargets",

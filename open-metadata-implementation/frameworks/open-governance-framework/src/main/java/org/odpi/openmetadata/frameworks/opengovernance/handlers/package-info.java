@@ -4,4 +4,4 @@
 /**
  * Provides specialised handlers that use the Notification Services.
  */
-package org.odpi.openmetadata.frameworks.openwatchdog.handlers;
+package org.odpi.openmetadata.frameworks.opengovernance.handlers;

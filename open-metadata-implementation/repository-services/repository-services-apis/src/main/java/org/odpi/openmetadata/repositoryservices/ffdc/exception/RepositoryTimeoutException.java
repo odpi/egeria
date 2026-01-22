@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * RepositoryTimeoutException provides a checked exception for reporting situations where the metadata
- * repository hosting a metadata collection is unable to perform a request due to a timeout (for example, a query
+ * repository hosting a metadata collection cannot perform a request due to a timeout (for example, a query
  * that exceeds a maximum allowed response time threshold).
  * The OMRSErrorCode adds specific details for the cause/effect of the error.
  */

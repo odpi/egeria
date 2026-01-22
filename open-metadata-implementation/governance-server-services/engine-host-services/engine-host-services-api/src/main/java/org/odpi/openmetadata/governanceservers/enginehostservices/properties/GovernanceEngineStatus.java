@@ -34,9 +34,9 @@ public enum GovernanceEngineStatus
     RUNNING     (2, "Running", "The governance engine is operational and able to service all defined governance requests on demand."),
 
     /**
-     * The governance engine is unable to run successfully due to an error in its configuration.
+     * The governance engine cannot run successfully due to an error in its configuration.
      */
-    FAILED      (3, "Failed", "The governance engine is unable to run successfully due to an error in its configuration."),
+    FAILED      (3, "Failed", "The governance engine cannot run successfully due to an error in its configuration."),
 
     /**
      * The governance engine has been disabled. It is waiting to be enabled before it can service any more governance requests.

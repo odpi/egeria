@@ -7,8 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.CommonServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogSeveritiesResponse;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstance;
@@ -65,7 +65,7 @@ public class OMRSAuditLogRESTServices extends TokenController
              * Validate that the serverName and userId permit the request.
              */
             instanceHandler.getInstance(userId, serverName, methodName);
-            response.setSeverities(OMRSAuditLogRecordSeverity.getSeverityList());
+            response.setSeverities(AuditLogRecordSeverityLevel.getSeverityList());
         }
         catch (Throwable  error)
         {

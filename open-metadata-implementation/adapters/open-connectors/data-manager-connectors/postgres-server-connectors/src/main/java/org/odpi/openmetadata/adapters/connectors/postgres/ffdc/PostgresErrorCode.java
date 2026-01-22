@@ -30,7 +30,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     NULL_URL(400, "POSTGRES-CONNECTOR-400-001",
                      "Connection {0} has been configured without the URL to the database",
-                     "The connector is unable to start because the endpoint of its connection has a null address property.",
+                     "The connector cannot start because the endpoint of its connection has a null address property.",
                      "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
 
     /**
@@ -38,7 +38,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     NO_DATABASE_CONNECTION(400, "POSTGRES-CONNECTOR-400-002",
              "Connection {0} has been configured without the embedded JDBC database connection",
-             "The connector is unable to start because it does not have a connector to the database.",
+             "The connector cannot start because it does not have a connector to the database.",
              "Update the connection to include the embedded connection needed to connect to the desired database."),
 
     /**
@@ -46,7 +46,7 @@ public enum PostgresErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-CONNECTOR-500-001",
                          "The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

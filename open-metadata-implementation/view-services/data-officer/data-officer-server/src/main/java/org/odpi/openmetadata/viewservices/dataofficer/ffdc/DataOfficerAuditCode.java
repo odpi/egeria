@@ -49,11 +49,11 @@ public enum DataOfficerAuditCode implements AuditLogMessageSet
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Data Officer OMVS."),
 
     /**
-     * OMVS-DATA-OFFICER-0004 The Data Officer Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     * OMVS-DATA-OFFICER-0004 The Data Officer Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("OMVS-DATA-OFFICER-0004",
                              AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Data Officer Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
+                         "The Data Officer Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

@@ -73,7 +73,7 @@ public class EgeriaOpenMetadataEventClient extends OpenMetadataEventClient
 
 
     /**
-     * Register a listener object that will be passed each of the events published by
+     * Register a listener object that will be passed the events published by
      * the Open Metadata Store.
      *
      * @param userId calling user

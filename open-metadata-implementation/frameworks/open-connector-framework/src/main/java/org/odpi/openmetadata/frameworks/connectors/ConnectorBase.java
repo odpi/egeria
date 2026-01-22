@@ -812,7 +812,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     }
 
     /**
-     * Log that no asset has been returned to the connector.  It is unable to proceed without this basic information.
+     * Log that no asset has been returned to the connector.  It cannot proceed without this basic information.
      *
      * @param assetGUID the unique identifier of the asset from the connection context
      * @param connectorName name of the connector

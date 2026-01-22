@@ -30,7 +30,7 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
      */
     UNEXPECTED_EXCEPTION(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001",
              "The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}",
-             "The connector is unable to process one or more lineage events.",
+             "The connector cannot process one or more lineage events.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -38,7 +38,7 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
      */
     NO_RAW_EVENT(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002",
                          "The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events",
-                         "The connector is unable to process an open lineage events because it has no content.",
+                         "The connector cannot process an open lineage events because it has no content.",
                          "Validate the set up and source of the events and retry the request once it is resolved."),
     ;
 

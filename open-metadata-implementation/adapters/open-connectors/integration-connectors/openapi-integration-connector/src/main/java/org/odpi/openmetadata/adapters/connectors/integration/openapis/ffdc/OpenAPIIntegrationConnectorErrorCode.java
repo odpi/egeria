@@ -27,12 +27,12 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
     UNEXPECTED_EXCEPTION(500, "OPEN-API-INTEGRATION-CONNECTOR-500-001",
                          "The {0} integration connector received an unexpected exception {1} when cataloguing APIs; the error message was: {2}",
-                         "The connector is unable to catalog one or more APIs.",
+                         "The connector cannot catalog one or more APIs.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     NULL_URL(400, "OPEN-API-INTEGRATION-CONNECTOR-400-014",
              "OMAG server has been called with a null local server name",
-             "The system is unable to configure the local server without knowing what it is called.",
+             "The system cannot configure the local server without knowing what it is called.",
              "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     CLIENT_SIDE_REST_API_ERROR(503, "OPEN-API-INTEGRATION-CONNECTOR-503-001",

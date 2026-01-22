@@ -21,7 +21,7 @@ public enum CSVFileConnectorAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("CSV-FILE-CONNECTOR-0003",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} CSV File connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

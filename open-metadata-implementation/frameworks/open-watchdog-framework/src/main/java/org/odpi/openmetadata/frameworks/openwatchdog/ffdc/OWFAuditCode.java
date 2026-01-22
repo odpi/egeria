@@ -40,6 +40,15 @@ public enum OWFAuditCode implements AuditLogMessageSet
                         "The watchdog action framework will attempt to stop the work of the watchdog action framework",
                         "Monitor the shutdown of the watchdog action service."),
 
+    /**
+     * OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}
+     */
+    IGNORING_NOTIFICATION_TYPES("OPEN-WATCHDOG-ACTION-0003",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The watchdog action service {0} linked to request type {1} for engine action {2} is ignoring the following notification type action targets: {3}",
+                                "The watchdog action service is only processing notification types connected to this service as action types if the activity status is either null, REQUESTED, APPROVED, IN_PROGRESS, or WAITING.  The other notification types are ignored.",
+                                "Validate that the activity status of the ignored notification types is correct."),
+
     ;
 
 

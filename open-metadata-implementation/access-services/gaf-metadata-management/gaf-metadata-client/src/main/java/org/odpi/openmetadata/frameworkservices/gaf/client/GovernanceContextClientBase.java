@@ -252,14 +252,14 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
-    public void updateActionTargetStatus(String             userId,
-                                         String             actionTargetGUID,
+    public void updateActionTargetStatus(String         userId,
+                                         String         actionTargetGUID,
                                          ActivityStatus status,
-                                         Date               startDate,
-                                         Date               completionDate,
-                                         String             completionMessage) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                         Date           startDate,
+                                         Date           completionDate,
+                                         String         completionMessage) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName = "updateActionTargetStatus";
         final String guidParameterName = "actionTargetGUID";
@@ -301,7 +301,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      */
     @Override
     public void recordCompletionStatus(String                userId,
-                                       String engineActionGUID,
+                                       String                engineActionGUID,
                                        Map<String, String>   requestParameters,
                                        CompletionStatus      status,
                                        List<String>          outputGuards,
@@ -312,7 +312,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     {
         final String methodName = "recordCompletionStatus";
         final String statusParameterName = "status";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-context-service/users/{2}/engine-actions/{3}/completion-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/completion-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateEnum(status, statusParameterName, methodName);

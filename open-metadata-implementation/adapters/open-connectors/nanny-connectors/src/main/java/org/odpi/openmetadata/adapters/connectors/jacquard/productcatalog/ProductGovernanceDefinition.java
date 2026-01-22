@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * The GovernanceDefinition is used to feed the definition of the Governance Definitions for the
- * open metadata product catalog.
+ * Open Metadata Digital Product Catalog.
  */
 public enum ProductGovernanceDefinition
 {
@@ -144,7 +144,7 @@ public enum ProductGovernanceDefinition
              "Updates are delivered within 1 hour of receipt",
              "When new data is loaded into the product's asset then the changes are sent as a delta to the subscriber's destination asset within 1 hour.",
              "The updates are delivered record by record.  New records are appended at the end of the data set.",
-             "Used with subscriptions backed up by a monitoring resource notification watchdog service.",
+             "Used when availability of the latest information is important to downstream consumers.",
              "High",
              null,
              null,
@@ -164,7 +164,26 @@ public enum ProductGovernanceDefinition
                       "A complete refresh of the product data is delivered to the product data's destination each day",
                       "All of the data for the product is sent to the subscriber's destination whether it has changed or not.",
                       "The data is delivered record by record.  New records are appended at the end of the data set.",
-                      "Used with subscriptions backed up by a scheduled resource notification watchdog service that has been configured to notify subscribers hourly.",
+                      "Used when the stability and consistency of the product data is important to downstream consumers.",
+                      "High",
+                      null, null,
+                      null,
+                      new String[]{"The subscriber is entitled to receive all updates to the product data."},
+                      null,
+                      new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
+                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      ScopeDefinition.WITHIN_ORGANIZATION,
+                      null),
+
+    /**
+     * A complete refresh of the product data is delivered to the product data's destination each week
+     */
+    WEEKLY_REFRESH_SLO("SLO-WEEKLY-REFRESH",
+                      OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName,
+                      "A complete refresh of the product data is delivered to the product data's destination each week",
+                      "All of the data for the product is sent to the subscriber's destination whether it has changed or not.",
+                      "The data is delivered record by record.  New records are appended at the end of the data set.",
+                      "Used when the stability and consistency of the product data is important to downstream consumers.",
                       "High",
                       null, null,
                       null,
@@ -183,7 +202,7 @@ public enum ProductGovernanceDefinition
                       "A complete copy of the product data is delivered to the product data's destination just once",
                       "All of the data for the product is sent to the subscriber's destination.",
                       "The data is delivered record by record.",
-                      "Used with subscriptions backed up by a one-time notification watchdog service.",
+                      "Used when evaluating a product, or if control is needed on when changes to the data can be tolerated by downstream consumers.",
                       "High",
                       null, null,
                       null,

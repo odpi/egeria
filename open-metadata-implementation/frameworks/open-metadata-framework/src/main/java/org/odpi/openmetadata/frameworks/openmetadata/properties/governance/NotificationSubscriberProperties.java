@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,8 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationSubscriberProperties extends LabeledRelationshipProperties
 {
-    private ActivityStatus activityStatus = ActivityStatus.IN_PROGRESS;
-    private List<String>   zoneMembership = null;
+    private ActivityStatus activityStatus   = ActivityStatus.IN_PROGRESS;
+    private List<String>   zoneMembership   = null;
+    private Date           lastNotification = null;
 
 
     /**
@@ -50,6 +52,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         {
             this.activityStatus = template.getActivityStatus();
             this.zoneMembership = template.getZoneMembership();
+            this.lastNotification = template.getLastNotification();
         }
     }
 
@@ -102,6 +105,28 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
 
 
     /**
+     * Return the last notification time
+     *
+     * @return date
+     */
+    public Date getLastNotification()
+    {
+        return lastNotification;
+    }
+
+
+    /**
+     * Set up the last notification time
+     *
+     * @param lastNotification date
+     */
+    public void setLastNotification(Date lastNotification)
+    {
+        this.lastNotification = lastNotification;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -110,8 +135,9 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     public String toString()
     {
         return "NotificationSubscriberProperties{" +
-                "status=" + activityStatus +
-                "zoneMembership=" + zoneMembership +
+                "activityStatus=" + getActivityStatus() +
+                ", zoneMembership=" + getZoneMembership() +
+                ", lastNotification=" + getLastNotification() +
                 "} " + super.toString();
     }
 
@@ -139,7 +165,8 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         }
         NotificationSubscriberProperties that = (NotificationSubscriberProperties) objectToCompare;
         return  activityStatus == that.activityStatus &&
-                Objects.equals(zoneMembership, that.zoneMembership);
+                Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(lastNotification, that.lastNotification);
     }
 
 
@@ -151,6 +178,6 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus, zoneMembership);
+        return Objects.hash(super.hashCode(), activityStatus, zoneMembership, lastNotification);
     }
 }

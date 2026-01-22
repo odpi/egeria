@@ -30,7 +30,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     FILES_LOCATION_NOT_SPECIFIED(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-001",
             "The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}",
-            "The connector is unable to monitor the directory for files because the name of the directory is not passed in the Connection object.",
+            "The connector cannot monitor the directory for files because the name of the directory is not passed in the Connection object.",
             "The name of the directory should be set up in the address property of the connection's Endpoint object.  Correct this in the configuration " +
                     "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
                     "Integration Daemon OMAG server where this connector is running."),
@@ -39,7 +39,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     FILES_LOCATION_NOT_DIRECTORY(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-002",
             "The file location {0} is not a directory",
-            "The connector is unable to work with this location since it is not a directory (folder).",
+            "The connector cannot work with this location since it is not a directory (folder).",
             "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
                     "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
                     "of the Integration Daemon OMAG server where this connector is running."),
@@ -49,7 +49,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     FILES_LOCATION_NOT_READABLE(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-003",
             "The directory (folder) {0} is not readable",
-            "The connector is unable to open the file because it does not have sufficient permission.",
+            "The connector cannot open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -79,7 +79,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     FILES_LOCATION_NOT_FOUND(404, "BASIC-FILES-INTEGRATION-CONNECTORS-404-001",
              "The directory named {0} does not exist",
-             "The connector is unable to locate the directory it has been asked to work with.",
+             "The connector cannot locate the directory it has been asked to work with.",
              "Ensure that the name of the directory is correct and restart the connector once it exists."),
 
     /**
@@ -87,7 +87,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     UNEXPECTED_SECURITY_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to access the file.",
+             "The connector cannot access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -95,7 +95,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     UNEXPECTED_IO_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the file.",
+             "The connector cannot process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -128,7 +128,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      */
     UNEXPECTED_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-005",
                             "The connector {0} received an unexpected {1} exception when processing the file named {2} in method {3}; the error message was: {4}",
-                            "The connector is unable to process the file.  The associated catalog entry may be out of date",
+                            "The connector cannot process the file.  The associated catalog entry may be out of date",
                             "Use the details from the error message to determine the cause of the error and fix it. Retry the connector once it is resolved."),
     ;
 

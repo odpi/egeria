@@ -167,11 +167,11 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
             "Validate that all resources used by the access services have been released."),
 
     /**
-     * SERVER-OPS-0015 - The {0} access service is unable to initialize a new instance; error message is {1}
+     * SERVER-OPS-0015 - The {0} access service cannot initialize a new instance; error message is {1}
      */
     ACCESS_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0015",
             AuditLogRecordSeverityLevel.EXCEPTION,
-            "The {0} access service is unable to initialize a new instance; error message is {1}",
+            "The {0} access service cannot initialize a new instance; error message is {1}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
@@ -210,7 +210,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     NULL_ACCESS_SERVICE_ADMIN_CLASS("SERVER-OPS-0018",
             AuditLogRecordSeverityLevel.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for access service {1}",
-            "The system is unable to initialize this access service. The server failed to start.",
+            "The system cannot initialize this access service. The server failed to start.",
             "If the access service should be initialized then set up the appropriate admin services class name " +
                     "in the access service's configuration and restart the server instance. Otherwise, " +
                     "remove the configuration for this access service and restart the server."),
@@ -277,11 +277,11 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
             "Validate that all resources used by the view services have been released."),
 
     /**
-     * SERVER-OPS-0025 - The {0} view service is unable to initialize a new instance; error message is {1}
+     * SERVER-OPS-0025 - The {0} view service cannot initialize a new instance; error message is {1}
      */
     VIEW_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0025",
             AuditLogRecordSeverityLevel.EXCEPTION,
-            "The {0} view service is unable to initialize a new instance; error message is {1}",
+            "The {0} view service cannot initialize a new instance; error message is {1}",
             "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem with the view service.  Once this is " +
                                           "resolved, restart the view server."),
@@ -321,7 +321,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     NULL_VIEW_SERVICE_ADMIN_CLASS("SERVER-OPS-0028",
             AuditLogRecordSeverityLevel.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for view service {1}",
-            "The system is unable to initialize this view service. The server failed to start.",
+            "The system cannot initialize this view service. The server failed to start.",
             "If the view service should be initialized then set up the appropriate admin services class name " +
                     "in the view service's configuration and restart the server instance. Otherwise, " +
                     "remove the configuration for this view service and restart the view server."),
@@ -408,11 +408,11 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
                               "Validate that all resources used by the engine services have been released."),
 
     /**
-     * SERVER-OPS-0045 - The {0} engine service is unable to initialize a new instance; error message is {1}
+     * SERVER-OPS-0045 - The {0} engine service cannot initialize a new instance; error message is {1}
      */
     ENGINE_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0045",
                                   AuditLogRecordSeverityLevel.EXCEPTION,
-                                  "The {0} engine service is unable to initialize a new instance; error message is {1}",
+                                  "The {0} engine service cannot initialize a new instance; error message is {1}",
                                   "The engine service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                                   "Review the error message and any other reported failures to determine the cause of the problem with the engine service.  Once this is " +
                                           "resolved, restart the engine host server."),
@@ -452,7 +452,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     NULL_ENGINE_SERVICE_ADMIN_CLASS("SERVER-OPS-0048",
                                   AuditLogRecordSeverityLevel.EXCEPTION,
                                   "The OMAG server {0} has been passed a null admin services class name for engine service {1}",
-                                  "The system is unable to initialize this engine service. The server failed to start.",
+                                  "The system cannot initialize this engine service. The server failed to start.",
                                   "If the engine service should be initialized then set up the appropriate admin services class name " +
                                           "in the engine service's configuration and restart the server instance. Otherwise, " +
                                           "remove the configuration for this engine service and restart the engine host OMAG server."),

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,16 +25,16 @@ public enum HarvestSurveysAuditCode implements AuditLogMessageSet
      * HARVEST-SURVEYS-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("HARVEST-SURVEYS-0001",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements in the observations database.",
+                         "The connector cannot catalog one or more metadata elements in the observations database.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
      * HARVEST-SURVEYS-0004 - Integration connector {0} has detected a non-numeric value of {1} in row {2} of file {3}: exception message is {4}
      */
-    NOT_A_NUMBER( "HARVEST-SURVEYS-0004",
-                 OMRSAuditLogRecordSeverity.ERROR,
+    NOT_A_NUMBER("HARVEST-SURVEYS-0004",
+                 AuditLogRecordSeverityLevel.ERROR,
                  "Integration connector {0} has detected a non-numeric value of {1} in row {2} of file {3}: exception message is {4}",
                  "The row in the file is ignored.",
                  "Check the content of the file to ascertain why the value is not null, correct the data."),
@@ -43,21 +43,21 @@ public enum HarvestSurveysAuditCode implements AuditLogMessageSet
      * HARVEST-SURVEYS-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
      */
     BAD_CONFIGURATION("HARVEST-SURVEYS-0005",
-                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                          "The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
-                          "The exception is passed back to the integration daemon that is hosting " +
-                                  "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
-                                  "error handling that was performed.  These can help to determine how to recover from this error",
-                          "This message contains the exception that was the original cause of the problem. Use the information from the " +
-                                  "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
-                                  "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected."),
+                      AuditLogRecordSeverityLevel.EXCEPTION,
+                      "The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
+                      "The exception is passed back to the integration daemon that is hosting " +
+                              "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
+                              "error handling that was performed.  These can help to determine how to recover from this error",
+                      "This message contains the exception that was the original cause of the problem. Use the information from the " +
+                              "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
+                              "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
+                              "connector in the integration daemon once the original cause of the error has been corrected."),
 
     /**
      * HARVEST-SURVEYS-0009 - The {0} integration connector has stopped its monitoring of Apache Atlas at {1} and is shutting down
      */
     CONNECTOR_STOPPING("HARVEST-SURVEYS-0009",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has stopped its monitoring of Apache Atlas at {1} and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
@@ -67,19 +67,19 @@ public enum HarvestSurveysAuditCode implements AuditLogMessageSet
      * HARVEST-SURVEYS-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
      */
     UNABLE_TO_REGISTER_LISTENER("HARVEST-SURVEYS-0032",
-                      OMRSAuditLogRecordSeverity.EXCEPTION,
-                          "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
-                                  "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",
-                                  "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
+                                "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",
+                                "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
 
 
     ;
 
-    private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
-    private final String                     logMessage;
-    private final String                     systemAction;
-    private final String                     userAction;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -96,11 +96,11 @@ public enum HarvestSurveysAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    HarvestSurveysAuditCode(String                     messageId,
-                            OMRSAuditLogRecordSeverity severity,
-                            String                     message,
-                            String                     systemAction,
-                            String                     userAction)
+    HarvestSurveysAuditCode(String                      messageId,
+                            AuditLogRecordSeverityLevel severity,
+                            String                      message,
+                            String                      systemAction,
+                            String                      userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;

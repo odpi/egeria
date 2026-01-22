@@ -1982,18 +1982,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          * Only adding LatestChange classification to anchors that are interesting to watch.
          */
         if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ACTOR.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.COLLECTION.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.COMMUNITY.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GLOSSARY_TERM.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GOVERNANCE_DEFINITION.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.PROJECT.typeName)))
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.COMMUNITY.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.PROJECT.typeName)))
         {
-            if (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName))
+            if ((! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName)) &&
+                    (! OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(classificationName)))
             {
                 /*
-                 * Do not log LatestChange for anchor classification updates
+                 * Do not log LatestChange for anchor/latest change classification updates
                  */
                 try
                 {

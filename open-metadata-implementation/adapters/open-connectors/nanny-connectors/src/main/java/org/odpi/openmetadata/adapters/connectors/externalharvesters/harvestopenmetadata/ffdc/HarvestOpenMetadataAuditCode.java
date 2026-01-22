@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,16 +25,16 @@ public enum HarvestOpenMetadataAuditCode implements AuditLogMessageSet
      * HARVEST-OPEN-METADATA-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("HARVEST-OPEN-METADATA-0001",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements in the observations database.",
+                         "The connector cannot catalog one or more metadata elements in the observations database.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
      * HARVEST-OPEN-METADATA-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
      */
     BAD_CONFIGURATION("HARVEST-OPEN-METADATA-0005",
-                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                      AuditLogRecordSeverityLevel.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
                           "The exception is passed back to the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
@@ -48,7 +48,7 @@ public enum HarvestOpenMetadataAuditCode implements AuditLogMessageSet
      * HARVEST-OPEN-METADATA-0009 - The {0} integration connector has stopped its monitoring of Apache Atlas at {1} and is shutting down
      */
     CONNECTOR_STOPPING("HARVEST-OPEN-METADATA-0009",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has stopped its monitoring of Apache Atlas at {1} and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
@@ -58,7 +58,7 @@ public enum HarvestOpenMetadataAuditCode implements AuditLogMessageSet
      * HARVEST-OPEN-METADATA-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
      */
     UNABLE_TO_REGISTER_LISTENER("HARVEST-OPEN-METADATA-0032",
-                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                                AuditLogRecordSeverityLevel.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
                                   "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",
                                   "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
@@ -67,7 +67,7 @@ public enum HarvestOpenMetadataAuditCode implements AuditLogMessageSet
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -88,7 +88,7 @@ public enum HarvestOpenMetadataAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     HarvestOpenMetadataAuditCode(String                     messageId,
-                                 OMRSAuditLogRecordSeverity severity,
+                                 AuditLogRecordSeverityLevel severity,
                                  String                     message,
                                  String                     systemAction,
                                  String                     userAction)

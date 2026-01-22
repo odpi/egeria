@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.contentpacks.core.core;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -26,6 +27,7 @@ import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsSt
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.contentpacks.core.*;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
@@ -431,24 +433,34 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         /*
-         * Integration Connector Types may need to link to deployedImplementationType valid value element.
-         * This information is in the connector provider.
+         * Add the connector type definitions for the connectors supplied by Egeria.
          */
-        archiveHelper.addConnectorType(new CSVFileStoreProvider());
-        archiveHelper.addConnectorType(new CSVTabularDataSetProvider());
-        archiveHelper.addConnectorType(new CSVTabularDataSetCollectionProvider());
-        archiveHelper.addConnectorType(new DataFolderProvider());
-        archiveHelper.addConnectorType(new BasicFileStoreProvider());
-        archiveHelper.addConnectorType(new BasicFolderProvider());
-        archiveHelper.addConnectorType(new JDBCResourceConnectorProvider());
-        archiveHelper.addConnectorType(new KafkaOpenMetadataTopicProvider());
+        for (EgeriaOpenConnectorDefinition egeriaOpenConnectorDefinition : EgeriaOpenConnectorDefinition.values())
+        {
+            if (egeriaOpenConnectorDefinition.getConnectorProviderClassName() != null)
+            {
+                try
+                {
+                    Class<?> connectorProviderClass = Class.forName(egeriaOpenConnectorDefinition.getConnectorProviderClassName());
+                    Object   potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
-        archiveHelper.addConnectorType(new YAMLSecretsStoreProvider());
+                    ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;
+                    archiveHelper.addConnectorType(connectorProvider);
+                }
+                catch (Exception error)
+                {
+                    System.err.println("Connector Provider Exception: " + error);
+                    System.exit(-1);
+                }
+            }
+        }
 
+        /*
+         * Connectors that are not yet using EgeriaOpenConnectorDefinition.
+         */
         archiveHelper.addConnectorType(new CSVLineageImporterProvider());
         archiveHelper.addConnectorType(new DataFilesMonitorIntegrationProvider());
         archiveHelper.addConnectorType(new DataFolderMonitorIntegrationProvider());
-        archiveHelper.addConnectorType(new JDBCIntegrationConnectorProvider());
         archiveHelper.addConnectorType(new DistributeAuditEventsFromKafkaProvider());
 
         archiveHelper.addConnectorType(new APIBasedOpenLineageLogStoreProvider());
@@ -465,8 +477,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(new MetadataAccessServerProvider());
         archiveHelper.addConnectorType(new ViewServerProvider());
 
-        archiveHelper.addConnectorType(new ValidMetadataValueDataSetProvider());
-        archiveHelper.addConnectorType(new ValidMetadataValueSetListProvider());
 
         /*
          * Add catalog templates
