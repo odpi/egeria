@@ -233,7 +233,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
 
             OpenLineageRun run = new OpenLineageRun();
 
-            run.setRunId(UUID.fromString(engineAction.getElementHeader().getGUID()));
+            run.setRunId(this.getUUIDFromGUID(engineAction.getElementHeader().getGUID()));
 
             String anchorGUID = propertyHelper.getAnchorGUID(engineAction.getElementHeader());
 
@@ -252,7 +252,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
 
                 parentRunFacet.setJob(parentRunFacetJob);
 
-                parentRunFacetRun.setRunId(UUID.fromString(anchorGUID));
+                parentRunFacetRun.setRunId(this.getUUIDFromGUID(anchorGUID));
 
                 parentRunFacet.setRun(parentRunFacetRun);
 
@@ -368,20 +368,45 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
 
 
     /**
+     * Convert a GUID to a UUID.
+     *
+     * @param guid starting guid from Egeria
+     * @return UUID object
+     */
+    private UUID getUUIDFromGUID(String guid)
+    {
+        /*
+         * In-memory repo prepends type name to GUID
+         */
+        if (guid.length() > UUID.randomUUID().toString().length())
+        {
+            int length             = guid.length();
+            int standardUUIDLength = UUID.randomUUID().toString().length();
+
+            return UUID.fromString(guid.substring(length - standardUUIDLength));
+        }
+        else
+        {
+            return UUID.fromString(guid);
+        }
+    }
+
+
+    /**
      * This turns a java Date into the right string format for an open lineage event.
      *
      * @param date date to convert
      * @return string formatted date
      */
-    private String getTimeStamp(Date date)
+    private String getTimeStamp (Date date)
     {
-        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(date.toInstant(), zoneId);
+        ZonedDateTime zonedDateTime   = ZonedDateTime.ofInstant(date.toInstant(), zoneId);
         String        zonedDateString = zonedDateTime.toString();
 
         /*
          * This is removing the time zone from the formatted date.  This should not be necessary and is hopefully temporary.
          */
-        String []     dataTokens = zonedDateString.split("\\[");
+        String[] dataTokens = zonedDateString.split("\\[");
 
         return dataTokens[0];
     }

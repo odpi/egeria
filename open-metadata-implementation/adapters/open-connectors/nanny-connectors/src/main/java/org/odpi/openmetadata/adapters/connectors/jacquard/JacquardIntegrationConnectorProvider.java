@@ -3,40 +3,20 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
 /**
- * OpenMetadataProductsHarvesterProvider is the connector provider for the OpenMetadataProductsHarvester connector
- * harvests open metadata as useful digital products.
+ * JacquardIntegrationConnectorProvider is the connector provider for the Jacquard Open Metadata Digital Products Loom connector
+ * that harvests open metadata into useful digital products.
  */
 public class JacquardIntegrationConnectorProvider extends IntegrationConnectorProvider
 {
     /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 708;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String connectorTypeGUID      = "8694dfff-e212-4c0d-9711-169571650a81";
-
-    /*
-     * Descriptive information about the connector for the connector type and audit log.
-     */
-    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:JacquardDigitalProductsLoom";
-    private static final String connectorDisplayName   = "Jacquard Digital Products Loom Integration Connector";
-    private static final String connectorDescription   = "Connector extracts open metadata collections into useful digital products.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/jacquard-digital-products-loom/";
-
-    /*
      * Class of the connector.
      */
-    private static final String connectorClassName      = JacquardIntegrationConnector.class.getName();
+    private static final String connectorClassName = JacquardIntegrationConnector.class.getName();
 
 
     /**
@@ -45,36 +25,8 @@ public class JacquardIntegrationConnectorProvider extends IntegrationConnectorPr
      */
     public JacquardIntegrationConnectorProvider()
     {
-        super();
-
-        /*
-         * Set up the class name of the connector that this provider creates.
-         */
-        super.setConnectorClassName(connectorClassName);
-
-        /*
-         * Set up the connector type that should be included in a connection used to configure this connector.
-         */
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorDisplayName);
-        connectorType.setDescription(connectorDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        super.connectorTypeBean = connectorType;
-
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
-        componentDescription.setComponentDescription(connectorDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
+        super(EgeriaOpenConnectorDefinition.JACQUARD_PRODUCT_LOOM,
+              connectorClassName,
+              null);
     }
 }

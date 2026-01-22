@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions;
+package org.odpi.openmetadata.adapters.connectors.subscriptions;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
@@ -10,31 +10,31 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import java.util.List;
 
 /**
- * CancelSubscriptionGovernanceActionProvider is the OCF connector provider for the "Cancel Digital Subscription"
+ * CreateSubscriptionGovernanceActionProvider is the OCF connector provider for the "Create Asset"
  * Governance Action Service.
  */
-public class CancelSubscriptionGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class CreateSubscriptionGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "9c45474b-a685-40df-8b40-5b7e7988546a";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:DigitalSubscription:Cancel";
-    private static final String  connectorTypeDisplayName = "Cancel Digital Subscription Governance Action Service";
-    private static final String  connectorTypeDescription = "Governance Action Service that cancels a digital subscription.";
+    private static final String  connectorTypeGUID = "488136c1-fded-4449-a820-60762b4f7fac";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:DigitalSubscription:Create";
+    private static final String  connectorTypeDisplayName = "Create Digital Subscription Governance Action Service";
+    private static final String  connectorTypeDescription = "Governance Action Service that creates a digital subscription and links it to the subscriber (if supplied).  The digital subscription's GUID is passed as a new action target.";
 
-    private static final String connectorClassName = CancelSubscriptionGovernanceActionConnector.class.getName();
+    private static final String connectorClassName = CreateSubscriptionGovernanceActionConnector.class.getName();
 
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      */
-    public CancelSubscriptionGovernanceActionProvider()
+    public CreateSubscriptionGovernanceActionProvider()
     {
         super();
 
-        super.supportedRequestParameters = null;
+        super.supportedRequestParameters = ManageDigitalSubscriptionRequestParameter.getRequestParameterTypes();
         super.producedGuards = ManageDigitalSubscriptionGuard.getGuardTypes();
-        super.supportedActionTargetTypes = ManageDigitalSubscriptionActionTarget.getCancelSubscriptionActionTargetTypes();
-        super.producedActionTargetTypes = null;
+        super.producedActionTargetTypes = List.of(ActionTarget.NEW_DIGITAL_SUBSCRIPTION.getActionTargetType());
+        super.supportedActionTargetTypes = ManageDigitalSubscriptionActionTarget.getCreateSubscriptionActionTargetTypes();
 
         super.setConnectorClassName(connectorClassName);
 

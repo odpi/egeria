@@ -3237,6 +3237,7 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_PHASE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MISSION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUCCESS_CRITERIA));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_COMPLETION_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTUAL_COMPLETION_DATE));
 
@@ -7272,9 +7273,12 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_TIME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_TIME_INTERVAL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_START_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_INTERVAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEXT_SCHEDULED_NOTIFICATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_COMPLETION_DATE));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -7328,6 +7332,7 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ACTIVITY_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_NOTIFICATION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

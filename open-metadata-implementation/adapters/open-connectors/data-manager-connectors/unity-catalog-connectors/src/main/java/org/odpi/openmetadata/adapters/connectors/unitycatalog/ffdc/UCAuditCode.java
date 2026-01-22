@@ -27,15 +27,15 @@ public enum UCAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("UNITY-CATALOG-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Unity Catalog connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0002 - The {0} connector is unable to retrieve details of any catalogs for Unity Catalog Server {1} ({2})
+     * UNITY-CATALOG-CONNECTOR-0002 - The {0} connector cannot retrieve details of any catalogs for Unity Catalog Server {1} ({2})
      */
     NO_CATALOGS( "UNITY-CATALOG-CONNECTOR-0002",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} connector is unable to retrieve details of any catalogs for Unity Catalog Server {1} ({2})",
+                       "The {0} connector cannot retrieve details of any catalogs for Unity Catalog Server {1} ({2})",
                        "The connector terminates.",
                        "Check that this server is a Unity Catalog (UC) Server.  If it is, ensure the permissions are set up so this connector can retrieve information from the server."),
 
@@ -75,7 +75,7 @@ public enum UCAuditCode implements AuditLogMessageSet
     WRONG_REST_CONNECTOR("UNITY-CATALOG-CONNECTOR-0006",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                         "The connector is unable to continue to profile Unity Catalog because it can not call its REST API.",
+                         "The connector cannot continue to profile Unity Catalog because it can not call its REST API.",
                          "Use the details from the error message to determine the class of the connector.  " +
                                  "Update the connector type associated with Unity Catalog's Connection in the metadata store."),
 
@@ -116,47 +116,47 @@ public enum UCAuditCode implements AuditLogMessageSet
                        "Verify that the element is being correctly synchronized.  It is possible that there are two different elements with the same name. Also investigate why this element changed in Unity Catalog when it is owned by the open metadata ecosystem.  It may be that the structure of the element was changed and the UC element was replaced to reflect the new data structure.  If this is a planned change then all is ok, if it is unexpected then take steps to repair the data source and prevent it happening again."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but is unable to update the catalog in Unity Catalog (UC) at {2}
+     * UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}
      */
     CATALOG_UPDATE("UNITY-CATALOG-CONNECTOR-0011",
                  AuditLogRecordSeverityLevel.ACTION,
-                 "The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but is unable to update the catalog in Unity Catalog (UC) at {2}",
+                 "The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this catalog's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0012 - The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but is unable to update the schema in Unity Catalog (UC) at {2}
+     * UNITY-CATALOG-CONNECTOR-0012 - The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but cannot update the schema in Unity Catalog (UC) at {2}
      */
     SCHEMA_UPDATE("UNITY-CATALOG-CONNECTOR-0012",
                  AuditLogRecordSeverityLevel.ACTION,
-                 "The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but is unable to update the schema in Unity Catalog (UC) at {2}",
+                 "The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but cannot update the schema in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this schema's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0013 - The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but is unable to update the table in Unity Catalog (UC) at {2}
+     * UNITY-CATALOG-CONNECTOR-0013 - The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but cannot update the table in Unity Catalog (UC) at {2}
      */
     TABLE_UPDATE("UNITY-CATALOG-CONNECTOR-0013",
                  AuditLogRecordSeverityLevel.ACTION,
-                 "The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but is unable to update the table in Unity Catalog (UC) at {2}",
+                 "The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but cannot update the table in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this table's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support an update request.",
                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}
+     * UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but cannot update the volume in Unity Catalog (UC) at {3}
      */
     VOLUME_UPDATE("UNITY-CATALOG-CONNECTOR-0014",
                  AuditLogRecordSeverityLevel.ACTION,
-                 "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}",
+                 "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but cannot update the volume in Unity Catalog (UC) at {3}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this volume's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0015 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but is unable to update the function in Unity Catalog (UC) at {3}
+     * UNITY-CATALOG-CONNECTOR-0015 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but cannot update the function in Unity Catalog (UC) at {3}
      */
     FUNCTION_UPDATE("UNITY-CATALOG-CONNECTOR-0015",
                   AuditLogRecordSeverityLevel.ACTION,
-                  "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but is unable to update the function in Unity Catalog (UC) at {3}",
+                  "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but cannot update the function in Unity Catalog (UC) at {3}",
                   "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this function's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
                   "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying called data sources."),
 

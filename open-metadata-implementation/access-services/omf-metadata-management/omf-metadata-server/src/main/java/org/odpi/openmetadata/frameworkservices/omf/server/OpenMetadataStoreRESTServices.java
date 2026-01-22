@@ -1820,42 +1820,42 @@ public class OpenMetadataStoreRESTServices
             OpenMetadataRelationshipList relationshipList = new OpenMetadataRelationshipList();
             if (requestBody != null)
             {
-                relationshipList.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                     metadataElementAtEnd1GUID,
-                                                                                     relationshipTypeName,
-                                                                                     metadataElementAtEnd2GUID,
-                                                                                     requestBody.getLimitResultsByStatus(),
-                                                                                     requestBody.getAsOfTime(),
-                                                                                     requestBody.getSequencingProperty(),
-                                                                                     requestBody.getSequencingOrder(),
-                                                                                     requestBody.getForLineage(),
-                                                                                     requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     requestBody.getStartFrom(),
-                                                                                     requestBody.getPageSize(),
-                                                                                     methodName));
+                relationshipList.setRelationships(handler.getMetadataElementRelationships(userId,
+                                                                                          metadataElementAtEnd1GUID,
+                                                                                          relationshipTypeName,
+                                                                                          metadataElementAtEnd2GUID,
+                                                                                          requestBody.getLimitResultsByStatus(),
+                                                                                          requestBody.getAsOfTime(),
+                                                                                          requestBody.getSequencingProperty(),
+                                                                                          requestBody.getSequencingOrder(),
+                                                                                          requestBody.getForLineage(),
+                                                                                          requestBody.getForDuplicateProcessing(),
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          requestBody.getStartFrom(),
+                                                                                          requestBody.getPageSize(),
+                                                                                          methodName));
             }
             else
             {
-                relationshipList.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                     metadataElementAtEnd1GUID,
-                                                                                     relationshipTypeName,
-                                                                                     metadataElementAtEnd2GUID,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     false,
-                                                                                     false,
-                                                                                     null,
-                                                                                     0,
-                                                                                     0,
-                                                                                     methodName));
+                relationshipList.setRelationships(handler.getMetadataElementRelationships(userId,
+                                                                                          metadataElementAtEnd1GUID,
+                                                                                          relationshipTypeName,
+                                                                                          metadataElementAtEnd2GUID,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          false,
+                                                                                          false,
+                                                                                          null,
+                                                                                          0,
+                                                                                          0,
+                                                                                          methodName));
             }
 
             if (response.getRelationshipList() != null)
             {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(metadataElementAtEnd1GUID, metadataElementAtEnd2GUID, relationshipList.getElementList());
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(metadataElementAtEnd1GUID, metadataElementAtEnd2GUID, relationshipList.getRelationships());
                 relationshipList.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 
@@ -2212,39 +2212,39 @@ public class OpenMetadataStoreRESTServices
 
                 if (requestBody.getSearchProperties() != null)
                 {
-                    relationshipList.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                                     requestBody.getRelationshipTypeName(),
-                                                                                                     requestBody.getSearchProperties(),
-                                                                                                     requestBody.getLimitResultsByStatus(),
-                                                                                                     requestBody.getAsOfTime(),
-                                                                                                     requestBody.getSequencingProperty(),
-                                                                                                     requestBody.getSequencingOrder(),
-                                                                                                     requestBody.getForLineage(),
-                                                                                                     requestBody.getForDuplicateProcessing(),
-                                                                                                     requestBody.getEffectiveTime(),
-                                                                                                     requestBody.getStartFrom(),
-                                                                                                     requestBody.getPageSize(),
-                                                                                                     methodName));
+                    relationshipList.setRelationships(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                       requestBody.getRelationshipTypeName(),
+                                                                                                       requestBody.getSearchProperties(),
+                                                                                                       requestBody.getLimitResultsByStatus(),
+                                                                                                       requestBody.getAsOfTime(),
+                                                                                                       requestBody.getSequencingProperty(),
+                                                                                                       requestBody.getSequencingOrder(),
+                                                                                                       requestBody.getForLineage(),
+                                                                                                       requestBody.getForDuplicateProcessing(),
+                                                                                                       requestBody.getEffectiveTime(),
+                                                                                                       requestBody.getStartFrom(),
+                                                                                                       requestBody.getPageSize(),
+                                                                                                       methodName));
                 }
                 else
                 {
-                    relationshipList.setElementList(handler.getRelationshipsByType(userId,
-                                                                                   requestBody.getRelationshipTypeName(),
-                                                                                   requestBody.getForLineage(),
-                                                                                   requestBody.getForDuplicateProcessing(),
-                                                                                   requestBody.getLimitResultsByStatus(),
-                                                                                   requestBody.getAsOfTime(),
-                                                                                   requestBody.getSequencingProperty(),
-                                                                                   requestBody.getSequencingOrder(),
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   requestBody.getStartFrom(),
-                                                                                   requestBody.getPageSize(),
-                                                                                   methodName));
+                    relationshipList.setRelationships(handler.getRelationshipsByType(userId,
+                                                                                     requestBody.getRelationshipTypeName(),
+                                                                                     requestBody.getForLineage(),
+                                                                                     requestBody.getForDuplicateProcessing(),
+                                                                                     requestBody.getLimitResultsByStatus(),
+                                                                                     requestBody.getAsOfTime(),
+                                                                                     requestBody.getSequencingProperty(),
+                                                                                     requestBody.getSequencingOrder(),
+                                                                                     requestBody.getEffectiveTime(),
+                                                                                     requestBody.getStartFrom(),
+                                                                                     requestBody.getPageSize(),
+                                                                                     methodName));
                 }
 
-                if (relationshipList.getElementList() != null)
+                if (relationshipList.getRelationships() != null)
                 {
-                    OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relationshipList.getElementList());
+                    OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relationshipList.getRelationships());
                     relationshipList.setMermaidGraph(graphBuilder.getMermaidGraph());
                 }
 
@@ -2417,7 +2417,7 @@ public class OpenMetadataStoreRESTServices
             }
 
             OpenMetadataRelationshipList openMetadataRelationshipList = new OpenMetadataRelationshipList();
-            openMetadataRelationshipList.setElementList(handler.convertOpenMetadataRelationships(relationships, methodName));
+            openMetadataRelationshipList.setRelationships(handler.convertOpenMetadataRelationships(relationships, methodName));
 
             response.setRelationshipList(openMetadataRelationshipList);
             // to do add mermaid graph

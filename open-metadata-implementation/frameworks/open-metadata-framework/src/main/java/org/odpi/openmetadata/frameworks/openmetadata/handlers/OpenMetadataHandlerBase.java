@@ -1360,6 +1360,7 @@ public class OpenMetadataHandlerBase
         }
     }
 
+
     /**
      * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
      * they have a more fancy graph to display.
@@ -1530,6 +1531,7 @@ public class OpenMetadataHandlerBase
             }
         }
     }
+
 
     /**
      * Return the nested elements to the required depth.
@@ -1781,12 +1783,7 @@ public class OpenMetadataHandlerBase
 
         propertyHelper.validatePaging(suppliedQueryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        QueryOptions queryOptions = suppliedQueryOptions;
-
-        if (queryOptions == null)
-        {
-            queryOptions = new QueryOptions();
-        }
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
 
         if (queryOptions.getMetadataElementTypeName() == null)
         {
@@ -1810,7 +1807,7 @@ public class OpenMetadataHandlerBase
      * @param userId                   userId of user making request
      * @param uniqueName unique name for the metadata element
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
-     * @param getOptions multiple options to control the query
+     * @param suppliedGetOptions multiple options to control the query
      *
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
@@ -1820,18 +1817,25 @@ public class OpenMetadataHandlerBase
     public OpenMetadataRootElement getRootElementByUniqueName(String     userId,
                                                               String     uniqueName,
                                                               String     uniquePropertyName,
-                                                              GetOptions getOptions) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                              GetOptions suppliedGetOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "getRootElementByUniqueName";
+
+        GetOptions getOptions = new GetOptions(suppliedGetOptions);
+
+        if (getOptions.getMetadataElementTypeName() == null)
+        {
+            getOptions.setMetadataElementTypeName(metadataElementTypeName);
+        }
 
         OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByUniqueName(userId,
                                                                                                     uniqueName,
                                                                                                     uniquePropertyName,
                                                                                                     getOptions);
 
-        return convertRootElement(userId, openMetadataElement, new QueryOptions(getOptions), methodName);
+        return convertRootElement(userId, openMetadataElement, new QueryOptions(suppliedGetOptions), methodName);
     }
 
 
@@ -1856,6 +1860,11 @@ public class OpenMetadataHandlerBase
                                                                                                        PropertyServerException
     {
         GetOptions getOptions = new GetOptions(suppliedGetOptions);
+
+        if (getOptions.getMetadataElementTypeName() == null)
+        {
+            getOptions.setMetadataElementTypeName(metadataElementTypeName);
+        }
 
         getOptions.setForLineage(true);
 
@@ -1891,6 +1900,11 @@ public class OpenMetadataHandlerBase
 
         queryOptions.setLimitResultsByStatus(Collections.singletonList(ElementStatus.DELETED));
         queryOptions.setSequencingOrder(SequencingOrder.LAST_UPDATE_RECENT);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(metadataElementTypeName);
+        }
 
         List<OpenMetadataRootElement> openMetadataRootElements = this.getRootElementsByName(userId, uniqueName, Collections.singletonList(uniquePropertyName), queryOptions, methodName);
 
@@ -2028,12 +2042,7 @@ public class OpenMetadataHandlerBase
     {
         final String guidParameterName = "elementGUID";
 
-        GetOptions getOptions = suppliedGetOptions;
-
-        if (getOptions == null)
-        {
-            getOptions = new GetOptions();
-        }
+        GetOptions getOptions = new GetOptions(suppliedGetOptions);
 
         if (getOptions.getMetadataElementTypeName() == null)
         {

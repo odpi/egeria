@@ -33,7 +33,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     INVALID_PROPERTY(400, "OMAG-REPOSITORY-HANDLER-400-001",
             "An unsupported property named {0} was passed to the repository services by the {1} request for open metadata access service {2} on server {3}; error message was: {4}",
-            "The system is unable to process the request because it has no place to store the property.",
+            "The system cannot process the request because it has no place to store the property.",
             "Correct the types and property names of the properties passed on the request."),
 
     /**
@@ -43,15 +43,15 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
     INVALID_PARAMETER(400, "OMAG-REPOSITORY-HANDLER-400-002",
             "The {0} parameter passed by the {1} request for open metadata access service {2} on server " +
                              "{3} is invalid; value passed was: {4}",
-            "The system is unable to process the request because it does no know how to process this value.",
+            "The system cannot process the request because it does no know how to process this value.",
             "Correct the value of the properties passed on the request."),
 
     /**
-     * OMAG-REPOSITORY-HANDLER-400-003 - Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}
+     * OMAG-REPOSITORY-HANDLER-400-003 - Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}
      */
     BAD_CLASSIFICATION_PROPERTIES(400, "OMAG-REPOSITORY-HANDLER-400-003",
-                                  "Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}",
-                                  "The system is unable to create a new instance with invalid properties in any of the classifications.",
+                                  "Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}",
+                                  "The system cannot create a new instance with invalid properties in any of the classifications.",
                                   "Correct the classification parameters passed with this request."),
 
     /**
@@ -61,7 +61,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
     INVALID_TYPE(404, "OMAG-REPOSITORY-HANDLER-400-004",
             "An unsupported type named {0} was passed to the repository services by the {1} request for open metadata access service {2} " +
                              "on server {3}; error message was: {4}",
-            "The system is unable to process the request because the repository services are unable to store the supplied information.",
+            "The system cannot process the request because the repository services are unable to store the supplied information.",
             "Change the call being made - or look to expand the collective capabilities of the available repositories by " +
                          "connecting an Egeria metadata server to the open metadata repository cohort that this server is connected to."),
 
@@ -70,7 +70,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     INVALID_PROPERTY_VALUE(400, "OMAG-REPOSITORY-HANDLER-400-005",
             "The property named {0} with value of {1} supplied on method {2} does not match the stored value of {3} for entity {4}",
-            "The system is unable to process the request because there is a possibility that the caller is requesting changes to the wrong object.",
+            "The system cannot process the request because there is a possibility that the caller is requesting changes to the wrong object.",
             "Correct the values of the properties passed on the request and retry."),
 
     /**
@@ -78,28 +78,28 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     DUPLICATE_CREATE_REQUEST(400, "OMAG-REPOSITORY-HANDLER-400-006",
             "Unable to create a new {0} with {1} of {2} as there is already an entity of that name with guid {3}",
-            "The system is unable to create the requested entity because there is an entity of the same name already defined.",
+            "The system cannot create the requested entity because there is an entity of the same name already defined.",
             "Either use the existing entity or change the name for the new one and re-run the create request."),
 
     /**
-     * OMAG-REPOSITORY-HANDLER-400-007 - Method {0} running on behalf of external source {1} ({2}) is unable to modify {3} instance {4} because
+     * OMAG-REPOSITORY-HANDLER-400-007 - Method {0} running on behalf of external source {1} ({2}) cannot modify {3} instance {4} because
      * it has a metadata provenance of {5} with an externalSourceGUID of {6} and an externalSourceName of {7}
      */
     WRONG_EXTERNAL_SOURCE(400, "OMAG-REPOSITORY-HANDLER-400-007",
-            "Method {0} running on behalf of external source {1} ({2}) is unable to modify {3} instance {4} because " +
+            "Method {0} running on behalf of external source {1} ({2}) cannot modify {3} instance {4} because " +
                                      "it has metadata provenance of {5} with an externalSourceGUID of {6} and an externalSourceName of {7}",
-            "The system is unable to modify the requested instance because it does not have the correct " +
+            "The system cannot modify the requested instance because it does not have the correct " +
                                   "ownership rights to the instance.",
             "Route the request through a different process that is set up to use the correct external source identifiers."),
 
     /**
-     * OMAG-REPOSITORY-HANDLER-400-008 - Method {0} is unable to modify {1} instance {2} because it has a metadata provenance of {3} with
+     * OMAG-REPOSITORY-HANDLER-400-008 - Method {0} cannot modify {1} instance {2} because it has a metadata provenance of {3} with
      * an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set
      */
     LOCAL_CANNOT_CHANGE_EXTERNAL(400, "OMAG-REPOSITORY-HANDLER-400-008",
-            "Method {0} is unable to modify {1} instance {2} because it has a metadata provenance of {3} with " +
+            "Method {0} cannot modify {1} instance {2} because it has a metadata provenance of {3} with " +
                                   "an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set",
-            "The system is unable to modify the requested instance because it does not have ownership rights to the instance.",
+            "The system cannot modify the requested instance because it does not have ownership rights to the instance.",
             "Route the request through a process that is set up to use the correct external source identifiers.  " +
                     "To understand more about this behavior, lookup Metadata Provenance in Egeria's Glossary."),
 
@@ -118,7 +118,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     UNAVAILABLE_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-010",
                         "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of forLineage={9} and forDuplicateProcessing={10}",
-                        "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
+                        "The system cannot format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
                         "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),
 
     /**
@@ -126,7 +126,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NO_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-011",
                         "A {0} entity with unique identifier {1} can not be retrieved by method {2} from service {3} for caller {4}",
-                        "The system is unable to format all or part of the response because the entity was not retrieved from the repository.",
+                        "The system cannot format all or part of the response because the entity was not retrieved from the repository.",
                         "Use knowledge of the request and the contents of the repositories to determine if the identifier is correct."),
 
     /**
@@ -134,15 +134,15 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
             "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
-            "The system is unable to process the request because the user should not be making this request.",
+            "The system cannot process the request because the user should not be making this request.",
             "Verify the access rights of the user."),
 
     /**
-     * OMAG-REPOSITORY-HANDLER-403-002 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
+     * OMAG-REPOSITORY-HANDLER-403-002 - The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-REPOSITORY-HANDLER-403-002",
-            "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
+            "The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it " +
                                     "was not created by the requesting user {5}",
             "The request fails because the user does not have the rights to take this action.",
             "Retry the request with a relationship created with this user, or request that the user who created " +
@@ -163,7 +163,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_INITIALIZED(404, "OMAG-REPOSITORY-HANDLER-404-002",
             "The open metadata repository services are not initialized for the {0} operation",
-            "The system is unable to connect to an open metadata repository.",
+            "The system cannot connect to an open metadata repository.",
             "Check that the server initialized correctly.  " +
                       "Correct any errors discovered and retry the request when the open metadata services are available."),
 
@@ -181,7 +181,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NO_METADATA_COLLECTION(404, "OMAG-REPOSITORY-HANDLER-404-004",
             "The repository connector {0} is not returning a metadata collection object",
-            "The system is unable to access any metadata from the open metadata repositories because it does not have access to the API it needs.",
+            "The system cannot access any metadata from the open metadata repositories because it does not have access to the API it needs.",
             "Check that the open metadata server URL is correct and the server is running.  Report the error to the system administrator."),
 
     /**
@@ -190,7 +190,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     PROXY_ENTITY_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-005",
             "Only an entity proxy for requested {0} object with unique identifier (guid) {1} is found in the open metadata server {2}, error message was: {3}",
-            "The system is unable to populate the requested connection object.",
+            "The system cannot populate the requested connection object.",
             "Check that the connection name and the OMAS Server URL are correct.  Retry the request when the connection is available in the OMAS Service"),
 
     /**
@@ -199,7 +199,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     MULTIPLE_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-006",
             "Multiple {0} relationships are connected to the {1} entity with unique identifier {2}: the relationship identifiers are {3}; the calling method is {4} and the server is {5}",
-            "The system is unable to process a request because multiple relationships have been discovered and it is unsure which relationship to follow.",
+            "The system cannot process a request because multiple relationships have been discovered and it is unsure which relationship to follow.",
             "Investigate why multiple relationships exist.  Then retry the request once the issue is resolved."),
 
     /**
@@ -207,7 +207,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_ENTITY(404, "OMAG-REPOSITORY-HANDLER-404-007",
             "The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
-            "The system is unable to retrieve information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
+            "The system cannot retrieve information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
             "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
 
     /**
@@ -215,7 +215,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NO_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-008",
             "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
-            "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all the information it needs.",
+            "The system cannot process a request because no relationships have been discovered and it cannot retrieve all the information it needs.",
             "Check that the unique identifier of the entity is correct and the metadata server supporting the request is running.  If these are " +
                                    "both correct, investigate why the relationships are missing.  It is likely that the process responsible for " +
                                    "the creation of the relationships has not yet run, or failed part way through its operation."),
@@ -225,7 +225,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NULL_ENTITY_RETURNED(404, "OMAG-REPOSITORY-HANDLER-404-009",
             "A null entity was returned to method {0} of server {1} during a request for entity of type {2} (guid {3}) and properties of: {4}",
-            "The system is unable to process a request because it can not find the requested entity.",
+            "The system cannot process a request because it can not find the requested entity.",
             "This may be a logic error in the caller or the server.  Alternatively the cohort may not be sharing information correctly.  Look for " +
                                  "errors in the server's audit log and console to understand and correct the source of the error."),
 
@@ -235,7 +235,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     MULTIPLE_ENTITIES_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-010",
             "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",
-            "The system is unable to process a request because multiple entities have been discovered and it is unsure which entity to use.",
+            "The system cannot process a request because multiple entities have been discovered and it is unsure which entity to use.",
             "Investigate why multiple entities exist.  Then retry the request once the issue is resolved."),
 
     /**
@@ -244,7 +244,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NULL_ENTITY_RETURNED_FOR_CLASSIFICATION(404, "OMAG-REPOSITORY-HANDLER-404-011",
             "A null entity was returned to method {0} of server {1} during a request to add a classification of type {4} (guid {3}) to entity {2} with properties of: {5}",
-            "The system is unable to process a request because it can not find the requested entity to update.",
+            "The system cannot process a request because it can not find the requested entity to update.",
             "This may be a logic error or a configuration error (such as the cohort does not contain the correct members.  Look for errors in the " +
                                                     "server's audit log and console to understand and correct the source of any error."),
 
@@ -254,7 +254,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-012",
                    "The {0} relationship with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
-                   "The system is unable to update information associated with the relationship because none of the connected open metadata repositories recognize the relationship's unique identifier.",
+                   "The system cannot update information associated with the relationship because none of the connected open metadata repositories recognize the relationship's unique identifier.",
                    "The unique identifier of the relationship is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
 
     /**
@@ -263,7 +263,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NOT_EFFECTIVE_ELEMENT(404, "OMAG-REPOSITORY-HANDLER-404-013",
                           "The {0} element with unique identifier {1} is found for method {2} of access service {3} in open metadata server {4} however its effectivity dates are from: {5} to {6} and the requested effective date was {7}",
-                          "The system is unable to return the element because the element is not active at this time.",
+                          "The system cannot return the element because the element is not active at this time.",
                           "The unique identifier of the element is supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the element are as expected. Once all errors have been resolved, and the time is right, retry the request."),
 
     /**
@@ -271,7 +271,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     BROADER_EFFECTIVE_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-015",
                                    "The {0} relationship with unique identifier {1} claims all effective dates which makes it broader than the requested effective dates of {2} to {3}",
-                                   "The system is unable to process with the request because the requested effectivity dates are incompatible with the existing relationships.",
+                                   "The system cannot process with the request because the requested effectivity dates are incompatible with the existing relationships.",
                                    "The effectivity dates of the relationship are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the request and retrieved relationship are as expected. Once all errors have been resolved, retry the request."),
 
     /**
@@ -279,7 +279,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     NARROWER_EFFECTIVE_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-016",
                                    "The {0} relationship with unique identifier {1} has narrower effective dates of {2} to {3} than the requested effective dates of {4} to {5}",
-                                   "The system is unable to proceed because two relationships are attempting to occupying the same effectivity times.",
+                                   "The system cannot proceed because two relationships are attempting to occupying the same effectivity times.",
                                    "The effectivity dates are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the relationship are as expected. If the command is to update the effectivity dates, rather than the relationship properties, use the specialist method for this purpose.  Once all errors have been resolved, and the time is right, retry the request."),
 
     /**
@@ -287,7 +287,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     OVERLAPPING_EFFECTIVE_RELATIONSHIPS(404, "OMAG-REPOSITORY-HANDLER-404-017",
                                          "The {0} relationship with unique identifier {1} has overlapping effective dates of {2} to {3} than the requested effective dates of {4} to {5}",
-                                         "The system is unable to continue processing with these incompatible values.",
+                                         "The system cannot continue processing with these incompatible values.",
                                          "The effectivity dates are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the retrieved relationship are also correct.  If the command is to update the effectivity dates, rather than the relationship properties, use the specialist method for this purpose.  Once all errors have been resolved, and the time is right, retry the request."),
 
     /**
@@ -295,7 +295,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     FUNCTION_NOT_SUPPORTED(404,"OMAG-REPOSITORY-HANDLER-404-018",
                            "Method {0} for service {1} is not supported by any of the metadata repositories connected to {2}",
-                           "The system is unable to process the request because none of the members of the connected cohort(s) support this function.",
+                           "The system cannot process the request because none of the members of the connected cohort(s) support this function.",
                            "Add an Egeria native metadata repository to one of the connected cohorts.  This will provide the support that you need."),
 
     /**
@@ -305,7 +305,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +
                                   "{2} on server {3}; message was {0}",
-                          "The system is unable to process the request because of an internal error.",
+                          "The system cannot process the request because of an internal error.",
                           "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the Egeria community for help."),
 
     /**

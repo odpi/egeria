@@ -21,7 +21,7 @@ public enum IntegrationGroupStatus
     ASSIGNED    (0, "Assigned", "The integration group is assigned to the integration daemon server but has not yet been configured."),
     CONFIGURING (1, "Configuring",  "The integration group is retrieving its configuration from the metadata server."),
     RUNNING     (2, "Running", "The integration group is operational and able to service all defined governance requests on demand."),
-    FAILED      (3, "Failed", "The integration group is unable to run successfully due to an error in its configuration."),
+    FAILED      (3, "Failed", "The integration group cannot run successfully due to an error in its configuration."),
     DISABLED    (4, "Disabled", "The integration group has been disabled. It is waiting to be enabled before " +
                                                                    "it can service any more governance requests.");
 

@@ -76,7 +76,7 @@ public class OMFOutTopicClientConnector extends OpenMetadataTopicListenerConnect
                     }
                     catch (Exception error)
                     {
-                        log.error("Listener: " + listener.getClass().getName() + " is unable to process event: " + event, error);
+                        log.error("Listener: " + listener.getClass().getName() + " cannot process event: " + event, error);
                     }
                 }
             }

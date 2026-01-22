@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The ProductDefinition describes the products (or templates for products) found in the open metadata product catalog.
+ * The ProductDefinition describes the products (or templates for products) found in the Open Metadata Digital Product Catalog.
  */
 public interface ProductDefinition
 {

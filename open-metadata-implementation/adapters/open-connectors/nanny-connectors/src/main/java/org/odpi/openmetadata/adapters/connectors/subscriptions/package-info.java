@@ -4,4 +4,4 @@
 /**
  * These governance action services are used for managing digital product subscriptions.
  */
-package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions;
+package org.odpi.openmetadata.adapters.connectors.subscriptions;

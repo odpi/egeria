@@ -685,7 +685,7 @@ Content-Type: application/json
 
 ###
 # @name getActionsForSponsor
-# Retrieve the "Actions" that are chained off of a sponsor's element.
+# Retrieve the "Actions" that are chained off a sponsor's element. (Actions relationship)
 #
 # @param serverName name of the server instances for this request
 # @param urlMarker  view service URL marker
@@ -697,6 +697,29 @@ Content-Type: application/json
 # PropertyServerException the server is not available
 # UserNotAuthorizedException the calling user is not authorized to issue the call
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{metadataElementGUID}}/sponsored/actions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActivityStatusRequestBody",
+  "activityStatus": "IN_PROGRESS"
+}
+
+
+###
+# @name getActionsForSponsor
+# Retrieve the "Actions" that are chained off the requester's element. (ActionRequester relationship)
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param metadataElementGUID unique identifier of the element to start with
+# @param requestBody     status of the action (null means current active)
+#
+# @return list of action beans or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{metadataElementGUID}}/requested/actions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1070,7 +1093,7 @@ Content-Type: application/json
 # @name addCatalogTarget
 # Add a catalog target to an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1120,7 +1143,7 @@ Content-Type: application/json
 # @name updateCatalogTarget
 # Update a catalog target for an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/catalog-targets/{{relationshipGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1152,25 +1175,37 @@ Content-Type: application/json
 # @name getCatalogTarget
 # Retrieve a specific catalog target associated with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/catalog-targets/{{relationshipGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "GetRequestBody"
+}
 
 
 ###
 # @name getCatalogTargets
 # Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-connectors/{{integrationConnectorGUID}}/catalog-targets
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+{
+  "class" : "ResultsRequestBody",
+  "startFrom": 0,
+  "pageSize": 10
+}
 
 ###
 # @name removeCatalogTarget
 # Unregister a catalog target from the integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/catalog-targets/{{relationshipGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+{
+  "class" : "DeleteRelationshipRequestBody"
+}

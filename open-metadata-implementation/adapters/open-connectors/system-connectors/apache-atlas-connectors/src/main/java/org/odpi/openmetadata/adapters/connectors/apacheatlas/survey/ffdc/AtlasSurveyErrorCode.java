@@ -30,7 +30,7 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
      */
     WRONG_REST_CONNECTOR(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-001",
                      "The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                     "The connector is unable to continue to profile Apache Atlas because it can not call its REST API.",
+                     "The connector cannot continue to profile Apache Atlas because it can not call its REST API.",
                          "Use the details from the error message to determine the correct class of the connector to use.  It should be specified in the connector type of an embedded connection as part of the failing connector's Connection.  When the connection information has been corrected, restart the failing connector."),
 
 
@@ -39,7 +39,7 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
      */
     WRONG_ROOT_SCHEMA_TYPE(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-002",
                            "The root schema type for Apache Atlas Software Server {0} is of type {1} rather than {2}. Apache Atlas Survey Connector {3} is not able to continue with its schema analysis.  The existing schema type properties are {4}",
-                           "The connector is unable to continue to define the schema for the Apache Atlas Server based on its defined types because it is unable to understand the existing root schema type.",
+                           "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot understand the existing root schema type.",
                            "Use the details from the error message to determine the origin and reason for the existing schema type.  If it is correct then disable the schema analysis of this survey action service.  It the existing root schema type should not be present, then delete it, and re-run the failed survey action service."),
 
     /**
@@ -47,7 +47,7 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
      */
     MISSING_ASSET_UNIVERSE(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-003",
                            "The asset universe for Apache Atlas Software Server is null. Apache Atlas Survey Connector {0} is not able to continue with its schema analysis",
-                           "The connector is unable to continue to define the schema for the Apache Atlas Server based on its defined types because it is unable to access the existing root schema type from the asset universe because it is null.",
+                           "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot access the existing root schema type from the asset universe because it is null.",
                            "Use the details from the error message to determine the asset universe being null.  Correct the error and re-run the failed survey action service."),
 
     /**
@@ -55,7 +55,7 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-500-001",
                          "The {0} Apache Atlas Survey Action connector received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The connector is unable to continue to survey the Apache Atlas Server.",
+                         "The connector cannot continue to survey the Apache Atlas Server.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
 

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -1642,6 +1643,84 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Add the data scope classification for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param properties details of the ownership
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addDataScopeClassification(String                userId,
+                                            String                elementGUID,
+                                            DataScopeProperties   properties,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the data scope classification for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param updateOptions  options to control access to open metadata
+     * @param properties details of the ownership
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateDataScopeClassification(String             userId,
+                                             String              elementGUID,
+                                             DataScopeProperties properties,
+                                             UpdateOptions       updateOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the data scope classification from an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element where the classification needs to be removed.
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void clearDataScopeClassification(String                userId,
+                                             String                elementGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 

@@ -106,7 +106,7 @@ public class CSVFileStoreConnectorTest
         }
         catch (FileReadException error)
         {
-            assertTrue("The connector is unable to retrieve the requested record because the file is too short.".equals(error.getReportedSystemAction()));
+            assertTrue("The connector cannot retrieve the requested record because the file is too short.".equals(error.getReportedSystemAction()));
         }
         catch (Exception exception)
         {

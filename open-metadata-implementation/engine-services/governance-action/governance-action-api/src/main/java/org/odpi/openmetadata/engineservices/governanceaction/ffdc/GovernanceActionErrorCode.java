@@ -76,12 +76,12 @@ public enum GovernanceActionErrorCode implements ExceptionMessageSet
                                           "configuration of the Governance Action OMES.  Once the cause is resolved, restart the server."),
 
     NO_GOVERNANCE_ACTION_ENGINES_STARTED(400,"OMES-GOVERNANCE-ACTION-400-012",
-             "Governance Action OMES in server {0} is unable to start any governance action engines",
+             "Governance Action OMES in server {0} cannot start any governance action engines",
              "The server is not able to run any governance action requests.  It fails to start.",
              "Add the configuration for at least one governance action engine to this Governance Action OMES."),
 
     NO_GOVERNANCE_ACTION_ENGINE_CLIENT(400,"OMES-GOVERNANCE-ACTION-400-013",
-                                 "Governance Action OMES in server {0} is unable to start a client to the Governance Action Engine OMAS for governance action engine {1}.  The " +
+                                 "Governance Action OMES in server {0} cannot start a client to the Governance Action Engine OMAS for governance action engine {1}.  The " +
                                          "exception was {2} and the error message was {3}",
                                  "The server is not able to run any governance action requests.  It fails to start.",
                                  "Using the information in the error message, correct the server configuration and restart the server."),
@@ -145,7 +145,7 @@ public enum GovernanceActionErrorCode implements ExceptionMessageSet
                                    "invalid configuration.  Raise an issue to get help to fix it"),
 
     GOVERNANCE_ACTION_ENGINE_NOT_INITIALIZED(400,"OMES-GOVERNANCE-ACTION-400-024",
-             "Governance Action OMES in server {0} is unable to pass a governance action request to governance action engine {1} because this governance action engine has not " +
+             "Governance Action OMES in server {0} cannot pass a governance action request to governance action engine {1} because this governance action engine has not " +
                                              "retrieved its configuration from the metadata server",
                                      "The governance action engine is not able to run any governance action requests until it is able to retrieve its configuration.",
                                      "Use the configuration interface of the Governance Action Engine OMAS to create a definition of at least one governance action" +

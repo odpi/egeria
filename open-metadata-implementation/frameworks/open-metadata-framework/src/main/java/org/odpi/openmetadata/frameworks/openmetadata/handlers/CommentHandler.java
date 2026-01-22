@@ -191,9 +191,9 @@ public class CommentHandler extends OpenMetadataHandlerBase
                                                                                                         OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                                                                         queryOptions);
 
-        if ((relationships != null) && (relationships.getElementList() != null))
+        if ((relationships != null) && (relationships.getRelationships() != null))
         {
-            for (OpenMetadataRelationship relationship : relationships.getElementList())
+            for (OpenMetadataRelationship relationship : relationships.getRelationships())
             {
                 if (relationship != null)
                 {

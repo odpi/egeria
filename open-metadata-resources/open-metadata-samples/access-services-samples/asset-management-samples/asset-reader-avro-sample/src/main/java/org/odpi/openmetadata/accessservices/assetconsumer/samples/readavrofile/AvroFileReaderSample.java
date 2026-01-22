@@ -196,7 +196,7 @@ public class AvroFileReaderSample
         }
         catch (FileException error)
         {
-            System.out.println("The connector is unable to retrieve the requested record because the file is not valid.");
+            System.out.println("The connector cannot retrieve the requested record because the file is not valid.");
         }
         catch (Exception exception)
         {

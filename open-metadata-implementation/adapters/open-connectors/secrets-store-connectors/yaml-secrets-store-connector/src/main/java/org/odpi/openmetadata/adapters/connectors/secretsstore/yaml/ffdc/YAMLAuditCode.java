@@ -27,7 +27,7 @@ public enum YAMLAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("YAML-SECRETS-STORE-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The YAML secrets store connector received an unexpected {0} exception during method {1}; the error message was: {2}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

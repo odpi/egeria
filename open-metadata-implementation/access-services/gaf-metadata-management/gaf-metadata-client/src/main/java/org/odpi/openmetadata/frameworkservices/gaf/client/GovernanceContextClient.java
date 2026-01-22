@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.client;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 
 /**
  * GovernanceContextClient sits in the governance context of a governance action service when it is running in the engine host OMAG server.

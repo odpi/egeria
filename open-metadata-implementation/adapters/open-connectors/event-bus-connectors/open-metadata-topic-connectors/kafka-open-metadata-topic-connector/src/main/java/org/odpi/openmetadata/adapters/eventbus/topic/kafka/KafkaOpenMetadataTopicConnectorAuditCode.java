@@ -98,7 +98,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
     MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0013 ",
                       AuditLogRecordSeverityLevel.ERROR,
                       "Property {0} is missing from the Kafka Event Bus configuration",
-                      "The system is unable to connect to the event bus.",
+                      "The system cannot connect to the event bus.",
                       "Add the missing property to the event bus properties in the server configuration."),
 
     SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-0014 ",

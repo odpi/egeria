@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationshipList
 {
-    private List<OpenMetadataRelationship> elementList = null;
-    private String                         mermaidGraph = null;
+    private List<OpenMetadataRelationship> relationships = null;
+    private String                         mermaidGraph  = null;
 
 
     /**
@@ -44,8 +44,8 @@ public class OpenMetadataRelationshipList
     {
         if (template != null)
         {
-            elementList = template.getElementList();
-            mermaidGraph = template.getMermaidGraph();
+            relationships = template.getRelationships();
+            mermaidGraph  = template.getMermaidGraph();
         }
     }
 
@@ -55,19 +55,19 @@ public class OpenMetadataRelationshipList
      *
      * @return result object
      */
-    public List<OpenMetadataRelationship> getElementList()
+    public List<OpenMetadataRelationship> getRelationships()
     {
-        if (elementList == null)
+        if (relationships == null)
         {
             return null;
         }
-        else if (elementList.isEmpty())
+        else if (relationships.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementList);
+            return new ArrayList<>(relationships);
         }
     }
 
@@ -75,11 +75,11 @@ public class OpenMetadataRelationshipList
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param relationships result object
      */
-    public void setElementList(List<OpenMetadataRelationship> elementList)
+    public void setRelationships(List<OpenMetadataRelationship> relationships)
     {
-        this.elementList = elementList;
+        this.relationships = relationships;
     }
 
 
@@ -114,7 +114,7 @@ public class OpenMetadataRelationshipList
     public String toString()
     {
         return "OpenMetadataRelationshipList{" +
-                "elementList=" + elementList +
+                "elementList=" + relationships +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
@@ -138,7 +138,7 @@ public class OpenMetadataRelationshipList
             return false;
         }
         OpenMetadataRelationshipList that = (OpenMetadataRelationshipList) objectToCompare;
-        return Objects.equals(elementList, that.elementList) &&
+        return Objects.equals(relationships, that.relationships) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
@@ -151,6 +151,6 @@ public class OpenMetadataRelationshipList
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementList, mermaidGraph);
+        return Objects.hash(relationships, mermaidGraph);
     }
 }

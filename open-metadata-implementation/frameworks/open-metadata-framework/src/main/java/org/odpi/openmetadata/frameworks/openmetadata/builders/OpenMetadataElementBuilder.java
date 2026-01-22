@@ -749,14 +749,23 @@ public class OpenMetadataElementBuilder
                                 else if (governanceControlProperties instanceof NotificationTypeProperties notificationTypeProperties)
                                 {
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                                                       OpenMetadataProperty.START_DATE.name,
-                                                                                       notificationTypeProperties.getStartDate());
+                                                                                       OpenMetadataProperty.PLANNED_START_DATE.name,
+                                                                                       notificationTypeProperties.getPlannedStartDate());
+                                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                       OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.name,
+                                                                                       notificationTypeProperties.getMultipleNotificationsPermitted());
                                     elementProperties = propertyHelper.addLongProperty(elementProperties,
-                                                                                       OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
-                                                                                       notificationTypeProperties.getRefreshTimeInterval());
+                                                                                       OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.name,
+                                                                                       notificationTypeProperties.getMinimumNotificationInterval());
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
+                                                                                       notificationTypeProperties.getNotificationInterval());
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                                                       OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
-                                                                                       notificationTypeProperties.getConnectorShutdownDate());
+                                                                                       OpenMetadataProperty.NEXT_SCHEDULED_NOTIFICATION.name,
+                                                                                       notificationTypeProperties.getNextScheduledNotification());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
+                                                                                       notificationTypeProperties.getPlannedCompletionDate());
                                 }
                                 else if (governanceControlProperties instanceof GovernanceRuleProperties governanceRuleProperties)
                                 {
@@ -1759,12 +1768,28 @@ public class OpenMetadataElementBuilder
                     else if (properties instanceof ProjectProperties projectProperties)
                     {
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.MISSION.name,
+                                                                             projectProperties.getMission());
+
+                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                  OpenMetadataProperty.SUCCESS_CRITERIA.name,
+                                                                                  projectProperties.getSuccessCriteria());
+
+                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                  OpenMetadataProperty.PURPOSES.name,
+                                                                                  projectProperties.getPurposes());
+
+                        elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                          OpenMetadataProperty.PRIORITY.name,
+                                                                          projectProperties.getPriority());
+
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.PROJECT_PHASE.name,
-                                                                             projectProperties.getProjectStatus());
+                                                                             projectProperties.getProjectPhase());
 
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.PROJECT_HEALTH.name,
-                                                                             projectProperties.getProjectStatus());
+                                                                             projectProperties.getProjectHealth());
 
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.PROJECT_STATUS.name,
@@ -1781,6 +1806,7 @@ public class OpenMetadataElementBuilder
                         elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                            OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
                                                                            projectProperties.getPlannedCompletionDate());
+
                         elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                            OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name,
                                                                            projectProperties.getActualCompletionDate());

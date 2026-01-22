@@ -27,7 +27,7 @@ public enum DistributeKafkaAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("DISTRIBUTE-KAFKA-AUDIT-LOG-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements in the observations database.",
+                         "The connector cannot catalog one or more metadata elements in the observations database.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

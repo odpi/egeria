@@ -35,7 +35,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     NULL_ACCESS_SERVICE_ADMIN_CLASS(400, "SERVER-OPS-400-011",
             "The OMAG server {0} has been passed a null admin services class name for access service {1}",
-            "The system is unable to initialize this access service. The server failed to start.",
+            "The system cannot initialize this access service. The server failed to start.",
             "If the access service should be initialized then set up the appropriate admin services class name " +
                                             "in the access service's configuration and restart the server instance. Otherwise, " +
                                             "remove the configuration for this access service and restart the server."),
@@ -45,7 +45,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     BAD_ACCESS_SERVICE_ADMIN_CLASS(400, "SERVER-OPS-400-012",
             "The OMAG server {0} has been passed an invalid admin services class name {1} for access service {2}",
-            "The system is unable to initialize this access service and the server failed to start.",
+            "The system cannot initialize this access service and the server failed to start.",
             "The configuration document for the serve needs to be fixed before the server will restart.  " +
                                            "If the access service should be initialized then update its configuration and" +
                                            "ensure ist admin class name is set to the name of a Java Class that implements AccessServiceAdmin. " +
@@ -63,18 +63,18 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
                               "Set the maximum page size in the configuration document to an appropriate value and restart the server."),
 
     /**
-     * SERVER-OPS-400-015 - The OMAG server {0} is unable to start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred
+     * SERVER-OPS-400-015 - The OMAG server {0} cannot start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred
      */
     ENTERPRISE_TOPIC_START_FAILED(400, "SERVER-OPS-400-015",
-            "The OMAG server {0} is unable to start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred",
+            "The OMAG server {0} cannot start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred",
             "The open metadata access services will not be able to receive events from the connected repositories.",
             "Review the error messages and once the source of the problem is resolved, restart the server and retry the request."),
 
     /**
-     * SERVER-OPS-400-017 - The OMAG server {0} is unable to add open metadata services until the event bus is configured
+     * SERVER-OPS-400-017 - The OMAG server {0} cannot add open metadata services until the event bus is configured
      */
     NO_EVENT_BUS_SET(400, "SERVER-OPS-400-017",
-            "The OMAG server {0} is unable to add open metadata services until the event bus is configured",
+            "The OMAG server {0} cannot add open metadata services until the event bus is configured",
             "No change has occurred in this server's configuration document.",
             "Add the event bus configuration using the administration services and retry the request."),
 
@@ -91,7 +91,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     NULL_VIEW_SERVICE_ADMIN_CLASS(400, "SERVER-OPS-400-029",
             "The View Server {0} has been passed a null admin services class name for view service {1}",
-            "The system is unable to initialize this view service since it has no admin class to call.",
+            "The system cannot initialize this view service since it has no admin class to call.",
             "If the view service should be initialized then set up the appropriate view service admin class name and restart the View Server."),
 
     /**
@@ -99,7 +99,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     BAD_VIEW_SERVICE_ADMIN_CLASS(400, "SERVER-OPS-400-030",
             "The View Server {0} has been passed an invalid admin services class name {1} for view service {2}",
-            "The system is unable to initialize this view service since it can not find the view's admin class.",
+            "The system cannot initialize this view service since it can not find the view's admin class.",
             "If the view service should be initialized then ensure that the view service's admin class is specified correctly and available on " +
                                          "the class path.  Then restart the View Server."),
 
@@ -109,7 +109,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     OLD_CONFIGURATION(400, "SERVER-OPS-400-050",
                                     "The OMAG Server {0} has been passed configuration which contains the following obsolete section {1}",
-                                    "The system is unable to initialize this server since it no longer supports the requested subsystem.",
+                                    "The system cannot initialize this server since it no longer supports the requested subsystem.",
                                     "Use information in the admin guide to update the configuration to request the replacement service " +
                                             "and restart the server."),
 
@@ -118,7 +118,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "SERVER-OPS-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
-            "The system is unable to work with the OMAG server.  No change was made to the server's configuration document.",
+            "The system cannot work with the OMAG server.  No change was made to the server's configuration document.",
             "This is likely to be either a configuration, operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
 
 
@@ -127,7 +127,7 @@ public enum ServerOpsErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_INITIALIZATION_EXCEPTION(500, "SERVER-OPS-500-004",
             "The {0} service detected an unexpected {1} exception with message {2} during initialization",
-            "The system is unable to start the service in the OMAG server.",
+            "The system cannot start the service in the OMAG server.",
             "This is likely to be either an operational or logic error. Look for other errors in the audit log.  Validate the request.  " +
                                                 "If you are stuck, raise an issue."),
 

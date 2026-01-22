@@ -283,7 +283,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
     INTEGRATION_GROUP_NO_CONFIG("INTEGRATION-DAEMON-SERVICES-0028",
                                 AuditLogRecordSeverityLevel.INFO,
                                 "Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}",
-                                "The integration group is unable to process any integration connector requests until its configuration can be retrieved.",
+                                "The integration group cannot process any integration connector requests until its configuration can be retrieved.",
                                 "Review the error messages and resolve the cause of the problem.  " +
                                         "Either wait for the integration daemon services to refresh the configuration, or issue the refreshConfig " +
                                         "call to request that the integration group calls the Governance Engine OMAS to refresh the configuration for " +
@@ -470,7 +470,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
     GROUP_CHANGE_FAILED("INTEGRATION-DAEMON-SERVICES-0053",
                         AuditLogRecordSeverityLevel.EXCEPTION,
                         "Failed to process a change to integration group {0}.  The exception was {1} with error message {2}",
-                        "The integration daemon is unable to process the change to a governance group.  The exception explains the reason.",
+                        "The integration daemon cannot process the change to a governance group.  The exception explains the reason.",
                         "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                      "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
 
@@ -480,7 +480,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
     CONNECTOR_CHANGE_FAILED("INTEGRATION-DAEMON-SERVICES-0054",
                             AuditLogRecordSeverityLevel.EXCEPTION,
                         "Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}",
-                        "The integration daemon is unable to process the change to a integration connector.  The exception explains the reason.",
+                        "The integration daemon cannot process the change to a integration connector.  The exception explains the reason.",
                         "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                 "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
 

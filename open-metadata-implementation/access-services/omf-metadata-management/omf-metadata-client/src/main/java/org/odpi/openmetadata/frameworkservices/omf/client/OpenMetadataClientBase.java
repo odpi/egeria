@@ -2003,9 +2003,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                              relationshipTypeName,
                                                                                              queryOptions);
 
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        if ((relationshipList != null) && (relationshipList.getRelationships() != null))
         {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            for (OpenMetadataRelationship relationship : relationshipList.getRelationships())
             {
                 if (relationship != null)
                 {
@@ -2143,9 +2143,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                              relationshipTypeName,
                                                                                              queryOptions);
 
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        if ((relationshipList != null) && (relationshipList.getRelationships() != null))
         {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            for (OpenMetadataRelationship relationship : relationshipList.getRelationships())
             {
                 if (relationship != null)
                 {

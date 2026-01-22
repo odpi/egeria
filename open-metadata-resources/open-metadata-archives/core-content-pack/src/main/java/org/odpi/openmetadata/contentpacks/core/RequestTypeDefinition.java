@@ -92,53 +92,20 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
-     * monitored-resource-notification
+     * baudot-subscription-manager
      */
-    MONITORED_RESOURCE_WATCHDOG(GovernanceActionTypeDefinition.MONITORED_RESOURCE_WATCHDOG.getGovernanceRequestType(),
+    BAUDOT_SUBSCRIPTION_MANAGER(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceRequestType(),
                                 null,
                                 null,
                                 null,
                                 GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                                GovernanceServiceDefinition.MONITORED_RESOURCE_NOTIFICATION,
-                                GovernanceActionTypeDefinition.MONITORED_RESOURCE_WATCHDOG.getGovernanceActionTypeGUID(),
+                                GovernanceServiceDefinition.BAUDOT_SUBSCRIPTION_MANAGER,
+                                GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
                                 DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
-                                "6f499586-26db-4997-8df7-6af9e4aa01ab",
-                                "Monitored Resource Notification",
-                                "Sends a notification to all subscribers when a monitored metadata element changes.",
-                                ContentPackDefinition.CORE_CONTENT_PACK),
-
-    /**
-     * periodic-refresh-notification
-     */
-    PERIODIC_REFRESH_WATCHDOG(GovernanceActionTypeDefinition.PERIODIC_REFRESH_WATCHDOG.getGovernanceRequestType(),
-                              null,
-                              null,
-                              null,
-                              GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                              GovernanceServiceDefinition.PERIODIC_REFRESH_NOTIFICATION,
-                              GovernanceActionTypeDefinition.PERIODIC_REFRESH_WATCHDOG.getGovernanceActionTypeGUID(),
-                              DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
-                              "9753963a-05ed-44fa-b411-0315a184dc7d",
-                              "Periodic Refresh Watchdog",
-                              "Issues a notification to subscribers at regular intervals. The interval is specified in millisecond using the refreshInterval request parameter.",
-                              ContentPackDefinition.CORE_CONTENT_PACK),
-
-    /**
-     * one-time-notification
-     */
-    ONE_TIME_NOTIFICATION(GovernanceActionTypeDefinition.ONE_TIME_NOTIFICATION.getGovernanceRequestType(),
-                          null,
-                          null,
-                          null,
-                          GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                          GovernanceServiceDefinition.ONE_TIME_NOTIFICATION,
-                          GovernanceActionTypeDefinition.ONE_TIME_NOTIFICATION.getGovernanceActionTypeGUID(),
-                          DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
-                          "f21427ee-4167-46bb-84e9-f06b7668b912",
-                          "One-time Notification",
-                          "Issues a notification to subscribers only once.",
-                          ContentPackDefinition.CORE_CONTENT_PACK),
-
+                                "d4166d3f-2eb8-47a1-8d33-a36ae831c2d3",
+                                "Baudot Subscription Manager",
+                                "Sends a notification to all interested subscribers when an Open Metadata Digital Product changes.",
+                                ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
      * one-time-notification

@@ -183,11 +183,11 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                              "server."),
 
     /**
-     * INTEGRATION-DAEMON-SERVICES-400-033 - Integration daemon {0} is unable to process connectors from integration group {1} because it is
+     * INTEGRATION-DAEMON-SERVICES-400-033 - Integration daemon {0} cannot process connectors from integration group {1} because it is
      * unable to retrieve its configuration from the metadata access server
      */
     INTEGRATION_GROUP_NOT_INITIALIZED(400,"INTEGRATION-DAEMON-SERVICES-400-033",
-                                      "Integration daemon {0} is unable to process connectors from integration group {1} because it is " +
+                                      "Integration daemon {0} cannot process connectors from integration group {1} because it is " +
                                               "unable to retrieve its configuration from the metadata access server",
                                       "The integration daemon is not able to run any integration connector from this group until it is able to " +
                                               "retrieve the group's configuration.",

@@ -35,11 +35,11 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                 "Verify that the start up sequence goes on to initialize the configured survey action engines."),
 
     /**
-     * OMES-SURVEY-ACTION-0012 - The Survey Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}
+     * OMES-SURVEY-ACTION-0012 - The Survey Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}
      */
     SERVICE_INSTANCE_FAILURE("OMES-SURVEY-ACTION-0012",
                              AuditLogRecordSeverityLevel.ERROR,
-                             "The Survey Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}",
+                             "The Survey Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its survey action services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
@@ -95,21 +95,21 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                    "It is possible to query the result of the survey request through Egeria's Open Metadata REST APIs."),
 
     /**
-     * OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} is unable to start any survey action engines
+     * OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} cannot start any survey action engines
      */
     NO_SURVEY_ACTION_ENGINES_STARTED("OMES-SURVEY-ACTION-0020",
                                      AuditLogRecordSeverityLevel.ERROR,
-                                     "Survey Action OMES in server {0} is unable to start any survey action engines",
+                                     "Survey Action OMES in server {0} cannot start any survey action engines",
                                      "The engine service is not able to run any survey requests.  It fails to start.",
                                      "Add the configuration for at least one survey action engine to this engine service."),
 
     /**
-     * OMES-SURVEY-ACTION-0021 - Survey action engine {0} is unable to update the status for survey action service {1}.
+     * OMES-SURVEY-ACTION-0021 - Survey action engine {0} cannot update the status for survey action service {1}.
      * The exception was {2} with error message {3}
      */
     EXC_ON_ERROR_STATUS_UPDATE("OMES-SURVEY-ACTION-0021",
                                AuditLogRecordSeverityLevel.EXCEPTION,
-                                 "Survey action engine {0} is unable to update the status for survey action service {1}.  The exception was {2} with error message {3}",
+                                 "Survey action engine {0} cannot update the status for survey action service {1}.  The exception was {2} with error message {3}",
                                  "The server is not able to record the failed result for a survey request. The survey report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the survey request."),
 

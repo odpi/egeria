@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -37,7 +36,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
      */
     BAD_FILE(400, "FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-002",
              "Unable to open file {0}.  Message from {1} exception was {2}",
-             "The server is is unable to open an open metadata archive store.",
+             "The server is cannot open an open metadata archive store.",
              "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
                      "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
     ;

@@ -72,11 +72,11 @@ public enum AtlasIntegrationAuditCode implements AuditLogMessageSet
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0006 - The {0} integration connector is unable to retrieve the requested {1} glossary from the open metadata ecosystem
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0006 - The {0} integration connector cannot retrieve the requested {1} glossary from the open metadata ecosystem
      */
     UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0006",
                                        AuditLogRecordSeverityLevel.INFO,
-                                       "The {0} integration connector is unable to retrieve the requested {1} glossary from the open metadata ecosystem",
+                                       "The {0} integration connector cannot retrieve the requested {1} glossary from the open metadata ecosystem",
                                        "Synchronization of the requested glossary is skipped until the requested glossary has been created.",
                                        "Check that the configured glossary name is correct.  Check that the failure to retrieve the glossary is expected."),
 
@@ -95,7 +95,7 @@ public enum AtlasIntegrationAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0008",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements.",
+                         "The connector cannot catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

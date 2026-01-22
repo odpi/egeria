@@ -26,7 +26,7 @@ public enum KafkaSurveyAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("APACHE-KAFKA-SURVEY-ACTION-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} Apache Kafka Survey Action Service received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to continue to profile Apache Kafka.",
+                         "The connector cannot continue to profile Apache Kafka.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

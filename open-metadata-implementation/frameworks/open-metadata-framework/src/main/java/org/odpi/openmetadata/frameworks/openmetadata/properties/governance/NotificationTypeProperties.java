@@ -15,17 +15,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NotificationTypeProperties describes an event or situation that needs to be monitored, and acted upon.
+ * NotificationTypeProperties describes an event or situation that needs to be monitored and acted upon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationTypeProperties extends GovernanceControlProperties
 {
-    private Date startDate             = null;
-    private long refreshTimeInterval   = 0L;
-    private Date connectorShutdownDate = null;
-
+    private Date    plannedStartDate               = null;
+    private boolean multipleNotificationsPermitted = true;
+    private long    minimumNotificationInterval    = 0L;
+    private long    notificationInterval           = 0L;
+    private Date    nextScheduledNotification      = null;
+    private Date    plannedCompletionDate          = null;
 
 
     /**
@@ -47,9 +49,12 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     {
         if (template != null)
         {
-            startDate             = template.getStartDate();
-            refreshTimeInterval   = template.getRefreshTimeInterval();
-            connectorShutdownDate = template.getConnectorShutdownDate();
+            plannedStartDate      = template.getPlannedStartDate();
+            multipleNotificationsPermitted = template.getMultipleNotificationsPermitted();
+            minimumNotificationInterval = template.getMinimumNotificationInterval();
+            notificationInterval  = template.getNotificationInterval();
+            nextScheduledNotification = template.getNextScheduledNotification();
+            plannedCompletionDate = template.getPlannedCompletionDate();
         }
     }
 
@@ -59,46 +64,114 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @return date
      */
-    public Date getStartDate()
+    public Date getPlannedStartDate()
     {
-        return startDate;
+        return plannedStartDate;
     }
 
 
     /**
      * Set up the date/time that the monitor can start.  Null means that it can start immediately.
      *
-     * @param startDate date
+     * @param plannedStartDate date
      */
-    public void setStartDate(Date startDate)
+    public void setPlannedStartDate(Date plannedStartDate)
     {
-        this.startDate = startDate;
+        this.plannedStartDate = plannedStartDate;
     }
 
 
     /**
-     * Return the number of minutes between each call to the monitor to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh call is made explicitly.
-     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     * Return whether multiple notifications are permitted.  If false, only one notification will be sent out
+     * to a subscriber.
+     *
+     * @return boolean flag
+     */
+    public boolean getMultipleNotificationsPermitted()
+    {
+        return multipleNotificationsPermitted;
+    }
+
+
+    /**
+     * Set up whether multiple notifications are permitted.  If false, only one notification will be sent out
+     * to a subscriber.
+     *
+     * @param multipleNotificationsPermitted boolean flag
+     */
+    public void setMultipleNotificationsPermitted(boolean multipleNotificationsPermitted)
+    {
+        this.multipleNotificationsPermitted = multipleNotificationsPermitted;
+    }
+
+
+    /**
+     * Return the minimum minutes between notifications.  If 0, notifications are sent out whenever the
+     * appropriate condition is detected.
      *
      * @return minute count
      */
-    public long getRefreshTimeInterval()
+    public long getMinimumNotificationInterval()
     {
-        return refreshTimeInterval;
+        return minimumNotificationInterval;
     }
 
 
     /**
-     * Set up the number of minutes between each call to the monitor to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh request is made explicitly.
-     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     * Set up the minimum minutes between notifications.  If 0, notifications are sent out whenever the
+     * appropriate condition is detected.
      *
-     * @param refreshTimeInterval minute count
+     * @param minimumNotificationInterval minute count
      */
-    public void setRefreshTimeInterval(long refreshTimeInterval)
+    public void setMinimumNotificationInterval(long minimumNotificationInterval)
     {
-        this.refreshTimeInterval = refreshTimeInterval;
+        this.minimumNotificationInterval = minimumNotificationInterval;
+    }
+
+    /**
+     * Return the minutes between notifications.  If null, notifications are driven by other events,
+     * such as a change to a monitored resource.
+     *
+     * @return minute count
+     */
+    public long getNotificationInterval()
+    {
+        return notificationInterval;
+    }
+
+
+    /**
+     * Set up the minutes between notifications.  If null, notifications are driven by other events,
+     * such as a change to a monitored resource.
+     *
+     * @param notificationInterval minute count
+     */
+    public void setNotificationInterval(long notificationInterval)
+    {
+        this.notificationInterval = notificationInterval;
+    }
+
+
+    /**
+     * Return the date/time that the notifications should be sent out if they are on a fixed schedule.
+     * If notificationInterval is 0, then this field is null.
+     *
+     * @return date
+     */
+    public Date getNextScheduledNotification()
+    {
+        return nextScheduledNotification;
+    }
+
+    /**
+     * Set up the date/time that the notifications should be sent out if they are on a fixed schedule.
+     * If notificationInterval is 0, then this field is null.
+     *
+     * @param nextScheduledNotification date
+     */
+    public void setNextScheduledNotification(Date nextScheduledNotification)
+    {
+        this.nextScheduledNotification = nextScheduledNotification;
     }
 
 
@@ -107,20 +180,20 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @return date
      */
-    public Date getConnectorShutdownDate()
+    public Date getPlannedCompletionDate()
     {
-        return connectorShutdownDate;
+        return plannedCompletionDate;
     }
 
 
     /**
      * Set up the date/time that the monitor should stop running.
      *
-     * @param connectorShutdownDate date
+     * @param plannedCompletionDate date
      */
-    public void setConnectorShutdownDate(Date connectorShutdownDate)
+    public void setPlannedCompletionDate(Date plannedCompletionDate)
     {
-        this.connectorShutdownDate = connectorShutdownDate;
+        this.plannedCompletionDate = plannedCompletionDate;
     }
 
 
@@ -133,9 +206,12 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     public String toString()
     {
         return "NotificationTypeProperties{" +
-                "startDate=" + startDate +
-                ", refreshTimeInterval=" + refreshTimeInterval +
-                ", connectorShutdownDate=" + connectorShutdownDate +
+                "plannedStartDate=" + getPlannedStartDate() +
+                ", multipleNotificationsPermitted=" + getMultipleNotificationsPermitted() +
+                ", minimumNotificationInterval=" + getMinimumNotificationInterval() +
+                ", notificationInterval=" + getNotificationInterval() +
+                ", nextScheduledNotification=" + getNextScheduledNotification() +
+                ", plannedCompletionDate=" + getPlannedCompletionDate() +
                 "} " + super.toString();
     }
 
@@ -153,10 +229,14 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         NotificationTypeProperties that = (NotificationTypeProperties) objectToCompare;
-        return refreshTimeInterval == that.refreshTimeInterval &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(connectorShutdownDate, that.connectorShutdownDate);
+        return minimumNotificationInterval == that.minimumNotificationInterval &&
+                multipleNotificationsPermitted == that.multipleNotificationsPermitted &&
+                notificationInterval == that.notificationInterval &&
+                Objects.equals(plannedStartDate, that.plannedStartDate) &&
+                Objects.equals(nextScheduledNotification, that.nextScheduledNotification) &&
+                Objects.equals(plannedCompletionDate, that.plannedCompletionDate);
     }
+
 
     /**
      * Return a hash code based on the values of this object.
@@ -166,6 +246,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), startDate, refreshTimeInterval, connectorShutdownDate);
+        return Objects.hash(super.hashCode(), plannedStartDate, multipleNotificationsPermitted, minimumNotificationInterval, notificationInterval, nextScheduledNotification, plannedCompletionDate);
     }
 }

@@ -32,11 +32,11 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                  "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
 
     /**
-     * OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
+     * OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service cannot create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
      */
     NO_TOPIC_INFORMATION("OMAG-MULTI-TENANT-0002",
                                  AuditLogRecordSeverityLevel.ERROR,
-                         "Method {0} called on behalf of the {1} service is unable to create a client-side open " +
+                         "Method {0} called on behalf of the {1} service cannot create a client-side open " +
                                          "metadata topic connection because the topic name is not configured in the configuration for this service",
                          "This is a configuration error and an exception is sent to the requester.",
                          "Correct the configuration of the access service to include the name of the topic."),

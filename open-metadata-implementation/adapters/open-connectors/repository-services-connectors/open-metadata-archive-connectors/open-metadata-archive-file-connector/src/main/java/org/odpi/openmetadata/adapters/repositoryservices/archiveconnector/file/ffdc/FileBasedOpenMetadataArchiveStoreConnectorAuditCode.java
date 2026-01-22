@@ -38,7 +38,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
     BAD_FILE("FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
              AuditLogRecordSeverityLevel.ERROR,
               "Unable to open file {0}.  Message from {1} exception was {2}",
-              "The server is is unable to open an open metadata archive store.",
+              "The server is cannot open an open metadata archive store.",
               "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
                       "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
 

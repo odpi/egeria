@@ -344,7 +344,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
 
         if (relationships != null)
         {
-            for (OpenMetadataRelationship relationship : relationships.getElementList())
+            for (OpenMetadataRelationship relationship : relationships.getRelationships())
             {
                 if (relationship != null)
                 {

@@ -5,7 +5,7 @@
 # https://egeria-project.org/concepts/community
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================
@@ -29,7 +29,7 @@ Content-Type: application/json
 # Create a list of the communities associated with the Open Metadata Digital Product Catalog.
 
 ###
-# @name find communities that have "OpenMetadataProductCatalog" in their properties
+# @name find communities that have "OpenMetadataDigitalProduct" in their properties
 # Retrieve the list of community metadata elements that contain the search string.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/community-matters/communities/by-search-string
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "OpenMetadataProductCatalog",
+  "searchString" : "OpenMetadataDigitalProduct",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,

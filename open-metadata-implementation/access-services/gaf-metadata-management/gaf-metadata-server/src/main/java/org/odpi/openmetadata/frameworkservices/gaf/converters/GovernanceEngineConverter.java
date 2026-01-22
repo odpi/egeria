@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.converters;
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.GovernanceEngineProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -78,8 +78,8 @@ public class GovernanceEngineConverter<B> extends OMFConverter<B>
                 properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 properties.setDisplayName(this.removeName(instanceProperties));
                 properties.setDescription(this.removeDescription(instanceProperties));
-                properties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                properties.setVersion(this.removeCapabilityVersion(instanceProperties));
+                properties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
+                properties.setVersionIdentifier(this.removeCapabilityVersion(instanceProperties));
                 properties.setPatchLevel(this.removePatchLevel(instanceProperties));
                 properties.setSource(this.removeSource(instanceProperties));
 

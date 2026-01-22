@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Metadata Collectio
+# Work with Metadata Collection
 # https://egeria-project.org/concepts/asset
 
 @metadataCollectionGUID=add guid here

@@ -57,10 +57,10 @@ public enum AtlasIntegrationErrorCode implements ExceptionMessageSet
                       "the connection information is stored in the connector's RegisteredIntegrationConnector relationship in the open metadata ecosystem."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Integration connector {0} is unable to create an Apache Atlas REST Connector
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Integration connector {0} cannot create an Apache Atlas REST Connector
      */
     NULL_ATLAS_CLIENT(400, "APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004",
-                       "Integration connector {0} is unable to create an Apache Atlas REST Connector",
+                       "Integration connector {0} cannot create an Apache Atlas REST Connector",
                        "The connector uses the Apache Atlas REST Connector to make REST calls to Apache Atlas. The connector is moved to FAILED status and will no longer be called to synchronize metadata until the problem creating the Apache Atlas REST Connector is resolved.",
                        "Ensure that the jar file for the Apache Atlas REST Connector is in the class path of the platform."),
 
@@ -85,7 +85,7 @@ public enum AtlasIntegrationErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001",
                          "The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to work with one or more metadata elements.",
+                         "The connector cannot work with one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;
 

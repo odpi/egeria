@@ -30,7 +30,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      */
     NULL_URL(400, "REFERENCE-DATA-CONNECTORS-400-001",
                      "Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform",
-                     "The connector is unable to contact the OMAG Infrastructure.",
+                     "The connector cannot contact the OMAG Infrastructure.",
                      "The Platform URL Root is configured in the connector's connection endpoint in the address property.  Typically it is the host name and port where the OMAG Server Platform is running."),
 
 
@@ -39,7 +39,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      */
     NULL_SERVER_NAME(400, "REFERENCE-DATA-CONNECTORS-400-002",
              "Reference Data Connector {0} has been configured without the name of the OMAG Server to call",
-             "The connector is unable to contact the OMAG Server.",
+             "The connector cannot contact the OMAG Server.",
              "The server's name is configured in the connector's connection additionalProperties in the serverName property."),
 
     /**
@@ -72,7 +72,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "REFERENCE-DATA-CONNECTORS-500-001",
                          "The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to continue with the request.",
+                         "The connector cannot continue with the request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -80,15 +80,15 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      */
     INVALID_ELEMENT(500, "REFERENCE-DATA-CONNECTORS-500-002",
                          "The {0} Reference Data Connector received an invalid element from the metadata store: {1}",
-                         "The connector is unable to continue to work with this element.",
+                         "The connector cannot continue to work with this element.",
                          "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
 
     /**
      * REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNMAPPED_COLUMN(500, "REFERENCE-DATA-CONNECTORS-500-003",
-                    "The {0} Reference Data Connector is unable to map column {1}",
-                    "The connector is unable to continue to work with this element.",
+                    "The {0} Reference Data Connector cannot map column {1}",
+                    "The connector cannot continue to work with this element.",
                     "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
 
 
@@ -97,7 +97,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      */
     NULL_PRODUCT_DEFINITION(500, "REFERENCE-DATA-CONNECTORS-500-004",
                     "Product definition is null for connector {0} in method {1}",
-                    "The connector is unable to continue to work without the product definition.",
+                    "The connector cannot continue to work without the product definition.",
                     "This is a timing issue.  The connector should set up a valid product definition either in its constructor or start() method.  The calls to retrieve the table name/description should occur after start()."),
 
     ;

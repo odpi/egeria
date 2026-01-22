@@ -38,6 +38,8 @@ public enum AssignmentType implements OpenMetadataEnum
     SPONSOR           (5,  "9549988d-5a40-4734-ba72-4d6cf6e1fffb",  "Sponsor",           "Individual is funding/supporting the work of the initiative.", false),
     DISCUSSION_LEADER (6,  "7d2d6d51-da67-40d3-99d2-03ca3760175f",  "Discussion Leader", "Individual responsible for leading discussions about a topic area within the initiative.", false),
     TECHNICAL_SUPPORT (7,  "744915c2-638c-4ac0-af96-2910299bed4b",  "Technical Support", "Individual responsible for managing technical aspects of the initiative.  This can include investigating and fixing technical issues.", false),
+    REVIEWER          (8,  "b7c7b386-3b48-419e-baea-4f03c8470f06",  "Reviewer",          "Individual responsible for reviewing the assigned element and taking any necessary action.", false),
+    APPROVER          (9,  "e7eac447-ba86-42c9-bdd9-db5a59f9132e",  "Approver",          "Individual responsible for reviewing the assigned element and approving its contents.", false),
     OTHER             (99, "1c9fd81c-d22a-4aca-b2f3-469088ff7887",  "Other",             "Another assignment type.", false);
 
 

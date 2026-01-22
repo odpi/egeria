@@ -137,7 +137,7 @@ public enum OMFAuditCode implements AuditLogMessageSet
     DISCONNECT_EXCEPTION("OPEN-METADATA-0012",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}",
-                         "The connector is is unable to disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
+                         "The connector is cannot disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
                          "Use the details from the error message to determine the cause of the error.  Check the remote target for errors and correct as needed."),
 
     /**

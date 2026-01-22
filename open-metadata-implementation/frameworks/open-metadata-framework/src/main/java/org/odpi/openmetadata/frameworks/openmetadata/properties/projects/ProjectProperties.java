@@ -25,6 +25,7 @@ public class ProjectProperties extends ReferenceableProperties
 {
     private String       mission               = null;
     private List<String> purposes              = null;
+    private List<String> successCriteria       = null;
     private String       projectPhase          = null;
     private String       projectHealth         = null;
     private String       projectStatus         = null;
@@ -58,6 +59,7 @@ public class ProjectProperties extends ReferenceableProperties
         {
             this.mission               = template.getMission();
             this.purposes              = template.getPurposes();
+            this.successCriteria       = template.getSuccessCriteria();
             this.projectPhase          = template.getProjectPhase();
             this.projectHealth         = template.getProjectHealth();
             this.projectStatus         = template.getProjectStatus();
@@ -111,6 +113,28 @@ public class ProjectProperties extends ReferenceableProperties
     public void setPurposes(List<String> purposes)
     {
         this.purposes = purposes;
+    }
+
+
+    /**
+     * Return the success criteria for the project.
+     *
+     * @return list
+     */
+    public List<String> getSuccessCriteria()
+    {
+        return successCriteria;
+    }
+
+
+    /**
+     * Set up the success criteria for the project.
+     *
+     * @param successCriteria list
+     */
+    public void setSuccessCriteria(List<String> successCriteria)
+    {
+        this.successCriteria = successCriteria;
     }
 
 
@@ -302,6 +326,7 @@ public class ProjectProperties extends ReferenceableProperties
         return "ProjectProperties{" +
                 "mission='" + mission + '\'' +
                 ", purposes=" + purposes +
+                ", successCriteria=" + successCriteria +
                 ", projectPhase='" + projectPhase + '\'' +
                 ", projectHealth='" + projectHealth + '\'' +
                 ", projectStatus='" + projectStatus + '\'' +
@@ -330,6 +355,7 @@ public class ProjectProperties extends ReferenceableProperties
         return priority == that.priority &&
                 Objects.equals(mission, that.mission) &&
                 Objects.equals(purposes, that.purposes) &&
+                Objects.equals(successCriteria, that.successCriteria) &&
                 Objects.equals(projectPhase, that.projectPhase) &&
                 Objects.equals(projectHealth, that.projectHealth) &&
                 Objects.equals(projectStatus, that.projectStatus) &&
@@ -347,7 +373,7 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mission, purposes,projectPhase, projectHealth, projectStatus, priority,
+        return Objects.hash(super.hashCode(), mission, purposes, successCriteria, projectPhase, projectHealth, projectStatus, priority,
                             plannedStartDate, actualStartDate, plannedCompletionDate, actualCompletionDate);
     }
 }

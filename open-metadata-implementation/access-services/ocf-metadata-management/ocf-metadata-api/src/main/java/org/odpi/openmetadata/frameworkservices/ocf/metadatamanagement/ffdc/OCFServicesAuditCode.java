@@ -50,11 +50,11 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
              "No action is required if the server is shutting down."),
 
     /**
-     * CONNECTED-ASSET-SERVICES-0005 - he Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}
+     * CONNECTED-ASSET-SERVICES-0005 - he Open Connector Framework (OCF) Metadata Management Service cannot initialize a new instance of the connected asset services; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("CONNECTED-ASSET-SERVICES-0005",
                              AuditLogRecordSeverityLevel.ERROR,
-            "The Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}",
+            "The Open Connector Framework (OCF) Metadata Management Service cannot initialize a new instance of the connected asset services; error message is {0}",
             "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

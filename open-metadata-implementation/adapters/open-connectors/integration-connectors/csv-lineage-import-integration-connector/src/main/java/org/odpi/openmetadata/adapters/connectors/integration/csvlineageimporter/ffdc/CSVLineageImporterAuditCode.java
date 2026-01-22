@@ -137,7 +137,7 @@ public enum CSVLineageImporterAuditCode implements AuditLogMessageSet
 
     MISSING_TEMPLATE("CSV-LINEAGE-IMPORTER-0015",
                      AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}",
+                     "The {0} integration connector cannot retrieve the DataFile template with qualified name: {1}",
                      "The metadata element for the template is not found in the open metadata repositories.  " +
                              "The template name was configured for the connector.  This means that files should be catalogued " +
                              "using the template.  Since the template is missing, files are not being catalogued.",

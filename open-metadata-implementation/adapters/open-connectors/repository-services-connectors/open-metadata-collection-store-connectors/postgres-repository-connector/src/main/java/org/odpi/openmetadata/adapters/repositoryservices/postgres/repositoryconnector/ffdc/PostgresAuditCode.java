@@ -26,7 +26,7 @@ public enum PostgresAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("POSTGRES-REPOSITORY-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The PostgreSQL repository connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

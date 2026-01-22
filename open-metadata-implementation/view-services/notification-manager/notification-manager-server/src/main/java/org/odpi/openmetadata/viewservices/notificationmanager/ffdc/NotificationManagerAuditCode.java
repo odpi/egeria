@@ -49,11 +49,11 @@ public enum NotificationManagerAuditCode implements AuditLogMessageSet
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Notification Manager OMVS."),
 
     /**
-     * OMVS-NOTIFICATION-MANAGER-0004 The Notification Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     * OMVS-NOTIFICATION-MANAGER-0004 The Notification Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("OMVS-NOTIFICATION-MANAGER-0004",
                              AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Notification Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
+                         "The Notification Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

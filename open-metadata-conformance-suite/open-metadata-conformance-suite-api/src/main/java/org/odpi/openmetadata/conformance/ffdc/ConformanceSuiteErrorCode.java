@@ -35,7 +35,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NULL_LOCAL_SERVER_NAME(400, "CONFORMANCE-SUITE-400-001",
             "OMAG server has been called with a null local server name",
-            "The system is unable to configure the local server.",
+            "The system cannot configure the local server.",
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -43,7 +43,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NULL_USER_ID(400, "CONFORMANCE-SUITE-400-002",
             "OMAG server {0} has been called with a null username (userId)",
-            "The system is unable to configure the local server.",
+            "The system cannot configure the local server.",
             "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -51,7 +51,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_TEST_CASE_ID(400, "CONFORMANCE-SUITE-400-003",
             "Unable to create a report for a test case with unknown identifier {0}",
-            "The system is unable to create the report.",
+            "The system cannot create the report.",
             "Validate the test case identifier with the messages being produced by the audit log  and the conformance suite documentation."),
 
     /**
@@ -59,7 +59,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_WORKBENCH_ID(400, "CONFORMANCE-SUITE-400-004",
             "Unable to create a report for a workbench with unknown identifier {0}",
-            "The system is unable to create the report.",
+            "The system cannot create the report.",
             "Validate the workbench identifier with the messages being produced by the audit log and the conformance suite documentation."),
 
     /**
@@ -67,7 +67,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NO_ENTERPRISE_ACCESS(400, "CONFORMANCE-SUITE-400-022",
             "The Egeria Conformance Suite located in OMAG server {0} has been configured with no access to the enterprise repository services",
-            "The system is unable to access the connectors to issue metadata requests to the technologies under test.",
+            "The system cannot access the connectors to issue metadata requests to the technologies under test.",
             "Change the setting of the enterprise access service to ensure it is enabled."),
 
     /**
@@ -75,7 +75,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_PROFILE_NAME(400, "CONFORMANCE-SUITE-400-023",
             "Unable to create a report for a profile with unknown name {0}",
-            "The system is unable to create the report.",
+            "The system cannot create the report.",
             "Validate the profile name with the messages being produced by the audit log and the conformance suite documentation."),
 
     /**
@@ -83,7 +83,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NO_ENTERPRISE_TOPIC(500, "CONFORMANCE-SUITE-500-001",
             "The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise topic connector",
-            "The conformance suite is unable to receive and evaluate events from technologies under test.",
+            "The conformance suite cannot receive and evaluate events from technologies under test.",
             "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
 
     /**
@@ -91,7 +91,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NO_ENTERPRISE_CONNECTOR_MANAGER(500, "CONFORMANCE-SUITE-500-002",
             "The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise connector manager",
-            "The conformance suite is unable to issue metadata requests to the technologies under test.",
+            "The conformance suite cannot issue metadata requests to the technologies under test.",
             "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
 
     /**
@@ -99,7 +99,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     DUPLICATE_TEST_CASE(500, "CONFORMANCE-SUITE-500-003",
             "The Egeria Conformance Suite testing technology {0} of type {1} has created two test cases with the same id of {2}",
-            "The conformance suite is unable to process one of the test cases.",
+            "The conformance suite cannot process one of the test cases.",
             "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
 
     /**
@@ -107,7 +107,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     SERVICE_NOT_INITIALIZED(503, "CONFORMANCE-SUITE-503-003",
             "The conformance suite service has not been initialized for server {0} and can not support REST API call {1}",
-            "The server has received a call to one of its open metadata conformance suite operations but is unable to process it because the conformance suite service is not active.",
+            "The server has received a call to one of its open metadata conformance suite operations but cannot process it because the conformance suite service is not active.",
             "If the server is supposed to have the conformance suite service activated, correct the server configuration and restart the server."),
 
     ;

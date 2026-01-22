@@ -35,7 +35,7 @@ public enum MetadataExplorerErrorCode implements ExceptionMessageSet
      */
     INVALID_URL_MARKER(400, "OMVS-METADATA-EXPLORER-400-001",
             "The URL marker {0} is not recognized",
-            "The system is unable to continue with the request because the supplied URL marker does not match the registered services.",
+            "The system cannot continue with the request because the supplied URL marker does not match the registered services.",
             "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform."),
 
 

@@ -17,7 +17,7 @@ public enum ProductSolutionComponent
     OPEN_METADATA_HARVESTER("3bd61f93-2aca-443d-84cf-330cd50a0c1d",
                             SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
                             DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
-                            "Jacquard Harvester",
+                            "Jacquard Digital Product Loom",
                             "This is the integration connector that is started when the Open Metadata Digital Product Archive is loaded.  It is responsible for detecting opportunities for open metadata digital products, creating a catalog entry for them and then maintaining last update information in the product information.  This is used to drive the distribution of open metadata updates to subscribers.",
                             "6.0-SNAPSHOT",
                             new ProductSolutionBlueprint[]{
@@ -44,8 +44,8 @@ public enum ProductSolutionComponent
     SUBSCRIPTION_MANAGER("b31abcf4-89bc-477c-870f-c93631253d80",
                          SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
-                         "Subscription Manager",
-                         "This is the service that monitors for changes in registered elements and notifies subscribers when changes occur.",
+                         "Baudot Subscription Manager",
+                         "This is the service that monitors for changes in registered products and notifies subscribers when changes occur.",
                          "6.0-SNAPSHOT",
                          new ProductSolutionBlueprint[]{
                                  ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,

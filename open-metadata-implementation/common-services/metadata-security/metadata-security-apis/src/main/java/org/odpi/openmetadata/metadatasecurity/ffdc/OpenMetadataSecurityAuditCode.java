@@ -155,7 +155,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0014",
                               AuditLogRecordSeverityLevel.SECURITY,
                               "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
-                              "The system is unable to process a request from the user because the asset is not correctly or completely filled out.",
+                              "The system cannot process a request from the user because the asset is not correctly or completely filled out.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
     /**
@@ -224,7 +224,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     NULL_ANCHOR("OPEN-METADATA-SECURITY-0021",
                 AuditLogRecordSeverityLevel.SECURITY,
                 "User {0} is not authorized to issue operation {1} because the element's anchor is null",
-                "The system is unable to process a request from the user because the element is not correctly anchored.",
+                "The system cannot process a request from the user because the element is not correctly anchored.",
                 "The request fails with a UserNotAuthorizedException exception. Add the Anchors classification and re-run the request."),
 
     /**
@@ -251,7 +251,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("OPEN-METADATA-SECURITY-0099",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The security connector received an unexpected {0} exception during method {1}; the error message was: {2}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;

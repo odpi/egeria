@@ -35,7 +35,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_LOCAL_SERVER_NAME(400, "OMAG-ADMIN-400-001",
             "OMAG server has been called with a null local server name",
-            "The system is unable to configure the local server.",
+            "The system cannot configure the local server.",
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     /**
@@ -45,7 +45,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     INCOMPATIBLE_SERVER_NAMES(400, "OMAG-ADMIN-400-002",
             "OMAG Server Platform was requested to start OMAG Server {0} but the configuration document retrieved for it " +
                     "has the server name set to {1}",
-            "The system is unable to start the OMAG server because it can not retrieve the correct configuration document.",
+            "The system cannot start the OMAG server because it can not retrieve the correct configuration document.",
             "The configuration is retrieved from the configuration document store connector.  " +
                                       "This connector is set up for the OMAG Server Platform.  " +
                                       "It is either not configured correctly, or there is an error in its " +
@@ -77,7 +77,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     ACCESS_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-005",
             "Unable to configure server {0} since access service {1} is not registered in this OMAG Server Platform",
-            "The system is unable to add this access service to the server's configuration document.",
+            "The system cannot add this access service to the server's configuration document.",
             "Check that the name of the access service is correctly specified in the configuration request.  " +
                                           "If you are not sure, issue the call to list the registered access services and verify the " +
                                           "values you are using.  If the name is right but the access service should be registered," +
@@ -93,7 +93,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     ACCESS_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-006",
             "Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform",
-            "The system is unable to configure the local server with this access service.",
+            "The system cannot configure the local server with this access service.",
             "Choose a different access service or enable the access service in this platform."),
 
     /**
@@ -101,7 +101,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_COHORT_NAME(400, "OMAG-ADMIN-400-007",
             "OMAG server {0} has been configured with a null cohort name",
-            "The system is unable to configure the local server with access to this cohort.",
+            "The system cannot configure the local server with access to this cohort.",
             "The cohort name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can be configured to " +
                              "register with the cohort."),
 
@@ -118,7 +118,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_SERVER_CONFIG(400, "OMAG-ADMIN-400-009",
             "The OMAG server {0} has been passed null configuration",
-            "The system is unable to initialize the local server instance without any configuration.",
+            "The system cannot initialize the local server instance without any configuration.",
             "Retry the request with server configuration."),
 
     /**
@@ -126,7 +126,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-010",
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
-            "The system is unable to initialize the local server instance because all servers need at least an audit log which is supported by the " +
+            "The system cannot initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
             "Use the administration services to add the repository services configuration."),
 
@@ -136,7 +136,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NO_CONFIG_DOCUMENT(400, "OMAG-ADMIN-400-011",
                            "No configuration document was found for OMAG server {0}",
-                           "The system is unable to initialize the local server instance without a configuration document.",
+                           "The system cannot initialize the local server instance without a configuration document.",
                            "Use the administration services to build up the definition of the server into a configuration document."),
 
     /**
@@ -144,7 +144,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     CONFIG_DOCUMENT_PARSE_ERROR(400, "OMAG-ADMIN-400-012",
                        "Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}",
-                       "The system is unable to process a configuration document.",
+                       "The system cannot process a configuration document.",
                        "Review the error message to understand why the parsing error occurred."),
 
 
@@ -153,7 +153,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     BAD_CONFIG_FILE(400, "OMAG-ADMIN-400-013",
             "The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2} which included a message {3}",
-            "The system is unable to initialize the server.",
+            "The system cannot initialize the server.",
             "Review the error message to determine the cause of the problem."),
 
     /**
@@ -168,10 +168,10 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
 
     /**
-     * OMAG-ADMIN-400-016 - The OMAG server {0} is unable to set up new event bus configuration because other services are already configured
+     * OMAG-ADMIN-400-016 - The OMAG server {0} cannot set up new event bus configuration because other services are already configured
      */
     TOO_LATE_TO_SET_EVENT_BUS(400, "OMAG-ADMIN-400-016",
-            "The OMAG server {0} is unable to set up new event bus configuration because other services are already configured",
+            "The OMAG server {0} cannot set up new event bus configuration because other services are already configured",
             "It is not possible to change the event bus configuration for this server while there are other open metadata services configured.",
             "Remove any configuration for this server's cohorts, local repository and access services, " +
                                       "and retry the request to add the event bus configuration.  " +
@@ -179,10 +179,10 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                       "into the configuration document."),
 
     /**
-     * OMAG-ADMIN-400-017 - The OMAG server {0} is unable to add open metadata services until the event bus is configured
+     * OMAG-ADMIN-400-017 - The OMAG server {0} cannot add open metadata services until the event bus is configured
      */
     NO_EVENT_BUS_SET(400, "OMAG-ADMIN-400-017",
-            "The OMAG server {0} is unable to add open metadata services until the event bus is configured",
+            "The OMAG server {0} cannot add open metadata services until the event bus is configured",
             "No change has occurred in this server's configuration document.",
             "Add the event bus configuration using the administration services and retry the request."),
 
@@ -191,7 +191,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_METADATA_COLLECTION_NAME(400, "OMAG-ADMIN-400-018",
             "OMAG server {0} has been called with a null metadata collection name",
-            "The system is unable to add this metadata collection name to the configuration document for the local server.",
+            "The system cannot add this metadata collection name to the configuration document for the local server.",
             "The metadata collection name is optional.  If it is not set up then the local server name is used instead."),
 
     /**
@@ -207,7 +207,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_ACCESS_SERVICE_ROOT_URL(400, "OMAG-ADMIN-400-020",
             "The {0} service of OMAG server {1} has been configured with a null root URL for the remote {2} access service",
-            "The system is unable to accept this value in the configuration document because it needs this value to be able to call the correct " +
+            "The system cannot accept this value in the configuration document because it needs this value to be able to call the correct " +
                                          "server platform where the access service is running.",
             "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
@@ -216,7 +216,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_ACCESS_SERVICE_SERVER_NAME(400, "OMAG-ADMIN-400-021",
             "The {0} service of OMAG server {1} has been configured with a null server name for the remote {2} access service",
-            "The system is unable to accept this value in the configuration document because it needs this value to be able to call the correct " +
+            "The system cannot accept this value in the configuration document because it needs this value to be able to call the correct " +
                                             "server where the access service is running.",
             "The server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
@@ -225,7 +225,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_FILE_NAME(400, "OMAG-ADMIN-400-022",
             "OMAG server {0} has been configured with a null file name for an Open Metadata Archive",
-            "The system is unable to configure the local server to load this Open Metadata Archive file.",
+            "The system cannot configure the local server to load this Open Metadata Archive file.",
             "The file name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can load the open metadata archive."),
 
     /**
@@ -233,7 +233,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     INCOMPATIBLE_CONFIG_FILE(400, "OMAG-ADMIN-400-023",
             "The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}",
-            "The system is unable to configure the local server because it can not read the configuration document.",
+            "The system cannot configure the local server because it can not read the configuration document.",
             "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria-project.org/guides/migration/migrating-configuration-documents/"),
 
     /**
@@ -268,7 +268,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTION(400, "OMAG-ADMIN-400-027",
             "OMAG server {0} has been called with a null connection for method {1}",
-            "The system is unable to add this connection to the server's configuration document.",
+            "The system cannot add this connection to the server's configuration document.",
             "Change the call to pass a valid connection for the server.  If you want to clear the connection use the clear version of the method."),
 
     /**
@@ -276,7 +276,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_PLATFORM_CONNECTION(400, "OMAG-ADMIN-400-028",
             "The OMAG Server Platform has been called with a null connection for method {0}",
-            "The admin services is unable to add this connection to the platform runtime.",
+            "The admin services cannot add this connection to the platform runtime.",
             "Change the call to pass a valid connection for the platform.  If you want to clear the connection use the clear version of the method."),
 
 
@@ -299,19 +299,19 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "Retry the configuration request with the property value set up correctly."),
 
     /**
-     * OMAG-ADMIN-400-033 - The OMAG server {0} is unable to override the cohort topic until the {1} cohort is set up
+     * OMAG-ADMIN-400-033 - The OMAG server {0} cannot override the cohort topic until the {1} cohort is set up
      */
     COHORT_NOT_KNOWN(400, "OMAG-ADMIN-400-033",
-            "The OMAG server {0} is unable to override the cohort topic until the {1} cohort is set up",
+            "The OMAG server {0} cannot override the cohort topic until the {1} cohort is set up",
             "No change has occurred in this server's configuration document because the admin services .",
             "Add the cohort configuration using the administration services and retry the request."),
 
     /**
-     * OMAG-ADMIN-400-034 - The OMAG server {0} is unable to override the cohort topic for the {1} cohort because the contents of the topic
+     * OMAG-ADMIN-400-034 - The OMAG server {0} cannot override the cohort topic for the {1} cohort because the contents of the topic
      * connection do not follow the expected pattern
      */
     COHORT_TOPIC_STRANGE(400, "OMAG-ADMIN-400-034",
-            "The OMAG server {0} is unable to override the cohort topic for the {1} cohort because the contents of the topic connection do not " +
+            "The OMAG server {0} cannot override the cohort topic for the {1} cohort because the contents of the topic connection do not " +
                     "follow the expected pattern",
             "No change has occurred in this server's configuration document because the topic connection in the cohort configuration does not " +
                                  "follow the same structure as Egeria expects and so any update may have unexpected consequences.",
@@ -322,7 +322,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     UNCLASSIFIABLE_SERVER(400, "OMAG-ADMIN-400-035",
             "Unable to classify the type of server for OMAG server {0} from its configuration document",
-            "The system is unable to initialize the local server instance.",
+            "The system cannot initialize the local server instance.",
             "Analyse the server's configuration document to determine why the type of server it requests " +
                                   "is not identified.  Update the server's configuration document to provide " +
                                   "a valid server configuration."),
@@ -332,7 +332,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     VIEW_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-036",
                                 "Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform",
-                                "The system is unable to add this view service to the server's configuration document.",
+                                "The system cannot add this view service to the server's configuration document.",
                                 "Check that the name of the view service is correctly specified in the configuration request.  " +
                                         "If you are not sure, issue the call to list the registered view services and verify the " +
                                         "values you are using.  If the name is right, but the view service should be registered," +
@@ -347,7 +347,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     VIEW_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-037",
                              "Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform",
-                             "The system is unable to configure the local server with this view service.",
+                             "The system cannot configure the local server with this view service.",
                              "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
 
     /**
@@ -355,7 +355,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_CLIENT_CONFIG(400, "OMAG-ADMIN-400-038",
                            "OMAG server {0} has been called by {1} with a null client config",
-                           "The system is unable to configure the local server with the governance service because it needs to be able to call a " +
+                           "The system cannot configure the local server with the governance service because it needs to be able to call a " +
                                "metadata access point or metadata server.",
                            "The client config is supplied by the caller to the OMAG server. This call needs to be supplied, including the name and URL of the OMAG server, before the server can operate correctly."),
 
@@ -364,7 +364,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_OMAG_SERVER_ROOT_URL(400, "OMAG-ADMIN-400-039",
                                  "The {0} service of OMAG server {1} has been configured with a null root URL for its remote OMAG Server",
-                                 "The system is unable to accept this value in the configuration document because the server would not be able to " +
+                                 "The system cannot accept this value in the configuration document because the server would not be able to " +
                                       "operate correctly.",
                                  "The root URL is supplied by the caller to the OMAG server. This URL value needs to be corrected before the server" +
                                       " can operate correctly."),
@@ -374,7 +374,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     NULL_OMAG_SERVER_NAME(400, "OMAG-ADMIN-400-040",
                             "The {0} service of server {1} has been configured with a null name for the remote server",
-                            "The system is unable to accept a null value for this property in the configuration document because the server would not" +
+                            "The system cannot accept a null value for this property in the configuration document because the server would not" +
                                   " be able to operate properly.",
                             "The OMAG Server name is supplied by the caller to the OMAG server. This remote server name needs to be corrected before " +
                                   "the server can operate correctly."),
@@ -422,7 +422,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     ENGINE_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-046",
                                 "Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform",
-                                "The system is unable to add this engine service to the server's configuration document.",
+                                "The system cannot add this engine service to the server's configuration document.",
                                 "Check that the name of the engine service is correctly specified in the configuration request.  " +
                                         "If you are not sure, issue the call to list the registered engine services and verify the " +
                                         "values you are using.  If the name is right, but the engine service should be registered," +
@@ -437,7 +437,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     ENGINE_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-047",
                              "Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform",
-                             "The system is unable to configure the local server with this engine service.",
+                             "The system cannot configure the local server with this engine service.",
                              "Validate and correct the name of the engine service URL marker or enable the engine service in this platform."),
 
 
@@ -454,7 +454,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     LOCAL_REPOSITORY_MODE_NOT_PROXY(400, "OMAG-ADMIN-400-052",
                                   "Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}",
-                                  "The local repository mode must be set to repository proxy before the event mapper connection is set.  The system is unable to configure the local server.",
+                                  "The local repository mode must be set to repository proxy before the event mapper connection is set.  The system cannot configure the local server.",
                                   "The local repository mode is supplied by the caller to the OMAG server when the repository connection is set up.  " +
                                           "This call to enable the repository connection needs to be made before the call to set the event mapper connection."),
 
@@ -487,7 +487,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_PLATFORM_EXCEPTION(500, "OMAG-ADMIN-500-002",
             "Method {0} returned an unexpected {1} exception with message {2}",
-            "The system is unable to configure the OMAG server.  The exception message gives more detail on the route cause of the problem.",
+            "The system cannot configure the OMAG server.  The exception message gives more detail on the route cause of the problem.",
             "This is likely to be either an operational or logic error. Look for other errors.  Validate the request parameters.  If you are stuck," +
                                           " raise an issue on Egeria's GitHub."),
 
@@ -506,7 +506,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_INITIALIZATION_EXCEPTION(500, "OMAG-ADMIN-500-004",
             "The {0} service detected an unexpected {1} exception with message {2} during initialization",
-            "The system is unable to start the service in the OMAG server.",
+            "The system cannot start the service in the OMAG server.",
             "This is likely to be either an operational or logic error. Look for other errors in the audit log.  Validate the request.  " +
                                                 "If you are stuck, raise an issue."),
 

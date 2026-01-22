@@ -27,19 +27,19 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
 {
     FILES_LOCATION_NOT_SPECIFIED(400, "CSV-LINEAGE-IMPORTER-400-001",
             "The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}",
-            "The connector is unable to monitor the directory for files because the name of the directory is not passed in the Connection object.",
+            "The connector cannot monitor the directory for files because the name of the directory is not passed in the Connection object.",
             "The name of the directory should be set up in the address property of the connection's Endpoint object.  Correct this in the configuration " +
                     "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
                     "Integration Daemon OMAG server where this connector is running."),
     FILES_LOCATION_NOT_DIRECTORY(400, "CSV-LINEAGE-IMPORTER-400-002",
             "The file location {0} is not a directory",
-            "The connector is unable to work with this location since it is not a directory (folder).",
+            "The connector cannot work with this location since it is not a directory (folder).",
             "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
                     "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
                     "of the Integration Daemon OMAG server where this connector is running."),
     FILES_LOCATION_NOT_READABLE(400, "CSV-LINEAGE-IMPORTER-400-003",
             "The directory (folder) {0} is not readable",
-            "The connector is unable to open the file because it does not have sufficient permission.",
+            "The connector cannot open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
     UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"CSV-LINEAGE-IMPORTER-400-004",
             "An unexpected {0} exception was returned to the {1} integration connector by the {2} " +
@@ -55,16 +55,16 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
             "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
     FILES_LOCATION_NOT_FOUND(404, "CSV-LINEAGE-IMPORTER-404-001",
              "The directory named {0} does not exist",
-             "The connector is unable to locate the file it has been asked to work with.",
+             "The connector cannot locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),
     UNEXPECTED_SECURITY_EXCEPTION(500, "CSV-LINEAGE-IMPORTER-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to access the file.",
+             "The connector cannot access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
     UNEXPECTED_IO_EXCEPTION(500, "CSV-LINEAGE-IMPORTER-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the file.",
+             "The connector cannot process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;
 

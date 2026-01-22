@@ -31,7 +31,7 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_IO_EXCEPTION(500, "DATA-FOLDER-CONNECTOR-500-002",
              "The connector received an unexpected IO exception when reading the folder named {0}; the error message was: {1}",
-             "The connector is unable to process the data in the folder.",
+             "The connector cannot process the data in the folder.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
     private final int    httpErrorCode;

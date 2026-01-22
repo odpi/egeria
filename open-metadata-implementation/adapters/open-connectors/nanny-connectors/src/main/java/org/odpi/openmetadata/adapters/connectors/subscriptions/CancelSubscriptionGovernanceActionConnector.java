@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions;
+package org.odpi.openmetadata.adapters.connectors.subscriptions;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
@@ -78,9 +78,9 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                                                                      OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                                                                                                                      0, 0);
 
-                    if ((licenses != null) && (licenses.getElementList() != null))
+                    if ((licenses != null) && (licenses.getRelationships() != null))
                     {
-                        for (OpenMetadataRelationship licence : licenses.getElementList())
+                        for (OpenMetadataRelationship licence : licenses.getRelationships())
                         {
                             if (licence != null)
                             {

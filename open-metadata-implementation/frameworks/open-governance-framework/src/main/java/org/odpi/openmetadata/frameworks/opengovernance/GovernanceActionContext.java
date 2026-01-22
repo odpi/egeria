@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.*;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.NotificationManagerClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
@@ -54,9 +55,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final ActionControlInterface           actionControlClient;
     private final GovernanceActionProcessInterface governanceActionProcessClient;
     private final ConnectedAssetClient             connectedAssetClient;
-    private final GovernanceCompletionInterface governanceCompletionClient;
-    private final WatchdogEventInterface        watchdogEventClient;
-    private final GovernanceConfiguration       governanceConfiguration;
+    private final NotificationManagerClient        notificationManagerClient;
+    private final GovernanceCompletionInterface    governanceCompletionClient;
+    private final WatchdogEventInterface           watchdogEventClient;
+    private final GovernanceConfiguration          governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
@@ -113,7 +115,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                    GovernanceActionProcessInterface governanceActionProcessClient,
                                    ConnectedAssetClient             connectedAssetClient,
                                    GovernanceCompletionInterface    governanceCompletionClient,
-                                   WatchdogEventInterface watchdogEventClient)
+                                   OpenGovernanceClient             openGovernanceClient,
+                                   WatchdogEventInterface           watchdogEventClient)
     {
         super(localServerName,
               localServiceName,
@@ -138,6 +141,17 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         this.actionTargetElements = actionTargetElements;
         this.governanceConfiguration = governanceConfiguration;
         this.actionControlClient = actionControlClient;
+        this.notificationManagerClient = new NotificationManagerClient(this,
+                                                                       localServerName,
+                                                                       localServiceName,
+                                                                       connectorUserId,
+                                                                       connectorGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       openMetadataClient,
+                                                                       openGovernanceClient,
+                                                                       auditLog,
+                                                                       maxPageSize);
         this.governanceActionProcessClient = governanceActionProcessClient;
         this.connectedAssetClient = connectedAssetClient;
         this.governanceCompletionClient = governanceCompletionClient;
@@ -242,6 +256,17 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
 
     /**
+     * Return the notification manager client for this governance action.
+     *
+     * @return notification manager client
+     */
+    public NotificationManagerClient getNotificationManagerClient()
+    {
+        return notificationManagerClient;
+    }
+
+
+    /**
      * Update the status of a specific action target. By default, these values are derived from
      * the values for the governance action service.  However, if the governance action service has to process name
      * target elements, then setting the status on each individual target will show the progress of the
@@ -258,13 +283,13 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
-    public void updateActionTargetStatus(String             actionTargetGUID,
+    public void updateActionTargetStatus(String         actionTargetGUID,
                                          ActivityStatus status,
-                                         Date               startDate,
-                                         Date               completionDate,
-                                         String              completionMessage) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                         Date           startDate,
+                                         Date           completionDate,
+                                         String         completionMessage) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         governanceCompletionClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }

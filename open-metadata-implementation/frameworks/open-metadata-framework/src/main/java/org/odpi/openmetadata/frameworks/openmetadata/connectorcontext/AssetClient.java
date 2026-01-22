@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
@@ -25,7 +26,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -627,6 +631,133 @@ public class AssetClient extends ConnectorContextClientBase
     {
         return assetHandler.getAssetsByDeployedImplementationType(connectorUserId, name, queryOptions);
     }
+
+
+    /**
+     * Return a list of assets with the requested name.  The name must match exactly.
+     *
+     * @param metadataCollectionId unique identifier of the metadata collection to search for
+     * @param queryOptions options to control the query
+     *
+     * @return list of unique identifiers of assets with matching name.
+     *
+     * @throws InvalidParameterException the name is invalid
+     * @throws PropertyServerException a problem in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<OpenMetadataRootElement> getAssetsByMetadataCollectionId(String       metadataCollectionId,
+                                                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        return assetHandler.getAssetsByMetadataCollectionId(connectorUserId, metadataCollectionId, queryOptions);
+    }
+
+
+    /**
+     * Retrieve the actions that are chained off a sponsor's element.
+     *
+     * @param sponsorGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsForSponsor(String         sponsorGUID,
+                                                              ActivityStatus activityStatus,
+                                                              QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        return assetHandler.getActionsForSponsor(connectorUserId, sponsorGUID, activityStatus, queryOptions);
+    }
+
+
+    /**
+     * Retrieve the actions that are chained off a sponsor's element.
+     *
+     * @param requesterGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsFromRequester(String         requesterGUID,
+                                                                 ActivityStatus activityStatus,
+                                                                 QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        return assetHandler.getActionsFromRequester(connectorUserId, requesterGUID, activityStatus, queryOptions);
+    }
+
+
+    /**
+     * Retrieve the actions for a particular actor.
+     *
+     * @param actorGUID  unique identifier of the role
+     * @param activityStatus optional activity status
+     * @param requestedQueryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getAssignedActions(String         actorGUID,
+                                                            ActivityStatus activityStatus,
+                                                            QueryOptions   requestedQueryOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        return assetHandler.getAssignedActions(connectorUserId, actorGUID, activityStatus, requestedQueryOptions);
+    }
+
+
+    /**
+     * Retrieve the Processes that match the search string.
+     *
+     * @param searchString string to search for (may include RegExs)
+     * @param activityStatus   optional  status
+     * @param suppliedSearchOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findProcesses(String         searchString,
+                                                       ActivityStatus activityStatus,
+                                                       SearchOptions  suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        return assetHandler.findProcesses(connectorUserId, searchString, activityStatus, suppliedSearchOptions);
+    }
+
+
+    /**
+     * Retrieve the processes that match the category name and status.
+     *
+     * @param category   type to search for
+     * @param activityStatus optional status
+     * @param suppliedQueryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getProcessesByCategory(String         category,
+                                                                ActivityStatus activityStatus,
+                                                                QueryOptions   suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        return assetHandler.getProcessesByCategory(connectorUserId, category, activityStatus, suppliedQueryOptions);
+    }
+
 
 
     /**

@@ -67,7 +67,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
     OPEN_LINEAGE_FORMAT_ERROR("OIF-CONNECTOR-0005",
                               AuditLogRecordSeverityLevel.ERROR,
                               "A {0} exception with message {1} occurred when parsing open lineage event: {2}",
-                              "The integration daemon is unable to parse an incoming open lineage event into Egeria's OpenLineageRunEvent bean.  " +
+                              "The integration daemon cannot parse an incoming open lineage event into Egeria's OpenLineageRunEvent bean.  " +
                                       "This may be due to either (1) an invalid open lineage event, or (2) Egeria's OpenLineageRunEvent not supporting an advancement in the open lineage standard.  " +
                                       "The raw event is passed to the listening connectors with a null OpenLineageRunEvent bean.  The connector can use the open lineage standard server to process the event facet by facet.",
                               "Verify the format of the open lineage event.  If incorrect, seek the source of the event.  If correct, look to enhance Egeria's OpenLineageRunEvent."),
@@ -135,7 +135,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
     DISCONNECT_EXCEPTION("OIF-CONNECTOR-0012",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}",
-                         "The connector is is unable to disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
+                         "The connector is cannot disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
                          "Use the details from the error message to determine the cause of the error.  Check the remote target for errors and correct as needed."),
 
     /**

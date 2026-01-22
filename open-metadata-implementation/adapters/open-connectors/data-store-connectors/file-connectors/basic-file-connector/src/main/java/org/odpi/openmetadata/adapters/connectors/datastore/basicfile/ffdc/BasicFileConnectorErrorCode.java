@@ -31,7 +31,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-001",
             "The file name is null in the Connection object {0}",
-            "The connector is unable to open the file because the name of the file is not passed in the Connection object.",
+            "The connector cannot open the file because the name of the file is not passed in the Connection object.",
             "The name of the file should be set up in the address property of the connection's Endpoint object."),
 
     /**
@@ -39,7 +39,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     DIRECTORY_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-002",
             "The file {0} given in Connection object {1} is a directory",
-            "The connector is unable to work with a directory.",
+            "The connector cannot work with a directory.",
             "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -47,7 +47,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_READABLE(400, "BASIC-FILE-CONNECTOR-400-003",
             "The file {0} given in Connection object {1} is not readable",
-            "The connector is unable to open the file because it does not have sufficient permission.",
+            "The connector cannot open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -55,7 +55,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FOLDER_NOT_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-005",
                          "The folder name is null in the Connection object {0}",
-                         "The connector is unable to open the folder because the name of the folder is not passed in the Connection object.",
+                         "The connector cannot open the folder because the name of the folder is not passed in the Connection object.",
                          "The name of the folder should be set up in the address property of the connection's Endpoint object."),
 
     /**
@@ -63,7 +63,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_DIRECTORY(400, "BASIC-FILE-CONNECTOR-400-006",
                        "The folder {0} given in Connection object {1} is a file",
-                       "The connector is unable to work with a file.",
+                       "The connector cannot work with a file.",
                        "Ensure a valid folder name is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -71,7 +71,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FOLDER_NOT_READABLE(400, "BASIC-FILE-CONNECTOR-400-007",
                         "The folder {0} given in Connection object {1} is not readable",
-                        "The connector is unable to open the folder because it does not have permission to read the file.",
+                        "The connector cannot open the folder because it does not have permission to read the file.",
                         "Ensure a readable folder name is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
@@ -79,7 +79,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FOLDER_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
                      "The folder named {0} in the Connection object {1} does not exist",
-                     "The connector is unable to open the folder because it does not exist.",
+                     "The connector cannot open the folder because it does not exist.",
                      "Add the name of an existing folder to the address property of the connection's Endpoint object."),
 
     /**
@@ -87,7 +87,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-002",
              "The file named {0} in the Connection object {1} does not exist",
-             "The connector is unable to locate the file it has been asked to work with.",
+             "The connector cannot locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),
 
@@ -96,7 +96,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_SECURITY_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to access the file.",
+             "The connector cannot access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -104,7 +104,7 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_IO_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the file.",
+             "The connector cannot process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
 

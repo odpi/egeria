@@ -762,6 +762,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param actionSourceGUID unique identifier of the source of the action
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param assignmentType the assignment type for the AssignmentScope relationship
      * @param actionTargets the list of elements that should be acted upon
      *
      * @return unique identifier of new action element
@@ -777,6 +778,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                     String                                actionSourceGUID,
                                     List<String>                          actionCauseGUIDs,
                                     String                                assignToGUID,
+                                    AssignmentType                        assignmentType,
                                     List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
@@ -789,6 +791,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                  actionCauseGUIDs,
                                  assignToGUID,
                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                 assignmentType,
                                  actionTargets);
     }
 
@@ -829,6 +832,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                  actionCauseGUIDs,
                                  noteLogGUID,
                                  OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                 null,
                                  actionTargets);
     }
 
@@ -845,6 +849,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param assignToRelationshipTypeName typeName of the relationship
+     * @param assignmentType type of assignment for the action (when assignToRelationshipType is AssignmentScope)
      * @param actionTargets the list of elements that should be acted upon
      *
      * @return unique identifier of new action element
@@ -861,6 +866,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                 List<String>                          actionCauseGUIDs,
                                 String                                assignToGUID,
                                 String                                assignToRelationshipTypeName,
+                                AssignmentType                        assignmentType,
                                 List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -932,16 +938,23 @@ public class AssetHandler extends OpenMetadataHandlerBase
             if (assignToGUID != null)
             {
                 /*
-                 * Link the action and the person assigned to complete the work
+                 * Link the action and the person/element assigned to complete the work
                  */
+                NewElementProperties relationshipProperties = null;
+
+                if ((OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName.equals(assignToRelationshipTypeName)) && (assignmentType != null))
+                {
+                    relationshipProperties = new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                       OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                       assignmentType.getName()));
+                }
+
                 openMetadataClient.createRelatedElementsInStore(userId,
                                                                 assignToRelationshipTypeName,
                                                                 assignToGUID,
                                                                 actionGUID,
                                                                 makeAnchorOptions,
-                                                                new NewElementProperties(propertyHelper.addStringProperty(null,
-                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
-                                                                                                                          AssignmentType.CONTRIBUTOR.getName())));
+                                                                relationshipProperties);
             }
 
             if (actionCauseGUIDs != null)
@@ -2302,7 +2315,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @return list of unique identifiers of assets with matching name.
      *
      * @throws InvalidParameterException the name is invalid
-     * @throws PropertyServerException a problem access in the property server
+     * @throws PropertyServerException a problem in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     public List<OpenMetadataRootElement> getAssetsByMetadataCollectionId(String       userId,
@@ -2324,10 +2337,10 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the actions that are chained off of a sponsor's element.
+     * Retrieve the actions that are chained off a sponsor's element.
      *
      * @param userId      calling user
-     * @param elementGUID unique identifier of the element to start with
+     * @param sponsorGUID unique identifier of the element to start with
      * @param activityStatus  optional activity status
      * @param queryOptions           multiple options to control the query
      * @return list of action beans
@@ -2336,20 +2349,53 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     public List<OpenMetadataRootElement> getActionsForSponsor(String         userId,
-                                                              String         elementGUID,
+                                                              String         sponsorGUID,
                                                               ActivityStatus activityStatus,
                                                               QueryOptions   queryOptions) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
         final String methodName        = "getActionsForSponsor";
-        final String guidParameterName = "elementGUID";
+        final String guidParameterName = "sponsorGUID";
 
         return getFilteredActions(userId,
-                                  elementGUID,
+                                  sponsorGUID,
                                   guidParameterName,
                                   activityStatus,
                                   OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
+                                  1,
+                                  queryOptions,
+                                  methodName);
+    }
+
+
+    /**
+     * Retrieve the actions that are chained off a sponsor's element.
+     *
+     * @param userId      calling user
+     * @param requesterGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsFromRequester(String         userId,
+                                                                 String         requesterGUID,
+                                                                 ActivityStatus activityStatus,
+                                                                 QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "getActionsForSponsor";
+        final String guidParameterName = "requesterGUID";
+
+        return getFilteredActions(userId,
+                                  requesterGUID,
+                                  guidParameterName,
+                                  activityStatus,
+                                  OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
                                   1,
                                   queryOptions,
                                   methodName);

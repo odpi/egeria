@@ -34,11 +34,11 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                 "Verify that the start up sequence goes on to initialize the configured governance action engines."),
 
     /**
-     * OMES-GOVERNANCE-ACTION-0002 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}
+     * OMES-GOVERNANCE-ACTION-0002 - The Governance Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}
      */
     SERVICE_INSTANCE_FAILURE("OMES-GOVERNANCE-ACTION-0002",
                              AuditLogRecordSeverityLevel.ERROR,
-                             "The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}",
+                             "The Governance Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its governance action services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
@@ -102,21 +102,21 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                                "start() unless they are managing their own thread(s)."),
 
     /**
-     * OMES-GOVERNANCE-ACTION-0027 - Governance Action OMES in server {0} is unable to start any governance action engines
+     * OMES-GOVERNANCE-ACTION-0027 - Governance Action OMES in server {0} cannot start any governance action engines
      */
     NO_GOVERNANCE_ACTION_ENGINES_STARTED("OMES-GOVERNANCE-ACTION-0027",
                                          AuditLogRecordSeverityLevel.ERROR,
-                         "Governance Action OMES in server {0} is unable to start any governance action engines",
+                         "Governance Action OMES in server {0} cannot start any governance action engines",
                          "The engine service is not able to run any governance action requests.  It fails to start.",
                          "Add the configuration for at least one governance action engine to this engine service."),
 
     /**
-     * OMES-GOVERNANCE-ACTION-0028 - Governance Action engine {0} is unable to update the completion status for governance action service {1}.  
+     * OMES-GOVERNANCE-ACTION-0028 - Governance Action engine {0} cannot update the completion status for governance action service {1}.  
      * The exception was {2} with error message {3}
      */
     EXC_ON_ERROR_STATUS_UPDATE("OMES-GOVERNANCE-ACTION-0028",
                                AuditLogRecordSeverityLevel.EXCEPTION,
-                                 "Governance Action engine {0} is unable to update the completion status for governance action service {1}.  The exception was {2} with error " +
+                                 "Governance Action engine {0} cannot update the completion status for governance action service {1}.  The exception was {2} with error " +
                                        "message {3}",
                                  "The server is not able to record the failed result for a governance action request. The governance action report status is not updated.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the governance action request."),
@@ -178,7 +178,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("OMES-GOVERNANCE-ACTION-0033",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}",
-                         "The service is unable to process the current request.",
+                         "The service cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
 

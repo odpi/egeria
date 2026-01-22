@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard;
 
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.ManageDigitalSubscriptionActionTarget;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.ManageDigitalSubscriptionRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionActionTarget;
+import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardErrorCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.*;
@@ -24,7 +24,6 @@ import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -37,8 +36,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.DigitalProductManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
@@ -50,6 +51,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLog
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
@@ -96,13 +98,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private Map<String, String> dataFields            = null;
     private Map<String, String> products              = null;
 
+    private final List<NewActionTarget> notificationWatchdogTargets = new ArrayList<>();
+
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
      * It sets up the contextual metadata used to fill out the product catalog.
      * This includes the solution blueprint that covers the components involved in managing
-     * the open metadata product catalog.  Then there is the product catalog itself with its
-     * internal folders, glossary and data dictionary.  The glossary is then populated
+     * the Open Metadata Digital Product Catalog.  Then there is the product catalog itself with its
+     * internal folders, glossary, and data dictionary.  The glossary is then populated
      * with glossary terms, and the data dictionary is populated with data fields.
      * The guids for these elements are managed in instance variables to allow the products
      * to link to them.
@@ -136,8 +140,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             governanceDefinitions = this.getGovernanceDefinitions();
 
             /*
-             * The product folders are set up first so that the top level folder for the product catalog can be
-             * the anchor scope for every thing else.
+             * The product folders are set up first so that the top-level folder for the product catalog can be
+             * the anchor scope for everything else.
              */
             productRoles          = this.getProductRoles();
             solutionBlueprintGUID = this.getSolutionBlueprint();
@@ -147,6 +151,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             communityNoteLogs     = this.getCommunityNoteLogs();
             dataFields            = this.getDataFields();
             products              = this.getProducts();
+
+            /*
+             * The engine action for the watchdog notification serve is started before the monitored resource
+             * and subscribers are attached to ensure the notification watchdog sees their attachment events and
+             * sends out the welcome messages.
+             */
+            String engineActionGUID = this.activateNotificationWatchdog();
+
+            if (engineActionGUID != null)
+            {
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.BARDOT_STARTED.getMessageDefinition(connectorName,
+                                                                                          engineActionGUID,
+                                                                                          Integer.toString(notificationWatchdogTargets.size())));
+            }
         }
         catch (Exception error)
         {
@@ -462,7 +481,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * First time, so the product needs to be created, along with its subscription options,
          * solution blueprint, data spec, notification type and asset.  The asset needs to be
-         * registered as a Catalog Target.
+         * registered as a CatalogTarget.
          */
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
         digitalProductProperties.setIntroductionDate(new Date());
@@ -497,7 +516,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
 
-        PersonRoleProperties personRoleProperties = new PersonRoleProperties();
+        DigitalProductManagerProperties personRoleProperties = new DigitalProductManagerProperties();
 
         personRoleProperties.setQualifiedName(productDefinition.getQualifiedName() + "_productManager");
         personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
@@ -827,6 +846,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (productAssetGUID != null)
                 {
+
                     addNotificationType(productSubscriptionDefinition,
                                         productHeader,
                                         productDefinition.getProductName(),
@@ -878,10 +898,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
 
-        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productSubscriptionDefinition.getIdentifier());
+        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productName + "::" + productSubscriptionDefinition.getIdentifier());
         notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
         notificationTypeProperties.setDisplayName("Notification type for '" + productSubscriptionDefinition.getDisplayName() + "' for product '" + productName + "'");
         notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
+        notificationTypeProperties.setPlannedStartDate(new Date());
+        notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
+        notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
+        notificationTypeProperties.setNotificationInterval(productSubscriptionDefinition.getNotificationInterval());
 
         NewElementOptions newElementOptions = new NewElementOptions(notificationTypeClient.getMetadataSourceOptions());
 
@@ -894,12 +918,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                         notificationTypeProperties,
                                                                                         null);
 
-        /*
-         * The engine action for the watchdog notification serve is started before the monitored resource
-         * and subscribers are attached to ensure the notification watchdog sees their attachment events and
-         * sends out the welcome messages.
-         */
-        String engineActionGUID = this.activateNotificationWatchdog(productHeader.getGUID(), productManagerGUID, productSubscriptionDefinition, notificationTypeGUID);
 
         MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -916,7 +934,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
         {
             notificationSubscriberProperties.setLabel("community notifications");
-            notificationSubscriberProperties.setDescription("A note log collects the notifications from the notification watchdog manager: " + engineActionGUID);
+            notificationSubscriberProperties.setDescription("A note log collects the notifications from the Baudot Subscription Manager based on activity around notification type: " + notificationTypeGUID);
 
             notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
         }
@@ -924,10 +942,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if (productManagerGUID != null)
         {
             notificationSubscriberProperties.setLabel("product manager notifications");
-            notificationSubscriberProperties.setDescription("Notifications from the notification watchdog manager: " + engineActionGUID + " are sent to the product manager.");
+            notificationSubscriberProperties.setDescription("Notifications from the Baudot Subscription Manager related to notification type: " + notificationTypeGUID + " are sent to the product manager.");
 
             notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
         }
+
+        /*
+         * Save details of the notification type so that it is processed by the Baudot Subscription Manager.
+         */
+        NewActionTarget notificationTarget = new NewActionTarget();
+
+        notificationTarget.setActionTargetGUID(notificationTypeGUID);
+        notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+        notificationWatchdogTargets.add(notificationTarget);
     }
 
 
@@ -1101,11 +1129,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         newElementOptions.setParentGUID(productGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
 
-        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
-        initialClassifications.put(OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName, null);
-
-        String assetGUID = assetClient.createAsset(newElementOptions,
-                                                   initialClassifications,
+       String assetGUID = assetClient.createAsset(newElementOptions,
+                                                   null,
                                                    dataSetProperties,
                                                    null);
 
@@ -1395,12 +1420,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Set up the notification watchdog.
-     *
-     * @param productGUID unique identifier of product
-     * @param productManagerGUID unique identifier of product manager
-     * @param productSubscriptionDefinition details of the specific subscription type
-     * @param notificationTypeGUID notification type that is to be monitored
+     * Set up the notification watchdog - Baudot Subscription Manager.
      *
      * @return engine action guid
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -1408,36 +1428,45 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private String activateNotificationWatchdog(String                        productGUID,
-                                                String                        productManagerGUID,
-                                                ProductSubscriptionDefinition productSubscriptionDefinition,
-                                                String                        notificationTypeGUID) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
+    private String activateNotificationWatchdog() throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
     {
-        List<NewActionTarget> actionTargets = new ArrayList<>();
-        NewActionTarget notificationTarget = new NewActionTarget();
-
-        notificationTarget.setActionTargetGUID(notificationTypeGUID);
-        notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-        actionTargets.add(notificationTarget);
-
         GovernanceDefinitionClient governanceActionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
-        OpenMetadataRootElement governanceActionType = governanceActionClient.getGovernanceDefinitionByGUID(productSubscriptionDefinition.getGovernanceActionTypeGUID(), null);
+        List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
+                                                                                      ActivityStatus.IN_PROGRESS,
+                                                                                      assetClient.getSearchOptions(0, 0));
 
-        if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
+        if (activeEngineActions == null)
         {
-            return integrationContext.getOpenGovernanceClient().initiateGovernanceActionType(integrationContext.getMyUserId(),
-                                                                                             governanceActionTypeProperties.getQualifiedName(),
-                                                                                             Arrays.asList(integrationContext.getIntegrationConnectorGUID(), productManagerGUID),
-                                                                                             Collections.singletonList(productGUID),
-                                                                                             actionTargets,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null);
+            OpenMetadataRootElement governanceActionType = governanceActionClient.getGovernanceDefinitionByGUID(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(), null);
+
+            if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
+            {
+                return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
+                                                                                              Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
+                                                                                              Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
+                                                                                              notificationWatchdogTargets,
+                                                                                              null,
+                                                                                              null,
+                                                                                              connectorName,
+                                                                                              null);
+            }
+        }
+        else
+        {
+            for (OpenMetadataRootElement activeEngineAction : activeEngineActions)
+            {
+                if ((activeEngineAction != null) && (activeEngineAction.getProperties() instanceof EngineActionProperties engineActionProperties))
+                {
+                    if (GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID().equals(engineActionProperties.getGovernanceActionTypeGUID()))
+                    {
+                        return activeEngineAction.getElementHeader().getGUID();
+                    }
+                }
+            }
         }
 
         return null;

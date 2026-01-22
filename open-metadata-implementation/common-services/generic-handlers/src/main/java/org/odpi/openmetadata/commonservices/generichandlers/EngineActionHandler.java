@@ -237,7 +237,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Take the supplied request parameters and combine them with the definitions from the GovernanceActionExecutor relationship.
+     * Take the supplied action targets and combine them with the definitions from the GovernanceActionExecutor relationship.
      *
      * @param governanceActionExecutorRelationship relationship with the properties to use
      * @param suppliedTargetsForAction targets from either the governance action or the caller.
@@ -248,74 +248,57 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         final String methodName = "getExecutorTargetsForAction";
 
-        if ((suppliedTargetsForAction != null) && (! suppliedTargetsForAction.isEmpty()))
+        if ((suppliedTargetsForAction == null) || (suppliedTargetsForAction.isEmpty()))
         {
-            Map<String, NewActionTarget> executorsActionTargets = new HashMap<>();
+            return suppliedTargetsForAction;
+        }
 
-            for (NewActionTarget newActionTarget : suppliedTargetsForAction)
+        Map<String, String> actionTargetMap = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                        OpenMetadataProperty.ACTION_TARGET_MAP.name,
+                                                                                        governanceActionExecutorRelationship.getProperties(),
+                                                                                        methodName);
+
+        if (actionTargetMap != null)
+        {
+            for (String oldActionTargetName: actionTargetMap.keySet())
             {
-                if ((newActionTarget != null) && (newActionTarget.getActionTargetName() != null))
+                if (oldActionTargetName != null)
                 {
-                    executorsActionTargets.put(newActionTarget.getActionTargetName(), newActionTarget);
-                }
-            }
-
-            Map<String, String> actionTargetMap = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                OpenMetadataProperty.ACTION_TARGET_MAP.name,
-                                                                                                governanceActionExecutorRelationship.getProperties(),
-                                                                                                methodName);
-
-            if (actionTargetMap != null)
-            {
-                Map<String, NewActionTarget> mappedTargetsForAction = new HashMap<>();
-
-                for (String actionTargetName : executorsActionTargets.keySet())
-                {
-                    if (actionTargetName != null)
+                    for (NewActionTarget newActionTarget : suppliedTargetsForAction)
                     {
-                        if (actionTargetMap.containsKey(actionTargetName))
+                        if ((newActionTarget != null) && (newActionTarget.getActionTargetName() != null))
                         {
-                            String newTargetForActionName = actionTargetMap.get(actionTargetName);
-
-                            mappedTargetsForAction.put(newTargetForActionName, executorsActionTargets.get(actionTargetName));
-                        }
-                        else
-                        {
-                            mappedTargetsForAction.put(actionTargetName, executorsActionTargets.get(actionTargetName));
+                            newActionTarget.setActionTargetName(actionTargetMap.get(oldActionTargetName));
                         }
                     }
                 }
-
-                executorsActionTargets = mappedTargetsForAction;
-            }
-
-            List<String> actionTargetFilter = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                      OpenMetadataProperty.ACTION_TARGET_FILTER.name,
-                                                                                      governanceActionExecutorRelationship.getProperties(),
-                                                                                      methodName);
-
-            if (actionTargetFilter != null)
-            {
-                Map<String, NewActionTarget> filteredTargetsForAction = new HashMap<>();
-
-                for (String actionTargetName : executorsActionTargets.keySet())
-                {
-                    if ((actionTargetName != null) && (!actionTargetFilter.contains(actionTargetName)))
-                    {
-                        filteredTargetsForAction.put(actionTargetName, executorsActionTargets.get(actionTargetName));
-                    }
-                }
-
-                executorsActionTargets = filteredTargetsForAction;
-            }
-
-            if (! executorsActionTargets.isEmpty())
-            {
-                return new ArrayList<>(executorsActionTargets.values());
             }
         }
 
-        return null;
+        List<String> actionTargetFilter = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                  OpenMetadataProperty.ACTION_TARGET_FILTER.name,
+                                                                                  governanceActionExecutorRelationship.getProperties(),
+                                                                                  methodName);
+
+        if (actionTargetFilter != null)
+        {
+            List<NewActionTarget> filteredTargetsForAction = new ArrayList<>();
+
+            for (NewActionTarget newActionTarget : suppliedTargetsForAction)
+            {
+                if (newActionTarget != null)
+                {
+                    if ((newActionTarget.getActionTargetName() == null) || (! actionTargetFilter.contains(newActionTarget.getActionTargetName())))
+                    {
+                        filteredTargetsForAction.add(newActionTarget);
+                    }
+                }
+            }
+
+            return filteredTargetsForAction;
+        }
+
+        return suppliedTargetsForAction;
     }
 
 

@@ -32,7 +32,7 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
     NO_SOURCE_FILE_NAME(400, "GOVERNANCE-ACTION-CONNECTORS-400-006",
                         "The {0} governance action service has been called without a source file name to work with",
                         "The provisioning governance action service connector is designed to manage files on request.  " +
-                                "It is unable to operate without the name of the source file and so it terminates with a FAILED completion status.",
+                                "It cannot operate without the name of the source file and so it terminates with a FAILED completion status.",
                         "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
                                 "relationship.  Correct the information passed to the governance service and rerun the request"),
 

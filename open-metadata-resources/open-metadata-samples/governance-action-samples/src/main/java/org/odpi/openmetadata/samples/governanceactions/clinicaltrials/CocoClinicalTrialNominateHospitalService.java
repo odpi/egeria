@@ -221,13 +221,13 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
          * All existing certifications are ended - assuming that the hospital contact people have changed - or
          * a similar reason, which has caused Coco Pharmaceuticals to "start again" with this hospital.
          */
-        while ((existingCertifications != null) && (existingCertifications.getElementList() != null))
+        while ((existingCertifications != null) && (existingCertifications.getRelationships() != null))
         {
             ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
                                                                                  OpenMetadataProperty.COVERAGE_END.name,
                                                                                  new Date());
 
-            for (OpenMetadataRelationship certification : existingCertifications.getElementList())
+            for (OpenMetadataRelationship certification : existingCertifications.getRelationships())
             {
                 if (certification != null)
                 {

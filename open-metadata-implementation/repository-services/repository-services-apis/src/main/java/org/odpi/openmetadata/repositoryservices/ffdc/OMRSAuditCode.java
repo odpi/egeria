@@ -231,7 +231,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     OMRS_TOPIC_LISTENER_DEAF("OMRS-AUDIT-0018",
                              AuditLogRecordSeverityLevel.ERROR,
                              "The OMRS Topic Listener has no embedded connector to an event bus",
-                             "The OMRS Topic Connector is unable to receive or send events because its connection object does not include " +
+                             "The OMRS Topic Connector cannot receive or send events because its connection object does not include " +
                                      "an embedded connection to the event bus.",
                              "Verify the start up configuration to ensure there is an event bus configured and that it was in place before the cohort was" +
                                      " defined."),
@@ -273,7 +273,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
                                AuditLogRecordSeverityLevel.ERROR,
                                "The local repository event mapper connector {0} has no connector to an event bus",
-                               "The event mapper connector is unable to receive or send events",
+                               "The event mapper connector cannot receive or send events",
                                "Verify the start up configuration to ensure there is an event bus configured."),
 
     /**
@@ -315,11 +315,11 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                        "related to incoming events"),
 
     /**
-     * OMRS-AUDIT-0027 - The local server is unable to initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}
+     * OMRS-AUDIT-0027 - The local server cannot initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}
      */
     COHORT_STARTUP_ERROR("OMRS-AUDIT-0027",
             AuditLogRecordSeverityLevel.EXCEPTION,
-            "The local server is unable to initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}",
+            "The local server cannot initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}",
             "The local server will now cancel startup, and shutdown.",
             "Review the exception and resolve the issue it documents. " +
                     "Then try starting the server again."),
@@ -403,7 +403,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                 "The connector to the local repository event mapper failed with a {0} exception and the following error message: {1}",
-                                "The server is unable to start.",
+                                "The server cannot start.",
                                 "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
 
     /**
@@ -412,7 +412,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     BAD_ARCHIVE_STORE("OMRS-AUDIT-0036",
                       AuditLogRecordSeverityLevel.EXCEPTION,
                       "The connector to the local repository archive store failed with a {0} exception and the following error message: {1}",
-                      "The server is unable to start up.",
+                      "The server cannot start up.",
                       "Correct the configuration to ensure that the local repository's archive store connection is valid."),
 
     /**
@@ -566,21 +566,21 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                        "Validate that this archive is appropriate for the server."),
 
     /**
-     * OMRS-AUDIT-0051 - The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive because it is empty
+     * OMRS-AUDIT-0051 - The Open Metadata Repository Services (OMRS) cannot process an open metadata archive because it is empty
      */
     EMPTY_ARCHIVE("OMRS-AUDIT-0051",
                   AuditLogRecordSeverityLevel.ERROR,
-                  "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive because it is empty",
+                  "The Open Metadata Repository Services (OMRS) cannot process an open metadata archive because it is empty",
                   "The local server is skipping an open metadata archive because it is empty.",
                   "Review the list of archives for the server and determine which archive is in error.  " +
                           "Request a new version of the archive or remove it from the server's archive list."),
 
     /**
-     * OMRS-AUDIT-0052 - The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive {0} because it has no control header
+     * OMRS-AUDIT-0052 - The Open Metadata Repository Services (OMRS) cannot process an open metadata archive {0} because it has no control header
      */
     NULL_PROPERTIES_IN_ARCHIVE("OMRS-AUDIT-0052",
                                AuditLogRecordSeverityLevel.ERROR,
-                               "The Open Metadata Repository Services (OMRS) is unable to process an open metadata archive {0} because it has no " +
+                               "The Open Metadata Repository Services (OMRS) cannot process an open metadata archive {0} because it has no " +
                                        "control header",
                                "The local server is skipping an open metadata archive because it does not have a correct header.  " +
                                        "This header confirms the version and source of the archive and is necessary to process the archive.",
@@ -690,11 +690,11 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                            "Review the exception to determine the source of the error and fix it."),
 
     /**
-     * OMRS-AUDIT-0102 - Connector {0} is unable to process a null event {0} passed by the event bus
+     * OMRS-AUDIT-0102 - Connector {0} cannot process a null event {0} passed by the event bus
      */
     NULL_EVENT_TO_PROCESS("OMRS-AUDIT-0102",
                           AuditLogRecordSeverityLevel.EXCEPTION,
-                          "Connector {0} is unable to process a null event {0} passed by the event bus",
+                          "Connector {0} cannot process a null event {0} passed by the event bus",
                           "The OMRS Topic Connector was passed a null event by the event bus.",
                           "Review the exception to identify the source of the error and correct it."),
 
@@ -704,7 +704,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     SEND_REGISTRY_EVENT_ERROR("OMRS-AUDIT-0105",
                               AuditLogRecordSeverityLevel.EXCEPTION,
                               "Unable to send a registry event for cohort {0} due to an error in the OMRS Topic Connector",
-                              "The local server is unable to properly manage registration events for the metadata " +
+                              "The local server cannot properly manage registration events for the metadata " +
                                       "repository cohort. The cause of the error is recorded in the accompanying exception.",
                               "Review the exception and resolve the issue it documents.  " +
                                       "Then disconnect and reconnect this server to the cohort."),
@@ -750,13 +750,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                                 "Update the local metadata collection id to remove the conflict."),
 
     /**
-     * OMRS-AUDIT-0109 - Registration error occurred in cohort {0} because remote server {1} that hosts metadata collection {2} is unable to use
+     * OMRS-AUDIT-0109 - Registration error occurred in cohort {0} because remote server {1} that hosts metadata collection {2} cannot use
      * connection {3} to create a connector to this local server
      */
     INCOMING_BAD_CONNECTION("OMRS-AUDIT-0109",
                             AuditLogRecordSeverityLevel.ACTION,
                             "Registration error occurred in cohort {0} because remote server {1} that hosts " +
-                                    "metadata collection {2} is unable to use connection {3} to create a " +
+                                    "metadata collection {2} cannot use connection {3} to create a " +
                                     "connector to this local server",
                             "The remote server will not be able to query metadata from this local server.",
                             "This error may be caused because the connection is incorrectly " +
@@ -1133,11 +1133,11 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                            "Egeria supplied native repositories support all types, but other repositories and proxies to third party repositories may not."),
 
     /**
-     * OMRS-AUDIT-0302 - The local server is unable to add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature
+     * OMRS-AUDIT-0302 - The local server cannot add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature
      */
     NEW_TYPE_NOT_SUPPORTED("OMRS-AUDIT-0302",
                            AuditLogRecordSeverityLevel.TYPES,
-                           "The local server is unable to add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature",
+                           "The local server cannot add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature",
                            "The local server will not be able to manage metadata instances of this type.",
                            "Validate that it is expected that this type is not supported by this repository.  " +
                                    "Ensure that there is at least one repository in the cohort that does support this type if you need to " +
@@ -1387,7 +1387,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ERROR,
                           "Received unknown event: {0}",
                           "The local server has received an unknown event from another member of the metadata repository " +
-                                  "cohort and is unable to process it. " +
+                                  "cohort and cannot process it. " +
                                   "This is possible if a server in the cohort is at a higher level than this server and " +
                                   "is using a more advanced version of the protocol. " +
                                   "The local server should continue to operate correctly.",
@@ -1480,7 +1480,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                              AuditLogRecordSeverityLevel.EXCEPTION,
                              "Unable to process a received event from topic {0} because its content is null",
-                             "The system is unable to process an incoming event.",
+                             "The system cannot process an incoming event.",
                              "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent, " +
                                      "possibly from a later version of the OMRS protocol"),
 
@@ -1490,7 +1490,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     SEND_TYPEDEF_EVENT_ERROR("OMRS-AUDIT-9003",
                              AuditLogRecordSeverityLevel.EXCEPTION,
                              "Unable to send a TypeDef event for cohort {0} due to an error in the OMRS Topic Connector",
-                             "The local server is unable to properly manage TypeDef events for the metadata " +
+                             "The local server cannot properly manage TypeDef events for the metadata " +
                                       "repository cohort. The cause of the error is recorded in the accompanying exception.",
                              "Review the exception and resolve the issue it documents.  " +
                                       "Then restart this server and it will send out its type information to the cohort."),
@@ -1501,7 +1501,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     SEND_INSTANCE_EVENT_ERROR("OMRS-AUDIT-9005",
                               AuditLogRecordSeverityLevel.EXCEPTION,
                               "Unable to send or receive a metadata instance event for cohort {0} due to an error in the OMRS Topic Connector",
-                              "The local server is unable to properly manage the replication of metadata instances for " +
+                              "The local server cannot properly manage the replication of metadata instances for " +
                                 "the metadata repository cohort. The cause of the error is recorded in the accompanying exception.",
                               "Review the exception and resolve the issue it documents. This often includes correcting the " +
                                       "configuration document for the server.  Once this is done, restart the server and it will " +
@@ -1513,7 +1513,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_REGISTRY_PROCESSOR("OMRS-AUDIT-9006",
                             AuditLogRecordSeverityLevel.EXCEPTION,
                             "Unable to send or receive a registry event because the event processor is null",
-                            "The local server is unable to properly manage registration events for the metadata " +
+                            "The local server cannot properly manage registration events for the metadata " +
                                 "repository cohort.",
                             "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
 
@@ -1523,7 +1523,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_TYPEDEF_PROCESSOR("OMRS-AUDIT-9007",
                            AuditLogRecordSeverityLevel.EXCEPTION,
                            "Unable to send or receive a TypeDef event because the event processor is null",
-                           "The local server is unable to properly manage the exchange of TypeDefs for the metadata " +
+                           "The local server cannot properly manage the exchange of TypeDefs for the metadata " +
                                "repository cohort.",
                            "This is an internal logic error.  " +
                                    "Raise a Git Issue, including the audit log, to get the exchange to TypeDefs fixed."),
@@ -1534,7 +1534,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NULL_INSTANCE_PROCESSOR("OMRS-AUDIT-9008",
                             AuditLogRecordSeverityLevel.EXCEPTION,
                             "Unable to send or receive a metadata instance event because the event processor is null",
-                            "The local server is unable to properly manage the replication of metadata instances for " +
+                            "The local server cannot properly manage the replication of metadata instances for " +
                                 "the metadata repository cohort.",
                             "This is an internal logic error.  " +
                                     "Raise a Git Issue, including the audit log, to get the initialization of the instance " +

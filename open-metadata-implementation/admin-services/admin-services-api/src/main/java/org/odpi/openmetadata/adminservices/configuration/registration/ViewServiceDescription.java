@@ -13,7 +13,7 @@ public enum ViewServiceDescription
     /**
      * Create new assets, software capabilities and link them to other elements.
      */
-    ASSET_MAKER(801,
+    ASSET_MAKER(201,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "Asset Maker",
                      "asset-maker",
@@ -22,7 +22,7 @@ public enum ViewServiceDescription
     /**
      * Provides advanced metadata management features for experts in open metadata.
      */
-    METADATA_EXPERT(802,
+    METADATA_EXPERT(202,
                 ComponentDevelopmentStatus.STABLE,
                 "Metadata Expert",
                 "metadata-expert",
@@ -31,7 +31,7 @@ public enum ViewServiceDescription
     /**
      * Supports the development and maintenance of digital products.
      */
-    PRODUCT_MANAGER(803,
+    PRODUCT_MANAGER(203,
                     ComponentDevelopmentStatus.STABLE,
                     "Product Manager",
                     "product-manager",
@@ -40,7 +40,7 @@ public enum ViewServiceDescription
     /**
      * Supports the development and maintenance of digital products.
      */
-    PRODUCT_CATALOG(804,
+    PRODUCT_CATALOG(204,
                     ComponentDevelopmentStatus.STABLE,
                     "Product Catalog",
                     "product-catalog",
@@ -49,7 +49,7 @@ public enum ViewServiceDescription
     /**
      * Create glossary terms and organize them into folders. It supports the editing glossary and multiple states.
      */
-    GLOSSARY_MANAGER(806,
+    GLOSSARY_MANAGER(206,
                      ComponentDevelopmentStatus.STABLE,
                      "Glossary Manager",
                      "glossary-manager",
@@ -58,7 +58,7 @@ public enum ViewServiceDescription
     /**
      * Manage information about the logged on user as well as their preferences.
      */
-    MY_PROFILE(807,
+    MY_PROFILE(207,
                ComponentDevelopmentStatus.STABLE,
                "My Profile",
                "my-profile",
@@ -67,7 +67,7 @@ public enum ViewServiceDescription
     /**
      * Search and understand your assets.
      */
-    ASSET_CATALOG (808,
+    ASSET_CATALOG (208,
                    ComponentDevelopmentStatus.STABLE,
                    "Asset Catalog",
                    "asset-catalog",
@@ -76,7 +76,7 @@ public enum ViewServiceDescription
     /**
      * Build collections of asset and other metadata.
      */
-    COLLECTION_MANAGER  (809,
+    COLLECTION_MANAGER  (209,
                          ComponentDevelopmentStatus.STABLE,
                          "Collection Manager",
                          "collection-manager",
@@ -85,7 +85,7 @@ public enum ViewServiceDescription
     /**
      * Manage Egeria's automation services.
      */
-    AUTOMATED_CURATION  (810,
+    AUTOMATED_CURATION  (210,
                          ComponentDevelopmentStatus.STABLE,
                          "Automated Curation",
                          "automated-curation",
@@ -94,7 +94,7 @@ public enum ViewServiceDescription
     /**
      * Work with notelogs, comments, informal tags, ratings/reviews and likes.
      */
-    FEEDBACK_MANAGER  (811,
+    FEEDBACK_MANAGER  (211,
                          ComponentDevelopmentStatus.STABLE,
                          "Feedback Manager",
                          "feedback-manager",
@@ -103,7 +103,7 @@ public enum ViewServiceDescription
     /**
      * Maintain definitions of governance actions such as governance action processes and governance action types.
      */
-    ACTION_AUTHOR(812,
+    ACTION_AUTHOR(212,
                   ComponentDevelopmentStatus.STABLE,
                   "Action Author",
                   "action-author",
@@ -112,7 +112,7 @@ public enum ViewServiceDescription
     /**
      * Set up and manage projects.
      */
-    PROJECT_MANAGER  (813,
+    PROJECT_MANAGER  (213,
                          ComponentDevelopmentStatus.STABLE,
                          "Project Manager",
                          "project-manager",
@@ -122,7 +122,7 @@ public enum ViewServiceDescription
     /**
      * Define and search for new data resources.
      */
-    DATA_DISCOVERY  (814,
+    DATA_DISCOVERY  (214,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Data Discovery",
                       "data-discovery",
@@ -131,7 +131,7 @@ public enum ViewServiceDescription
     /**
      * Retrieve and refine the templates for use during cataloguing.
      */
-    TEMPLATE_MANAGER  (815,
+    TEMPLATE_MANAGER  (215,
                      ComponentDevelopmentStatus.STABLE,
                      "Template Manager",
                      "template-manager",
@@ -140,7 +140,7 @@ public enum ViewServiceDescription
     /**
      * Work with code tables and associated reference data.
      */
-    REFERENCE_DATA  (816,
+    REFERENCE_DATA  (216,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Reference Data",
                        "reference-data",
@@ -149,7 +149,7 @@ public enum ViewServiceDescription
     /**
      * Maintain and query valid values for metadata.
      */
-    VALID_METADATA (817,
+    VALID_METADATA (217,
                      ComponentDevelopmentStatus.STABLE,
                      "Valid Metadata",
                      "valid-metadata",
@@ -158,7 +158,7 @@ public enum ViewServiceDescription
     /**
      * Maintain classifications and relationships used to organize open metadata elements.
      */
-    CLASSIFICATION_MANAGER (818,
+    CLASSIFICATION_MANAGER (218,
                             ComponentDevelopmentStatus.STABLE,
                             "Classification Manager",
                             "classification-manager",
@@ -167,7 +167,7 @@ public enum ViewServiceDescription
     /**
      * Manage the metadata about the assets managed by a DevOps pipeline.
      */
-    DEVOPS_PIPELINE (819,
+    DEVOPS_PIPELINE (219,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "DevOps Pipeline",
                      "devops-pipeline",
@@ -177,7 +177,7 @@ public enum ViewServiceDescription
     /**
      * Set up and review rules and security tags to protect data and systems.
      */
-    SECURITY_OFFICER (820,
+    SECURITY_OFFICER (220,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Security Officer",
                       "security-officer",
@@ -187,7 +187,7 @@ public enum ViewServiceDescription
     /**
      * Manage governance of privacy.
      */
-    PRIVACY_OFFICER (821,
+    PRIVACY_OFFICER (221,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "Privacy Officer",
                      "privacy-officer",
@@ -196,7 +196,7 @@ public enum ViewServiceDescription
     /**
      * Manage governance of data.
      */
-    DATA_OFFICER (822,
+    DATA_OFFICER (222,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
                   "Data Officer",
                   "data-officer",
@@ -205,7 +205,7 @@ public enum ViewServiceDescription
     /**
      * Describe teams and organizational structure.
      */
-    PEOPLE_ORGANIZER (823,
+    PEOPLE_ORGANIZER (223,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
                   "People Organizer",
                   "people-organizer",
@@ -215,7 +215,7 @@ public enum ViewServiceDescription
     /**
      * Retrieve configuration and status from platforms and servers.
      */
-    RUNTIME_MANAGER (824,
+    RUNTIME_MANAGER (224,
                       ComponentDevelopmentStatus.STABLE,
                       "Runtime Manager",
                       "runtime-manager",
@@ -224,7 +224,7 @@ public enum ViewServiceDescription
     /**
      * Maintain governance definitions used in all governance domains.
      */
-    GOVERNANCE_OFFICER (825,
+    GOVERNANCE_OFFICER (225,
                      ComponentDevelopmentStatus.STABLE,
                      "Governance Officer",
                      "governance-officer",
@@ -233,7 +233,7 @@ public enum ViewServiceDescription
     /**
      * Create schema definitions to describe the structure of data.
      */
-    DATA_DESIGNER (826,
+    DATA_DESIGNER (226,
                    ComponentDevelopmentStatus.STABLE,
                    "Data Designer",
                    "data-designer",
@@ -241,19 +241,19 @@ public enum ViewServiceDescription
 
 
     /**
-     * Provides generic search, query and retrieval operations for open metadata.
+     * Provides generic search, query, and retrieval operations for open metadata.
      */
-    METADATA_EXPLORER (827,
+    METADATA_EXPLORER (227,
                    ComponentDevelopmentStatus.STABLE,
                    "Metadata Explorer",
                    "metadata-explorer",
-                   "Provides generic search, query and retrieval operations for open metadata."),
+                   "Provides generic search, query, and retrieval operations for open metadata."),
 
 
     /**
      * Manages the definitions of notifications.  This includes the definition of the trigger for the notification, the style of notification and the recipient.
      */
-    NOTIFICATION_MANAGER (828,
+    NOTIFICATION_MANAGER (228,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Notification Manager",
                        "notification-manager",
@@ -262,7 +262,7 @@ public enum ViewServiceDescription
     /**
      * Manages the definitions of information supply chains and solution components.
      */
-    SOLUTION_ARCHITECT (829,
+    SOLUTION_ARCHITECT (229,
                           ComponentDevelopmentStatus.STABLE,
                           "Solution Architect",
                           "solution-architect",
@@ -271,26 +271,26 @@ public enum ViewServiceDescription
     /**
      * Retrieve elements based on type or the classifications/relationships attached to these metadata elements.
      */
-    CLASSIFICATION_EXPLORER (830,
+    CLASSIFICATION_EXPLORER (230,
                             ComponentDevelopmentStatus.STABLE,
                             "Classification Explorer",
                             "classification-explorer",
                             "Retrieve elements based on type or the classifications/relationships attached to these metadata elements."),
 
     /**
-     * Manages context events and other time related behaviour.
+     * Manages context events and other time-related behaviour.
      */
-    TIME_KEEPER (831,
+    TIME_KEEPER (231,
                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
                              "Time Keeper",
                              "time-keeper",
-                             "Manages context events and other time related behaviour."),
+                             "Manages context events and other time related-behaviour."),
 
 
     /**
      * Manages the definitions of user identities, actor profiles, contact details and actor roles.
      */
-    ACTOR_MANAGER (832,
+    ACTOR_MANAGER (232,
                  ComponentDevelopmentStatus.STABLE,
                  "Actor Manager",
                  "actor-manager",
@@ -299,7 +299,7 @@ public enum ViewServiceDescription
     /**
      * Manages the definitions of communities, their leaders and membership.
      */
-    COMMUNITY_MATTERS (833,
+    COMMUNITY_MATTERS (233,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Community Matters",
                    "community-matters",
@@ -308,7 +308,7 @@ public enum ViewServiceDescription
     /**
      * Manages the definition of subject areas and reporting on their contents.
      */
-    SUBJECT_AREA (834,
+    SUBJECT_AREA (234,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Subject Area",
                        "subject-area",
@@ -317,7 +317,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of connections, connector types and endpoints.
      */
-    CONNECTION_MAKER (835,
+    CONNECTION_MAKER (235,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Connection Maker",
                       "connection-maker",
@@ -327,7 +327,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of connections, connector types and endpoints.
      */
-    SCHEMA_MAKER (836,
+    SCHEMA_MAKER (236,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Schema Maker",
                       "schema-maker",
@@ -337,7 +337,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of locations.
      */
-    LOCATION_ARENA(837,
+    LOCATION_ARENA(237,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Location Arena",
                    "location-arena",
@@ -347,7 +347,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of translations for open metadata elements.
      */
-    MULTI_LANGUAGE(838,
+    MULTI_LANGUAGE(238,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Multi Language",
                    "multi-language",
@@ -356,7 +356,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of lineage relationships.
      */
-    LINEAGE_LINKER(839,
+    LINEAGE_LINKER(239,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Lineage Linker",
                    "lineage-linker",
@@ -365,7 +365,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of external reference and external identifiers.
      */
-    EXTERNAL_LINKS(840,
+    EXTERNAL_LINKS(240,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "External Links",
                    "external-links",
@@ -374,7 +374,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of locations.
      */
-    DIGITAL_BUSINESS(841,
+    DIGITAL_BUSINESS(241,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Digital Business",
                    "digital-business",
@@ -383,7 +383,7 @@ public enum ViewServiceDescription
     /**
      * Manages the creation and maintenance of data pipelines, open metadata templates and reference data.
      */
-    DATA_ENGINEER(842,
+    DATA_ENGINEER(242,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Data Engineer",
                    "data-engineer",

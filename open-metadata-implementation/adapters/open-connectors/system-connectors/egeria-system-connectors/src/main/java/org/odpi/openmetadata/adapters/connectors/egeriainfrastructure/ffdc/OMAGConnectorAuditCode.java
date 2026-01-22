@@ -27,7 +27,7 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("OMAG-CONNECTORS-0001",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to connector the the OMAG Infrastructure.",
+                         "The connector cannot connector the the OMAG Infrastructure.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
@@ -86,21 +86,21 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                                 "Validate that there are no errors reported while these relationships are reviewed and updated."),
 
     /**
-     * The {0} integration connector is unable to refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}
+     * The {0} integration connector cannot refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}
      */
     REFRESH_SERVER_LINEAGE_FAILED("OMAG-CONNECTORS-0008",
                            AuditLogRecordSeverityLevel.INFO,
-                           "The {0} integration connector is unable to refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}",
+                           "The {0} integration connector cannot refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}",
                            "The connector hit a problem refreshing lineage relationships for the server. The exception describes the nature of the issue.",
                            "Review the exception to determine the cause of the problem.  Correct it and the lineage will be updated on the next refresh."),
 
 
     /**
-     * The {0} integration connector is unable to refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}
+     * The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}
      */
     REFRESH_SERVER_LINEAGE_BAD_CONNECTOR("OMAG-CONNECTORS-0008",
                                   AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} integration connector is unable to refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}",
+                                  "The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}",
                                   "The connector hit a problem refreshing lineage relationships for the server because the resource connector associated with the server is no of the expected type.",
                                   "Correct the connector type linked to the server's connection and the lineage will be updated on the next refresh."),
 

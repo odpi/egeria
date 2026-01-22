@@ -35,7 +35,7 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
     BAD_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
              AuditLogRecordSeverityLevel.EXCEPTION,
               "Unable to open directory \"{0}\".  Message from {1} exception was {2}",
-              "The caller is is unable to open an open metadata archive.",
+              "The caller is cannot open an open metadata archive.",
               "Use the information from the exception to determine the cause of the error.  For example, is the directory (folder) name correct?  " +
                       "Look particularly for extraneous quotes, " +
                       "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the directory?  Once the cause of the error is corrected, restart the caller."),

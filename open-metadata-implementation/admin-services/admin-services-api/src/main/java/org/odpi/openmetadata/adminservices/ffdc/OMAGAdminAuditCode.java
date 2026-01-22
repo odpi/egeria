@@ -116,12 +116,12 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                              "This is part of the normal start up of an access service in a server."),
 
     /**
-     * OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null
+     * OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) cannot register a listener with the enterprise OMRS Topic for server {1} because it is null
      */
     NO_ENTERPRISE_TOPIC("OMAG-ADMIN-0210",
                         AuditLogRecordSeverityLevel.ERROR,
-                        "The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null",
-                        "The OMAS is registering to receive events from the open metadata repositories registered with the cohort but is unable to because the enterprise OMRS topic is null.",
+                        "The {0} Open Metadata Access Service (OMAS) cannot register a listener with the enterprise OMRS Topic for server {1} because it is null",
+                        "The OMAS is registering to receive events from the open metadata repositories registered with the cohort but cannot because the enterprise OMRS topic is null.",
                         "Review other error messages to determine why the connector to the enterprise topic is missing."),
 
     /**

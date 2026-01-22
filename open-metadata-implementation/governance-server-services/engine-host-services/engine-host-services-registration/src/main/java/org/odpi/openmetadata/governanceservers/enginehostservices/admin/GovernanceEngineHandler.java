@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;

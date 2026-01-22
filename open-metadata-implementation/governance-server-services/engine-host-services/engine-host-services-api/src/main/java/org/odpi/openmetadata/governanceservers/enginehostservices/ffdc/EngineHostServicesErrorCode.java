@@ -196,10 +196,10 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
 
 
     /**
-     * ENGINE-HOST-SERVICES-400-015 - Engine service {0} in engine host {1} is unable to start any governance engines
+     * ENGINE-HOST-SERVICES-400-015 - Engine service {0} in engine host {1} cannot start any governance engines
      */
     ENGINE_SERVICE_NULL_HANDLERS(400,"ENGINE-HOST-SERVICES-400-015",
-                                 "Engine service {0} in engine host {1} is unable to start any governance engines",
+                                 "Engine service {0} in engine host {1} cannot start any governance engines",
                                  "The server is not able to run any governance requests.  It fails to start.",
                                  "Correct the configuration for the engine service to ensure it has at least one valid governance engine."),
 
@@ -215,11 +215,11 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                     "invalid configuration.  Raise an issue to get help to fix it"),
 
     /**
-     * ENGINE-HOST-SERVICES-400-017 - Engine host server {0} is unable to pass a governance request to governance engine {1} because this
+     * ENGINE-HOST-SERVICES-400-017 - Engine host server {0} cannot pass a governance request to governance engine {1} because this
      * governance engine has not retrieved its configuration from the metadata access server
      */
     GOVERNANCE_ENGINE_NOT_INITIALIZED(400,"ENGINE-HOST-SERVICES-400-017",
-                                      "Engine host server {0} is unable to pass a governance request to governance engine {1} because this governance engine has not " +
+                                      "Engine host server {0} cannot pass a governance request to governance engine {1} because this governance engine has not " +
                                               "retrieved its configuration from the metadata access server",
                                       "The governance engine is not able to run any governance requests until it is able to retrieve its configuration.",
                                       "Use the configuration interface of the Governance Engine OMAS to create a definition of at least one governance" +

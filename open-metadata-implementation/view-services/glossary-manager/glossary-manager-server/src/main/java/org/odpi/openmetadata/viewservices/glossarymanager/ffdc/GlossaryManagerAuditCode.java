@@ -51,11 +51,11 @@ public enum GlossaryManagerAuditCode implements AuditLogMessageSet
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Glossary Manager OMVS."),
 
     /**
-     * OMVS-GLOSSARY-MANAGER-0004 The Glossary Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     * OMVS-GLOSSARY-MANAGER-0004 The Glossary Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("OMVS-GLOSSARY-MANAGER-0004",
                              AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Glossary Manager Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
+                         "The Glossary Manager Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 

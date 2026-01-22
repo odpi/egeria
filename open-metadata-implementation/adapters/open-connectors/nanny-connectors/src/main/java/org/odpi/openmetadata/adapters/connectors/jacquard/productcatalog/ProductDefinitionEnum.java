@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The ProductDefinition describes the fixed products and product groups found in the open metadata product catalog.
+ * The ProductDefinition describes the fixed products and product groups found in the Open Metadata Digital Product Catalog.
  */
 public enum ProductDefinitionEnum implements ProductDefinition
 {
@@ -38,8 +38,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                               ProductCommunityDefinition.REFERENCE_DATA_SIG,
                               new ProductSubscriptionDefinition[]{
-                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                             ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                      ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.ONGOING_UPDATE},
                               null,
                               null,
                               null,
@@ -63,6 +65,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                   new ProductSubscriptionDefinition[]{
                                           ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                           ProductSubscriptionDefinition.ONGOING_UPDATE},
                                   "Valid Metadata Value Set List",
                                   new ProductDataFieldDefinition[]{
@@ -97,6 +101,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductCommunityDefinition.REFERENCE_DATA_SIG,
                               new ProductSubscriptionDefinition[]{
                                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                       ProductSubscriptionDefinition.ONGOING_UPDATE},
                               null,
                               null,
@@ -121,6 +127,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                   new ProductSubscriptionDefinition[]{
                                           ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                           ProductSubscriptionDefinition.ONGOING_UPDATE},
                                   "Reference Data Set List",
                                   new ProductDataFieldDefinition[]{
@@ -156,6 +164,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
                         new ProductSubscriptionDefinition[]{
                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
                         null,
                         null,
@@ -180,6 +190,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
                     new ProductSubscriptionDefinition[]{
                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
                     "Open Metadata Data Types List",
                     new ProductDataFieldDefinition[]{
@@ -187,7 +199,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     new ProductDataFieldDefinition[]{
                             ProductDataFieldDefinition.GUID,
                             ProductDataFieldDefinition.DESCRIPTION,
-                            ProductDataFieldDefinition.CATEGORY},
+                            ProductDataFieldDefinition.CATEGORY,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
                     null,
@@ -208,6 +222,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
                     new ProductSubscriptionDefinition[]{
                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
                     "Open Metadata Attributes",
                     new ProductDataFieldDefinition[]{
@@ -216,7 +232,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     new ProductDataFieldDefinition[]{
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
-                            ProductDataFieldDefinition.DATA_TYPE},
+                            ProductDataFieldDefinition.DATA_TYPE,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
                     null,
@@ -237,6 +255,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                ProductCommunityDefinition.REFERENCE_DATA_SIG,
                new ProductSubscriptionDefinition[]{
                        ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                        ProductSubscriptionDefinition.ONGOING_UPDATE},
                "Open Metadata Types",
                new ProductDataFieldDefinition[]{
@@ -272,6 +292,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductCommunityDefinition.REFERENCE_DATA_SIG,
                               new ProductSubscriptionDefinition[]{
                                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                       ProductSubscriptionDefinition.ONGOING_UPDATE},
                               "Open Metadata Attributes For Types",
                               new ProductDataFieldDefinition[]{
@@ -281,7 +303,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductDataFieldDefinition.IS_NULLABLE,
                                       ProductDataFieldDefinition.DATA_TYPE,
                                       ProductDataFieldDefinition.DESCRIPTION,
-                                      ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_STATUS},
+                                      ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_STATUS,
+                                      ProductDataFieldDefinition.CREATE_TIME,
+                                      ProductDataFieldDefinition.UPDATE_TIME},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
                               null,
@@ -306,6 +330,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductCommunityDefinition.MASTER_DATA_SIG,
                           new ProductSubscriptionDefinition[]{
                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                  ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                  ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                   ProductSubscriptionDefinition.ONGOING_UPDATE},
                           null,
                           null,
@@ -330,6 +356,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                   ProductCommunityDefinition.MASTER_DATA_SIG,
                   new ProductSubscriptionDefinition[]{
                           ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                          ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                          ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                           ProductSubscriptionDefinition.ONGOING_UPDATE},
                   "Organizations",
                   new ProductDataFieldDefinition[]{
@@ -339,7 +367,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductDataFieldDefinition.IDENTIFIER,
                           ProductDataFieldDefinition.DISPLAY_NAME,
                           ProductDataFieldDefinition.CATEGORY,
-                          ProductDataFieldDefinition.DESCRIPTION},
+                          ProductDataFieldDefinition.DESCRIPTION,
+                          ProductDataFieldDefinition.CREATE_TIME,
+                          ProductDataFieldDefinition.UPDATE_TIME},
                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                   "Data set",
                   null,
@@ -360,6 +390,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
            ProductCommunityDefinition.MASTER_DATA_SIG,
            new ProductSubscriptionDefinition[]{
                    ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                    ProductSubscriptionDefinition.ONGOING_UPDATE},
            "People",
            new ProductDataFieldDefinition[]{
@@ -368,7 +400,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                    ProductDataFieldDefinition.IDENTIFIER,
                    ProductDataFieldDefinition.DISPLAY_NAME,
-                   ProductDataFieldDefinition.DESCRIPTION},
+                   ProductDataFieldDefinition.DESCRIPTION,
+                   ProductDataFieldDefinition.CREATE_TIME,
+                   ProductDataFieldDefinition.UPDATE_TIME},
            OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
            "Data set",
            null,
@@ -389,6 +423,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      ProductCommunityDefinition.MASTER_DATA_SIG,
                      new ProductSubscriptionDefinition[]{
                              ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                              ProductSubscriptionDefinition.ONGOING_UPDATE},
                      "Digital Products",
                      new ProductDataFieldDefinition[]{
@@ -398,7 +434,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductDataFieldDefinition.IDENTIFIER,
                              ProductDataFieldDefinition.DISPLAY_NAME,
                              ProductDataFieldDefinition.DESCRIPTION,
-                             ProductDataFieldDefinition.ELEMENT_STATUS},
+                             ProductDataFieldDefinition.ELEMENT_STATUS,
+                             ProductDataFieldDefinition.CREATE_TIME,
+                             ProductDataFieldDefinition.UPDATE_TIME},
                      OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                      "Data set",
                      null,
@@ -423,6 +461,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
               ProductCommunityDefinition.MASTER_DATA_SIG,
               new ProductSubscriptionDefinition[]{
                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                      ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                      ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                       ProductSubscriptionDefinition.ONGOING_UPDATE},
               "Locations",
               new ProductDataFieldDefinition[]{
@@ -438,7 +478,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.LOCATION_COORDINATES,
                       ProductDataFieldDefinition.LOCATION_MAP_PROJECTION,
                       ProductDataFieldDefinition.LOCATION_POSTAL_ADDRESS,
-                      ProductDataFieldDefinition.NETWORK_ADDRESS},
+                      ProductDataFieldDefinition.NETWORK_ADDRESS,
+                      ProductDataFieldDefinition.CREATE_TIME,
+                      ProductDataFieldDefinition.UPDATE_TIME},
               OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
               "Data set",
               null,
@@ -461,7 +503,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                                ProductGovernanceDefinition.PERSONAL_DATA,
                                ProductCommunityDefinition.OBSERVABILITY_SIG,
-                               new ProductSubscriptionDefinition[]{ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION},
+                               new ProductSubscriptionDefinition[]{
+                                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                       ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                       ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                       ProductSubscriptionDefinition.ONGOING_UPDATE
+                               },
                                null,
                                null,
                                null,
@@ -487,7 +534,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                              ProductCommunityDefinition.OBSERVABILITY_SIG,
-                             new ProductSubscriptionDefinition[]{ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION},
+                             new ProductSubscriptionDefinition[]{
+                                     ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                     ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                     ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                     ProductSubscriptionDefinition.ONGOING_UPDATE
+                             },
                              null,
                              null,
                              null,
@@ -513,7 +565,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                      ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                      ProductCommunityDefinition.OBSERVABILITY_SIG,
-                     new ProductSubscriptionDefinition[]{ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION},
+                     new ProductSubscriptionDefinition[]{
+                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.ONGOING_UPDATE
+                     },
                      null,
                      null,
                      null,
@@ -568,9 +625,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ConnectorProvider               connectorProvider,
                           String                          catalogTargetName)
     {
-        this.typeName        = typeName;
-        this.productFamilies = productFamilies;
-        this.productName     = productName;
+        this.typeName            = typeName;
+        this.productFamilies     = productFamilies;
+        this.productName         = productName;
         this.identifier          = identifier;
         this.parent              = parent;
         this.displayName         = displayName;

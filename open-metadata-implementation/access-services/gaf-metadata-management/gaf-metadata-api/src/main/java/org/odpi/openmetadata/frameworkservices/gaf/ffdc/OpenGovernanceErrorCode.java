@@ -31,7 +31,7 @@ public enum OpenGovernanceErrorCode implements ExceptionMessageSet
      */
     OMRS_NOT_INITIALIZED(404, "OPEN-GOVERNANCE-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
-                         "The system is unable to connect to the open metadata property server.",
+                         "The system cannot connect to the open metadata property server.",
                          "Check that the server where the Open Metadata Store Services are running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
 

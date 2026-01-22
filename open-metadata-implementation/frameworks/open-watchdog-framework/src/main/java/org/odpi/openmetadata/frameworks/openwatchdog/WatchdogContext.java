@@ -20,16 +20,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
-import org.odpi.openmetadata.frameworks.openwatchdog.handlers.NotificationHandler;
+import org.odpi.openmetadata.frameworks.opengovernance.handlers.NotificationHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFAuditCode;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -38,7 +38,6 @@ import java.util.Map;
  */
 public class WatchdogContext extends ConnectorContextBase implements WatchdogEventInterface
 {
-    private final String                    notificationTypeGUID;
     private final String                    requestType;
     private final Map<String, String>       requestParameters;
     private final List<ActionTargetElement> actionTargetElements;
@@ -83,7 +82,6 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * @param maxPageSize max number of results
      * @param deleteMethod default delete method
      * @param engineActionGUID unique identifier of the engine action that triggered this governance service
-     * @param notificationTypeGUID unique identifier of the notification type to process
      * @param requestType request type used to initiate the watchdog action service
      * @param requestParameters name-value properties to control the watchdog action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -107,7 +105,6 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
                            int                           maxPageSize,
                            DeleteMethod                  deleteMethod,
                            String                        engineActionGUID,
-                           String                        notificationTypeGUID,
                            String                        requestType,
                            Map<String, String>           requestParameters,
                            List<ActionTargetElement>     actionTargetElements,
@@ -129,7 +126,6 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
               deleteMethod);
 
         this.notificationHandler        = new NotificationHandler(localServerName, auditLog, localServiceName, openMetadataClient, openGovernanceClient);
-        this.notificationTypeGUID       = notificationTypeGUID;
         this.governanceCompletionClient = governanceCompletionClient;
         this.watchdogEventClient        = watchdogEventClient;
         this.engineActionGUID           = engineActionGUID;
@@ -143,33 +139,18 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
 
 
     /**
-     * Return the unique identifier of the associated notification.
-     *
-     * @return string guid
-     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
-     */
-    public String getNotificationTypeGUID() throws UserNotAuthorizedException
-    {
-        final String methodName = "getNotificationTypeGUID";
-
-        validateIsActive(methodName);
-
-        return notificationTypeGUID;
-    }
-
-
-    /**
-     * Return details of notification type to monitor along with its linked resources and subscribers, the actions it
+     * Return details of the notification type to monitor along with its linked resources and subscribers, the actions it
      * has caused and any additional context.
      *
-     * @return string guid
+     * @param notificationTypeGUID unique identifier of the notification type to process
+     * @return root element
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
      * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
-    public OpenMetadataRootElement getNotificationType() throws UserNotAuthorizedException,
-                                                                InvalidParameterException,
-                                                                PropertyServerException
+    public OpenMetadataRootElement getNotificationType(String notificationTypeGUID) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
+                                                                                           PropertyServerException
     {
         final String methodName = "getNotificationType";
 
@@ -178,10 +159,37 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
         if (notificationTypeGUID != null)
         {
             return this.governanceDefinitionClient.getGovernanceDefinitionByGUID(notificationTypeGUID,
-                                                                                 openMetadataStore.getQueryOptions());
+                                                                                 governanceDefinitionClient.getQueryOptions());
         }
 
         return null;
+    }
+
+
+    /**
+     * Update the supplied properties in the governance definition - mergeUpdate=true
+     *
+     * @param notificationTypeGUID       unique identifier of the notification type to process
+     * @param notificationTypeProperties new properties for the notification type
+     * @throws InvalidParameterException  an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
+     * @throws PropertyServerException    a problem communicating with the metadata server (or it has a logic error).
+     */
+    public void updateNotificationType(String                     notificationTypeGUID,
+                                       NotificationTypeProperties notificationTypeProperties) throws UserNotAuthorizedException,
+                                                                                                     InvalidParameterException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName = "updateNotificationType";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            this.governanceDefinitionClient.updateGovernanceDefinition(notificationTypeGUID,
+                                                                       governanceDefinitionClient.getUpdateOptions(true),
+                                                                       notificationTypeProperties);
+        }
     }
 
 
@@ -248,18 +256,90 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     }
 
 
+
+
+    /**
+     * Extract the notification types to process from the action targets.
+     *
+     * @return list of notification types or null
+     * @throws InvalidParameterException problem updating action target status
+     * @throws UserNotAuthorizedException problem updating action target status
+     * @throws PropertyServerException problem updating action target status
+     */
+    public List<ActionTargetElement> getNotificationTypesFromActionTargets() throws InvalidParameterException,
+                                                                                                                               PropertyServerException,
+                                                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "getNotificationTypesFromActionTargets";
+
+        /*
+         * Scan the action targets looking for notification types.  If the notification type is not
+         * in an appropriate state, it is ignored.
+         */
+        List<ActionTargetElement> notificationTargetElements = new ArrayList<>();
+        List<String>              ignoredNotificationTypes = new ArrayList<>();
+
+        for (ActionTargetElement actionTargetElement : actionTargetElements)
+        {
+            if (actionTargetElement != null)
+            {
+                if (propertyHelper.isTypeOf(actionTargetElement.getTargetElement(), OpenMetadataType.NOTIFICATION_TYPE.typeName))
+                {
+                    if ((actionTargetElement.getStatus() == null) ||
+                            (actionTargetElement.getStatus() == ActivityStatus.REQUESTED) ||
+                            (actionTargetElement.getStatus() == ActivityStatus.APPROVED) ||
+                            (actionTargetElement.getStatus() == ActivityStatus.WAITING) ||
+                            (actionTargetElement.getStatus() == ActivityStatus.OTHER) ||
+                            (actionTargetElement.getStatus() == ActivityStatus.IN_PROGRESS))
+                    {
+                        notificationTargetElements.add(actionTargetElement);
+
+                        if (actionTargetElement.getStatus() != ActivityStatus.IN_PROGRESS)
+                        {
+                            governanceCompletionClient.updateActionTargetStatus(connectorUserId,
+                                                                        actionTargetElement.getActionTargetRelationshipGUID(),
+                                                                        ActivityStatus.IN_PROGRESS,
+                                                                        new Date(),
+                                                                        null,
+                                                                        null);
+                        }
+                    }
+                    else
+                    {
+                        ignoredNotificationTypes.add(actionTargetElement.getTargetElement().getElementGUID());
+                    }
+                }
+            }
+        }
+
+        if (! ignoredNotificationTypes.isEmpty())
+        {
+            auditLog.logMessage(methodName,
+                                OWFAuditCode.IGNORING_NOTIFICATION_TYPES.getMessageDefinition(watchdogActionServiceName,
+                                                                                              requestType,
+                                                                                              engineActionGUID,
+                                                                                              ignoredNotificationTypes.toString()));
+        }
+
+        return notificationTargetElements;
+    }
+
+
     /**
      * Convert the message definitions into properties for a notification.  This includes setting
      * the qualified name and status.
      *
      * @param notificationDescription description of the notification
+     * @param notificationTypeGUID unique identifier of the notification type to process
      * @return notification properties
      */
-    public NotificationProperties getNotificationProperties(MessageDefinition notificationDescription)
+    public NotificationProperties getNotificationProperties(MessageDefinition notificationDescription,
+                                                            String            notificationTypeGUID,
+                                                            long              notificationCount)
     {
         NotificationProperties notificationProperties = new NotificationProperties();
 
-        notificationProperties.setQualifiedName(notificationProperties.getTypeName() + "::"  + connectorName + "::" + notificationTypeGUID + "::" + new Date());
+        notificationProperties.setQualifiedName(notificationProperties.getTypeName() + "::"  + connectorName + "::" + notificationTypeGUID + "::" + new Date().getTime() + "::" + notificationCount);
 
         if (notificationDescription != null)
         {
@@ -276,14 +356,15 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     /**
      * Return the elements that are linked to the notification type as monitored resources.
      *
-     * @return string guid
+     * @param notificationTypeGUID unique identifier of the notification type to process
+     * @return list of root elements
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
      * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
-    public List<OpenMetadataRootElement> getMonitoredResources() throws UserNotAuthorizedException,
-                                                                        InvalidParameterException,
-                                                                        PropertyServerException
+    public List<OpenMetadataRootElement> getMonitoredResources(String notificationTypeGUID) throws UserNotAuthorizedException,
+                                                                                                   InvalidParameterException,
+                                                                                                   PropertyServerException
     {
         final String methodName = "getMonitoredResources";
 
@@ -303,14 +384,15 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     /**
      * Return the elements that are linked to the notification type as a subscriber.
      *
-     * @return string guid
+     * @param notificationTypeGUID unique identifier of the notification type to process
+     * @return list of root elements
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
      * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
-    public List<OpenMetadataRootElement> getNotificationSubscribers() throws UserNotAuthorizedException,
-                                                                             InvalidParameterException,
-                                                                             PropertyServerException
+    public List<OpenMetadataRootElement> getNotificationSubscribers(String notificationTypeGUID) throws UserNotAuthorizedException,
+                                                                                                        InvalidParameterException,
+                                                                                                        PropertyServerException
     {
         final String methodName = "getNotificationSubscribers";
 
@@ -330,23 +412,29 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     /**
      * Create a notification/action for one of the subscribers.
      *
+     * @param notificationTypeGUID unique identifier of the notification type to process
      * @param subscriberGUID unique identifier of the subscriber
      * @param initialClassifications classification to add to the action
      * @param notificationProperties properties for the notification
      * @param requestParameters properties to pass to the next governance service
      * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param minimumNotificationInterval    minimum time between notifications
+     * @param newSubscriberStatus    set the subscriber relationship to this value after a successful notification; null means leave it alone
      *
-     * @throws InvalidParameterException the completion status is null
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException a problem connecting to the metadata store
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the watchdog action service is not authorized to continue
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public void notifySubscriber(String                                subscriberGUID,
-                                 Map<String, ClassificationProperties> initialClassifications,
-                                 NotificationProperties                notificationProperties,
-                                 Map<String, String>                   requestParameters,
-                                 List<NewActionTarget>                 newActionTargets)  throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public void welcomeSubscriber(String                                notificationTypeGUID,
+                                  String                                subscriberGUID,
+                                  Map<String, ClassificationProperties> initialClassifications,
+                                  NotificationProperties                notificationProperties,
+                                  Map<String, String>                   requestParameters,
+                                  List<NewActionTarget>                 newActionTargets,
+                                  long                                  minimumNotificationInterval,
+                                  ActivityStatus                        newSubscriberStatus)  throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName = "notifySubscriber";
 
@@ -354,8 +442,50 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
 
         if (notificationTypeGUID != null)
         {
+            this.notificationHandler.welcomeSubscriber(connectorUserId,
+                                                       subscriberGUID,
+                                                       initialClassifications,
+                                                       notificationProperties,
+                                                       notificationTypeGUID,
+                                                       requestParameters,
+                                                       connectorGUID,
+                                                       newActionTargets,
+                                                       minimumNotificationInterval,
+                                                       newSubscriberStatus);
+        }
+    }
 
-            this.notificationHandler.notifySubscriber(connectorUserId,
+
+    /**
+     * Create a notification/action for one of the subscribers.
+     *
+     * @param notificationTypeGUID unique identifier of the notification type to process
+     * @param subscriberGUID unique identifier of the subscriber
+     * @param initialClassifications classification to add to the action
+     * @param notificationProperties properties for the notification
+     * @param requestParameters properties to pass to the next governance service
+     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the watchdog action service is not authorized to continue
+     * @throws PropertyServerException    a problem connecting to the metadata store
+    */
+    public void dismissSubscriber(String                                notificationTypeGUID,
+                                  String                                subscriberGUID,
+                                  Map<String, ClassificationProperties> initialClassifications,
+                                  NotificationProperties                notificationProperties,
+                                  Map<String, String>                   requestParameters,
+                                  List<NewActionTarget>                 newActionTargets)  throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String methodName = "notifySubscriber";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            this.notificationHandler.dismissSubscriber(connectorUserId,
                                                       subscriberGUID,
                                                       initialClassifications,
                                                       notificationProperties,
@@ -370,19 +500,27 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     /**
      * Create a notification/action for each subscriber.
      *
+     * @param notificationTypeGUID unique identifier of the notification type to process
+     * @param firstNotification              is this the first notification sent to this subscriber by this governance service instance?
      * @param initialClassifications classification to add to the action
      * @param notificationProperties properties for the notification
      * @param requestParameters      properties to pass to the next governance service
      * @param newActionTargets       map of action target names to GUIDs for the resulting engine action
+     * @param minimumNotificationInterval    minimum time between notifications
+     * @param nextScheduledNotificationTime  next notification trigger time - either from the notification type or monitored resource activity
      * @param newSubscriberStatus    status of the subscriber after the notification
-     * @throws InvalidParameterException  the completion status is null
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the watchdog action service is not authorized to continue
      * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public void notifySubscribers(Map<String, ClassificationProperties> initialClassifications,
+    public void notifySubscribers(String                                notificationTypeGUID,
+                                  boolean                               firstNotification,
+                                  Map<String, ClassificationProperties> initialClassifications,
                                   NotificationProperties                notificationProperties,
                                   Map<String, String>                   requestParameters,
                                   List<NewActionTarget>                 newActionTargets,
+                                  long                                  minimumNotificationInterval,
+                                  Date                                  nextScheduledNotificationTime,
                                   ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
@@ -394,12 +532,15 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
         if (notificationTypeGUID != null)
         {
             this.notificationHandler.notifySubscribers(connectorUserId,
+                                                       firstNotification,
                                                        initialClassifications,
                                                        notificationProperties,
                                                        notificationTypeGUID,
                                                        requestParameters,
                                                        connectorGUID,
                                                        newActionTargets,
+                                                       minimumNotificationInterval,
+                                                       nextScheduledNotificationTime,
                                                        newSubscriberStatus);
         }
     }
@@ -409,7 +550,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
      * Return the request type that was used to start this watchdog action service.
      *
      * @return AdditionalProperties object storing the analysis parameters
-     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
+     * @throws UserNotAuthorizedException exception thrown if the connector is no longer active
      */
     public String getRequestType() throws UserNotAuthorizedException
     {
@@ -576,8 +717,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
     public String toString()
     {
         return "WatchdogContext{" +
-                "notificationTypeGUID='" + notificationTypeGUID + '\'' +
-                ", requestParameters=" + requestParameters +
+                "requestParameters=" + requestParameters +
                 ", actionTargetElements=" + actionTargetElements +
                 ", watchdogActionServiceName='" + watchdogActionServiceName + '\'' +
                 ", requesterUserId='" + requesterUserId + '\'' +

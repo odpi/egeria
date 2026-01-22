@@ -78,7 +78,7 @@ abstract public class OpenGovernanceConverterBase<B> extends OpenMetadataStoreCo
     private ActivityStatus getActivityStatus(String               propertyName,
                                              InstanceProperties   properties)
     {
-        ActivityStatus activityStatus = ActivityStatus.OTHER;
+        ActivityStatus activityStatus = null;
 
         if (properties != null)
         {
@@ -104,7 +104,7 @@ abstract public class OpenGovernanceConverterBase<B> extends OpenMetadataStoreCo
                         case 12 -> ActivityStatus.IGNORED;
                         case 13 -> ActivityStatus.FAILED;
                         case 14 -> ActivityStatus.CANCELLED;
-                        default -> activityStatus;
+                        default -> null;
                     };
                 }
             }

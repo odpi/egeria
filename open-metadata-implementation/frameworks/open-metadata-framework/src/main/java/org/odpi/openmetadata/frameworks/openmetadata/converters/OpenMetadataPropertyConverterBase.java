@@ -6882,7 +6882,6 @@ public class OpenMetadataPropertyConverterBase
     }
 
 
-
     /**
      * Extract and delete the processingEngineUserId property from the supplied element properties.
      *
@@ -6897,7 +6896,7 @@ public class OpenMetadataPropertyConverterBase
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.REQUESTER_USER_ID.name,
+                                                       OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7788,10 +7787,100 @@ public class OpenMetadataPropertyConverterBase
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeLastNotification(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeLastNotification";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_NOTIFICATION.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeNextScheduledNotification(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeNextScheduledNotification";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.NEXT_SCHEDULED_NOTIFICATION.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeMinimumNotificationInterval(ElementProperties elementProperties)
+    {
+        final String methodName = "removeMinimumNotificationInterval";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeNotificationInterval(ElementProperties elementProperties)
+    {
+        final String methodName = "removeNotificationInterval";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
      * @return long
      */
     protected long removeRefreshTimeInterval(ElementProperties elementProperties)
-
     {
         final String methodName = "removeRefreshTimeInterval";
 
@@ -7814,7 +7903,6 @@ public class OpenMetadataPropertyConverterBase
      * @return long
      */
     protected long removePlannedDuration(ElementProperties elementProperties)
-
     {
         final String methodName = "removePlannedDuration";
 
@@ -7837,7 +7925,6 @@ public class OpenMetadataPropertyConverterBase
      * @return long
      */
     protected long removeActualDuration(ElementProperties elementProperties)
-
     {
         final String methodName = "removeActualDuration";
 
@@ -7897,8 +7984,6 @@ public class OpenMetadataPropertyConverterBase
 
         return null;
     }
-
-
 
 
     /**
@@ -8319,6 +8404,28 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeBooleanProperty(localServiceName,
                                                         OpenMetadataProperty.IS_CASE_SENSITIVE.name,
+                                                        elementProperties,
+                                                        methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extract the isCaseSensitive property from the supplied element properties.
+     *
+     * @param elementProperties properties from the entity
+     * @return boolean
+     */
+    protected boolean removeMultipleNotificationsPermitted(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMultipleNotificationsPermitted";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeBooleanProperty(localServiceName,
+                                                        OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.name,
                                                         elementProperties,
                                                         methodName);
         }
@@ -10377,6 +10484,29 @@ public class OpenMetadataPropertyConverterBase
 
         return null;
     }
+
+
+    /**
+     * Extract the property from the supplied element properties.
+     *
+     * @param elementProperties properties from entities
+     * @return list of name-value pairs
+     */
+    protected List<String> removeSuccessCriteria(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSuccessCriteria";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.SUCCESS_CRITERIA.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the property from the supplied element properties.
@@ -12554,6 +12684,7 @@ public class OpenMetadataPropertyConverterBase
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setActivityStatus(this.removeActivityStatus(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setZoneMembership(this.removeZoneMembership(elementProperties));
+                ((NotificationSubscriberProperties)relationshipBeanProperties).setLastNotification(this.removeLastNotification(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PEER_RELATIONSHIP.typeName))
             {
@@ -13492,9 +13623,12 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new NotificationTypeProperties();
 
-                                ((NotificationTypeProperties) beanProperties).setStartDate(this.removeStartDate(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setRefreshTimeInterval(this.removeRefreshTimeInterval(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setConnectorShutdownDate(this.removeConnectorShutdownDate(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setMinimumNotificationInterval(this.removeMinimumNotificationInterval(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setNotificationInterval(this.removeNotificationInterval(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setMultipleNotificationsPermitted(this.removeMultipleNotificationsPermitted(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setNextScheduledNotification(this.removeNextScheduledNotification(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));
 
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION.typeName))
@@ -14770,6 +14904,7 @@ public class OpenMetadataPropertyConverterBase
                     ((ProjectProperties)beanProperties).setProjectPhase(this.removeProjectPhase(elementProperties));
                     ((ProjectProperties)beanProperties).setMission(this.removeMission(elementProperties));
                     ((ProjectProperties)beanProperties).setPurposes(this.removePurposes(elementProperties));
+                    ((ProjectProperties)beanProperties).setSuccessCriteria(this.removeSuccessCriteria(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROPERTY_FACET.typeName))
                 {

@@ -44,10 +44,10 @@ public enum OIFErrorCode implements ExceptionMessageSet
                                 "The caller has requested a connector work with the wrong type of element.  It should be reconfigured with the correct type of element and rerun."),
 
     /**
-     * OIF-CONNECTOR-400-003 - Catalog target {0} has a connection that is missing property {1} and connector {2} is unable to proceed
+     * OIF-CONNECTOR-400-003 - Catalog target {0} has a connection that is missing property {1} and connector {2} cannot proceed
      */
     INVALID_CATALOG_TARGET_CONNECTION(400, "OIF-CONNECTOR-400-003",
-                                "Catalog target {0} has a connection that is missing property {1} and connector {2} is unable to proceed",
+                                "Catalog target {0} has a connection that is missing property {1} and connector {2} cannot proceed",
                                 "The connector stops processing the catalog target.",
                                 "The caller has requested a connector work with a catalog target that has a connection that has missing information.  Correct the set up of the connection."),
 
@@ -65,7 +65,7 @@ public enum OIFErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "OIF-CONNECTOR-500-001",
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to catalog one or more metadata elements.",
+                         "The connector cannot catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**

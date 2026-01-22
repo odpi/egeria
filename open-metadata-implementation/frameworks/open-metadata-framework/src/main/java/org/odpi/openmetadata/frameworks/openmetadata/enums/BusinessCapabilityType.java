@@ -34,6 +34,11 @@ public enum BusinessCapabilityType implements OpenMetadataEnum
     BUSINESS_AREA  (2,  "fd762806-e784-4990-916f-acba931e8807",  "BusinessArea", "A collection of related business services.", false),
 
     /**
+     * An overall area of activity in which a business operates.  A single organization may operate multiple business domains, such as retail, distribution, banking, ...
+     */
+    BUSINESS_DOMAIN  (3,  "cbae16ce-3941-4f1b-8170-403b5b46725e",  "BusinessDomain", "An overall area of activity in which a business operates.  A single organization may operate multiple business domains, such as retail, distribution, banking, ...", false),
+
+    /**
      * Another business capability type.
      */
     OTHER  (99,  "769813b7-4e0f-40b4-a0f7-a74165de0ed5",  "Other", "Another business capability type.", false),

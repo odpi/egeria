@@ -185,11 +185,11 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                  "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
 
     /**
-     * BASIC-FILES-INTEGRATION-CONNECTORS-0015 - The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0015 - The {0} integration connector cannot retrieve the DataFile template with qualified name: {1}
      */
     MISSING_TEMPLATE("BASIC-FILES-INTEGRATION-CONNECTORS-0015",
                      AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}",
+                     "The {0} integration connector cannot retrieve the DataFile template with qualified name: {1}",
                      "The metadata element for the template is not found in the open metadata repositories.  " +
                              "The template name was configured for the connector.  This means that files should be catalogued " +
                              "using the template.  Since the template is missing, files are not being catalogued.",
@@ -272,7 +272,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
     FILES_LOCATION_NOT_FOUND( "BASIC-FILES-INTEGRATION-CONNECTORS-0023",
                               AuditLogRecordSeverityLevel.ERROR,
                               "The directory named {0} does not exist.  Connector {1} retrieved this path name from source {2}",
-                             "The connector is unable to locate the directory (folder) it has been asked to work with.",
+                             "The connector cannot locate the directory (folder) it has been asked to work with.",
                              "Ensure that the path name of the folder matches the location of the directory that the connector is to monitor.  Correct it if necessary, otherwise, once the directory has been created, the connector will start monitoring it on the next refresh."),
 
     /**
@@ -281,7 +281,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
     UNEXPECTED_EXCEPTION("BASIC-FILES-INTEGRATION-CONNECTORS-0024",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} connector received an unexpected {1} exception during method {2}; the error message was: {3}",
-                         "The connector is unable to process the current request.",
+                         "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;
 

@@ -262,7 +262,7 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
                                                                                                                    openMetadataRelationshipType,
                                                                                                                    0,
                                                                                                                    0);
-            if ((existingRelationships == null) || (existingRelationships.getElementList() == null))
+            if ((existingRelationships == null) || (existingRelationships.getRelationships() == null))
             {
                 ElementProperties properties = null;
                 if (mode != null)

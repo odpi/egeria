@@ -70,7 +70,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
      */
     WRONG_TYPE_OF_CONNECTOR(400, "OPEN-SURVEY-400-006",
                             "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                            "The survey is unable to continue since it is unable to work with the supplied connector.",
+                            "The survey cannot continue since it cannot work with the supplied connector.",
                             "Use the details from the error message to determine the class of the connector.  " +
                                     "Update the connector type associated with its Connection in the metadata store."),
 
@@ -79,7 +79,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
      */
     NO_SCHEMA(400, "OPEN-SURVEY-400-007",
                             "The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached",
-                            "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema.",
+                            "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema.",
                             "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
 
     /**
@@ -87,7 +87,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
      */
     NO_SCHEMA_ATTRIBUTES(400,"OPEN-SURVEY-400-008",
                          "The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached",
-                         "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
+                         "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
                          "Update the asset to include the desired schema attributes and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
 
 

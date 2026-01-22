@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogContext;
@@ -28,7 +28,6 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
 {
     private final WatchdogActionServiceConnector watchdogActionService;
     private final WatchdogContext watchdogContext;
-    private final String          notificationTypeGUID;
 
     /**
      * Constructor sets up the key parameters for running the watchdog action service.
@@ -82,11 +81,6 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
             watchdogActionService.setWatchdogContext(watchdogContext);
             watchdogActionService.setAuditLog(auditLog);
             watchdogActionService.setWatchdogActionServiceName(governanceServiceName);
-
-            /*
-             * This tests the validity of the notification type
-             */
-            notificationTypeGUID  = watchdogContext.getNotificationTypeGUID();
         }
         catch (Exception error)
         {
@@ -128,7 +122,6 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
 
             auditLog.logMessage(actionDescription,
                                 WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
-                                                                                                              watchdogContext.getNotificationTypeGUID(),
                                                                                                               serviceRequestType,
                                                                                                               governanceEngineProperties.getQualifiedName(),
                                                                                                               governanceEngineGUID));
@@ -143,14 +136,12 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
             {
                 auditLog.logMessage(actionDescription,
                                     WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceServiceName,
-                                                                                                                  watchdogContext.getNotificationTypeGUID(),
                                                                                                                   serviceRequestType));
             }
             else
             {
                 auditLog.logMessage(actionDescription,
                                     WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
-                                                                                                                  watchdogContext.getNotificationTypeGUID(),
                                                                                                                   serviceRequestType,
                                                                                                                   Long.toString(endTime.getTime() - startTime.getTime())));
                 super.disconnect();
@@ -160,7 +151,6 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
         {
             AuditLogMessageDefinition completionMessage = WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
                                                                                                                                       error.getClass().getName(),
-                                                                                                                                      notificationTypeGUID,
                                                                                                                                       serviceRequestType,
                                                                                                                                       governanceEngineProperties.getQualifiedName(),
                                                                                                                                       governanceEngineGUID,

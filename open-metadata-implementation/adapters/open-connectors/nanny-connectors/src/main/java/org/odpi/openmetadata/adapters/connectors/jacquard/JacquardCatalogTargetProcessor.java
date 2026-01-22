@@ -17,19 +17,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * Calculates the last time an update was made to the tabular data set that is the target and if it has changes since
- * the last refresh (or this is the first refresh), the GovernanceMeasurements classification is updated with the latest update time.
+ * the last refresh (or this is the first refresh), the DataScope classification is updated with the latest update time.
  * This will be detected as a change to the catalog target by any monitoring process.
  */
 public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
@@ -77,9 +74,9 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
 
     /**
      * Check whether the data set has changed since the last refresh.  If it has then update the asset's
-     * GovernanceMeasurement classification.
+     * DataScope classification.
      *
-     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is unable to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException
@@ -99,6 +96,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                  * Locate the lastUpdate column, no action is taken if the last update column is not present in the
                  * data set.
                  */
+                int createTimeColumnNumber = tabularDataSource.getColumnNumber(ProductDataFieldDefinition.CREATE_TIME.getDisplayName());
                 int lastUpdateColumnNumber = tabularDataSource.getColumnNumber(ProductDataFieldDefinition.UPDATE_TIME.getDisplayName());
 
                 if (lastUpdateColumnNumber < 0)
@@ -106,86 +104,71 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.NO_LAST_UPDATE_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
                 }
+                else if (createTimeColumnNumber < 0)
+                {
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.NO_CREATION_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
+                }
                 else
                 {
                     /*
                      * Extract the last update time for all records in the data set saved the last time the data set was scanned.
                      */
-                    Date createTime     = null;
-                    Date lastUpdateTime = null;
+                    Date dataScopeCreateTime     = null;
+                    Date dataScopeLastUpdateTime = null;
 
                     AssetClient             dataSetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_SET.typeName);
                     OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getElementHeader().getGUID(), null);
 
-                    if (dataSet.getElementHeader().getGovernanceMeasurements() != null)
+                    if (dataSet.getElementHeader().getDataScope() != null)
                     {
-                        if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties governanceMeasurementsProperties)
+                        if (dataSet.getElementHeader().getDataScope().getClassificationProperties() instanceof DataScopeProperties dataScopeProperties)
                         {
-                            createTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
-
-                            if (governanceMeasurementsProperties.getDates() != null)
-                            {
-                                lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.UPDATE_TIME.name);
-
-                                if (lastUpdateTime == null)
-                                {
-                                    lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
-                                }
-                            }
+                            dataScopeCreateTime = dataScopeProperties.getDataCollectionStartTime();
+                            dataScopeLastUpdateTime = dataScopeProperties.getDataCollectionEndTime();
                         }
                     }
 
-                    Date dataSetCreateTime     = dataSet.getElementHeader().getVersions().getCreateTime();
+                    Date dataSetCreateTime     = getDataSetCreateTime(createTimeColumnNumber);
                     Date dataSetLastUpdateTime = getDataSetLastUpdateTime(lastUpdateColumnNumber);
 
-                    if ((createTime == null) || (lastUpdateTime == null) ||
-                            ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(lastUpdateTime))))
+                    if ((dataScopeCreateTime == null) || (dataScopeLastUpdateTime == null) ||
+                            ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(dataScopeLastUpdateTime))))
                     {
                         /*
                          * The data set has changed (or this is the first time it has been monitored).  Details of
-                         * the creation and last update times are saved in the data set's GovernanceMeasurements
-                         * classification.
+                         * the creation and last update times are saved in the data set's DataScope
+                         * classification.  This will trigger the Baudot Notification Manager to send a notification.
                          */
                         ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(OpenMetadataType.ASSET.typeName);
 
-                        if (dataSet.getElementHeader().getGovernanceMeasurements() == null)
+                        if (dataSet.getElementHeader().getDataScope() == null)
                         {
                             /*
-                             * First time thorough - no GovernanceMeasurements classification set up.
+                             * First time thorough - no DataScope classification set up.
                              */
-                            GovernanceMeasurementsProperties governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
-                            Map<String, Date>                dates                            = new HashMap<>();
+                            DataScopeProperties dataScopeProperties = new DataScopeProperties();
 
-                            dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
-                            dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
+                            dataScopeProperties.setDataCollectionStartTime(dataSetCreateTime);
+                            dataScopeProperties.setDataCollectionEndTime(dataSetLastUpdateTime);
 
-                            governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
-                            governanceMeasurementsProperties.setDates(dates);
-                            classificationManagerClient.addGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
-                                                                                  governanceMeasurementsProperties,
-                                                                                  integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
+                            classificationManagerClient.addDataScopeClassification(dataSet.getElementHeader().getGUID(),
+                                                                                   dataScopeProperties,
+                                                                                   integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
                         }
                         else
                         {
                             /*
                              * Update the existing governance measurements classification.
                              */
-                            GovernanceMeasurementsProperties governanceMeasurementsProperties;
+                            DataScopeProperties dataScopeProperties;
 
-                            if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties properties)
+                            if (dataSet.getElementHeader().getDataScope().getClassificationProperties() instanceof DataScopeProperties properties)
                             {
                                 /*
                                  * The copy/clone constructor is used to preserve any measurements from other processes.
                                  */
-                                governanceMeasurementsProperties = new GovernanceMeasurementsProperties(properties);
-
-                                if (governanceMeasurementsProperties.getDataCollectionStartTime() == null)
-                                {
-                                    /*
-                                     * The start time might not be set if the classification was created by another process.
-                                     */
-                                    governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
-                                }
+                                dataScopeProperties = new DataScopeProperties(properties);
                             }
                             else
                             {
@@ -193,31 +176,14 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                                  * This is unexpected - suggests that another process created the classification,
                                  * but without any properties.
                                  */
-                                governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
-
-                                governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
+                                dataScopeProperties = new DataScopeProperties();
                             }
 
-                            /*
-                             * Preserve any other dates saved by different processes.
-                             */
-                            Map<String, Date> dates = governanceMeasurementsProperties.getDates();
+                            dataScopeProperties.setDataCollectionStartTime(dataSetCreateTime);
+                            dataScopeProperties.setDataCollectionEndTime(dataSetLastUpdateTime);
 
-                            if (dates == null)
-                            {
-                                /*
-                                 * Nothing else saved.
-                                 */
-                                dates = new HashMap<>();
-                            }
-
-                            dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
-                            dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
-
-                            governanceMeasurementsProperties.setDates(dates);
-
-                            classificationManagerClient.updateGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
-                                                                                     governanceMeasurementsProperties,
+                            classificationManagerClient.updateDataScopeClassification(dataSet.getElementHeader().getGUID(),
+                                                                                     dataScopeProperties,
                                                                                      integrationContext.getOpenMetadataStore().getUpdateOptions(true));
                         }
                     }
@@ -244,6 +210,38 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
         }
     }
 
+
+
+    /**
+     * Extract the date of the creation time of the data set.
+     *
+     * @param createTimeColumnNumber column to check
+     * @return date (or null if no date has been detected - typically because the data set is empty)
+     * @throws ConnectorCheckedException problem accessing the data set values
+     */
+    private Date getDataSetCreateTime(int createTimeColumnNumber) throws ConnectorCheckedException
+    {
+        long recordCount = tabularDataSource.getRecordCount();
+
+        if (recordCount > 0L)
+        {
+            for (long rowNumber = 0; rowNumber < recordCount; rowNumber++)
+            {
+                List<String> recordValues = tabularDataSource.readRecord(rowNumber);
+
+                if (recordValues != null)
+                {
+                    String createDateAsString = recordValues.get(createTimeColumnNumber);
+                    if (createDateAsString != null)
+                    {
+                        return new Date(Long.parseLong(createDateAsString));
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
 
     /**

@@ -27,7 +27,7 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("TABULAR-METADATA-CONNECTORS-0001",
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Tabular Metadata Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector is unable to connector the the OMAG Infrastructure.",
+                         "The connector cannot connector the the OMAG Infrastructure.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
 
