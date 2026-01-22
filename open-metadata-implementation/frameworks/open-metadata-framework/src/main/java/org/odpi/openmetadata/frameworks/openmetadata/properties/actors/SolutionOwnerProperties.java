@@ -33,9 +33,21 @@ public class SolutionOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public SolutionOwnerProperties(SolutionOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public SolutionOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SOLUTION_OWNER.typeName;
     }
 
 

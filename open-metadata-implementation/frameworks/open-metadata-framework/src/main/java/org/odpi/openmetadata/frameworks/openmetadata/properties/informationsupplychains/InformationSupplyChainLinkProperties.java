@@ -34,7 +34,7 @@ public class InformationSupplyChainLinkProperties extends LabeledRelationshipPro
      *
      * @param template object to copy
      */
-    public InformationSupplyChainLinkProperties(LabeledRelationshipProperties template)
+    public InformationSupplyChainLinkProperties(InformationSupplyChainLinkProperties template)
     {
         super(template);
     }

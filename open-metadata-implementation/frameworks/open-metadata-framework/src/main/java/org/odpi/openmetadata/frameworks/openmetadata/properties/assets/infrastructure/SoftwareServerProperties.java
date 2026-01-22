@@ -49,6 +49,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
     public SoftwareServerProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SOFTWARE_SERVER.typeName;
     }
 
 

@@ -35,7 +35,7 @@ public class MemberDataFieldProperties extends PartOfRelationshipProperties
      *
      * @param template template schema attribute to copy.
      */
-    public MemberDataFieldProperties(PartOfRelationshipProperties template)
+    public MemberDataFieldProperties(MemberDataFieldProperties template)
     {
         super(template);
     }

@@ -34,7 +34,7 @@ public class DataVirtualizationEngineProperties extends SoftwareCapabilityProper
      *
      * @param template object to copy
      */
-    public DataVirtualizationEngineProperties(SoftwareCapabilityProperties template)
+    public DataVirtualizationEngineProperties(DataVirtualizationEngineProperties template)
     {
         super(template);
     }

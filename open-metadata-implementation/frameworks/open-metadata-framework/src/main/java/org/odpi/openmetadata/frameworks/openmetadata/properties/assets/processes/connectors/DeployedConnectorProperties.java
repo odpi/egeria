@@ -39,9 +39,21 @@ public class DeployedConnectorProperties extends DeployedSoftwareComponentProper
      *
      * @param template template object to copy.
      */
+    public DeployedConnectorProperties(DeployedConnectorProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
     public DeployedConnectorProperties(DeployedSoftwareComponentProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DEPLOYED_CONNECTOR.typeName;
     }
 
 

@@ -36,7 +36,7 @@ public class ConsistentValidValuesProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public ConsistentValidValuesProperties(RelationshipBeanProperties template)
+    public ConsistentValidValuesProperties(ConsistentValidValuesProperties template)
     {
         super(template);
     }

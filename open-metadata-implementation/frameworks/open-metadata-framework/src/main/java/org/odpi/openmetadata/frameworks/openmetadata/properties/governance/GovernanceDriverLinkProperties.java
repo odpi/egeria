@@ -34,7 +34,7 @@ public class GovernanceDriverLinkProperties extends PeerDefinitionProperties
      *
      * @param template object to copy
      */
-    public GovernanceDriverLinkProperties(PeerDefinitionProperties template)
+    public GovernanceDriverLinkProperties(GovernanceDriverLinkProperties template)
     {
         super(template);
     }

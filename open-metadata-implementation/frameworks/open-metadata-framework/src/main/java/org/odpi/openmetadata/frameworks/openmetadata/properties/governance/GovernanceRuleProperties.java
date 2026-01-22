@@ -39,7 +39,7 @@ public class GovernanceRuleProperties extends GovernanceControlProperties
      *
      * @param template object to copy
      */
-    public GovernanceRuleProperties(GovernanceControlProperties template)
+    public GovernanceRuleProperties(GovernanceRuleProperties template)
     {
         super(template);
     }

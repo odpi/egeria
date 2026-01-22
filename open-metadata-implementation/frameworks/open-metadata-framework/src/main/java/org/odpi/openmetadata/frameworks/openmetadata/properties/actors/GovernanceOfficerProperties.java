@@ -33,9 +33,21 @@ public class GovernanceOfficerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public GovernanceOfficerProperties(GovernanceOfficerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public GovernanceOfficerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_OFFICER.typeName;
     }
 
 

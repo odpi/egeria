@@ -34,9 +34,21 @@ public class XMLFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public XMLFileProperties(XMLFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public XMLFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.XML_FILE.typeName;
     }
 
 

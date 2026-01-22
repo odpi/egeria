@@ -34,9 +34,21 @@ public class ProjectManagerProperties extends PersonRoleProperties
      *
      * @param template object to copy
      */
+    public ProjectManagerProperties(ProjectManagerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public ProjectManagerProperties(PersonRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.PROJECT_MANAGER.typeName;
     }
 
 

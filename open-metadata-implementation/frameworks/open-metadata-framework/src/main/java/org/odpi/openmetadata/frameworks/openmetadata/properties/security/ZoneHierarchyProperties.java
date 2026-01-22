@@ -39,6 +39,7 @@ public class ZoneHierarchyProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

@@ -35,10 +35,23 @@ public class WorkItemListProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public WorkItemListProperties(CollectionProperties template)
+    public WorkItemListProperties(WorkItemListProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public WorkItemListProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.WORK_ITEM_LIST_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

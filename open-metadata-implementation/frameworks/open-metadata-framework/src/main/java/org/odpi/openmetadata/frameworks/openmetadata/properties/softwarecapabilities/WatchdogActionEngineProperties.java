@@ -36,6 +36,7 @@ public class WatchdogActionEngineProperties extends GovernanceEngineProperties
     public WatchdogActionEngineProperties(GovernanceEngineProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName;
     }
 
 
@@ -44,7 +45,7 @@ public class WatchdogActionEngineProperties extends GovernanceEngineProperties
      *
      * @param template template object to copy.
      */
-    public WatchdogActionEngineProperties(EngineProperties template)
+    public WatchdogActionEngineProperties(WatchdogActionEngineProperties template)
     {
         super(template);
     }

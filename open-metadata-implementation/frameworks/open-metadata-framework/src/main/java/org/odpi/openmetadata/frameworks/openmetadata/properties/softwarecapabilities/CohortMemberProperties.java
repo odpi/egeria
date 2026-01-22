@@ -33,7 +33,7 @@ public class CohortMemberProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public CohortMemberProperties(SoftwareServiceProperties template)
+    public CohortMemberProperties(CohortMemberProperties template)
     {
         super(template);
     }

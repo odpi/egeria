@@ -34,9 +34,21 @@ public class ExternalModelSourceProperties extends ExternalReferenceProperties
      *
      * @param template element to copy
      */
+    public ExternalModelSourceProperties(ExternalModelSourceProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template element to copy
+     */
     public ExternalModelSourceProperties(ExternalReferenceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.EXTERNAL_MODEL_SOURCE.typeName;
     }
 
 

@@ -36,9 +36,21 @@ public class CohortRegistryStoreProperties extends DataStoreProperties
      *
      * @param template object to copy
      */
+    public CohortRegistryStoreProperties(CohortRegistryStoreProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public CohortRegistryStoreProperties(DataStoreProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COHORT_REGISTRY_STORE.typeName;
     }
 
     /**

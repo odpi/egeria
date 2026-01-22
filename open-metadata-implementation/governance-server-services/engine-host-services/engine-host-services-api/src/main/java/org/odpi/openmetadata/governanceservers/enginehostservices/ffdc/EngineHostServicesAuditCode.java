@@ -319,13 +319,13 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                       "refresh-config command or wait for the engine host services to retry the configuration request."),
 
     /**
-     * ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0}.
-     * It will receive configuration updates from metadata server {1}
+     * ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0} and governance engine {1}.
+     * It will receive configuration updates from metadata access server {2}
      */
     CONFIGURATION_LISTENER_REGISTERED("ENGINE-HOST-SERVICES-0027",
                                       AuditLogRecordSeverityLevel.STARTUP,
                                       "The engine host services has registered the configuration " +
-                                              "listener for server {0}.  It will receive configuration updates from metadata server {1}",
+                                              "listener for server {0} and governance engine {1}.  It will receive configuration updates from metadata access server {2}",
                                       "The engine host services continues to run.  The engine host services will start up the " +
                                               "governance engines and they will operate with whatever configuration that they can retrieve.  " +
                                               "Periodically the engine host services will" +
@@ -505,13 +505,13 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
      */
     ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
-                             AuditLogRecordSeverityLevel.EXCEPTION,
+                             AuditLogRecordSeverityLevel.ERROR,
                             "{0} caught an exception {1} while processing engine action {2}; the error message was {3}",
                             "The server is not able to start or complete the requested processing related to the governance service for this engine action.",
                             "Follow the instructions for the message associated with the exception."),
 
     /**
-     * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
+     * ENGINE-HOST-SERVICES-2001 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
      */
     RESTART_SERVICE_ERROR( "ENGINE-HOST-SERVICES-2001",
                              AuditLogRecordSeverityLevel.ERROR,

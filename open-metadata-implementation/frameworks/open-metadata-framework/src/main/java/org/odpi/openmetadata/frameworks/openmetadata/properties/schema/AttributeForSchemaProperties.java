@@ -35,7 +35,7 @@ public class AttributeForSchemaProperties extends PartOfRelationshipProperties
      *
      * @param template template schema attribute to copy.
      */
-    public AttributeForSchemaProperties(PartOfRelationshipProperties template)
+    public AttributeForSchemaProperties(AttributeForSchemaProperties template)
     {
         super(template);
     }

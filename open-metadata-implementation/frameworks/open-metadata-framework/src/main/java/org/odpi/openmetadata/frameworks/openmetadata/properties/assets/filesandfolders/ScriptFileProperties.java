@@ -34,9 +34,21 @@ public class ScriptFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public ScriptFileProperties(ScriptFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public ScriptFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SCRIPT_FILE.typeName;
     }
 
 

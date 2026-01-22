@@ -35,9 +35,21 @@ public class DataProcessingActionProperties extends AuthoredReferenceablePropert
      *
      * @param template object to copy
      */
+    public DataProcessingActionProperties(DataProcessingActionProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public DataProcessingActionProperties(AuthoredReferenceableProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_PROCESSING_ACTION.typeName;
     }
 
 

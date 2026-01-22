@@ -36,7 +36,7 @@ public class DigitalSupportProperties extends LabeledRelationshipProperties
      *
      * @param template template object to copy.
      */
-    public DigitalSupportProperties(LabeledRelationshipProperties template)
+    public DigitalSupportProperties(DigitalSupportProperties template)
     {
         super(template);
     }

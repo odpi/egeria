@@ -34,7 +34,7 @@ public class MoreInformationProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public MoreInformationProperties(LabeledRelationshipProperties template)
+    public MoreInformationProperties(MoreInformationProperties template)
     {
         super(template);
     }

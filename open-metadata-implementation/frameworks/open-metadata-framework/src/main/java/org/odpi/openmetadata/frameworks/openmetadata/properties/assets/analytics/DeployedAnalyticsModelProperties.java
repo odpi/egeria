@@ -35,9 +35,21 @@ public class DeployedAnalyticsModelProperties extends DeployedSoftwareComponentP
      *
      * @param template object to copy
      */
+    public DeployedAnalyticsModelProperties(DeployedAnalyticsModelProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public DeployedAnalyticsModelProperties(DeployedSoftwareComponentProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DEPLOYED_ANALYTICS_MODEL.typeName;
     }
 
 

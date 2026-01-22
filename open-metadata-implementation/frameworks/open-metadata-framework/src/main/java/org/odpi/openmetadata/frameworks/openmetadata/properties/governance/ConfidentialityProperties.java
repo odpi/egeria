@@ -39,6 +39,7 @@ public class ConfidentialityProperties extends GovernanceClassificationPropertie
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

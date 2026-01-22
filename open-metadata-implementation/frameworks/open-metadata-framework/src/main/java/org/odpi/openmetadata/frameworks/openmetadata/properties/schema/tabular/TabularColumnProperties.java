@@ -43,9 +43,21 @@ public class TabularColumnProperties extends SchemaAttributeProperties
      *
      * @param template template object to copy.
      */
+    public TabularColumnProperties(TabularColumnProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor.
+     *
+     * @param template template object to copy.
+     */
     public TabularColumnProperties(SchemaAttributeProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TABULAR_COLUMN.typeName;
     }
 
 

@@ -35,9 +35,21 @@ public class GraphStoreProperties extends DataStoreProperties
      *
      * @param template object to copy
      */
+    public GraphStoreProperties(GraphStoreProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public GraphStoreProperties(DatabaseProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GRAPH_STORE.typeName;
     }
 
 

@@ -39,6 +39,7 @@ public class ConnectionConnectorTypeProperties extends RelationshipBeanPropertie
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

@@ -38,10 +38,23 @@ public class ReferenceCodeMappingTableProperties extends TabularDataSetPropertie
      *
      * @param template object to copy
      */
-    public ReferenceCodeMappingTableProperties(DataSetProperties template)
+    public ReferenceCodeMappingTableProperties(ReferenceCodeMappingTableProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public ReferenceCodeMappingTableProperties(DataSetProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.REFERENCE_CODE_MAPPING_TABLE.typeName;
+    }
+
 
     /**
      * Standard toString method.

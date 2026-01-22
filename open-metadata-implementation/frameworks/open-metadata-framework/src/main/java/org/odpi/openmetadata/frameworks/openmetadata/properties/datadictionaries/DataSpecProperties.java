@@ -34,9 +34,21 @@ public class DataSpecProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public DataSpecProperties(DataSpecProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public DataSpecProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_SPEC_COLLECTION.typeName;
     }
 
 

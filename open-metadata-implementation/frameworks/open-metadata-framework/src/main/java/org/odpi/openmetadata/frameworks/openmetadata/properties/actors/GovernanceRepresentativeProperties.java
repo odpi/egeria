@@ -36,6 +36,18 @@ public class GovernanceRepresentativeProperties extends GovernanceRoleProperties
     public GovernanceRepresentativeProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_REPRESENTATIVE.typeName;
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public GovernanceRepresentativeProperties(GovernanceRepresentativeProperties template)
+    {
+        super(template);
     }
 
 

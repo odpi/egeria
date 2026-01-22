@@ -38,6 +38,7 @@ public class ISARelationshipProperties extends GlossaryTermRelationshipPropertie
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

@@ -52,6 +52,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabili
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -1843,6 +1844,32 @@ public class OpenMetadataElementBuilder
                                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                              softwareCapabilityProperties.getDeployedImplementationType());
                     }
+                }
+                else if (properties instanceof TranslationDetailProperties translationDetailProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                         translationDetailProperties.getDisplayName());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DESCRIPTION.name,
+                                                                         translationDetailProperties.getDescription());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LANGUAGE.name,
+                                                                         translationDetailProperties.getLanguage());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LANGUAGE_CODE.name,
+                                                                         translationDetailProperties.getLanguageCode());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LOCALE.name,
+                                                                         translationDetailProperties.getLocale());
+
+                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                            OpenMetadataProperty.ADDITIONAL_TRANSLATIONS.name,
+                                                                            translationDetailProperties.getAdditionalTranslations());
                 }
 
                 elementProperties = propertyHelper.addPropertyMap(elementProperties,

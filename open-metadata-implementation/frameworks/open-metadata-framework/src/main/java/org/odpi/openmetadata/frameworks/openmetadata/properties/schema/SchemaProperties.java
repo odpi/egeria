@@ -40,6 +40,7 @@ public class SchemaProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

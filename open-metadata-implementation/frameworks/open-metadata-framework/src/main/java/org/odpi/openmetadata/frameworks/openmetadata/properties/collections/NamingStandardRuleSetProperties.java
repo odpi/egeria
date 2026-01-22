@@ -33,9 +33,21 @@ public class NamingStandardRuleSetProperties extends CollectionProperties
      *
      * @param template object to copy
      */
+    public NamingStandardRuleSetProperties(NamingStandardRuleSetProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public NamingStandardRuleSetProperties(CollectionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION.typeName;
     }
 
 

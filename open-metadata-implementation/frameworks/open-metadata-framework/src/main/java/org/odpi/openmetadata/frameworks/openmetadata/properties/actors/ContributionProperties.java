@@ -40,6 +40,7 @@ public class ContributionProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

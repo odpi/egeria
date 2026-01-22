@@ -34,7 +34,7 @@ public class SolutionDesignProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public SolutionDesignProperties(LabeledRelationshipProperties template)
+    public SolutionDesignProperties(SolutionDesignProperties template)
     {
         super(template);
     }

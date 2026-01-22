@@ -35,7 +35,7 @@ public class BusinessCapabilityDependencyProperties extends LabeledRelationshipP
      *
      * @param template object to copy
      */
-    public BusinessCapabilityDependencyProperties(LabeledRelationshipProperties template)
+    public BusinessCapabilityDependencyProperties(BusinessCapabilityDependencyProperties template)
     {
         super(template);
     }

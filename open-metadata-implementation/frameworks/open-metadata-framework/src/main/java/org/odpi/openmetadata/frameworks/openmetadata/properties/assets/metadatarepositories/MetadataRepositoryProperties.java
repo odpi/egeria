@@ -36,9 +36,21 @@ public class MetadataRepositoryProperties extends DataStoreProperties
      *
      * @param template object to copy
      */
+    public MetadataRepositoryProperties(MetadataRepositoryProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public MetadataRepositoryProperties(DataStoreProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.METADATA_REPOSITORY.typeName;
     }
 
     /**

@@ -64,6 +64,18 @@ public class CollectionProperties extends AuthoredReferenceableProperties
         super.typeName = OpenMetadataType.COLLECTION.typeName;
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public CollectionProperties(CollectionProperties template)
+    {
+        super(template);
+    }
+
+
     /**
      * Copy/clone constructor
      *
@@ -72,6 +84,7 @@ public class CollectionProperties extends AuthoredReferenceableProperties
     public CollectionProperties(AuthoredReferenceableProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COLLECTION.typeName;
     }
 
 
@@ -83,6 +96,7 @@ public class CollectionProperties extends AuthoredReferenceableProperties
     public CollectionProperties(ReferenceableProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COLLECTION.typeName;
     }
 
 

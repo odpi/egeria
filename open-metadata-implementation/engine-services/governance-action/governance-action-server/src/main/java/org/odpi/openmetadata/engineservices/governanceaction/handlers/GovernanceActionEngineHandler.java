@@ -79,7 +79,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler imple
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
         this.governanceContextClient   = governanceContextClient;
 
-        this.governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
+        this.governanceContextClient.setListenerManager(governanceListenerManager);
     }
 
 

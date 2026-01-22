@@ -94,6 +94,7 @@ public class ProcessProperties extends AssetProperties
     public ProcessProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.PROCESS.typeName;
     }
 
 

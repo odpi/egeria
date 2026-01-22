@@ -41,7 +41,7 @@ public class GovernanceEngineProperties extends EngineProperties
      *
      * @param template template object to copy.
      */
-    public GovernanceEngineProperties(EngineProperties template)
+    public GovernanceEngineProperties(GovernanceEngineProperties template)
     {
         super(template);
     }

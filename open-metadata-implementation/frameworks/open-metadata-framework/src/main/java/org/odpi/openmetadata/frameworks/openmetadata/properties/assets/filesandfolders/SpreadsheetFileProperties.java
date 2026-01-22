@@ -34,9 +34,21 @@ public class SpreadsheetFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public SpreadsheetFileProperties(SpreadsheetFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public SpreadsheetFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SPREADSHEET_FILE.typeName;
     }
 
 

@@ -49,6 +49,7 @@ public class NetworkProperties extends ITInfrastructureProperties
     public NetworkProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.NETWORK.typeName;
     }
 
 

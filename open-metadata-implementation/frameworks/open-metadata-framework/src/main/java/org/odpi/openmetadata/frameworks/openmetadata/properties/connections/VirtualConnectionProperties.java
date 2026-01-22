@@ -38,6 +38,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
         super(template);
     }
 
+
     /**
      * Standard toString method. Note SecuredProperties and other credential type properties are not displayed.
      * This is deliberate because there is no knowing where the string will be printed.

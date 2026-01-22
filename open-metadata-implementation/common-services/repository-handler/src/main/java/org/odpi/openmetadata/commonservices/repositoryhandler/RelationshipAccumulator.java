@@ -545,6 +545,7 @@ public class RelationshipAccumulator
                 originalRelationships.add(relationship.getGUID() + "[" + relationship.getCreatedBy() + "," + relationship.getType().getTypeDefName() + "]");
             }
         }
+
         auditLog.logMessage(methodName,
                             RepositoryHandlerAuditCode.RELATION_DEDUP_SUMMARY.getMessageDefinition(originalRelationships.toString(),
                                                                                                    deDupedRelationships.toString()));

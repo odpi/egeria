@@ -38,11 +38,22 @@ public class RelationalColumnProperties extends TabularColumnProperties
      *
      * @param template object to copy
      */
-    public RelationalColumnProperties(TabularColumnProperties template)
+    public RelationalColumnProperties(RelationalColumnProperties template)
     {
         super(template);
     }
 
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public RelationalColumnProperties(TabularColumnProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.RELATIONAL_COLUMN.typeName;
+    }
 
 
     /**
@@ -53,6 +64,7 @@ public class RelationalColumnProperties extends TabularColumnProperties
     public RelationalColumnProperties(SchemaAttributeProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.RELATIONAL_COLUMN.typeName;
     }
 
 

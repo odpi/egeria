@@ -51,6 +51,7 @@ public class InformalTagProperties extends ReferenceableProperties
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

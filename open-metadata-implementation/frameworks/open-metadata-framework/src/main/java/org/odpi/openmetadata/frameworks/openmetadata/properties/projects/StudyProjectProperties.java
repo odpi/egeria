@@ -36,10 +36,11 @@ public class StudyProjectProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public StudyProjectProperties(ClassificationBeanProperties template)
+    public StudyProjectProperties(StudyProjectProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

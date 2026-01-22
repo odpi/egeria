@@ -35,7 +35,7 @@ public class GovernedByProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public GovernedByProperties(LabeledRelationshipProperties template)
+    public GovernedByProperties(GovernedByProperties template)
     {
         super(template);
     }

@@ -35,9 +35,21 @@ public class VirtualMachineProperties extends HostProperties
      *
      * @param template object to copy
      */
+    public VirtualMachineProperties(VirtualMachineProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public VirtualMachineProperties(HostProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VIRTUAL_MACHINE.typeName;
     }
 
 
@@ -49,6 +61,7 @@ public class VirtualMachineProperties extends HostProperties
     public VirtualMachineProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VIRTUAL_MACHINE.typeName;
     }
 
 

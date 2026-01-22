@@ -39,9 +39,21 @@ public class PropertiesFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public PropertiesFileProperties(PropertiesFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public PropertiesFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.PROPERTIES_FILE.typeName;
     }
 
 

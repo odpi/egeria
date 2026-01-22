@@ -36,7 +36,7 @@ public class ReportDependencyProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public ReportDependencyProperties(LabeledRelationshipProperties template)
+    public ReportDependencyProperties(ReportDependencyProperties template)
     {
         super(template);
     }

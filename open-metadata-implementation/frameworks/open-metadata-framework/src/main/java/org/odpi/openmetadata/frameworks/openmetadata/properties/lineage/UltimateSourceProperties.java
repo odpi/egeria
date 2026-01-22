@@ -33,7 +33,7 @@ public class UltimateSourceProperties extends LineageBoundaryProperties
      *
      * @param template element to copy
      */
-    public UltimateSourceProperties(LineageBoundaryProperties template)
+    public UltimateSourceProperties(UltimateDestinationProperties template)
     {
         super(template);
     }

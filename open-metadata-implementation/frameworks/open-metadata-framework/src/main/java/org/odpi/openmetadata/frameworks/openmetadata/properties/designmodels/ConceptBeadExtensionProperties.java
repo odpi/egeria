@@ -34,7 +34,7 @@ public class ConceptBeadExtensionProperties extends RoledRelationshipProperties
      *
      * @param template object to copy
      */
-    public ConceptBeadExtensionProperties(RoledRelationshipProperties template)
+    public ConceptBeadExtensionProperties(ConceptBeadExtensionProperties template)
     {
         super(template);
     }

@@ -33,6 +33,17 @@ public class ExternalSourceCodeProperties extends ExternalReferenceProperties
      *
      * @param template element to copy
      */
+    public ExternalSourceCodeProperties(ExternalSourceCodeProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template element to copy
+     */
     public ExternalSourceCodeProperties(ExternalReferenceProperties template)
     {
         super(template);

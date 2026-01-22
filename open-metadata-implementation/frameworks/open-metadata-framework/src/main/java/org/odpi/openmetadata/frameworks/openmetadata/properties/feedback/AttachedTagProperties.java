@@ -40,6 +40,7 @@ public class AttachedTagProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

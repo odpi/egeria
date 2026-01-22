@@ -2,16 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.translations;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * TranslationDetail provides translated strings for an open metadata element for a specific language/locale.
  */
-public class TranslationDetailProperties
+public class TranslationDetailProperties extends OpenMetadataRootProperties
 {
     private String              language               = null;
-    private String              codeSet                = null;
+    private String              languageCode           = null;
     private String              locale                 = null;
     private String              displayName            = null;
     private String              description            = null;
@@ -23,6 +26,8 @@ public class TranslationDetailProperties
      */
     public TranslationDetailProperties()
     {
+        super();
+        super.typeName = OpenMetadataType.TRANSLATION_DETAIL.typeName;
     }
 
 
@@ -33,11 +38,13 @@ public class TranslationDetailProperties
      */
     public TranslationDetailProperties(TranslationDetailProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            language = template.getLanguage();
-            codeSet = template.getCodeSet();
-            locale = template.getLocale();
+            language     = template.getLanguage();
+            languageCode = template.getLanguageCode();
+            locale       = template.getLocale();
             displayName = template.getDisplayName();
             description = template.getDescription();
             additionalTranslations = template.getAdditionalTranslations();
@@ -72,20 +79,20 @@ public class TranslationDetailProperties
      *
      * @return string name
      */
-    public String getCodeSet()
+    public String getLanguageCode()
     {
-        return codeSet;
+        return languageCode;
     }
 
 
     /**
      * Set up the code set for the translation.
      *
-     * @param codeSet string name
+     * @param languageCode string name
      */
-    public void setCodeSet(String codeSet)
+    public void setLanguageCode(String languageCode)
     {
-        this.codeSet = codeSet;
+        this.languageCode = languageCode;
     }
 
 
@@ -187,14 +194,14 @@ public class TranslationDetailProperties
     @Override
     public String toString()
     {
-        return "TranslationDetail{" +
-                       "language='" + language + '\'' +
-                       ", codeSet='" + codeSet + '\'' +
-                       ", locale='" + locale + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", additionalTranslations=" + additionalTranslations +
-                       '}';
+        return "TranslationDetailProperties{" +
+                "language='" + getLanguage() + '\'' +
+                ", codeSet='" + getLanguageCode() + '\'' +
+                ", locale='" + getLocale() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", additionalTranslations=" + getAdditionalTranslations() +
+                "} " + super.toString();
     }
 
 
@@ -207,21 +214,15 @@ public class TranslationDetailProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof TranslationDetailProperties))
-        {
-            return false;
-        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         TranslationDetailProperties that = (TranslationDetailProperties) objectToCompare;
         return Objects.equals(language, that.language) &&
-                       Objects.equals(codeSet, that.codeSet) &&
-                       Objects.equals(locale, that.locale) &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(additionalTranslations, that.additionalTranslations);
+                Objects.equals(languageCode, that.languageCode) &&
+                Objects.equals(locale, that.locale) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(additionalTranslations, that.additionalTranslations);
     }
 
 
@@ -233,6 +234,6 @@ public class TranslationDetailProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(language, codeSet, locale, displayName, description, additionalTranslations);
+        return Objects.hash(super.hashCode(), language, languageCode, locale, displayName, description, additionalTranslations);
     }
 }

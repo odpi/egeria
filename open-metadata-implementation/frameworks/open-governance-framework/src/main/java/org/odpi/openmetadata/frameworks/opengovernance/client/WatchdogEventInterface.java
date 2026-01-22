@@ -26,6 +26,7 @@ public interface WatchdogEventInterface
      * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
      *
+     * @param listenerId             identifier used to maintain topic event pointer in event manager
      * @param listener listener object to receive events
      * @param interestingEventTypes types of events that should be passed to the listener
      * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
@@ -33,7 +34,8 @@ public interface WatchdogEventInterface
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
-    void registerListener(WatchdogGovernanceListener  listener,
+    void registerListener(String                      listenerId,
+                          WatchdogGovernanceListener  listener,
                           List<OpenMetadataEventType> interestingEventTypes,
                           List<String>                interestingMetadataTypes,
                           String                      specificInstance) throws InvalidParameterException;
@@ -41,6 +43,8 @@ public interface WatchdogEventInterface
 
     /**
      * Unregister the listener from the event infrastructure.
+     *
+     * @param listenerId  identifier used to maintain topic event pointer in event manager
      */
-    void disconnectListener();
+    void disconnectListener(String listenerId);
 }

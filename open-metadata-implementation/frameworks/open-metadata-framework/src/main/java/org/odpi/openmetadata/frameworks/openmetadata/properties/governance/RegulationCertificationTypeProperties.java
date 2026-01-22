@@ -35,7 +35,7 @@ public class RegulationCertificationTypeProperties extends LabeledRelationshipPr
      *
      * @param template object to copy
      */
-    public RegulationCertificationTypeProperties(LabeledRelationshipProperties template)
+    public RegulationCertificationTypeProperties(RegulationCertificationTypeProperties template)
     {
         super(template);
     }

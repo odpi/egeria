@@ -39,6 +39,7 @@ public class ImpactProperties extends GovernanceClassificationProperties
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

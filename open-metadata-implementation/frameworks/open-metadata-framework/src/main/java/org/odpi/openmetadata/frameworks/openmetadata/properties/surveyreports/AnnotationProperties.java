@@ -72,8 +72,6 @@ public class AnnotationProperties extends OpenMetadataRootProperties
     }
 
 
-
-
     /**
      * Return the informal name for the type of annotation.
      *

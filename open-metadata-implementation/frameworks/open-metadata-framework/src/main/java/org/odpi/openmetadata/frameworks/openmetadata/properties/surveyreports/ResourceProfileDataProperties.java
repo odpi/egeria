@@ -35,7 +35,7 @@ public class ResourceProfileDataProperties extends RelationshipBeanProperties
      *
      * @param template template object to copy.
      */
-    public ResourceProfileDataProperties(RelationshipBeanProperties template)
+    public ResourceProfileDataProperties(ResourceProfileDataProperties template)
     {
         super(template);
     }

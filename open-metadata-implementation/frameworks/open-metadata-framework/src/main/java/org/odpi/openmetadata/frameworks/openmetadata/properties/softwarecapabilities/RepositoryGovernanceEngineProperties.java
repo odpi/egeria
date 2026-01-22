@@ -36,6 +36,7 @@ public class RepositoryGovernanceEngineProperties extends GovernanceEngineProper
     public RepositoryGovernanceEngineProperties(GovernanceEngineProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName;
     }
 
 
@@ -44,7 +45,7 @@ public class RepositoryGovernanceEngineProperties extends GovernanceEngineProper
      *
      * @param template template object to copy.
      */
-    public RepositoryGovernanceEngineProperties(EngineProperties template)
+    public RepositoryGovernanceEngineProperties(RepositoryGovernanceEngineProperties template)
     {
         super(template);
     }

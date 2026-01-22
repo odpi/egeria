@@ -52,7 +52,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
      * @param engineActionClient client to control the execution of governance action requests
      * @param governanceContextClient REST client for calls made by the governance action services
      * @param auditLog logging destination
-     * @param maxPageSize maximum number of results that can be returned in a single request
+     * @param maxPageSize maximum results that can be returned in a single request
      */
     public WatchdogActionEngineHandler(EngineConfig                  engineConfig,
                                        String                        localServerName,
@@ -77,7 +77,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
         this.governanceContextClient   = governanceContextClient;
 
-        governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
+        governanceContextClient.setListenerManager(governanceListenerManager);
     }
 
 

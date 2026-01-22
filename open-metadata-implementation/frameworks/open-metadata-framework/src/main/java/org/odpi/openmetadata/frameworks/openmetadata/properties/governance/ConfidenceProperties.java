@@ -39,6 +39,7 @@ public class ConfidenceProperties extends GovernanceClassificationProperties
         super(template);
     }
 
+
     /**
      * Standard toString method.
      *

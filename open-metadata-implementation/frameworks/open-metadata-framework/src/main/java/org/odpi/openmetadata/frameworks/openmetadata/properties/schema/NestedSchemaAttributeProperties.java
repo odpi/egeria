@@ -37,7 +37,7 @@ public class NestedSchemaAttributeProperties extends PartOfRelationshipPropertie
      *
      * @param template template schema attribute to copy.
      */
-    public NestedSchemaAttributeProperties(PartOfRelationshipProperties template)
+    public NestedSchemaAttributeProperties(NestedSchemaAttributeProperties template)
     {
         super(template);
     }

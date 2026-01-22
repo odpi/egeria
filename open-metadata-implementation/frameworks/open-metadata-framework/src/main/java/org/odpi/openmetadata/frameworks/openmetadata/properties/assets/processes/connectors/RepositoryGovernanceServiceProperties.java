@@ -34,11 +34,21 @@ public class RepositoryGovernanceServiceProperties extends GovernanceServiceProp
      *
      * @param template template object to copy.
      */
-    public RepositoryGovernanceServiceProperties(DeployedSoftwareComponentProperties template)
+    public RepositoryGovernanceServiceProperties(RepositoryGovernanceServiceProperties template)
     {
         super(template);
     }
 
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
+    public RepositoryGovernanceServiceProperties(DeployedSoftwareComponentProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
+    }
 
     /**
      * Copy/clone Constructor
@@ -48,6 +58,7 @@ public class RepositoryGovernanceServiceProperties extends GovernanceServiceProp
     public RepositoryGovernanceServiceProperties(DeployedConnectorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
     }
 
 
@@ -60,6 +71,7 @@ public class RepositoryGovernanceServiceProperties extends GovernanceServiceProp
     public RepositoryGovernanceServiceProperties(GovernanceServiceProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
     }
 
 

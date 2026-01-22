@@ -41,9 +41,21 @@ public class ActorProfileProperties extends ActorProperties
      *
      * @param template object to copy
      */
+    public ActorProfileProperties(ActorProfileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ActorProfileProperties(ActorProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.ACTOR_PROFILE.typeName;
     }
 
 

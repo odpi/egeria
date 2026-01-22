@@ -35,7 +35,7 @@ public class ProjectHierarchyProperties extends LabeledRelationshipProperties
      *
      * @param template template object to copy.
      */
-    public ProjectHierarchyProperties(LabeledRelationshipProperties template)
+    public ProjectHierarchyProperties(ProjectHierarchyProperties template)
     {
         super(template);
     }

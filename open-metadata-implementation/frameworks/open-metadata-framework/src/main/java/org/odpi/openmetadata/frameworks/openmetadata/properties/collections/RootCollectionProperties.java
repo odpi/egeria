@@ -35,10 +35,23 @@ public class RootCollectionProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public RootCollectionProperties(CollectionProperties template)
+    public RootCollectionProperties(RootCollectionProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public RootCollectionProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.ROOT_COLLECTION.typeName;
+    }
+
 
     /**
      * Standard toString method.

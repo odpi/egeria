@@ -38,10 +38,23 @@ public class EmbeddedProcessProperties extends ActionProperties
      *
      * @param template template object to copy.
      */
-    public EmbeddedProcessProperties(ActionProperties template)
+    public EmbeddedProcessProperties(EmbeddedProcessProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
+    public EmbeddedProcessProperties(ActionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.EMBEDDED_PROCESS.typeName;
+    }
+
 
 
     /**

@@ -61,7 +61,6 @@ public class MetadataCollectionProperties extends DataSetProperties
     }
 
 
-
     /**
      * Set up the unique identifier of the metadata collection.
      *

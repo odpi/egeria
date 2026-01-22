@@ -43,9 +43,21 @@ public class TransientEmbeddedProcessProperties extends EmbeddedProcessPropertie
      *
      * @param template template object to copy.
      */
+    public TransientEmbeddedProcessProperties(TransientEmbeddedProcessProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
     public TransientEmbeddedProcessProperties(EmbeddedProcessProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName;
     }
 
 

@@ -34,9 +34,21 @@ public class AvroFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public AvroFileProperties(AvroFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public AvroFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.AVRO_FILE.typeName;
     }
 
 

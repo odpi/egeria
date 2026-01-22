@@ -36,7 +36,7 @@ public class ContextEventEvidenceProperties extends LabeledRelationshipPropertie
      *
      * @param template object to copy
      */
-    public ContextEventEvidenceProperties(LabeledRelationshipProperties template)
+    public ContextEventEvidenceProperties(ContextEventEvidenceProperties template)
     {
         super (template);
     }

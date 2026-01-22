@@ -36,10 +36,23 @@ public class CertificationTypeProperties extends TermsAndConditionsProperties
      *
      * @param template object to copy
      */
-    public CertificationTypeProperties(TermsAndConditionsProperties template)
+    public CertificationTypeProperties(CertificationTypeProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/Clone Constructor
+     *
+     * @param template object to copy
+     */
+    public CertificationTypeProperties(TermsAndConditionsProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.CERTIFICATION_TYPE.typeName;
+    }
+
 
     /**
      * JSON-style toString

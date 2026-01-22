@@ -27,13 +27,12 @@ public class GovernanceActionEngineProperties extends GovernanceEngineProperties
         super.typeName = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
     }
 
-
     /**
      * Copy/clone Constructor
      *
      * @param template template object to copy.
      */
-    public GovernanceActionEngineProperties(GovernanceEngineProperties template)
+    public GovernanceActionEngineProperties(GovernanceActionEngineProperties template)
     {
         super(template);
     }
@@ -44,9 +43,10 @@ public class GovernanceActionEngineProperties extends GovernanceEngineProperties
      *
      * @param template template object to copy.
      */
-    public GovernanceActionEngineProperties(EngineProperties template)
+    public GovernanceActionEngineProperties(GovernanceEngineProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
     }
 
 

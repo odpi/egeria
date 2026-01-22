@@ -35,9 +35,21 @@ public class SecretsCollectionProperties extends DataSetProperties
      *
      * @param template object to copy
      */
+    public SecretsCollectionProperties(SecretsCollectionProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public SecretsCollectionProperties(DataSetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.SECRETS_COLLECTION.typeName;
     }
 
 

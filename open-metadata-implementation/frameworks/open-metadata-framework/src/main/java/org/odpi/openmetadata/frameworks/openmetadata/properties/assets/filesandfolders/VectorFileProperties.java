@@ -34,9 +34,21 @@ public class VectorFileProperties extends MediaFileProperties
      *
      * @param template object to copy
      */
+    public VectorFileProperties(VectorFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public VectorFileProperties(MediaFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VECTOR_FILE.typeName;
     }
 
 

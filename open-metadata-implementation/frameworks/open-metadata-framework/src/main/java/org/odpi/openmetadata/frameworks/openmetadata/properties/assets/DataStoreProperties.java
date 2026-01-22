@@ -71,7 +71,6 @@ public class DataStoreProperties extends DataAssetProperties
             pathName        = template.getPathName();
             storeCreateTime = template.getStoreCreateTime();
             storeUpdateTime = template.getStoreUpdateTime();
-
         }
     }
 
@@ -84,6 +83,7 @@ public class DataStoreProperties extends DataAssetProperties
     public DataStoreProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_STORE.typeName;
     }
 
 

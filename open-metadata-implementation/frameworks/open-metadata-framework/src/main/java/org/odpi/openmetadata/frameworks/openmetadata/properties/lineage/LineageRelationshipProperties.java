@@ -39,7 +39,6 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
     private String iscQualifiedName = null;
 
 
-
     /**
      * Default constructor
      */

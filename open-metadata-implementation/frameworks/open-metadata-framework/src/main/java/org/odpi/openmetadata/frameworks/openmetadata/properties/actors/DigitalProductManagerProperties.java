@@ -34,9 +34,21 @@ public class DigitalProductManagerProperties extends PersonRoleProperties
      *
      * @param template object being copied
      */
+    public DigitalProductManagerProperties(DigitalProductManagerProperties template)
+    {
+        super (template);
+    }
+
+
+    /**
+     * Copy/clone Constructor - the resulting object.
+     *
+     * @param template object being copied
+     */
     public DigitalProductManagerProperties(PersonRoleProperties template)
     {
         super (template);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName;
     }
 
 

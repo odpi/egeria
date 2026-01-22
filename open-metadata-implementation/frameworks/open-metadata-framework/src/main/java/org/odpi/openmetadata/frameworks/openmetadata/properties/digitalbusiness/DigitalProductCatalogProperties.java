@@ -35,10 +35,23 @@ public class DigitalProductCatalogProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public DigitalProductCatalogProperties(CollectionProperties template)
+    public DigitalProductCatalogProperties(DigitalProductCatalogProperties template)
     {
         super(template);
     }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public DigitalProductCatalogProperties(CollectionProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName;
+    }
+
 
     /**
      * Standard toString method.

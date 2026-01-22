@@ -27,6 +27,16 @@ public class AssetOwnerProperties extends GovernanceRoleProperties
         super.typeName = OpenMetadataType.ASSET_OWNER.typeName;
     }
 
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public AssetOwnerProperties(AssetOwnerProperties template)
+    {
+        super(template);
+    }
+
 
     /**
      * Copy/clone constructor.
@@ -36,6 +46,7 @@ public class AssetOwnerProperties extends GovernanceRoleProperties
     public AssetOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.ASSET_OWNER.typeName;
     }
 
 

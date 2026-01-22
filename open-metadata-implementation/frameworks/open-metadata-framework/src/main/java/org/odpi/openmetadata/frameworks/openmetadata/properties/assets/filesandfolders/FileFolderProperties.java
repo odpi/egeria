@@ -42,6 +42,7 @@ public class FileFolderProperties extends DataStoreProperties
     public FileFolderProperties(FileFolderProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.FILE_FOLDER.typeName;
     }
 
 

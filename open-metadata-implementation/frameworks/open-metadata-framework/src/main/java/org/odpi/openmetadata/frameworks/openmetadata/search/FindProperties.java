@@ -3,12 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.search;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

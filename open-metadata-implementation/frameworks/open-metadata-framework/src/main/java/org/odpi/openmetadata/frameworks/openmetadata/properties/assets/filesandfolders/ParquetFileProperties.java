@@ -34,9 +34,21 @@ public class ParquetFileProperties extends DataFileProperties
      *
      * @param template object to copy
      */
+    public ParquetFileProperties(ParquetFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public ParquetFileProperties(DataFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.PARQUET_FILE.typeName;
     }
 
 

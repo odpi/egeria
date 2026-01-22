@@ -36,10 +36,11 @@ public class TaskProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public TaskProperties(ClassificationBeanProperties template)
+    public TaskProperties(TaskProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

@@ -40,6 +40,7 @@ public class AcceptedAnswerProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

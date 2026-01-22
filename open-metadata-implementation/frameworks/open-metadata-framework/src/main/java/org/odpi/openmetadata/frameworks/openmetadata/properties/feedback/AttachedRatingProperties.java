@@ -40,6 +40,7 @@ public class AttachedRatingProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

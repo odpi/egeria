@@ -39,6 +39,7 @@ public class SchemaTypeOptionProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

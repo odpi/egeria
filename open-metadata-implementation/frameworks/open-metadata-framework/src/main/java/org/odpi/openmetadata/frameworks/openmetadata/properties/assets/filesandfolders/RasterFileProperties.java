@@ -34,9 +34,21 @@ public class RasterFileProperties extends MediaFileProperties
      *
      * @param template object to copy
      */
+    public RasterFileProperties(RasterFileProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public RasterFileProperties(MediaFileProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.RASTER_FILE.typeName;
     }
 
 

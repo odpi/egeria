@@ -38,6 +38,7 @@ public class ReplacementTermProperties extends GlossaryTermRelationshipPropertie
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

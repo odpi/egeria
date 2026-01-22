@@ -36,10 +36,11 @@ public class PersonalProjectProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public PersonalProjectProperties(ClassificationBeanProperties template)
+    public PersonalProjectProperties(PersonalProjectProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

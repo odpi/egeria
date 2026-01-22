@@ -34,7 +34,7 @@ public class AdjacentLocationProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public AdjacentLocationProperties(LabeledRelationshipProperties template)
+    public AdjacentLocationProperties(AdjacentLocationProperties template)
     {
         super(template);
     }

@@ -42,9 +42,21 @@ public class DataProcessingDescriptionProperties extends AuthoredReferenceablePr
      *
      * @param template object to copy
      */
+    public DataProcessingDescriptionProperties(DataProcessingDescriptionProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public DataProcessingDescriptionProperties(AuthoredReferenceableProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName;
     }
 
 

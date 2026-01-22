@@ -35,7 +35,7 @@ public class NestedLocationProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public NestedLocationProperties(LabeledRelationshipProperties template)
+    public NestedLocationProperties(NestedLocationProperties template)
     {
         super(template);
     }

@@ -35,9 +35,21 @@ public class HostClusterProperties extends HostProperties
      *
      * @param template object to copy
      */
+    public HostClusterProperties(HostClusterProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public HostClusterProperties(HostProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.HOST_CLUSTER.typeName;
     }
 
 
@@ -49,6 +61,7 @@ public class HostClusterProperties extends HostProperties
     public HostClusterProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.HOST_CLUSTER.typeName;
     }
 
 

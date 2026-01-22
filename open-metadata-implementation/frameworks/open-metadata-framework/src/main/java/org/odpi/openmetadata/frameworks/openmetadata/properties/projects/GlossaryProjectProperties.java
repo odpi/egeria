@@ -35,7 +35,7 @@ public class GlossaryProjectProperties extends ClassificationBeanProperties
      *
      * @param template template object to copy.
      */
-    public GlossaryProjectProperties(ClassificationBeanProperties template)
+    public GlossaryProjectProperties(GlossaryProjectProperties template)
     {
         super(template);
     }

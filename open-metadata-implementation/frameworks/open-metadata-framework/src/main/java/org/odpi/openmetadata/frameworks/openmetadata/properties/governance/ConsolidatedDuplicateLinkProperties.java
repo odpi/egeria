@@ -38,10 +38,11 @@ public class ConsolidatedDuplicateLinkProperties extends RelationshipBeanPropert
      *
      * @param template object to copy
      */
-    public ConsolidatedDuplicateLinkProperties(RelationshipBeanProperties template)
+    public ConsolidatedDuplicateLinkProperties(ConsolidatedDuplicateLinkProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

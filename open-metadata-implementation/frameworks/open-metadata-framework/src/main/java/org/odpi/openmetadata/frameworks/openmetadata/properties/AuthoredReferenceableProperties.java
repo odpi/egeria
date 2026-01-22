@@ -94,6 +94,7 @@ public class AuthoredReferenceableProperties extends ReferenceableProperties
     public AuthoredReferenceableProperties(ReferenceableProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.AUTHORED_REFERENCEABLE.typeName;
     }
 
 

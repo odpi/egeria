@@ -42,9 +42,21 @@ public class TabularDataSetProperties extends DataSetProperties
      *
      * @param template object to copy
      */
+    public TabularDataSetProperties(TabularDataSetProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public TabularDataSetProperties(DataSetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TABULAR_DATA_SET.typeName;
     }
 
 

@@ -46,7 +46,7 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      *
      * @param template object to copy
      */
-    public DataFieldAnnotationProperties(AnnotationProperties template)
+    public DataFieldAnnotationProperties(DataFieldAnnotationProperties template)
     {
         super(template);
     }

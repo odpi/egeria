@@ -33,9 +33,21 @@ public class TeamLeaderProperties extends PersonRoleProperties
      *
      * @param template object to copy
      */
+    public TeamLeaderProperties(TeamLeaderProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public TeamLeaderProperties(PersonRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.TEAM_LEADER.typeName;
     }
 
 

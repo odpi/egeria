@@ -33,9 +33,21 @@ public class NoteLogAuthorProperties extends PersonRoleProperties
      *
      * @param template object to copy
      */
+    public NoteLogAuthorProperties(NoteLogAuthorProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public NoteLogAuthorProperties(PersonRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.NOTE_LOG_AUTHOR.typeName;
     }
 
 

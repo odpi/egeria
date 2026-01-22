@@ -39,9 +39,21 @@ public class ValidMetadataValueProperties extends ValidValueDefinitionProperties
      *
      * @param template object to copy
      */
+    public ValidMetadataValueProperties(ValidMetadataValueProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
     public ValidMetadataValueProperties(ValidValueDefinitionProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.VALID_METADATA_VALUE.typeName;
     }
 
 

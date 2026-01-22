@@ -40,7 +40,7 @@ public class ConceptModelElementProperties extends DesignModelElementProperties
      *
      * @param template object to copy
      */
-    public ConceptModelElementProperties(DesignModelElementProperties template)
+    public ConceptModelElementProperties(ConceptModelElementProperties template)
     {
         super(template);
     }

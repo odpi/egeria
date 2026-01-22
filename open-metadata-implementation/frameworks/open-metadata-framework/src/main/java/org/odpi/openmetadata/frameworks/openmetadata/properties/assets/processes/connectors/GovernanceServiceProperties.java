@@ -42,11 +42,22 @@ public class GovernanceServiceProperties extends DeployedConnectorProperties
      *
      * @param template template object to copy.
      */
-    public GovernanceServiceProperties(DeployedSoftwareComponentProperties template)
+    public GovernanceServiceProperties(GovernanceServiceProperties template)
     {
         super(template);
     }
 
+
+    /**
+     * Copy/clone Constructor
+     *
+     * @param template template object to copy.
+     */
+    public GovernanceServiceProperties(DeployedSoftwareComponentProperties template)
+    {
+        super(template);
+        super.typeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
+    }
 
 
     /**

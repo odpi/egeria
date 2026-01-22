@@ -34,7 +34,7 @@ public class WorkflowEngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public WorkflowEngineProperties(SoftwareCapabilityProperties template)
+    public WorkflowEngineProperties(WorkflowEngineProperties template)
     {
         super(template);
     }

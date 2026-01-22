@@ -34,9 +34,21 @@ public class CommunityMemberProperties extends PersonRoleProperties
      *
      * @param template object to copy
      */
+    public CommunityMemberProperties(CommunityMemberProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
     public CommunityMemberProperties(PersonRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.COMMUNITY_MEMBER.typeName;
     }
 
 

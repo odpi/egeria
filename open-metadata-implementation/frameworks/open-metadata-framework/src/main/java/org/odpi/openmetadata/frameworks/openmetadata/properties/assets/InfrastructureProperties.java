@@ -69,6 +69,7 @@ public class InfrastructureProperties extends AssetProperties
     public InfrastructureProperties(AssetProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.INFRASTRUCTURE.typeName;
     }
 
 

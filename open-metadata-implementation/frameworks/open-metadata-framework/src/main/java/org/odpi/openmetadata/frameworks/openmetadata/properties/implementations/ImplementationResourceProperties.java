@@ -35,7 +35,7 @@ public class ImplementationResourceProperties extends RoledRelationshipPropertie
      *
      * @param template object to copy
      */
-    public ImplementationResourceProperties(RoledRelationshipProperties template)
+    public ImplementationResourceProperties(ImplementationResourceProperties template)
     {
         super(template);
     }

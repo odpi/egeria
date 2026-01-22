@@ -38,6 +38,7 @@ public class UsedInContextProperties extends GlossaryTermRelationshipProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

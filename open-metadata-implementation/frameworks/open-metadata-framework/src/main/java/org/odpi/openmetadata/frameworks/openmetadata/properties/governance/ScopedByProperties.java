@@ -40,6 +40,7 @@ public class ScopedByProperties extends RelationshipBeanProperties
         super(template);
     }
 
+
     /**
      * JSON-style toString.
      *

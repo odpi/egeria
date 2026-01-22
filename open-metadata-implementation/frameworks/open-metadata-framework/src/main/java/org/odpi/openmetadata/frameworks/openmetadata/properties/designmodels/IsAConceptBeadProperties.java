@@ -35,7 +35,7 @@ public class IsAConceptBeadProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public IsAConceptBeadProperties(RoledRelationshipProperties template)
+    public IsAConceptBeadProperties(IsAConceptBeadProperties template)
     {
         super(template);
     }

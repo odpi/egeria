@@ -36,7 +36,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * Manages registered listeners
      */
     protected  GovernanceListenerManager governanceListenerManager = null;
-    protected  String                    listenerId = null;
 
 
     /**
@@ -66,16 +65,13 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
 
 
     /**
-     * Set up the listener manager.
+     * Set up the listener manager.  Called once for each governance engine handler.
      *
      * @param governanceListenerManager aggregates listeners from governance services
-     * @param listenerId             identifier used to maintain topic event pointer in event manager
      */
-    public void setListenerManager(GovernanceListenerManager governanceListenerManager,
-                                   String                    listenerId)
+    public void setListenerManager(GovernanceListenerManager governanceListenerManager)
     {
         this.governanceListenerManager = governanceListenerManager;
-        this.listenerId = listenerId;
     }
 
 
@@ -96,14 +92,16 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @param interestingEventTypes types of events that should be passed to the listener
      * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
      * @param specificInstance unique identifier of a specific instance to watch for
+     * @param listenerId             identifier used to maintain topic event pointer in event manager
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     @Override
-    public  void registerListener(WatchdogGovernanceListener   listener,
-                                  List<OpenMetadataEventType>  interestingEventTypes,
-                                  List<String>                 interestingMetadataTypes,
-                                  String                       specificInstance) throws InvalidParameterException
+    public  void registerListener(String                      listenerId,
+                                  WatchdogGovernanceListener  listener,
+                                  List<OpenMetadataEventType> interestingEventTypes,
+                                  List<String>                interestingMetadataTypes,
+                                  String                      specificInstance) throws InvalidParameterException
     {
         governanceListenerManager.registerListener(listenerId, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
@@ -111,9 +109,11 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
 
     /**
      * Called during the disconnect processing of the watchdog governance action service.
+     *
+     * @param listenerId             identifier used to maintain topic event pointer in event manager
      */
     @Override
-    public void disconnectListener()
+    public void disconnectListener(String listenerId)
     {
         governanceListenerManager.removeListener(listenerId);
     }

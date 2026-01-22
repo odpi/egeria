@@ -33,9 +33,21 @@ public class BusinessOwnerProperties extends GovernanceRoleProperties
      *
      * @param template object to copy
      */
+    public BusinessOwnerProperties(BusinessOwnerProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
     public BusinessOwnerProperties(GovernanceRoleProperties template)
     {
         super(template);
+        super.typeName = OpenMetadataType.BUSINESS_OWNER.typeName;
     }
 
 

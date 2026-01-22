@@ -35,7 +35,7 @@ public class ProjectDependencyProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public ProjectDependencyProperties(LabeledRelationshipProperties template)
+    public ProjectDependencyProperties(ProjectDependencyProperties template)
     {
         super(template);
     }

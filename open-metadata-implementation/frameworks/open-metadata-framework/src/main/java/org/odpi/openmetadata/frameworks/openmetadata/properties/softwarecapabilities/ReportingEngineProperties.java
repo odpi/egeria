@@ -34,7 +34,7 @@ public class ReportingEngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public ReportingEngineProperties(SoftwareCapabilityProperties template)
+    public ReportingEngineProperties(ReportingEngineProperties template)
     {
         super(template);
     }
