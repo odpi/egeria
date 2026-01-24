@@ -278,11 +278,11 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                       "refresh-config command or wait for the engine host services to retry the configuration request."),
 
     /**
-     * INTEGRATION-DAEMON-SERVICES-0028 - Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}
+     * INTEGRATION-DAEMON-SERVICES-0028 - Unable to refresh configuration for integration group {0}.  The exception was {1} with an error message {2}
      */
     INTEGRATION_GROUP_NO_CONFIG("INTEGRATION-DAEMON-SERVICES-0028",
                                 AuditLogRecordSeverityLevel.INFO,
-                                "Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}",
+                                "Unable to refresh configuration for integration group {0}.  The exception was {1} with an error message {2}",
                                 "The integration group cannot process any integration connector requests until its configuration can be retrieved.",
                                 "Review the error messages and resolve the cause of the problem.  " +
                                         "Either wait for the integration daemon services to refresh the configuration, or issue the refreshConfig " +

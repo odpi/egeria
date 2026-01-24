@@ -3381,6 +3381,16 @@ public enum OpenMetadataType
                     GovernanceRuleProperties.class),
 
     /**
+     * Technical control identifies the scope of data for a particular type of processing. The attributes of this governance definition identify the scope of the data in space and time.
+     */
+    DATA_LENS("bd9a8c9b-5434-46be-bbd7-71081475a36d",
+                    "DataLens",
+                    OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                    "c46593aa-692d-4315-953b-6765b9152a3b",
+                    "identifies the scope of data for a particular type of processing. The attributes of this governance definition identify the scope of the data in space and time.",
+                    DataLensProperties.class),
+
+    /**
      * The set of behaviour-related objectives that an asset or capability seeks to achieve.
      */
     SERVICE_LEVEL_OBJECTIVE("22c4e433-1b87-4446-840a-03f83d2dc113",

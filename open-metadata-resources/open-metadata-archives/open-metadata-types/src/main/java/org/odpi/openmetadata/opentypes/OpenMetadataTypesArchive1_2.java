@@ -7241,6 +7241,7 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0430TechnicalControls()
     {
+        this.archiveBuilder.addEntityDef(getDataLensEntity());
         this.archiveBuilder.addEntityDef(getGovernanceRuleEntity());
         this.archiveBuilder.addEntityDef(getGovernanceActionEntity());
         this.archiveBuilder.addEntityDef(getNotificationTypeEntity());
@@ -7253,6 +7254,32 @@ public class OpenMetadataTypesArchive1_2
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_RULE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
+    }
+
+    private EntityDef getDataLensEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_LENS,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_LONGITUDE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_LATITUDE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_LONGITUDE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_LATITUDE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_HEIGHT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_HEIGHT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE_ELEMENTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

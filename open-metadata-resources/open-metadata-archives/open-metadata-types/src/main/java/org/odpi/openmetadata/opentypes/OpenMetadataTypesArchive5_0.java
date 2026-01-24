@@ -429,6 +429,7 @@ public class OpenMetadataTypesArchive5_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_LATITUDE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_HEIGHT));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_HEIGHT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE_ELEMENTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_START_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_END_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));

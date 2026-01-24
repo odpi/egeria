@@ -333,14 +333,18 @@ public class WatchdogContext extends ConnectorContextBase
                                                             String            notificationTypeGUID,
                                                             long              notificationCount)
     {
+        Date notificationTime = new Date();
+
         NotificationProperties notificationProperties = new NotificationProperties();
 
-        notificationProperties.setQualifiedName(notificationProperties.getTypeName() + "::"  + connectorName + "::" + notificationTypeGUID + "::" + new Date().getTime() + "::" + notificationCount);
+        notificationProperties.setQualifiedName(notificationProperties.getTypeName() + "::"  + connectorName + "::" + notificationTypeGUID + "::" + notificationTime.getTime() + "::" + notificationCount);
 
         if (notificationDescription != null)
         {
+            notificationProperties.setRequestedTime(notificationTime);
+            notificationProperties.setStartTime(notificationTime);
             notificationProperties.setActivityStatus(ActivityStatus.FOR_INFO);
-            notificationProperties.setDisplayName(messageFormatter.getFormattedMessage(notificationDescription));
+            notificationProperties.setDisplayName(notificationTime + " " + messageFormatter.getFormattedMessage(notificationDescription));
             notificationProperties.setSituation(notificationDescription.getSystemAction());
             notificationProperties.setExpectedBehaviour(notificationDescription.getUserAction());
         }

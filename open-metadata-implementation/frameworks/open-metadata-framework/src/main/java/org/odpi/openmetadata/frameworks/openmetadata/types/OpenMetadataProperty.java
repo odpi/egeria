@@ -2098,6 +2098,11 @@ public enum OpenMetadataProperty
     METADATA_SOURCE_QUALIFIED_NAME("metadataSourceQualifiedName", DataType.STRING, DataType.STRING.getName(), "Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.", null, "5538fcb0-b3d9-4870-8d1f-1d2752c75255"),
 
     /**
+     * Map from name (such as open metadata type name) to guid of the element that defines the scope of the data.
+     */
+    SCOPE_ELEMENTS("scopeElements", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getName(), "Map from name (such as open metadata type name) to guid of the element that defines the scope of the data.", null, "9a7cec53-6232-4ed3-8881-86c187b6b487"),
+
+    /**
      * If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.
      */
     MIN_LONGITUDE("minLongitude", DataType.FLOAT, DataType.FLOAT.getName(), "If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "9d1694e3-2197-49d4-b651-8d6ab0b8bc42"),

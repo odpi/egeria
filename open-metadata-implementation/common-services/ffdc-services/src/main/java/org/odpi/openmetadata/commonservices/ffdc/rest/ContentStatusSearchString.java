@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Objects;
  */
 public class ContentStatusSearchString extends SearchStringRequestBody
 {
-    private ContentStatus contentStatus = null;
+    private List<ContentStatus> contentStatusList = null;
 
     /**
      * Default constructor
@@ -32,30 +33,30 @@ public class ContentStatusSearchString extends SearchStringRequestBody
 
         if (template != null)
         {
-            contentStatus = template.getContentStatus();
+            contentStatusList = template.getContentStatusList();
         }
     }
 
 
     /**
-     * Return the status value.
+     * Return the status list.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public ContentStatus getContentStatus()
+    public List<ContentStatus> getContentStatusList()
     {
-        return contentStatus;
+        return contentStatusList;
     }
 
 
     /**
-     * Set up the status value.
+     * Set up the status list.
      *
-     * @param contentStatus element status enum value
+     * @param contentStatusList status enum list
      */
-    public void setContentStatus(ContentStatus contentStatus)
+    public void setContentStatusList(List<ContentStatus> contentStatusList)
     {
-        this.contentStatus = contentStatus;
+        this.contentStatusList = contentStatusList;
     }
 
 
@@ -68,7 +69,7 @@ public class ContentStatusSearchString extends SearchStringRequestBody
     public String toString()
     {
         return "ContentStatusSearchString{" +
-                "contentStatus=" + contentStatus +
+                "contentStatusList=" + contentStatusList +
                 "} " + super.toString();
     }
 
@@ -86,7 +87,7 @@ public class ContentStatusSearchString extends SearchStringRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContentStatusSearchString that = (ContentStatusSearchString) objectToCompare;
-        return Objects.equals(contentStatus, that.contentStatus);
+        return Objects.equals(contentStatusList, that.contentStatusList);
     }
 
 
@@ -98,6 +99,6 @@ public class ContentStatusSearchString extends SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), contentStatus);
+        return Objects.hash(super.hashCode(), contentStatusList);
     }
 }

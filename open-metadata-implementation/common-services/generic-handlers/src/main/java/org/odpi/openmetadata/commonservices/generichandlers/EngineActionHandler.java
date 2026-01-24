@@ -1496,14 +1496,26 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        this.addAnchorGUIDToBuilder(userId,
-                                    anchorGUID,
-                                    anchorGUIDParameterName,
-                                    false,
-                                    false,
-                                    null,
-                                    builder,
-                                    methodName);
+        if (anchorGUID != null)
+        {
+            this.addAnchorGUIDToBuilder(userId,
+                                        anchorGUID,
+                                        anchorGUIDParameterName,
+                                        false,
+                                        false,
+                                        null,
+                                        builder,
+                                        methodName);
+        }
+        else
+        {
+            builder.setAnchors(userId, null,
+                               OpenMetadataType.ENGINE_ACTION.typeName,
+                               OpenMetadataType.ASSET.typeName,
+                               null,
+                               builder.getInitialGovernanceZones(),
+                               methodName);
+        }
 
         String engineActionGUID = this.createBeanInRepository(userId,
                                                               null,

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActivityStatusFilterRequestBody extends FilterRequestBody
 {
-    private ActivityStatus activityStatus = null;
+    private List<ActivityStatus> activityStatusList = null;
 
 
     /**
@@ -45,7 +45,7 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
 
         if (template != null)
         {
-            activityStatus = template.getActivityStatus();
+            activityStatusList = template.getActivityStatusList();
         }
     }
 
@@ -53,22 +53,22 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
     /**
      * Return the status value.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public ActivityStatus getActivityStatus()
+    public List<ActivityStatus> getActivityStatusList()
     {
-        return activityStatus;
+        return activityStatusList;
     }
 
 
     /**
      * Set up the status value.
      *
-     * @param activityStatus element status enum value
+     * @param activityStatusList status enum list
      */
-    public void setActivityStatus(ActivityStatus activityStatus)
+    public void setActivityStatusList(List<ActivityStatus> activityStatusList)
     {
-        this.activityStatus = activityStatus;
+        this.activityStatusList = activityStatusList;
     }
 
 
@@ -81,7 +81,7 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
     public String toString()
     {
         return "ActivityStatusFilterRequestBody{" +
-                "activityStatus=" + activityStatus +
+                "activityStatusList=" + activityStatusList +
                 "} " + super.toString();
     }
 
@@ -99,7 +99,7 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActivityStatusFilterRequestBody that = (ActivityStatusFilterRequestBody) objectToCompare;
-        return activityStatus == that.activityStatus;
+        return activityStatusList == that.activityStatusList;
     }
 
 
@@ -111,6 +111,6 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus);
+        return Objects.hash(super.hashCode(), activityStatusList);
     }
 }

@@ -8,14 +8,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelati
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -2379,19 +2377,19 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @param userId       calling user
      * @param searchString string to search for (may include RegExs)
-     * @param contentStatus   optional  status
+     * @param contentStatusList   optional status list
      * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findAuthoredElements(String         userId,
-                                                              String         searchString,
-                                                              ContentStatus  contentStatus,
-                                                              SearchOptions  suppliedSearchOptions) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findAuthoredElements(String              userId,
+                                                              String              searchString,
+                                                              List<ContentStatus> contentStatusList,
+                                                              SearchOptions       suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
     {
         final String methodName = "findAuthoredElements";
 
@@ -2407,7 +2405,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                    searchOptions,
                                                                                    methodName);
 
-        return filterAuthoredElements(openMetadataElements, contentStatus);
+        return filterAuthoredElements(openMetadataElements, contentStatusList);
     }
 
 
@@ -2416,19 +2414,19 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @param userId     calling user
      * @param category   type to search for
-     * @param contentStatus optional status
+     * @param contentStatusList optional status list
      * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getAuthoredElementsByCategory(String        userId,
-                                                                       String        category,
-                                                                       ContentStatus contentStatus,
-                                                                       QueryOptions  suppliedQueryOptions) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getAuthoredElementsByCategory(String              userId,
+                                                                       String              category,
+                                                                       List<ContentStatus> contentStatusList,
+                                                                       QueryOptions        suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                                        PropertyServerException,
+                                                                                                                        UserNotAuthorizedException
     {
         final String methodName = "getAuthoredElementsByCategory";
 
@@ -2445,7 +2443,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                          suppliedQueryOptions,
                                                                                          methodName);
 
-        return filterAuthoredElements(openMetadataElements, contentStatus);
+        return filterAuthoredElements(openMetadataElements, contentStatusList);
     }
 
 
@@ -2453,11 +2451,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * Filter authored elements by content status.
      *
      * @param openMetadataRootElements retrieved elements
-     * @param contentStatus           optional  status
+     * @param contentStatusList           optional  status
      * @return list of process elements
      */
     private List<OpenMetadataRootElement> filterAuthoredElements(List<OpenMetadataRootElement> openMetadataRootElements,
-                                                                 ContentStatus                 contentStatus)
+                                                                 List<ContentStatus>           contentStatusList)
     {
         if (openMetadataRootElements != null)
         {
@@ -2468,7 +2466,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) &&
                         (openMetadataRootElement.getProperties() instanceof AuthoredReferenceableProperties authoredReferenceableProperties))
                 {
-                    if ((contentStatus == null) || (contentStatus == authoredReferenceableProperties.getContentStatus()))
+                    if (contentStatusList == null)
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                    else if (contentStatusList.contains(authoredReferenceableProperties.getContentStatus()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

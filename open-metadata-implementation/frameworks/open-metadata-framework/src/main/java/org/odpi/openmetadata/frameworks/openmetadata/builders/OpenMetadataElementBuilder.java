@@ -732,11 +732,38 @@ public class OpenMetadataElementBuilder
                                                                                      OpenMetadataProperty.IMPLEMENTATION_DESCRIPTION.name,
                                                                                      governanceControlProperties.getImplementationDescription());
 
-                                if (governanceControlProperties instanceof SecurityGroupProperties securityGroupProperties)
+                                if (properties instanceof DataLensProperties dataScopeProperties)
                                 {
-                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.DISTINGUISHED_NAME.name,
-                                                                                         securityGroupProperties.getDistinguishedName());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MAX_LONGITUDE.name,
+                                                                                        dataScopeProperties.getMaxLongitude());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MIN_LONGITUDE.name,
+                                                                                        dataScopeProperties.getMinLongitude());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MAX_LATITUDE.name,
+                                                                                        dataScopeProperties.getMaxLongitude());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MIN_LATITUDE.name,
+                                                                                        dataScopeProperties.getMinLatitude());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MAX_HEIGHT.name,
+                                                                                        dataScopeProperties.getMaxHeight());
+                                    elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                        OpenMetadataProperty.MIN_HEIGHT.name,
+                                                                                        dataScopeProperties.getMinHeight());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COLLECTION_START_TIME.name,
+                                                                                       dataScopeProperties.getDataCollectionStartTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COLLECTION_END_TIME.name,
+                                                                                       dataScopeProperties.getDataCollectionEndTime());
+                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                            OpenMetadataProperty.SCOPE_ELEMENTS.name,
+                                                                                            dataScopeProperties.getScopeElements());
+                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                            OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                            dataScopeProperties.getAdditionalProperties());
                                 }
                                 else if (governanceControlProperties instanceof GovernanceMetricProperties governanceMetricProperties)
                                 {
@@ -785,6 +812,12 @@ public class OpenMetadataElementBuilder
                                                                                              OpenMetadataProperty.CRITERIA.name,
                                                                                              governanceZoneProperties.getCriteria());
                                     }
+                                }
+                                else if (governanceControlProperties instanceof SecurityGroupProperties securityGroupProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                                                         securityGroupProperties.getDistinguishedName());
                                 }
                                 else if (governanceControlProperties instanceof TermsAndConditionsProperties termsAndConditionsProperties)
                                 {

@@ -132,8 +132,8 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
     @Override
-    public void updateEngineActionStatus(String             userId,
-                                         String             engineActionGUID,
+    public void updateEngineActionStatus(String         userId,
+                                         String         engineActionGUID,
                                          ActivityStatus activityStatus) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException

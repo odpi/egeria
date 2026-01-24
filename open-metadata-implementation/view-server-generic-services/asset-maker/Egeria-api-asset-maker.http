@@ -343,7 +343,7 @@ Content-Type: application/json
 {
   "class" : "ActivityStatusSearchString",
   "searchString" : "xxx",
-  "activityStatus" : "IN_PROGRESS",
+  "activityStatusList" : ["IN_PROGRESS"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -377,7 +377,8 @@ Content-Type: application/json
 {
   "class" : "ActivityStatusFilterRequestBody",
   "filter" : "xxx",
-  "activityStatus" : "IN_PROGRESS",
+  "activityStatusList" : [ "IN_PROGRESS" ],
+  "category" : "Governance",
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -410,7 +411,335 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ActionRequestBody"
+  "class" : "ActionRequestBody",
+  "initialClassifications" : {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : "governance"
+    }
+  },
+  "newActionTargets" : [
+    {
+      "actionTargetGUID" : "add guid here",
+      "actionTargetName": "add name here"
+    }
+  ],
+  "properties" : {
+    "class" : "ActionProperties",
+    "qualifiedName": "",
+    "identifier": "",
+    "displayName": "",
+    "description": "",
+    "versionIdentifier": "",
+    "category": "",
+    "url": "",
+    "resourceName": "",
+    "namespace": "",
+    "deployedImplementationType": "",
+    "source": "",
+    "expectedBehaviour": "",
+    "requestedTime": "{{$isoTimestamp}}",
+    "requestedStartTime": "{{$isoTimestamp}}",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "lastPauseTime": "{{$isoTimestamp}}",
+    "lastResumeTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "priority": 0,
+    "formula": "",
+    "formulaType": "",
+    "activityStatus": "REQUESTED",
+    "userDefinedActivityStatus": "",
+    "situation": "",
+    "additionalProperties" : {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "originatorGUID" : "add guid of requester (ActionRequester relationship)",
+  "actionSponsorGUID" : "add guid of sponsor (Actions relationship)",
+  "assignToActorGUID" : "add guid of actor that will be assigned this action (AssignmentScope relationship)"
+}
+
+
+###
+# @name createAction (Meeting)
+# Create a new action and link it to the supplied actor and targets (if applicable).
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param requestBody properties of the action
+#
+# @return unique identifier of the action or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionRequestBody",
+  "initialClassifications" : {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : "governance"
+    }
+  },
+  "newActionTargets" : [
+    {
+      "actionTargetGUID" : "add guid here",
+      "actionTargetName": "add name here"
+    }
+  ],
+  "properties" : {
+    "class" : "MeetingProperties",
+    "qualifiedName": "",
+    "identifier": "",
+    "displayName": "",
+    "description": "",
+    "versionIdentifier": "",
+    "category": "",
+    "url": "",
+    "resourceName": "",
+    "namespace": "",
+    "deployedImplementationType": "",
+    "source": "",
+    "expectedBehaviour": "",
+    "requestedTime": "{{$isoTimestamp}}",
+    "requestedStartTime": "{{$isoTimestamp}}",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "lastPauseTime": "{{$isoTimestamp}}",
+    "lastResumeTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "priority": 0,
+    "formula": "",
+    "formulaType": "",
+    "activityStatus": "REQUESTED",
+    "userDefinedActivityStatus": "",
+    "situation": "",
+    "objective": "",
+    "minutes": [""],
+    "decisions": [""],
+    "additionalProperties" : {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "originatorGUID" : "add guid of requester (ActionRequester relationship)",
+  "actionSponsorGUID" : "add guid of sponsor (Actions relationship)",
+  "assignToActorGUID" : "add guid of actor that will be assigned this action (AssignmentScope relationship)"
+}
+
+
+###
+# @name createAction (To Do)
+# Create a new action and link it to the supplied actor and targets (if applicable).
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param requestBody properties of the action
+#
+# @return unique identifier of the action or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionRequestBody",
+  "initialClassifications" : {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : "governance"
+    }
+  },
+  "newActionTargets" : [
+    {
+      "actionTargetGUID" : "add guid here",
+      "actionTargetName": "add name here"
+    }
+  ],
+  "properties" : {
+    "class" : "ToDoProperties",
+    "qualifiedName": "",
+    "identifier": "",
+    "displayName": "",
+    "description": "",
+    "versionIdentifier": "",
+    "category": "",
+    "url": "",
+    "resourceName": "",
+    "namespace": "",
+    "deployedImplementationType": "",
+    "source": "",
+    "expectedBehaviour": "",
+    "requestedTime": "{{$isoTimestamp}}",
+    "requestedStartTime": "{{$isoTimestamp}}",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "lastPauseTime": "{{$isoTimestamp}}",
+    "lastResumeTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "priority": 0,
+    "formula": "",
+    "formulaType": "",
+    "activityStatus": "REQUESTED",
+    "userDefinedActivityStatus": "",
+    "situation": "",
+    "additionalProperties" : {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "originatorGUID" : "add guid of requester (ActionRequester relationship)",
+  "actionSponsorGUID" : "add guid of sponsor (Actions relationship)",
+  "assignToActorGUID" : "add guid of actor that will be assigned this action (AssignmentScope relationship)"
+}
+
+###
+# @name createAction (Notification)
+# Create a new action and link it to the supplied actor and targets (if applicable).
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param requestBody properties of the action
+#
+# @return unique identifier of the action or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionRequestBody",
+  "initialClassifications" : {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : "governance"
+    }
+  },
+  "newActionTargets" : [
+    {
+      "actionTargetGUID" : "add guid here",
+      "actionTargetName": "add name here"
+    }
+  ],
+  "properties" : {
+    "class" : "NotificationProperties",
+    "qualifiedName": "",
+    "identifier": "",
+    "displayName": "",
+    "description": "",
+    "versionIdentifier": "",
+    "category": "",
+    "url": "",
+    "resourceName": "",
+    "namespace": "",
+    "deployedImplementationType": "",
+    "source": "",
+    "expectedBehaviour": "",
+    "requestedTime": "{{$isoTimestamp}}",
+    "requestedStartTime": "{{$isoTimestamp}}",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "lastPauseTime": "{{$isoTimestamp}}",
+    "lastResumeTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "priority": 0,
+    "formula": "",
+    "formulaType": "",
+    "activityStatus": "REQUESTED",
+    "userDefinedActivityStatus": "",
+    "situation": "",
+    "additionalProperties" : {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "originatorGUID" : "add guid of requester (ActionRequester relationship)",
+  "actionSponsorGUID" : "add guid of sponsor (Actions relationship)",
+  "assignToActorGUID" : "add guid of actor that will be assigned this action (AssignmentScope relationship)"
+}
+
+
+###
+# @name createAction
+# Create a new action and link it to the supplied actor and targets (if applicable).
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param requestBody properties of the action
+#
+# @return unique identifier of the action or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionRequestBody",
+  "initialClassifications" : {
+    "ZoneMembership" : {
+      "class" : "ZoneMembershipProperties",
+      "zoneMembership" : "governance"
+    }
+  },
+  "newActionTargets" : [
+    {
+      "actionTargetGUID" : "add guid here",
+      "actionTargetName": "add name here"
+    }
+  ],
+  "properties" : {
+    "class" : "ReviewProperties",
+    "qualifiedName": "",
+    "identifier": "",
+    "displayName": "",
+    "description": "",
+    "versionIdentifier": "",
+    "category": "",
+    "url": "",
+    "resourceName": "",
+    "namespace": "",
+    "deployedImplementationType": "",
+    "source": "",
+    "expectedBehaviour": "",
+    "requestedTime": "{{$isoTimestamp}}",
+    "requestedStartTime": "{{$isoTimestamp}}",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "lastPauseTime": "{{$isoTimestamp}}",
+    "lastResumeTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "priority": 0,
+    "formula": "",
+    "formulaType": "",
+    "activityStatus": "REQUESTED",
+    "userDefinedActivityStatus": "",
+    "situation": "",
+    "reviewDate" : "{{$isoTimestamp}}",
+    "comment" : "",
+    "additionalProperties" : {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  },
+  "originatorGUID" : "add guid of requester (ActionRequester relationship)",
+  "actionSponsorGUID" : "add guid of sponsor (Actions relationship)",
+  "assignToActorGUID" : "add guid of actor that will be assigned this action (AssignmentScope relationship)"
 }
 
 ###
@@ -528,7 +857,7 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusRequestBody",
-  "activityStatus": "IN_PROGRESS"
+  "activityStatusList": ["REQUESTED", "WAITING", "IN_PROGRESS"]
 }
 
 ###
@@ -550,7 +879,7 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusRequestBody",
-  "activityStatus": "IN_PROGRESS"
+  "activityStatusList": ["REQUESTED", "WAITING", "IN_PROGRESS"]
 }
 
 
@@ -680,7 +1009,7 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusRequestBody",
-  "activityStatus": "IN_PROGRESS"
+  "activityStatusList": ["REQUESTED", "WAITING", "IN_PROGRESS"]
 }
 
 ###
@@ -702,7 +1031,7 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusRequestBody",
-  "activityStatus": "IN_PROGRESS"
+  "activityStatusList": ["REQUESTED", "WAITING", "IN_PROGRESS"]
 }
 
 
@@ -725,7 +1054,7 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusRequestBody",
-  "activityStatus": "IN_PROGRESS"
+  "activityStatusList": ["REQUESTED", "WAITING", "IN_PROGRESS"]
 }
 
 
@@ -756,7 +1085,7 @@ Content-Type: application/json
 {
   "class" : "DeploymentStatusSearchString",
   "searchString" : "xxx",
-  "deploymentStatus" : "ACTIVE",
+  "deploymentStatusList" : ["ACTIVE"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -792,7 +1121,7 @@ Content-Type: application/json
 {
   "class" : "DeploymentStatusFilterRequestBody",
   "filter" : "xxx",
-  "deploymentStatus" : "ACTIVE",
+  "deploymentStatusList" : ["ACTIVE"],
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -964,7 +1293,7 @@ Content-Type: application/json
 {
   "class" : "ContentStatusSearchString",
   "searchString" : "xxx",
-  "contentStatus" : "ACTIVE",
+  "contentStatusList" : ["ACTIVE"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -1000,7 +1329,7 @@ Content-Type: application/json
 {
   "class" : "ContentStatusFilterRequestBody",
   "filter" : "xxx",
-  "contentStatus" : "ACTIVE",
+  "contentStatusList" : ["ACTIVE"],
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",

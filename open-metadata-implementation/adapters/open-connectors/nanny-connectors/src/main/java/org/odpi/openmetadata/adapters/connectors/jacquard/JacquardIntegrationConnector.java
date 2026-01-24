@@ -207,6 +207,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         harvestReferenceDataSets(existingDataSources);
 
         /*
+         * Refresh all the harvested tabular data sources, looking for data changes.
+         */
+        super.refresh();
+
+        /*
          * The engine action for the watchdog notification serve is started before the monitored resource
          * and subscribers are attached to ensure the notification watchdog sees their attachment events and
          * sends out the welcome messages.
@@ -227,11 +232,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                       error);
             }
         }
-
-        /*
-         * Refresh all the harvested tabular data sources, looking for data changes.
-         */
-        super.refresh();
     }
 
 
@@ -827,9 +827,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
-     * subscription template.  When the governance action process runs, it creates the subscription for the requesting
-     * actor.
+     * Set up a product's subscription types.  These are governance types configured with an appropriate
+     * subscription behaviour.  There is also a customized governance action process for creating a subscription.
+     * When the governance action process runs, it creates the subscription for the requesting
+     * actor by linking them to the notification type.
      *
      * @param productDefinition description of product
      * @param productHeader unique identifier and type for the product
@@ -1482,7 +1483,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
         List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                                                                                      ActivityStatus.IN_PROGRESS,
+                                                                                      Collections.singletonList(ActivityStatus.IN_PROGRESS),
                                                                                       assetClient.getSearchOptions(0, 0));
 
         if (activeEngineActions == null)

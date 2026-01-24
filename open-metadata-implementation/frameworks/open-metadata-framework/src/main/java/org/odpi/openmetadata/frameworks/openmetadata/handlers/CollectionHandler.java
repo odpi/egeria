@@ -150,19 +150,19 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      *
      * @param userId       calling user
      * @param searchString string to search for (may include RegExs)
-     * @param deploymentStatus   optional  status
+     * @param deploymentStatusList   optional status list
      * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findDigitalProducts(String           userId,
-                                                             String           searchString,
-                                                             DeploymentStatus deploymentStatus,
-                                                             SearchOptions    suppliedSearchOptions) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findDigitalProducts(String                 userId,
+                                                             String                 searchString,
+                                                             List<DeploymentStatus> deploymentStatusList,
+                                                             SearchOptions          suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
     {
         final String methodName = "findDigitalProducts";
 
@@ -178,7 +178,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                                    suppliedSearchOptions,
                                                                                    methodName);
 
-        return filterDigitalProduct(openMetadataElements, deploymentStatus);
+        return filterDigitalProduct(openMetadataElements, deploymentStatusList);
     }
 
 
@@ -187,19 +187,19 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      *
      * @param userId     calling user
      * @param category   type to search for
-     * @param deploymentStatus optional status
+     * @param deploymentStatusList optional status list
      * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getDigitalProductByCategory(String           userId,
-                                                                     String           category,
-                                                                     DeploymentStatus deploymentStatus,
-                                                                     QueryOptions     suppliedQueryOptions) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getDigitalProductByCategory(String                 userId,
+                                                                     String                 category,
+                                                                     List<DeploymentStatus> deploymentStatusList,
+                                                                     QueryOptions           suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException
     {
         final String methodName = "getDigitalProductByCategory";
 
@@ -216,7 +216,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                                          queryOptions,
                                                                                          methodName);
 
-        return filterDigitalProduct(openMetadataElements, deploymentStatus);
+        return filterDigitalProduct(openMetadataElements, deploymentStatusList);
     }
 
 
@@ -224,11 +224,11 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * Filter digital products by deployment status.
      *
      * @param openMetadataRootElements retrieved elements
-     * @param deploymentStatus           optional  status
+     * @param deploymentStatusList           optional status list
      * @return list of process elements
      */
     private List<OpenMetadataRootElement> filterDigitalProduct(List<OpenMetadataRootElement> openMetadataRootElements,
-                                                               DeploymentStatus deploymentStatus)
+                                                               List<DeploymentStatus>        deploymentStatusList)
     {
         if (openMetadataRootElements != null)
         {
@@ -239,7 +239,11 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) &&
                         (openMetadataRootElement.getProperties() instanceof DigitalProductProperties digitalProductProperties))
                 {
-                    if ((deploymentStatus == null) || (deploymentStatus == digitalProductProperties.getDeploymentStatus()))
+                    if (deploymentStatusList == null)
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                    else if (deploymentStatusList.contains(digitalProductProperties.getDeploymentStatus()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
