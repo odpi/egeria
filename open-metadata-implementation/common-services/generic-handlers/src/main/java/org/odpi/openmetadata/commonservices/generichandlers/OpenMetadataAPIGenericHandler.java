@@ -1956,19 +1956,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws UserNotAuthorizedException local server user id not authorized to update LatestChange
      * @throws PropertyServerException logic error because classification type not recognized
      */
-    private void addLatestChangeToAnchor(EntityDetail       anchorEntity,
-                                         LatestChangeTarget latestChangeTarget,
-                                         LatestChangeAction latestChangeAction,
-                                         String             classificationName,
-                                         String             attachmentGUID,
-                                         String             attachmentTypeName,
-                                         String             relationshipTypeName,
-                                         String             userId,
-                                         String             actionDescription,
-                                         boolean            forLineage,
-                                         boolean            forDuplicateProcessing,
-                                         Date               effectiveTime,
-                                         String             methodName) throws InvalidParameterException,
+    protected void addLatestChangeToAnchor(EntityDetail anchorEntity,
+                                           LatestChangeTarget latestChangeTarget,
+                                           LatestChangeAction latestChangeAction,
+                                           String classificationName,
+                                           String attachmentGUID,
+                                           String attachmentTypeName,
+                                           String relationshipTypeName,
+                                           String userId,
+                                           String actionDescription,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date effectiveTime,
+                                           String methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -2201,7 +2201,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         else if (propertyBuilder.isClassificationSet(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
         {
             /*
-             * The new entity is going to be anchored to another element.
+             * The new entity is going to be anchored to another element.  First, check that the caller has not requested
+             * governance zones since they can only be attached to an anchor.
              */
             List<String> proposedZones = propertyBuilder.getInitialGovernanceZones();
 

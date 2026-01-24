@@ -418,13 +418,17 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                     combinedClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
                 }
 
+                auditLog.logMessage(methodName, OGFAuditCode.ISSUING_NOTIFICATION.getMessageDefinition(localServiceName,
+                                                                                                       subscriberGUID,
+                                                                                                       subscriberHeader.getType().getTypeName(),
+                                                                                                       notificationTypeGUID));
+
                 /*
                  * Issue notification.  This depends on the type of subscriber.
                  */
                 if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.ACTOR.typeName))
                 {
                     return assetHandler.createActorAction(userId,
-                                                          subscriberNotificationProperties.getTypeName(),
                                                           initialClassifications,
                                                           subscriberNotificationProperties,
                                                           actionRequesterGUID,
@@ -436,7 +440,6 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                 else if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.NOTE_LOG.typeName))
                 {
                     return assetHandler.createNoteLogEntry(userId,
-                                                           subscriberNotificationProperties.getTypeName(),
                                                            initialClassifications,
                                                            subscriberNotificationProperties,
                                                            actionRequesterGUID,
@@ -478,9 +481,11 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                      * The subscriber is not supported by the notification manager, so set its status to INVALID.
                      */
                     auditLog.logMessage(methodName, OGFAuditCode.WRONG_TYPE_OF_SUBSCRIBER.getMessageDefinition(subscriberGUID,
+                                                                                                               notificationTypeGUID,
                                                                                                                subscriberHeader.getType().getTypeName(),
                                                                                                                localServiceName,
                                                                                                                List.of(OpenMetadataType.ACTOR.typeName,
+                                                                                                                       OpenMetadataType.NOTE_LOG.typeName,
                                                                                                                        OpenMetadataType.GOVERNANCE_ACTION.typeName).toString()));
                     newSubscriberStatus = ActivityStatus.INVALID;
                 }

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.opengovernance.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 
 
 /**
@@ -22,23 +21,31 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSever
  */
 public enum OGFAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OPEN-GOVERNANCE-0001 - The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3}
+     */
+    ISSUING_NOTIFICATION("OPEN-GOVERNANCE-0001",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3}",
+                             "The governance service attempts to notify the subscriber.",
+                             "Verify that this subscriber should be linked to this notification type.  If not, remove the subscriber from the notification type.  If this is a valid subscriber then verify that the notification was successful.  Error messages should be logged if there are any known failures."),
 
     /**
-     * OPEN-GOVERNANCE-0001 - Subscriber {0} is of type {1} but {2} only supports the following subscriber type(s): {3}
+     * OPEN-GOVERNANCE-0002 - Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}
      */
-    WRONG_TYPE_OF_SUBSCRIBER("OPEN-GOVERNANCE-0001",
+    WRONG_TYPE_OF_SUBSCRIBER("OPEN-GOVERNANCE-0002",
                              AuditLogRecordSeverityLevel.ERROR,
-                             "Subscriber {0} is of type {1} but {2} only supports the following subscriber type(s): {3}",
-                             "The watchdog action service ignores this subscriber.",
+                             "Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}",
+                             "The governance service ignores this subscriber.",
                              "Remove this subscriber from the notification type and replace it with a subscriber type that is supported."),
 
     /**
-     * OPEN-GOVERNANCE-0002 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
+     * OPEN-GOVERNANCE-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
      */
-    UNEXPECTED_EXCEPTION("OPEN-GOVERNANCE-0002",
+    UNEXPECTED_EXCEPTION("OPEN-GOVERNANCE-0003",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot catalog one or more metadata elements in the metadata repository.",
+                         "The governance service cannot perform the requested governance action on one or more metadata elements in the metadata repository.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;
 

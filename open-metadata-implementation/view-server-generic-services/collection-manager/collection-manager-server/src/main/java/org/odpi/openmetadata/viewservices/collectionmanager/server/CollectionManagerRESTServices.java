@@ -179,7 +179,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findDigitalProducts(userId, requestBody.getSearchString(), requestBody.getDeploymentStatus(), requestBody));
+                response.setElements(handler.findDigitalProducts(userId, requestBody.getSearchString(), requestBody.getDeploymentStatusList(), requestBody));
             }
             else
             {
@@ -231,7 +231,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getDigitalProductByCategory(userId, requestBody.getFilter(), requestBody.getDeploymentStatus(), requestBody));
+                response.setElements(handler.getDigitalProductByCategory(userId, requestBody.getFilter(), requestBody.getDeploymentStatusList(), requestBody));
             }
             else
             {

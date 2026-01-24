@@ -1,0 +1,383 @@
+# Egeria-coco-sales-territories
+# Create a referce data set for sales territories
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Valid Value Definitions
+# https://egeria-project.org/concepts/valid-value-definition
+
+
+
+###
+# @name create the reference data set
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": true,
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ReferenceDataSetProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories",
+    "identifier": "SALES-TERRITORIES-2026",
+    "displayName": "Coco Pharmaceuticals Sales Territories",
+    "description": "Geographical organization of sales territories for reporting.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "SALES-TERRITORIES-2026"
+  }
+}
+
+> {% client.global.set("salesTerritoriesGUID", response.body.guid); %}
+
+###
+# @name create reference data value for Europe
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{salesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::Europe",
+    "displayName": "Europe",
+    "description": "European sales territory encompassing EU counties and the United Kingdom.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "Europe"
+  }
+}
+
+> {% client.global.set("europeSalesTerritoriesGUID", response.body.guid); %}
+
+
+###
+# @name create reference data value for the European Union (EU)
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{europeSalesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::EU",
+    "displayName": "European Union (EU)",
+    "description": "Sales territory encompassing European Union (EU) counties.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "European Union"
+  }
+}
+
+> {% client.global.set("euSalesTerritoriesGUID", response.body.guid); %}
+
+
+###
+# @name create reference data value for the United Kingdom (UK)
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{europeSalesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::UK",
+    "displayName": "United Kingdom (UK)",
+    "description": "Sales territory encompassing Great Britain and Northern Ireland.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "United Kingdom"
+  }
+}
+
+> {% client.global.set("ukSalesTerritoriesGUID", response.body.guid); %}
+
+
+###
+# @name create reference data value for North America (NA)
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{salesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::NA",
+    "displayName": "North America (NA)",
+    "description": "North American sales territory encompassing the United States (US) and Canada.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "North America"
+  }
+}
+
+> {% client.global.set("naSalesTerritoriesGUID", response.body.guid); %}
+
+
+###
+# @name create reference data value for the United States of America (USA)
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{naSalesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::US",
+    "displayName": "United States of America (USA)",
+    "description": "Sales territory encompassing the United States of America.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "United States of America"
+  }
+}
+
+> {% client.global.set("usaSalesTerritoriesGUID", response.body.guid); %}
+
+###
+# @name create reference data value for the United States of America (USA)
+# Create a valid value definition.
+#
+# Request body provides             properties for the valid value definition.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{salesTerritoriesGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{naSalesTerritoriesGUID}}",
+  "parentRelationshipTypeName": "ValidValueMember",
+  "parentRelationshipProperties": {
+    "class": "ValidValueMemberProperties",
+    "isDefaultValue" : false
+  },
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "ReferenceDataValueProperties",
+    "qualifiedName": "ReferenceDataSet::CocoPharmaceuticals::SalesTerritories::Canada",
+    "displayName": "Canada",
+    "description": "Sales territory encompassing Canada.",
+    "category": "Reference Data",
+    "contentStatus" : "ACTIVE",
+    "usage": "Used to consistently report on sales forecasts and actual sales.",
+    "dataType" : "string",
+    "scope" : "Global",
+    "preferredValue" : "Canada"
+  }
+}
+
+> {% client.global.set("canadaSalesTerritoriesGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Work with reference data set
+# https://egeria-project.org/concepts/valid-value-definition
+
+
+###
+# @name findValidValueDefinitions
+# Retrieve the list of valid value definition metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "SALES-TERRITORIES-2026",
+  "metadataElementTypeName" : "ReferenceDataValueProperties",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getValidValueDefinitionByGUID
+# Return the properties of a specific valid value definition.
+#
+# @param validValueDefinitionGUID    unique identifier of the required element
+# Request body controls query options
+#
+# Returns element or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-definitions/{{salesTerritoriesGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "metadataElementTypeName" : "ValidValueDefinition",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+

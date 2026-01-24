@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -16,13 +15,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataAssetEncodingProperties provides the JavaBean for describing a data asset's encoding.
+ * DataLensProperties provides the JavaBean for describing the scope of data needed for specific processing.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class DataScopeProperties extends ClassificationBeanProperties
+public class DataLensProperties extends GovernanceControlProperties
 {
     private float               minLongitude            = 0F;
     private float               minLatitude             = 0F;
@@ -39,10 +38,10 @@ public class DataScopeProperties extends ClassificationBeanProperties
     /**
      * Default constructor
      */
-    public DataScopeProperties()
+    public DataLensProperties()
     {
         super();
-        super.typeName = OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName;
+        super.typeName = OpenMetadataType.DATA_LENS.typeName;
     }
 
 
@@ -51,7 +50,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public DataScopeProperties(DataScopeProperties template)
+    public DataLensProperties(DataLensProperties template)
     {
         super(template);
 
@@ -299,7 +298,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "DataScopeProperties{" +
+        return "DataLensProperties{" +
                 "minLongitude=" + minLongitude +
                 ", minLatitude=" + minLatitude +
                 ", maxLongitude=" + maxLongitude +
@@ -327,7 +326,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        DataScopeProperties that = (DataScopeProperties) objectToCompare;
+        DataLensProperties that = (DataLensProperties) objectToCompare;
         return Float.compare(minLongitude, that.minLongitude) == 0 &&
                 Float.compare(minLatitude, that.minLatitude) == 0 &&
                 Float.compare(maxLongitude, that.maxLongitude) == 0 &&

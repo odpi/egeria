@@ -1819,7 +1819,6 @@ public class ConnectorContextBase
     /**
      * Create an entry in a note log.
      *
-     * @param openMetadataTypeName type of action to create
      * @param initialClassifications classification to add to the action
      * @param properties properties of the action
      * @param actionSourceGUID unique identifier of the source of the action
@@ -1833,8 +1832,7 @@ public class ConnectorContextBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException a problem connecting to (or inside) the metadata store
      */
-    public String createNoteLogEntry(String                                openMetadataTypeName,
-                                     Map<String, ClassificationProperties> initialClassifications,
+    public String createNoteLogEntry(Map<String, ClassificationProperties> initialClassifications,
                                      ActionProperties                      properties,
                                      String                                actionSourceGUID,
                                      List<String>                          actionCauseGUIDs,
@@ -1843,7 +1841,7 @@ public class ConnectorContextBase
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return assetHandler.createNoteLogEntry(connectorUserId, openMetadataTypeName, initialClassifications, properties, actionSourceGUID, actionCauseGUIDs, noteLogGUID, actionTargets);
+        return assetHandler.createNoteLogEntry(connectorUserId, initialClassifications, properties, actionSourceGUID, actionCauseGUIDs, noteLogGUID, actionTargets);
     }
 
 

@@ -364,7 +364,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.getProcessesByCategory(userId,
                                                                     requestBody.getFilter(),
-                                                                    requestBody.getActivityStatus(),
+                                                                    requestBody.getActivityStatusList(),
                                                                     requestBody));
             }
             else
@@ -519,7 +519,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.findProcesses(userId,
                                                            requestBody.getSearchString(),
-                                                           requestBody.getActivityStatus(),
+                                                           requestBody.getActivityStatusList(),
                                                            requestBody));
             }
             else
@@ -581,7 +581,7 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findInfrastructure(userId, requestBody.getSearchString(), requestBody.getDeploymentStatus(), requestBody));
+                response.setElements(handler.findInfrastructure(userId, requestBody.getSearchString(), requestBody.getDeploymentStatusList(), requestBody));
             }
             else
             {
@@ -633,7 +633,7 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getInfrastructureByCategory(userId, requestBody.getFilter(), requestBody.getDeploymentStatus(), requestBody));
+                response.setElements(handler.getInfrastructureByCategory(userId, requestBody.getFilter(), requestBody.getDeploymentStatusList(), requestBody));
             }
             else
             {
@@ -922,7 +922,7 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findDataAssets(userId, requestBody.getSearchString(), requestBody.getContentStatus(), requestBody));
+                response.setElements(handler.findDataAssets(userId, requestBody.getSearchString(), requestBody.getContentStatusList(), requestBody));
             }
             else
             {
@@ -974,7 +974,7 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getDataAssetsByCategory(userId, requestBody.getFilter(), requestBody.getContentStatus(), requestBody));
+                response.setElements(handler.getDataAssetsByCategory(userId, requestBody.getFilter(), requestBody.getContentStatusList(), requestBody));
             }
             else
             {
@@ -1378,7 +1378,7 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getActionTargets(userId, integrationConnectorGUID, requestBody.getActivityStatus(), requestBody));
+                response.setElements(handler.getActionTargets(userId, integrationConnectorGUID, requestBody.getActivityStatusList(), requestBody));
             }
             else
             {
@@ -1434,7 +1434,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.getActionsForActionTarget(userId,
                                                                        elementGUID,
-                                                                       requestBody.getActivityStatus(),
+                                                                       requestBody.getActivityStatusList(),
                                                                        requestBody));
             }
             else
@@ -1663,7 +1663,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.getActionsForSponsor(userId,
                                                                   elementGUID,
-                                                                  requestBody.getActivityStatus(),
+                                                                  requestBody.getActivityStatusList(),
                                                                   requestBody));
             }
             else
@@ -1724,7 +1724,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.getActionsFromRequester(userId,
                                                                      elementGUID,
-                                                                     requestBody.getActivityStatus(),
+                                                                     requestBody.getActivityStatusList(),
                                                                      requestBody));
             }
             else
@@ -1784,7 +1784,7 @@ public class AssetMakerRESTServices extends TokenController
             {
                 response.setElements(handler.getAssignedActions(userId,
                                                                 actorGUID,
-                                                                requestBody.getActivityStatus(),
+                                                                requestBody.getActivityStatusList(),
                                                                 requestBody));
             }
             else

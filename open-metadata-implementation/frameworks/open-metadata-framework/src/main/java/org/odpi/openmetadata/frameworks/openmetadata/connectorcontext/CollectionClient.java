@@ -965,20 +965,20 @@ public class CollectionClient extends ConnectorContextClientBase
      * Retrieve the digital products that match the search string and optional status.
      *
      * @param searchString string to search for (may include RegExs)
-     * @param deploymentStatus   optional  status
+     * @param deploymentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findDigitalProducts(String           searchString,
-                                                             DeploymentStatus deploymentStatus,
-                                                             SearchOptions    searchOptions) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findDigitalProducts(String                 searchString,
+                                                             List<DeploymentStatus> deploymentStatusList,
+                                                             SearchOptions          searchOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
     {
-        return collectionHandler.findDigitalProducts(connectorUserId, searchString, deploymentStatus, searchOptions);
+        return collectionHandler.findDigitalProducts(connectorUserId, searchString, deploymentStatusList, searchOptions);
     }
 
 
@@ -986,20 +986,20 @@ public class CollectionClient extends ConnectorContextClientBase
      * Retrieve the digital products that match the category name and status.
      *
      * @param category   type to search for
-     * @param deploymentStatus optional status
+     * @param deploymentStatusList optional status list
      * @param queryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getDigitalProductByCategory(String           category,
-                                                                     DeploymentStatus deploymentStatus,
-                                                                     QueryOptions     queryOptions) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getDigitalProductByCategory(String                 category,
+                                                                     List<DeploymentStatus> deploymentStatusList,
+                                                                     QueryOptions           queryOptions) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
     {
-        return collectionHandler.getDigitalProductByCategory(connectorUserId, category, deploymentStatus, queryOptions);
+        return collectionHandler.getDigitalProductByCategory(connectorUserId, category, deploymentStatusList, queryOptions);
     }
 
 

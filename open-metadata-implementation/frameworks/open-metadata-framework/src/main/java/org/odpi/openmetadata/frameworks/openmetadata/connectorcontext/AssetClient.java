@@ -658,20 +658,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the actions that are chained off a sponsor's element.
      *
      * @param sponsorGUID unique identifier of the element to start with
-     * @param activityStatus  optional activity status
+     * @param activityStatusList  optional activity status list
      * @param queryOptions           multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getActionsForSponsor(String         sponsorGUID,
-                                                              ActivityStatus activityStatus,
-                                                              QueryOptions   queryOptions) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getActionsForSponsor(String               sponsorGUID,
+                                                              List<ActivityStatus> activityStatusList,
+                                                              QueryOptions         queryOptions) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
-        return assetHandler.getActionsForSponsor(connectorUserId, sponsorGUID, activityStatus, queryOptions);
+        return assetHandler.getActionsForSponsor(connectorUserId, sponsorGUID, activityStatusList, queryOptions);
     }
 
 
@@ -679,20 +679,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the actions that are chained off a sponsor's element.
      *
      * @param requesterGUID unique identifier of the element to start with
-     * @param activityStatus  optional activity status
+     * @param activityStatusList  optional activity status list
      * @param queryOptions           multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getActionsFromRequester(String         requesterGUID,
-                                                                 ActivityStatus activityStatus,
-                                                                 QueryOptions   queryOptions) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getActionsFromRequester(String               requesterGUID,
+                                                                 List<ActivityStatus> activityStatusList,
+                                                                 QueryOptions         queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
     {
-        return assetHandler.getActionsFromRequester(connectorUserId, requesterGUID, activityStatus, queryOptions);
+        return assetHandler.getActionsFromRequester(connectorUserId, requesterGUID, activityStatusList, queryOptions);
     }
 
 
@@ -700,20 +700,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the actions for a particular actor.
      *
      * @param actorGUID  unique identifier of the role
-     * @param activityStatus optional activity status
+     * @param activityStatusList optional activity status list
      * @param requestedQueryOptions           multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getAssignedActions(String         actorGUID,
-                                                            ActivityStatus activityStatus,
-                                                            QueryOptions   requestedQueryOptions) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getAssignedActions(String               actorGUID,
+                                                            List<ActivityStatus> activityStatusList,
+                                                            QueryOptions         requestedQueryOptions) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
-        return assetHandler.getAssignedActions(connectorUserId, actorGUID, activityStatus, requestedQueryOptions);
+        return assetHandler.getAssignedActions(connectorUserId, actorGUID, activityStatusList, requestedQueryOptions);
     }
 
 
@@ -721,18 +721,18 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the Processes that match the search string.
      *
      * @param searchString string to search for (may include RegExs)
-     * @param activityStatus   optional  status
+     * @param activityStatus   optional status list
      * @param suppliedSearchOptions           multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findProcesses(String         searchString,
-                                                       ActivityStatus activityStatus,
-                                                       SearchOptions  suppliedSearchOptions) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findProcesses(String               searchString,
+                                                       List<ActivityStatus> activityStatus,
+                                                       SearchOptions        suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
     {
         return assetHandler.findProcesses(connectorUserId, searchString, activityStatus, suppliedSearchOptions);
     }
@@ -742,42 +742,41 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the processes that match the category name and status.
      *
      * @param category   type to search for
-     * @param activityStatus optional status
+     * @param activityStatus optional status list
      * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getProcessesByCategory(String         category,
-                                                                ActivityStatus activityStatus,
-                                                                QueryOptions   suppliedQueryOptions) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getProcessesByCategory(String               category,
+                                                                List<ActivityStatus> activityStatus,
+                                                                QueryOptions         suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
     {
         return assetHandler.getProcessesByCategory(connectorUserId, category, activityStatus, suppliedQueryOptions);
     }
-
 
 
     /**
      * Retrieve the data assets that match the search string and optional content status.
      *
      * @param searchString string to search for (may include RegExs)
-     * @param contentStatus   optional  status
+     * @param contentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findDataAssets(String        searchString,
-                                                        ContentStatus contentStatus,
-                                                        SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findDataAssets(String              searchString,
+                                                        List<ContentStatus> contentStatusList,
+                                                        SearchOptions       searchOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
-        return assetHandler.findDataAssets(connectorUserId, searchString, contentStatus, searchOptions);
+        return assetHandler.findDataAssets(connectorUserId, searchString, contentStatusList, searchOptions);
     }
 
 
@@ -785,20 +784,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the data sets that match the category name and status.
      *
      * @param category   type to search for
-     * @param contentStatus optional status
+     * @param contentStatusList optional status list
      * @param queryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getDataAssetsByCategory(String        category,
-                                                                 ContentStatus contentStatus,
-                                                                 QueryOptions  queryOptions) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getDataAssetsByCategory(String              category,
+                                                                 List<ContentStatus> contentStatusList,
+                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
     {
-        return assetHandler.getDataAssetsByCategory(connectorUserId, category, contentStatus, queryOptions);
+        return assetHandler.getDataAssetsByCategory(connectorUserId, category, contentStatusList, queryOptions);
     }
 
 
@@ -806,20 +805,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the data sets that match the search string and optional content status.
      *
      * @param searchString string to search for (may include RegExs)
-     * @param deploymentStatus   optional  status
+     * @param deploymentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findInfrastructure(String           searchString,
-                                                            DeploymentStatus deploymentStatus,
-                                                            SearchOptions    searchOptions) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findInfrastructure(String                 searchString,
+                                                            List<DeploymentStatus> deploymentStatusList,
+                                                            SearchOptions          searchOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
-        return assetHandler.findInfrastructure(connectorUserId, searchString, deploymentStatus, searchOptions);
+        return assetHandler.findInfrastructure(connectorUserId, searchString, deploymentStatusList, searchOptions);
     }
 
 
@@ -827,20 +826,20 @@ public class AssetClient extends ConnectorContextClientBase
      * Retrieve the infrastructure elements that match the category name and status.
      *
      * @param category   type to search for
-     * @param deploymentStatus optional status
+     * @param deploymentStatusList optional status list
      * @param queryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getInfrastructureByCategory(String           category,
-                                                                     DeploymentStatus deploymentStatus,
-                                                                     QueryOptions     queryOptions) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getInfrastructureByCategory(String                 category,
+                                                                     List<DeploymentStatus> deploymentStatusList,
+                                                                     QueryOptions           queryOptions) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
     {
-        return assetHandler.getInfrastructureByCategory(connectorUserId, category, deploymentStatus, queryOptions);
+        return assetHandler.getInfrastructureByCategory(connectorUserId, category, deploymentStatusList, queryOptions);
     }
 
 

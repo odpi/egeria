@@ -85,6 +85,7 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+
 ###
 # @name createGovernanceStrategy (with parent)
 # Create an anchored governance definition linked to a parent of type GovernanceStrategy
@@ -246,6 +247,70 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+
+###
+# @name createDataLens (with parent)
+# Create an anchored governance definition linked to a parent of type DataLens
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DataLensProperties",
+    "domainIdentifier": 0,
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "summary": "add summary here",
+    "description": "add description here",
+    "scope": "add scope of effect for this definition",
+    "importance": "add importance for this definition",
+    "businessImperatives" : [],
+    "implications": [],
+    "outcomes": [],
+    "results": [],
+    "dataCollectionStartTime" : "{{$isoTimestamp}}",
+    "dataCollectionEndTime" : "{{$isoTimestamp}}",
+    "minLongitude" : 0,
+    "minLatitude" : 0,
+    "maxLongitude" : 0,
+    "maxLatitude" : 0,
+    "minHeight" : 0,
+    "maxHeight" : 0,
+    "scopeElements" : {
+      "add scope element name" : "add scope element GUID"
+    },
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name createSecurityGroup (with parent)

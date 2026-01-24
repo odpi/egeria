@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -780,16 +781,16 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
-     * @param requestBody list of security labels and properties
+     * @param requestBody properties for the request
      *
      * @return void or
      * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addGovernanceMeasurements(String                    serverName,
-                                                  String                   urlMarker,
-                                                  String                    elementGUID,
+    public VoidResponse addGovernanceMeasurements(String                       serverName,
+                                                  String                       urlMarker,
+                                                  String                       elementGUID,
                                                   NewClassificationRequestBody requestBody)
     {
         final String methodName = "addGovernanceMeasurements";
@@ -841,7 +842,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
-     * @param requestBody list of security labels and properties
+     * @param requestBody properties for the request
      *
      * @return void or
      * InvalidParameterException a full path or userId is null or
@@ -849,7 +850,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse updateGovernanceMeasurements(String                          serverName,
-                                                     String                   urlMarker,
+                                                     String                          urlMarker,
                                                      String                          elementGUID,
                                                      UpdateClassificationRequestBody requestBody)
     {
@@ -910,7 +911,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearGovernanceMeasurements(String                          serverName,
-                                                    String                   urlMarker,
+                                                    String                          urlMarker,
                                                     String                          elementGUID,
                                                     DeleteClassificationRequestBody requestBody)
     {
@@ -931,6 +932,176 @@ public class ClassificationManagerRESTServices extends TokenController
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearGovernanceMeasurements(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Add the data scope for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException a full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addDataScope(String                       serverName,
+                                     String                       urlMarker,
+                                     String                       elementGUID,
+                                     NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addDataScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataScopeProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+                    handler.addDataScopeClassification(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataScopeProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the data scope for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException a full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateDataScope(String                          serverName,
+                                        String                          urlMarker,
+                                        String                          elementGUID,
+                                        UpdateClassificationRequestBody requestBody)
+    {
+        final String methodName = "updateDataScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataScopeProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+                    handler.updateDataScopeClassification(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceMeasurementsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the data scope classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID   unique identifier of element
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException a full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearDataScope(String                          serverName,
+                                       String                          urlMarker,
+                                       String                          elementGUID,
+                                       DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearDataScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearDataScopeClassification(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {

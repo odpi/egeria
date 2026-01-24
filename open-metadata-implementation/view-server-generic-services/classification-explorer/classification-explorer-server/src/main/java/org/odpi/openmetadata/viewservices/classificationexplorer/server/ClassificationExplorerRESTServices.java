@@ -1798,7 +1798,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.findAuthoredElements(userId, requestBody.getSearchString(), requestBody.getContentStatus(), requestBody));
+                response.setElements(handler.findAuthoredElements(userId, requestBody.getSearchString(), requestBody.getContentStatusList(), requestBody));
             }
             else
             {
@@ -1850,7 +1850,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getAuthoredElementsByCategory(userId, requestBody.getFilter(), requestBody.getContentStatus(), requestBody));
+                response.setElements(handler.getAuthoredElementsByCategory(userId, requestBody.getFilter(), requestBody.getContentStatusList(), requestBody));
             }
             else
             {

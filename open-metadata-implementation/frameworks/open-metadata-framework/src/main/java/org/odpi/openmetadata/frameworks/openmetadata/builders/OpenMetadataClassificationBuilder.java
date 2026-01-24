@@ -297,6 +297,9 @@ public class OpenMetadataClassificationBuilder
                                                                    OpenMetadataProperty.DATA_COLLECTION_END_TIME.name,
                                                                    dataScopeProperties.getDataCollectionEndTime());
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.SCOPE_ELEMENTS.name,
+                                                                        dataScopeProperties.getScopeElements());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                         dataScopeProperties.getAdditionalProperties());
             }

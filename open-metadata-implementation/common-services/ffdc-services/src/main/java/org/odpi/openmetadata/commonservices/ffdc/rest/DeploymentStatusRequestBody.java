@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeploymentStatusRequestBody extends QueryOptions
 {
-    private DeploymentStatus deploymentStatus = null;
+    private List<DeploymentStatus> deploymentStatusList = null;
 
 
     /**
@@ -45,7 +46,7 @@ public class DeploymentStatusRequestBody extends QueryOptions
 
         if (template != null)
         {
-            deploymentStatus = template.getDeploymentStatus();
+            deploymentStatusList = template.getDeploymentStatusList();
         }
     }
 
@@ -53,22 +54,22 @@ public class DeploymentStatusRequestBody extends QueryOptions
     /**
      * Return the status value.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public DeploymentStatus getDeploymentStatus()
+    public List<DeploymentStatus> getDeploymentStatusList()
     {
-        return deploymentStatus;
+        return deploymentStatusList;
     }
 
 
     /**
      * Set up the status value.
      *
-     * @param deploymentStatus element status enum value
+     * @param deploymentStatusList status enum list
      */
-    public void setDeploymentStatus(DeploymentStatus deploymentStatus)
+    public void setDeploymentStatusList(List<DeploymentStatus> deploymentStatusList)
     {
-        this.deploymentStatus = deploymentStatus;
+        this.deploymentStatusList = deploymentStatusList;
     }
 
 
@@ -81,7 +82,7 @@ public class DeploymentStatusRequestBody extends QueryOptions
     public String toString()
     {
         return "DeploymentStatusRequestBody{" +
-                "deploymentStatus=" + deploymentStatus +
+                "deploymentStatusList=" + deploymentStatusList +
                 "} " + super.toString();
     }
 
@@ -99,7 +100,7 @@ public class DeploymentStatusRequestBody extends QueryOptions
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DeploymentStatusRequestBody that = (DeploymentStatusRequestBody) objectToCompare;
-        return deploymentStatus == that.deploymentStatus;
+        return deploymentStatusList == that.deploymentStatusList;
     }
 
 
@@ -111,6 +112,6 @@ public class DeploymentStatusRequestBody extends QueryOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentStatus);
+        return Objects.hash(super.hashCode(), deploymentStatusList);
     }
 }

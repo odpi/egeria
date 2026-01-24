@@ -422,7 +422,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "openMetadataTypeName" : "Catalog",
     "propertyValue" : "clinical_trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 

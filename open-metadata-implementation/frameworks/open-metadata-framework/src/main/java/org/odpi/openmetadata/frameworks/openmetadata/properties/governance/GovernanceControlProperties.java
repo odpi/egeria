@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = DataLensProperties.class, name = "DataLensProperties"),
                 @JsonSubTypes.Type(value = GovernanceRuleProperties.class, name = "GovernanceRuleProperties"),
                 @JsonSubTypes.Type(value = GovernanceMetricProperties.class, name = "GovernanceMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionProperties.class, name = "GovernanceActionProperties"),

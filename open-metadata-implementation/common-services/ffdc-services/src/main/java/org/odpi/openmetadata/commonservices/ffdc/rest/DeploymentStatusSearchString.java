@@ -5,14 +5,15 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * A request body that allows the status of an authored referenceable to be included in the search criteria.
+ * A request body that allows the status of an infrastructure asset to be included in the search criteria.
  */
 public class DeploymentStatusSearchString extends SearchStringRequestBody
 {
-    private DeploymentStatus deploymentStatus = null;
+    private List<DeploymentStatus> deploymentStatusList = null;
 
     /**
      * Default constructor
@@ -32,7 +33,7 @@ public class DeploymentStatusSearchString extends SearchStringRequestBody
 
         if (template != null)
         {
-            deploymentStatus = template.getDeploymentStatus();
+            deploymentStatusList = template.getDeploymentStatusList();
         }
     }
 
@@ -40,22 +41,22 @@ public class DeploymentStatusSearchString extends SearchStringRequestBody
     /**
      * Return the status value.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public DeploymentStatus getDeploymentStatus()
+    public List<DeploymentStatus> getDeploymentStatusList()
     {
-        return deploymentStatus;
+        return deploymentStatusList;
     }
 
 
     /**
      * Set up the status value.
      *
-     * @param deploymentStatus element status enum value
+     * @param deploymentStatusList status enum list
      */
-    public void setDeploymentStatus(DeploymentStatus deploymentStatus)
+    public void setDeploymentStatusList(List<DeploymentStatus> deploymentStatusList)
     {
-        this.deploymentStatus = deploymentStatus;
+        this.deploymentStatusList = deploymentStatusList;
     }
 
 
@@ -68,7 +69,7 @@ public class DeploymentStatusSearchString extends SearchStringRequestBody
     public String toString()
     {
         return "DeploymentStatusSearchString{" +
-                "deploymentStatus=" + deploymentStatus +
+                "deploymentStatusList=" + deploymentStatusList +
                 "} " + super.toString();
     }
 
@@ -86,7 +87,7 @@ public class DeploymentStatusSearchString extends SearchStringRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DeploymentStatusSearchString that = (DeploymentStatusSearchString) objectToCompare;
-        return Objects.equals(deploymentStatus, that.deploymentStatus);
+        return Objects.equals(deploymentStatusList, that.deploymentStatusList);
     }
 
 
@@ -98,6 +99,6 @@ public class DeploymentStatusSearchString extends SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentStatus);
+        return Objects.hash(super.hashCode(), deploymentStatusList);
     }
 }

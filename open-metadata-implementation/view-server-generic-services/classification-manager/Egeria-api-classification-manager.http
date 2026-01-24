@@ -433,7 +433,6 @@ Content-Type: application/json
 }
 
 
-
 ###
 # @name updateGovernanceMeasurements
 # Update the governance measurements classification to an element.
@@ -479,6 +478,99 @@ Content-Type: application/json
 # Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name addDataScope
+# Add the data scope classification to an element.
+#
+# Data Scope: https://egeria-project.org/types/2/0210-Data-Stores/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/data-scope
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "DataScopeProperties",
+       "dataCollectionStartTime" : "{{$isoTimestamp}}",
+       "dataCollectionEndTime" : "{{$isoTimestamp}}",
+       "minLongitude" : 0,
+       "minLatitude" : 0,
+       "maxLongitude" : 0,
+       "maxLatitude" : 0,
+       "minHeight" : 0,
+       "maxHeight" : 0,
+       "scopeElements" : {},
+       "additionalProperties" : {}
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateDataScope
+# Update the data scope classification to an element.
+#
+# Data Scope: https://egeria-project.org/types/2/0210-Data-Stores/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/data-scope/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateClassificationRequestBody",
+   "mergeUpdate" : true,
+   "properties" : {
+       "class" : "DataScopeProperties",
+       "dataCollectionStartTime" : "{{$isoTimestamp}}",
+       "dataCollectionEndTime" : "{{$isoTimestamp}}",
+       "minLongitude" : 0,
+       "minLatitude" : 0,
+       "maxLongitude" : 0,
+       "maxLatitude" : 0,
+       "minHeight" : 0,
+       "maxHeight" : 0,
+       "scopeElements" : {
+           "add scope element name" : "add scope element GUID"
+       },
+       "additionalProperties" : {
+           "property1" : "propertyValue1",
+           "property2" : "propertyValue2"
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearDataScope
+# Remove the data scope classification from an element.
+#
+# Data Scope: https://egeria-project.org/types/2/0210-Data-Stores/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/data-scope/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

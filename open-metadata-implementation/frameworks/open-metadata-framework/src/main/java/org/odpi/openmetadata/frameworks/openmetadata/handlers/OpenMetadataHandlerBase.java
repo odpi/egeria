@@ -1191,6 +1191,14 @@ public class OpenMetadataHandlerBase
                                                                  queryOptions,
                                                                  1));
 
+            rootElement.setValidValueMembers(this.getElementHierarchies(userId,
+                                                                 rootElement.getValidValueMembers(),
+                                                                 1,
+                                                                 OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                                 null,
+                                                                 queryOptions,
+                                                                 1));
+
             if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.ASSET.typeName))
             {
                 rootElement.setConnections(this.getElementHierarchies(userId,
@@ -1689,8 +1697,8 @@ public class OpenMetadataHandlerBase
                                  * The relationship is a parent/child relationship type.
                                  * Is this orientated logically down the hierarchy?
                                  */
-                                if (((parentEnd != 2) && (relatedMetadataElement.getElementAtEnd1())) ||
-                                        ((parentEnd != 1) && (! relatedMetadataElement.getElementAtEnd1())))
+                                if (((parentEnd != 2) && (! relatedMetadataElement.getElementAtEnd1())) ||
+                                        ((parentEnd != 1) && (relatedMetadataElement.getElementAtEnd1())))
                                 {
                                     /*
                                      * Check that this relationship has not been covered already.

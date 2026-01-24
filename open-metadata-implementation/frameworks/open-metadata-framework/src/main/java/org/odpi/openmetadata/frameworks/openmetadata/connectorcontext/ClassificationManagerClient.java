@@ -149,20 +149,20 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * Retrieve the authored elements that match the search string and optional content status.
      *
      * @param searchString string to search for (may include RegExs)
-     * @param contentStatus   optional  status
+     * @param contentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> findAuthoredElements(String        searchString,
-                                                              ContentStatus contentStatus,
-                                                              SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public List<OpenMetadataRootElement> findAuthoredElements(String              searchString,
+                                                              List<ContentStatus> contentStatusList,
+                                                              SearchOptions       searchOptions) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
-        return stewardshipManagementHandler.findAuthoredElements(connectorUserId, searchString, contentStatus, searchOptions);
+        return stewardshipManagementHandler.findAuthoredElements(connectorUserId, searchString, contentStatusList, searchOptions);
     }
 
 
@@ -170,20 +170,20 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * Retrieve the elements that match the category name and status.
      *
      * @param category   type to search for
-     * @param contentStatus optional status
+     * @param contentStatusList optional status list
      * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public List<OpenMetadataRootElement> getAuthoredElementsByCategory(String        category,
-                                                                       ContentStatus contentStatus,
-                                                                       QueryOptions  suppliedQueryOptions) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getAuthoredElementsByCategory(String              category,
+                                                                       List<ContentStatus> contentStatusList,
+                                                                       QueryOptions        suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                                        PropertyServerException,
+                                                                                                                        UserNotAuthorizedException
     {
-        return stewardshipManagementHandler.getAuthoredElementsByCategory(connectorUserId, category, contentStatus, suppliedQueryOptions);
+        return stewardshipManagementHandler.getAuthoredElementsByCategory(connectorUserId, category, contentStatusList, suppliedQueryOptions);
     }
 
 

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActivityStatusRequestBody extends QueryOptions
 {
-    private ActivityStatus activityStatus = null;
+    private List<ActivityStatus> activityStatusList = null;
 
 
     /**
@@ -45,30 +46,30 @@ public class ActivityStatusRequestBody extends QueryOptions
 
         if (template != null)
         {
-            activityStatus = template.getActivityStatus();
+            activityStatusList = template.getActivityStatusList();
         }
     }
 
 
     /**
-     * Return the status value.
+     * Return the status list value.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public ActivityStatus getActivityStatus()
+    public List<ActivityStatus> getActivityStatusList()
     {
-        return activityStatus;
+        return activityStatusList;
     }
 
 
     /**
      * Set up the status value.
      *
-     * @param activityStatus element status enum value
+     * @param activityStatusList status enum list
      */
-    public void setActivityStatus(ActivityStatus activityStatus)
+    public void setActivityStatusList(List<ActivityStatus> activityStatusList)
     {
-        this.activityStatus = activityStatus;
+        this.activityStatusList = activityStatusList;
     }
 
 
@@ -81,7 +82,7 @@ public class ActivityStatusRequestBody extends QueryOptions
     public String toString()
     {
         return "ActivityStatusRequestBody{" +
-                "activityStatus=" + activityStatus +
+                "activityStatusList=" + activityStatusList +
                 "} " + super.toString();
     }
 
@@ -99,7 +100,7 @@ public class ActivityStatusRequestBody extends QueryOptions
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActivityStatusRequestBody that = (ActivityStatusRequestBody) objectToCompare;
-        return activityStatus == that.activityStatus;
+        return activityStatusList == that.activityStatusList;
     }
 
 
@@ -111,6 +112,6 @@ public class ActivityStatusRequestBody extends QueryOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus);
+        return Objects.hash(super.hashCode(), activityStatusList);
     }
 }

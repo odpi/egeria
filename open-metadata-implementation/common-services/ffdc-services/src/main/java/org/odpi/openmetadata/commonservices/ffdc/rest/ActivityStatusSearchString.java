@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Objects;
  */
 public class ActivityStatusSearchString extends SearchStringRequestBody
 {
-    private ActivityStatus activityStatus = null;
+    private List<ActivityStatus> activityStatusList = null;
 
     /**
      * Default constructor
@@ -32,30 +33,30 @@ public class ActivityStatusSearchString extends SearchStringRequestBody
 
         if (template != null)
         {
-            activityStatus = template.getActivityStatus();
+            activityStatusList = template.getActivityStatusList();
         }
     }
 
 
     /**
-     * Return the status value.
+     * Return the status list.
      *
-     * @return element status enum value
+     * @return status enum list
      */
-    public ActivityStatus getActivityStatus()
+    public List<ActivityStatus> getActivityStatusList()
     {
-        return activityStatus;
+        return activityStatusList;
     }
 
 
     /**
-     * Set up the status value.
+     * Set up the status list.
      *
-     * @param activityStatus element status enum value
+     * @param activityStatusList status enum list
      */
-    public void setActivityStatus(ActivityStatus activityStatus)
+    public void setActivityStatusList(List<ActivityStatus> activityStatusList)
     {
-        this.activityStatus = activityStatus;
+        this.activityStatusList = activityStatusList;
     }
 
 
@@ -68,7 +69,7 @@ public class ActivityStatusSearchString extends SearchStringRequestBody
     public String toString()
     {
         return "ActivityStatusSearchString{" +
-                "activityStatus=" + activityStatus +
+                "activityStatusList=" + activityStatusList +
                 "} " + super.toString();
     }
 
@@ -86,7 +87,7 @@ public class ActivityStatusSearchString extends SearchStringRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActivityStatusSearchString that = (ActivityStatusSearchString) objectToCompare;
-        return Objects.equals(activityStatus, that.activityStatus);
+        return Objects.equals(activityStatusList, that.activityStatusList);
     }
 
 
@@ -98,6 +99,6 @@ public class ActivityStatusSearchString extends SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus);
+        return Objects.hash(super.hashCode(), activityStatusList);
     }
 }

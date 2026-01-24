@@ -652,7 +652,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "Project",
     "propertyValue" : "Campaign:Clinical Trials Management",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -675,7 +675,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "CertificationType",
     "propertyValue" : "Approved Hospital",
-    "propertyNames" : ["name", "qualifiedName", "title"],
+    "propertyNames" : ["displayName", "qualifiedName", "identifier"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -728,7 +728,7 @@ Content-Type: application/json
 {
   "class" : "ContentStatusSearchString",
   "searchString" : "xxx",
-  "contentStatus" : "ACTIVE",
+  "contentStatusList" : ["ACTIVE"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -764,7 +764,7 @@ Content-Type: application/json
 {
   "class" : "ContentStatusFilterRequestBody",
   "filter" : "xxx",
-  "contentStatus" : "ACTIVE",
+  "contentStatusList" : ["ACTIVE"],
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -831,7 +831,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -851,7 +851,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -947,7 +947,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -966,7 +966,7 @@ Content-Type: application/json
     "class" : "FindPropertyNamesProperties",
     "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -1012,7 +1012,7 @@ Content-Type: application/json
 {
     "class" : "FindPropertyNamesProperties",
     "propertyValue" : "Organization:Hampton Hospital",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -1030,7 +1030,7 @@ Content-Type: application/json
 {
     "class" : "FindPropertyNamesProperties",
     "propertyValue" : "Organization:Hampton Hospital",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -1048,7 +1048,7 @@ Content-Type: application/json
 {
     "class" : "FindPropertyNamesProperties",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -1066,7 +1066,7 @@ Content-Type: application/json
 {
     "class" : "FindPropertyNamesProperties",
     "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
+    "propertyNames" : ["displayName", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"

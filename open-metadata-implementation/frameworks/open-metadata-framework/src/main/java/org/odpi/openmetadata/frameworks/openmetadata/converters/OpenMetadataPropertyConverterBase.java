@@ -233,7 +233,7 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the qualifiedName property from the supplied element properties.
+     * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return map or null
@@ -252,6 +252,29 @@ public class OpenMetadataPropertyConverterBase
 
         return null;
     }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map or null
+     */
+    protected Map<String, String> removeScopeElements(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeScopeElements";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.SCOPE_ELEMENTS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -11651,6 +11674,7 @@ public class OpenMetadataPropertyConverterBase
                 ((DataScopeProperties)beanProperties).setMaxHeight(this.removeMaxHeight(elementProperties));
                 ((DataScopeProperties)beanProperties).setDataCollectionStartTime(this.removeDataCollectionStartTime(elementProperties));
                 ((DataScopeProperties)beanProperties).setDataCollectionEndTime(this.removeDataCollectionEndTime(elementProperties));
+                ((DataScopeProperties)beanProperties).setScopeElements(this.removeScopeElements(elementProperties));
                 ((DataScopeProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName))
@@ -13660,43 +13684,24 @@ public class OpenMetadataPropertyConverterBase
                     {
                         if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_CONTROL.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_GROUP.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_LENS.typeName))
                             {
-                                beanProperties = new SecurityGroupProperties();
+                                beanProperties = new DataLensProperties();
 
-                                ((SecurityGroupProperties) beanProperties).setDistinguishedName(this.removeDistinguishedName(elementProperties));
+                                ((DataLensProperties)beanProperties).setMinLongitude(this.removeMinLongitude(elementProperties));
+                                ((DataLensProperties)beanProperties).setMinLatitude(this.removeMinLatitude(elementProperties));
+                                ((DataLensProperties)beanProperties).setMaxLongitude(this.removeMaxLongitude(elementProperties));
+                                ((DataLensProperties)beanProperties).setMaxLatitude(this.removeMaxLatitude(elementProperties));
+                                ((DataLensProperties)beanProperties).setMinHeight(this.removeMinHeight(elementProperties));
+                                ((DataLensProperties)beanProperties).setMaxHeight(this.removeMaxHeight(elementProperties));
+                                ((DataLensProperties)beanProperties).setDataCollectionStartTime(this.removeDataCollectionStartTime(elementProperties));
+                                ((DataLensProperties)beanProperties).setDataCollectionEndTime(this.removeDataCollectionEndTime(elementProperties));
+                                ((DataLensProperties)beanProperties).setScopeElements(this.removeScopeElements(elementProperties));
+                                ((DataLensProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                             }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_METRIC.typeName))
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
                             {
-                                beanProperties = new GovernanceMetricProperties();
-
-                                ((GovernanceMetricProperties) beanProperties).setTarget(this.removeTarget(elementProperties));
-                                ((GovernanceMetricProperties) beanProperties).setMeasurement(this.removeMeasurement(elementProperties));
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName))
-                            {
-                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ZONE.typeName))
-                                {
-                                    beanProperties = new GovernanceZoneProperties();
-
-                                    ((GovernanceZoneProperties) beanProperties).setCriteria(this.removeCriteria(elementProperties));
-                                }
-                                else
-                                {
-                                    beanProperties = new SecurityAccessControlProperties();
-                                }
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTIFICATION_TYPE.typeName))
-                            {
-                                beanProperties = new NotificationTypeProperties();
-
-                                ((NotificationTypeProperties) beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setMinimumNotificationInterval(this.removeMinimumNotificationInterval(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setNotificationInterval(this.removeNotificationInterval(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setMultipleNotificationsPermitted(this.removeMultipleNotificationsPermitted(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setNextScheduledNotification(this.removeNextScheduledNotification(elementProperties));
-                                ((NotificationTypeProperties) beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));
-
+                                beanProperties = new DataProcessingPurposeProperties();
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION.typeName))
                             {
@@ -13724,6 +13729,28 @@ public class OpenMetadataPropertyConverterBase
                                     beanProperties = new GovernanceActionProperties();
                                 }
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_METRIC.typeName))
+                            {
+                                beanProperties = new GovernanceMetricProperties();
+
+                                ((GovernanceMetricProperties) beanProperties).setTarget(this.removeTarget(elementProperties));
+                                ((GovernanceMetricProperties) beanProperties).setMeasurement(this.removeMeasurement(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_PROCEDURE.typeName))
+                            {
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.METHODOLOGY.typeName))
+                                {
+                                    beanProperties = new MethodologyProperties();
+                                }
+                                else
+                                {
+                                    beanProperties = new GovernanceProcedureProperties();
+                                }
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName))
+                            {
+                                beanProperties = new GovernanceResponsibilityProperties();
+                            }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_RULE.typeName))
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NAMING_STANDARD_RULE.typeName))
@@ -13736,6 +13763,37 @@ public class OpenMetadataPropertyConverterBase
                                 {
                                     beanProperties = new GovernanceRuleProperties();
                                 }
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTIFICATION_TYPE.typeName))
+                            {
+                                beanProperties = new NotificationTypeProperties();
+
+                                ((NotificationTypeProperties) beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setMinimumNotificationInterval(this.removeMinimumNotificationInterval(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setNotificationInterval(this.removeNotificationInterval(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setMultipleNotificationsPermitted(this.removeMultipleNotificationsPermitted(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setNextScheduledNotification(this.removeNextScheduledNotification(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));
+
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName))
+                            {
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ZONE.typeName))
+                                {
+                                    beanProperties = new GovernanceZoneProperties();
+
+                                    ((GovernanceZoneProperties) beanProperties).setCriteria(this.removeCriteria(elementProperties));
+                                }
+                                else
+                                {
+                                    beanProperties = new SecurityAccessControlProperties();
+                                }
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_GROUP.typeName))
+                            {
+                                beanProperties = new SecurityGroupProperties();
+
+                                ((SecurityGroupProperties) beanProperties).setDistinguishedName(this.removeDistinguishedName(elementProperties));
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TERMS_AND_CONDITIONS.typeName))
                             {
@@ -13759,25 +13817,6 @@ public class OpenMetadataPropertyConverterBase
                                 ((TermsAndConditionsProperties) beanProperties).setEntitlements(this.removeEntitlements(elementProperties));
                                 ((TermsAndConditionsProperties) beanProperties).setRestrictions(this.removeRestrictions(elementProperties));
                                 ((TermsAndConditionsProperties) beanProperties).setObligations(this.removeObligations(elementProperties));
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
-                            {
-                                beanProperties = new DataProcessingPurposeProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName))
-                            {
-                                beanProperties = new GovernanceResponsibilityProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_PROCEDURE.typeName))
-                            {
-                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.METHODOLOGY.typeName))
-                                {
-                                    beanProperties = new MethodologyProperties();
-                                }
-                                else
-                                {
-                                    beanProperties = new GovernanceProcedureProperties();
-                                }
                             }
                             else
                             {

@@ -127,7 +127,7 @@ Content-Type: application/json
 {
   "class" : "DeploymentStatusSearchString",
   "searchString" : "add search string here",
-  "deploymentStatus" : "ACTIVE",
+  "deploymentStatusList" : ["ACTIVE"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -164,7 +164,7 @@ Content-Type: application/json
 {
   "class" : "DeploymentStatusFilterRequestBody",
   "filter" : "xxx",
-  "deploymentStatus" : "ACTIVE",
+  "deploymentStatusList" : ["ACTIVE"],
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",

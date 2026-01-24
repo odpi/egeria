@@ -64,7 +64,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -94,7 +94,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -127,7 +127,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -159,7 +159,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -191,7 +191,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -223,7 +223,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -257,7 +257,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -289,7 +289,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -323,7 +323,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -355,7 +355,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -386,7 +386,7 @@ public class ClassificationManagerResource
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -409,7 +409,7 @@ public class ClassificationManagerResource
 
 
     /**
-     * Update the governance expectations classification to an element.
+     * Update the governance expectations classification for an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
@@ -417,7 +417,7 @@ public class ClassificationManagerResource
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -425,7 +425,7 @@ public class ClassificationManagerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateGovernanceExpectations",
-            description="Update the governance expectations classification to an element.",
+            description="Update the governance expectations classification for an element.",
             externalDocs=@ExternalDocumentation(description="Governance Rollout",
                     url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
 
@@ -448,7 +448,7 @@ public class ClassificationManagerResource
      * @param requestBody null request body
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -476,10 +476,10 @@ public class ClassificationManagerResource
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
-     * @param requestBody list of security labels and properties
+     * @param requestBody properties for the request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -489,7 +489,7 @@ public class ClassificationManagerResource
     @Operation(summary="addGovernanceMeasurements",
             description="Add the governance measurements classification to an element.",
             externalDocs=@ExternalDocumentation(description="Governance Rollout",
-                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
 
     public VoidResponse addGovernanceMeasurements(@PathVariable String                    serverName,
                                                   @PathVariable String                    urlMarker,
@@ -502,15 +502,15 @@ public class ClassificationManagerResource
 
 
     /**
-     * Update the governance measurements classification to an element.
+     * Update the governance measurements classification for an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
-     * @param requestBody list of security labels and properties
+     * @param requestBody properties for the request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -518,9 +518,9 @@ public class ClassificationManagerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateGovernanceMeasurements",
-            description="Update the governance measurements classification to an element.",
+            description="Update the governance measurements classification for an element.",
             externalDocs=@ExternalDocumentation(description="Governance Rollout",
-                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
 
     public VoidResponse updateGovernanceMeasurements(@PathVariable String                    serverName,
                                                      @PathVariable String                    urlMarker,
@@ -542,7 +542,7 @@ public class ClassificationManagerResource
      * @param requestBody null request body
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -565,6 +565,99 @@ public class ClassificationManagerResource
 
 
     /**
+     * Add the data scope classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/data-scope")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addDataScope",
+            description="Add the data scope classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Data Scope",
+                    url="https://egeria-project.org/types/2/0210-Data-Stores/"))
+
+    public VoidResponse addDataScope(@PathVariable String                    serverName,
+                                     @PathVariable String                    urlMarker,
+                                     @PathVariable String                    elementGUID,
+                                     @RequestBody  (required = false)
+                                         NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addDataScope(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Update the data scope classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/data-scope/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateDataScope",
+            description="Update the data scope classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Data Scope",
+                    url="https://egeria-project.org/types/2/0210-Data-Stores/"))
+
+    public VoidResponse updateDataScope(@PathVariable String                    serverName,
+                                        @PathVariable String                    urlMarker,
+                                        @PathVariable String                    elementGUID,
+                                        @RequestBody  (required = false)
+                                            UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateDataScope(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the data scope classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/data-scope/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearDataScope",
+            description="Clear the data scope classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Data Scope",
+                    url="https://egeria-project.org/types/2/0210-Data-Stores/"))
+
+    public VoidResponse clearDataScope(@PathVariable String          serverName,
+                                       @PathVariable String                    urlMarker,
+                                       @PathVariable String          elementGUID,
+                                       @RequestBody(required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearDataScope(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
      * Add the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to
@@ -573,7 +666,7 @@ public class ClassificationManagerResource
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -604,7 +697,7 @@ public class ClassificationManagerResource
      * @param requestBody null request body
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -635,7 +728,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -666,7 +759,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -698,7 +791,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -729,7 +822,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -761,7 +854,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -792,7 +885,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -825,7 +918,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -858,7 +951,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -891,7 +984,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -924,7 +1017,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -957,7 +1050,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -990,7 +1083,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1023,7 +1116,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1056,7 +1149,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1089,7 +1182,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1122,7 +1215,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException guid or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1309,7 +1402,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -1339,7 +1432,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -1432,7 +1525,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException guid or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -1462,7 +1555,7 @@ public class ClassificationManagerResource
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException guid or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
