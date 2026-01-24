@@ -239,36 +239,36 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of assets metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataAssets(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findDataAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&nbsp;contentStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataAssets(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findDataAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&gt;&nbsp;contentStatusList,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data assets that match the search string and optional content status.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInfrastructure(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findInfrastructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&nbsp;deploymentStatus,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInfrastructure(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findInfrastructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&gt;&nbsp;deploymentStatusList,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data sets that match the search string and optional content status.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProcesses(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProcesses(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatus,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;suppliedSearchOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the Processes that match the search string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the actions that are chained off a sponsor's element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsFromRequester(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getActionsFromRequester</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsFromRequester(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getActionsFromRequester</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the actions that are chained off a sponsor's element.</div>
@@ -305,8 +305,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets with a particular name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;requestedQueryOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the actions for a particular actor.</div>
@@ -324,8 +324,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of elements that are target elements for an integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataAssetsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getDataAssetsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&nbsp;contentStatus,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataAssetsByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getDataAssetsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&gt;&nbsp;contentStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data sets that match the category name and status.</div>
@@ -356,15 +356,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of file assets catalogued under the folder asset.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInfrastructureByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getInfrastructureByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&nbsp;deploymentStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInfrastructureByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getInfrastructureByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&gt;&nbsp;deploymentStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the infrastructure elements that match the category name and status.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessesByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getProcessesByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessesByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getProcessesByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatus,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;suppliedQueryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the processes that match the category name and status.</div>
@@ -1140,10 +1140,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsForSponsor(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getActionsForSponsor(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getActionsForSponsor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getActionsForSponsor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                    throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1152,7 +1152,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>sponsorGUID</code> - unique identifier of the element to start with</dd>
-<dd><code>activityStatus</code> - optional activity status</dd>
+<dd><code>activityStatusList</code> - optional activity status list</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1164,10 +1164,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsFromRequester(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getActionsFromRequester(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getActionsFromRequester</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getActionsFromRequester</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requesterGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                       throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1176,7 +1176,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>requesterGUID</code> - unique identifier of the element to start with</dd>
-<dd><code>activityStatus</code> - optional activity status</dd>
+<dd><code>activityStatusList</code> - optional activity status list</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1188,10 +1188,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssignedActions(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getAssignedActions(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getAssignedActions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getAssignedActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;requestedQueryOptions)</span>
                                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1200,7 +1200,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>actorGUID</code> - unique identifier of the role</dd>
-<dd><code>activityStatus</code> - optional activity status</dd>
+<dd><code>activityStatusList</code> - optional activity status list</dd>
 <dd><code>requestedQueryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1212,10 +1212,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findProcesses(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
+<section class="detail" id="findProcesses(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findProcesses</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">findProcesses</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatus,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;suppliedSearchOptions)</span>
                                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1224,7 +1224,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - string to search for (may include RegExs)</dd>
-<dd><code>activityStatus</code> - optional  status</dd>
+<dd><code>activityStatus</code> - optional status list</dd>
 <dd><code>suppliedSearchOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1236,10 +1236,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getProcessesByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getProcessesByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getProcessesByCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessesByCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&gt;&nbsp;activityStatus,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;suppliedQueryOptions)</span>
                                                      throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1248,7 +1248,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>category</code> - type to search for</dd>
-<dd><code>activityStatus</code> - optional status</dd>
+<dd><code>activityStatus</code> - optional status list</dd>
 <dd><code>suppliedQueryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1260,10 +1260,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findDataAssets(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
+<section class="detail" id="findDataAssets(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findDataAssets</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">findDataAssets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&nbsp;contentStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&gt;&nbsp;contentStatusList,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1272,7 +1272,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - string to search for (may include RegExs)</dd>
-<dd><code>contentStatus</code> - optional  status</dd>
+<dd><code>contentStatusList</code> - optional status list</dd>
 <dd><code>searchOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1284,10 +1284,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getDataAssetsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getDataAssetsByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getDataAssetsByCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getDataAssetsByCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&nbsp;contentStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ContentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ContentStatus</a>&gt;&nbsp;contentStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                       throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1296,7 +1296,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>category</code> - type to search for</dd>
-<dd><code>contentStatus</code> - optional status</dd>
+<dd><code>contentStatusList</code> - optional status list</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1308,10 +1308,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findInfrastructure(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
+<section class="detail" id="findInfrastructure(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findInfrastructure</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">findInfrastructure</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&nbsp;deploymentStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&gt;&nbsp;deploymentStatusList,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1320,7 +1320,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - string to search for (may include RegExs)</dd>
-<dd><code>deploymentStatus</code> - optional  status</dd>
+<dd><code>deploymentStatusList</code> - optional status list</dd>
 <dd><code>searchOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>
@@ -1332,10 +1332,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getInfrastructureByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getInfrastructureByCategory(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
 <h3>getInfrastructureByCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getInfrastructureByCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- <a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&nbsp;deploymentStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a>&gt;&nbsp;deploymentStatusList,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
                                                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -1344,7 +1344,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>category</code> - type to search for</dd>
-<dd><code>deploymentStatus</code> - optional status</dd>
+<dd><code>deploymentStatusList</code> - optional status list</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of action beans</dd>

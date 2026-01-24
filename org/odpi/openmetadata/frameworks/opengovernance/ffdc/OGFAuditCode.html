@@ -115,13 +115,17 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ISSUING_NOTIFICATION" class="member-name-link">ISSUING_NOTIFICATION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-GOVERNANCE-0002 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">OPEN-GOVERNANCE-0001 - The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_SUBSCRIBER" class="member-name-link">WRONG_TYPE_OF_SUBSCRIBER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OPEN-GOVERNANCE-0001 - Subscriber {0} is of type {1} but {2} only supports the following subscriber type(s): {3}</div>
+<div class="block">OPEN-GOVERNANCE-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_SUBSCRIBER" class="member-name-link">WRONG_TYPE_OF_SUBSCRIBER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-GOVERNANCE-0002 - Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}</div>
 </div>
 </div>
 </section>
@@ -184,17 +188,24 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="ISSUING_NOTIFICATION">
+<h3>ISSUING_NOTIFICATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OGFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">OGFAuditCode</a></span>&nbsp;<span class="element-name">ISSUING_NOTIFICATION</span></div>
+<div class="block">OPEN-GOVERNANCE-0001 - The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="WRONG_TYPE_OF_SUBSCRIBER">
 <h3>WRONG_TYPE_OF_SUBSCRIBER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OGFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">OGFAuditCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_SUBSCRIBER</span></div>
-<div class="block">OPEN-GOVERNANCE-0001 - Subscriber {0} is of type {1} but {2} only supports the following subscriber type(s): {3}</div>
+<div class="block">OPEN-GOVERNANCE-0002 - Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OGFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">OGFAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">OPEN-GOVERNANCE-0002 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">OPEN-GOVERNANCE-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 </ul>
