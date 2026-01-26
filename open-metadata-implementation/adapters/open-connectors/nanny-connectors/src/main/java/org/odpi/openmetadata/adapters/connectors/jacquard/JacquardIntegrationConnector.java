@@ -803,7 +803,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         DigitalProductProperties digitalProductProperties = new DigitalProductProperties();
 
-        digitalProductProperties.setTypeName(productDefinition.getTypeName()); // may be family or product
+        digitalProductProperties.setTypeName(productDefinition.getTypeName()); // maybe family or product
         digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
         digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
         digitalProductProperties.setDescription(productDefinition.getDescription());
@@ -811,7 +811,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         digitalProductProperties.setCategory(productDefinition.getCategory());
         digitalProductProperties.setProductName(productDefinition.getProductName());
 
-        if (productDefinition.getConnectorProvider() != null)
+        /*
+         * Some digital products are not in active status but are in development.
+         * Assume all digital product families are active and
+         * digital products that have a connector provider are active.
+         */
+        if ((! productDefinition.getTypeName().equals(OpenMetadataType.DIGITAL_PRODUCT.typeName)) ||
+                (productDefinition.getConnectorProvider() != null))
         {
             digitalProductProperties.setContentStatus(ContentStatus.ACTIVE);
             digitalProductProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
@@ -828,8 +834,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
     /**
      * Set up a product's subscription types.  These are governance types configured with an appropriate
-     * subscription behaviour.  There is also a customized governance action process for creating a subscription.
-     * When the governance action process runs, it creates the subscription for the requesting
+     * subscription behaviour.  A customized governance action process for creating a subscription is also set up.
+     * When this governance action process runs, it creates the subscription for the requesting
      * actor by linking them to the notification type.
      *
      * @param productDefinition description of product
@@ -1149,10 +1155,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         newElementOptions.setParentGUID(productGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
 
+        CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
+        collectionMembershipProperties.setMembershipType("product data set");
+
        String assetGUID = assetClient.createAsset(newElementOptions,
                                                    null,
                                                    dataSetProperties,
-                                                   null);
+                                                   collectionMembershipProperties);
 
         /*
          * Add the "productized" keyword on the asset to identify assets that have been elevated to products.

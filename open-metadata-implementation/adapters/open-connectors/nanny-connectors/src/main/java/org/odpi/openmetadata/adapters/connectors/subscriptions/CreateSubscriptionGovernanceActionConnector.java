@@ -304,7 +304,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
                             CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
 
-                            collectionMembershipProperties.setMembershipType("nested-subscription");
+                            collectionMembershipProperties.setMembershipType("nested subscription");
 
                             productClient.addToCollection(subscriptionGUID, childSubscriptionGUID, new MakeAnchorOptions(productClient.getMetadataSourceOptions()), collectionMembershipProperties);
                         }

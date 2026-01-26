@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ActionTargetProperties extends RelationshipBeanProperties
 {
     private String         actionTargetName  = null;
-    private ActivityStatus activityStatus    = null;
+    private ActivityStatus activityStatus    = ActivityStatus.REQUESTED;
     private Date           startTime         = null;
     private Date           completionTime    = null;
     private String         completionMessage = null;

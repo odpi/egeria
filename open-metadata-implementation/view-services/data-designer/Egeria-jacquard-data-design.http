@@ -1,0 +1,120 @@
+# Egeria-jacquard-data-design
+## Understand the data dictionaru and data specs created by Jacquard.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Locate the data dictionary
+# https://egeria-project.org/concepts/data-dictionary
+
+###
+# @name find data disctionary for open metadata digital products
+# https://egeria-project.org/concepts/digital-product
+# Returns the list of digital products matching the search string and optional deployment status.
+# (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)
+#
+# @param serverName name of the service to route the request to
+# @param urlMarker  view service URL marker
+# @param requestBody string to find in the properties
+#
+# @return a list of digital products
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "metadataElementTypeName" : "DataDictionary",
+  "searchString" : "Open Metadata Digital Product Data Dictionary",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true
+}
+
+
+###
+# =====================================================================================================================
+# Locate the structure of a particular product
+# https://egeria-project.org/concepts/data-structure
+
+###
+# @name findDataStructures
+# Retrieve the list of data structure metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Reference Data Set List"
+}
+
+###
+# =====================================================================================================================
+# Work with Data Fields
+# https://egeria-project.org/concepts/data-field
+
+
+###
+# @name find a data field and its uses
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Element Create Time"
+}
+
+###
+# @name find the data fields that include a GUID
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "GUID"
+}
+
+
+
+###
+# @name find the Property Name data field
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Property Name",
+  "ignoreCase": false
+}
+
+
+###

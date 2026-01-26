@@ -31,7 +31,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class InfrastructureProperties extends AssetProperties
 {
-    private DeploymentStatus deploymentStatus            = null;
+    private DeploymentStatus deploymentStatus            = DeploymentStatus.ACTIVE;
     private String           userDefinedDeploymentStatus = null;
 
     /**

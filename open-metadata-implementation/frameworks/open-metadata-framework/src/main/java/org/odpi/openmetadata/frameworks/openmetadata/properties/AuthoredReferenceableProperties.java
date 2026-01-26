@@ -54,7 +54,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class AuthoredReferenceableProperties extends ReferenceableProperties
 {
     private List<String>  authors = null;
-    private ContentStatus contentStatus            = null;
+    private ContentStatus contentStatus            = ContentStatus.ACTIVE;
     private String        userDefinedContentStatus = null;
 
 
