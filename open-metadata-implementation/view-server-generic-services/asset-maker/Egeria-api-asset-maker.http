@@ -342,8 +342,8 @@ Content-Type: application/json
 
 {
   "class" : "ActivityStatusSearchString",
-  "searchString" : "xxx",
-  "activityStatusList" : ["IN_PROGRESS"],
+  "metadataElementSubtypeNames": ["ToDo", "Notification", "GovernanceActionService"],
+  "searchString" : "Digital",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
