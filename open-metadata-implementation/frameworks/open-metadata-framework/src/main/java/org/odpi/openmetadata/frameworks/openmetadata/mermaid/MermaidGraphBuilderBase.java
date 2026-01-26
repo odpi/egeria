@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -1921,6 +1922,10 @@ public class MermaidGraphBuilderBase
 
             for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
             {
+                /*
+                 * If we have more than 5 related elements, create a "more" node to represent the rest.
+                 * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
+                 */
                 if (nodeCount > 5)
                 {
                     String moreNodeId = UUID.randomUUID().toString();
@@ -1928,7 +1933,14 @@ public class MermaidGraphBuilderBase
                                          " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
                                          relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
                                          VisualStyle.MORE_ELEMENTS);
-                    appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                    if (relatedMetadataElement.getRelatedElementAtEnd1())
+                    {
+                        appendMermaidDottedLine(null, moreNodeId, null, startingEndId);
+                    }
+                    else
+                    {
+                        appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                    }
                     break;
                 }
                 addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, lineStyle);
@@ -2012,7 +2024,8 @@ public class MermaidGraphBuilderBase
 
 
     /**
-     * Extract a label value from the relationship properties.
+     * Extract a label value from the relationship properties using specific properties that describe
+     * the relationship in context.
      *
      * @param relatedMetadataElement relationship
      * @return label or null
@@ -2028,6 +2041,12 @@ public class MermaidGraphBuilderBase
         else if (relatedMetadataElement.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
         {
             label = roledRelationshipProperties.getRole();
+        }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof PartOfRelationshipProperties partOfRelationshipProperties)
+        {
+            label = this.getCardinalityLabel(partOfRelationshipProperties.getPosition(),
+                                             partOfRelationshipProperties.getMinCardinality(),
+                                             partOfRelationshipProperties.getMaxCardinality());
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties)
         {
@@ -2061,11 +2080,9 @@ public class MermaidGraphBuilderBase
         {
             label = requestForActionTargetProperties.getActionTargetName();
         }
-        else if (relatedMetadataElement.getRelationshipProperties() instanceof PartOfRelationshipProperties partOfRelationshipProperties)
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties)
         {
-            label = this.getCardinalityLabel(partOfRelationshipProperties.getPosition(),
-                                             partOfRelationshipProperties.getMinCardinality(),
-                                             partOfRelationshipProperties.getMaxCardinality());
+            label = resourceListProperties.getResourceUse();
         }
 
         return label;

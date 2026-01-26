@@ -415,7 +415,7 @@ Content-Type: application/json
   "initialClassifications" : {
     "ZoneMembership" : {
       "class" : "ZoneMembershipProperties",
-      "zoneMembership" : "governance"
+      "zoneMembership" : ["governance"]
     }
   },
   "newActionTargets" : [
@@ -1036,7 +1036,7 @@ Content-Type: application/json
 
 
 ###
-# @name getActionsForSponsor
+# @name getActionsForRequester
 # Retrieve the "Actions" that are chained off the requester's element. (ActionRequester relationship)
 #
 # @param serverName name of the server instances for this request

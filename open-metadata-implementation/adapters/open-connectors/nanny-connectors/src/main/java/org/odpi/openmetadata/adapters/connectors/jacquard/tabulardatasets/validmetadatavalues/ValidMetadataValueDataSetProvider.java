@@ -75,6 +75,8 @@ public class ValidMetadataValueDataSetProvider extends DynamicOpenMetadataDataSe
                                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                          new ProductSubscriptionDefinition[]{
                                                  ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                                  ProductSubscriptionDefinition.ONGOING_UPDATE},
                                          canonicalName,
                                          new ProductDataFieldDefinition[]{

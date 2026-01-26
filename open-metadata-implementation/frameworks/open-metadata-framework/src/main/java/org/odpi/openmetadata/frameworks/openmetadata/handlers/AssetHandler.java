@@ -706,18 +706,20 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                 assignToActorGUID,
                                                                 actionGUID,
                                                                 makeAnchorOptions,
-                                                                relationshipBuilder.getNewElementProperties(new AssignmentScopeProperties()));
+                                                                new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                          AssignmentType.OWNER.getName())));
             }
 
             if (actionSponsorGUID != null)
             {
                 openMetadataClient.createRelatedElementsInStore(userId,
-                                                                OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
                                                                 actionSponsorGUID,
                                                                 actionGUID,
                                                                 makeAnchorOptions,
                                                                 new NewElementProperties(propertyHelper.addStringProperty(null,
-                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                          OpenMetadataProperty.LABEL.name,
                                                                                                                           AssignmentType.SPONSOR.getName())));
             }
 
@@ -2556,7 +2558,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) && 
                         (openMetadataRootElement.getProperties() instanceof ProcessProperties processProperties))
                 {
-                    if (activityStatusList == null)
+                    if ((activityStatusList == null) || (activityStatusList.isEmpty()))
                     {
                         processes.add(openMetadataRootElement);
                     }
@@ -2592,7 +2594,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             {
                 if ((openMetadataRootElement != null) && (openMetadataRootElement.getRelatedBy() != null) && (openMetadataRootElement.getRelatedBy().getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties))
                 {
-                    if (activityStatusList == null)
+                    if ((activityStatusList == null) || (activityStatusList.isEmpty()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -2704,7 +2706,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) &&
                         (openMetadataRootElement.getProperties() instanceof DataAssetProperties dataAssetProperties))
                 {
-                    if (contentStatusList == null)
+                    if ((contentStatusList == null) || (contentStatusList.isEmpty()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -2802,7 +2804,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) &&
                         (openMetadataRootElement.getProperties() instanceof InfrastructureProperties infrastructureProperties))
                 {
-                    if (deploymentStatusList == null)
+                    if ((deploymentStatusList == null) || (deploymentStatusList.isEmpty()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

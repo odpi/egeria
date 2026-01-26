@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DigitalProductProperties extends CollectionProperties
 {
-    private DeploymentStatus deploymentStatus            = null;
+    private DeploymentStatus deploymentStatus            = DeploymentStatus.ACTIVE;
     private String           userDefinedDeploymentStatus = null;
     private String           productName                 = null;
     private Date             introductionDate            = null;

@@ -53,6 +53,11 @@ public enum OpenMetadataProperty
     UPDATED_BY("updatedBy", DataType.STRING, DataType.STRING.getName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b"),
 
     /**
+     * UserId that updated this instance.
+     */
+    MAINTAINED_BY("maintainedBy", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "UserIds for users that have updated this instance since creation.", "[peterprofile, erinoverview]", "569786c1-378f-4692-a5cd-ffc12f65826c"),
+
+    /**
      * Time when this instance was last updated.
      */
     UPDATE_TIME("updateTime", DataType.DATE, DataType.DATE.getName(), "Time when this instance was last updated.", null, "3cefe85f-4904-411f-9afd-546c0a9ba016"),

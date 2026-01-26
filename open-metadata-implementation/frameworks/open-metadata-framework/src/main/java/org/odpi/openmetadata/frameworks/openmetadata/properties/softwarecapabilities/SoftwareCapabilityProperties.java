@@ -47,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SoftwareCapabilityProperties extends ReferenceableProperties
 {
     private String           deployedImplementationType  = null;
-    private DeploymentStatus deploymentStatus            = null;
+    private DeploymentStatus deploymentStatus            = DeploymentStatus.ACTIVE;
     private String           userDefinedDeploymentStatus = null;
     private String           patchLevel                  = null;
     private String           source                      = null;

@@ -239,7 +239,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                 if ((openMetadataRootElement != null) &&
                         (openMetadataRootElement.getProperties() instanceof DigitalProductProperties digitalProductProperties))
                 {
-                    if (deploymentStatusList == null)
+                    if ((deploymentStatusList == null) || (deploymentStatusList.isEmpty()))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

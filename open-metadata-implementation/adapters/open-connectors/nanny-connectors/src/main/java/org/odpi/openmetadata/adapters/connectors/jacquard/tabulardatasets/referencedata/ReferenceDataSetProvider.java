@@ -77,7 +77,10 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
                                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                          new ProductSubscriptionDefinition[]{
                                                  ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.ONGOING_UPDATE
+                                         },
                                          canonicalName,
                                          new ProductDataFieldDefinition[]{
                                                  ProductDataFieldDefinition.GUID},
