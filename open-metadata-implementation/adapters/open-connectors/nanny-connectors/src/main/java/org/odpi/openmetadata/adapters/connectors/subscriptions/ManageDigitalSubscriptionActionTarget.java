@@ -304,6 +304,8 @@ public enum ManageDigitalSubscriptionActionTarget
         actionTargetType.setDescription(description);
         actionTargetType.setOpenMetadataTypeName(typeName);
         actionTargetType.setDeployedImplementationType(deployedImplementationType);
+        actionTargetType.setOtherPropertyValues(otherPropertyValues);
+        actionTargetType.setRequired(true);
 
         return actionTargetType;
     }

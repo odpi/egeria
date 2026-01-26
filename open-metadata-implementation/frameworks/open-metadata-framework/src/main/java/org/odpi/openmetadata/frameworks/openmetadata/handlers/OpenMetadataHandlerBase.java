@@ -800,11 +800,13 @@ public class OpenMetadataHandlerBase
         {
             for (String typeName : getOptions.getMetadataElementSubtypeNames())
             {
-                if ((typeName != null) && (! propertyHelper.isTypeOf(element, typeName)))
+                if ((typeName != null) && (propertyHelper.isTypeOf(element, typeName)))
                 {
-                    return false;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         return true;

@@ -696,7 +696,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
      * The breadth of the search is determined by the supplied anchorGUID.
      *
      * @param userId caller's userId

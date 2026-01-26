@@ -159,7 +159,7 @@ Content-Type: application/json
 
 
 ###
-# @name get digital roducts by name
+# @name get the digital product for contentStatus valid values
 # Returns the list of collections with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
 Authorization: Bearer {{token}}
@@ -171,7 +171,22 @@ Content-Type: application/json
   "filter" : "contentStatus Valid Values"
 }
 
-> {% set("digitalProductGUID", response.body.elements); %}
+> {% client.global.set("contentStatusDigitalProductGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name get subscription types for the contentStatus valid values digital product
+# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
+# specifying a type name for the elements that should be returned. If no type name is specified then any type of
+# element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/ResourceList?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "GovernanceActionProcess"
+}
+
 
 ###
 # @name getCollectionsByCategory

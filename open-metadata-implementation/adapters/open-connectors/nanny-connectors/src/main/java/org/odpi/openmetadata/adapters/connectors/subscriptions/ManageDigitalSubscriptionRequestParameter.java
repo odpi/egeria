@@ -135,6 +135,7 @@ public enum ManageDigitalSubscriptionRequestParameter
         requestParameterType.setDescription(description);
         requestParameterType.setDataType(dataType);
         requestParameterType.setExample(example);
+        requestParameterType.setRequired(true);
 
         return requestParameterType;
     }

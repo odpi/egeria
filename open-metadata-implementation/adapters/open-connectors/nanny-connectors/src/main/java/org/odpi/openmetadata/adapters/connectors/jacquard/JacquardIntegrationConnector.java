@@ -618,7 +618,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, communityNoteLogGUID, productManagerGUID);
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerGUID);
 
         /*
          * Register each product as a catalog target, so it is refreshed.
@@ -841,6 +841,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param productDefinition description of product
      * @param productHeader unique identifier and type for the product
      * @param productAssetGUID unique identifier for the asset that represents the product
+     * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
      *
@@ -852,6 +853,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private void addSubscriptionTypes(ProductDefinition productDefinition,
                                       ElementHeader     productHeader,
                                       String            productAssetGUID,
+                                      String            licenseTypeGUID,
                                       String            communityNoteLogGUID,
                                       String            productManagerGUID) throws InvalidParameterException,
                                                                                    PropertyServerException,
@@ -863,19 +865,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (productAssetGUID != null)
                 {
+                    String notificationTypeGUID = addNotificationType(productSubscriptionDefinition,
+                                                                      productHeader,
+                                                                      productDefinition.getProductName(),
+                                                                      productAssetGUID,
+                                                                      communityNoteLogGUID,
+                                                                      productManagerGUID);
 
-                    addNotificationType(productSubscriptionDefinition,
-                                        productHeader,
-                                        productDefinition.getProductName(),
-                                        productAssetGUID,
-                                        communityNoteLogGUID,
-                                        productManagerGUID);
+                    addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
+                                                           productHeader.getGUID(),
+                                                           licenseTypeGUID,
+                                                           notificationTypeGUID,
+                                                           productSubscriptionDefinition,
+                                                           productManagerGUID);
                 }
-
-                addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
-                                                       productHeader.getGUID(),
-                                                       productSubscriptionDefinition,
-                                                       productManagerGUID);
             }
         }
     }
@@ -887,23 +890,23 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * actor.
      *
      * @param productSubscriptionDefinition description of the subscription type that is supported by the product
-     * @param productHeader unique identifier and type for the product
-     * @param productName name of the product
-     * @param productAssetGUID unique identifier for the asset that represents the product
-     * @param communityNoteLogGUID unique identifier of the community's note log
-     * @param productManagerGUID unique identifier for the product manager
-     *
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
+     * @param productHeader                 unique identifier and type for the product
+     * @param productName                   name of the product
+     * @param productAssetGUID              unique identifier for the asset that represents the product
+     * @param communityNoteLogGUID          unique identifier of the community's note log
+     * @param productManagerGUID            unique identifier for the product manager
+     * @return
+     * @throws InvalidParameterException  invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException    repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
+     *                                    been disconnected.
      */
-    private void addNotificationType(ProductSubscriptionDefinition productSubscriptionDefinition,
-                                     ElementHeader                 productHeader,
-                                     String                        productName,
-                                     String                        productAssetGUID,
-                                     String                        communityNoteLogGUID,
-                                     String                        productManagerGUID) throws InvalidParameterException,
+    private String addNotificationType(ProductSubscriptionDefinition productSubscriptionDefinition,
+                                       ElementHeader                 productHeader,
+                                       String                        productName,
+                                       String                        productAssetGUID,
+                                       String                        communityNoteLogGUID,
+                                       String                        productManagerGUID) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
@@ -982,6 +985,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
 
         notificationWatchdogTargets.add(notificationTarget);
+        return notificationTypeGUID;
     }
 
 
@@ -992,6 +996,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      *
      * @param productName name of product
      * @param productGUID unique identifier of the product
+     * @param licenseTypeGUID unique identifier of the license type supported to this product
+     * @param notificationTypeGUID unique identifier of the notification type driving the subscription (optional)
      * @param productSubscriptionDefinition details of the subscription type
      * @param productManagerGUID unique identifier for the product manager
      *
@@ -1002,6 +1008,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      */
     private void addSubscriptionGovernanceActionProcess(String                        productName,
                                                         String                        productGUID,
+                                                        String                        licenseTypeGUID,
+                                                        String                        notificationTypeGUID,
                                                         ProductSubscriptionDefinition productSubscriptionDefinition,
                                                         String                        productManagerGUID) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
@@ -1035,6 +1043,29 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
         actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
+
+        if (licenseTypeGUID != null)
+        {
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           licenseTypeGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
+        }
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()); // always remove
+
+
+        if (notificationTypeGUID != null)
+        {
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           notificationTypeGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()));
+        }
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()); // always remove
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -1087,6 +1118,16 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                         if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
                         {
                             if (actionTargetNames.contains(specificationPropertyValueProperties.getPreferredValue()))
+                            {
+                                openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                            }
+                        }
+                    }
+                    else if (SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
+                    {
+                        if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
+                        {
+                            if (additionalRequestParameters.containsKey(specificationPropertyValueProperties.getPreferredValue()))
                             {
                                 openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
                             }

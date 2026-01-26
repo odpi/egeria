@@ -27,7 +27,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -87,6 +86,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
             /*
              * Set up by the harvester
              */
+            ActionTargetElement       license = super.getActionTarget(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName());
+            ActionTargetElement       notificationType = super.getActionTarget(ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName());
             ActionTargetElement       subscriptionItem = super.getActionTarget(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()); // the product
             List<ActionTargetElement> productOwners = super.getAllActionTargets(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
             ActionTargetElement       provisioningActionType = super.getActionTarget(ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName());
@@ -104,6 +105,18 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                 messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_REQUEST_PARAMETER.getMessageDefinition(governanceServiceName, ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName());
                 outputGuards.add(ManageDigitalSubscriptionGuard.MISSING_REQUEST_PARAMETER.getName());
                 completionStatus = ManageDigitalSubscriptionGuard.MISSING_REQUEST_PARAMETER.getCompletionStatus();
+            }
+            else if (license == null)
+            {
+                messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET.getMessageDefinition(governanceServiceName, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName());
+                outputGuards.add(ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getName());
+                completionStatus = ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getCompletionStatus();
+            }
+            else if (notificationType == null)
+            {
+                messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET.getMessageDefinition(governanceServiceName, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName());
+                outputGuards.add(ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getName());
+                completionStatus = ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getCompletionStatus();
             }
             else if (targetAsset == null)
             {
@@ -165,6 +178,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                  subscriptionIdentifier,
                                                                  subscriptionDescription,
                                                                  subscriptionItemGUID,
+                                                                 license.getActionTargetGUID(),
+                                                                 notificationType.getActionTargetGUID(),
                                                                  subscriptionRequesterGUID,
                                                                  targetAsset.getActionTargetGUID(),
                                                                  provisioningActionType.getActionTargetGUID(),
@@ -223,6 +238,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * @param subscriptionIdentifier identifier use to locate the correct notification
      * @param subscriptionDescription description of the subscription
      * @param productGUID unique identifier of the product that the subscription is for
+     * @param licenseTypeGUID unique identifier of the license (may be null)
+     * @param notificationTypeGUID unique identifier of the notification type that will drive the product provisioning
      * @param subscriptionRequesterGUID unique identifier of the actor requesting the subscription
      * @param targetAssetGUID the destination for the product data
      * @param provisioningActionTypeGUID the governance action used to provision to the target data source
@@ -238,6 +255,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                      String                    subscriptionIdentifier,
                                      String                    subscriptionDescription,
                                      String                    productGUID,
+                                     String                    licenseTypeGUID,
+                                     String                    notificationTypeGUID,
                                      String                    subscriptionRequesterGUID,
                                      String                    targetAssetGUID,
                                      String                    provisioningActionTypeGUID,
@@ -275,7 +294,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                 setUpCancellationProcess(subscriptionGUID,
                                          targetAssetGUID,
                                          cancellingActionTypeGUID,
-                                         productGovernanceDefinitions);
+                                         licenseTypeGUID);
 
                 addServiceLevelObjectives(subscriptionGUID,
                                           serviceLevelObjectives);
@@ -295,6 +314,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                   subscriptionIdentifier,
                                                                                   subscriptionDescription,
                                                                                   collectionMember.getRelatedElement().getElementHeader().getGUID(),
+                                                                                  licenseTypeGUID,
+                                                                                  notificationTypeGUID,
                                                                                   subscriptionRequesterGUID,
                                                                                   targetAssetGUID,
                                                                                   provisioningActionTypeGUID,
@@ -323,29 +344,17 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
                         OpenMetadataRootElement asset = assetClient.getAssetByGUID(sourceAssetGUID, assetClient.getGetOptions());
 
-                        if ((asset != null) && (asset.getMonitoredThrough() != null))
+                        if (asset != null)
                         {
-                            String  notificationTypeGUID = null;
-
-                            for (RelatedMetadataElementSummary notificationType : asset.getMonitoredThrough())
-                            {
-                                if ((notificationType != null) &&
-                                        (notificationType.getRelatedElement().getProperties() instanceof NotificationTypeProperties notificationTypeProperties) &&
-                                        (subscriptionIdentifier.equals(notificationTypeProperties.getIdentifier())))
-                                {
-                                    notificationTypeGUID = notificationType.getRelatedElement().getElementHeader().getGUID();
-                                }
-                            }
-
                             if (notificationTypeGUID != null)
                             {
                                 setUpProvisioningPipeline(sourceAssetGUID,
                                                           targetAssetGUID,
+                                                          licenseTypeGUID,
                                                           notificationTypeGUID,
                                                           provisioningActionTypeGUID,
                                                           subscriptionGUID,
-                                                          subscriptionRequesterGUID,
-                                                          productGovernanceDefinitions);
+                                                          subscriptionRequesterGUID);
                             }
                         }
                     }
@@ -445,16 +454,16 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * @param subscriptionGUID unique identifier of the subscription
      * @param targetAssetGUID the destination asset
      * @param cancellingActionTypeGUID the governance action type to act as a template for the new process
-     * @param productGovernanceDefinitions list of product governance definitions (including license that will need to be cancelled with the subscription).
+     * @param licenseTypeGUID  license type that will need to be cancelled with the subscription.
      *
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
      * @throws PropertyServerException a problem with the metadata store
      */
-    private void setUpCancellationProcess(String                              subscriptionGUID,
-                                          String                              targetAssetGUID,
-                                          String                              cancellingActionTypeGUID,
-                                          List<RelatedMetadataElementSummary> productGovernanceDefinitions) throws InvalidParameterException,
+    private void setUpCancellationProcess(String subscriptionGUID,
+                                          String targetAssetGUID,
+                                          String cancellingActionTypeGUID,
+                                          String licenseTypeGUID) throws InvalidParameterException,
                                                                                                                    PropertyServerException,
                                                                                                                    UserNotAuthorizedException
     {
@@ -491,20 +500,14 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                            null,
                                                            propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_TARGET.getName()));
 
-            if (productGovernanceDefinitions != null)
+            if (licenseTypeGUID != null)
             {
-                for (RelatedMetadataElementSummary productGovernanceDefinition : productGovernanceDefinitions)
-                {
-                    if ((productGovernanceDefinition != null) && (propertyHelper.isTypeOf(productGovernanceDefinition.getRelatedElement().getElementHeader(), OpenMetadataType.LICENSE_TYPE.typeName)))
-                    {
-                        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                       cancelSubscriptionGUID,
-                                                                       productGovernanceDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                       null,
-                                                                       null,
-                                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
-                    }
-                }
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                               cancelSubscriptionGUID,
+                                                               licenseTypeGUID,
+                                                               null,
+                                                               null,
+                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
             }
         }
 
@@ -572,11 +575,11 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      *
      * @param sourceAssetGUID this is the product's asset
      * @param targetAssetGUID asset provided by the caller that defines where data is to be sent
+     * @param licenseTypeGUID license type that defines how the data may be used
      * @param notificationTypeGUID notification type that controls calls to the pipeline when data changes
      * @param provisioningActionTypeGUID definition of the service to call
      * @param subscriptionGUID set anchor to subscription so that the cancel subscription removes the pipeline too
      * @param subscriptionRequesterGUID unique identifier of the subscription requester
-     * @param productGovernanceDefinitions the governance definitions
      *
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
@@ -584,11 +587,11 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      */
     private void   setUpProvisioningPipeline(String                              sourceAssetGUID,
                                              String                              targetAssetGUID,
+                                             String                              licenseTypeGUID,
                                              String                              notificationTypeGUID,
                                              String                              provisioningActionTypeGUID,
                                              String                              subscriptionGUID,
-                                             String                              subscriptionRequesterGUID,
-                                             List<RelatedMetadataElementSummary> productGovernanceDefinitions) throws InvalidParameterException,
+                                             String                              subscriptionRequesterGUID) throws InvalidParameterException,
                                                                                                                       PropertyServerException,
                                                                                                                       UserNotAuthorizedException
     {
@@ -674,23 +677,17 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         /*
          * Add the license to the destination data asset.
          */
-        if (productGovernanceDefinitions != null)
+        if (licenseTypeGUID != null)
         {
-            for (RelatedMetadataElementSummary governanceDefinition : productGovernanceDefinitions)
-            {
-                if ((governanceDefinition != null) && (propertyHelper.isTypeOf(governanceDefinition.getRelatedElement().getElementHeader(), OpenMetadataType.LICENSE_TYPE.typeName)))
-                {
-                    LicenseProperties licenseProperties = new LicenseProperties();
+            LicenseProperties licenseProperties = new LicenseProperties();
 
-                    licenseProperties.setCoverageStart(new Date());
-                    licenseProperties.setLicenseGUID(subscriptionGUID);
+            licenseProperties.setCoverageStart(new Date());
+            licenseProperties.setLicenseGUID(subscriptionGUID);
 
-                    governanceDefinitionClient.licenseElement(targetAssetGUID,
-                                                              governanceDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                              new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
-                                                              licenseProperties);
-                }
-            }
+            governanceDefinitionClient.licenseElement(targetAssetGUID,
+                                                      licenseTypeGUID,
+                                                      new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
+                                                      licenseProperties);
         }
     }
 }
