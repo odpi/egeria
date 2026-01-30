@@ -19,6 +19,7 @@ org.odpi.openmetadata.adapters.connectors.apachekafka.survey
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc
 org.odpi.openmetadata.adapters.connectors.babbage
+org.odpi.openmetadata.adapters.connectors.babbage.ffdc
 org.odpi.openmetadata.adapters.connectors.baudot
 org.odpi.openmetadata.adapters.connectors.baudot.ffdc
 org.odpi.openmetadata.adapters.connectors.controls
@@ -376,9 +377,12 @@ org.odpi.openmetadata.frameworks.openwatchdog.ffdc
 org.odpi.openmetadata.frameworkservices.gaf.admin
 org.odpi.openmetadata.frameworkservices.gaf.client
 org.odpi.openmetadata.frameworkservices.gaf.client.rest
+org.odpi.openmetadata.frameworkservices.gaf.connectors.outtopic
 org.odpi.openmetadata.frameworkservices.gaf.converters
 org.odpi.openmetadata.frameworkservices.gaf.ffdc
 org.odpi.openmetadata.frameworkservices.gaf.handlers
+org.odpi.openmetadata.frameworkservices.gaf.listener
+org.odpi.openmetadata.frameworkservices.gaf.outtopic
 org.odpi.openmetadata.frameworkservices.gaf.rest
 org.odpi.openmetadata.frameworkservices.gaf.server
 org.odpi.openmetadata.frameworkservices.gaf.server.spring

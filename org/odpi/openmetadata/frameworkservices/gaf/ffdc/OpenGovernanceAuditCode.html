@@ -124,17 +124,26 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0002 - The catalog integrator context manager is being initialized for calls to server {0} on platform {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EVENT_SHUTDOWN_ERROR" class="member-name-link">EVENT_SHUTDOWN_ERROR</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OPEN-GOVERNANCE-0011 The Open Governance Service caught an unexpected {0} exception whilst shutting down the out
+ topic listeners.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0005 - The Open Metadata Store Services has initialized a new instance for server {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-GOVERNANCE-0001 - The Open Metadata Store Services are initializing a new server instance</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0006 - The Open Metadata Store Services are unable to initialize a new instance; error message is {0}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVICE_PUBLISHING" class="member-name-link">SERVICE_PUBLISHING</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-GOVERNANCE-0003 The Open Governance service is ready to publish  notifications to topic {0}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
 <div class="col-last odd-row-color">
@@ -142,7 +151,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_TERMINATING" class="member-name-link">SERVICE_TERMINATING</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-GOVERNANCE-0009 - The Open Metadata Store Services are shutting down server instance {0}</div>
+<div class="block">OPEN-GOVERNANCE-0009 - The Open Governance Service are shutting down server instance {0}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -232,6 +241,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SERVICE_PUBLISHING">
+<h3>SERVICE_PUBLISHING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_PUBLISHING</span></div>
+<div class="block">OPEN-GOVERNANCE-0003 The Open Governance service is ready to publish  notifications to topic {0}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="SERVICE_INITIALIZED">
 <h3>SERVICE_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZED</span></div>
@@ -257,7 +273,15 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_TERMINATING">
 <h3>SERVICE_TERMINATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_TERMINATING</span></div>
-<div class="block">OPEN-GOVERNANCE-0009 - The Open Metadata Store Services are shutting down server instance {0}</div>
+<div class="block">OPEN-GOVERNANCE-0009 - The Open Governance Service are shutting down server instance {0}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_SHUTDOWN_ERROR">
+<h3>EVENT_SHUTDOWN_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">EVENT_SHUTDOWN_ERROR</span></div>
+<div class="block">OPEN-GOVERNANCE-0011 The Open Governance Service caught an unexpected {0} exception whilst shutting down the out
+ topic listeners. The error message was: {1}</div>
 </section>
 </li>
 <li>

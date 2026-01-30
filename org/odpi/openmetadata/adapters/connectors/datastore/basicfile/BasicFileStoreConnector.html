@@ -197,6 +197,11 @@ implements <a href="BasicFileStore.html" title="interface in org.odpi.openmetada
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#touchFile()" class="member-name-link">touchFile</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create the file if it does not exist.</div>
+</div>
 </div>
 </div>
 </div>
@@ -276,6 +281,20 @@ implements <a href="BasicFileStore.html" title="interface in org.odpi.openmetada
 <dd><code>fileStoreName</code> - path name of the desired file</dd>
 <dt>Throws:</dt>
 <dd><code><a href="ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - this is not a file that can be used</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="touchFile()">
+<h3>touchFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">touchFile</span>()
+                  throws <span class="exceptions"><a href="ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></span></div>
+<div class="block">Create the file if it does not exist.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean flag that is true if the file was created</dd>
+<dt>Throws:</dt>
+<dd><code><a href="ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
 </dl>
 </section>
 </li>

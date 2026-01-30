@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../../../commonservices/multitenant/AccessServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AccessServerServiceInstance</a></span></div>
 <div class="block">GAFServicesInstance caches references to OMRS objects for a specific server.
  It is also responsible for registering itself in the instance map.
- It is created by the admin class during server start up and</div>
+ It is created by the admin class during server start-up.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,10 +113,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int)" class="member-name-link">GAFServicesInstance</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">GAFServicesInstance</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- int&nbsp;maxPageSize)</code></div>
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicConnection)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Set up the local repository connector that will service the REST Calls.</div>
 </div>
@@ -171,12 +172,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>GAFServicesInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GAFServicesInstance</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- int&nbsp;maxPageSize)</span>
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicConnection)</span>
                     throws <span class="exceptions"><a href="../../../commonservices/multitenant/ffdc/exceptions/NewInstanceException.html" title="class in org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions">NewInstanceException</a></span></div>
 <div class="block">Set up the local repository connector that will service the REST Calls.</div>
 <dl class="notes">
@@ -184,7 +186,8 @@ loadScripts(document, 'script');</script>
 <dd><code>repositoryConnector</code> - link to the repository responsible for servicing the REST calls.</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
-<dd><code>maxPageSize</code> - max number of results to return on single request.</dd>
+<dd><code>maxPageSize</code> - max results to return on a single request.</dd>
+<dd><code>outTopicConnection</code> - topic of the client side listener</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../commonservices/multitenant/ffdc/exceptions/NewInstanceException.html" title="class in org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions">NewInstanceException</a></code> - a problem occurred during initialization</dd>
 </dl>

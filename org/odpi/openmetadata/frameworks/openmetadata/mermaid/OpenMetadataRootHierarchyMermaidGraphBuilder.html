@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.mermaid.MermaidGraphBuilderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.mermaid.<a href="MermaidGraphBuilderBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">MermaidGraphBuilderBase</a></h3>
-<code><a href="MermaidGraphBuilderBase.html#guidToNodeIdMap">guidToNodeIdMap</a>, <a href="MermaidGraphBuilderBase.html#mermaidGraph">mermaidGraph</a>, <a href="MermaidGraphBuilderBase.html#nodeClicks">nodeClicks</a>, <a href="MermaidGraphBuilderBase.html#nodeColours">nodeColours</a>, <a href="MermaidGraphBuilderBase.html#propertyHelper">propertyHelper</a>, <a href="MermaidGraphBuilderBase.html#sourceName">sourceName</a></code></div>
+<code><a href="MermaidGraphBuilderBase.html#guidToNodeIdMap">guidToNodeIdMap</a>, <a href="MermaidGraphBuilderBase.html#maxNodeCount">maxNodeCount</a>, <a href="MermaidGraphBuilderBase.html#mermaidGraph">mermaidGraph</a>, <a href="MermaidGraphBuilderBase.html#nodeClicks">nodeClicks</a>, <a href="MermaidGraphBuilderBase.html#nodeColours">nodeColours</a>, <a href="MermaidGraphBuilderBase.html#propertyHelper">propertyHelper</a>, <a href="MermaidGraphBuilderBase.html#sourceName">sourceName</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -99,9 +99,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">OpenMetadataRootHierarchyMermaidGraphBuilder</a><wbr>(<a href="../metadataelements/OpenMetadataRootHierarchy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootHierarchy</a>&nbsp;openMetadataRootHierarchy,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,int)" class="member-name-link">OpenMetadataRootHierarchyMermaidGraphBuilder</a><wbr>(<a href="../metadataelements/OpenMetadataRootHierarchy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootHierarchy</a>&nbsp;openMetadataRootHierarchy,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipName,
- <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;principleStyle)</code></div>
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;principleStyle,
+ int&nbsp;maxNodeCount)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Construct a mermaid markdown graph.</div>
 </div>
@@ -133,15 +134,19 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,int)">
 <h3>OpenMetadataRootHierarchyMermaidGraphBuilder</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataRootHierarchyMermaidGraphBuilder</span><wbr><span class="parameters">(<a href="../metadataelements/OpenMetadataRootHierarchy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootHierarchy</a>&nbsp;openMetadataRootHierarchy,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipName,
- <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;principleStyle)</span></div>
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;principleStyle,
+ int&nbsp;maxNodeCount)</span></div>
 <div class="block">Construct a mermaid markdown graph.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataRootHierarchy</code> - content</dd>
+<dd><code>membershipName</code> - name of the subgraph</dd>
+<dd><code>principleStyle</code> - style of the principle element</dd>
+<dd><code>maxNodeCount</code> - maximum number of nodes to include in the graph</dd>
 </dl>
 </section>
 </li>
