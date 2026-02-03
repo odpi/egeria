@@ -84,7 +84,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">SolutionBlueprint</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a>&gt;</span></div>
-<div class="block">Describes the solution blueprints in the core content packs.</div>
+<div class="block">The solution blueprints that describe the contents of the core content packs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,49 +105,53 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#APACHE_ATLAS" class="member-name-link">APACHE_ATLAS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#APACHE_ATLAS_CONTENT_PACK" class="member-name-link">APACHE_ATLAS_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution Blueprint supporting integration connectors connecting to Apache Atlas.</div>
+<div class="block">Reference data, templates, connectors, and governance services for working with Apache Atlas.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#APACHE_KAFKA" class="member-name-link">APACHE_KAFKA</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#APACHE_KAFKA_CONTENT_PACK" class="member-name-link">APACHE_KAFKA_CONTENT_PACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Solution Blueprint supporting integration connectors connecting to Apache Kafka.</div>
+<div class="block">Reference data, templates, connectors, and governance services for working with an Apache Kafka Server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#APIS" class="member-name-link">APIS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#APIS_CONTENT_PACK" class="member-name-link">APIS_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution Blueprint supporting integration connectors extracting Open API specifications to Open APIs via swagger.</div>
+<div class="block">Reference data, templates, connectors, and governance services for working with REST APIs via the swagger interface.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DEFAULT" class="member-name-link">DEFAULT</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CORE_CONTENT_PACK" class="member-name-link">CORE_CONTENT_PACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Solution blueprint for a default setup.</div>
+<div class="block">Base Connector Types and Categories for connectors from the Egeria project along with metadata valid values, templates, and connectors for the basic types of technology supported by these connectors.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EGERIA" class="member-name-link">EGERIA</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EGERIA_CONTENT_PACK" class="member-name-link">EGERIA_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution Blueprint containing integration connectors for working with Egeria's infrastructure.</div>
+<div class="block">Cataloguing and monitoring the Egeria infrastructure.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FILES" class="member-name-link">FILES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FILES_CONTENT_PACK" class="member-name-link">FILES_CONTENT_PACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Solution Blueprint containing integration connectors for working with files.</div>
+<div class="block">Surveying and cataloguing files in the file system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NANNY" class="member-name-link">NANNY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OBSERVABILITY_CONTENT_PACK" class="member-name-link">OBSERVABILITY_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution Blueprint supporting integration connectors extracting interesting information needed to observe the activity in the Open Metadata Ecosystem.</div>
+<div class="block">Connectors and governance services used to enable observability functions on Egeria's infrastructure.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE" class="member-name-link">OPEN_LINEAGE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_CONTENT_PACK" class="member-name-link">OPEN_LINEAGE_CONTENT_PACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Solution Blueprint containing integration connectors for working with open lineage events.</div>
+<div class="block">Capture open lineage events and harvest assets and relationships from them.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POSTGRES" class="member-name-link">POSTGRES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ORGANIZATION_INSIGHT_CONTENT_PACK" class="member-name-link">ORGANIZATION_INSIGHT_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution Blueprint supporting integration connectors connecting to PostgreSQL Servers.</div>
+<div class="block">Monitoring, analysis, and capture of insight into organization activity and effectiveness.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNITY_CATALOG" class="member-name-link">UNITY_CATALOG</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#POSTGRES_CONTENT_PACK" class="member-name-link">POSTGRES_CONTENT_PACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Solution Blueprint supporting integration connectors connecting to Unity Catalog (UC).</div>
+<div class="block">Reference data, templates, connectors, and governance services for working with a PostgreSQL Server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WORKSPACES" class="member-name-link">WORKSPACES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PRODUCTS_CONTENT_PACK" class="member-name-link">PRODUCTS_CONTENT_PACK</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Solution blueprint for a default setup.</div>
+<div class="block">Open metadata collections packaged into dynamic digital products.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNITY_CATALOG_CONTENT_PACK" class="member-name-link">UNITY_CATALOG_CONTENT_PACK</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Reference data, templates, connectors, and governance services for working with Unity Catalog.</div>
 </div>
 </div>
 </section>
@@ -168,8 +172,8 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get identifier of content pack where this definition should be located.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationTypeGUIDs()" class="member-name-link">getDeployedImplementationTypeGUIDs</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationTypes()" class="member-name-link">getDeployedImplementationTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of technology types integrated into this solution.</div>
 </div>
@@ -178,25 +182,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the solution blueprint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtraSolutionComponentGUIDs()" class="member-name-link">getExtraSolutionComponentGUIDs</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier for the solution blueprint.</div>
+<div class="block">Return the solution components included in the solution blueprint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintDisplayName()" class="member-name-link">getSolutionBlueprintDisplayName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the solution blueprint.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintGUID()" class="member-name-link">getSolutionBlueprintGUID</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique name of the solution blueprint.</div>
+<div class="block">Return the unique identifier for the solution blueprint.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentGUIDs()" class="member-name-link">getSolutionComponentGUIDs</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintQualifiedName()" class="member-name-link">getSolutionBlueprintQualifiedName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the solution components included in the solution blueprint.</div>
+<div class="block">Return the unique name of the solution blueprint.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -235,80 +239,87 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="DEFAULT">
-<h3>DEFAULT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">DEFAULT</span></div>
-<div class="block">Solution blueprint for a default setup.</div>
+<section class="detail" id="CORE_CONTENT_PACK">
+<h3>CORE_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">CORE_CONTENT_PACK</span></div>
+<div class="block">Base Connector Types and Categories for connectors from the Egeria project along with metadata valid values, templates, and connectors for the basic types of technology supported by these connectors.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="WORKSPACES">
-<h3>WORKSPACES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">WORKSPACES</span></div>
-<div class="block">Solution blueprint for a default setup.</div>
+<section class="detail" id="EGERIA_CONTENT_PACK">
+<h3>EGERIA_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">EGERIA_CONTENT_PACK</span></div>
+<div class="block">Cataloguing and monitoring the Egeria infrastructure.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="FILES">
-<h3>FILES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">FILES</span></div>
-<div class="block">Solution Blueprint containing integration connectors for working with files.</div>
+<section class="detail" id="FILES_CONTENT_PACK">
+<h3>FILES_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">FILES_CONTENT_PACK</span></div>
+<div class="block">Surveying and cataloguing files in the file system.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="OPEN_LINEAGE">
-<h3>OPEN_LINEAGE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE</span></div>
-<div class="block">Solution Blueprint containing integration connectors for working with open lineage events.</div>
+<section class="detail" id="OPEN_LINEAGE_CONTENT_PACK">
+<h3>OPEN_LINEAGE_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_CONTENT_PACK</span></div>
+<div class="block">Capture open lineage events and harvest assets and relationships from them.  Generate open lineage from running governance action processes. Save and distribute open lineage events both received from third parties and generated by Egeria.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="EGERIA">
-<h3>EGERIA</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">EGERIA</span></div>
-<div class="block">Solution Blueprint containing integration connectors for working with Egeria's infrastructure.</div>
+<section class="detail" id="UNITY_CATALOG_CONTENT_PACK">
+<h3>UNITY_CATALOG_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">UNITY_CATALOG_CONTENT_PACK</span></div>
+<div class="block">Reference data, templates, connectors, and governance services for working with Unity Catalog.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="APACHE_ATLAS">
-<h3>APACHE_ATLAS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APACHE_ATLAS</span></div>
-<div class="block">Solution Blueprint supporting integration connectors connecting to Apache Atlas.</div>
+<section class="detail" id="APACHE_ATLAS_CONTENT_PACK">
+<h3>APACHE_ATLAS_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APACHE_ATLAS_CONTENT_PACK</span></div>
+<div class="block">Reference data, templates, connectors, and governance services for working with Apache Atlas.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="APACHE_KAFKA">
-<h3>APACHE_KAFKA</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APACHE_KAFKA</span></div>
-<div class="block">Solution Blueprint supporting integration connectors connecting to Apache Kafka.</div>
+<section class="detail" id="POSTGRES_CONTENT_PACK">
+<h3>POSTGRES_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">POSTGRES_CONTENT_PACK</span></div>
+<div class="block">Reference data, templates, connectors, and governance services for working with a PostgreSQL Server.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="APIS">
-<h3>APIS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APIS</span></div>
-<div class="block">Solution Blueprint supporting integration connectors extracting Open API specifications to Open APIs via swagger.</div>
+<section class="detail" id="APACHE_KAFKA_CONTENT_PACK">
+<h3>APACHE_KAFKA_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APACHE_KAFKA_CONTENT_PACK</span></div>
+<div class="block">Reference data, templates, connectors, and governance services for working with an Apache Kafka Server.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NANNY">
-<h3>NANNY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">NANNY</span></div>
-<div class="block">Solution Blueprint supporting integration connectors extracting interesting information needed to observe the activity in the Open Metadata Ecosystem.</div>
+<section class="detail" id="OBSERVABILITY_CONTENT_PACK">
+<h3>OBSERVABILITY_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">OBSERVABILITY_CONTENT_PACK</span></div>
+<div class="block">Connectors and governance services used to enable observability functions on Egeria's infrastructure.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="POSTGRES">
-<h3>POSTGRES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">POSTGRES</span></div>
-<div class="block">Solution Blueprint supporting integration connectors connecting to PostgreSQL Servers.</div>
+<section class="detail" id="APIS_CONTENT_PACK">
+<h3>APIS_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">APIS_CONTENT_PACK</span></div>
+<div class="block">Reference data, templates, connectors, and governance services for working with REST APIs via the swagger interface.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNITY_CATALOG">
-<h3>UNITY_CATALOG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">UNITY_CATALOG</span></div>
-<div class="block">Solution Blueprint supporting integration connectors connecting to Unity Catalog (UC).</div>
+<section class="detail" id="PRODUCTS_CONTENT_PACK">
+<h3>PRODUCTS_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">PRODUCTS_CONTENT_PACK</span></div>
+<div class="block">Open metadata collections packaged into dynamic digital products.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ORGANIZATION_INSIGHT_CONTENT_PACK">
+<h3>ORGANIZATION_INSIGHT_CONTENT_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.contentpacks.core">SolutionBlueprint</a></span>&nbsp;<span class="element-name">ORGANIZATION_INSIGHT_CONTENT_PACK</span></div>
+<div class="block">Monitoring, analysis, and capture of insight into organization activity and effectiveness.</div>
 </section>
 </li>
 </ul>
@@ -351,9 +362,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getGUID()">
-<h3>getGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGUID</span>()</div>
+<section class="detail" id="getSolutionBlueprintGUID()">
+<h3>getSolutionBlueprintGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionBlueprintGUID</span>()</div>
 <div class="block">Return the unique identifier for the solution blueprint.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -362,9 +373,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getQualifiedName()">
-<h3>getQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
+<section class="detail" id="getSolutionBlueprintQualifiedName()">
+<h3>getSolutionBlueprintQualifiedName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionBlueprintQualifiedName</span>()</div>
 <div class="block">Return the unique name of the solution blueprint.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -373,9 +384,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getName()">
-<h3>getName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<section class="detail" id="getSolutionBlueprintDisplayName()">
+<h3>getSolutionBlueprintDisplayName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionBlueprintDisplayName</span>()</div>
 <div class="block">Return the name of the solution blueprint.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -395,10 +406,10 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getSolutionComponentGUIDs()">
-<h3>getSolutionComponentGUIDs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSolutionComponentGUIDs</span>()</div>
-<div class="block">Return the solution components included in the solution blueprint.</div>
+<section class="detail" id="getExtraSolutionComponentGUIDs()">
+<h3>getExtraSolutionComponentGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getExtraSolutionComponentGUIDs</span>()</div>
+<div class="block">Return the solution components included in the solution blueprint. membershipRationale="related component"</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of guids or null</dd>
@@ -406,13 +417,13 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getDeployedImplementationTypeGUIDs()">
-<h3>getDeployedImplementationTypeGUIDs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDeployedImplementationTypeGUIDs</span>()</div>
-<div class="block">Return the list of technology types integrated into this solution.</div>
+<section class="detail" id="getDeployedImplementationTypes()">
+<h3>getDeployedImplementationTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a>&gt;</span>&nbsp;<span class="element-name">getDeployedImplementationTypes</span>()</div>
+<div class="block">Return the list of technology types integrated into this solution. membershipRationale="interacting with"</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of GUIDs or null</dd>
+<dd>list of definitions or null</dd>
 </dl>
 </section>
 </li>

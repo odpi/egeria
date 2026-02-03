@@ -79,12 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">UnityCatalogDeployedImplementationType</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a>&gt;
-implements <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></span></div>
+implements <a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></span></div>
 <div class="block">UnityCatalogDeployedImplementationType describes the standard deployed implementation types supplied with Egeria for
  the technology surrounding Unity Catalog.  This includes the Open Source and commercial versions.</div>
 </section>
@@ -167,10 +167,10 @@ implements <a href="../../../frameworks/openmetadata/refdata/DeployedImplementat
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type name that this deployed implementation type is associated with.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefinitionFromDeployedImplementationType(java.lang.String)" class="member-name-link">getDefinitionFromDeployedImplementationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the matching ENUM to make use of the full definition for the deployed implementation type.</div>
+<div class="block">Return the matching ENUM for the full definition for the deployed implementation type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
@@ -187,34 +187,49 @@ implements <a href="../../../frameworks/openmetadata/refdata/DeployedImplementat
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the guid for the deployed technology type - can be null.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsATypeOf()" class="member-name-link">getIsATypeOf</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGUIDs()" class="member-name-link">getGUIDs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return a list of GUIDs for this set of deployed implementation types.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsATypeOf()" class="member-name-link">getIsATypeOf</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentGUID()" class="member-name-link">getSolutionComponentGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the optional unique identifier of the solution component that this deployed implementation type is associated with.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentIdentifier()" class="member-name-link">getSolutionComponentIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name for this deployed implementation type.</div>
+<div class="block">Return the solution component identifier that this deployed implementation type is associated with.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentType()" class="member-name-link">getSolutionComponentType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the URL to more information.</div>
+<div class="block">Return the solution component type that this deployed implementation type is associated with.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the URL to more information.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -227,6 +242,9 @@ the order they are declared.</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></h3>
+<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getQualifiedName()">getQualifiedName</a>, <a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getSolutionComponent()">getSolutionComponent</a>, <a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getSubComponents()">getSubComponents</a></code></div>
 </section>
 </li>
 </ul>
@@ -343,13 +361,24 @@ not permitted.)</div>
 <li>
 <section class="detail" id="getDefinitionFromDeployedImplementationType(java.lang.String)">
 <h3>getDefinitionFromDeployedImplementationType</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getDefinitionFromDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</span></div>
-<div class="block">Return the matching ENUM to make use of the full definition for the deployed implementation type.</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getDefinitionFromDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</span></div>
+<div class="block">Return the matching ENUM for the full definition for the deployed implementation type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>deployedImplementationType</code> - value to match on</dd>
 <dt>Returns:</dt>
 <dd>DeployedImplementationType definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGUIDs()">
+<h3>getGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">getGUIDs</span>()</div>
+<div class="block">Return a list of GUIDs for this set of deployed implementation types.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>array of guids</dd>
 </dl>
 </section>
 </li>
@@ -360,7 +389,7 @@ not permitted.)</div>
 <div class="block">Return the guid for the deployed technology type - can be null.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -373,7 +402,7 @@ not permitted.)</div>
 <div class="block">Return preferred value for deployed implementation type.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getDeployedImplementationType()">getDeployedImplementationType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getDeployedImplementationType()">getDeployedImplementationType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -382,11 +411,11 @@ not permitted.)</div>
 <li>
 <section class="detail" id="getIsATypeOf()">
 <h3>getIsATypeOf</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getIsATypeOf</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getIsATypeOf</span>()</div>
 <div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getIsATypeOf()">getIsATypeOf</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getIsATypeOf()">getIsATypeOf</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>deployed implementation type enum</dd>
 </dl>
@@ -399,7 +428,7 @@ not permitted.)</div>
 <div class="block">Return the type name that this deployed implementation type is associated with.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getAssociatedTypeName()">getAssociatedTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getAssociatedTypeName()">getAssociatedTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -412,20 +441,7 @@ not permitted.)</div>
 <div class="block">Return the optional classification name that this deployed implementation type is associated with.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getAssociatedClassification()">getAssociatedClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getQualifiedName()">
-<h3>getQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
-<div class="block">Return the qualified name for this deployed implementation type.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getAssociatedClassification()">getAssociatedClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -438,7 +454,7 @@ not permitted.)</div>
 <div class="block">Return the description for this value.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -451,9 +467,48 @@ not permitted.)</div>
 <div class="block">Return the URL to more information.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html#getWikiLink()">getWikiLink</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getWikiLink()">getWikiLink</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string url</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentGUID()">
+<h3>getSolutionComponentGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentGUID</span>()</div>
+<div class="block">Return the optional unique identifier of the solution component that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentGUID()">getSolutionComponentGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentType()">
+<h3>getSolutionComponentType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentType</span>()</div>
+<div class="block">Return the solution component type that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentType()">getSolutionComponentType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentIdentifier()">
+<h3>getSolutionComponentIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentIdentifier</span>()</div>
+<div class="block">Return the solution component identifier that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentIdentifier()">getSolutionComponentIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
 </dl>
 </section>
 </li>

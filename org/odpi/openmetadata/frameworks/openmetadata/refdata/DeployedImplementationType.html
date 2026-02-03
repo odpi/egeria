@@ -79,12 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">DeployedImplementationType</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&gt;
-implements <a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></span></div>
+implements <a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></span></div>
 <div class="block">DeployedImplementationType describes the standard deployed implementation types supplied with Egeria. These are encoded in the
  CoreContentPack.omarchive and are available in the open metadata repository as valid values.</div>
 </section>
@@ -109,15 +109,23 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#AIRFLOW_DAG" class="member-name-link">AIRFLOW_DAG</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A deployable software component.</div>
+<div class="block">A python component that implements a micro-workflow that runs in Apache Airflow.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ANDROID_PHONE" class="member-name-link">ANDROID_PHONE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">A smartphone that runs the Android operating system.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#APACHE_KAFKA_TOPIC" class="member-name-link">APACHE_KAFKA_TOPIC</a></code></div>
+<div class="col-first even-row-color"><code><a href="#APACHE_AIRFLOW_SERVER" class="member-name-link">APACHE_AIRFLOW_SERVER</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
+<div class="block">Runs data movement and transformation pipelines.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#APACHE_KAFKA_TOPIC" class="member-name-link">APACHE_KAFKA_TOPIC</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">An event topic supporting high-speed, reliable event exchange.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#APACHE_SUPERSET" class="member-name-link">APACHE_SUPERSET</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Manages the definition and display of reports.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#API_MANAGER" class="member-name-link">API_MANAGER</a></code></div>
 <div class="col-last odd-row-color">
@@ -141,7 +149,7 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#ASSET_CATALOG" class="member-name-link">ASSET_CATALOG</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A catalog of metadata that describes assets such as deployed systems, data sources and processes.</div>
+<div class="block">A catalog of metadata that describes assets such as deployed systems, data sources, and processes.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#AUDIO_DATA_FILE" class="member-name-link">AUDIO_DATA_FILE</a></code></div>
 <div class="col-last odd-row-color">
@@ -157,7 +165,7 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#BARE_METAL_COMPUTER" class="member-name-link">BARE_METAL_COMPUTER</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A computer (hardware) with operating system for running software.</div>
+<div class="block">A computer (hardware) with an operating system for running software.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#BUILD_FILE" class="member-name-link">BUILD_FILE</a></code></div>
 <div class="col-last odd-row-color">
@@ -189,7 +197,7 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#DATA_FEED" class="member-name-link">DATA_FEED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
+<div class="block">An event-based data source</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DATA_FILE" class="member-name-link">DATA_FILE</a></code></div>
 <div class="col-last odd-row-color">
@@ -235,13 +243,13 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="col-last odd-row-color">
 <div class="block">A file containing externally accessible data - other fields provide information on the internal format.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FILE_FOLDER" class="member-name-link">FILE_FOLDER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FILE_SYSTEM" class="member-name-link">FILE_SYSTEM</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A directory (folder) that holds files that are potential data sources.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#FILE_SYSTEM" class="member-name-link">FILE_SYSTEM</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">A system that manages hierarchically organized files on persistent storage.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FILE_SYSTEM_DIRECTORY" class="member-name-link">FILE_SYSTEM_DIRECTORY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">A directory (folder) that holds files that are potential data sources.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION" class="member-name-link">GOVERNANCE_ACTION</a></code></div>
 <div class="col-last even-row-color">
@@ -261,7 +269,7 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_TYPE" class="member-name-link">GOVERNANCE_ACTION_TYPE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Governance Action Type - A modelled governance action comprising of a single step.</div>
+<div class="block">Governance Action Type - A modelled governance action with a single step.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ENGINE" class="member-name-link">GOVERNANCE_ENGINE</a></code></div>
 <div class="col-last odd-row-color">
@@ -277,11 +285,11 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#I_PAD" class="member-name-link">I_PAD</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A tablet from Apple Inc that runs the iOS operating system.</div>
+<div class="block">A tablet from Apple Inc.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#I_PHONE" class="member-name-link">I_PHONE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A smartphone from Apple Inc that runs the iOS operating system.</div>
+<div class="block">A smartphone from Apple Inc.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_CONNECTOR" class="member-name-link">INTEGRATION_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
@@ -301,35 +309,43 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 </div>
 <div class="col-first even-row-color"><code><a href="#JDBC_RELATIONAL_DATABASE" class="member-name-link">JDBC_RELATIONAL_DATABASE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A database hosted on a relational database server capable of being called through a JDBC Driver.</div>
+<div class="block">A database hosted on a relational database server callable through a JDBC Driver.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#JDBC_RELATIONAL_DATABASE_SCHEMA" class="member-name-link">JDBC_RELATIONAL_DATABASE_SCHEMA</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A database schema hosted on a relational database server capable of being called through a JDBC Driver.</div>
+<div class="block">A database schema hosted on a relational database server callable through a JDBC Driver.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#JSON_FILE" class="member-name-link">JSON_FILE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">JSON Data File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#KEYSTORE_FILE" class="member-name-link">KEYSTORE_FILE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#JUPYTER_NOTEBOOK" class="member-name-link">JUPYTER_NOTEBOOK</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Jupyter Notebook File</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#KEYSTORE_FILE" class="member-name-link">KEYSTORE_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Keystore File</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#KUBERNETES_CLUSTER" class="member-name-link">KUBERNETES_CLUSTER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#KUBERNETES_CLUSTER" class="member-name-link">KUBERNETES_CLUSTER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A host cluster managing containerized applications.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LAPTOP_COMPUTER" class="member-name-link">LAPTOP_COMPUTER</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">A portable computer with screen, keyboard and battery power.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#LOG_FILE" class="member-name-link">LOG_FILE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LAPTOP_COMPUTER" class="member-name-link">LAPTOP_COMPUTER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A portable computer with a screen, keyboard, and battery power.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LOG_FILE" class="member-name-link">LOG_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Log File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MACBOOK_PRO" class="member-name-link">MACBOOK_PRO</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MACBOOK_PRO" class="member-name-link">MACBOOK_PRO</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A professional laptop supplied by Apple that runs the macOS operating system.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MARKDOWN_DOCUMENT" class="member-name-link">MARKDOWN_DOCUMENT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Markdown Document File</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#MARQUEZ_SERVER" class="member-name-link">MARQUEZ_SERVER</a></code></div>
 <div class="col-last even-row-color">
@@ -351,17 +367,25 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="col-last even-row-color">
 <div class="block">A pluggable software component that conforms to the Open Connector Framework (OCF).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_REPOSITORY" class="member-name-link">OPEN_METADATA_REPOSITORY</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_ARCHIVE" class="member-name-link">OPEN_METADATA_ARCHIVE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Open Metadata Archive</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_METADATA_REPOSITORY" class="member-name-link">OPEN_METADATA_REPOSITORY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A metadata repository supporting open metadata types and interfaces.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PARQUET_FILE" class="member-name-link">PARQUET_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PARQUET_FILE" class="member-name-link">PARQUET_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Parquet Data File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PLATFORM_SECURITY_CONNECTOR" class="member-name-link">PLATFORM_SECURITY_CONNECTOR</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PLATFORM_SECURITY_CONNECTOR" class="member-name-link">PLATFORM_SECURITY_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Platform Metadata Security Connector - A connector that manages authorization requests to the OMAG Server Platform.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#POSTGRES_SERVER" class="member-name-link">POSTGRES_SERVER</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.</div>
+<div class="block">A software server that supports databases.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#PROCESS" class="member-name-link">PROCESS</a></code></div>
 <div class="col-last even-row-color">
@@ -375,129 +399,137 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="col-last even-row-color">
 <div class="block">Properties File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RASTER_DATA_FILE" class="member-name-link">RASTER_DATA_FILE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PYEGERIA" class="member-name-link">PYEGERIA</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Python language library supporting calls to Egeria's REST APIs.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#RASTER_DATA_FILE" class="member-name-link">RASTER_DATA_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Raster Data File</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RELATIONAL_DATABASE_MANAGER" class="member-name-link">RELATIONAL_DATABASE_MANAGER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RELATIONAL_DATABASE_MANAGER" class="member-name-link">RELATIONAL_DATABASE_MANAGER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REPOSITORY_CONNECTOR" class="member-name-link">REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REPOSITORY_CONNECTOR" class="member-name-link">REPOSITORY_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS Repository Connector - Maps open metadata calls to a metadata repository.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_ENGINE" class="member-name-link">REPOSITORY_GOVERNANCE_ENGINE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REPOSITORY_GOVERNANCE_ENGINE" class="member-name-link">REPOSITORY_GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A governance engine that runs repository governance services.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Repository Governance Service - A connector that dynamically governs the activity of the open metadata repositories.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RESOURCE_CONNECTOR" class="member-name-link">RESOURCE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RESOURCE_CONNECTOR" class="member-name-link">RESOURCE_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A pluggable software component that conforms to the Open Connector Framework (OCF).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REST_API_ENDPOINT" class="member-name-link">REST_API_ENDPOINT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REST_API_ENDPOINT" class="member-name-link">REST_API_ENDPOINT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A callable network address supporting the REST protocol.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REST_API_MANAGER" class="member-name-link">REST_API_MANAGER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REST_API_MANAGER" class="member-name-link">REST_API_MANAGER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A software capability that provides callable APIs supporting the REST protocol.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SCRIPT_FILE" class="member-name-link">SCRIPT_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SCRIPT_FILE" class="member-name-link">SCRIPT_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Script File</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SECURITY_CONNECTOR" class="member-name-link">SERVER_SECURITY_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SMALL_FORM_FACTOR_COMPUTER" class="member-name-link">SMALL_FORM_FACTOR_COMPUTER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SERVER_SECURITY_CONNECTOR" class="member-name-link">SERVER_SECURITY_CONNECTOR</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Server Metadata Security Connector - A connector that manages authorization requests to the OMAG Server.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SMALL_FORM_FACTOR_COMPUTER" class="member-name-link">SMALL_FORM_FACTOR_COMPUTER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A small hardware server enclosed in a protective case that can sit under a desk.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SMARTPHONE" class="member-name-link">SMARTPHONE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A handheld portable device with network, touchscreen and battery power.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SOFTWARE_CAPABILITY" class="member-name-link">SOFTWARE_CAPABILITY</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SMARTPHONE" class="member-name-link">SMARTPHONE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">A handheld portable device with network, touchscreen, and battery power.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SOFTWARE_CAPABILITY" class="member-name-link">SOFTWARE_CAPABILITY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A callable software capability supporting specific types of assets.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOFTWARE_COMPONENT" class="member-name-link">SOFTWARE_COMPONENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOFTWARE_COMPONENT" class="member-name-link">SOFTWARE_COMPONENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A deployable software component.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOFTWARE_SERVER" class="member-name-link">SOFTWARE_SERVER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOFTWARE_SERVER" class="member-name-link">SOFTWARE_SERVER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A callable software server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOURCE_CODE_FILE" class="member-name-link">SOURCE_CODE_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOURCE_CODE_FILE" class="member-name-link">SOURCE_CODE_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Source Code File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SPREADSHEET_FILE" class="member-name-link">SPREADSHEET_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SPREADSHEET_FILE" class="member-name-link">SPREADSHEET_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Spreadsheet Data File</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_ENGINE" class="member-name-link">SURVEY_ACTION_ENGINE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_ENGINE" class="member-name-link">SURVEY_ACTION_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Survey Action Engine - A governance engine that runs survey action services.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_SERVICE_CONNECTOR" class="member-name-link">SURVEY_ACTION_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_SERVICE_CONNECTOR" class="member-name-link">SURVEY_ACTION_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Survey Action Service - A connector that coordinates asset surveys.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TABLET" class="member-name-link">TABLET</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A two-handed portable device with network, touchscreen and battery power.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TABULAR_DATA_SET" class="member-name-link">TABULAR_DATA_SET</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TABLET" class="member-name-link">TABLET</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">A two-handed portable device with network, touchscreen, and battery power.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABULAR_DATA_SET" class="member-name-link">TABULAR_DATA_SET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TABULAR_DATA_SET_COLLECTION" class="member-name-link">TABULAR_DATA_SET_COLLECTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TABULAR_DATA_SET_COLLECTION" class="member-name-link">TABULAR_DATA_SET_COLLECTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A collection of tabular data sets.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TECHNOLOGY" class="member-name-link">TECHNOLOGY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TECHNOLOGY" class="member-name-link">TECHNOLOGY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Root technology type.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE" class="member-name-link">THREE_D_IMAGE_DATA_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE" class="member-name-link">THREE_D_IMAGE_DATA_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">3D Image Data File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TOPIC" class="member-name-link">TOPIC</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNIX_FILE_SYSTEM" class="member-name-link">UNIX_FILE_SYSTEM</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TOPIC" class="member-name-link">TOPIC</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">An organized event-based data source that supports subscription to a named data feed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNIX_FILE_SYSTEM" class="member-name-link">UNIX_FILE_SYSTEM</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A UNIX capability that manages hierarchically organized files on persistent storage.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#USER_AUTHENTICATION_MANAGER" class="member-name-link">USER_AUTHENTICATION_MANAGER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#USER_AUTHENTICATION_MANAGER" class="member-name-link">USER_AUTHENTICATION_MANAGER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Software supporting a business function.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#VECTOR_DATA_FILE" class="member-name-link">VECTOR_DATA_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#VECTOR_DATA_FILE" class="member-name-link">VECTOR_DATA_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Vector Data File</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VIDEO_DATA_FILE" class="member-name-link">VIDEO_DATA_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#VIDEO_DATA_FILE" class="member-name-link">VIDEO_DATA_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Video Data File</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WATCHDOG_ACTION_ENGINE" class="member-name-link">WATCHDOG_ACTION_ENGINE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WATCHDOG_ACTION_ENGINE" class="member-name-link">WATCHDOG_ACTION_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Watchdog Action Engine - A governance engine that runs survey action services.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_CONNECTOR" class="member-name-link">WATCHDOG_ACTION_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_CONNECTOR" class="member-name-link">WATCHDOG_ACTION_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Watchdog Action Service - A connector that coordinates notifications based on situations/events.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#WEBPAGE" class="member-name-link">WEBPAGE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Webpage File</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#XML_FILE" class="member-name-link">XML_FILE</a></code></div>
 <div class="col-last even-row-color">
@@ -534,12 +566,12 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefinitionFromDeployedImplementationType(java.lang.String)" class="member-name-link">getDefinitionFromDeployedImplementationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the matching ENUM to make use of the full definition for the deployed implementation type.</div>
+<div class="block">Return the matching ENUM definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return preferred value for deployed implementation type.</div>
+<div class="block">Return the preferred value for the deployed implementation type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
@@ -551,34 +583,49 @@ implements <a href="DeployedImplementationTypeDefinition.html" title="interface 
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the guid for the deployed technology type - can be null.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsATypeOf()" class="member-name-link">getIsATypeOf</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
+<div class="block">Return the optional deployed implementation type that this technology inherits from.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentGUID()" class="member-name-link">getSolutionComponentGUID</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name for this deployed implementation type.</div>
+<div class="block">Return the optional unique identifier of the solution component that this deployed implementation type is associated with.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentIdentifier()" class="member-name-link">getSolutionComponentIdentifier</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the URL to more information.</div>
+<div class="block">Return the solution component identifier that this deployed implementation type is associated with.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentType()" class="member-name-link">getSolutionComponentType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the solution component type that this deployed implementation type is associated with.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the optional list of subcomponents.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the URL for more information.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -591,6 +638,9 @@ the order they are declared.</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></h3>
+<code><a href="../definitions/DeployedImplementationTypeDefinition.html#getQualifiedName()">getQualifiedName</a>, <a href="../definitions/DeployedImplementationTypeDefinition.html#getSolutionComponent()">getSolutionComponent</a></code></div>
 </section>
 </li>
 </ul>
@@ -722,6 +772,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="JUPYTER_NOTEBOOK">
+<h3>JUPYTER_NOTEBOOK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">JUPYTER_NOTEBOOK</span></div>
+<div class="block">Jupyter Notebook File</div>
+</section>
+</li>
+<li>
 <section class="detail" id="PARQUET_FILE">
 <h3>PARQUET_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">PARQUET_FILE</span></div>
@@ -747,6 +804,20 @@ the order they are declared.</div>
 <h3>DOCUMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DOCUMENT</span></div>
 <div class="block">Document File</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MARKDOWN_DOCUMENT">
+<h3>MARKDOWN_DOCUMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">MARKDOWN_DOCUMENT</span></div>
+<div class="block">Markdown Document File</div>
+</section>
+</li>
+<li>
+<section class="detail" id="WEBPAGE">
+<h3>WEBPAGE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">WEBPAGE</span></div>
+<div class="block">Webpage File</div>
 </section>
 </li>
 <li>
@@ -841,6 +912,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="OPEN_METADATA_ARCHIVE">
+<h3>OPEN_METADATA_ARCHIVE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">OPEN_METADATA_ARCHIVE</span></div>
+<div class="block">Open Metadata Archive</div>
+</section>
+</li>
+<li>
 <section class="detail" id="KEYSTORE_FILE">
 <h3>KEYSTORE_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">KEYSTORE_FILE</span></div>
@@ -848,9 +926,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="FILE_FOLDER">
-<h3>FILE_FOLDER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">FILE_FOLDER</span></div>
+<section class="detail" id="FILE_SYSTEM_DIRECTORY">
+<h3>FILE_SYSTEM_DIRECTORY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">FILE_SYSTEM_DIRECTORY</span></div>
 <div class="block">A directory (folder) that holds files that are potential data sources.</div>
 </section>
 </li>
@@ -886,42 +964,42 @@ the order they are declared.</div>
 <section class="detail" id="JDBC_RELATIONAL_DATABASE">
 <h3>JDBC_RELATIONAL_DATABASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">JDBC_RELATIONAL_DATABASE</span></div>
-<div class="block">A database hosted on a relational database server capable of being called through a JDBC Driver.</div>
+<div class="block">A database hosted on a relational database server callable through a JDBC Driver.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="JDBC_RELATIONAL_DATABASE_SCHEMA">
 <h3>JDBC_RELATIONAL_DATABASE_SCHEMA</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">JDBC_RELATIONAL_DATABASE_SCHEMA</span></div>
-<div class="block">A database schema hosted on a relational database server capable of being called through a JDBC Driver.</div>
+<div class="block">A database schema hosted on a relational database server callable through a JDBC Driver.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BARE_METAL_COMPUTER">
 <h3>BARE_METAL_COMPUTER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">BARE_METAL_COMPUTER</span></div>
-<div class="block">A computer (hardware) with operating system for running software.</div>
+<div class="block">A computer (hardware) with an operating system for running software.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LAPTOP_COMPUTER">
 <h3>LAPTOP_COMPUTER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">LAPTOP_COMPUTER</span></div>
-<div class="block">A portable computer with screen, keyboard and battery power.</div>
+<div class="block">A portable computer with a screen, keyboard, and battery power.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SMARTPHONE">
 <h3>SMARTPHONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">SMARTPHONE</span></div>
-<div class="block">A handheld portable device with network, touchscreen and battery power.</div>
+<div class="block">A handheld portable device with network, touchscreen, and battery power.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="I_PHONE">
 <h3>I_PHONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">I_PHONE</span></div>
-<div class="block">A smartphone from Apple Inc that runs the iOS operating system.</div>
+<div class="block">A smartphone from Apple Inc. that runs the iOS operating system.</div>
 </section>
 </li>
 <li>
@@ -935,14 +1013,14 @@ the order they are declared.</div>
 <section class="detail" id="TABLET">
 <h3>TABLET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">TABLET</span></div>
-<div class="block">A two-handed portable device with network, touchscreen and battery power.</div>
+<div class="block">A two-handed portable device with network, touchscreen, and battery power.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="I_PAD">
 <h3>I_PAD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">I_PAD</span></div>
-<div class="block">A tablet from Apple Inc that runs the iOS operating system.</div>
+<div class="block">A tablet from Apple Inc. that runs the iOS operating system.</div>
 </section>
 </li>
 <li>
@@ -995,10 +1073,31 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="POSTGRES_SERVER">
+<h3>POSTGRES_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">POSTGRES_SERVER</span></div>
+<div class="block">A software server that supports databases.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="INTEGRATION_SERVER">
 <h3>INTEGRATION_SERVER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">INTEGRATION_SERVER</span></div>
 <div class="block">A software server that supports the exchange of data.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="AIRFLOW_DAG">
+<h3>AIRFLOW_DAG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">AIRFLOW_DAG</span></div>
+<div class="block">A python component that implements a micro-workflow that runs in Apache Airflow.  DAG stands for Directed Acyclic Graph, which describes the structure of its implementation.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="APACHE_AIRFLOW_SERVER">
+<h3>APACHE_AIRFLOW_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">APACHE_AIRFLOW_SERVER</span></div>
+<div class="block">Runs data movement and transformation pipelines.</div>
 </section>
 </li>
 <li>
@@ -1020,6 +1119,13 @@ the order they are declared.</div>
 <h3>MARQUEZ_SERVER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">MARQUEZ_SERVER</span></div>
 <div class="block">A data catalog for data observability.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="APACHE_SUPERSET">
+<h3>APACHE_SUPERSET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">APACHE_SUPERSET</span></div>
+<div class="block">Manages the definition and display of reports.</div>
 </section>
 </li>
 <li>
@@ -1054,7 +1160,7 @@ the order they are declared.</div>
 <section class="detail" id="ASSET_CATALOG">
 <h3>ASSET_CATALOG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">ASSET_CATALOG</span></div>
-<div class="block">A catalog of metadata that describes assets such as deployed systems, data sources and processes.</div>
+<div class="block">A catalog of metadata that describes assets such as deployed systems, data sources, and processes.</div>
 </section>
 </li>
 <li>
@@ -1114,10 +1220,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="AIRFLOW_DAG">
-<h3>AIRFLOW_DAG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">AIRFLOW_DAG</span></div>
-<div class="block">A deployable software component.</div>
+<section class="detail" id="PYEGERIA">
+<h3>PYEGERIA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">PYEGERIA</span></div>
+<div class="block">Python language library supporting calls to Egeria's REST APIs.</div>
 </section>
 </li>
 <li>
@@ -1142,17 +1248,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="GOVERNANCE_ENGINE">
-<h3>GOVERNANCE_ENGINE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_ENGINE</span></div>
-<div class="block">Manages the execution of automated governance activity requested via engine actions.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="GOVERNANCE_SERVICE">
 <h3>GOVERNANCE_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_SERVICE</span></div>
 <div class="block">Provides the description of a component that implements an automated governance activity.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_ENGINE">
+<h3>GOVERNANCE_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_ENGINE</span></div>
+<div class="block">Manages the execution of automated governance activity requested via engine actions.</div>
 </section>
 </li>
 <li>
@@ -1229,7 +1335,7 @@ the order they are declared.</div>
 <section class="detail" id="GOVERNANCE_ACTION_TYPE">
 <h3>GOVERNANCE_ACTION_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_TYPE</span></div>
-<div class="block">Governance Action Type - A modelled governance action comprising of a single step.</div>
+<div class="block">Governance Action Type - A modelled governance action with a single step.</div>
 </section>
 </li>
 <li>
@@ -1243,14 +1349,14 @@ the order they are declared.</div>
 <section class="detail" id="PLATFORM_SECURITY_CONNECTOR">
 <h3>PLATFORM_SECURITY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">PLATFORM_SECURITY_CONNECTOR</span></div>
-<div class="block">Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.</div>
+<div class="block">Platform Metadata Security Connector - A connector that manages authorization requests to the OMAG Server Platform.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SECURITY_CONNECTOR">
 <h3>SERVER_SECURITY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">SERVER_SECURITY_CONNECTOR</span></div>
-<div class="block">Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.</div>
+<div class="block">Server Metadata Security Connector - A connector that manages authorization requests to the OMAG Server.</div>
 </section>
 </li>
 <li>
@@ -1285,21 +1391,21 @@ the order they are declared.</div>
 <section class="detail" id="DATA_FEED">
 <h3>DATA_FEED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DATA_FEED</span></div>
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
+<div class="block">An event-based data source</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC">
 <h3>TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">TOPIC</span></div>
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
+<div class="block">An organized event-based data source that supports subscription to a named data feed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="APACHE_KAFKA_TOPIC">
 <h3>APACHE_KAFKA_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">APACHE_KAFKA_TOPIC</span></div>
-<div class="block">An event topic supporting high speed, reliable event exchange.</div>
+<div class="block">An event topic supporting high-speed, reliable event exchange.</div>
 </section>
 </li>
 </ul>
@@ -1345,7 +1451,7 @@ not permitted.)</div>
 <section class="detail" id="getDefinitionFromDeployedImplementationType(java.lang.String)">
 <h3>getDefinitionFromDeployedImplementationType</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">getDefinitionFromDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType)</span></div>
-<div class="block">Return the matching ENUM to make use of the full definition for the deployed implementation type.</div>
+<div class="block">Return the matching ENUM definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>deployedImplementationType</code> - value to match on</dd>
@@ -1361,7 +1467,7 @@ not permitted.)</div>
 <div class="block">Return the guid for the deployed technology type - can be null.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -1371,10 +1477,10 @@ not permitted.)</div>
 <section class="detail" id="getDeployedImplementationType()">
 <h3>getDeployedImplementationType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDeployedImplementationType</span>()</div>
-<div class="block">Return preferred value for deployed implementation type.</div>
+<div class="block">Return the preferred value for the deployed implementation type.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getDeployedImplementationType()">getDeployedImplementationType</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getDeployedImplementationType()">getDeployedImplementationType</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -1383,11 +1489,11 @@ not permitted.)</div>
 <li>
 <section class="detail" id="getIsATypeOf()">
 <h3>getIsATypeOf</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getIsATypeOf</span>()</div>
-<div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></span>&nbsp;<span class="element-name">getIsATypeOf</span>()</div>
+<div class="block">Return the optional deployed implementation type that this technology inherits from.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getIsATypeOf()">getIsATypeOf</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getIsATypeOf()">getIsATypeOf</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>deployed implementation type enum</dd>
 </dl>
@@ -1400,7 +1506,7 @@ not permitted.)</div>
 <div class="block">Return the type name that this deployed implementation type is associated with.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getAssociatedTypeName()">getAssociatedTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getAssociatedTypeName()">getAssociatedTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -1413,20 +1519,7 @@ not permitted.)</div>
 <div class="block">Return the optional classification name that this deployed implementation type is associated with.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getAssociatedClassification()">getAssociatedClassification</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getQualifiedName()">
-<h3>getQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
-<div class="block">Return the qualified name for this deployed implementation type.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getAssociatedClassification()">getAssociatedClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -1439,7 +1532,7 @@ not permitted.)</div>
 <div class="block">Return the description for this value.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -1449,12 +1542,64 @@ not permitted.)</div>
 <section class="detail" id="getWikiLink()">
 <h3>getWikiLink</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getWikiLink</span>()</div>
-<div class="block">Return the URL to more information.</div>
+<div class="block">Return the URL for more information.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="DeployedImplementationTypeDefinition.html#getWikiLink()">getWikiLink</a></code>&nbsp;in interface&nbsp;<code><a href="DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></code></dd>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getWikiLink()">getWikiLink</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string url</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentGUID()">
+<h3>getSolutionComponentGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentGUID</span>()</div>
+<div class="block">Return the optional unique identifier of the solution component that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentGUID()">getSolutionComponentGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentType()">
+<h3>getSolutionComponentType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentType</span>()</div>
+<div class="block">Return the solution component type that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentType()">getSolutionComponentType</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionComponentIdentifier()">
+<h3>getSolutionComponentIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionComponentIdentifier</span>()</div>
+<div class="block">Return the solution component identifier that this deployed implementation type is associated with.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getSolutionComponentIdentifier()">getSolutionComponentIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSubComponents()">
+<h3>getSubComponents</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</span>&nbsp;<span class="element-name">getSubComponents</span>()</div>
+<div class="block">Return the optional list of subcomponents.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../definitions/DeployedImplementationTypeDefinition.html#getSubComponents()">getSubComponents</a></code>&nbsp;in interface&nbsp;<code><a href="../definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>null or list</dd>
 </dl>
 </section>
 </li>

@@ -1,6 +1,5 @@
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
 org.odpi.openmetadata.adapters.connectors
-org.odpi.openmetadata.adapters.connectors.apacheatlas.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules
@@ -116,7 +115,6 @@ org.odpi.openmetadata.adapters.connectors.subscriptions
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
-org.odpi.openmetadata.adapters.connectors.surveyaction.solution
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
@@ -128,6 +126,7 @@ org.odpi.openmetadata.adapters.connectors.unitycatalog.resource
 org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.rest
 org.odpi.openmetadata.adapters.connectors.unitycatalog.survey
 org.odpi.openmetadata.adapters.connectors.unitycatalog.sync
+org.odpi.openmetadata.adapters.connectors.wedgwood
 org.odpi.openmetadata.adapters.eventbus.topic.inmemory
 org.odpi.openmetadata.adapters.eventbus.topic.kafka
 org.odpi.openmetadata.adapters.repositoryservices

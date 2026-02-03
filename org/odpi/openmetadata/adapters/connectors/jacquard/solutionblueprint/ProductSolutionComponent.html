@@ -84,7 +84,9 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ProductSolutionComponent</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ProductSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint">ProductSolutionComponent</a>&gt;</span></div>
-<div class="block">A description of the predefined solution components.</div>
+<div class="block">A description of the predefined solution components.  Any that are associated
+ with connectors will be created in one of the core content packs, which
+ is why the GUID is defined here.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -107,11 +109,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CANCEL_PRODUCT_SUBSCRIPTION" class="member-name-link">CANCEL_PRODUCT_SUBSCRIPTION</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#METADATA_ACCESS_STORE" class="member-name-link">METADATA_ACCESS_STORE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#JACQUARD_HARVESTER" class="member-name-link">JACQUARD_HARVESTER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NEW_PRODUCT_SUBSCRIPTION" class="member-name-link">NEW_PRODUCT_SUBSCRIPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#METADATA_ACCESS_STORE" class="member-name-link">METADATA_ACCESS_STORE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_HARVESTER" class="member-name-link">OPEN_METADATA_HARVESTER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NEW_PRODUCT_SUBSCRIPTION" class="member-name-link">NEW_PRODUCT_SUBSCRIPTION</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_METADATA_PRODUCT" class="member-name-link">OPEN_METADATA_PRODUCT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -146,16 +148,18 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSolutionBlueprint.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint">ProductSolutionBlueprint</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConsumingBlueprints()" class="member-name-link">getConsumingBlueprints</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of blueprints to connect this component to.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the description of the solution blueprint</div>
+<div class="block">Return the description of the solution component</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the display name of the solution blueprint.</div>
+<div class="block">Return the display name of the solution component.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
@@ -185,7 +189,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the version identifier of the solution blueprint.</div>
+<div class="block">Return the version identifier of the solution component.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -224,9 +228,9 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="OPEN_METADATA_HARVESTER">
-<h3>OPEN_METADATA_HARVESTER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint">ProductSolutionComponent</a></span>&nbsp;<span class="element-name">OPEN_METADATA_HARVESTER</span></div>
+<section class="detail" id="JACQUARD_HARVESTER">
+<h3>JACQUARD_HARVESTER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint">ProductSolutionComponent</a></span>&nbsp;<span class="element-name">JACQUARD_HARVESTER</span></div>
 </section>
 </li>
 <li>
@@ -359,7 +363,7 @@ not permitted.)</div>
 <section class="detail" id="getDisplayName()">
 <h3>getDisplayName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
-<div class="block">Return the display name of the solution blueprint.</div>
+<div class="block">Return the display name of the solution component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
@@ -370,7 +374,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the description of the solution blueprint</div>
+<div class="block">Return the description of the solution component</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
@@ -381,7 +385,7 @@ not permitted.)</div>
 <section class="detail" id="getVersionIdentifier()">
 <h3>getVersionIdentifier</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getVersionIdentifier</span>()</div>
-<div class="block">Return the version identifier of the solution blueprint.</div>
+<div class="block">Return the version identifier of the solution component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
@@ -392,6 +396,11 @@ not permitted.)</div>
 <section class="detail" id="getConsumingBlueprints()">
 <h3>getConsumingBlueprints</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSolutionBlueprint.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint">ProductSolutionBlueprint</a>&gt;</span>&nbsp;<span class="element-name">getConsumingBlueprints</span>()</div>
+<div class="block">Return the list of blueprints to connect this component to.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list or null</dd>
+</dl>
 </section>
 </li>
 <li>
