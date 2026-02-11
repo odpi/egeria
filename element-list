@@ -1,5 +1,6 @@
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
 org.odpi.openmetadata.adapters.connectors
+org.odpi.openmetadata.adapters.connectors.apacheatlas.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules
@@ -9,7 +10,6 @@ org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc
-org.odpi.openmetadata.adapters.connectors.apachekafka.control
 org.odpi.openmetadata.adapters.connectors.apachekafka.integration
 org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apachekafka.resource
@@ -91,7 +91,6 @@ org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
-org.odpi.openmetadata.adapters.connectors.postgres.solution
 org.odpi.openmetadata.adapters.connectors.postgres.survey
 org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.postgres.utilities

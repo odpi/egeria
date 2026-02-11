@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li>Method</li>
 </ul>
@@ -70,7 +70,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
+<div class="inheritance"><a href="../../../../frameworks/connectors/OpenConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider</div>
+</div>
 </div>
 </div>
 </div>
@@ -81,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ApacheAtlasRESTProvider</span>
-<span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></span></div>
+<span class="extends-implements">extends <a href="../../../../frameworks/connectors/OpenConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">OpenConnectorProviderBase</a></span></div>
 <div class="block">ApacheAtlasRESTProvider is the connector provider for the Apache Atlas REST connector that provides a Java API to the Apache Atlas REST API.</div>
 </section>
 <section class="summary">
@@ -90,17 +92,6 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY" class="member-name-link">ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The configuration property name used to supply the name of the Apache Atlas server.</div>
-</div>
-</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorComponentDescription">connectorComponentDescription</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -144,30 +135,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY">
-<h3>ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY</span></div>
-<div class="block">The configuration property name used to supply the name of the Apache Atlas server.  This name is used in messages
- and its default value is "Apache Atlas".</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider.ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
