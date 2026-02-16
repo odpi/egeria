@@ -547,10 +547,6 @@ org.odpi.openmetadata.viewservices.classificationexplorer.admin
 org.odpi.openmetadata.viewservices.classificationexplorer.ffdc
 org.odpi.openmetadata.viewservices.classificationexplorer.server
 org.odpi.openmetadata.viewservices.classificationexplorer.server.spring
-org.odpi.openmetadata.viewservices.classificationmanager.admin
-org.odpi.openmetadata.viewservices.classificationmanager.ffdc
-org.odpi.openmetadata.viewservices.classificationmanager.server
-org.odpi.openmetadata.viewservices.classificationmanager.server.spring
 org.odpi.openmetadata.viewservices.collectionmanager.admin
 org.odpi.openmetadata.viewservices.collectionmanager.ffdc
 org.odpi.openmetadata.viewservices.collectionmanager.server
@@ -616,10 +612,6 @@ org.odpi.openmetadata.viewservices.metadataexpert.admin
 org.odpi.openmetadata.viewservices.metadataexpert.ffdc
 org.odpi.openmetadata.viewservices.metadataexpert.server
 org.odpi.openmetadata.viewservices.metadataexpert.server.spring
-org.odpi.openmetadata.viewservices.metadataexplorer.admin
-org.odpi.openmetadata.viewservices.metadataexplorer.ffdc
-org.odpi.openmetadata.viewservices.metadataexplorer.server
-org.odpi.openmetadata.viewservices.metadataexplorer.server.spring
 org.odpi.openmetadata.viewservices.multilanguage.admin
 org.odpi.openmetadata.viewservices.multilanguage.ffdc
 org.odpi.openmetadata.viewservices.multilanguage.server
