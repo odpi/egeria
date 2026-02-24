@@ -119,9 +119,9 @@ loadScripts(document, 'script');</script>
  or description.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
+ <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 </div>
@@ -180,17 +180,17 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span></div>
+ <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>assetGUID</code> - unique name for the connection.</dd>
-<dd><code>queryOptions</code> - options to control the query</dd>
+<dd><code>requestBody</code> - options to control the query</dd>
 <dt>Returns:</dt>
 <dd>graph of elements or
  InvalidParameterException - one of the parameters is null or invalid or

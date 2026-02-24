@@ -434,7 +434,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a context event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -461,7 +461,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect two context events to show that one is dependent on another.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentContextEventGUID</code> - unique identifier of the parent context event</dd>
 <dd><code>childContextEventGUID</code> - unique identifier of the child context event</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -486,7 +486,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach two dependent context events from one another.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>parentContextEventGUID</code> - unique identifier of the  parent context event.</dd>
 <dd><code>childContextEventGUID</code> - unique identifier of the child context event.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -511,7 +511,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect two context events to show that one is related to the other.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>contextEventOneGUID</code> - unique identifier of the  context event at end 1</dd>
 <dd><code>contextEventTwoGUID</code> - unique identifier of the  context event at end 2</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -536,7 +536,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach two context events that are related to one another.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>contextEventOneGUID</code> - unique identifier of the  context event at end 1</dd>
 <dd><code>contextEventTwoGUID</code> - unique identifier of the  context event at end 2</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -561,7 +561,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect a context event to an element that provides evidence that this context event is real.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>evidenceGUID</code> - unique identifier of the element representing the evidence</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -586,7 +586,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a context event from an element that provides evidence that this context event is real.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>evidenceGUID</code> - unique identifier of the element representing the evidence</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -611,7 +611,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect a context event to an element that is impacted by this event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>impactedElementGUID</code> - unique identifier of the element that is impacted by the event</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -636,7 +636,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a context event from an element that is impacted by the event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>impactedElementGUID</code> - unique identifier of the element that is impacted by the event</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -661,7 +661,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect a context event to an element whose data is impacted by this event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>timelineAffectedElementGUID</code> - unique identifier of the element whose data is impacted by the context event</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -686,7 +686,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a context event from an element whose data is impacted by the event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>timelineAffectedElementGUID</code> - unique identifier of the element whose data is impacted by the context event</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the context event</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -709,7 +709,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a context event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -731,7 +731,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of context events with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -755,7 +755,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific context event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>contextEventGUID</code> - unique identifier of the required element</dd>
 <dt>Returns:</dt>
 <dd>retrieved properties</dd>

@@ -109,10 +109,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">cancelEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.GAFAPIRequest)" class="member-name-link">cancelEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../rest/GAFAPIRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GAFAPIRequest</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that execution of an engine action is stopped.</div>
 </div>
@@ -220,7 +220,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>connection object for the out topic or
  InvalidParameterException one of the parameters is null or invalid or
- UserNotAuthorizedException user not authorized to issue this request or
+ UserNotAuthorizedException the user is not authorized to issue this request or
  PropertyServerException problem retrieving the discovery engine definition.</dd>
 </dl>
 </section>
@@ -348,13 +348,13 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>engine action properties and status or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="cancelEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<section class="detail" id="cancelEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.GAFAPIRequest)">
 <h3>cancelEngineAction</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/{engineActionGUID}/cancel")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">cancelEngineAction</span><wbr><span class="parameters">(@PathVariable
@@ -364,7 +364,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/GAFAPIRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GAFAPIRequest</a>&nbsp;requestBody)</span></div>
 <div class="block">Request that execution of an engine action is stopped.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -375,7 +375,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>void or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
 </dl>
 </section>
@@ -397,12 +397,12 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>userId</code> - userId of caller</dd>
-<dd><code>startFrom</code> - starting from element</dd>
+<dd><code>startFrom</code> - starting from position</dd>
 <dd><code>pageSize</code> - maximum elements to return</dd>
 <dt>Returns:</dt>
 <dd>list of engine action elements or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
 </dl>
 </section>

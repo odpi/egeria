@@ -640,7 +640,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of collections that are linked off of the supplied element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object (typically a personal profile, project or
                      community) that the collections hang off of</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
@@ -665,7 +665,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of collections matching the search string.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>searchString</code> - string to search for</dd>
 <dd><code>searchOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -741,7 +741,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of collections with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the collections to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -765,7 +765,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of collections with a particular category.  This is an optional text field in the collection element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>category</code> - the collection type value to match on.  If it is null, all collections with a null category are returned</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -789,7 +789,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>collectionGUID</code> - unique identifier of the required collection</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -815,7 +815,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new generic collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the collection.</dd>
@@ -875,7 +875,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the collection.</dd>
@@ -902,7 +902,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -927,7 +927,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -952,7 +952,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect a data describing collection to an element using the DataDescription relationship (0580).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataDescriptionCollectionGUID</code> - unique identifier of the collection</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -977,7 +977,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataDescriptionCollectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1002,7 +1002,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a solution blueprint to the element it describes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentGUID</code> - unique identifier of the element being described</dd>
 <dd><code>solutionBlueprintGUID</code> - unique identifier of the  solution blueprint</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1027,7 +1027,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a solution blueprint from the element it describes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>parentGUID</code> - unique identifier of the element being described</dd>
 <dd><code>solutionBlueprintGUID</code> - unique identifier of the  solution blueprint</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1052,7 +1052,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Link two dependent products.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>consumerDigitalProductGUID</code> - unique identifier of the digital product that has the dependency.</dd>
 <dd><code>consumedDigitalProductGUID</code> - unique identifier of the digital product that it is using.</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1077,7 +1077,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Unlink dependent products.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>consumerDigitalProductGUID</code> - unique identifier of the digital product that has the dependency.</dd>
 <dd><code>consumedDigitalProductGUID</code> - unique identifier of the digital product that it is using.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1102,7 +1102,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a subscriber to a subscription.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>digitalSubscriberGUID</code> - unique identifier of the subscriber (referenceable)</dd>
 <dd><code>digitalSubscriptionGUID</code> - unique identifier of the  digital subscription agreement</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1127,7 +1127,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a subscriber from a subscription.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>digitalSubscriberGUID</code> - unique identifier of the subscriber (referenceable)</dd>
 <dd><code>digitalSubscriptionGUID</code> - unique identifier of the  digital subscription agreement</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1152,7 +1152,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a product manager to a digital product.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>digitalProductGUID</code> - unique identifier of the digital product</dd>
 <dd><code>digitalProductManagerRoleGUID</code> - unique identifier of the product manager role</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1177,7 +1177,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a product manager from a digital product.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>digitalProductGUID</code> - unique identifier of the digital product</dd>
 <dd><code>digitalProductManagerGUID</code> - unique identifier of the product manager role</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1202,7 +1202,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an actor to an agreement.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>actorGUID</code> - unique identifier of the actor</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1228,7 +1228,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an actor from an agreement.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>agreementActorRelationshipGUID</code> - unique identifier of the element being described</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1252,7 +1252,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an agreement to an element involved in its definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>agreementItemGUID</code> - unique identifier of the agreement item</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1277,7 +1277,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an agreement from an element involved in its definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>agreementItemGUID</code> - unique identifier of the agreement item</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1302,7 +1302,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an agreement to an external reference element that describes the location of the contract documents.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier of the external reference describing the location of the contract</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1327,7 +1327,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an agreement from an external reference describing the location of the contract documents.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier of the external reference describing the location of the contract</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1352,7 +1352,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Link dependent business capabilities.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>businessCapabilityGUID</code> - unique identifier of the business capability that is dependent on another</dd>
 <dd><code>supportingBusinessCapabilityGUID</code> - unique identifier of the business capability that is supporting</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1377,7 +1377,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach dependent business capabilities.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>businessCapabilityGUID</code> - unique identifier of the business capability that is dependent on another</dd>
 <dd><code>supportingBusinessCapabilityGUID</code> - unique identifier of the business capability that is supporting</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1402,7 +1402,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a business capability to an element that provides digital support.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>businessCapabilityGUID</code> - unique identifier of the business capability</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1427,7 +1427,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a business capability from an element that provides digital support.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>businessCapabilityGUID</code> - unique identifier of the business capability</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1451,7 +1451,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify an element to indicate that it is significant to a particular business capability.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1474,7 +1474,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the business significant classification from the element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1498,7 +1498,7 @@ loadScripts(document, 'script');</script>
  a collection of element copies that will eventually be merged back into .</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1521,7 +1521,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the editing collection classification from the collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1544,7 +1544,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify the collection to indicate that it is a staging collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1567,7 +1567,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the staging collection classification from the collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1590,7 +1590,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify the collection to indicate that it is a scoping collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1613,7 +1613,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the scoping collection classification from the collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1640,7 +1640,7 @@ loadScripts(document, 'script');</script>
  are linked to the assets etc. and as such they are logically categorized by the linked category.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the glossary.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1663,7 +1663,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the taxonomy glossary classification from the glossary.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the glossary.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1689,7 +1689,7 @@ loadScripts(document, 'script');</script>
  Canonical vocabularies are used to semantically classify assets in an unambiguous way.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the glossary.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1712,7 +1712,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the canonical designation from the glossary.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the glossary.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1735,7 +1735,7 @@ loadScripts(document, 'script');</script>
  then they are also deleted.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -1757,7 +1757,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of elements that are a member of a collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>queryOptions</code> - options for query</dd>
 <dt>Returns:</dt>
@@ -1783,7 +1783,7 @@ loadScripts(document, 'script');</script>
  includes a mermaid graph of the returned elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>suppliedQueryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -1809,7 +1809,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add an element to a collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>membershipProperties</code> - properties describing the membership characteristics.</dd>
@@ -1835,7 +1835,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update an element's membership to a collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating a relationship.</dd>
@@ -1884,7 +1884,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove an element from a collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>

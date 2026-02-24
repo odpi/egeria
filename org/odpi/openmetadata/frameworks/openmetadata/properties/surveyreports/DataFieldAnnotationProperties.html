@@ -74,8 +74,12 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
+<div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties</a>
 <div class="inheritance"><a href="AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.DataFieldAnnotationProperties</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,7 +87,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ClassificationAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ClassificationAnnotationProperties</a></code>, <code><a href="DataClassAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassAnnotationProperties</a></code>, <code><a href="FingerprintAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">FingerprintAnnotationProperties</a></code>, <code><a href="QualityAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">QualityAnnotationProperties</a></code>, <code><a href="RelationshipAdviceAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RelationshipAdviceAnnotationProperties</a></code>, <code><a href="RequestForActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RequestForActionProperties</a></code>, <code><a href="ResourceProfileAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileAnnotationProperties</a></code>, <code><a href="ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code>, <code><a href="SemanticAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">SemanticAnnotationProperties</a></code></dd>
+<dd><code><a href="ClassificationAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ClassificationAnnotationProperties</a></code>, <code><a href="DataClassAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassAnnotationProperties</a></code>, <code><a href="DataGrainAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataGrainAnnotationProperties</a></code>, <code><a href="FingerprintAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">FingerprintAnnotationProperties</a></code>, <code><a href="QualityAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">QualityAnnotationProperties</a></code>, <code><a href="RelationshipAdviceAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RelationshipAdviceAnnotationProperties</a></code>, <code><a href="RequestForActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RequestForActionProperties</a></code>, <code><a href="ResourceProfileAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileAnnotationProperties</a></code>, <code><a href="ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code>, <code><a href="SemanticAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">SemanticAnnotationProperties</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataFieldAnnotationProperties</span>
@@ -131,6 +135,46 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataType()" class="member-name-link">getDataType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the data type for this element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingValues()" class="member-name-link">getMatchingValues</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the count of matching values that match the specification of these data classes.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNonMatchingValues()" class="member-name-link">getNonMatchingValues</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the count of values that do not match the specification of these data classes.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a hash code for this element type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataType(java.lang.String)" class="member-name-link">setDataType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the data type for this element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMatchingValues(long)" class="member-name-link">setMatchingValues</a><wbr>(long&nbsp;matchingValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the count of matching values that match the specification of these data classes.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNonMatchingValues(long)" class="member-name-link">setNonMatchingValues</a><wbr>(long&nbsp;nonMatchingValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the count of values that do not match the specification of these data classes.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -141,7 +185,13 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.<a href="AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a></h3>
-<code><a href="AnnotationProperties.html#equals(java.lang.Object)">equals</a>, <a href="AnnotationProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="AnnotationProperties.html#getAnalysisStep()">getAnalysisStep</a>, <a href="AnnotationProperties.html#getAnnotationType()">getAnnotationType</a>, <a href="AnnotationProperties.html#getConfidenceLevel()">getConfidenceLevel</a>, <a href="AnnotationProperties.html#getExplanation()">getExplanation</a>, <a href="AnnotationProperties.html#getExpression()">getExpression</a>, <a href="AnnotationProperties.html#getJsonProperties()">getJsonProperties</a>, <a href="AnnotationProperties.html#getSummary()">getSummary</a>, <a href="AnnotationProperties.html#hashCode()">hashCode</a>, <a href="AnnotationProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="AnnotationProperties.html#setAnalysisStep(java.lang.String)">setAnalysisStep</a>, <a href="AnnotationProperties.html#setAnnotationType(java.lang.String)">setAnnotationType</a>, <a href="AnnotationProperties.html#setConfidenceLevel(int)">setConfidenceLevel</a>, <a href="AnnotationProperties.html#setExplanation(java.lang.String)">setExplanation</a>, <a href="AnnotationProperties.html#setExpression(java.lang.String)">setExpression</a>, <a href="AnnotationProperties.html#setJsonProperties(java.lang.String)">setJsonProperties</a>, <a href="AnnotationProperties.html#setSummary(java.lang.String)">setSummary</a></code></div>
+<code><a href="AnnotationProperties.html#getAbsoluteUncertainty()">getAbsoluteUncertainty</a>, <a href="AnnotationProperties.html#getAnalysisStep()">getAnalysisStep</a>, <a href="AnnotationProperties.html#getAnnotationType()">getAnnotationType</a>, <a href="AnnotationProperties.html#getConfidenceLevel()">getConfidenceLevel</a>, <a href="AnnotationProperties.html#getExplanation()">getExplanation</a>, <a href="AnnotationProperties.html#getExpression()">getExpression</a>, <a href="AnnotationProperties.html#getJsonProperties()">getJsonProperties</a>, <a href="AnnotationProperties.html#getRelativeUncertainty()">getRelativeUncertainty</a>, <a href="AnnotationProperties.html#getSamplePercent()">getSamplePercent</a>, <a href="AnnotationProperties.html#getSampleSize()">getSampleSize</a>, <a href="AnnotationProperties.html#getSamplingMethod()">getSamplingMethod</a>, <a href="AnnotationProperties.html#getSummary()">getSummary</a>, <a href="AnnotationProperties.html#getUnits()">getUnits</a>, <a href="AnnotationProperties.html#setAbsoluteUncertainty(long)">setAbsoluteUncertainty</a>, <a href="AnnotationProperties.html#setAnalysisStep(java.lang.String)">setAnalysisStep</a>, <a href="AnnotationProperties.html#setAnnotationType(java.lang.String)">setAnnotationType</a>, <a href="AnnotationProperties.html#setConfidenceLevel(int)">setConfidenceLevel</a>, <a href="AnnotationProperties.html#setExplanation(java.lang.String)">setExplanation</a>, <a href="AnnotationProperties.html#setExpression(java.lang.String)">setExpression</a>, <a href="AnnotationProperties.html#setJsonProperties(java.lang.String)">setJsonProperties</a>, <a href="AnnotationProperties.html#setRelativeUncertainty(long)">setRelativeUncertainty</a>, <a href="AnnotationProperties.html#setSamplePercent(int)">setSamplePercent</a>, <a href="AnnotationProperties.html#setSampleSize(long)">setSampleSize</a>, <a href="AnnotationProperties.html#setSamplingMethod(java.lang.String)">setSamplingMethod</a>, <a href="AnnotationProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="AnnotationProperties.html#setUnits(java.lang.String)">setUnits</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></h3>
+<code><a href="../AuthoredReferenceableProperties.html#getAuthors()">getAuthors</a>, <a href="../AuthoredReferenceableProperties.html#getContentStatus()">getContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../AuthoredReferenceableProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
+<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
 <code><a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -189,6 +239,72 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getDataType()">
+<h3>getDataType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDataType</span>()</div>
+<div class="block">Return the data type for this element.  Null means an unknown data type.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>String data type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDataType(java.lang.String)">
+<h3>setDataType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDataType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType)</span></div>
+<div class="block">Set up the data type for this element.  Null means an unknown data type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataType</code> - data type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMatchingValues()">
+<h3>getMatchingValues</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMatchingValues</span>()</div>
+<div class="block">Return the count of matching values that match the specification of these data classes.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMatchingValues(long)">
+<h3>setMatchingValues</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchingValues</span><wbr><span class="parameters">(long&nbsp;matchingValues)</span></div>
+<div class="block">Set up the count of matching values that match the specification of these data classes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>matchingValues</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNonMatchingValues()">
+<h3>getNonMatchingValues</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getNonMatchingValues</span>()</div>
+<div class="block">Return the count of values that do not match the specification of these data classes.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setNonMatchingValues(long)">
+<h3>setNonMatchingValues</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNonMatchingValues</span><wbr><span class="parameters">(long&nbsp;nonMatchingValues)</span></div>
+<div class="block">Set up the count of values that do not match the specification of these data classes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>nonMatchingValues</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
@@ -198,6 +314,34 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="AnnotationProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="AnnotationProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Create a hash code for this element type.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="AnnotationProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a></code></dd>
+<dt>Returns:</dt>
+<dd>int hash code</dd>
 </dl>
 </section>
 </li>

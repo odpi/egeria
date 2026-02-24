@@ -755,7 +755,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -1046,7 +1046,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add an element to an action's workload.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>actionGUID</code> - unique identifier of the integration connector.</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>actionTargetProperties</code> - properties describing the relationship characteristics.</dd>
@@ -1103,7 +1103,7 @@ loadScripts(document, 'script');</script>
 <dd>details of the integration connector and the elements it is to catalog</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the integration connector definition.</dd>
 </dl>
 </section>
@@ -1121,7 +1121,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of elements that are target elements for an action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>actionGUID</code> - unique identifier of the integration connector.</dd>
 <dd><code>queryOptions</code> - options for query</dd>
 <dt>Returns:</dt>
@@ -1248,7 +1248,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of an asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -1275,7 +1275,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>destinationGUID</code> - unique identifier of the destination asset</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1300,7 +1300,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove a DeployedOn relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>destinationGUID</code> - unique identifier of the destination asset</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1325,7 +1325,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a relationship that links a software capability to an infrastructure asset like a software server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>capabilityGUID</code> - unique identifier of the destination asset</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1350,7 +1350,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove a relationship that links a software capability to an infrastructure asset like a software server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>capabilityGUID</code> - unique identifier of the destination asset</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1375,7 +1375,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a data set to another asset (typically a data store) that is supplying the data.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataSetGUID</code> - unique identifier of the data set</dd>
 <dd><code>dataContentAssetGUID</code> - unique identifier of the data asset supplying the data</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1400,7 +1400,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a data set from another asset that was supplying the data and is no more.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataSetGUID</code> - unique identifier of the data set</dd>
 <dd><code>dataContentAssetGUID</code> - unique identifier of the data asset supplying the data</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1425,7 +1425,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add an element to an integration connector's workload.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector.</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>catalogTargetProperties</code> - properties describing the relationship characteristics.</dd>
@@ -1482,7 +1482,7 @@ loadScripts(document, 'script');</script>
 <dd>details of the integration connector and the elements it is to catalog</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the integration connector definition.</dd>
 </dl>
 </section>
@@ -1499,7 +1499,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of elements that are target elements for an integration connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector.</dd>
 <dd><code>queryOptions</code> - options for query</dd>
 <dt>Returns:</dt>
@@ -1524,7 +1524,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove an element from an integration connector's workload.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1547,7 +1547,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove an element from an integration connector's workload.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1571,7 +1571,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an API to an endpoint</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>deployedAPIGUID</code> - unique identifier of the super team</dd>
 <dd><code>endpointGUID</code> - unique identifier of the subteam</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1596,7 +1596,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an API from an endpoint</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>deployedAPIGUID</code> - unique identifier of the API</dd>
 <dd><code>endpointGUID</code> - unique identifier of the endpoint</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1621,7 +1621,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a child process to its parent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentProcessGUID</code> - unique identifier of the parent process</dd>
 <dd><code>childProcessGUID</code> - unique identifier of the child process</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1646,7 +1646,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a child process from its parent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>parentProcessGUID</code> - unique identifier of the parent process</dd>
 <dd><code>childProcessGUID</code> - unique identifier of the child process</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1671,7 +1671,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a file to a folder.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>folderGUID</code> - unique identifier of the folder</dd>
 <dd><code>fileGUID</code> - unique identifier of the associated file</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1696,7 +1696,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a file from its folder.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>folderGUID</code> - unique identifier of the folder</dd>
 <dd><code>fileGUID</code> - unique identifier of the associated file</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1721,7 +1721,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a file to a folder.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>folderGUID</code> - unique identifier of the folder</dd>
 <dd><code>fileGUID</code> - unique identifier of the associated file</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1746,7 +1746,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a file from its folder.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>folderGUID</code> - unique identifier of the folder</dd>
 <dd><code>fileGUID</code> - unique identifier of the associated file</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1771,7 +1771,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach folders in a hierarchy.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentFolderGUID</code> - unique identifier of the parent folder</dd>
 <dd><code>childFolderGUID</code> - unique identifier of the associated child folder</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -1796,7 +1796,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a child folder from its parent.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>parentFolderGUID</code> - unique identifier of the parent folder</dd>
 <dd><code>childFolderGUID</code> - unique identifier of the associated child folder</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -1819,7 +1819,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -1841,7 +1841,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName, resourceName or displayName</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -1865,7 +1865,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - deployedImplementationType name of the element to return - match is full text match</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2147,7 +2147,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets with a particular assetGUID.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the starting element</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2171,7 +2171,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets providing data to the data set.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the starting element</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2195,7 +2195,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of assets providing data to the data set.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>elementGUID</code> - unique identifier of the starting element</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2219,7 +2219,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of file assets catalogued under the folder asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>folderGUID</code> - unique identifier of the starting element</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2243,7 +2243,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -2268,7 +2268,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific governance definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - unique name of the required element</dd>
 <dd><code>propertyName</code> - name of the property to query (default is qualifiedName)</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>

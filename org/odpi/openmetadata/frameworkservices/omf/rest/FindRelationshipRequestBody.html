@@ -85,6 +85,10 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.requestid">RequestIdService</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FindRelationshipRequestBody</span>
 <span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></span></div>
@@ -131,6 +135,26 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Equals method that returns true if containing properties are the same.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd1EntityGUIDs()" class="member-name-link">getEnd1EntityGUIDs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of entity guids used to match end 1 of the relationships.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd2EntityGUIDs()" class="member-name-link">getEnd2EntityGUIDs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of entity guids used to match end 2 of the relationships.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">EndMatchCriteria</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndMatchCriteria()" class="member-name-link">getEndMatchCriteria</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the end matching search criteria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipSubtypeGUIDs()" class="member-name-link">getRelationshipSubtypeGUIDs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the subtype guids to limit the results of the find request.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipTypeName()" class="member-name-link">getRelationshipTypeName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -145,6 +169,26 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd1EntityGUIDs(java.util.List)" class="member-name-link">setEnd1EntityGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of entity guids used to match end 1 of the relationships.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd2EntityGUIDs(java.util.List)" class="member-name-link">setEnd2EntityGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of entity guids used to match end 2 of the relationships.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndMatchCriteria(org.odpi.openmetadata.frameworks.openmetadata.search.EndMatchCriteria)" class="member-name-link">setEndMatchCriteria</a><wbr>(<a href="../../../frameworks/openmetadata/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">EndMatchCriteria</a>&nbsp;endMatchCriteria)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set the end matching search criteria.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipSubtypeGUIDs(java.util.List)" class="member-name-link">setRelationshipSubtypeGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the subtype guids to limit the results of the find request.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipTypeName(java.lang.String)" class="member-name-link">setRelationshipTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName)</code></div>
@@ -175,7 +219,7 @@ loadScripts(document, 'script');</script>
 <code><a href="../../../frameworks/openmetadata/search/GetOptions.html#getAsOfTime()">getAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getGraphQueryDepth()">getGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getIncludeOnlyRelationships()">getIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMaxMermaidNodeCount()">getMaxMermaidNodeCount</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementSubtypeNames()">getMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getMetadataElementTypeName()">getMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getRelationshipsPageSize()">getRelationshipsPageSize</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#getSkipRelationships()">getSkipRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setGraphQueryDepth(int)">setGraphQueryDepth</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setIncludeOnlyRelationships(java.util.List)">setIncludeOnlyRelationships</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMaxMermaidNodeCount(int)">setMaxMermaidNodeCount</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementSubtypeNames(java.util.List)">setMetadataElementSubtypeNames</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setMetadataElementTypeName(java.lang.String)">setMetadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setRelationshipsPageSize(int)">setRelationshipsPageSize</a>, <a href="../../../frameworks/openmetadata/search/GetOptions.html#setSkipRelationships(java.util.List)">setSkipRelationships</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="../../../frameworks/openmetadata/search/BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
-<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a></code></div>
+<code><a href="../../../frameworks/openmetadata/search/BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getForLineage()">getForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#getRequestId()">getRequestId</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="../../../frameworks/openmetadata/search/BasicOptions.html#setRequestId(java.lang.String)">setRequestId</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -250,6 +294,28 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getRelationshipSubtypeGUIDs()">
+<h3>getRelationshipSubtypeGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRelationshipSubtypeGUIDs</span>()</div>
+<div class="block">Return the subtype guids to limit the results of the find request.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><code>List&lt;String&gt;</code> guids</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRelationshipSubtypeGUIDs(java.util.List)">
+<h3>setRelationshipSubtypeGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipSubtypeGUIDs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs)</span></div>
+<div class="block">Set up the subtype guids to limit the results of the find request.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipSubtypeGUIDs</code> - <code>List&lt;String&gt;</code> guids</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getSearchProperties()">
 <h3>getSearchProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/SearchProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchProperties</a></span>&nbsp;<span class="element-name">getSearchProperties</span>()</div>
@@ -268,6 +334,72 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchProperties</code> - property specification</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEnd1EntityGUIDs()">
+<h3>getEnd1EntityGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getEnd1EntityGUIDs</span>()</div>
+<div class="block">Return the list of entity guids used to match end 1 of the relationships.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of guids</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEnd1EntityGUIDs(java.util.List)">
+<h3>setEnd1EntityGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEnd1EntityGUIDs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs)</span></div>
+<div class="block">Set up the list of entity guids used to match end 1 of the relationships.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>end1EntityGUIDs</code> - list of guids</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEnd2EntityGUIDs()">
+<h3>getEnd2EntityGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getEnd2EntityGUIDs</span>()</div>
+<div class="block">Return the list of entity guids used to match end 2 of the relationships.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of guids</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEnd2EntityGUIDs(java.util.List)">
+<h3>setEnd2EntityGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEnd2EntityGUIDs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs)</span></div>
+<div class="block">Set up the list of entity guids used to match end 2 of the relationships.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>end2EntityGUIDs</code> - list of guids</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEndMatchCriteria()">
+<h3>getEndMatchCriteria</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">EndMatchCriteria</a></span>&nbsp;<span class="element-name">getEndMatchCriteria</span>()</div>
+<div class="block">Return the end matching search criteria.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>SearchClassifications</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEndMatchCriteria(org.odpi.openmetadata.frameworks.openmetadata.search.EndMatchCriteria)">
+<h3>setEndMatchCriteria</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEndMatchCriteria</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">EndMatchCriteria</a>&nbsp;endMatchCriteria)</span></div>
+<div class="block">Set the end matching search criteria.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>endMatchCriteria</code> - to set as search criteria</dd>
 </dl>
 </section>
 </li>

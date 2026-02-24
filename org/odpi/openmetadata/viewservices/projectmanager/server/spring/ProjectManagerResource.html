@@ -163,9 +163,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a project using an existing metadata element as a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTaskProject(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties)" class="member-name-link">createTaskProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTaskProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewAttachmentRequestBody)" class="member-name-link">createTaskProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="../../../../frameworks/openmetadata/properties/projects/ProjectProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.projects">ProjectProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new task linked to the supplied project.</div>
 </div>
@@ -528,7 +528,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createTaskProject(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties)">
+<section class="detail" id="createTaskProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewAttachmentRequestBody)">
 <h3>createTaskProject</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/projects/{projectGUID}/task")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createTaskProject</span><wbr><span class="parameters">(@PathVariable
@@ -536,7 +536,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
  @RequestBody
- <a href="../../../../frameworks/openmetadata/properties/projects/ProjectProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.projects">ProjectProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new task linked to the supplied project.  Used to identify a discrete piece of work within the project.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

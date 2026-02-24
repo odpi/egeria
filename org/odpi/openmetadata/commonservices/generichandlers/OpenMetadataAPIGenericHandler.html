@@ -257,8 +257,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove an entity if it is anchored to the anchor entity or any of the deleted entities.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAttachmentLinks(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">findAttachmentLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAttachmentLinks(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">findAttachmentLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
@@ -1486,7 +1490,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectToGUID</code> - unique id for the object to connect the attachment to.</dd>
 <dd><code>connectToGUIDParameterName</code> - name of the parameter that passed the connectTo guid</dd>
 <dd><code>connectToType</code> - type of the connectToElement.</dd>
@@ -1535,7 +1539,7 @@ loadScripts(document, 'script');</script>
  Some anchor entities have specific validation to perform.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectToType</code> - name of type of connectToEntity</dd>
 <dd><code>connectToEntity</code> - entity retrieved from the repository</dd>
 <dd><code>connectToGUIDParameterName</code> - name of the parameter that passed the connectTo guid</dd>
@@ -1568,7 +1572,7 @@ loadScripts(document, 'script');</script>
  and element status, since they are the responsibility of the repository handler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>retrievedEntities</code> - entities retrieved from the repository</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
@@ -1597,7 +1601,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectToEntity</code> - entity retrieved from the repository</dd>
 <dd><code>anchorIdentifiers</code> - retrieved anchors information</dd>
 <dd><code>isExplicitGetRequest</code> - Is this request an explicit get request for the asset or a find request.</dd>
@@ -1630,7 +1634,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectToEntity</code> - entity retrieved from the repository</dd>
 <dd><code>anchorEntity</code> - retrieved anchors entity</dd>
 <dd><code>isExplicitGetRequest</code> - Is this request an explicit get request for the asset or a find request.</dd>
@@ -1904,7 +1908,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new entity in the repository assuming all parameters are ok.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>entityTypeGUID</code> - unique identifier of the type of entity to create</dd>
@@ -1941,7 +1945,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new entity in the repository assuming all parameters are ok.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>entityTypeGUID</code> - unique identifier of the type of entity to create</dd>
@@ -2793,7 +2797,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved objects or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -2847,7 +2851,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved relationships or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -2891,7 +2895,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved relationships or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -2949,7 +2953,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved relationships or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3007,7 +3011,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved relationships or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3055,10 +3059,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findAttachmentLinks(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,boolean,boolean,int,int,java.util.Date,java.lang.String)">
+<section class="detail" id="findAttachmentLinks(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,boolean,boolean,int,int,java.util.Date,java.lang.String)">
 <h3>findAttachmentLinks</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</span>&nbsp;<span class="element-name">findAttachmentLinks</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
@@ -3079,6 +3087,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>relationshipTypeName</code> - type of interest (null means any element type)</dd>
+<dd><code>relationshipSubtypeGUIDs</code> - optional list of the GUIDs for subtypes of the requested type to include in the search results.</dd>
+<dd><code>end1EntityGUIDs</code> - optional list of entity guids used to match end 1 of the relationships.</dd>
+<dd><code>end2EntityGUIDs</code> - optional list of entity guids used to match end 2 of the relationships.</dd>
+<dd><code>endMatchCriteria</code> - criteria for matching the ends of the relationships.</dd>
 <dd><code>searchProperties</code> - Optional list of entity property conditions to match.</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (eg ACTIVE) to restrict the results.  Null means all status values.</dd>
@@ -3139,7 +3151,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved objects or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3199,7 +3211,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved objects or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3259,7 +3271,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved objects or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3323,7 +3335,7 @@ loadScripts(document, 'script');</script>
 <dd>list of retrieved objects or null if none found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the input properties are invalid</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the repositories</dd>
 </dl>
 </section>
@@ -3349,7 +3361,7 @@ loadScripts(document, 'script');</script>
  and element status, since they are the responsibility of the repository handler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>startingGUID</code> - identifier for the entity that the identifier is attached to</dd>
 <dd><code>startingTypeName</code> - name of the type of object being attached to</dd>
 <dd><code>retrievedRelationships</code> - relationships retrieved from the repository</dd>
@@ -3775,7 +3787,7 @@ loadScripts(document, 'script');</script>
 <dd>matching bean.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the bean definition.</dd>
 </dl>
 </section>
@@ -4227,7 +4239,7 @@ loadScripts(document, 'script');</script>
 <dd>requested entity</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem retrieving the entity.</dd>
 </dl>
 </section>
@@ -4287,7 +4299,7 @@ loadScripts(document, 'script');</script>
  the properties are updated.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>startingElementGUID</code> - unique id for the starting element's entity</dd>
@@ -4334,7 +4346,7 @@ loadScripts(document, 'script');</script>
  Both elements must be visible to the user to allow the link. No check is done for the relationship existence before creating it.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>startingElementGUID</code> - unique id for the starting element's entity</dd>
@@ -4379,7 +4391,7 @@ loadScripts(document, 'script');</script>
  Both elements must be visible to the user to allow the link.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>startingElementGUID</code> - unique id for the starting element's entity</dd>
@@ -4431,7 +4443,7 @@ loadScripts(document, 'script');</script>
  Both elements must be visible to the user to allow the update.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>startingGUID</code> - unique id for the starting element's entity</dd>
@@ -4484,7 +4496,7 @@ loadScripts(document, 'script');</script>
  if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>onlyCreatorPermitted</code> - operation only permitted if the userId was the same one that created the relationship</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
@@ -4536,7 +4548,7 @@ loadScripts(document, 'script');</script>
  if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>onlyCreatorPermitted</code> - operation only permitted if the userId was the same one that created the relationship</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
@@ -4582,7 +4594,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Calls unlinkElementFromElement for all relationships of a certain type emanating from the requested element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>onlyCreatorPermitted</code> - operation only permitted if the userId was the same one that created the relationship</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>

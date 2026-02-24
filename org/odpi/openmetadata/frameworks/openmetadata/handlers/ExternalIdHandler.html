@@ -275,7 +275,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new externalId.  It should be anchored to its scope (external source GUID)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -335,7 +335,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of an externalId.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the externalId (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -362,7 +362,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an externalId to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the externalId</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -388,11 +388,11 @@ loadScripts(document, 'script');</script>
  from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>externalIdLinkGUID</code> - unique identifier of the ExternalIdLink relationship to update</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </section>
@@ -410,7 +410,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an externalId from an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique identifier of the infrastructure asset</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the externalId</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -433,7 +433,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete an externalId.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -455,7 +455,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of externalIds with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -479,7 +479,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific externalId.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -504,7 +504,7 @@ loadScripts(document, 'script');</script>
  There are no wildcards supported on this request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>identifier</code> - identifier to search for</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -528,7 +528,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of externalId metadata elements that are attached to a specific infrastructure element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>elementGUID</code> - element to search for</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>

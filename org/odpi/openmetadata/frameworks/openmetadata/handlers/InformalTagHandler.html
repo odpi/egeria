@@ -272,7 +272,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>requestedNewElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - name of the tag and (optional) description.  Setting a description, particularly in a public tag
@@ -332,7 +332,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Updates the description of an existing tag (either private or public).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>tagGUID</code> - unique identifier for the tag.</dd>
 <dd><code>properties</code> - description of the tag.  Setting a description, particularly in a public tag
                         makes the tag more valuable to other users and can act as an embryonic glossary term.</dd>
@@ -359,7 +359,7 @@ loadScripts(document, 'script');</script>
  a public tag can be deleted by anyone, but only if it is not attached to any referenceable.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>tagGUID</code> - unique id for the tag.</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -478,7 +478,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Adds a tag (either private or public) to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique id for the element.</dd>
 <dd><code>tagGUID</code> - unique id of the tag.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -502,7 +502,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Removes a tag from the element that was added by this user.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique id for the element.</dd>
 <dd><code>tagGUID</code> - unique id for the tag.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -551,7 +551,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the informal tags attached to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>elementGUID</code> - unique identifier for the element that the comments are connected to (maybe a comment too).</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>

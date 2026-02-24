@@ -114,7 +114,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
-<code><a href="OpenGovernanceClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OpenGovernanceClientBase.html#nullRequestBody">nullRequestBody</a>, <a href="OpenGovernanceClientBase.html#restClient">restClient</a></code></div>
+<code><a href="OpenGovernanceClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OpenGovernanceClientBase.html#restClient">restClient</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
 <code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#propertyHelper">propertyHelper</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverName">serverName</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></div>
@@ -218,7 +218,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
-<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.util.Date)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionType</a></code></div>
+<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionType</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
 <code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#toString()">toString</a></code></div>
@@ -363,7 +363,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <dd><code>activityStatus</code> - new status enum</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </section>
@@ -385,7 +385,7 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <dd><code>engineActionGUID</code> - identifier of the governance action request.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </section>
@@ -408,13 +408,13 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of caller</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of governance engine</dd>
-<dd><code>startFrom</code> - starting from element</dd>
+<dd><code>startFrom</code> - starting from position</dd>
 <dd><code>pageSize</code> - maximum elements to return</dd>
 <dt>Returns:</dt>
 <dd>list of governance action elements</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </section>

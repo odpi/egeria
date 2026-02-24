@@ -347,7 +347,7 @@ implements <a href="../api/ConnectorFactoryInterface.html" title="interface in o
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ConnectorFactoryInterface.html#getConnectorByName(java.lang.String,java.lang.String)">getConnectorByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworks.connectors.api">ConnectorFactoryInterface</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionName</code> - this may be the qualifiedName or displayName of the connection.</dd>
 <dt>Returns:</dt>
 <dd>connector instance - or null if there is no connection</dd>
@@ -376,7 +376,7 @@ implements <a href="../api/ConnectorFactoryInterface.html" title="interface in o
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ConnectorFactoryInterface.html#getConnectorForAsset(java.lang.String,java.lang.String)">getConnectorForAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworks.connectors.api">ConnectorFactoryInterface</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - the unique id for the asset within the metadata repository.</dd>
 <dt>Returns:</dt>
 <dd>connector instance - or null if there is no connection</dd>
@@ -406,7 +406,7 @@ implements <a href="../api/ConnectorFactoryInterface.html" title="interface in o
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ConnectorFactoryInterface.html#getConnectorForAsset(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">getConnectorForAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworks.connectors.api">ConnectorFactoryInterface</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - the unique id for the asset within the metadata repository.</dd>
 <dd><code>auditLog</code> - optional logging destination</dd>
 <dt>Returns:</dt>
@@ -436,7 +436,7 @@ implements <a href="../api/ConnectorFactoryInterface.html" title="interface in o
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ConnectorFactoryInterface.html#getConnectorByGUID(java.lang.String,java.lang.String)">getConnectorByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworks.connectors.api">ConnectorFactoryInterface</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - the unique id for the connection within the metadata repository.</dd>
 <dt>Returns:</dt>
 <dd>connector instance - or null if there is no connection</dd>
@@ -464,7 +464,7 @@ implements <a href="../api/ConnectorFactoryInterface.html" title="interface in o
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ConnectorFactoryInterface.html#getConnectorByConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnectorByConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworks.connectors.api">ConnectorFactoryInterface</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
 <dt>Returns:</dt>
 <dd>connector instance</dd>

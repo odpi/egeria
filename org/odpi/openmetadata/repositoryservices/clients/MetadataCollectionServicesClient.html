@@ -97,7 +97,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
      <li><i>rootServiceNameInURL</i> - "/open-metadata/repository-services"</li>
      <li><i>userIdInURL</i> - optional - "/users/{0}"</li>
      <li><i>serviceURLMarker</i> - "/" for local repository services and "/enterprise/" for enterprise repository services</li>
-     <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
+     <li><i>operationSpecificURL</i> - the operation-specific part of the URL</li>
  </ul></div>
 </section>
 <section class="summary">
@@ -387,9 +387,12 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="block">Return a list of entities whose string based property values match the search criteria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationships(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationships(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="../connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
@@ -892,29 +895,22 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a specific relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">updateRelationshipStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the status of a specific relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)" class="member-name-link">updateTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)" class="member-name-link">updateTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update one or more properties of the TypeDef.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyAttributeTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef)" class="member-name-link">verifyAttributeTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyAttributeTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef)" class="member-name-link">verifyAttributeTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)" class="member-name-link">verifyTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)" class="member-name-link">verifyTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Verify that a definition of a TypeDef is either new or matches the definition already stored.</div>
 </div>
 </div>
@@ -2209,11 +2205,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="findRelationships(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
+<section class="detail" id="findRelationships(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
 <h3>findRelationships</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</span>&nbsp;<span class="element-name">findRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="../connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
@@ -2237,6 +2236,9 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
                              (but may be slow so not recommended).</dd>
 <dd><code>relationshipSubtypeGUIDs</code> - optional list of the unique identifiers (guids) for subtypes of the
                                  relationshipTypeGUID to include in the search results. Null means all subtypes.</dd>
+<dd><code>end1EntityGUIDs</code> - optional list of entity guids used to match end 1 of the relationships.</dd>
+<dd><code>end2EntityGUIDs</code> - optional list of entity guids used to match end 2 of the relationships.</dd>
+<dd><code>endMatchCriteria</code> - criteria for matching the ends of the relationships.</dd>
 <dd><code>matchProperties</code> - Optional list of relationship property conditions to match.</dd>
 <dd><code>fromRelationshipElement</code> - the starting element number of the entities to return.
                                 This is used when retrieving elements
@@ -3232,37 +3234,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="updateRelationshipStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">
-<h3>updateRelationshipStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></span>&nbsp;<span class="element-name">updateRelationshipStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
-<a href="../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
-<a href="../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a>,
-<a href="../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
-<a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Update the status of a specific relationship.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>relationshipGUID</code> - String unique identifier (guid) for the relationship.</dd>
-<dd><code>newStatus</code> - new InstanceStatus for the relationship.</dd>
-<dt>Returns:</dt>
-<dd>Resulting relationship structure with the new status set.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid or null.</dd>
-<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a problem communicating with the metadata repository where
-                                  the metadata collection is stored.</dd>
-<dd><code><a href="../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the requested relationship is not known in the metadata collection.</dd>
-<dd><code><a href="../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a></code> - invalid status for instance.</dd>
-<dd><code><a href="../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support maintenance of metadata.</dd>
-<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="updateRelationshipProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">
 <h3>updateRelationshipProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></span>&nbsp;<span class="element-name">updateRelationshipProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -3798,7 +3769,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  remove reference copies from the local cohort, repositories that have left the cohort,
  or entities that have come from open metadata archives.  It is also an opportunity to remove
  relationships attached to the entity.
-
  This method is called when a remote repository calls the variant of purgeEntity that
  passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
  However, it may also be used to purge after a soft-delete.</div>
@@ -4143,7 +4113,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="block">This method is called when a remote repository calls the variant of purgeRelationship that
  passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
  However, it may also be used to purge after a soft-delete.
-
  Remove the reference copy of the relationship from the local repository. This method can be used to
  remove reference copies from the local cohort, repositories that have left the cohort,
  or relationships that have come from open metadata archives.</div>

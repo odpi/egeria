@@ -162,9 +162,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a project using an existing metadata element as a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTaskForProject(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties)" class="member-name-link">createTaskForProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTaskForProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewAttachmentRequestBody)" class="member-name-link">createTaskForProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="../../../frameworks/openmetadata/properties/projects/ProjectProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.projects">ProjectProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new project with the Task classification.</div>
 </div>
@@ -494,18 +494,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createTaskForProject(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties)">
+<section class="detail" id="createTaskForProject(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewAttachmentRequestBody)">
 <h3>createTaskForProject</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createTaskForProject</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="../../../frameworks/openmetadata/properties/projects/ProjectProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.projects">ProjectProperties</a>&nbsp;properties)</span></div>
+ <a href="../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new project with the Task classification.  Used to identify the top of a
  project hierarchy.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server.</dd>
 <dd><code>projectGUID</code> - unique identifier of the project</dd>
-<dd><code>properties</code> - properties for the project.</dd>
+<dd><code>requestBody</code> - properties for the project.</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Project
   InvalidParameterException  one of the parameters is invalid.

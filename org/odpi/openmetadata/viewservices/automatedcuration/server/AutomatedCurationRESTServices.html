@@ -363,7 +363,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>engine action properties and status or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
 </dl>
 </section>
@@ -380,12 +380,12 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
-<dd><code>startFrom</code> - starting from element</dd>
+<dd><code>startFrom</code> - starting from position</dd>
 <dd><code>pageSize</code> - maximum elements to return</dd>
 <dt>Returns:</dt>
 <dd>list of engine action elements or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
 </dl>
 </section>

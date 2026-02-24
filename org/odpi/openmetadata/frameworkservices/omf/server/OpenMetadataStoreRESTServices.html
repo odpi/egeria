@@ -538,7 +538,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>connection object for the out topic or
  InvalidParameterException one of the parameters is null or invalid or
- UserNotAuthorizedException user not authorized to issue this request or
+ UserNotAuthorizedException the user is not authorized to issue this request or
  PropertyServerException problem retrieving the discovery engine definition.</dd>
 </dl>
 </section>
@@ -555,14 +555,14 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier for asset.</dd>
 <dd><code>governanceService</code> - name of governance service</dd>
 <dd><code>message</code> - message to log</dd>
 <dt>Returns:</dt>
 <dd>void or
   InvalidParameterException one of the parameters is null or invalid.
-  UserNotAuthorizedException user not authorized to issue this request.
+  UserNotAuthorizedException the user is not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
 </dl>
 </section>

@@ -253,7 +253,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -313,7 +313,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of an open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>metadataRepositoryCohortGUID</code> - unique identifier of the open metadata repository cohort (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -340,7 +340,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an open metadata cohort to a cohort member.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>metadataRepositoryCohortGUID</code> - unique identifier of the cohort</dd>
 <dd><code>cohortMemberGUID</code> - unique identifier of the member</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -365,7 +365,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an open metadata cohort from a cohort member.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>metadataRepositoryCohortGUID</code> - unique identifier of the cohort</dd>
 <dd><code>cohortMemberGUID</code> - unique identifier of the member</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -388,7 +388,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete an open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>metadataRepositoryCohortGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -410,7 +410,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of open metadata repository cohorts with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -434,7 +434,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>metadataRepositoryCohortGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>

@@ -269,6 +269,7 @@ org.odpi.openmetadata.engineservices.watchdogaction.server
 org.odpi.openmetadata.engineservices.watchdogaction.server.spring
 org.odpi.openmetadata.frameworks.auditlog
 org.odpi.openmetadata.frameworks.auditlog.messagesets
+org.odpi.openmetadata.frameworks.auditlog.requestid
 org.odpi.openmetadata.frameworks.connectors
 org.odpi.openmetadata.frameworks.connectors.api
 org.odpi.openmetadata.frameworks.connectors.client

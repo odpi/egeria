@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -49,7 +53,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -73,26 +77,18 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
+<dd><code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.requestid">RequestIdService</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ClassificationRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">ClassificationRequest</a></code>, <code><a href="ClassificationWithEntityRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">ClassificationWithEntityRequest</a></code>, <code><a href="EntityCreateRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityCreateRequest</a></code>, <code><a href="HistoryRangeRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">HistoryRangeRequest</a></code>, <code><a href="HistoryRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">HistoryRequest</a></code>, <code><a href="InstanceGraphRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphRequest</a></code>, <code><a href="InstancePropertiesRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstancePropertiesRequest</a></code>, <code><a href="MetadataCollectionIdRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">MetadataCollectionIdRequest</a></code>, <code><a href="OMRSAPIFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIFindRequest</a></code>, <code><a href="RelationshipCreateRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipCreateRequest</a></code>, <code><a href="TypeDefChangeRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefChangeRequest</a></code>, <code><a href="TypeDefDeleteRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefDeleteRequest</a></code>, <code><a href="TypeDefReIdentifyRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefReIdentifyRequest</a></code>, <code><a href="TypeDefValidationForRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefValidationForRequest</a></code></dd>
+<dd><code><a href="AttributeTypeDefCategoryRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AttributeTypeDefCategoryRequest</a></code>, <code><a href="AttributeTypeDefRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AttributeTypeDefRequest</a></code>, <code><a href="ClassificationRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">ClassificationRequest</a></code>, <code><a href="ClassificationWithEntityRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">ClassificationWithEntityRequest</a></code>, <code><a href="EntityCreateRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityCreateRequest</a></code>, <code><a href="EntityDetailRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityDetailRequest</a></code>, <code><a href="EntityProxyRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityProxyRequest</a></code>, <code><a href="GetRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">GetRequest</a></code>, <code><a href="HistoryRangeRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">HistoryRangeRequest</a></code>, <code><a href="HistoryRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">HistoryRequest</a></code>, <code><a href="InstanceGraphRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphRequest</a></code>, <code><a href="InstancePropertiesRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstancePropertiesRequest</a></code>, <code><a href="InstanceStatusRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceStatusRequest</a></code>, <code><a href="MetadataCollectionIdRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">MetadataCollectionIdRequest</a></code>, <code><a href="OMRSAPIFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIFindRequest</a></code>, <code><a href="RelationshipCreateRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipCreateRequest</a></code>, <code><a href="RelationshipRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipRequest</a></code>, <code><a href="TypeDefCategoryRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefCategoryRequest</a></code>, <code><a href="TypeDefChangeRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefChangeRequest</a></code>, <code><a href="TypeDefDeleteRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefDeleteRequest</a></code>, <code><a href="TypeDefGalleryRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefGalleryRequest</a></code>, <code><a href="TypeDefPatchRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefPatchRequest</a></code>, <code><a href="TypeDefPropertiesRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefPropertiesRequest</a></code>, <code><a href="TypeDefReIdentifyRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefReIdentifyRequest</a></code>, <code><a href="TypeDefRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefRequest</a></code>, <code><a href="TypeDefValidationForRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefValidationForRequest</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMRSAPIRequest</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+implements <a href="../../../frameworks/auditlog/requestid/RequestIdService.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.requestid">RequestIdService</a></span></div>
 <div class="block">OMRSAPIRequest provides a common header for complex OMRS request to the OMRS REST API.   It manages
  the parameters in the request body.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIRequest">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,9 +115,44 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestId()" class="member-name-link">getRequestId</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier for the request.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a hash code for this element type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestId(java.lang.String)" class="member-name-link">setRequestId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the unique identifier for the request.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Standard toString method.</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -148,6 +179,81 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="getRequestId()">
+<h3>getRequestId</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getRequestId</span>()</div>
+<div class="block">Return the unique identifier for the request.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html#getRequestId()">getRequestId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.requestid">RequestIdService</a></code></dd>
+<dt>Returns:</dt>
+<dd>string guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRequestId(java.lang.String)">
+<h3>setRequestId</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRequestId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestId)</span></div>
+<div class="block">Set up the unique identifier for the request.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html#setRequestId(java.lang.String)">setRequestId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/requestid/RequestIdService.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.requestid">RequestIdService</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>requestId</code> - string guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">Standard toString method.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>print out of variables in a JSON-style</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Create a hash code for this element type.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>int hash code</dd>
 </dl>
 </section>
 </li>

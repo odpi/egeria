@@ -304,7 +304,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -364,7 +364,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -391,7 +391,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a ConnectionConnectorType relationship between a connection and a connector type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the connector type</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -416,7 +416,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the ConnectionConnectorType relationship between a connection and a connector type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the connector type</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -441,7 +441,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a ConnectToEndpoint relationship between a connection and an endpoint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>endpointGUID</code> - unique identifier of the endpoint</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -466,7 +466,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the ConnectToEndpoint relationship between a connection and an endpoint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>endpointGUID</code> - unique identifier of the endpoint</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -491,7 +491,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create an EmbeddedConnection relationship between a virtual connection and an embedded connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>connectionGUID</code> - unique identifier of the virtual connection</dd>
 <dd><code>embeddedConnectionGUID</code> - unique identifier of the embedded connection</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -516,7 +516,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove an EmbeddedConnection relationship between a virtual connection and an embedded connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the virtual connection</dd>
 <dd><code>embeddedConnectionGUID</code> - unique identifier of the embedded connection</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -541,7 +541,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create an AssetConnection relationship between an asset and its connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -566,7 +566,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an asset from one of its connections.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -589,7 +589,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -611,7 +611,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of connections with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -635,7 +635,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>connectionGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>

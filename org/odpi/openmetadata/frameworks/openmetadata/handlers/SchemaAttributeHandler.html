@@ -465,7 +465,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -525,7 +525,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -552,7 +552,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a nested schema attribute to a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the parent schema attribute</dd>
 <dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -577,7 +577,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a nested schema attribute for a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the parent schema attribute</dd>
 <dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -602,7 +602,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a nested schema attribute to a schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the parent schema type</dd>
 <dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -627,7 +627,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a  schema attribute from a schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the parent schema type</dd>
 <dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -652,7 +652,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a foreign key relationship to a relational column.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>primaryKeyColumnGUID</code> - unique identifier of the primary key</dd>
 <dd><code>foreignKeyColumnGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -677,7 +677,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a foreign key relationship for a relational column.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>primaryKeyColumnGUID</code> - unique identifier of the primary key</dd>
 <dd><code>foreignKeyColumnGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -702,7 +702,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a schema element to an external schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schema element (typically this is a schema attribute
                                  but may be a root schema type</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the linked schema type</dd>
@@ -728,7 +728,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a schema element to an external schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the primary key</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -753,7 +753,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a schema element to a "mapFrom" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schema element (typically this is a schema attribute
                                  but may be a root schema type</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the linked schema type</dd>
@@ -779,7 +779,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a schema element from a "mapFrom" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the primary key</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -804,7 +804,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a schema element to a "mapTo" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schema element (typically this is a schema attribute
                                  but may be a root schema type</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the linked schema type</dd>
@@ -830,7 +830,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a schema element from a "mapTo" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the primary key</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -855,7 +855,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a graph edge schema element to a graph vertex schema element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>graphEdgeGUID</code> - unique identifier of the schema element (typically this is a schema attribute
                                  but may be a root schema type</dd>
 <dd><code>graphVertexGUID</code> - unique identifier of the linked schema type</dd>
@@ -881,7 +881,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a graph edge schema element from a graph vertex schema element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>graphEdgeGUID</code> - unique identifier of the primary key</dd>
 <dd><code>graphVertexGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -906,7 +906,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a schema element to a "mapTo" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schema element (typically this is a schema attribute
                                  but may be a root schema type</dd>
 <dd><code>queryTargetSchemaElementGUID</code> - unique identifier of the schema element supplying all/part of the data</dd>
@@ -932,7 +932,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a schema element from a "mapTo" schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the primary key</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the foreign key</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -956,7 +956,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add the PrimaryKey classification to a relational column.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>relationalColumnGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -979,7 +979,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the PrimaryKey classification for a relational column.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>relationalColumnGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1002,7 +1002,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add the TypeEmbeddedAttribute classification to the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1026,7 +1026,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the TypeEmbeddedAttribute classification for the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating a classification.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
@@ -1049,7 +1049,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the TypeEmbeddedAttribute classification from the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1072,7 +1072,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add the CalculatedValue classification to the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
@@ -1096,7 +1096,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the CalculatedValue classification for the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating a classification.</dd>
 <dd><code>properties</code> - properties for the classification</dd>
@@ -1119,7 +1119,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the CalculatedValue classification from the schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the schema attribute.</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
@@ -1141,7 +1141,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -1163,7 +1163,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of schema attributes with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -1187,7 +1187,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -1235,7 +1235,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of schema attributes nested under a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the starting schema attribute</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -1259,7 +1259,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of schema attributes nested under a schema attribute.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the starting schema attribute</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>

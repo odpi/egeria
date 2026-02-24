@@ -74,7 +74,11 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
+<div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -85,7 +89,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AnnotationProperties</span>
-<span class="extends-implements">extends <a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></span></div>
+<span class="extends-implements">extends <a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></span></div>
 <div class="block">AnnotationProperties is used to record information gleaned from a survey action service.  The subtypes contain more detail.</div>
 </section>
 <section class="summary">
@@ -134,10 +138,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalProperties()" class="member-name-link">getAdditionalProperties</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAbsoluteUncertainty()" class="member-name-link">getAbsoluteUncertainty</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the additional properties for the AnnotationProperties.</div>
+<div class="block">Return the absolute uncertainty.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnalysisStep()" class="member-name-link">getAnalysisStep</a>()</code></div>
@@ -169,55 +173,105 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the JSON properties associated with the annotation.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelativeUncertainty()" class="member-name-link">getRelativeUncertainty</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the relative uncertainty.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSamplePercent()" class="member-name-link">getSamplePercent</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the sample percent associated with the annotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSampleSize()" class="member-name-link">getSampleSize</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the sample size associated with the annotation.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSamplingMethod()" class="member-name-link">getSamplingMethod</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the sampling method associated with the annotation.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the summary description for the annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUnits()" class="member-name-link">getUnits</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the units used to describe the granularity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a hash code for this element type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the additional properties for the AnnotationProperties.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnalysisStep(java.lang.String)" class="member-name-link">setAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;analysisStep)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAbsoluteUncertainty(long)" class="member-name-link">setAbsoluteUncertainty</a><wbr>(long&nbsp;absoluteUncertainty)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the absolute uncertainty.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnalysisStep(java.lang.String)" class="member-name-link">setAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;analysisStep)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a description of the analysis step that the survey action service was in when it created the annotation.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnnotationType(java.lang.String)" class="member-name-link">setAnnotationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationType)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnnotationType(java.lang.String)" class="member-name-link">setAnnotationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the informal name for the type of annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConfidenceLevel(int)" class="member-name-link">setConfidenceLevel</a><wbr>(int&nbsp;confidenceLevel)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConfidenceLevel(int)" class="member-name-link">setConfidenceLevel</a><wbr>(int&nbsp;confidenceLevel)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the confidence level of the survey action service that the annotation is correct.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExplanation(java.lang.String)" class="member-name-link">setExplanation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;explanation)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExplanation(java.lang.String)" class="member-name-link">setExplanation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;explanation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the explanation for the annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExpression(java.lang.String)" class="member-name-link">setExpression</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expression)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExpression(java.lang.String)" class="member-name-link">setExpression</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expression)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the expression that represent the relationship between the annotation and the asset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setJsonProperties(java.lang.String)" class="member-name-link">setJsonProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;jsonProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setJsonProperties(java.lang.String)" class="member-name-link">setJsonProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;jsonProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the JSON properties associated with the annotation.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelativeUncertainty(long)" class="member-name-link">setRelativeUncertainty</a><wbr>(long&nbsp;relativeUncertainty)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the relative uncertainty.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSummary(java.lang.String)" class="member-name-link">setSummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;summary)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSamplePercent(int)" class="member-name-link">setSamplePercent</a><wbr>(int&nbsp;samplePercent)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the sample percent associated with the annotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSize(long)" class="member-name-link">setSampleSize</a><wbr>(long&nbsp;sampleSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the sample size associated with the annotation.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSamplingMethod(java.lang.String)" class="member-name-link">setSamplingMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;samplingMethod)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the sampling method associated with the annotation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSummary(java.lang.String)" class="member-name-link">setSummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;summary)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the summary description for the annotation.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUnits(java.lang.String)" class="member-name-link">setUnits</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;units)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the units used to describe the granularity.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -227,6 +281,12 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></h3>
+<code><a href="../AuthoredReferenceableProperties.html#getAuthors()">getAuthors</a>, <a href="../AuthoredReferenceableProperties.html#getContentStatus()">getContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../AuthoredReferenceableProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
+<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
 <code><a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -318,6 +378,72 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getSampleSize()">
+<h3>getSampleSize</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getSampleSize</span>()</div>
+<div class="block">Retrieve the sample size associated with the annotation.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSampleSize(long)">
+<h3>setSampleSize</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSampleSize</span><wbr><span class="parameters">(long&nbsp;sampleSize)</span></div>
+<div class="block">Set up the sample size associated with the annotation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>sampleSize</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSamplePercent()">
+<h3>getSamplePercent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getSamplePercent</span>()</div>
+<div class="block">Retrieve the sample percent associated with the annotation.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSamplePercent(int)">
+<h3>setSamplePercent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSamplePercent</span><wbr><span class="parameters">(int&nbsp;samplePercent)</span></div>
+<div class="block">Set up the sample percent associated with the annotation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>samplePercent</code> - int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSamplingMethod()">
+<h3>getSamplingMethod</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSamplingMethod</span>()</div>
+<div class="block">Retrieve the sampling method associated with the annotation.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSamplingMethod(java.lang.String)">
+<h3>setSamplingMethod</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSamplingMethod</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;samplingMethod)</span></div>
+<div class="block">Set up the sampling method associated with the annotation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>samplingMethod</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getConfidenceLevel()">
 <h3>getConfidenceLevel</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getConfidenceLevel</span>()</div>
@@ -336,6 +462,72 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>confidenceLevel</code> - int confidence level</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnits()">
+<h3>getUnits</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUnits</span>()</div>
+<div class="block">Return the units used to describe the granularity.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUnits(java.lang.String)">
+<h3>setUnits</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUnits</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;units)</span></div>
+<div class="block">Set up the units used to describe the granularity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>units</code> - string description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAbsoluteUncertainty()">
+<h3>getAbsoluteUncertainty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getAbsoluteUncertainty</span>()</div>
+<div class="block">Return the absolute uncertainty.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAbsoluteUncertainty(long)">
+<h3>setAbsoluteUncertainty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAbsoluteUncertainty</span><wbr><span class="parameters">(long&nbsp;absoluteUncertainty)</span></div>
+<div class="block">Set up the absolute uncertainty.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>absoluteUncertainty</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelativeUncertainty()">
+<h3>getRelativeUncertainty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRelativeUncertainty</span>()</div>
+<div class="block">Return the relative uncertainty.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRelativeUncertainty(long)">
+<h3>setRelativeUncertainty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelativeUncertainty</span><wbr><span class="parameters">(long&nbsp;relativeUncertainty)</span></div>
+<div class="block">Set up the relative uncertainty.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relativeUncertainty</code> - long</dd>
 </dl>
 </section>
 </li>
@@ -428,35 +620,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAdditionalProperties()">
-<h3>getAdditionalProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
-<div class="block">Return the additional properties for the AnnotationProperties.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>properties map</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAdditionalProperties(java.util.Map)">
-<h3>setAdditionalProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</span></div>
-<div class="block">Set up the additional properties for the AnnotationProperties.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>additionalProperties</code> - properties map</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../OpenMetadataRootProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -469,7 +639,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../OpenMetadataRootProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -484,7 +654,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a hash code for this element type.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../OpenMetadataRootProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

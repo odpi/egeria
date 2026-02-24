@@ -350,7 +350,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new project.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>optionalClassification</code> - classification of the projects - eg Campaign, Task or PersonalProjectProperties</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
@@ -610,7 +610,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of projects that are linked off of the supplied element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object (typically a personal profile, project or
                        community) that the projects hang off of</dd>
 <dd><code>projectStatus</code> - filter response by project type - if null, any value will do</dd>
@@ -683,7 +683,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of projects with a particular classification.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>classificationName</code> - name of the classification - if null, all projects are returned</dd>
 <dd><code>suppliedQueryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -708,7 +708,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of actors that are members of a project.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>projectGUID</code> - unique identifier of the project</dd>
 <dd><code>teamRole</code> - optional team role value found in AssignmentScope's assignmentType attribute.  Used to filter the results.</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>

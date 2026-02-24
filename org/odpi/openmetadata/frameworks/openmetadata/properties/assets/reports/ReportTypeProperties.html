@@ -75,9 +75,11 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
-<div class="inheritance"><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties</a>
-<div class="inheritance"><a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties</a>
+<div class="inheritance"><a href="../../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties</a>
+<div class="inheritance"><a href="../../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties</a>
+<div class="inheritance"><a href="../../datadictionaries/DataSpecProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportTypeProperties</div>
+</div>
 </div>
 </div>
 </div>
@@ -87,7 +89,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ReportTypeProperties</span>
-<span class="extends-implements">extends <a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></span></div>
+<span class="extends-implements">extends <a href="../../datadictionaries/DataSpecProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataSpecProperties</a></span></div>
 <div class="block">ReportTypeProperties is a class for representing a report type.</div>
 </section>
 <section class="summary">
@@ -151,35 +153,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the person or engine that last modified the report.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPurpose()" class="member-name-link">getPurpose</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the purpose of the report.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCreatedTime(java.util.Date)" class="member-name-link">setCreatedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;createdTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCreatedTime(java.util.Date)" class="member-name-link">setCreatedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;createdTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the date/time that the report was created.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastModifiedTime(java.util.Date)" class="member-name-link">setLastModifiedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastModifiedTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastModifiedTime(java.util.Date)" class="member-name-link">setLastModifiedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastModifiedTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up date/time that the report was last updated.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastModifier(java.lang.String)" class="member-name-link">setLastModifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lastModifier)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the person or engine that last modified the report.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPurpose(java.lang.String)" class="member-name-link">setPurpose</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;purpose)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastModifier(java.lang.String)" class="member-name-link">setLastModifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lastModifier)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the purpose for the report.</div>
+<div class="block">Set up the name of the person or engine that last modified the report.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -190,11 +182,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></h3>
-<code><a href="../DataAssetProperties.html#getAuthors()">getAuthors</a>, <a href="../DataAssetProperties.html#getContentStatus()">getContentStatus</a>, <a href="../DataAssetProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../DataAssetProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../DataAssetProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../DataAssetProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.collections.<a href="../../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></h3>
+<code><a href="../../collections/CollectionProperties.html#getPurpose()">getPurpose</a>, <a href="../../collections/CollectionProperties.html#setPurpose(java.lang.String)">setPurpose</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></h3>
-<code><a href="../AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../AssetProperties.html#getNamespace()">getNamespace</a>, <a href="../AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../AssetProperties.html#getSource()">getSource</a>, <a href="../AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../AssetProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="../AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../AssetProperties.html#setSource(java.lang.String)">setSource</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></h3>
+<code><a href="../../AuthoredReferenceableProperties.html#getAuthors()">getAuthors</a>, <a href="../../AuthoredReferenceableProperties.html#getContentStatus()">getContentStatus</a>, <a href="../../AuthoredReferenceableProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../../AuthoredReferenceableProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../../AuthoredReferenceableProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../../AuthoredReferenceableProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
 <code><a href="../../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
@@ -244,28 +236,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getPurpose()">
-<h3>getPurpose</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPurpose</span>()</div>
-<div class="block">Return the purpose of the report.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setPurpose(java.lang.String)">
-<h3>setPurpose</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPurpose</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;purpose)</span></div>
-<div class="block">Set up the purpose for the report.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>purpose</code> - string</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getCreatedTime()">
 <h3>getCreatedTime</h3>
@@ -339,7 +309,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataAssetProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></dd>
+<dd><code><a href="../../datadictionaries/DataSpecProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../datadictionaries/DataSpecProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataSpecProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -352,7 +322,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataAssetProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></dd>
+<dd><code><a href="../../collections/CollectionProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -367,7 +337,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataAssetProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></dd>
+<dd><code><a href="../../collections/CollectionProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

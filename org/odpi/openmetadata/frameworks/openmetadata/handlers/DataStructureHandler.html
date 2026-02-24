@@ -217,11 +217,11 @@ loadScripts(document, 'script');</script>
  contain the valid values.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDataClassDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassDefinitionProperties)" class="member-name-link">linkDataClassDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDataClassDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataValueDefinitionProperties)" class="member-name-link">linkDataClassDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataDefinitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataClassGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
- <a href="../properties/datadictionaries/DataClassDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassDefinitionProperties</a>&nbsp;relationshipProperties)</code></div>
+ <a href="../properties/datadictionaries/DataValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataValueDefinitionProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect an element that is part of a data design to a data class to show that the data class should be used
  as the specification for the data values when interpreting the data definition.</div>
@@ -312,7 +312,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -372,7 +372,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>actorProfileGUID</code> - unique identifier of the actor profile (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
@@ -399,7 +399,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach a data field to a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
 <dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -424,7 +424,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a data field from a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the data structure.</dd>
 <dd><code>dataFieldGUID</code> - unique identifier of the nested data field.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -447,7 +447,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the element</dd>
 <dd><code>deleteOptions</code> - options for a delete request</dd>
 <dt>Throws:</dt>
@@ -469,7 +469,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of data structures with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>name</code> - name of the element to return - match is full text match in qualifiedName or name</dd>
 <dd><code>queryOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -493,7 +493,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the required element</dd>
 <dd><code>getOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
@@ -530,13 +530,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkDataClassDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassDefinitionProperties)">
+<section class="detail" id="linkDataClassDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataValueDefinitionProperties)">
 <h3>linkDataClassDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkDataClassDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataDefinitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataClassGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
- <a href="../properties/datadictionaries/DataClassDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassDefinitionProperties</a>&nbsp;relationshipProperties)</span>
+ <a href="../properties/datadictionaries/DataValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataValueDefinitionProperties</a>&nbsp;relationshipProperties)</span>
                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
@@ -544,7 +544,7 @@ loadScripts(document, 'script');</script>
  as the specification for the data values when interpreting the data definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataDefinitionGUID</code> - unique identifier of the data design element (eg data field) that uses the data class</dd>
 <dd><code>dataClassGUID</code> - unique identifier of the data class</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -569,7 +569,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a data definition from a data class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataDefinitionGUID</code> - unique identifier of the data design element (eg data field) that uses the data class</dd>
 <dd><code>dataClassGUID</code> - unique identifier of the data class</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -595,7 +595,7 @@ loadScripts(document, 'script');</script>
  as the semantic definition for the data values when interpreting the data definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>dataDefinitionGUID</code> - unique identifier of the data design element (eg data field) that uses the data class</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -620,7 +620,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a data definition from a glossary term.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>dataDefinitionGUID</code> - unique identifier of the data design element (eg data field) that uses the data class</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
@@ -649,7 +649,7 @@ loadScripts(document, 'script');</script>
  contain the valid values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>userId</code> - userId of the user making the request</dd>
 <dd><code>certificationTypeGUID</code> - unique identifier of the certification type</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
@@ -674,7 +674,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach a data structure from a certification type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - userId of the user making the request.</dd>
 <dd><code>certificationTypeGUID</code> - unique identifier of the certification type</dd>
 <dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
