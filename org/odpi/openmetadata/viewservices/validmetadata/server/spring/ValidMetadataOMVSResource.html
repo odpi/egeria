@@ -809,9 +809,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve all the valid values for the requested property.</div>
 <dl class="notes">

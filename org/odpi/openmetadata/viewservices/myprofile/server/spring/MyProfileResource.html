@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;includeRoles,
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of actions that have been assigned to the user's profile, roles or, user identity</div>
+<div class="block">Return the list of actions that have been assigned to the user's profile, roles, or user identity</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyProfile(java.lang.String)" class="member-name-link">getMyProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
@@ -273,13 +273,13 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assigned-actions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getMyAssignedActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(value="includeUserIds",required=false)
+ @RequestParam(value="includeUserIds",required=false,defaultValue="true")
  boolean&nbsp;includeUserIds,
- @RequestParam(value="includeRoles",required=false)
+ @RequestParam(value="includeRoles",required=false,defaultValue="true")
  boolean&nbsp;includeRoles,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return the list of actions that have been assigned to the user's profile, roles or, user identity</div>
+<div class="block">Return the list of actions that have been assigned to the user's profile, roles, or user identity</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -300,9 +300,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/sponsored-actions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getMySponsoredActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(value="includeUserIds",required=false)
+ @RequestParam(value="includeUserIds",required=false,defaultValue="true")
  boolean&nbsp;includeUserIds,
- @RequestParam(value="includeRoles",required=false)
+ @RequestParam(value="includeRoles",required=false,defaultValue="true")
  boolean&nbsp;includeRoles,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
@@ -327,9 +327,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/requested-actions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getMyRequestedActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(value="includeUserIds",required=false)
+ @RequestParam(value="includeUserIds",required=false,defaultValue="true")
  boolean&nbsp;includeUserIds,
- @RequestParam(value="includeRoles",required=false)
+ @RequestParam(value="includeRoles",required=false,defaultValue="true")
  boolean&nbsp;includeRoles,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ActivityStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ActivityStatusRequestBody</a>&nbsp;requestBody)</span></div>
@@ -417,9 +417,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assigned-resources")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getMyResources</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(value="includeUserIds",required=false)
+ @RequestParam(value="includeUserIds",required=false,defaultValue="true")
  boolean&nbsp;includeUserIds,
- @RequestParam(value="includeRoles",required=false)
+ @RequestParam(value="includeRoles",required=false,defaultValue="true")
  boolean&nbsp;includeRoles,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
