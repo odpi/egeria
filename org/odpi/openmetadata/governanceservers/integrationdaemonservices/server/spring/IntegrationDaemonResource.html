@@ -126,7 +126,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupSummaries(java.lang.String,java.lang.String)" class="member-name-link">getIntegrationGroupSummaries</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a summary of each of the integration groups running in the integration daemon.</div>
+<div class="block">Return a summary of the integration groups running in the integration daemon.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationGroupSummaryResponse.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest">IntegrationGroupSummaryResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupSummary(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getIntegrationGroupSummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -140,7 +140,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.</div>
+<div class="block">Issue a refresh() request on all connectors running in the integration daemon or a specific connector if the connector name is specified.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshIntegrationGroupConfig(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">refreshIntegrationGroupConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -154,7 +154,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.</div>
+<div class="block">Restart all connectors running in the integration daemon or restart a specific connector if the connector name is specified.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConfigurationProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody)" class="member-name-link">updateConfigurationProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -380,13 +380,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.</div>
+<div class="block">Issue a refresh() request on all connectors running in the integration daemon or a specific connector if the connector name is specified.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - integration daemon server name</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
 <dd><code>requestBody</code> - optional name of the connector to target - if no connector name is specified, all
-                      connectors managed by this integration service are refreshed.</dd>
+                      connectors managed by this integration daemon are refreshed.</dd>
 <dt>Returns:</dt>
 <dd>void or
   InvalidParameterException one of the parameters is null or invalid or
@@ -405,13 +405,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.</div>
+<div class="block">Restart all connectors running in the integration daemon or restart a specific connector if the connector name is specified.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - integration daemon server name</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
 <dd><code>requestBody</code> - optional name of the connector to target - if no connector name is specified, all
-                      connectors managed by this integration service are refreshed.</dd>
+                      connectors managed by this integration daemon are refreshed.</dd>
 <dt>Returns:</dt>
 <dd>void or
   InvalidParameterException one of the parameters is null or invalid or
@@ -435,9 +435,9 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - integration daemon server name</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
-<dd><code>integrationGroupName</code> - name of integration group of interest</dd>
+<dd><code>integrationGroupName</code> - name of the integration group of interest</dd>
 <dt>Returns:</dt>
-<dd>list of statuses - on for each assigned integration groups or
+<dd>integration group status, or
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException the user is not authorized to issue this request or</dd>
 </dl>
@@ -451,13 +451,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</span></div>
-<div class="block">Return a summary of each of the integration groups running in the integration daemon.</div>
+<div class="block">Return a summary of the integration groups running in the integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - integration daemon server name</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
 <dt>Returns:</dt>
-<dd>list of statuses - one for each assigned integration groups
+<dd>list of statuses - one for each integration group, or
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException the user is not authorized to issue this request or</dd>
 </dl>
