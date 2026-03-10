@@ -197,7 +197,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the search properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSearchString(java.lang.String)" class="member-name-link">setSearchString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSearchString(java.lang.String,boolean,boolean,boolean)" class="member-name-link">setSearchString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the Java regular expression used to match against any of the String property values
  within instances of the specified type(s).</div>
@@ -281,14 +284,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setSearchString(java.lang.String)">
+<section class="detail" id="setSearchString(java.lang.String,boolean,boolean,boolean)">
 <h3>setSearchString</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSearchString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSearchString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase)</span></div>
 <div class="block">Set up the Java regular expression used to match against any of the String property values
  within instances of the specified type(s).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - regex</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 </dl>
 </section>
 </li>

@@ -86,40 +86,62 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a>&gt;</span></div>
 <div class="block">PropertyComparisonOperator is used for search requests against a metadata store.  It defines how the properties
  should be compared to find a matching result.
-
  The property comparison operator values are:
  <ul>
      <li>
-         EQUAL: when the property has a value that precisely equals the provided value. This is the default.
+         EQ: when the property has a value that precisely equals the provided value. This is the default.
      </li>
      <li>
-         NOT_EQUAL: when the property has a value that is not equal to the provided value.
+         NEQ: when the property has a value that is not equal to the provided value.
      </li>
      <li>
-         LESS_THAN: when the property has a value that is strictly less than the provided value.
+         LT: when the property has a value that is strictly less than the provided value.
      </li>
      <li>
-         LESS_THAN_OR_EQUAL: when the property has a value that is less than, or equal to, the provided value.
+         LTE: when the property has a value that is less than, or equal to, the provided value.
      </li>
      <li>
-         GREATER_THAN: when the property has a value that is strictly greater than the provided value.
+         GT: when the property has a value that is strictly greater than the provided value.
      </li>
      <li>
-         GREATER_THAN_OR_EQUAL: when the property has a value that is greater than, or equal to, the provided value.
+         GTE: when the property has a value that is greater than, or equal to, the provided value.
      </li>
      <li>
-         IN_LIST: when the property has a value that matches at least one element of the provided list of values.
+         IN: when the property has a value that matches at least one element of the provided list of values.
      </li>
      <li>
          IS_NULL: when the property has no value.
      </li>
      <li>
-         IS_NOT_NULL: when the property has any non-null value.
+         NOT_NULL: when the property has any non-null value.
      </li>
      <li>
-         LIKE: when the property has a value that matches the provided regular expression. This should only be applied
-         to String properties, and should still be used even for exact matches for String properties.
+         LIKE: when the property has a value that matches the provided value.
      </li>
+     <LI>
+         NOT_LIKE: when the property has a value that does not match the provided value.
+     </LI>
+     <LI>
+         CASE_INSENSITIVE_LIKE: when the property has a value that matches the provided value if the case is ignored.
+     </LI>
+     <LI>
+         CASE_INSENSITIVE_NOT_LIKE: when the property has a value that does not match the provided value even if the case is ignored.
+     </LI>
+     <LI>
+         STARTS_WITH: when the property has a value that starts with the provided value.
+     </LI>
+     <LI>
+         ENDS_WITH: when the property has a value that ends with the provided value.
+     </LI>
+     <LI>
+         CASE_INSENSITIVE_STARTS_WITH: when the property has a value that starts with the provided value if the case is ignored.
+     </LI>
+     <LI>
+         CASE_INSENSITIVE_ENDS_WITH: when the property has a value that ends with the provided value if the case is ignored.
+     </LI>
+     <LI>
+         CASE_INSENSITIVE_EQ: when the property has a value that matches the provided value if the case is ignored.
+     </LI>
  </ul></div>
 </section>
 <section class="summary">
@@ -141,6 +163,30 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#CASE_INSENSITIVE_ENDS_WITH" class="member-name-link">CASE_INSENSITIVE_ENDS_WITH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Has a value that ends with the provided string if the case is ignored.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CASE_INSENSITIVE_EQ" class="member-name-link">CASE_INSENSITIVE_EQ</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Has a value that equals the provided string if the case is ignored.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CASE_INSENSITIVE_LIKE" class="member-name-link">CASE_INSENSITIVE_LIKE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Has a value that includes the provided string if the case is ignored.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CASE_INSENSITIVE_NOT_LIKE" class="member-name-link">CASE_INSENSITIVE_NOT_LIKE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Has a value that does not include the provided string even if the case is ignored.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CASE_INSENSITIVE_STARTS_WITH" class="member-name-link">CASE_INSENSITIVE_STARTS_WITH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Has a value that starts with the provided string if the case is ignored.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ENDS_WITH" class="member-name-link">ENDS_WITH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Has a value that ends with the provided string.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#EQ" class="member-name-link">EQ</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Equal to.</div>
@@ -163,7 +209,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#LIKE" class="member-name-link">LIKE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Has a value that matches the provided regular expression (strings only).</div>
+<div class="block">Has a value that includes the provided string.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#LT" class="member-name-link">LT</a></code></div>
 <div class="col-last even-row-color">
@@ -177,9 +223,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Not equal to.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NOT_NULL" class="member-name-link">NOT_NULL</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NOT_LIKE" class="member-name-link">NOT_LIKE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Has a value that does not include the provided string.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NOT_NULL" class="member-name-link">NOT_NULL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Has any non-null value.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#STARTS_WITH" class="member-name-link">STARTS_WITH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Has a value that begins with the provided string.</div>
 </div>
 </div>
 </section>
@@ -313,7 +367,63 @@ the order they are declared.</div>
 <section class="detail" id="LIKE">
 <h3>LIKE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">LIKE</span></div>
-<div class="block">Has a value that matches the provided regular expression (strings only).</div>
+<div class="block">Has a value that includes the provided string.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NOT_LIKE">
+<h3>NOT_LIKE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">NOT_LIKE</span></div>
+<div class="block">Has a value that does not include the provided string.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CASE_INSENSITIVE_LIKE">
+<h3>CASE_INSENSITIVE_LIKE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE_LIKE</span></div>
+<div class="block">Has a value that includes the provided string if the case is ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CASE_INSENSITIVE_NOT_LIKE">
+<h3>CASE_INSENSITIVE_NOT_LIKE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE_NOT_LIKE</span></div>
+<div class="block">Has a value that does not include the provided string even if the case is ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STARTS_WITH">
+<h3>STARTS_WITH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">STARTS_WITH</span></div>
+<div class="block">Has a value that begins with the provided string.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ENDS_WITH">
+<h3>ENDS_WITH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">ENDS_WITH</span></div>
+<div class="block">Has a value that ends with the provided string.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CASE_INSENSITIVE_STARTS_WITH">
+<h3>CASE_INSENSITIVE_STARTS_WITH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE_STARTS_WITH</span></div>
+<div class="block">Has a value that starts with the provided string if the case is ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CASE_INSENSITIVE_ENDS_WITH">
+<h3>CASE_INSENSITIVE_ENDS_WITH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE_ENDS_WITH</span></div>
+<div class="block">Has a value that ends with the provided string if the case is ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CASE_INSENSITIVE_EQ">
+<h3>CASE_INSENSITIVE_EQ</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE_EQ</span></div>
+<div class="block">Has a value that equals the provided string if the case is ignored.</div>
 </section>
 </li>
 </ul>

@@ -226,7 +226,6 @@ org.odpi.openmetadata.contentpacks.core.core
 org.odpi.openmetadata.contentpacks.core.digitalproducts
 org.odpi.openmetadata.contentpacks.core.egeria
 org.odpi.openmetadata.contentpacks.core.files
-org.odpi.openmetadata.contentpacks.core.nanny
 org.odpi.openmetadata.contentpacks.core.openlineage
 org.odpi.openmetadata.contentpacks.core.organizationinsight
 org.odpi.openmetadata.contentpacks.core.postgres

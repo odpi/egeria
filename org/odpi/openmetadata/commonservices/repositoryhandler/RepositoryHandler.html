@@ -311,8 +311,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the requested entities that match the requested type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">getEntitiesByValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntitiesByValue(java.lang.String,java.lang.String,boolean,boolean,boolean,java.lang.String,java.util.List,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">getEntitiesByValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
@@ -2127,10 +2130,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">
+<section class="detail" id="getEntitiesByValue(java.lang.String,java.lang.String,boolean,boolean,boolean,java.lang.String,java.util.List,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">
 <h3>getEntitiesByValue</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</span>&nbsp;<span class="element-name">getEntitiesByValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
@@ -2150,7 +2156,10 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling userId</dd>
-<dd><code>propertyValue</code> - string value to search on - may be a RegEx</dd>
+<dd><code>searchString</code> - string value to search on</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>entityTypeGUID</code> - unique identifier of the entity's type</dd>
 <dd><code>limitResultsByStatus</code> - only return elements that have the requested status (null means all statuses</dd>
 <dd><code>limitResultsByClassification</code> - only return elements that have the requested classification(s)</dd>

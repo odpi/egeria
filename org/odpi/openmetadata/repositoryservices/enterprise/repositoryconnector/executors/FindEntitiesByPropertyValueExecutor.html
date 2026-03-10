@@ -108,9 +108,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator,java.lang.String)" class="member-name-link">FindEntitiesByPropertyValueExecutor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,int,java.util.List,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator,java.lang.String)" class="member-name-link">FindEntitiesByPropertyValueExecutor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  int&nbsp;fromEntityElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
@@ -174,11 +177,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,int,java.util.List,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator,java.lang.String)">
 <h3>FindEntitiesByPropertyValueExecutor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FindEntitiesByPropertyValueExecutor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  int&nbsp;fromEntityElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
@@ -196,22 +202,25 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>entityTypeGUID</code> - GUID of the type of entity to search for. Null means all types will
-                       be searched (could be slow so not recommended).</dd>
-<dd><code>searchCriteria</code> - String expression contained in any of the property values within the entities
-                       of the supplied type.</dd>
+                                     be searched (could be slow so not recommended).</dd>
+<dd><code>searchString</code> - String expression contained in any of the property values within the entities
+                                     of the supplied type.</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>fromEntityElement</code> - the starting element number of the entities to return.
-                                This is used when retrieving elements
-                                beyond the first page of results. Zero means start from the first element.</dd>
+                                     This is used when retrieving elements
+                                     beyond the first page of results. Zero means start from the first element.</dd>
 <dd><code>limitResultsByStatus</code> - By default, entities in all statuses are returned.  However, it is possible
-                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-                             status values.</dd>
+                                     to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+                                     status values.</dd>
 <dd><code>limitResultsByClassification</code> - List of classifications that must be present on all returned entities.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
 <dd><code>sequencingProperty</code> - String name of the property that is to be used to sequence the results.
-                           Null means do not sequence on a property name (see SequencingOrder).</dd>
+                                     Null means do not sequence on a property name (see SequencingOrder).</dd>
 <dd><code>sequencingOrder</code> - Enum defining how the results should be ordered.</dd>
 <dd><code>pageSize</code> - the maximum number of result entities that can be returned on this request.  Zero means
-                 unrestricted return results size.</dd>
+                                     unrestricted return results size.</dd>
 <dd><code>localMetadataCollectionId</code> - unique identifier for the local repository - may be null if no local repository</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>repositoryValidator</code> - validator for resulting relationships</dd>

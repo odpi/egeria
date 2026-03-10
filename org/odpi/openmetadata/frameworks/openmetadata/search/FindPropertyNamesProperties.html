@@ -76,7 +76,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions</a>
 <div class="inheritance"><a href="PagingOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.PagingOptions</a>
 <div class="inheritance"><a href="QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions</a>
-<div class="inheritance"><a href="FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties</a>
+<div class="inheritance"><a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties</div>
 </div>
 </div>
@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FindPropertyNamesProperties</span>
-<span class="extends-implements">extends <a href="FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a></span></div>
+<span class="extends-implements">extends <a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a></span></div>
 <div class="block">FindPropertyNamesProperties is the request body structure used on OMAG REST API calls that passes a property value
  and a list of names to match to.</div>
 </section>
@@ -165,6 +165,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a></h3>
+<code><a href="SearchOptions.html#getEndsWith()">getEndsWith</a>, <a href="SearchOptions.html#getIgnoreCase()">getIgnoreCase</a>, <a href="SearchOptions.html#getStartsWith()">getStartsWith</a>, <a href="SearchOptions.html#setEndsWith(boolean)">setEndsWith</a>, <a href="SearchOptions.html#setIgnoreCase(boolean)">setIgnoreCase</a>, <a href="SearchOptions.html#setStartsWith(boolean)">setStartsWith</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></h3>
 <code><a href="QueryOptions.html#getAnchorDomainName()">getAnchorDomainName</a>, <a href="QueryOptions.html#getAnchorGUID()">getAnchorGUID</a>, <a href="QueryOptions.html#getAnchorScopeGUID()">getAnchorScopeGUID</a>, <a href="QueryOptions.html#getGovernanceZoneFilter()">getGovernanceZoneFilter</a>, <a href="QueryOptions.html#getIncludeOnlyClassifiedElements()">getIncludeOnlyClassifiedElements</a>, <a href="QueryOptions.html#getLimitResultsByStatus()">getLimitResultsByStatus</a>, <a href="QueryOptions.html#getSequencingOrder()">getSequencingOrder</a>, <a href="QueryOptions.html#getSequencingProperty()">getSequencingProperty</a>, <a href="QueryOptions.html#getSkipClassifiedElements()">getSkipClassifiedElements</a>, <a href="QueryOptions.html#setAnchorDomainName(java.lang.String)">setAnchorDomainName</a>, <a href="QueryOptions.html#setAnchorGUID(java.lang.String)">setAnchorGUID</a>, <a href="QueryOptions.html#setAnchorScopeGUID(java.lang.String)">setAnchorScopeGUID</a>, <a href="QueryOptions.html#setGovernanceZoneFilter(java.util.List)">setGovernanceZoneFilter</a>, <a href="QueryOptions.html#setIncludeOnlyClassifiedElements(java.util.List)">setIncludeOnlyClassifiedElements</a>, <a href="QueryOptions.html#setLimitResultsByStatus(java.util.List)">setLimitResultsByStatus</a>, <a href="QueryOptions.html#setSequencingOrder(org.odpi.openmetadata.frameworks.openmetadata.refdata.SequencingOrder)">setSequencingOrder</a>, <a href="QueryOptions.html#setSequencingProperty(java.lang.String)">setSequencingProperty</a>, <a href="QueryOptions.html#setSkipClassifiedElements(java.util.List)">setSkipClassifiedElements</a></code></div>
@@ -268,7 +271,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="FindProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a></code></dd>
+<dd><code><a href="SearchOptions.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -281,7 +284,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="QueryOptions.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></dd>
+<dd><code><a href="SearchOptions.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -296,7 +299,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a hash code for this element type.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="QueryOptions.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></dd>
+<dd><code><a href="SearchOptions.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

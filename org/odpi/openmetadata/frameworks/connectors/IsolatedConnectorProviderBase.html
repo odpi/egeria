@@ -74,7 +74,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
+<div class="inheritance"><a href="OpenConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.connectors.IsolatedConnectorProviderBase</div>
+</div>
 </div>
 </div>
 </div>
@@ -85,7 +87,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IsolatedConnectorProviderBase</span>
-<span class="extends-implements">extends <a href="ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></span></div>
+<span class="extends-implements">extends <a href="OpenConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">OpenConnectorProviderBase</a></span></div>
 <div class="block">IsolatedConnectorProviderBase provides extensions to ConnectorProviderBase that uses a custom class loader to
  load the connector class in getConnector.  This custom class loader give preference to the classes in the
  same JAR file as the connector provider's implementation over other classes on the class path.

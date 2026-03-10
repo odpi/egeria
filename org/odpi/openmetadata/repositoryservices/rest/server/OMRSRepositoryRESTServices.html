@@ -393,17 +393,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of entities that match the supplied properties according to the match criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEntitiesByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest)" class="member-name-link">findEntitiesByPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEntitiesByPropertyValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest)" class="member-name-link">findEntitiesByPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/EntityPropertyFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityPropertyFindRequest</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of entities whose string based property values match the search criteria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEntitiesByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyHistoricalFindRequest)" class="member-name-link">findEntitiesByPropertyValueHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEntitiesByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyHistoricalFindRequest)" class="member-name-link">findEntitiesByPropertyValueHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/EntityPropertyHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityPropertyHistoricalFindRequest</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of entities whose string based property values match the search criteria.</div>
@@ -437,17 +443,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of relationships that match the requested properties by the matching criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest)" class="member-name-link">findRelationshipsByPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest)" class="member-name-link">findRelationshipsByPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/TypeLimitedFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeLimitedFindRequest</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of relationships that match the search criteria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedHistoricalFindRequest)" class="member-name-link">findRelationshipsByPropertyValueHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedHistoricalFindRequest)" class="member-name-link">findRelationshipsByPropertyValueHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/TypeLimitedHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeLimitedHistoricalFindRequest</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of relationships that match the search criteria.</div>
@@ -1967,11 +1979,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findEntitiesByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest)">
+<section class="detail" id="findEntitiesByPropertyValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest)">
 <h3>findEntitiesByPropertyValue</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></span>&nbsp;<span class="element-name">findEntitiesByPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/EntityPropertyFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityPropertyFindRequest</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of entities whose string based property values match the search criteria.  The
  search criteria may include regex style wild cards.</div>
@@ -1979,7 +1994,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>searchCriteria</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>searchString</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>requestBody</code> - find parameters used to limit the returned results.</dd>
 <dt>Returns:</dt>
 <dd>EntityListResponse:
@@ -1998,11 +2016,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findEntitiesByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyHistoricalFindRequest)">
+<section class="detail" id="findEntitiesByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyHistoricalFindRequest)">
 <h3>findEntitiesByPropertyValueHistory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></span>&nbsp;<span class="element-name">findEntitiesByPropertyValueHistory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/EntityPropertyHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityPropertyHistoricalFindRequest</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of entities whose string based property values match the search criteria.  The
  search criteria may include regex style wild cards.</div>
@@ -2010,7 +2031,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>searchCriteria</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>searchString</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>requestBody</code> - find parameters used to limit the returned results.</dd>
 <dt>Returns:</dt>
 <dd>EntityListResponse:
@@ -2243,18 +2267,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findRelationshipsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest)">
+<section class="detail" id="findRelationshipsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest)">
 <h3>findRelationshipsByPropertyValue</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipListResponse</a></span>&nbsp;<span class="element-name">findRelationshipsByPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/TypeLimitedFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeLimitedFindRequest</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of relationships that match the search criteria.  The results can be paged.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>searchCriteria</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>searchString</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>requestBody</code> - find parameters used to limit the returned results.</dd>
 <dt>Returns:</dt>
 <dd>RelationshipListResponse:
@@ -2271,18 +2301,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findRelationshipsByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedHistoricalFindRequest)">
+<section class="detail" id="findRelationshipsByPropertyValueHistory(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedHistoricalFindRequest)">
 <h3>findRelationshipsByPropertyValueHistory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipListResponse</a></span>&nbsp;<span class="element-name">findRelationshipsByPropertyValueHistory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
  <a href="../properties/TypeLimitedHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeLimitedHistoricalFindRequest</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of relationships that match the search criteria.  The results can be paged.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>searchCriteria</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>searchString</code> - String expression of the characteristics of the required relationships.</dd>
+<dd><code>startsWith</code> - true if the search should be for strings that start with the search string</dd>
+<dd><code>endsWith</code> - true if the search should be for strings that end with the search string</dd>
+<dd><code>ignoreCase</code> - true if the search should be case-insensitive</dd>
 <dd><code>requestBody</code> - find parameters used to limit the returned results.</dd>
 <dt>Returns:</dt>
 <dd>RelationshipListResponse:

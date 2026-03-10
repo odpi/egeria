@@ -187,19 +187,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the request parameter.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRecognizedConfigurationProperties()" class="member-name-link">getRecognizedConfigurationProperties</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the names of the defined configuration properties</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls">PostgresConfigurationProperty</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls">PostgresConfigurationProperty</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls">PostgresConfigurationProperty</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls">PostgresConfigurationProperty</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -379,6 +384,17 @@ not permitted.)</div>
 <h3>getConfigurationPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getConfigurationPropertyTypes</span>()</div>
 <div class="block">Retrieve all the defined configuration properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRecognizedConfigurationProperties()">
+<h3>getRecognizedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRecognizedConfigurationProperties</span>()</div>
+<div class="block">Retrieve all the names of the defined configuration properties</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list</dd>
