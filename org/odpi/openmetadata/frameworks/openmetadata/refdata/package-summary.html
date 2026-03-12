@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -67,7 +71,8 @@ loadScripts(document, 'script');</script>
 <ul class="summary-list">
 <li>
 <div id="class-summary">
-<div class="caption"><span>Enum Classes</span></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
@@ -96,51 +101,75 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">CompletionStatus defines the completion status of a governance action service.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ConfidenceLevel</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">ConfidenceLevel identifies the level of confidence to place in the accuracy of a data item.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ConfidentialityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ConfidentialityLevel</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">Defines how confidential a data item is.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">CriticalityLevel</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">CriticalityLevel defines how important a data item is to the organization.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">DeployedImplementationType describes the standard deployed implementation types supplied with Egeria.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ElementOriginCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ElementOriginCategory</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ElementOriginCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ElementOriginCategory</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">ElementOriginCategory defines where the metadata comes from.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ElementStatus</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ElementStatus</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The ElementStatus defines the status of an element in the metadata collection.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="FileExtension.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileExtension</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="FileExtension.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileExtension</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">FileExtension describes the standard file extensions recognized by Egeria.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="FileName.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileName</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="FileName.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileName</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">FileName describes the standard file names recognized by Egeria.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="FileType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileType</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="FileType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">FileType describes the standard file types supplied with Egeria.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ProjectHealth.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectHealth</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="GovernanceDomain.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">GovernanceDomain</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">GovernanceDomain defines the different governance domains that open metadata seeks to unite.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">OpenMetadataRefData defines the common methods for an open metadata reference data enum.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ProjectHealth.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectHealth</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">ProjectHealth lists suggested health values for a project.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ProjectPhase.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectPhase</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
-<div class="block">ProjectStatus lists suggested status values for a project.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ProjectPhase.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectPhase</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">ProjectStatus lists suggested status values for a project.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ResourceUse.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ResourceUse</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">ProjectStatus lists suggested status values for a project.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ResourceUse.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ResourceUse</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">ResourceUse describes the difference values used in the resourceUse property found in the ResourceList
  relationship.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ResourceUseProperties.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ResourceUseProperties</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ResourceUseProperties.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ResourceUseProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">ResourceUseProperties lists common property values found in the resourceUseProperties attribute when a particular
  resourceUse value is in use.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">RetentionBasis</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">RetentionBasis defines the retention requirements associated with a data item.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ScopeDefinition.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ScopeDefinition</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
@@ -150,15 +179,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">SequencingOrder is used for search requests against a metadata collection.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SolutionComponentType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SolutionComponentType</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SeverityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SeverityLevel</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">SeverityLevel defines the severity of the impact that a situation has.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SolutionComponentType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SolutionComponentType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">SolutionComponentType describes suggested values to use in the solutionComponentType property found in the
  SolutionComponent entity.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">SpecificationPropertyType provides definitions of the different types of specification properties supported by
  Egeria's templates, connectors and governance actions.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="StatusIdentifier.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">StatusIdentifier</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">StatusIdentifier identifies the status of one of the governed data classifications.</div>
+</div>
 </div>
 </div>
 </div>

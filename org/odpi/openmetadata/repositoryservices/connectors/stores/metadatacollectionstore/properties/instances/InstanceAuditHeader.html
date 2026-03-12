@@ -121,7 +121,7 @@ loadScripts(document, 'script');</script>
      </li>
      <li>
          MaintainedBy contains the list of userIds of the person/engine that are responsible for maintained this
-         instance.  Null means that the maintainer is the creator.
+         instance.
      </li>
      <li>
          CreateTime contains the Date/Time when the instance was created.  It is set automatically by the
@@ -134,25 +134,25 @@ loadScripts(document, 'script');</script>
      <li>
          Version is a numeric count of the updates to the instance.  It is used by the open metadata repositories
          to ensure updates to reference copies of the instance are applied in the right sequence.  The home open
-         metadata repository (where the create an all subsequent updates happen) maintains the version number.
+         metadata repository (where the creation and all subsequent updates happen) maintains the version number.
      </li>
      <li>
          CurrentStatus indicates the status of the instance.  It is initialized by the open metadata repository
          to the first status defined in the TypeDef.  After that, it is the actions of the consumers of the
-         metadata (typically the Open Metadata Access Services (OMASs)
+         metadata that change this value.  For example, it switches to deleted when the instance is deleted.
      </li>
      <li>
          RequestId is a unique identifier used by the caller to synchronize requests between the open metadata.
      </li>
      <li>
          StatusOnDelete is populated when the instance is deleted and is se to the status when the deleted was
-         called - it is used set the status if the instance is restored.
+         called - it is used to set the status if the instance is restored.
      </li>
      <li>
          MappingProperties is used by connector implementations that are mapping between an existing repository
          and open metadata. It provides space for the connector to stash identifiers and other values that help
          them to map instances stored with the open metadata equivalent.  These values should be maintained by the
-         master repository and stored by any repository that is saving the reference copy.
+         home repository and stored by any other repository saving a reference copy.
      </li>
  </ul></div>
 <dl class="notes">

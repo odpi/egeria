@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">MatchCriteria</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">MatchCriteria</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">MatchCriteria</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">MatchCriteria</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">MatchCriteria</a>&gt;
+implements <a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></span></div>
 <div class="block">The MatchCriteria enum defines how the metadata instances in the metadata store should be matched
  against the properties supplied on the search request.
  <ul>
@@ -143,14 +144,24 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the default description of the match criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescriptionGUID()" class="member-name-link">getDescriptionGUID</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier for the valid value that represents the enum value.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default name of the match criteria.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the numeric representation of the match criteria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDefault()" class="member-name-link">isDefault</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether the enum is the default value or not.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -177,6 +188,9 @@ the order they are declared.</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.refdata.OpenMetadataRefData">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></h3>
+<code><a href="../refdata/OpenMetadataRefData.html#name()">name</a></code></div>
 </section>
 </li>
 </ul>
@@ -254,17 +268,21 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
 <div class="block">Return the numeric representation of the match criteria.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../refdata/OpenMetadataRefData.html#getOrdinal()">getOrdinal</a></code>&nbsp;in interface&nbsp;<code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
 <dt>Returns:</dt>
 <dd>int ordinal</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getName()">
-<h3>getName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<section class="detail" id="getDisplayName()">
+<h3>getDisplayName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
 <div class="block">Return the default name of the match criteria.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../refdata/OpenMetadataRefData.html#getDisplayName()">getDisplayName</a></code>&nbsp;in interface&nbsp;<code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
 <dt>Returns:</dt>
 <dd>String name</dd>
 </dl>
@@ -276,8 +294,36 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the default description of the match criteria.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../refdata/OpenMetadataRefData.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
 <dt>Returns:</dt>
 <dd>String description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDescriptionGUID()">
+<h3>getDescriptionGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescriptionGUID</span>()</div>
+<div class="block">Return the unique identifier for the valid value that represents the enum value.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../refdata/OpenMetadataRefData.html#getDescriptionGUID()">getDescriptionGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
+<dt>Returns:</dt>
+<dd>guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isDefault()">
+<h3>isDefault</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isDefault</span>()</div>
+<div class="block">Return whether the enum is the default value or not.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../refdata/OpenMetadataRefData.html#isDefault()">isDefault</a></code>&nbsp;in interface&nbsp;<code><a href="../refdata/OpenMetadataRefData.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">OpenMetadataRefData</a></code></dd>
+<dt>Returns:</dt>
+<dd>boolean</dd>
 </dl>
 </section>
 </li>

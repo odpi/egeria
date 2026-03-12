@@ -74,10 +74,8 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties</a>
 <div class="inheritance"><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties</a>
-<div class="inheritance"><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase</a>
-<div class="inheritance"><a href="GovernanceClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties</a>
+<div class="inheritance"><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedDataClassificationBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ConfidentialityProperties</div>
-</div>
 </div>
 </div>
 </div>
@@ -85,7 +83,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ConfidentialityProperties</span>
-<span class="extends-implements">extends <a href="GovernanceClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationProperties</a></span></div>
+<span class="extends-implements">extends <a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></span></div>
 <div class="block">Defines the properties for a confidentiality classification.</div>
 </section>
 <section class="summary">
@@ -129,6 +127,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfidentialityLevel()" class="member-name-link">getConfidentialityLevel</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the level assigned to this element for this classification.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return code value representing the contents of this object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConfidentialityLevel(int)" class="member-name-link">setConfidentialityLevel</a><wbr>(int&nbsp;confidentialityLevel)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the level assigned to this element for this classification.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -138,11 +156,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernanceClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationProperties</a></h3>
-<code><a href="GovernanceClassificationProperties.html#equals(java.lang.Object)">equals</a>, <a href="GovernanceClassificationProperties.html#getLevelIdentifier()">getLevelIdentifier</a>, <a href="GovernanceClassificationProperties.html#hashCode()">hashCode</a>, <a href="GovernanceClassificationProperties.html#setLevelIdentifier(int)">setLevelIdentifier</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></h3>
-<code><a href="GovernanceClassificationBase.html#getConfidence()">getConfidence</a>, <a href="GovernanceClassificationBase.html#getNotes()">getNotes</a>, <a href="GovernanceClassificationBase.html#getSource()">getSource</a>, <a href="GovernanceClassificationBase.html#getStatusIdentifier()">getStatusIdentifier</a>, <a href="GovernanceClassificationBase.html#getSteward()">getSteward</a>, <a href="GovernanceClassificationBase.html#getStewardPropertyName()">getStewardPropertyName</a>, <a href="GovernanceClassificationBase.html#getStewardTypeName()">getStewardTypeName</a>, <a href="GovernanceClassificationBase.html#setConfidence(int)">setConfidence</a>, <a href="GovernanceClassificationBase.html#setNotes(java.lang.String)">setNotes</a>, <a href="GovernanceClassificationBase.html#setSource(java.lang.String)">setSource</a>, <a href="GovernanceClassificationBase.html#setStatusIdentifier(int)">setStatusIdentifier</a>, <a href="GovernanceClassificationBase.html#setSteward(java.lang.String)">setSteward</a>, <a href="GovernanceClassificationBase.html#setStewardPropertyName(java.lang.String)">setStewardPropertyName</a>, <a href="GovernanceClassificationBase.html#setStewardTypeName(java.lang.String)">setStewardTypeName</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedDataClassificationBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></h3>
+<code><a href="GovernedDataClassificationBase.html#getConfidence()">getConfidence</a>, <a href="GovernedDataClassificationBase.html#getNotes()">getNotes</a>, <a href="GovernedDataClassificationBase.html#getSource()">getSource</a>, <a href="GovernedDataClassificationBase.html#getStatusIdentifier()">getStatusIdentifier</a>, <a href="GovernedDataClassificationBase.html#getSteward()">getSteward</a>, <a href="GovernedDataClassificationBase.html#getStewardPropertyName()">getStewardPropertyName</a>, <a href="GovernedDataClassificationBase.html#getStewardTypeName()">getStewardTypeName</a>, <a href="GovernedDataClassificationBase.html#setConfidence(int)">setConfidence</a>, <a href="GovernedDataClassificationBase.html#setNotes(java.lang.String)">setNotes</a>, <a href="GovernedDataClassificationBase.html#setSource(java.lang.String)">setSource</a>, <a href="GovernedDataClassificationBase.html#setStatusIdentifier(int)">setStatusIdentifier</a>, <a href="GovernedDataClassificationBase.html#setSteward(java.lang.String)">setSteward</a>, <a href="GovernedDataClassificationBase.html#setStewardPropertyName(java.lang.String)">setStewardPropertyName</a>, <a href="GovernedDataClassificationBase.html#setStewardTypeName(java.lang.String)">setStewardTypeName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></h3>
 <code><a href="../ClassificationBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../ClassificationBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -190,15 +205,65 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getConfidentialityLevel()">
+<h3>getConfidentialityLevel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getConfidentialityLevel</span>()</div>
+<div class="block">Return the level assigned to this element for this classification.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setConfidentialityLevel(int)">
+<h3>setConfidentialityLevel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConfidentialityLevel</span><wbr><span class="parameters">(int&nbsp;confidentialityLevel)</span></div>
+<div class="block">Set up the level assigned to this element for this classification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>confidentialityLevel</code> - int</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="GovernanceClassificationProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationProperties</a></code></dd>
+<dd><code><a href="GovernedDataClassificationBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="GovernedDataClassificationBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return code value representing the contents of this object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="GovernedDataClassificationBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>int</dd>
 </dl>
 </section>
 </li>

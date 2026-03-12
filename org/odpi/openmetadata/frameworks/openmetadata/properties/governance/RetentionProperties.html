@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties</a>
 <div class="inheritance"><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties</a>
-<div class="inheritance"><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase</a>
+<div class="inheritance"><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedDataClassificationBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.RetentionProperties</div>
 </div>
 </div>
@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RetentionProperties</span>
-<span class="extends-implements">extends <a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></span></div>
+<span class="extends-implements">extends <a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></span></div>
 <div class="block">RetentionClassificationProperties defines the retention requirements for related data items.</div>
 </section>
 <section class="summary">
@@ -142,15 +142,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the element used in deciding the archiveAfter and deleteAfter dates.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBasisIdentifier()" class="member-name-link">getBasisIdentifier</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeleteAfter()" class="member-name-link">getDeleteAfter</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeleteAfter()" class="member-name-link">getDeleteAfter</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the date that this asset will be permanently deleted.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRetentionBasis()" class="member-name-link">getRetentionBasis</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -168,14 +168,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the unique identifier of the element used in deciding the archiveAfter and deleteAfter dates.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBasisIdentifier(int)" class="member-name-link">setBasisIdentifier</a><wbr>(int&nbsp;basisIdentifier)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeleteAfter(java.util.Date)" class="member-name-link">setDeleteAfter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;deleteAfter)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
+<div class="block">Set up the date that this asset will be permanently deleted.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeleteAfter(java.util.Date)" class="member-name-link">setDeleteAfter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;deleteAfter)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRetentionBasis(int)" class="member-name-link">setRetentionBasis</a><wbr>(int&nbsp;retentionBasis)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the date that this asset will be permanently deleted.</div>
+<div class="block">Set up a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -186,8 +186,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></h3>
-<code><a href="GovernanceClassificationBase.html#getConfidence()">getConfidence</a>, <a href="GovernanceClassificationBase.html#getNotes()">getNotes</a>, <a href="GovernanceClassificationBase.html#getSource()">getSource</a>, <a href="GovernanceClassificationBase.html#getStatusIdentifier()">getStatusIdentifier</a>, <a href="GovernanceClassificationBase.html#getSteward()">getSteward</a>, <a href="GovernanceClassificationBase.html#getStewardPropertyName()">getStewardPropertyName</a>, <a href="GovernanceClassificationBase.html#getStewardTypeName()">getStewardTypeName</a>, <a href="GovernanceClassificationBase.html#setConfidence(int)">setConfidence</a>, <a href="GovernanceClassificationBase.html#setNotes(java.lang.String)">setNotes</a>, <a href="GovernanceClassificationBase.html#setSource(java.lang.String)">setSource</a>, <a href="GovernanceClassificationBase.html#setStatusIdentifier(int)">setStatusIdentifier</a>, <a href="GovernanceClassificationBase.html#setSteward(java.lang.String)">setSteward</a>, <a href="GovernanceClassificationBase.html#setStewardPropertyName(java.lang.String)">setStewardPropertyName</a>, <a href="GovernanceClassificationBase.html#setStewardTypeName(java.lang.String)">setStewardTypeName</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedDataClassificationBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></h3>
+<code><a href="GovernedDataClassificationBase.html#getConfidence()">getConfidence</a>, <a href="GovernedDataClassificationBase.html#getNotes()">getNotes</a>, <a href="GovernedDataClassificationBase.html#getSource()">getSource</a>, <a href="GovernedDataClassificationBase.html#getStatusIdentifier()">getStatusIdentifier</a>, <a href="GovernedDataClassificationBase.html#getSteward()">getSteward</a>, <a href="GovernedDataClassificationBase.html#getStewardPropertyName()">getStewardPropertyName</a>, <a href="GovernedDataClassificationBase.html#getStewardTypeName()">getStewardTypeName</a>, <a href="GovernedDataClassificationBase.html#setConfidence(int)">setConfidence</a>, <a href="GovernedDataClassificationBase.html#setNotes(java.lang.String)">setNotes</a>, <a href="GovernedDataClassificationBase.html#setSource(java.lang.String)">setSource</a>, <a href="GovernedDataClassificationBase.html#setStatusIdentifier(int)">setStatusIdentifier</a>, <a href="GovernedDataClassificationBase.html#setSteward(java.lang.String)">setSteward</a>, <a href="GovernedDataClassificationBase.html#setStewardPropertyName(java.lang.String)">setStewardPropertyName</a>, <a href="GovernedDataClassificationBase.html#setStewardTypeName(java.lang.String)">setStewardTypeName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></h3>
 <code><a href="../ClassificationBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../ClassificationBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -235,9 +235,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getBasisIdentifier()">
-<h3>getBasisIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getBasisIdentifier</span>()</div>
+<section class="detail" id="getRetentionBasis()">
+<h3>getRetentionBasis</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getRetentionBasis</span>()</div>
 <div class="block">Return a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -246,13 +246,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setBasisIdentifier(int)">
-<h3>setBasisIdentifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setBasisIdentifier</span><wbr><span class="parameters">(int&nbsp;basisIdentifier)</span></div>
+<section class="detail" id="setRetentionBasis(int)">
+<h3>setRetentionBasis</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRetentionBasis</span><wbr><span class="parameters">(int&nbsp;retentionBasis)</span></div>
 <div class="block">Set up a description of the factor used to set the archiveAfter and deleteAfter dates.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>basisIdentifier</code> - int</dd>
+<dd><code>retentionBasis</code> - int</dd>
 </dl>
 </section>
 </li>
@@ -333,7 +333,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="GovernanceClassificationBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></code></dd>
+<dd><code><a href="GovernedDataClassificationBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -346,7 +346,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="GovernanceClassificationBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></code></dd>
+<dd><code><a href="GovernedDataClassificationBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -361,7 +361,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return code value representing the contents of this object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="GovernanceClassificationBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernanceClassificationBase</a></code></dd>
+<dd><code><a href="GovernedDataClassificationBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="GovernedDataClassificationBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">GovernedDataClassificationBase</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>
