@@ -438,6 +438,7 @@ org.odpi.openmetadata.metadatasecurity.server
 org.odpi.openmetadata.opentypes
 org.odpi.openmetadata.opentypes.utility
 org.odpi.openmetadata.platformchassis.springboot
+org.odpi.openmetadata.platformchassis.springboot.ffdc
 org.odpi.openmetadata.platformservices.client
 org.odpi.openmetadata.platformservices.properties
 org.odpi.openmetadata.platformservices.rest

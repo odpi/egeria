@@ -129,36 +129,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The user requests to remove a classification from the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DELETE" class="member-name-link">DELETE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DEFAULT" class="member-name-link">DEFAULT</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">This means any possible operation.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DELETE" class="member-name-link">DELETE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to remove the metadata element from the catalog (archive, soft-delete or purge).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DELETE_FEEDBACK" class="member-name-link">DELETE_FEEDBACK</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DELETE_FEEDBACK" class="member-name-link">DELETE_FEEDBACK</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user requests to detach feedback elements (comments, tags, likes, reviews) from the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DELETE_MEMBER" class="member-name-link">DELETE_MEMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DELETE_MEMBER" class="member-name-link">DELETE_MEMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to remove an anchored element from the metadata element in the catalog.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DETACH" class="member-name-link">DETACH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DETACH" class="member-name-link">DETACH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user requests to detach a non-anchored element from the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PUBLISH" class="member-name-link">PUBLISH</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PUBLISH" class="member-name-link">PUBLISH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to publish the metadata element.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#READ" class="member-name-link">READ</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#READ" class="member-name-link">READ</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user requests to read the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UPDATE_PROPERTIES" class="member-name-link">UPDATE_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UPDATE_PROPERTIES" class="member-name-link">UPDATE_PROPERTIES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to change the description of the metadata element in the catalog.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UPDATE_STATUS" class="member-name-link">UPDATE_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UPDATE_STATUS" class="member-name-link">UPDATE_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user requests to change the status of the metadata element in the catalog.</div>
 </div>
 </div>
@@ -322,6 +326,13 @@ the order they are declared.</div>
 <h3>PUBLISH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AccessOperation.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">AccessOperation</a></span>&nbsp;<span class="element-name">PUBLISH</span></div>
 <div class="block">The user requests to publish the metadata element.  This is a special type of classification that potentially changes the governance zones.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DEFAULT">
+<h3>DEFAULT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AccessOperation.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">AccessOperation</a></span>&nbsp;<span class="element-name">DEFAULT</span></div>
+<div class="block">This means any possible operation.</div>
 </section>
 </li>
 </ul>

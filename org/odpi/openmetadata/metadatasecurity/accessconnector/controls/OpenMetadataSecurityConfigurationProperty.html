@@ -105,85 +105,49 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ALL_USER_ZONES_GROUP" class="member-name-link">ALL_USER_ZONES_GROUP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ALL_USERS_GROUP" class="member-name-link">ALL_USERS_GROUP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A list of governance zones where any defined user may read the member assets.</div>
+<div class="block">A dynamic group that includes all users with an active account.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#AUTOMATED_ZONES_GROUP" class="member-name-link">AUTOMATED_ZONES_GROUP</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CONTRACTORS_GROUP" class="member-name-link">CONTRACTORS_GROUP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A list of governance zones where only automated processes may read or maintain the member assets.</div>
+<div class="block">Name of the dynamic group that includes all contactors with a valid account.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DEFAULT_ZONE_MEMBERSHIP" class="member-name-link">DEFAULT_ZONE_MEMBERSHIP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DIGITAL_USERS_GROUP" class="member-name-link">DIGITAL_USERS_GROUP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Provide a comma-separated list of zone names that should be added to an Asset when it is created.</div>
+<div class="block">Name of the dynamic group that includes all digital (automated process) users with a valid account.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DYNAMIC_TYPE_AUTHOR_GROUP" class="member-name-link">DYNAMIC_TYPE_AUTHOR_GROUP</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EMPLOYEES_GROUP" class="member-name-link">EMPLOYEES_GROUP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Name of the list of users/roles that are permitted to modify the open metadata type definitions in a Metadata Access Server.</div>
+<div class="block">Name of the dynamic group that includes all employees with a valid account.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ELEMENT_GROUP_NAME_PATTERN" class="member-name-link">ELEMENT_GROUP_NAME_PATTERN</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EXISTING_MAINTAINER_GROUP" class="member-name-link">EXISTING_MAINTAINER_GROUP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert an element's type {0}, qualified name {1} and the operation {2} into the group name to use to look up whether a user has access to the element.</div>
+<div class="block">Name of a dynamic group that includes all the existing maintainers of the element.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EMPLOYEE_ONLY_ZONES_GROUP" class="member-name-link">EMPLOYEE_ONLY_ZONES_GROUP</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EXTERNAL_USERS_GROUP" class="member-name-link">EXTERNAL_USERS_GROUP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A list of governance zones where defined user with an account type of EMPLOYEE may read or maintain the member assets.</div>
+<div class="block">Name of the dynamic group that includes all external users with a valid account.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INSTANCE_HEADER_AUTHOR_GROUP" class="member-name-link">INSTANCE_HEADER_AUTHOR_GROUP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INSTANCE_OWNER_GROUP" class="member-name-link">INSTANCE_OWNER_GROUP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Name of the list of users/roles that are permitted to modify the header information for an existing open metadata instance in the Open Metadata Ecosystem.</div>
+<div class="block">A dynamic group that includes the owners of the element.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NOT_EXTERNAL_ZONES_GROUP" class="member-name-link">NOT_EXTERNAL_ZONES_GROUP</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NEW_MAINTAINER_GROUP" class="member-name-link">NEW_MAINTAINER_GROUP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">A list of governance zones where defined user with an account type of EMPLOYEE or CONTRACTOR may read the member assets.</div>
+<div class="block">Name of the dynamic group that supports the policy that the user must not be in the existing list of maintainers for the element.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OWNER_GROUP_NAME_PATTERN" class="member-name-link">OWNER_GROUP_NAME_PATTERN</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SERVER_ADMINISTRATOR_CONTROL" class="member-name-link">SERVER_ADMINISTRATOR_CONTROL</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert an owner's name {0}, type name {1} and property name {2} into the group name to use to look up whether a user is the owner of an element.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#PERSONAL_ZONES_GROUP" class="member-name-link">PERSONAL_ZONES_GROUP</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">A list of governance zones that only allow update and access to the creator of the member assets.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#READABLE_ZONES_GROUP" class="member-name-link">READABLE_ZONES_GROUP</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A list of governance zones where all user have read access.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_ADMINISTRATOR_GROUP" class="member-name-link">SERVER_ADMINISTRATOR_GROUP</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Name of the list of users/roles that are permitted to configure OMAG servers using the OMAG Server Platform's administration services.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_GROUP_NAME_PATTERN" class="member-name-link">SERVER_GROUP_NAME_PATTERN</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a server name {0} into the group name to use to look up whether a user has access to a server's functions.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_INVESTIGATORS_GROUP" class="member-name-link">SERVER_INVESTIGATORS_GROUP</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SERVER_INVESTIGATORS_CONTROL" class="member-name-link">SERVER_INVESTIGATORS_CONTROL</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Name of the list of users/roles that are permitted to start and stop OMAG Servers on an OMAG Server Platform.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_OPERATORS_GROUP" class="member-name-link">SERVER_OPERATORS_GROUP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SERVER_OPERATORS_CONTROL" class="member-name-link">SERVER_OPERATORS_CONTROL</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Name of the list of users/roles that are permitted to start and stop OMAG Servers on an OMAG Server Platform.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_SERVICE_GROUP_NAME_PATTERN" class="member-name-link">SERVER_SERVICE_GROUP_NAME_PATTERN</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) Provide a string pattern (for MessageFormat.format()) to convert a server name {0} and service name {1} into the group name to use to look up whether a user has access to a specific server's service.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN" class="member-name-link">SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a server name {0}, a service name {1} and an operation {2} into the group name to use to look up whether a user has access to a specific server's service operation (method).</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#STEWARDSHIP_ZONES_GROUP" class="member-name-link">STEWARDSHIP_ZONES_GROUP</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">A list of governance zones where only the owner of a member asset may read or maintain the asset.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#VALIDATION_ZONES_GROUP" class="member-name-link">VALIDATION_ZONES_GROUP</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">A list of governance zones that require a different user from the creator to move a member asset out of the zone.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ZONE_GROUP_NAME_PATTERN" class="member-name-link">ZONE_GROUP_NAME_PATTERN</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a governance zone name into the group name to use to look up whether a user has access to assets in the zone.</div>
 </div>
 </div>
 </section>
@@ -303,143 +267,80 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="DEFAULT_ZONE_MEMBERSHIP">
-<h3>DEFAULT_ZONE_MEMBERSHIP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">DEFAULT_ZONE_MEMBERSHIP</span></div>
-<div class="block">Provide a comma-separated list of zone names that should be added to an Asset when it is created.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_ADMINISTRATOR_GROUP">
-<h3>SERVER_ADMINISTRATOR_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_ADMINISTRATOR_GROUP</span></div>
+<section class="detail" id="SERVER_ADMINISTRATOR_CONTROL">
+<h3>SERVER_ADMINISTRATOR_CONTROL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_ADMINISTRATOR_CONTROL</span></div>
 <div class="block">Name of the list of users/roles that are permitted to configure OMAG servers using the OMAG Server Platform's administration services.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SERVER_OPERATORS_GROUP">
-<h3>SERVER_OPERATORS_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_OPERATORS_GROUP</span></div>
+<section class="detail" id="SERVER_OPERATORS_CONTROL">
+<h3>SERVER_OPERATORS_CONTROL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_OPERATORS_CONTROL</span></div>
 <div class="block">Name of the list of users/roles that are permitted to start and stop OMAG Servers on an OMAG Server Platform.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SERVER_INVESTIGATORS_GROUP">
-<h3>SERVER_INVESTIGATORS_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_INVESTIGATORS_GROUP</span></div>
+<section class="detail" id="SERVER_INVESTIGATORS_CONTROL">
+<h3>SERVER_INVESTIGATORS_CONTROL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_INVESTIGATORS_CONTROL</span></div>
 <div class="block">Name of the list of users/roles that are permitted to start and stop OMAG Servers on an OMAG Server Platform.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="DYNAMIC_TYPE_AUTHOR_GROUP">
-<h3>DYNAMIC_TYPE_AUTHOR_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">DYNAMIC_TYPE_AUTHOR_GROUP</span></div>
-<div class="block">Name of the list of users/roles that are permitted to modify the open metadata type definitions in a Metadata Access Server.</div>
+<section class="detail" id="ALL_USERS_GROUP">
+<h3>ALL_USERS_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">ALL_USERS_GROUP</span></div>
+<div class="block">A dynamic group that includes all users with an active account.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="INSTANCE_HEADER_AUTHOR_GROUP">
-<h3>INSTANCE_HEADER_AUTHOR_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">INSTANCE_HEADER_AUTHOR_GROUP</span></div>
-<div class="block">Name of the list of users/roles that are permitted to modify the header information for an existing open metadata instance in the Open Metadata Ecosystem.</div>
+<section class="detail" id="INSTANCE_OWNER_GROUP">
+<h3>INSTANCE_OWNER_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">INSTANCE_OWNER_GROUP</span></div>
+<div class="block">A dynamic group that includes the owners of the element.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SERVER_GROUP_NAME_PATTERN">
-<h3>SERVER_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a server name {0} into the group name to use to look up whether a user has access to a server's functions.</div>
+<section class="detail" id="EXISTING_MAINTAINER_GROUP">
+<h3>EXISTING_MAINTAINER_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">EXISTING_MAINTAINER_GROUP</span></div>
+<div class="block">Name of a dynamic group that includes all the existing maintainers of the element.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SERVER_SERVICE_GROUP_NAME_PATTERN">
-<h3>SERVER_SERVICE_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_SERVICE_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) Provide a string pattern (for MessageFormat.format()) to convert a server name {0} and service name {1} into the group name to use to look up whether a user has access to a specific server's service.</div>
+<section class="detail" id="NEW_MAINTAINER_GROUP">
+<h3>NEW_MAINTAINER_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">NEW_MAINTAINER_GROUP</span></div>
+<div class="block">Name of the dynamic group that supports the policy that the user must not be in the existing list of maintainers for the element.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN">
-<h3>SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a server name {0}, a service name {1} and an operation {2} into the group name to use to look up whether a user has access to a specific server's service operation (method).</div>
+<section class="detail" id="CONTRACTORS_GROUP">
+<h3>CONTRACTORS_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">CONTRACTORS_GROUP</span></div>
+<div class="block">Name of the dynamic group that includes all contactors with a valid account.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ZONE_GROUP_NAME_PATTERN">
-<h3>ZONE_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">ZONE_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert a governance zone name into the group name to use to look up whether a user has access to assets in the zone.</div>
+<section class="detail" id="DIGITAL_USERS_GROUP">
+<h3>DIGITAL_USERS_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">DIGITAL_USERS_GROUP</span></div>
+<div class="block">Name of the dynamic group that includes all digital (automated process) users with a valid account.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ELEMENT_GROUP_NAME_PATTERN">
-<h3>ELEMENT_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">ELEMENT_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert an element's type {0}, qualified name {1} and the operation {2} into the group name to use to look up whether a user has access to the element.</div>
+<section class="detail" id="EMPLOYEES_GROUP">
+<h3>EMPLOYEES_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">EMPLOYEES_GROUP</span></div>
+<div class="block">Name of the dynamic group that includes all employees with a valid account.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="OWNER_GROUP_NAME_PATTERN">
-<h3>OWNER_GROUP_NAME_PATTERN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">OWNER_GROUP_NAME_PATTERN</span></div>
-<div class="block">Provide a string pattern (for MessageFormat.format()) to convert an owner's name {0}, type name {1} and property name {2} into the group name to use to look up whether a user is the owner of an element.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="VALIDATION_ZONES_GROUP">
-<h3>VALIDATION_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">VALIDATION_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones that require a different user from the creator to move a member asset out of the zone.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="PERSONAL_ZONES_GROUP">
-<h3>PERSONAL_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">PERSONAL_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones that only allow update and access to the creator of the member assets.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="STEWARDSHIP_ZONES_GROUP">
-<h3>STEWARDSHIP_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">STEWARDSHIP_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where only the owner of a member asset may read or maintain the asset.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="READABLE_ZONES_GROUP">
-<h3>READABLE_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">READABLE_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where all user have read access.  Maintenance (create, update, delete) requires explicit access.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="AUTOMATED_ZONES_GROUP">
-<h3>AUTOMATED_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">AUTOMATED_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where only automated processes may read or maintain the member assets.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_USER_ZONES_GROUP">
-<h3>ALL_USER_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">ALL_USER_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where any defined user may read the member assets.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="EMPLOYEE_ONLY_ZONES_GROUP">
-<h3>EMPLOYEE_ONLY_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">EMPLOYEE_ONLY_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where defined user with an account type of EMPLOYEE may read or maintain the member assets.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NOT_EXTERNAL_ZONES_GROUP">
-<h3>NOT_EXTERNAL_ZONES_GROUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">NOT_EXTERNAL_ZONES_GROUP</span></div>
-<div class="block">A list of governance zones where defined user with an account type of EMPLOYEE or CONTRACTOR may read the member assets.</div>
+<section class="detail" id="EXTERNAL_USERS_GROUP">
+<h3>EXTERNAL_USERS_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></span>&nbsp;<span class="element-name">EXTERNAL_USERS_GROUP</span></div>
+<div class="block">Name of the dynamic group that includes all external users with a valid account.</div>
 </section>
 </li>
 </ul>
