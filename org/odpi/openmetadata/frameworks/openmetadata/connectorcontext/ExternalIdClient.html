@@ -147,8 +147,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Confirm that this element has been synchronized at this time.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalId(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties)" class="member-name-link">createExternalId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalId(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties)" class="member-name-link">createExternalId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;anchorScopeGUIDs,
  <a href="../properties/externalidentifiers/ExternalIdLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdLinkProperties</a>&nbsp;externalIdLinkProperties,
  <a href="../properties/externalidentifiers/ExternalIdProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdProperties</a>&nbsp;externalIdProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -163,9 +163,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new externalId.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalIdFromTemplate(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)" class="member-name-link">createExternalIdFromTemplate</a><wbr>(<a href="../search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a>&nbsp;templateOptions,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalIdFromTemplate(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)" class="member-name-link">createExternalIdFromTemplate</a><wbr>(<a href="../search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a>&nbsp;templateOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="../properties/EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;replacementClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;parentRelationshipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -294,10 +295,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createExternalId(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties)">
+<section class="detail" id="createExternalId(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties)">
 <h3>createExternalId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createExternalId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;anchorScopeGUIDs,
  <a href="../properties/externalidentifiers/ExternalIdLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdLinkProperties</a>&nbsp;externalIdLinkProperties,
  <a href="../properties/externalidentifiers/ExternalIdProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdProperties</a>&nbsp;externalIdProperties)</span>
                       throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -307,7 +308,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementGUID</code> - element that the external id is for</dd>
-<dd><code>anchorScopeGUID</code> - broad search scope - typically server technology type GUID</dd>
+<dd><code>anchorScopeGUIDs</code> - broad search scope - typically server technology type GUID</dd>
 <dd><code>externalIdLinkProperties</code> - properties for the relationship</dd>
 <dd><code>externalIdProperties</code> - properties for the external Id itself.</dd>
 <dt>Throws:</dt>
@@ -344,11 +345,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createExternalIdFromTemplate(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">
+<section class="detail" id="createExternalIdFromTemplate(org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">
 <h3>createExternalIdFromTemplate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createExternalIdFromTemplate</span><wbr><span class="parameters">(<a href="../search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a>&nbsp;templateOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="../properties/EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;replacementClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;parentRelationshipProperties)</span>
                                     throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -359,9 +361,9 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>templateOptions</code> - details of the element to create</dd>
-<dd><code>templateGUID</code> - the unique identifier of the existing external id to copy (this will copy all the attachments such as nested content, schema
-                     connection etc)</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing element to copy</dd>
 <dd><code>replacementProperties</code> - properties of the new metadata element.  These override the template values</dd>
+<dd><code>replacementClassifications</code> - map of classification names to classification properties to include in the entity creation request. These override the template values.</dd>
 <dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
                               template element - and their anchored elements, which are also copied as part of this operation.</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>

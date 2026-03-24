@@ -138,10 +138,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the element that should be the anchor for the new element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorScopeGUID()" class="member-name-link">getAnchorScopeGUID</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorScopeGUIDs()" class="member-name-link">getAnchorScopeGUIDs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of the anchor's scope.</div>
+<div class="block">Return the unique identifiers of the anchor's scope.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsOwnAnchor()" class="member-name-link">getIsOwnAnchor</a>()</code></div>
@@ -159,9 +159,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the unique identifier of the element that should be the anchor for the new element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnchorScopeGUID(java.lang.String)" class="member-name-link">setAnchorScopeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnchorScopeGUIDs(java.util.List)" class="member-name-link">setAnchorScopeGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;anchorScopeGUIDs)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier of the anchor's scope.</div>
+<div class="block">Set up the unique identifiers of the anchor's scope.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsOwnAnchor(boolean)" class="member-name-link">setIsOwnAnchor</a><wbr>(boolean&nbsp;ownAnchor)</code></div>
@@ -280,10 +280,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAnchorScopeGUID()">
-<h3>getAnchorScopeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorScopeGUID</span>()</div>
-<div class="block">Return the unique identifier of the anchor's scope.
+<section class="detail" id="getAnchorScopeGUIDs()">
+<h3>getAnchorScopeGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getAnchorScopeGUIDs</span>()</div>
+<div class="block">Return the unique identifiers of the anchor's scope.
  If this is not supplied, the value set in the anchor entity's Anchors classification is used.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -292,14 +292,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setAnchorScopeGUID(java.lang.String)">
-<h3>setAnchorScopeGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAnchorScopeGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID)</span></div>
-<div class="block">Set up the unique identifier of the anchor's scope.
+<section class="detail" id="setAnchorScopeGUIDs(java.util.List)">
+<h3>setAnchorScopeGUIDs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAnchorScopeGUIDs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;anchorScopeGUIDs)</span></div>
+<div class="block">Set up the unique identifiers of the anchor's scope.
  If this is not supplied, the value set in the anchor entity's Anchors classification is used.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>anchorScopeGUID</code> - string guid</dd>
+<dd><code>anchorScopeGUIDs</code> - string guid</dd>
 </dl>
 </section>
 </li>
