@@ -45,7 +45,7 @@ Content-Type: application/json
     "hostIdentifier" : "localhost",
     "portNumber" : "5442",
     "serverName" : "LocalPostgreSQL1",
-    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
     "versionIdentifier" : "1.0",
     "description" : "PostgreSQL database in egeria-workspaces."
   }
@@ -67,7 +67,7 @@ Content-Type: application/json
     "hostIdentifier" : "localhost",
     "portNumber" : "5442",
     "serverName" : "LocalPostgreSQL1",
-    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
     "versionIdentifier" : "1.0",
     "description" : "PostgreSQL database in egeria-workspaces."
   }

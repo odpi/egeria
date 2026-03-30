@@ -422,7 +422,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         AgreementActorProperties agreementActorProperties = new AgreementActorProperties();
 
-        agreementActorProperties.setActorName(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_REQUESTER.getName());
+        agreementActorProperties.setAgreementPartyName(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_REQUESTER.getName());
 
         collectionClient.linkAgreementActor(subscriptionGUID,
                                             subscriptionRequesterGUID,
@@ -433,7 +433,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         {
             if (productOwner != null)
             {
-                agreementActorProperties.setActorName(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
+                agreementActorProperties.setAgreementPartyName(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
 
                 collectionClient.linkAgreementActor(subscriptionGUID,
                                                     productOwner.getActionTargetGUID(),

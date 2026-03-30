@@ -28,7 +28,6 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatal
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -90,18 +89,18 @@ public enum IntegrationConnectorDefinition
 
     SECRETS_STORE_CATALOGUER("75e55161-4633-49f4-9358-77b6810aa2d1",
                             "SecretsStoreMonitorIntegrationConnector",
-                            "Catalogs Secrets Stores found under the loading-bay/secrets directory (folder) and any other folder added as a catalog target.",
+                            "Catalogs Secrets Stores found under the secrets directory (folder) and any other folder added as a catalog target.",
                             OMSecretsFilesMonitorIntegrationProvider.class.getName(),
                             "SecretsStoreCataloguer",
                             "secretsstorecatnpa",
                             null,
-                            "loading-bay/secrets",
+                            "secrets",
                             getFileCataloguerConfigProperties(),
                             60,
                             new DeployedImplementationTypeDefinition[]{DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
                             "469ccdaf-17b8-4c6d-8713-5f66004f1cff",
                             "Secrets Store Monitor",
-                            "Catalogs secrets store files located in the 'loading-bay/secrets' directory.  This includes cataloguing the secrets collections and security access controls.  User accounts are linked to UserIdentity elements if defined in open metadata.",
+                            "Catalogs secrets store files located in the 'secrets' directory.  This includes cataloguing the secrets collections and security access controls.  User accounts are linked to UserIdentity elements if defined in open metadata.",
                             true,
                             null,
                             null,
@@ -308,7 +307,7 @@ public enum IntegrationConnectorDefinition
                                     "omagspcatnpa",
                                     null,
                                     null,
-                                    getOMAGCataloguerConfigProperties(),
+                                    null,
                                     60,
                                     new DeployedImplementationTypeDefinition[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM},
                                     "2eed7ad8-9189-4971-ba67-2de94efc7db3",
@@ -318,7 +317,7 @@ public enum IntegrationConnectorDefinition
                                     "OMAGServerPlatformCataloguer",
                                     SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                                     new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
-                                    "loading-bay/secrets/egeria-servers.omsecrets",
+                                    "secrets/egeria-servers.omsecrets",
                                     ContentPackDefinition.EGERIA_CONTENT_PACK),
 
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
@@ -447,7 +446,7 @@ public enum IntegrationConnectorDefinition
                       "JacquardDigitalProductLoom",
                       SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                       new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
-                      "loading-bay/secrets/egeria-servers.omsecrets",
+                      "secrets/egeria-servers.omsecrets",
                       ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     BABBAGE_ANALYTICAL_ENGINE("a2c281e0-3c8d-4621-bb4d-8f6dff756d1a",
@@ -482,20 +481,6 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), UC_CATALOG_CATALOGUER.getGUID());
-
-        return configurationProperties;
-    }
-
-    /**
-     * Get the configuration properties for the OMAGServerPlatformCataloguer.
-     *
-     * @return map
-     */
-    private static Map<String, Object> getOMAGCataloguerConfigProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), "loading-bay/secrets/default.omsecrets");
 
         return configurationProperties;
     }

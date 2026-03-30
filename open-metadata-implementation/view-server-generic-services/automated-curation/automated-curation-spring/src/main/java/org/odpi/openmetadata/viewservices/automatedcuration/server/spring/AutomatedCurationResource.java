@@ -234,6 +234,66 @@ public class AutomatedCurationResource
     }
 
 
+    /* =====================================================================================================================
+     * Manage client-side secrets
+     */
+
+    /**
+     * Creates or replaces the details of a client-side secret in the requested secret store.
+     *
+     * @param serverName       name of called server
+     * @param secretsStoreGUID unique identifier of secret store asset
+     * @param urlMarker        view service URL marker
+     * @param requestBody      details of the secrets collection
+     * @return a list of projects
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping("/secrets-stores/{secretsStoreGUID}/client-side-secret/save")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "saveClientSideSecret",
+            description = "Creates or replaces the details of a client-side secret in the requested secret store.",
+            externalDocs = @ExternalDocumentation(description = "Further Information",
+                    url = "https://egeria-project.org/concepts/client-side-secret"))
+
+    public VoidResponse saveClientSideSecret(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String secretsStoreGUID,
+                                             @RequestBody(required = false) SecretsCollectionRequestBody requestBody)
+    {
+        return restAPI.saveClientSideSecret(serverName, urlMarker, secretsStoreGUID, requestBody);
+    }
+
+
+    /**
+     * Deletes a client-side secret from the requested secret store.
+     *
+     * @param serverName       name of called server
+     * @param secretsStoreGUID unique identifier of secret store asset
+     * @param urlMarker        view service URL marker
+     * @param requestBody      details of the secrets collection
+     * @return a list of projects
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping("/secrets-stores/{secretsStoreGUID}/client-side-secret/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "deleteClientSideSecret",
+            description = "Deletes a client-side secret from the requested secret store.",
+            externalDocs = @ExternalDocumentation(description = "Further Information",
+                    url = "https://egeria-project.org/concepts/client-side-secret"))
+
+    public VoidResponse deleteClientSideSecret(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String secretsStoreGUID,
+                                               @RequestBody(required = false) NameRequestBody requestBody)
+    {
+        return restAPI.deleteClientSideSecret(serverName, urlMarker, secretsStoreGUID, requestBody);
+    }
 
 
     /* =====================================================================================================================

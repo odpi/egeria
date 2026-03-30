@@ -88,7 +88,6 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     }
 
 
-
     /**
      * Retrieve a secret from the secrets store.
      *
@@ -240,6 +239,67 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
 
     /**
+     * Save the requested security access control in the secrets collection.
+     *
+     * @param controlName           controlName for the lookup
+     * @param securityAccessControl associated control details
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    @Override
+    public void saveSecurityAccessControl(String                controlName,
+                                          SecurityAccessControl securityAccessControl) throws ConnectorCheckedException
+    {
+        if (secretsStore != null)
+        {
+            SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+            if (secretsCollection != null)
+            {
+                /*
+                 * Ensure addition information from a subclass is not included
+                 */
+                SecurityAccessControl newSecurityAccessControl = new SecurityAccessControl(securityAccessControl);
+
+                /*
+                 * Set up the new control ...
+                 */
+                secretsCollection.getSecurityAccessControls().put(controlName, newSecurityAccessControl);
+
+                saveSecrets();
+
+                /*
+                 * Refresh the user cache.
+                 */
+                populateSecurityAccessControl(controlName, newSecurityAccessControl, secretsCollection.getNamedLists());
+            }
+        }
+    }
+
+
+    /**
+     * Delete the requested security access control stored in the secrets collection.
+     *
+     * @param controlName control for the lookup
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    @Override
+    public void deleteSecurityAccessControl(String controlName) throws ConnectorCheckedException
+    {
+        if (secretsStore != null)
+        {
+            SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+            if (secretsCollection != null)
+            {
+                secretsCollection.getSecurityAccessControls().remove(controlName);
+                saveSecrets();
+                securityAccessControlMap.remove(controlName);
+            }
+        }
+    }
+
+
+    /**
      * Populate the security access control details with the linked named lists.  The result is cached before
      * returning to speed this process for future requests.  This is important
      * because some access secuirty controls are used on many requests.
@@ -308,6 +368,13 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     }
 
 
+    /**
+     * Return all the known security access controls in this collection.
+     *
+     * @param permissionName name of control
+     * @param securityLists defined lists
+     * @return set of members
+     */
     private Set<String> getNestedPermissions(String                 permissionName,
                                              Map<String, NamedList> securityLists)
     {
@@ -569,16 +636,21 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
             if (secretsCollection != null)
             {
                 /*
+                 * Ensure properties from a subtype are not included
+                 */
+                UserAccount newUserAccount = new UserAccount(userAccount);
+
+                /*
                  * Set up the user account ...
                  */
-                secretsCollection.getUsers().put(userId, userAccount);
+                secretsCollection.getUsers().put(userId, newUserAccount);
 
                 /*
                  * Add the user to any named security roles ...
                  */
-                if (userAccount.getSecurityRoles() != null)
+                if (newUserAccount.getSecurityRoles() != null)
                 {
-                    for (String securityRole : userAccount.getSecurityRoles())
+                    for (String securityRole : newUserAccount.getSecurityRoles())
                     {
                         if (securityRole != null)
                         {
@@ -590,9 +662,9 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                 /*
                  * Add the user to any named security groups ...
                  */
-                if (userAccount.getSecurityGroups() != null)
+                if (newUserAccount.getSecurityGroups() != null)
                 {
-                    for (String securityGroup : userAccount.getSecurityGroups())
+                    for (String securityGroup : newUserAccount.getSecurityGroups())
                     {
                         if (securityGroup != null)
                         {
@@ -602,10 +674,11 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                 }
 
                 saveSecrets();
+
                 /*
                  * Refresh the user cache.
                  */
-                populateUserAccount(userId, userAccount, secretsCollection.getNamedLists());
+                populateUserAccount(userId, newUserAccount, secretsCollection.getNamedLists());
             }
         }
     }
@@ -664,6 +737,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
             {
                 secretsCollection.getUsers().remove(userId);
                 saveSecrets();
+                userAccountMap.remove(userId);
             }
         }
     }
@@ -939,6 +1013,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
         }
         catch (Exception error)
         {
+            secretsStore = null;
             super.logRecord(methodName,
                             YAMLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
                                                                                     methodName,

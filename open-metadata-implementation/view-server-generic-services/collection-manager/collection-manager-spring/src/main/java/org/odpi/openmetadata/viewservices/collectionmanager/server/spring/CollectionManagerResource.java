@@ -489,7 +489,7 @@ public class CollectionManagerResource
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collections/subscribers/{digitalSubscriberGUID}/subscriptions/{digitalSubscriptionGUID}/attach")
+    @PostMapping(path = "/subscribers/{digitalSubscriberGUID}/subscriptions/{digitalSubscriptionGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="linkSubscriber",

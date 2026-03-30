@@ -663,7 +663,7 @@ public class ServerConfig
         final String endInteractiveMode = "exit";
 
         String       secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
-        String       secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String       secretsStoreLocation = "secrets/integration.omsecrets";
         String       platformURLRoot = "https://localhost:9443";
         String       secretsStoreCollection = "garygeeke";
         String       mode = interactiveMode;

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -217,10 +218,10 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
 
 
     /**
-     * OPEN-METADATA-SECURITY-403-018 - Exception {0} occurred when retrieving user {1}; message was {2}
+     * OPEN-METADATA-SECURITY-403-018 - Exception {0} occurred when retrieving user {1}; the exception message was {2}
      */
     FAILED_TO_RETRIEVE_USER(403,"OPEN-METADATA-SECURITY-403-018",
-                            "Exception {0} occurred when retrieving user {1}; message was {2}",
+                            "Exception {0} occurred when retrieving user {1}; the exception message was {2}",
                             "An exception occurred when the security service tried to retrieve a user account.",
                             "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
 
@@ -233,6 +234,22 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                 "The security service detected an unauthorized access to a glossary.",
                                 "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    /**
+     * OMAG-SERVER-SECURITY-403-025 - Security access control {0} is not recognized
+     */
+    UNKNOWN_CONTROL(403, "OMAG-SERVER-SECURITY-403-025",
+                    "Security access control {0} is not recognized",
+                    "The security service has received a request for an unknown control.",
+                    "Track down the source of the request and correct the name of the control - or add the missing control to the secrets store."),
+
+    /**
+     * OMAG-SERVER-SECURITY-403-026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}
+     */
+    FAILED_TO_RETRIEVE_CONTROL(403,"OMAG-SERVER-SECURITY-403-026",
+                               "Exception {0} occurred when retrieving security access control {1}; the exception message was {2}",
+                               "An exception occurred when the security service tried to retrieve a security access control.",
+                               "Use the information in the exception to determine the cause of this error.  The control will not be returned to the calling user."),
 
     /**
      * OMAG-PLATFORM-SECURITY-500-001 - {0} connections are connected to the asset with unique identifier {1} but the connector selecting the connection for user {2} has returned an unrecognized connection; the calling method is {3}

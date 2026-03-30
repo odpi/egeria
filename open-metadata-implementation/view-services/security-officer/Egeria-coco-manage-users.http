@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-# @name Token (log in as Callie Quartile who is a aata scientist without priviledges to maintain users.)
+# @name Token (Attempt to log in as Callie Quartile, but will the wrong password.)
 POST {{baseURL}}/api/token
 Content-Type: application/json
 
@@ -33,6 +33,19 @@ Content-Type: application/json
 
 > {% client.global.set("callieToken", response.body); %}
 
+
+###
+
+# @name Token (log in as Callie Quartile who is a aata scientist without priviledges to maintain users.)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "calliequartile",
+  "password" : "secret"
+}
+
+> {% client.global.set("callieToken", response.body); %}
 
 ###
 # =====================================================================================================================
@@ -97,6 +110,11 @@ Authorization: Bearer {{callieToken}}
 ## Callie can not see Gary's account
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/garygeeke
 Authorization: Bearer {{callieToken}}
+
+###
+## Gary can see his account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/garygeeke
+Authorization: Bearer {{garyToken}}
 
 ###
 ## Gary can see his account

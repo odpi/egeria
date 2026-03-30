@@ -1259,7 +1259,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     @Override
     public String getQualifiedName()
     {
-        return typeName + "::OpenMetadataDigitalProduct::" + identifier + "::" + displayName;
+        return typeName + "::Jacquard::" + identifier + "::" + displayName;
     }
 
 

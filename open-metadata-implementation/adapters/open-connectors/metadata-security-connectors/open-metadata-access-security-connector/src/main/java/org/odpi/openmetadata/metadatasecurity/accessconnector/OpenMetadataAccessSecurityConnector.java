@@ -16,6 +16,7 @@ import org.odpi.openmetadata.metadatasecurity.accessconnector.controls.OpenMetad
 import org.odpi.openmetadata.metadatasecurity.accessconnector.ffdc.MetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -203,6 +204,8 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         {
             throwUnknownUser(userAccount.getUserId(), null, methodName);
         }
+
+        logRecord(methodName, OpenMetadataSecurityAuditCode.ADDING_USER.getMessageDefinition(userAccount.getUserId()));
     }
 
 
@@ -245,6 +248,127 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         {
             throwUnknownUser(userId, null, methodName);
         }
+
+        logRecord(methodName, OpenMetadataSecurityAuditCode.REMOVING_USER.getMessageDefinition(userId));
+    }
+
+
+    /**
+     * Retrieve information about a specific security access control.
+     *
+     * @param controlName calling user
+     * @return security access control
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
+     */
+    @Override
+    public OpenMetadataSecurityAccessControl getSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException
+    {
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(controlName);
+
+        if (securityAccessControl != null)
+        {
+            return new OpenMetadataSecurityAccessControl(controlName, securityAccessControl);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create/update information about a specific security access control.
+     *
+     * @param securityAccessControl control properties
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    @Override
+    public void setSecurityAccessControl(OpenMetadataSecurityAccessControl securityAccessControl) throws UserNotAuthorizedException,
+                                                                                                         InvalidParameterException,
+                                                                                                         PropertyServerException
+    {
+        final String methodName = "setSecurityAccessControl";
+
+        boolean accountSaved = false;
+
+        if (secretsStoreConnectorMap != null)
+        {
+            for (SecretsStoreConnector secretsStoreConnector : secretsStoreConnectorMap.values())
+            {
+                if (secretsStoreConnector != null)
+                {
+                    try
+                    {
+                        secretsStoreConnector.saveSecurityAccessControl(securityAccessControl.getControlName(), securityAccessControl);
+                        accountSaved = true;
+                    }
+                    catch (ConnectorCheckedException error)
+                    {
+                        throwUnknownControl(securityAccessControl.getControlName(), error, methodName);
+                    }
+                }
+            }
+        }
+
+        if (! accountSaved)
+        {
+            throwUnknownControl(securityAccessControl.getControlName(), null, methodName);
+        }
+
+        logRecord(methodName, OpenMetadataSecurityAuditCode.ADDING_CONTROL.getMessageDefinition(securityAccessControl.getControlName()));
+
+    }
+
+
+    /**
+     * Delete information about a specific security access control.
+     *
+     * @param controlName calling user
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
+     */
+    @Override
+    public void deleteSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                                 InvalidParameterException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "deleteSecurityAccessControl";
+
+        boolean controlDeleted = false;
+
+        if (secretsStoreConnectorMap != null)
+        {
+            for (SecretsStoreConnector secretsStoreConnector : secretsStoreConnectorMap.values())
+            {
+                if (secretsStoreConnector != null)
+                {
+                    try
+                    {
+                        if (secretsStoreConnector.getSecurityAccessControl(controlName) != null)
+                        {
+                            secretsStoreConnector.deleteSecurityAccessControl(controlName);
+                            controlDeleted = true;
+                        }
+                    }
+                    catch (ConnectorCheckedException error)
+                    {
+                        throwUnknownControl(controlName, error, methodName);
+                    }
+                }
+            }
+        }
+
+        if (! controlDeleted)
+        {
+            throwUnknownControl(controlName, null, methodName);
+        }
+
+        logRecord(methodName, OpenMetadataSecurityAuditCode.REMOVING_CONTROL.getMessageDefinition(controlName));
     }
 
 
@@ -385,7 +509,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                 InvalidParameterException,
                                                                 PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverAdministratorControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverAdministratorControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -413,7 +537,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                            InvalidParameterException,
                                                                            PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverOperatorsControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverOperatorsControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -442,7 +566,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                              InvalidParameterException,
                                                                              PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverInvestigatorsControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverInvestigatorsControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -471,7 +595,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                InvalidParameterException,
                                                                PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverName);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverName);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -500,7 +624,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                    InvalidParameterException,
                                                                    PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverAdministratorControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverAdministratorControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -529,7 +653,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                       InvalidParameterException,
                                                                       PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverOperatorsControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverOperatorsControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -558,7 +682,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                           InvalidParameterException,
                                                                           PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serverInvestigatorsControl);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serverInvestigatorsControl);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -589,7 +713,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                    InvalidParameterException,
                                                                    PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serviceName);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serviceName);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -622,7 +746,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                        InvalidParameterException,
                                                                                        PropertyServerException
     {
-        SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(serviceName);
+        SecurityAccessControl securityAccessControl = this.getSecurityAccessControlFromStore(serviceName);
 
         if (this.validateUserInGroup(userId,
                                      securityAccessControl,
@@ -643,9 +767,9 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @param controlName name of the zone
      * @return security control or null if not found
      */
-    SecurityAccessControl getSecurityAccessControl(String controlName)
+    SecurityAccessControl getSecurityAccessControlFromStore(String controlName)
     {
-        final String methodName = "getSecurityAccessControl";
+        final String methodName = "getSecurityAccessControlFromStore";
 
         if ((controlName != null) && (secretsStoreConnectorMap != null))
         {
@@ -836,57 +960,16 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                            InvalidParameterException,
                                                                            PropertyServerException
     {
-        return this.getZonesForUser(currentZones, "publishZones", userId);
-    }
-
-
-    /**
-     * Determine the appropriate setting for the zones depending on the user and the
-     * current zones set up for the element.  This is called whenever an element is withdrawn.
-     *
-     * @param currentZones default setting of the default zones
-     * @param typeName type of the element
-     * @param serviceName name of the called service
-     * @param userId name of the user
-     *
-     * @return list of published zones for the user
-     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
-     */
-    @Override
-    public List<String> getWithdrawZonesForUser(List<String>  currentZones,
-                                                String        typeName,
-                                                String        serviceName,
-                                                String        userId) throws UserNotAuthorizedException,
-                                                                             InvalidParameterException,
-                                                                             PropertyServerException
-    {
-        List<String> publishZones = this.getZonesForUser(null, "publishZones", userId);
-        HashSet<String> withdrawZones = new HashSet<>();
-
-        if (currentZones != null)
-        {
-            withdrawZones.addAll(currentZones);
-        }
-
         /*
-         * Only remove the publishZones to preserve any additional zones added by the original publishing user.
+         * The current zones are not relevant.
          */
-        if (publishZones != null)
-        {
-            publishZones.forEach(withdrawZones::remove);
-        }
-
-        return new ArrayList<>(withdrawZones);
+        return this.getZonesForUser(null, "publishZones", userId);
     }
-
 
     /*============================================================================
      * OpenMetadataElementSecurity assures the access to open metadata elements.
      * There is one set of methods for unanchored elements an one for anchors and their members.
      */
-
 
 
     /**

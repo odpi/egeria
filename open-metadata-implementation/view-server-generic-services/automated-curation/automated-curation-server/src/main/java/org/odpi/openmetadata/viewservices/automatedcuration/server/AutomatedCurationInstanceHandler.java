@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -32,7 +33,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     * This method returns the object for the tenant to use to work with the Open Metadata Store API.
      *
      * @param serverName           name of the server that the request is for
      * @param urlMarker  view service URL marker
@@ -62,7 +63,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     * This method returns the object for the tenant to use to work with the Technology Type Handler.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -92,7 +93,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     * This method returns the object for the tenant to use to work with the Open Governance API.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -115,6 +116,36 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getOpenGovernanceClient(urlMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the Connected Asset API.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param urlMarker  view service URL marker
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public ConnectedAssetClient getConnectedAssetClient(String userId,
+                                                        String serverName,
+                                                        String urlMarker,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getConnectedAssetClient(urlMarker, serviceOperationName);
         }
 
         return null;

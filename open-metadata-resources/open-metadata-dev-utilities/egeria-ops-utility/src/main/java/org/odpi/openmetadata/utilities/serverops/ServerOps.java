@@ -331,7 +331,7 @@ public class ServerOps
 
         String platformURLRoot = "https://localhost:9443";
         String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
-        String secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String secretsStoreLocation = "secrets/default.omsecrets";
         String secretsStoreCollection = "garygeeke";
         String mode = interactiveMode;
 

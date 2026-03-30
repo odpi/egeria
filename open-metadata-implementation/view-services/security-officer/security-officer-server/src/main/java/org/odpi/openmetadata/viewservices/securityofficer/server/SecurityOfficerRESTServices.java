@@ -4,14 +4,10 @@ package org.odpi.openmetadata.viewservices.securityofficer.server;
 
 
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
@@ -47,13 +43,13 @@ public class SecurityOfficerRESTServices extends TokenController
 
 
     /**
-     * Set up a new user account or update an existing one.
+     * Set up a new security access control or update an existing one.
      * This is account is registered with the platform security connector.  The user
-     * requires operator permission for the platform unless it is their own user account they are updating.
+     * requires operator permission for the platform unless it is their own security access control they are updating.
      *
      * @param serverName  name of called server
      * @param platformGUID unique identifier of the platform
-     * @param requestBody containing the user account properties.
+     * @param requestBody containing the security access control properties.
      * @return void or exceptions that occur when trying to create the connector:
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    a problem retrieving information from the property server(s).
@@ -116,12 +112,12 @@ public class SecurityOfficerRESTServices extends TokenController
 
 
     /**
-     * Return details of a user account registered with the platform security connector.
+     * Return details of a security access control registered with the platform security connector.
      *
      * @param serverName  name of called server
      * @param platformGUID unique identifier of the platform
      * @param accountUserId name of the connector provider class
-     * @return user account bean or exceptions that occur when trying to create the connector:
+     * @return security access control bean or exceptions that occur when trying to create the connector:
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -233,6 +229,196 @@ public class SecurityOfficerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /**
+     * Set up a new security access control or update an existing one.
+     * This is account is registered with the platform security connector.  The user
+     * requires operator permission for the platform.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param requestBody containing the security access control properties.
+     * @return void or exceptions that occur when trying to create the connector:
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse setSecurityAccessControl(String                           serverName,
+                                                 String                           platformGUID,
+                                                 SecurityAccessControlRequestBody requestBody)
+    {
+        final String methodName = "setSecurityAccessControl";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+                AssetHandler         platformHandler      = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
+
+                OpenMetadataRootElement asset = platformHandler.getAssetByGUID(userId, platformGUID, null);
+
+                Connector connector = connectedAssetClient.getConnectorForAsset(userId, platformGUID, auditLog);
+
+                if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
+                {
+                    if ((asset != null) && (asset.getProperties() instanceof AssetProperties assetProperties))
+                    {
+                        omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
+                    }
+
+                    omagServerPlatformConnector.setDelegatingUserId(userId);
+                    omagServerPlatformConnector.start();
+                    omagServerPlatformConnector.setSecurityAccessControl(requestBody.getSecurityAccessControl());
+                    omagServerPlatformConnector.disconnect();
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, "<null>");
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return details of a security access control registered with the platform security connector.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param controlName name of the connector provider class
+     * @return security access control bean or exceptions that occur when trying to create the connector:
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public SecurityAccessControlResponse getSecurityAccessControl(String serverName,
+                                                                  String platformGUID,
+                                                                  String controlName)
+    {
+        final String methodName = "getSecurityAccessControl";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        SecurityAccessControlResponse response = new SecurityAccessControlResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+            AssetHandler         platformHandler      = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
+
+            OpenMetadataRootElement asset = platformHandler.getAssetByGUID(userId, platformGUID, null);
+
+            Connector     connector = connectedAssetClient.getConnectorForAsset(userId, platformGUID, auditLog);
+
+            if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
+            {
+                if ((asset != null) && (asset.getProperties() instanceof AssetProperties assetProperties))
+                {
+                    omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
+                }
+
+                omagServerPlatformConnector.setDelegatingUserId(userId);
+                omagServerPlatformConnector.start();
+                response.setSecurityAccessControl(omagServerPlatformConnector.getSecurityAccessControl(controlName));
+                omagServerPlatformConnector.disconnect();
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Clear the account for a user with the platform security connector.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param controlName name of the control
+     * @return void or exceptions that occur when trying to create the connector:
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteSecurityAccessControl(String serverName,
+                                                    String platformGUID,
+                                                    String controlName)
+    {
+        final String methodName = "deleteSecurityAccessControl";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+            AssetHandler         platformHandler      = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
+
+            OpenMetadataRootElement asset = platformHandler.getAssetByGUID(userId, platformGUID, null);
+
+            Connector     connector = connectedAssetClient.getConnectorForAsset(userId, platformGUID, auditLog);
+
+            if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
+            {
+                if ((asset != null) && (asset.getProperties() instanceof AssetProperties assetProperties))
+                {
+                    omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
+                }
+
+                omagServerPlatformConnector.setDelegatingUserId(userId);
+                omagServerPlatformConnector.start();
+                omagServerPlatformConnector.deleteSecurityAccessControl(controlName);
+                omagServerPlatformConnector.disconnect();
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
 
 
     /**

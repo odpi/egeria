@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 import java.lang.reflect.Constructor;
@@ -172,6 +173,14 @@ public class ViewServiceClientMap<B>
                                                                                          maxPageSize,
                                                                                          auditLog);
 
+        EgeriaConnectedAssetClient connectedAssetClient = new EgeriaConnectedAssetClient(viewServiceConfig.getOMAGServerName(),
+                                                                                         viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                         viewServiceConfig.getSecretsStoreProvider(),
+                                                                                         viewServiceConfig.getSecretsStoreLocation(),
+                                                                                         viewServiceConfig.getSecretsStoreCollection(),
+                                                                                         maxPageSize,
+                                                                                         auditLog);
+
         try
         {
             if (handlerClass.isInstance(openMetadataClient))
@@ -181,6 +190,10 @@ public class ViewServiceClientMap<B>
             else if (handlerClass.isInstance(openGovernanceClient))
             {
                 viewServiceClient = handlerClass.cast(openGovernanceClient);
+            }
+            else if (handlerClass.isInstance(connectedAssetClient))
+            {
+                viewServiceClient = handlerClass.cast(connectedAssetClient);
             }
             else
             {

@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdent
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -31,6 +32,7 @@ import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.myprofile.ffdc.MyProfileErrorCode;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -790,7 +792,18 @@ public class MyProfileRESTServices extends TokenController
                         newElementOptions.setParentAtEnd1(true);
                         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName);
 
-                        userIdentityHandler.createUserIdentity(userId, newElementOptions, null, userIdentityProperties, null);
+                        ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
+                        ArrayList<String>        zoneMembership           = new ArrayList<>();
+
+                        zoneMembership.add(userId); // Make userIdentity visible to the associated user
+                        zoneMembership.add(GovernanceZoneName.SECURITY.getZoneName());
+                        zoneMembershipProperties.setZoneMembership(zoneMembership);
+
+                        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+                        initialClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
+
+                        userIdentityHandler.createUserIdentity(userId, newElementOptions, initialClassifications, userIdentityProperties, null);
 
                         response.setGUID(profileGUID);
                     }

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataUserSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 
 
@@ -185,12 +186,13 @@ public class OpenMetadataPlatformSecurityVerifier
         }
     }
 
+
     /**
      * Return information about a user.
      *
      * @param userId           calling user
      * @param delegatingUserId external userId making request
-     * @param accountUserId user account identifier
+     * @param accountUserId security access control identifier
      * @return known details of the user
      * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -256,7 +258,7 @@ public class OpenMetadataPlatformSecurityVerifier
     }
 
     /**
-     * Update information about a specific user.  This is used to update user details nd reset the password.
+     * Update information about a specific user.  This is used to update user details and reset the password.
      *
      * @param userId           calling user
      * @param delegatingUserId external userId making request
@@ -306,6 +308,101 @@ public class OpenMetadataPlatformSecurityVerifier
         if (userSecurityConnector != null)
         {
             userSecurityConnector.deleteUserAccount(accountUserId);
+        }
+    }
+
+
+    /**
+     * Return information about a security access control.
+     *
+     * @param userId           calling user
+     * @param delegatingUserId external userId making request
+     * @param controlName security access control identifier
+     * @return known details of the user
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    public static synchronized OpenMetadataSecurityAccessControl getSecurityAccessControl(String userId,
+                                                                                          String delegatingUserId,
+                                                                                          String controlName) throws UserNotAuthorizedException,
+                                                                                                                     InvalidParameterException,
+                                                                                                                     PropertyServerException
+    {
+        if (userSecurityConnector != null)
+        {
+            /*
+             * Validate that someone has authority to retrieve the security access control.
+             */
+            validatePlatformOperator(userId, delegatingUserId);
+
+            try
+            {
+                return userSecurityConnector.getSecurityAccessControl(controlName);
+            }
+            catch (Exception error)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Update information about a specific security access control.
+     *
+     * @param userId           calling user
+     * @param delegatingUserId external userId making request
+     * @param securityAccessControl security properties about the control
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    public static synchronized void setSecurityAccessControl(String                            userId,
+                                                             String                            delegatingUserId,
+                                                             OpenMetadataSecurityAccessControl securityAccessControl) throws UserNotAuthorizedException,
+                                                                                                                             InvalidParameterException,
+                                                                                                                             PropertyServerException
+    {
+        if ((userSecurityConnector != null) && (securityAccessControl != null))
+        {
+            /*
+             * Validate that someone has authority to update the user's account details.
+             */
+            validatePlatformOperator(userId, delegatingUserId);
+            userSecurityConnector.setSecurityAccessControl(securityAccessControl);
+        }
+    }
+
+
+    /**
+     * Delete information about a specific user.
+     *
+     * @param userId           calling user
+     * @param delegatingUserId external userId making request
+     * @param controlName      calling user
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    public static synchronized void deleteSecurityAccessControl(String userId,
+                                                                String delegatingUserId,
+                                                                String controlName) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
+                                                                                           PropertyServerException
+    {
+        /*
+         * Validate that someone has authority to delete the user's account details.
+         */
+        validatePlatformOperator(userId, delegatingUserId);
+
+        if (userSecurityConnector != null)
+        {
+            userSecurityConnector.deleteSecurityAccessControl(controlName);
         }
     }
 

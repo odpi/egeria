@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,8 @@ import java.util.Objects;
  */
 public class OMRSRuntimeException extends RuntimeException
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRuntimeException.class);
 
@@ -27,17 +29,17 @@ public class OMRSRuntimeException extends RuntimeException
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int                 reportedHTTPCode;
-    private String              reportingClassName;
-    private String              reportingActionDescription;
-    private String              reportedErrorMessage;
-    private String              reportedErrorMessageId;
-    private String[]            reportedErrorMessageParameters;
-    private String              reportedSystemAction;
-    private String              reportedUserAction;
-    private Exception           reportedCaughtException = null;
-    private String              reportedCaughtExceptionClassName = null;
-    private Map<String, Object> relatedProperties = null;
+    private final int                 reportedHTTPCode;
+    private final String              reportingClassName;
+    private final String              reportingActionDescription;
+    private final String              reportedErrorMessage;
+    private final String              reportedErrorMessageId;
+    private final String[]            reportedErrorMessageParameters;
+    private final String              reportedSystemAction;
+    private final String              reportedUserAction;
+    private       Exception           reportedCaughtException          = null;
+    private       String              reportedCaughtExceptionClassName = null;
+    private       Map<String, Object> relatedProperties                = null;
 
 
 
@@ -138,7 +140,7 @@ public class OMRSRuntimeException extends RuntimeException
 
         this.validateCoreProperties();
 
-        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError.getMessage(), caughtError);
     }
 
 
@@ -231,55 +233,6 @@ public class OMRSRuntimeException extends RuntimeException
     }
 
 
-
-    /**
-     * This is the typical constructor used for creating an OMRSRuntimeException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    OMRSRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(errorMessage);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-    }
-
-
-    /**
-     * This is the constructor used for creating a OMRSRuntimeException when an unexpected error has been caught.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  previous error causing this exception
-     */
-    @Deprecated
-    OMRSRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(errorMessage, caughtError);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-        this.reportedCaughtException =  caughtError;
-    }
-
-
     /**
      * Return the HTTP response code to use with this exception.
      *
@@ -317,19 +270,6 @@ public class OMRSRuntimeException extends RuntimeException
     /**
      * A formatted short description of the cause of the condition that resulted in this exception.
      * It includes the message id and is formatted with the message parameters.  The message is defined in En_US.
-     * The method is deprecated because it is inconsistent in its naming compared with other methods.
-     *
-     * @return string message
-     */
-    @Deprecated
-    public String getErrorMessage()
-    {
-        return reportedErrorMessage;
-    }
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     * It includes the message id and is formatted with the message parameters.  The message is defined in En_US.
      *
      * @return string message
      */
@@ -357,7 +297,7 @@ public class OMRSRuntimeException extends RuntimeException
      * These are provided both for automated processing and to enable the error message to be reformatted
      * in a different language.
      *
-     * @return list of parameter values
+     * @return array of parameter values
      */
     public String[] getReportedErrorMessageParameters()
     {
@@ -497,7 +437,6 @@ public class OMRSRuntimeException extends RuntimeException
                 ", reportedCaughtException=" + reportedCaughtException +
                 ", reportedCaughtExceptionClassName='" + reportedCaughtExceptionClassName + '\'' +
                 ", relatedProperties=" + relatedProperties +
-                ", errorMessage='" + getErrorMessage() + '\'' +
                 '}';
     }
 }

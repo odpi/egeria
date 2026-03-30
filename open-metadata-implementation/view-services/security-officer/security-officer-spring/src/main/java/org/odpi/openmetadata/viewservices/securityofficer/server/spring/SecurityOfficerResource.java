@@ -13,6 +13,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestB
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.securityofficer.server.SecurityOfficerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +49,7 @@ public class SecurityOfficerResource
 
 
     /**
-     * Set up or update a user account in the platform metadata security connector
-     * The user requires operator permission for the platform unless it is their own user account they are retrieving.
+     * Set up or update a user account in the platform metadata security connector.  The user requires operator permission for the platform unless it is their own user account they are retrieving.
      *
      * @param serverName  name of called server
      * @param platformGUID unique identifier of the platform
@@ -59,7 +60,7 @@ public class SecurityOfficerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setUserAccount",
-            description="Set up a user in the platform metadata security connector to control access to open metadata.  This overrides the ",
+            description="Set up or update a user account in the platform metadata security connector.  The user requires operator permission for the platform unless it is their own user account they are retrieving.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/platform-services/overview"))
 
@@ -85,7 +86,7 @@ public class SecurityOfficerResource
 
     @Operation(summary="getUserAccount",
             description="Return the user account object for the requested user from the platform metadata security connector.  Null is returned if no platform security or user account has been set up.",
-            externalDocs=@ExternalDocumentation(description="Metadata Security",
+            externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/metadata-security/overview/"))
 
 
@@ -119,6 +120,83 @@ public class SecurityOfficerResource
     {
         return restAPI.deleteUserAccount(serverName, platformGUID, accountUserId);
     }
+
+
+
+    /**
+     * Set up or update a security access control in the platform metadata security connector.
+     * The user requires operator permission for the platform.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param requestBody requestBody used to create and configure the connector that performs platform security
+     * @return void response
+     */
+    @PostMapping(path = "/platforms/{platformGUID}/security-access-control")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setSecurityAccessControl",
+            description="Set up or update a security access control in the platform metadata security connector to control access to open metadata.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/platform-services/overview"))
+
+    public VoidResponse setSecurityAccessControl(@PathVariable String serverName,
+                                       @PathVariable String platformGUID,
+                                       @RequestBody(required = false) SecurityAccessControlRequestBody requestBody)
+    {
+        return restAPI.setSecurityAccessControl(serverName, platformGUID, requestBody);
+    }
+
+
+    /**
+     * Return the security access control object from the platform metadata security connector.  Null is returned if no control has been set up.
+     * The user requires operator permission for the platform.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param controlName    user id of the account
+     * @return user account response
+     */
+    @GetMapping(path = "/platforms/{platformGUID}/security-access-control/{controlName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSecurityAccessControl",
+            description="Return the security access control object from the platform metadata security connector.  Null is returned if no platform security or control has been set up.",
+            externalDocs=@ExternalDocumentation(description="Metadata Security",
+                    url="https://egeria-project.org/features/metadata-security/overview/"))
+
+
+    public SecurityAccessControlResponse getSecurityAccessControl(@PathVariable String serverName,
+                                                                  @PathVariable String platformGUID,
+                                                                  @PathVariable String controlName)
+    {
+        return restAPI.getSecurityAccessControl(serverName, platformGUID, controlName);
+    }
+
+
+    /**
+     * Clear the named security access control with the platform security connector.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param controlName    user id of the control
+     * @return void response
+     */
+    @DeleteMapping(path = "/platforms/{platformGUID}/security-access-control/{controlName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSecurityAccessControl",
+            description="Clear the security access control with the platform security connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/platform-services/overview/"))
+
+    public  VoidResponse deleteSecurityAccessControl(@PathVariable String serverName,
+                                                     @PathVariable String platformGUID,
+                                                     @PathVariable String controlName)
+    {
+        return restAPI.deleteSecurityAccessControl(serverName, platformGUID, controlName);
+    }
+
 
 
     /**

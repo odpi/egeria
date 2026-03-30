@@ -2956,10 +2956,10 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
      *  PropertyServerException a problem with the metadata store
      */
-    public  VoidResponse archiveMetadataElementInStore(String            serverName,
-                                                       String            userId,
-                                                       String            metadataElementGUID,
-                                                       DeleteRequestBody requestBody)
+    public  VoidResponse archiveMetadataElementInStore(String                   serverName,
+                                                       String                   userId,
+                                                       String                   metadataElementGUID,
+                                                       DeleteElementRequestBody requestBody)
     {
         final String methodName = "archiveMetadataElementInStore";
 

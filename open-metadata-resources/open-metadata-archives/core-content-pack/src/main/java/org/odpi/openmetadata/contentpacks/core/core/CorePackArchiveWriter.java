@@ -112,6 +112,20 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
+         * Add the valid metadata values used in the standard zone name.
+         */
+        for (GovernanceZoneName governanceZoneName : GovernanceZoneName.values())
+        {
+            this.addValidMetadataValue(governanceZoneName.getDisplayName(),
+                                       governanceZoneName.getDescription(),
+                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                       null,
+                                       null,
+                                       governanceZoneName.getZoneName());
+        }
+
+
+        /*
          * Add the valid metadata values used in the scope property found in many elements.
          */
         for (ScopeDefinition scopeDefinition : ScopeDefinition.values())
@@ -123,7 +137,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                        null,
                                        scopeDefinition.getPreferredValue());
         }
-
 
         /*
          * Add the valid metadata values used in the solutionComponentType property of the SolutionComponent entity.

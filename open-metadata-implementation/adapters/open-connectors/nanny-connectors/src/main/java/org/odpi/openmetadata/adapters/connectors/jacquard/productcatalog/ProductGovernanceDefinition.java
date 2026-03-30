@@ -296,7 +296,7 @@ public enum ProductGovernanceDefinition
      */
     public String getQualifiedName()
     {
-        return type + "::OpenMetadataDigitalProduct::" + identifier + "::" + displayName;
+        return type + "::Jacquard::" + identifier + "::" + displayName;
     }
 
 

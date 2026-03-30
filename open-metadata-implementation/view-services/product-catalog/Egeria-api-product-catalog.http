@@ -163,7 +163,7 @@ Content-Type: application/json
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "serverName" : "LocalPostgreSQL1",
-    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
     "secretsCollectionName" : "PostgreSQL Server:LocalPostgreSQL1",
     "hostIdentifier" : "localhost",
     "portNumber" : "5432",

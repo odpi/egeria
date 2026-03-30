@@ -197,7 +197,7 @@ Content-Type: application/json
     "tableDescription" : "List of properties that have valid metadata values defined.",
     "versionIdentifier" : "V1.0",
     "secretsCollectionName" : "PostgreSQL Server:LocalPostgreSQL1",
-    "secretsStorePathName" : "loading-bay/secrets/integration.omsecrets"
+    "secretsStorePathName" : "secrets/integration.omsecrets"
   }
 }
 

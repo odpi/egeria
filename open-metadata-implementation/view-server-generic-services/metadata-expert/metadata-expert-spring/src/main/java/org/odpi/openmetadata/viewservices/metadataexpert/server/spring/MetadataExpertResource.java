@@ -122,7 +122,7 @@ public class MetadataExpertResource
     }
 
     /**
-     * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
@@ -140,7 +140,7 @@ public class MetadataExpertResource
     public VoidResponse publishMetadataElement(@PathVariable String                    serverName,
                                                @PathVariable String                    urlMarker,
                                                @PathVariable String                    metadataElementGUID,
-                                               @RequestBody  MetadataSourceRequestBody requestBody)
+                                               @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.publishMetadataElement(serverName, urlMarker, metadataElementGUID, requestBody);
     }
@@ -165,7 +165,7 @@ public class MetadataExpertResource
     public VoidResponse withdrawMetadataElement(@PathVariable String                    serverName,
                                                 @PathVariable String                    urlMarker,
                                                 @PathVariable String                    metadataElementGUID,
-                                                @RequestBody  MetadataSourceRequestBody requestBody)
+                                                @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.withdrawMetadataElement(serverName, urlMarker, metadataElementGUID, requestBody);
     }

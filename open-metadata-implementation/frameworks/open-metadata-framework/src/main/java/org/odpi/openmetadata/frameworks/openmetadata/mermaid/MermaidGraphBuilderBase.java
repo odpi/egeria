@@ -2088,7 +2088,7 @@ public class MermaidGraphBuilderBase
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof AgreementActorProperties agreementActorProperties)
         {
-            label = agreementActorProperties.getActorName();
+            label = agreementActorProperties.getAgreementPartyName();
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof AgreementItemProperties agreementItemProperties)
         {

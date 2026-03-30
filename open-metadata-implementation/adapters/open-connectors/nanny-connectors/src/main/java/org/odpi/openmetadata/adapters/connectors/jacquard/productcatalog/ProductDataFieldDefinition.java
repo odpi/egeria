@@ -1926,7 +1926,7 @@ public enum ProductDataFieldDefinition
      */
     public String getQualifiedName()
     {
-        return "DataField::OpenMetadataDigitalProduct::" + displayName;
+        return "DataField::Jacquard::" + displayName;
     }
 
 

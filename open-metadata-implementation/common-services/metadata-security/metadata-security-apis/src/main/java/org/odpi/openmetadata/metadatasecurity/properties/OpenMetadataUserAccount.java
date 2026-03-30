@@ -14,11 +14,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OpenMetadataUserAccount extends UserAccount with properties that should not leave the server.
+ * OpenMetadataUserAccount extends UserAccount with associated userId property.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OpenMetadataUserAccount extends UserAccount
 {
     private String userId = null;
@@ -35,11 +35,11 @@ public class OpenMetadataUserAccount extends UserAccount
     /**
      * Copy constructor
      *
-     * @param userId associated user account identifier
+     * @param userId      associated user account identifier
      * @param userAccount super class properties
      */
-    public OpenMetadataUserAccount(String       userId,
-                                   UserAccount  userAccount)
+    public OpenMetadataUserAccount(String userId,
+                                   UserAccount userAccount)
     {
         super(userAccount);
 

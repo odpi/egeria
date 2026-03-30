@@ -91,7 +91,7 @@ public enum ProductRoleDefinition
      */
     public String getQualifiedName()
     {
-        return typeName + "::OpenMetadataDigitalProduct::" + identifier;
+        return typeName + "::Jacquard::" + identifier;
     }
 
 

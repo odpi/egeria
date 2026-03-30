@@ -1199,7 +1199,7 @@ public class OpenMetadataStoreResource
     public  VoidResponse archiveMetadataElementInStore(@PathVariable String            serverName,
                                                        @PathVariable String            userId,
                                                        @PathVariable String            metadataElementGUID,
-                                                       @RequestBody(required = false)  DeleteRequestBody requestBody)
+                                                       @RequestBody(required = false)  DeleteElementRequestBody requestBody)
     {
         return restAPI.archiveMetadataElementInStore(serverName, userId, metadataElementGUID, requestBody);
     }

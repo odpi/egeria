@@ -162,7 +162,7 @@ public class ConfigMetadataServerSample
     public static void main(String[] args)
     {
         String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
-        String secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String secretsStoreLocation = "secrets/default.omsecrets";
         String secretsStoreCollection = "garygeeke";
 
         String  serverURLRoot = defaultAdminPlatformURLRoot;

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataEventsSecurity;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistry
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 
@@ -248,7 +248,7 @@ public class OMRSMetadataHighwayManager
              */
             cohortManagers.add(cohortManager);
         }
-        catch (OMRSConfigErrorException  error)
+        catch (OMRSConfigErrorException error)
         {
             auditLog.logMessage(actionDescription,
                                 OMRSAuditCode.COHORT_CONFIG_ERROR.getMessageDefinition(cohortConfig.getCohortName(), error.getReportedErrorMessage()));

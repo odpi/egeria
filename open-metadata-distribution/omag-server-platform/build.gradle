@@ -75,17 +75,6 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
     implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
 }
 
@@ -147,9 +136,14 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
-            into('assembly/platform/loading-bay/secrets') {
-                // Identify how the platform is started
+            into('assembly/platform/secrets') {
+                // Provide the secrets stores
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets" }
+                fileMode = 0755
+            }
+            into('assembly/platform/loading-bay') {
+                // Describe the loading bay
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/loading-bay" }
                 fileMode = 0755
             }
             into('assembly/platform/data') {

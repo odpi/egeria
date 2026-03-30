@@ -793,7 +793,7 @@ public enum FileType
                     "YAML",
                     OpenMetadataType.KEY_STORE_FILE.typeName,
                     DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE,
-                    "A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector."),
+                    "A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector or YAMLSecretsFileConnector."),
 
     /**
      * A file containing binary data.

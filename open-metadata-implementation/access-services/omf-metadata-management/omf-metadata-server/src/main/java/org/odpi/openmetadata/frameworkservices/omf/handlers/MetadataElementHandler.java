@@ -2447,7 +2447,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                               String            externalSourceGUID,
                                               String            externalSourceName,
                                               String            metadataElementGUID,
-                                              DeleteOptions archiveProperties,
+                                              DeleteOptions     archiveProperties,
                                               boolean           forLineage,
                                               boolean           forDuplicateProcessing,
                                               Date              effectiveTime,

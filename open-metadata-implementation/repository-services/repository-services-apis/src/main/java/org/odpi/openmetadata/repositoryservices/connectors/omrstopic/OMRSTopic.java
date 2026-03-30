@@ -29,21 +29,10 @@ public interface OMRSTopic
      * received on the topic.
      *
      * @param newListener object implementing the OMRSTopicListener interface
-     */
-    @Deprecated
-    void registerListener(OMRSTopicListener newListener);
-
-
-    /**
-     * Register a listener object.  This object will be supplied with all the events
-     * received on the topic.
-     *
-     * @param newListener object implementing the OMRSTopicListener interface
      * @param serviceName name of service that the listener is from
      */
     void registerListener(OMRSTopicListener newListener,
                           String            serviceName);
-
 
 
     /**

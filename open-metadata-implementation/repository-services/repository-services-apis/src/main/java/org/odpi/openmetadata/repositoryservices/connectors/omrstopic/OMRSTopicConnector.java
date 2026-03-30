@@ -138,31 +138,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
-     * Register an OMRSTopicListener object.  This object will be supplied with all the OMRS events
-     * received on the topic.
-     *
-     * @param topicListener object implementing the OMRSTopicListener interface
-     */
-    @Deprecated
-    @Override
-    public void registerListener(OMRSTopicListener  topicListener)
-    {
-        if (topicListener != null)
-        {
-            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, auditLog));
-        }
-        else
-        {
-            final String            methodName = "registerListener";
-
-            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER.getMessageDefinition(connectionName),
-                                              this.getClass().getName(),
-                                              methodName);
-        }
-    }
-
-
-    /**
      * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *

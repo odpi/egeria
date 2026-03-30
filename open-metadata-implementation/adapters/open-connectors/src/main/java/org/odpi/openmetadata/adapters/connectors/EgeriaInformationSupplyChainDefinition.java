@@ -71,7 +71,18 @@ public enum EgeriaInformationSupplyChainDefinition
                           false,
                           null),
 
-
+    /**
+     * Security Access Information Supply Chain
+     */
+    SECURITY("207380ef-a133-4939-b403-027574b797d2",
+             "Security Access Information Supply Chain",
+             "Identifies the data flows related to access control information such as user accounts, security lists, and security access controls.",
+             ScopeDefinition.WITHIN_SOLUTION,
+             new String[]{ "To ensure that access to open metadata is controlled." },
+             EgeriaRoleDefinition.SECURITY_MANAGER.getGUID(),
+             null,
+             false,
+             null),
     ;
 
 

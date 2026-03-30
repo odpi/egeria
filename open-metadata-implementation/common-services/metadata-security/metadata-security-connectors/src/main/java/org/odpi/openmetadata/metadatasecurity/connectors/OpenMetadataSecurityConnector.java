@@ -345,9 +345,8 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     }
 
 
-
     /**
-     * Write an audit log message and throw exception to record an
+     * Write an audit log message and throw an exception to record
      * unauthorized access.
      *
      * @param userId calling user
@@ -388,7 +387,47 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Write an audit log message and throw exception to record an
+     * Write an audit log message and throw an exception to record
+     * unauthorized access.
+     *
+     * @param controlName calling user
+     * @param underLyingException optional exception
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwUnknownControl(String    controlName,
+                                       Exception underLyingException,
+                                       String    methodName) throws UserNotAuthorizedException
+    {
+        if (underLyingException == null)
+        {
+            logRecord(methodName, OpenMetadataSecurityAuditCode.UNKNOWN_CONTROL.getMessageDefinition(controlName));
+
+            throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNKNOWN_CONTROL.getMessageDefinition(controlName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 controlName);
+        }
+        else
+        {
+            logRecord(methodName,
+                      OpenMetadataSecurityAuditCode.FAILED_TO_RETRIEVE_CONTROL.getMessageDefinition(underLyingException.getClass().getName(),
+                                                                                                 controlName,
+                                                                                                 underLyingException.getMessage()));
+
+            throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.FAILED_TO_RETRIEVE_CONTROL.getMessageDefinition(underLyingException.getClass().getName(),
+                                                                                                                               controlName,
+                                                                                                                               underLyingException.getMessage()),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 underLyingException,
+                                                 controlName);
+        }
+    }
+
+
+    /**
+     * Write an audit log message and throw an exception to record
      * unauthorized access.
      *
      * @param userId calling user
@@ -615,31 +654,6 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Determine the appropriate setting for the zones depending on the user and the
-     * current zones set up for the element.  This is called whenever an element is withdrawn.
-     *
-     * @param currentZones default setting of the default zones
-     * @param typeName type of the element
-     * @param serviceName name of the called service
-     * @param userId name of the user
-     *
-     * @return list of published zones for the user
-     * @throws InvalidParameterException one of the parameter values is invalid
-     * @throws PropertyServerException a problem calculating the zones
-     * @throws UserNotAuthorizedException unknown user
-     */
-    protected List<String> getWithdrawZonesForUser(List<String>  currentZones,
-                                                   String        typeName,
-                                                   String        serviceName,
-                                                   String        userId) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
-    {
-        return currentZones;
-    }
-
-
-    /**
      * Check that the calling user is authorized to create new servers.
      *
      * @param userId calling user
@@ -653,7 +667,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                                 PropertyServerException
     {
         final String methodName = "validateUserForNewServer";
-        final String requestType = "NewServer";
+        final String requestType = "serverAdministrator";
 
         throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }
@@ -673,7 +687,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                                            PropertyServerException
     {
         final String methodName = "validateUserAsOperatorForPlatform";
-        final String requestType = "Operator";
+        final String requestType = "serverOperator";
 
         throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }
@@ -693,7 +707,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                                                PropertyServerException
     {
         final String methodName = "validateUserAsInvestigatorForPlatform";
-        final String requestType = "Investigator";
+        final String requestType = "serverInvestigator";
 
         throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }

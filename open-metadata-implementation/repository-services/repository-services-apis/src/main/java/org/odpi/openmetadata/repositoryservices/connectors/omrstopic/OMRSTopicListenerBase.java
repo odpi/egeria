@@ -1452,7 +1452,6 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity                         details of the entity with the new classification added.
      */
     @Deprecated
-    @SuppressWarnings(value = "unused")
     public void processClassifiedEntityEvent(String       sourceName,
                                              String       originatorMetadataCollectionId,
                                              String       originatorServerName,

@@ -3,11 +3,11 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.SecretsCollection;
@@ -19,22 +19,25 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileExtension;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
 public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 {
     private static final Logger log = LoggerFactory.getLogger(OMSecretsFilesMonitorForTarget.class);
-
-    private final ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
 
     /**
@@ -168,11 +171,16 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
                 if (secretsStore != null)
                 {
-                    for (SecretsCollection secretsCollection : secretsStore.getSecretsCollections().values())
+                    for (String secretsCollectionName : secretsStore.getSecretsCollections().keySet())
                     {
-                        yamlSecretsFileConnector.setSecretsCollectionName(secretsCollection.getDisplayName());
+                        yamlSecretsFileConnector.setSecretsCollectionName(secretsCollectionName);
 
+                        SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
 
+                        if (secretsCollection != null)
+                        {
+                            String secretsCollectionGUID = catalogSecretsCollection(secretsCollectionName, secretsCollection, fileAssetGUID);
+                        }
                     }
                 }
             }
@@ -185,5 +193,68 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                                                    methodName,
                                                                                                                    error.getMessage()));
         }
+    }
+
+
+    /**
+     * Catalog the secrets collection in the metadata repository.
+     *
+     * @param secretsCollectionName name of the secrets collection
+     * @param secretsCollection collection of secrets
+     * @param fileAssetGUID unique identifier of the file asset
+     * @return unique identifier of the secrets collection
+     */
+    private String catalogSecretsCollection(String            secretsCollectionName,
+                                            SecretsCollection secretsCollection,
+                                            String            fileAssetGUID) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException
+    {
+        String qualifiedName = OpenMetadataType.SECRETS_COLLECTION.typeName + "::" + fileAssetGUID + "::" + secretsCollectionName;
+
+        String secretsCollectionGUID;
+
+        try
+        {
+            secretsCollectionGUID = integrationConnector.integrationContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(qualifiedName,
+                                                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name);
+        }
+        catch (InvalidParameterException notKnown)
+        {
+            NewElementOptions options = new NewElementOptions();
+
+            options.setIsOwnAnchor(true);
+            options.setParentGUID(fileAssetGUID);
+            options.setParentAtEnd1(false);
+            options.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+            SecretsCollectionProperties secretsCollectionProperties = new SecretsCollectionProperties();
+
+            secretsCollectionProperties.setQualifiedName(qualifiedName);
+            secretsCollectionProperties.setResourceName(secretsCollectionName);
+            secretsCollectionProperties.setDisplayName(secretsCollection.getDisplayName());
+            secretsCollectionProperties.setDescription(secretsCollection.getDescription());
+
+            Map<String, String> additionalProperties = new HashMap<>();
+
+            additionalProperties.put(OpenMetadataProperty.REFRESH_TIME_INTERVAL.name, Long.toString(secretsCollection.getRefreshTimeInterval()));
+
+            secretsCollectionProperties.setAdditionalProperties(additionalProperties);
+
+            DataSetContentProperties dataSetContentProperties = new DataSetContentProperties();
+
+            dataSetContentProperties.setISCQualifiedName(EgeriaInformationSupplyChainDefinition.SECURITY.getQualifiedName());
+
+            /*
+             * The secrets collection is not added to the security zone because it need to be visible to the data
+             * engineers configuring cataloguing.
+             */
+            secretsCollectionGUID = integrationConnector.integrationContext.getAssetClient().createAsset(options,
+                                                                                                         null,
+                                                                                                         secretsCollectionProperties,
+                                                                                                         dataSetContentProperties);
+        }
+
+        return secretsCollectionGUID;
     }
 }
