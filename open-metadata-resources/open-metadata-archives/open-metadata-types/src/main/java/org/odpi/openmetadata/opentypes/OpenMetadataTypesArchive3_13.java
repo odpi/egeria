@@ -265,7 +265,7 @@ public class OpenMetadataTypesArchive3_13
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTOR_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AGREEMENT_PARTY_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

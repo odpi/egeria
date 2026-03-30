@@ -8,4 +8,8 @@ If you add files under this directory, they will be automatically classified usi
 and then catalogued into the *active-metadata-store* metadata repository as [assets](https://egeria-project.org/concepts/asset/).
 
 
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
 

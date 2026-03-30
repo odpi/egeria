@@ -2445,7 +2445,7 @@ public enum OpenMetadataProperty
     /**
      * Name used to identify a specific actor in the agreement.
      */
-    ACTOR_NAME("actorName", DataType.STRING, DataType.STRING.getDisplayName(), "Name used to identify a specific actor in the agreement.", null, "4ec49806-b114-4580-9fac-dfdf26b62211"),
+    AGREEMENT_PARTY_NAME("actorName", DataType.STRING, DataType.STRING.getDisplayName(), "Name used to identify a specific actor in the agreement.", null, "4ec49806-b114-4580-9fac-dfdf26b62211"),
 
     /**
      * Process that created the refinement.

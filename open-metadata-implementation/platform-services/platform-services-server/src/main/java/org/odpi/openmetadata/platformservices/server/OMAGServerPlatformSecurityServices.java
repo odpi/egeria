@@ -5,13 +5,11 @@ package org.odpi.openmetadata.platformservices.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.adminservices.server.OMAGServerErrorHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -256,6 +254,123 @@ public class OMAGServerPlatformSecurityServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.deleteUserAccount(userId, delegatingUserId, accountUserId);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Set up details of a user account with the platform security connector.
+     *
+     * @param delegatingUserId external userId making request
+     * @param requestBody containing the user account properties.
+     * @return void response
+     */
+    public synchronized VoidResponse setSecurityAccessControl(String                           delegatingUserId,
+                                                              SecurityAccessControlRequestBody requestBody)
+    {
+        final String methodName    = "setSecurityAccessControl";
+        final String parameterName = "securityAccessControl";
+        final String controlName   = "securityAccessControl.userId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, "<null>");
+            }
+            else
+            {
+                errorHandler.validatePropertyNotNull(requestBody.getSecurityAccessControl(), parameterName, "<null>", methodName);
+                errorHandler.validatePropertyNotNull(requestBody.getSecurityAccessControl().getControlName(), controlName, "<null>", methodName);
+
+                OpenMetadataPlatformSecurityVerifier.setSecurityAccessControl(userId, delegatingUserId, requestBody.getSecurityAccessControl());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Return the user account from the platform security connector.
+     *
+     * @param delegatingUserId external userId making request
+     * @param accountUserId    user id of the account
+     * @return connection response
+     */
+    public synchronized SecurityAccessControlResponse getSecurityAccessControl(String delegatingUserId,
+                                                                               String accountUserId)
+    {
+        final String methodName = "getSecurityAccessControl";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, methodName);
+
+        SecurityAccessControlResponse response = new SecurityAccessControlResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response.setSecurityAccessControl(OpenMetadataPlatformSecurityVerifier.getSecurityAccessControl(userId, delegatingUserId, accountUserId));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Clear a user's account from the platform security connector.
+     *
+     * @param delegatingUserId external userId making request
+     * @param accountUserId    user id of the account
+     * @return void response
+     */
+    public synchronized VoidResponse deleteSecurityAccessControl(String delegatingUserId,
+                                                       String accountUserId)
+    {
+        final String methodName = "deleteSecurityAccessControl";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, methodName);
+
+        VoidResponse  response = new VoidResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.SERVER_OPERATIONS.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            OpenMetadataPlatformSecurityVerifier.deleteSecurityAccessControl(userId, delegatingUserId, accountUserId);
         }
         catch (Throwable error)
         {

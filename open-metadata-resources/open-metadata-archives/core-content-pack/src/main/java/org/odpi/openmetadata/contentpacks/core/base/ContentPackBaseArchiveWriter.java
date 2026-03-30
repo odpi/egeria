@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.contentpacks.core.base;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition;
 import org.odpi.openmetadata.adapters.connectors.EgeriaRoleDefinition;
 import org.odpi.openmetadata.contentpacks.core.*;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -144,7 +145,6 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                 null,
                                                 null);
                 }
-
             }
         }
     }
@@ -157,7 +157,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         final String methodName = "addInformationSupplyChains";
 
-        for (org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition informationSupplyChain : org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition.values())
+        for (org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition informationSupplyChain : EgeriaInformationSupplyChainDefinition.values())
         {
             archiveHelper.setGUID(informationSupplyChain.getQualifiedName(), informationSupplyChain.getGUID());
 

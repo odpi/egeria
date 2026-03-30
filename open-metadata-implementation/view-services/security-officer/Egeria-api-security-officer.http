@@ -56,24 +56,9 @@ Content-Type: application/json
     "distinguishedName": "",
     "securityRoles": [""],
     "securityGroups": [""],
-    "zoneAccess": {
-      "zoneName" : [
-        "READ",
-        "CREATE",
-        "UPDATE_PROPERTIES",
-        "DELETE",
-        "ATTACH",
-        "DETACH",
-        "ADD_MEMBER",
-        "DELETE_MEMBER",
-        "ADD_FEEDBACK",
-        "DELETE_FEEDBACK",
-        "CLASSIFY",
-        "DECLASSIFY",
-        "PUBLISH"]
-    },
     "otherProperties": {
-      "propertyName1" : "propertyValue1"
+      "defaultZones" : [],
+      "publishZones" : []
     },
     "userAccountStatus": "CREDENTIALS_EXPIRED",
     "secrets": {

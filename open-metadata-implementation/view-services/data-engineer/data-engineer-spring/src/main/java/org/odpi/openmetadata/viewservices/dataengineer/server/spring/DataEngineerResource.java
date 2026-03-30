@@ -52,7 +52,7 @@ public class DataEngineerResource
      * @param startFromRow    cursor position in the data set
      * @param maxRowCount maximum number of rows to return.  0 means no rows.
      *
-     * @return a list of projects
+     * @return a list of rows
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.

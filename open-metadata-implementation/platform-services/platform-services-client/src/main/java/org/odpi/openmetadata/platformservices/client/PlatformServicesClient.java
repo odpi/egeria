@@ -10,11 +10,14 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.SecurityAccessControl;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecretsCollection;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 import org.odpi.openmetadata.platformservices.properties.PublicProperties;
 import org.odpi.openmetadata.platformservices.properties.BuildProperties;
@@ -334,7 +337,83 @@ public class PlatformServicesClient
 
         restClient.callVoidDeleteRESTCall(methodName, urlTemplate, accountUserId, delegatingUserId);
     }
-    
+
+
+    /**
+     * Set up a new security access control or update an existing one.
+     * This is control is registered with the platform security connector.  The user
+     * requires operator permission for the platform.
+     *
+     * @param securityAccessControl details about the control to update
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+
+    public void setSecurityAccessControl(OpenMetadataSecurityAccessControl securityAccessControl) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        final String methodName    = "setSecurityAccessControl";
+        final String parameterName = "securityAccessControl";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/security-access-controls?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(securityAccessControl, parameterName, methodName);
+
+        SecurityAccessControlRequestBody requestBody = new SecurityAccessControlRequestBody();
+
+        requestBody.setSecurityAccessControl(securityAccessControl);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, delegatingUserId);
+    }
+
+
+    /**
+     * Return details of a security access control registered with the platform security connector.
+     *
+     * @param controlName identifier for the control to retrieve
+     * @throws UserNotAuthorizedException the supplied user id (from bearer token) is not authorized to issue this command.
+     * @throws InvalidParameterException  invalid parameter.
+     * @throws PropertyServerException    unusual state in the platform.
+     */
+    public OpenMetadataSecurityAccessControl getSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName    = "getSecurityAccessControl";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/security-access-controls/{0}?delegatingUserId={1}";
+        final String controlNameParameterName = "controlName";
+
+        invalidParameterHandler.validateName(controlName, controlNameParameterName, methodName);
+
+        SecurityAccessControlResponse response = restClient.callSecurityAccessControlResponseGetRESTCall(methodName, urlTemplate, controlName, delegatingUserId);
+
+        return response.getSecurityAccessControl();
+    }
+
+
+    /**
+     * Clear the requested security access control with the platform security connector.
+     *
+     * @param controlName identifier for the control to remove
+     * @throws UserNotAuthorizedException the supplied user is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void deleteSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                       InvalidParameterException,
+                                                                       PropertyServerException
+    {
+        final String methodName  = "deleteSecurityAccessControl";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/security-access-controls/{0}?delegatingUserId={1}";
+        final String controlNameParameterName = "controlName";
+
+        invalidParameterHandler.validateName(controlName, controlNameParameterName, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, controlName, delegatingUserId);
+    }
+
+
 
     /**
      * Return the connector type for the requested connector provider after validating that the

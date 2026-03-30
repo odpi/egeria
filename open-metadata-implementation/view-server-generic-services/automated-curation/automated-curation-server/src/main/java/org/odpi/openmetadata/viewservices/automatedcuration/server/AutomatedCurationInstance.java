@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 
@@ -30,6 +31,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     private final ViewServiceClientMap<EgeriaOpenMetadataStoreClient> openMetadataHandlerMap;
     private final ViewServiceClientMap<TechnologyTypeHandler>         technologyTypeHandlerMap;
     private final ViewServiceClientMap<EgeriaOpenGovernanceClient>    openGovernanceClientMap;
+    private final ViewServiceClientMap<EgeriaConnectedAssetClient>    connectedAssetClientMap;
 
 
     /**
@@ -76,6 +78,14 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
                                                                    maxPageSize);
 
         this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
+                                                                  serverName,
+                                                                  auditLog,
+                                                                  activeViewServices,
+                                                                  myDescription.getViewServiceFullName(),
+                                                                  myDescription.getViewServiceURLMarker(),
+                                                                  maxPageSize);
+
+        this.connectedAssetClientMap = new ViewServiceClientMap<>(EgeriaConnectedAssetClient.class,
                                                                   serverName,
                                                                   auditLog,
                                                                   activeViewServices,
@@ -134,5 +144,23 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
                                                                                         PropertyServerException
     {
         return openGovernanceClientMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the connected asset client.  This client is from the Open Connector Framework (OCF) and is for
+     * working with connectors.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     * @return client
+     */
+    public EgeriaConnectedAssetClient getConnectedAssetClient(String urlMarker,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException
+    {
+        return connectedAssetClientMap.getClient(urlMarker, methodName);
     }
 }

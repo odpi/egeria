@@ -55,6 +55,7 @@ public class SecretsCollection
             this.tokenAPI               = template.getTokenAPI();
             this.users                  = template.getUsers();
             this.namedLists             = template.getNamedLists();
+            this.securityAccessControls = template.getSecurityAccessControls();
         }
     }
 

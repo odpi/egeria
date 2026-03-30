@@ -13,9 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformSecurityServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -173,5 +171,72 @@ public class OMAGServerPlatformSecurityResource
                                            @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
         return adminSecurityAPI.deleteUserAccount(delegatingUserId, accountUserId);
+    }
+
+
+    /**
+     * Set up a security access control in the platform metadata security connector
+     *
+     * @param delegatingUserId external userId making request
+     * @param requestBody requestBody used to create and configure the connector that performs platform security
+     * @return void response
+     */
+    @PostMapping(path = "/security-access-controls")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setSecurityAccessControl",
+            description="Set up a security access control in the platform metadata security connector to control access to open metadata.  This overrides the ",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/platform-services/overview"))
+
+    public VoidResponse setSecurityAccessControl(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                       @RequestBody SecurityAccessControlRequestBody requestBody)
+    {
+        return adminSecurityAPI.setSecurityAccessControl(delegatingUserId, requestBody);
+    }
+
+
+    /**
+     * Return the requested security access control object from the platform metadata security connector.  Null is returned if no platform security or security access control has been set up.
+     *
+     * @param controlName    user id of the account
+     * @param delegatingUserId external userId making request
+     * @return security access control response
+     */
+    @GetMapping(path = "/security-access-controls/{controlName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSecurityAccessControl",
+            description="Return the requested security access control object from the platform metadata security connector.  Null is returned if no platform security or security access control has been set up.",
+            externalDocs=@ExternalDocumentation(description="Metadata Security",
+                    url="https://egeria-project.org/features/metadata-security/overview/"))
+
+
+    public SecurityAccessControlResponse getSecurityAccessControl(@Parameter(description="control name")  @PathVariable String controlName,
+                                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
+    {
+        return adminSecurityAPI.getSecurityAccessControl(delegatingUserId, controlName);
+    }
+
+
+    /**
+     * Clear the security access control with the platform security connector.
+     *
+     * @param controlName    user id of the account
+     * @param delegatingUserId external userId making request
+     * @return void response
+     */
+    @DeleteMapping(path = "/security-access-controls/{controlName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSecurityAccessControl",
+            description="Clear the security access control with the platform security connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/platform-services/overview/"))
+
+    public  VoidResponse deleteSecurityAccessControl(@Parameter(description="control name")  @PathVariable String controlName,
+                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
+    {
+        return adminSecurityAPI.deleteSecurityAccessControl(delegatingUserId, controlName);
     }
 }

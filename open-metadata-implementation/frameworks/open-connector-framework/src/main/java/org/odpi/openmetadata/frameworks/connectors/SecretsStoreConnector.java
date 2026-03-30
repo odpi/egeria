@@ -241,6 +241,31 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
 
 
     /**
+     * Save the requested security access control in the secrets collection.
+     *
+     * @param controlName      controlName for the lookup
+     * @param securityAccessControl associated control details
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    public void saveSecurityAccessControl(String                controlName,
+                                          SecurityAccessControl securityAccessControl) throws ConnectorCheckedException
+    {
+    }
+
+
+
+    /**
+     * Delete the requested security access control stored in the secrets collection.
+     *
+     * @param controlName control for the lookup
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    public void deleteSecurityAccessControl(String controlName) throws ConnectorCheckedException
+    {
+    }
+
+
+    /**
      * Look up a particular named list in the collection.
      *
      * @param listName name of a list

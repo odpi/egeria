@@ -3602,53 +3602,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate that the parameters passed to addEntity are valid.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
-     * @param initialProperties initial list of properties for the new entity; null means no properties.
-     * @param initialClassifications initial list of classifications for the new entity; null means no classifications.
-     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
-     * not have any relationships at this stage.
-     * @return typeDef of the entity's type
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
-     *                              hosting the metadata collection.
-     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
-     *                                  characteristics in the TypeDef for this entity's type.
-     * @throws ClassificationErrorException one or more of the requested classifications are either not known or
-     *                                           not defined for this entity type.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                       the requested status.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected TypeDef addEntityParameterValidation(String                     userId,
-                                                   String                     entityTypeGUID,
-                                                   InstanceProperties         initialProperties,
-                                                   List<Classification>       initialClassifications,
-                                                   InstanceStatus             initialStatus) throws InvalidParameterException,
-                                                                                                    RepositoryErrorException,
-                                                                                                    TypeErrorException,
-                                                                                                    PropertyErrorException,
-                                                                                                    ClassificationErrorException,
-                                                                                                    StatusNotSupportedException,
-                                                                                                    UserNotAuthorizedException
-    {
-        final String  methodName    = "addEntity";
-
-        return this.addEntityParameterValidation(userId,
-                                                 entityTypeGUID,
-                                                 initialProperties,
-                                                 initialClassifications,
-                                                 initialStatus,
-                                                 methodName);
-    }
-
-
-    /**
      * Validate parameters needed to save a new entity that is sourced from an external technology.
      *
      * @param userId unique identifier for requesting user.
@@ -3782,30 +3735,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the parameters for calls that manage an existing instance.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param instanceGUID String unique identifier (guid) for the instance.
-     * @param methodName name of the calling method.
-     * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected void manageInstanceParameterValidation(String  userId,
-                                                     String  instanceGUID,
-                                                     String  methodName) throws InvalidParameterException,
-                                                                                RepositoryErrorException,
-                                                                                UserNotAuthorizedException
-    {
-        final String  instanceGUIDParameterName  = "instanceGUID";
-
-        this.manageInstanceParameterValidation(userId, instanceGUID, instanceGUIDParameterName, methodName);
-    }
-
-
-    /**
      * Validate the parameters passed to delete() or purge() instance method.
      *
      * @param userId unique identifier for requesting user.
@@ -3837,37 +3766,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                typeDefName,
                                                methodName);
         repositoryValidator.validateGUID(repositoryName, instanceGUIDParameterName, instanceGUID, methodName);
-    }
-
-
-
-
-
-    /**
-     * Validate the parameters passed to delete() or purge() instance method.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the instance to delete.
-     * @param typeDefName unique name of the type of the instance to delete.
-     * @param instanceGUID String unique identifier (guid) for the instance.
-     * @param methodName calling method
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected void  removeInstanceParameterValidation(String userId,
-                                                      String typeDefGUID,
-                                                      String typeDefName,
-                                                      String instanceGUID,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                RepositoryErrorException,
-                                                                                UserNotAuthorizedException
-    {
-        final String  instanceGUIDParameterName  = "instanceGUID";
-
-        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, instanceGUID, instanceGUIDParameterName, methodName);
     }
 
 
@@ -3912,35 +3810,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         return typeDef;
     }
 
-
-    /**
-     * Validate the parameters passed to classifyEntity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID String unique identifier (guid) for the entity.
-     * @param classificationName String name for the classification.
-     * @param classificationProperties list of properties to set in the classification.
-     * @return typeDef for the classification
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
-     *                                characteristics in the TypeDef for this classification type
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected TypeDef  classifyEntityParameterValidation(String               userId,
-                                                         String               entityGUID,
-                                                         String               classificationName,
-                                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
-                                                                                                               RepositoryErrorException,
-                                                                                                               PropertyErrorException,
-                                                                                                               UserNotAuthorizedException
-    {
-        final String  methodName   = "classifyEntity";
-
-        return classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
-    }
 
     /**
      * Validate the parameters passed to classifyEntity.
@@ -4049,90 +3918,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the parameters passed to declassifyEntity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID String unique identifier (guid) for the entity.
-     * @param classificationName String name for the classification.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     */
-    @Deprecated
-    protected void declassifyEntityParameterValidation(String    userId,
-                                                       String    entityGUID,
-                                                       String    classificationName) throws InvalidParameterException,
-                                                                                            RepositoryErrorException
-    {
-
-        final String  methodName     = "declassifyEntity";
-
-        this.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
-    }
-
-
-    /**
-     * Validate the parameters passed to updateEntityClassification.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID String unique identifier (guid) for the entity.
-     * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
-     * @return typeDef for the classification
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
-     *                                characteristics in the TypeDef for this classification type
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected TypeDef updateEntityClassificationParameterValidation(String               userId,
-                                                                    String               entityGUID,
-                                                                    String               classificationName,
-                                                                    InstanceProperties   properties) throws InvalidParameterException,
-                                                                                                            RepositoryErrorException,
-                                                                                                            PropertyErrorException,
-                                                                                                            UserNotAuthorizedException
-    {
-        final String  methodName = "updateEntityClassification";
-
-        return classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
-    }
-
-
-
-    /**
-     * Validate the parameters passed to updateEntityClassification.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityProxy proxy for the entity.
-     * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
-     * @return typeDef for the classification
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
-     *                                characteristics in the TypeDef for this classification type
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected TypeDef updateEntityClassificationParameterValidation(String               userId,
-                                                                    EntityProxy          entityProxy,
-                                                                    String               classificationName,
-                                                                    InstanceProperties   properties) throws InvalidParameterException,
-                                                                                                            RepositoryErrorException,
-                                                                                                            PropertyErrorException,
-                                                                                                            UserNotAuthorizedException
-    {
-        final String  methodName = "updateEntityClassification";
-
-        return classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
-    }
-
-
-    /**
      * Validate the parameters for adding a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
@@ -4199,52 +3984,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                    methodName);
 
         return typeDef;
-    }
-
-
-    /**
-     * Validate the parameters for adding a new relationship between two entities to the metadata collection.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param initialProperties initial list of properties for the new entity; null means no properties.
-     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
-     * @return type definition
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException a problem communicating with the metadata repository where
-     *                                 the metadata collection is stored.
-     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
-     *                            hosting the metadata collection.
-     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
-     *                                  characteristics in the TypeDef for this relationship's type.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                     the requested status.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    protected TypeDef addRelationshipParameterValidation(String               userId,
-                                                         String               relationshipTypeGUID,
-                                                         InstanceProperties   initialProperties,
-                                                         String               entityOneGUID,
-                                                         String               entityTwoGUID,
-                                                         InstanceStatus       initialStatus) throws InvalidParameterException,
-                                                                                                    RepositoryErrorException,
-                                                                                                    TypeErrorException,
-                                                                                                    PropertyErrorException,
-                                                                                                    StatusNotSupportedException,
-                                                                                                    UserNotAuthorizedException
-    {
-        final String methodName          = "addRelationship";
-
-        return this.addRelationshipParameterValidation(userId,
-                                                       relationshipTypeGUID,
-                                                       initialProperties,
-                                                       entityOneGUID,
-                                                       entityTwoGUID,
-                                                       initialStatus,
-                                                       methodName);
     }
 
 

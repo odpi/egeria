@@ -733,8 +733,7 @@ Content-Type: application/json
 ###
 # @name createDataSharingAgreementCollection 
 # Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement
-# which may use the NewElementRequestBody, or the NewAgreementRequestBody if the initial status needs to be set.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-sharing-agreement
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -826,7 +825,7 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "AgreementActorProperties",
-    "actorName": "add name of actor used in agreement text",
+    "agreementPartyName": "add name of party used in agreement text",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
@@ -1062,7 +1061,7 @@ Content-Type: application/json
 # Attach a subscriber to a subscription.  The subscriber is of type 'Referenceable' to allow digital
 # products, team or business capabilities to be the subscriber.
 # The subscription is an element of type DigitalSubscription.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1085,7 +1084,7 @@ Content-Type: application/json
 ###
 # @name detachSubscriber
 # Detach a subscriber from a subscription.  Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

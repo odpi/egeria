@@ -548,17 +548,15 @@ Content-Type: application/json
 # Set up the overall data sharing agreement collection.  This groups all of the information for
 # a data data sharing agreement between Coco Pharmaceuticals and a hospital.
 
-
 ###
 # @name createDataSharingAgreementCollection
-# Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement
-# which may use the NewElementRequestBody, or the NewAgreementRequestBody if the initial status needs to be set.
+# Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/collections/data-sharing-agreement
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewAgreementRequestBody",
+  "class" : "NewElementRequestBody",
   "isOwnAnchor" : true,
   "anchorScopeGUIDs" : ["{{ctDataDictionaryGUID}}"],
   "properties": {

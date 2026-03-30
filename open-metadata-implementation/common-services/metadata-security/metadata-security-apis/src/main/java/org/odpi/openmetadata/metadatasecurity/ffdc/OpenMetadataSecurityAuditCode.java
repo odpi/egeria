@@ -34,39 +34,39 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
      * OPEN-METADATA-SECURITY-0002 - The Open Metadata Security Service {0} for OMAG Server Platform {1} is shutting down
      */
     PLATFORM_SHUTDOWN("OPEN-METADATA-SECURITY-0002",
-                     AuditLogRecordSeverityLevel.SHUTDOWN,
-                     "The Open Metadata Security Service {0} for OMAG Server Platform {1} is shutting down",
-                     "The local administrator has requested shut down of the Open Metadata Platform Security Service Connector.",
-                     "No action is required.  This is part of the normal operation of the service."),
+                      AuditLogRecordSeverityLevel.SHUTDOWN,
+                      "The Open Metadata Security Service {0} for OMAG Server Platform {1} is shutting down",
+                      "The local administrator has requested shut down of the Open Metadata Platform Security Service Connector.",
+                      "No action is required.  This is part of the normal operation of the service."),
 
 
     /**
      * OPEN-METADATA-SECURITY-0003 - The Open Metadata Security Service {0} for server {1} is initializing
      */
     SERVICE_INITIALIZING("OPEN-METADATA-SECURITY-0003",
-             AuditLogRecordSeverityLevel.STARTUP,
-             "The Open Metadata Security Service {0} for server {1} is initializing",
-             "The local server has started up a new instance of the Open Metadata Server Security Service Connector.",
-             "No action is required.  This is part of the normal operation of the service."),
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The Open Metadata Security Service {0} for server {1} is initializing",
+                         "The local server has started up a new instance of the Open Metadata Server Security Service Connector.",
+                         "No action is required.  This is part of the normal operation of the service."),
 
     /**
      * OPEN-METADATA-SECURITY-0004 - The Open Metadata Security Service {0} for server {1} is shutting down
      */
     SERVICE_SHUTDOWN("OPEN-METADATA-SECURITY-0004",
-             AuditLogRecordSeverityLevel.SHUTDOWN,
-             "The Open Metadata Security Service {0} for server {1} is shutting down",
-             "The local administrator has requested shut down of the Open Metadata Server Security Service Connector.",
-             "No action is required.  This is part of the normal operation of the service."),
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
+                     "The Open Metadata Security Service {0} for server {1} is shutting down",
+                     "The local administrator has requested shut down of the Open Metadata Server Security Service Connector.",
+                     "No action is required.  This is part of the normal operation of the service."),
 
     /**
      * OPEN-METADATA-SECURITY-0005 - User {0} is not authorized to issue a request to this OMAG Server Platform
      */
     UNAUTHORIZED_PLATFORM_ACCESS("OPEN-METADATA-SECURITY-0005",
-             AuditLogRecordSeverityLevel.SECURITY,
-             "User {0} is not authorized to issue a {1} request to OMAG Server Platform {2}",
-             "The security service detected an unauthorized access to an OMAG Server Platform.",
-             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                        "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                 AuditLogRecordSeverityLevel.SECURITY,
+                                 "User {0} is not authorized to issue a {1} request to OMAG Server Platform {2}",
+                                 "The security service detected an unauthorized access to an OMAG Server Platform.",
+                                 "Review the security policies and settings to determine if this access should be allowed or not." +
+                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0006 - User {0} is not authorized to issue a request to server {1}
@@ -97,7 +97,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                               "User {0} is not authorized to attach feedback to asset {1}",
                               "The security service detected an unauthorized change to an asset.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
-                                        "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0009 - User {0} is not authorized to change the zone membership of element {1} from {2} to {3}
@@ -113,11 +113,11 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
      * OPEN-METADATA-SECURITY-0010 - User {0} is not authorized to use connection {1}
      */
     UNAUTHORIZED_CONNECTION_ACCESS("OPEN-METADATA-SECURITY-0010",
-             AuditLogRecordSeverityLevel.SECURITY,
-             "User {0} is not authorized to use connection {1}",
-             "The security service detected an unauthorized access to an asset.",
-             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                   AuditLogRecordSeverityLevel.SECURITY,
+                                   "User {0} is not authorized to use connection {1}",
+                                   "The security service detected an unauthorized access to an asset.",
+                                   "Review the security policies and settings to determine if this access should be allowed or not." +
+                                           "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
@@ -127,13 +127,13 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
                                "The security service detected an unauthorized access to a member of the anchor element.",
                                "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0012 - User {0} is not authorized to create an asset of type {1}
      */
     UNAUTHORIZED_ASSET_CREATE("OPEN-METADATA-SECURITY-0012",
-                               AuditLogRecordSeverityLevel.SECURITY,
+                              AuditLogRecordSeverityLevel.SECURITY,
                               "User {0} is not authorized to create an asset of type {1}",
                               "The security service detected an unauthorized create of an asset.",
                               "Review the security policies and settings to determine if this create should be allowed or not." +
@@ -152,21 +152,21 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     /**
      * OPEN-METADATA-SECURITY-0014 - User {0} is not authorized to change asset {1} because it has missing properties: {2}
      */
-    INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0014",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
-                              "The system cannot process a request from the user because the asset is not correctly or completely filled out.",
-                              "The request fails with a UserNotAuthorizedException exception."),
+    INCOMPLETE_ASSET("OPEN-METADATA-SECURITY-0014",
+                     AuditLogRecordSeverityLevel.SECURITY,
+                     "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
+                     "The system cannot process a request from the user because the asset is not correctly or completely filled out.",
+                     "The request fails with a UserNotAuthorizedException exception."),
 
     /**
      * OPEN-METADATA-SECURITY-0015 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
      */
     UNAUTHORIZED_TYPE_ACCESS("OPEN-METADATA-SECURITY-0015",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
-                              "The security service detected an unauthorized access of an open metadata type.",
-                              "Review the security policies and settings to determine if this access should be allowed or not." +
-                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                             AuditLogRecordSeverityLevel.SECURITY,
+                             "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
+                             "The security service detected an unauthorized access of an open metadata type.",
+                             "Review the security policies and settings to determine if this access should be allowed or not." +
+                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0016 - User {0} is not authorized to change open metadata type {1} ({2}) on server {3}
@@ -192,21 +192,21 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
      * OPEN-METADATA-SECURITY-0018 - User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}
      */
     UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0018",
-                             AuditLogRecordSeverityLevel.SECURITY,
-                             "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
-                             "The security service detected an unauthorized access of an open metadata type.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                 AuditLogRecordSeverityLevel.SECURITY,
+                                 "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
+                                 "The security service detected an unauthorized access of an open metadata type.",
+                                 "Review the security policies and settings to determine if this access should be allowed or not." +
+                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0019 - User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}
      */
     UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0019",
-                             AuditLogRecordSeverityLevel.SECURITY,
-                             "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
-                             "The security service detected an unauthorized change of an open metadata instance.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                 AuditLogRecordSeverityLevel.SECURITY,
+                                 "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
+                                 "The security service detected an unauthorized change of an open metadata instance.",
+                                 "Review the security policies and settings to determine if this access should be allowed or not." +
+                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on {2} element {3}
@@ -216,7 +216,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                 "User {0} is not authorized to issue operation {1} on {2} element {3}",
                                 "The security service detected an unauthorized access to an element.",
                                 "Review the security policies and settings to determine if this access to the element should be allowed or not." +
-                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+                                        "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
      * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the anchor is null
@@ -237,13 +237,13 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                  "Track down the source of the request and either add the user to the user directory or prevent the user from accessing again."),
 
     /**
-     * OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; message was {2}
+     * OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; the exception message was {2}
      */
     FAILED_TO_RETRIEVE_USER("OPEN-METADATA-SECURITY-0023",
-                 AuditLogRecordSeverityLevel.SECURITY,
-                 "Exception {0} occurred when retrieving user {1}; message was {2}",
-                 "An exception occurred when the security service tried to retrieve a user account.",
-                 "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
+                            AuditLogRecordSeverityLevel.SECURITY,
+                            "Exception {0} occurred when retrieving user {1}; the exception message was {2}",
+                            "An exception occurred when the security service tried to retrieve a user account.",
+                            "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
 
     /**
      * OPEN-METADATA-SECURITY-0024 - User {0} has expired credentials
@@ -253,6 +253,61 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                  "User {0} has expired credentials",
                  "The security service has received a request from a user whose credentials have expired.",
                  "Track down the source of the request and encourage the used to rest their credentials (probably password)."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0025 - Security access control {0} is not recognized
+     */
+    UNKNOWN_CONTROL("OPEN-METADATA-SECURITY-0025",
+                    AuditLogRecordSeverityLevel.SECURITY,
+                    "Security access control {0} is not recognized",
+                    "The security service has received a request for an unknown control.",
+                    "Track down the source of the request and correct the name of the control - or add the missing control to the secrets store."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}
+     */
+    FAILED_TO_RETRIEVE_CONTROL("OPEN-METADATA-SECURITY-0026",
+                               AuditLogRecordSeverityLevel.SECURITY,
+                               "Exception {0} occurred when retrieving security access control {1}; the exception message was {2}",
+                               "An exception occurred when the security service tried to retrieve a security access control.",
+                               "Use the information in the exception to determine the cause of this error.  The control will not be returned to the calling user."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0027 - Adding user {0} to the platform user directory
+     */
+    ADDING_USER("OPEN-METADATA-SECURITY-0027",
+                AuditLogRecordSeverityLevel.SECURITY,
+                "Adding user {0} to the platform user directory",
+                "A user account is added or updated in the platform's user directory",
+                "Make sure this user is valid and has the correct permissions."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0028 - Removing user {0} from the platform user directory
+     */
+    REMOVING_USER("OPEN-METADATA-SECURITY-0028",
+                AuditLogRecordSeverityLevel.SECURITY,
+                "Removing user {0} from the platform user directory",
+                "A user account is removed from the platform's user directory",
+                "Make sure this user is no longer needed."),
+
+
+    /**
+     * OPEN-METADATA-SECURITY-0029 - Adding security access control {0} to the platform user directory
+     */
+    ADDING_CONTROL("OPEN-METADATA-SECURITY-0029",
+                AuditLogRecordSeverityLevel.SECURITY,
+                "Adding security access control {0} to the platform user directory",
+                "A security access control is added or updated in the platform's user directory",
+                "Make sure this control is valid and has the correct permissions."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0030 - Removing security access control {0} from the platform user directory
+     */
+    REMOVING_CONTROL("OPEN-METADATA-SECURITY-0030",
+                  AuditLogRecordSeverityLevel.SECURITY,
+                  "Removing security access control {0} from the platform user directory",
+                  "A security access control is removed from the platform's user directory.",
+                  "Make sure this control is no longer needed."),
 
     /**
      * OPEN-METADATA-SECURITY-0099 - The security connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}
@@ -265,38 +320,38 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
 
     ;
 
-    private final String                     logMessageId;
+    private final String                      logMessageId;
     private final AuditLogRecordSeverityLevel severity;
-    private final String                     logMessage;
-    private final String                     systemAction;
-    private final String                     userAction;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
      * The constructor for OpenMetadataSecurityAuditCode expects to be passed one of the enumeration rows defined in
      * OpenMetadataSecurityAuditCode above.   For example:
      * <br>
-     *     OpenMetadataSecurityAuditCode   auditCode = OpenMetadataSecurityAuditCode.SERVER_NOT_AVAILABLE;
+     * OpenMetadataSecurityAuditCode   auditCode = OpenMetadataSecurityAuditCode.SERVER_NOT_AVAILABLE;
      * <br>
      * This will expand out to the 5 parameters shown below.
      *
-     * @param messageId - unique identifier for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
+     * @param messageId    - unique identifier for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param userAction   - instructions for resolving the situation, if any
      */
-    OpenMetadataSecurityAuditCode(String                     messageId,
+    OpenMetadataSecurityAuditCode(String messageId,
                                   AuditLogRecordSeverityLevel severity,
-                                  String                     message,
-                                  String                     systemAction,
-                                  String                     userAction)
+                                  String message,
+                                  String systemAction,
+                                  String userAction)
     {
         this.logMessageId = messageId;
-        this.severity = severity;
-        this.logMessage = message;
+        this.severity     = severity;
+        this.logMessage   = message;
         this.systemAction = systemAction;
-        this.userAction = userAction;
+        this.userAction   = userAction;
     }
 
 
@@ -323,7 +378,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
         AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
                                                                                     severity,

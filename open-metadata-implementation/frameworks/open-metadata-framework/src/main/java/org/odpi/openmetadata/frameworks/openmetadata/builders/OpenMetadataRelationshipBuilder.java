@@ -401,8 +401,8 @@ public class OpenMetadataRelationshipBuilder
             else if (properties instanceof AgreementActorProperties agreementActorProperties)
             {
                 elementProperties =  propertyHelper.addStringProperty(elementProperties,
-                                                                      OpenMetadataProperty.ACTOR_NAME.name,
-                                                                      agreementActorProperties.getActorName());
+                                                                      OpenMetadataProperty.AGREEMENT_PARTY_NAME.name,
+                                                                      agreementActorProperties.getAgreementPartyName());
             }
             else if (properties instanceof AgreementItemProperties agreementItemProperties)
             {

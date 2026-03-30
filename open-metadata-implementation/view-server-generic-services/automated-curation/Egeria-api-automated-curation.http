@@ -574,7 +574,6 @@ Content-Type: application/json
 }
 
 
-
 ###
 # @name createElementFromTemplate (OMAG Server Platform)
 # Create a new element from a template.
@@ -594,6 +593,103 @@ Content-Type: application/json
   }
 }
 
+###
+# @name createElementFromTemplate (Secrets Store File)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "130d819e-e17d-46bf-bfea-d09d862e341f",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "fileSystemName" : "Add file system name",
+    "filePathName" : "Add full path name here, eg a/b/c/mySecrets.omsecrets",
+    "fileName" : "Add file name without enclosing directory names, eg mySecrets.omsecrets",
+    "description" : "Add description",
+    "fileType" : "Open Metadata Secrets Store File",
+    "fileExtension" : "omsecrets",
+    "fileEncoding" : "YAML",
+    "versionIdentifier" : "Add version identifier eg V1.0"
+  }
+}
+
+
+###
+#=====================================================================================================================
+# Manage client-side secrets
+# https://egeria-project.org/concepts/client-side-secret
+#
+
+@secretsStoreGUID=add guid here
+
+###
+# @name saveClientSideSecret
+# Creates or replaces the details of a client-side secret in the requested secret store.
+#
+# @param serverName       name of called server
+# @param secretsStoreGUID unique identifier of secret store asset
+# @param urlMarker        view service URL marker
+# @param requestBody      details of the secrets collection
+# @return a list of projects
+# InvalidParameterException  one of the parameters is null or invalid.
+# PropertyServerException    a problem retrieving information from the property server(s).
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/secrets-stores/{{secretsStoreGUID}}/client-side-secret/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "SecretsCollectionRequestBody",
+  "secretsCollection": {
+    "collectionName": "add secret name here",
+    "displayName": "add display name here",
+    "description": "add description here",
+    "refreshTimeInterval": 60,
+    "secrets": {
+      "secretName1" : "secretValue1",
+      "secretName2" : "secretValue2"
+    },
+    "tokenAPI": {
+      "httpRequestType": "GET",
+      "url": "Add URL for REST API call to retrieve bearer token.",
+      "contentType": "application/json",
+      "requestBody": {
+        "requestBodyProperty1" : "value1",
+        "requestBodyProperty2" : "value2"
+      },
+      "responseBodyMapping": {
+        "responseProperty1" : "secretName1",
+        "responseProperty2" : "secretName2"
+      }
+    }
+  }
+}
+
+###
+# @name deleteClientSideSecret
+# Deletes a client-side secret from the requested secret store.
+#
+# @param serverName       name of called server
+# @param secretsStoreGUID unique identifier of secret store asset
+# @param urlMarker        view service URL marker
+# @param requestBody      details of the secrets collection
+# @return a list of projects
+# InvalidParameterException  one of the parameters is null or invalid.
+# PropertyServerException    a problem retrieving information from the property server(s).
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/secrets-stores/{{secretsStoreGUID}}/client-side-secret/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name": "add secret name here"
+}
 
 
 ###

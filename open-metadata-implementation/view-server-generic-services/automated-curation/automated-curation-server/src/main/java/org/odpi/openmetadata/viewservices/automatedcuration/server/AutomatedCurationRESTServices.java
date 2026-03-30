@@ -3,11 +3,14 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
@@ -408,6 +411,152 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                classificationBuilder.getInitialClassifications(requestBody.getReplacementClassifications()),
                                                                                requestBody.getPlaceholderPropertyValues(),
                                                                                relationshipBuilder.getNewElementProperties(requestBody.getParentRelationshipProperties())));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * Client-side secrets
+     */
+
+
+    /**
+     * Creates or replaces the details of a client-side secret in the requested secret store.
+     *
+     * @param serverName       name of called server
+     * @param secretsStoreGUID unique identifier of secret store asset
+     * @param urlMarker        view service URL marker
+     * @param requestBody      details of the secrets collection
+     * @return a list of projects
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse saveClientSideSecret(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       secretsStoreGUID,
+                                             SecretsCollectionRequestBody requestBody)
+    {
+        final String methodName    = "createClientSideSecret";
+        final String parameterName = "requestBody.secretsCollection.collectionName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, urlMarker, methodName);
+
+            Connector connector = connectedAssetClient.getConnectorForAsset(userId, secretsStoreGUID, auditLog);
+
+            if (requestBody != null)
+            {
+                if ((requestBody.getSecretsCollection() != null) && (requestBody.getSecretsCollection().getCollectionName() != null))
+                {
+                    if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+                    {
+                        connector.start();
+
+                        yamlSecretsFileConnector.saveSecretsCollection(requestBody.getSecretsCollection().getCollectionName(), requestBody.getSecretsCollection());
+
+                        connector.disconnect();
+                    }
+                }
+                else
+                {
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Removes the named client-side secret from the secrets store
+     *
+     * @param serverName       name of called server
+     * @param secretsStoreGUID unique identifier of secret store asset
+     * @param urlMarker        view service URL marker
+     * @param requestBody      name of the secrets collection
+     *
+     * @return a list of projects
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteClientSideSecret(String          serverName,
+                                               String          urlMarker,
+                                               String          secretsStoreGUID,
+                                               NameRequestBody requestBody)
+    {
+        final String methodName    = "deleteClientSideSecret";
+        final String parameterName = "requestBody.secretsCollection.collectionName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, urlMarker, methodName);
+
+            Connector connector = connectedAssetClient.getConnectorForAsset(userId, secretsStoreGUID, auditLog);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getName() != null)
+                {
+                    if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+                    {
+                        connector.start();
+
+                        yamlSecretsFileConnector.deleteSecretsCollection(requestBody.getName());
+
+                        connector.disconnect();
+                    }
+                }
+                else
+                {
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
             }
             else
             {

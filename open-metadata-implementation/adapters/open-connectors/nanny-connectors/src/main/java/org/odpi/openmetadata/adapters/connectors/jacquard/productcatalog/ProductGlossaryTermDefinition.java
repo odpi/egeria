@@ -104,7 +104,7 @@ public enum ProductGlossaryTermDefinition
 
     public String getQualifiedName()
     {
-        return OpenMetadataType.GLOSSARY_TERM.typeName + "::OpenMetadataProductCatalog::" + displayName;
+        return OpenMetadataType.GLOSSARY_TERM.typeName + "::Jacquard::" + displayName;
     }
 
 

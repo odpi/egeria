@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Map;
  */
 public class OMRSConnectorErrorException extends OMRSRuntimeException
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**
@@ -20,7 +22,7 @@ public class OMRSConnectorErrorException extends OMRSRuntimeException
      *
      * @param messageDefinition  content of the message
      * @param className   name of class reporting error
-     * @param actionDescription   description of function it was performing when error detected
+     * @param actionDescription   description of the function it was performing when the error was detected
      */
     public OMRSConnectorErrorException(ExceptionMessageDefinition messageDefinition,
                                        String                     className,
@@ -124,40 +126,5 @@ public class OMRSConnectorErrorException extends OMRSRuntimeException
               userAction,
               caughtErrorClassName,
               relatedProperties);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating an OMRSLogicErrorException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    public OMRSConnectorErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating a OMRSLogicErrorException when an unexpected exception has been caught.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  previous error causing this exception
-     */
-    @Deprecated
-    public OMRSConnectorErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

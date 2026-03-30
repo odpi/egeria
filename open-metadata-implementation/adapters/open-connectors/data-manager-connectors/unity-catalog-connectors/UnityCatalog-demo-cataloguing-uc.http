@@ -223,7 +223,7 @@ Content-Type: application/json
     "serverName" : "Databricks UC",
     "hostURL" : "http://localhost",
     "portNumber" : "8080",
-    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
     "description" : "Local Unity Catalog",
     "versionIdentifier" : "V1.0"
   }

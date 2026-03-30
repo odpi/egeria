@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 
 import java.util.*;
@@ -243,6 +244,58 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
                                                                PropertyServerException
     {
         extractor.deleteUserAccount(accountUserId);
+    }
+
+
+
+    /**
+     * Set up a new security access control or update an existing one.
+     * This is control is registered with the platform security connector.  The user
+     * requires operator permission for the platform.
+     *
+     * @param securityAccessControl details about the control to update
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+
+    public void setSecurityAccessControl(OpenMetadataSecurityAccessControl securityAccessControl) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        extractor.setSecurityAccessControl(securityAccessControl);
+    }
+
+
+    /**
+     * Return details of a security access control registered with the platform security connector.
+     *
+     * @param controlName identifier for the control to retrieve
+     * @throws UserNotAuthorizedException the supplied user id (from bearer token) is not authorized to issue this command.
+     * @throws InvalidParameterException  invalid parameter.
+     * @throws PropertyServerException    unusual state in the platform.
+     */
+    public OpenMetadataSecurityAccessControl getSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException
+    {
+        return extractor.getSecurityAccessControl(controlName);
+    }
+
+
+    /**
+     * Clear the requested security access control with the platform security connector.
+     *
+     * @param controlName identifier for the control to remove
+     * @throws UserNotAuthorizedException the supplied user is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void deleteSecurityAccessControl(String controlName) throws UserNotAuthorizedException,
+                                                                       InvalidParameterException,
+                                                                       PropertyServerException
+    {
+        extractor.deleteSecurityAccessControl(controlName);
     }
 
 

@@ -349,7 +349,7 @@ public class OpenMetadataConformanceTestReport
         String serverName = args[0];
         String serverURLRoot = args[1];
         String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
-        String secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String secretsStoreLocation = "secrets/coco-user-directory.omsecrets";
         String secretsStoreCollection = "garygeeke";
         String userId = defaultUserId;
 

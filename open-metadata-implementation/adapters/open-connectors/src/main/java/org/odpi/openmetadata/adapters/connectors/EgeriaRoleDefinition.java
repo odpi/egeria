@@ -39,6 +39,24 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
                       "Python Programmer",
                       "A person/system capable of writing python code."),
 
+    SECURITY_MANAGER("731c2c95-201e-4b04-859d-b8a2a8de0800",
+                     OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
+                     "SECURITY-MANAGER",
+                     "Security Manager",
+                     "A person/process responsible for the security of the open metadata ecosystem."),
+
+    DIGITAL_PRODUCT_MANAGER("51538271-3464-4efe-b2f2-4c30a2230589",
+                            OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
+                            "DIGITAL-PRODUCT-MANAGER",
+                            "Digital Product Manager",
+                            "A person responsible for the development and management of digital products."),
+
+    RUNTIME_MANAGER("19d7e01f-6177-452e-afda-d6311900f900",
+                    OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
+                    "RUNTIME-MANAGER",
+                    "Runtime Manager",
+                    "A person responsible for the management and operation of the Open Metadata runtime environments.  This includes Egeria and its dependent software."),
+
     ;
 
     private final String guid;

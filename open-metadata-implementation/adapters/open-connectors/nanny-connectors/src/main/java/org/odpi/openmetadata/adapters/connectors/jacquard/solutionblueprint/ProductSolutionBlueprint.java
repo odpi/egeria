@@ -154,7 +154,7 @@ public enum ProductSolutionBlueprint
      */
     public String getQualifiedName()
     {
-        return "SolutionBlueprint::OpenMetadataDigitalProduct::" + displayName + "::" + versionIdentifier;
+        return "SolutionBlueprint::Jacquard::" + displayName + "::" + versionIdentifier;
     }
 
 

@@ -15,8 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OCFConnectionResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
- * Connection object as a response.
+ * UserAccountResponse is the response structure used to return an Open Metadata User Account object.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

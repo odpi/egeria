@@ -326,7 +326,7 @@ public enum ProductSolutionComponent
      */
     public String getQualifiedName()
     {
-        return "SolutionComponent::OpenMetadataDigitalProduct::" + displayName + "::" + versionIdentifier;
+        return "SolutionComponent::Jacquard::" + displayName + "::" + versionIdentifier;
     }
 
 

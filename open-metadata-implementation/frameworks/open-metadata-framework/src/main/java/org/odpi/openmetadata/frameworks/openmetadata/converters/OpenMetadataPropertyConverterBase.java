@@ -384,14 +384,14 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string text or null
      */
-    protected String removeActorName(ElementProperties  elementProperties)
+    protected String removeAgreementPartyName(ElementProperties  elementProperties)
     {
-        final String methodName = "removeActorName";
+        final String methodName = "removeAgreementPartyName";
 
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.ACTOR_NAME.name,
+                                                       OpenMetadataProperty.AGREEMENT_PARTY_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -12671,7 +12671,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new AgreementActorProperties();
 
-                ((AgreementActorProperties)relationshipBeanProperties).setActorName(this.removeActorName(elementProperties));
+                ((AgreementActorProperties)relationshipBeanProperties).setAgreementPartyName(this.removeAgreementPartyName(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName))
             {

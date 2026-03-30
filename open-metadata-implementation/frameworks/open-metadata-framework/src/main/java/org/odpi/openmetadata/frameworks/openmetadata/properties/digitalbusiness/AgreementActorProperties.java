@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AgreementActorProperties extends RelationshipBeanProperties
 {
-    private String actorName = null;
+    private String agreementPartyName = null;
 
 
     /**
@@ -46,30 +46,30 @@ public class AgreementActorProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            actorName = template.getActorName();
+            agreementPartyName = template.getAgreementPartyName();
         }
     }
 
 
     /**
-     * Set up the name of the role from the agreement text.
+     * Set up the name of the party from the agreement text.
      *
-     * @param actorName String name
+     * @param agreementPartyName String name
      */
-    public void setActorName(String actorName)
+    public void setAgreementPartyName(String agreementPartyName)
     {
-        this.actorName = actorName;
+        this.agreementPartyName = agreementPartyName;
     }
 
 
     /**
-     * Returns the name of the role from the agreement text.
+     * Returns the name of the party from the agreement text.
      *
      * @return String name
      */
-    public String getActorName()
+    public String getAgreementPartyName()
     {
-        return actorName;
+        return agreementPartyName;
     }
 
 
@@ -82,7 +82,7 @@ public class AgreementActorProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "AgreementActorProperties{" +
-                "roleName='" + actorName + '\'' +
+                "agreementPartyName'" + agreementPartyName + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class AgreementActorProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        return Objects.equals(actorName, that.actorName);
+        return Objects.equals(agreementPartyName, that.agreementPartyName);
     }
 
 
@@ -120,6 +120,6 @@ public class AgreementActorProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), actorName);
+        return Objects.hash(super.hashCode(), agreementPartyName);
     }
 }

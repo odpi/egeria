@@ -26,8 +26,6 @@ public class OMAGServerPlatformCatalogProvider extends IntegrationConnectorProvi
     {
         super(EgeriaOpenConnectorDefinition.OMAG_SERVER_PLATFORM_CATALOG_INTEGRATION_CONNECTOR,
               connectorClassName,
-              OMAGServerPlatformConfigurationProperty.getRecognizedConfigurationProperties());
-
-        super.supportedConfigurationProperties = OMAGServerPlatformConfigurationProperty.getConfigurationPropertyTypes();
+              null);
     }
 }
