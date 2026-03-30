@@ -124,72 +124,88 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new element from a template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeSummaryListResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeSummaryListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findTechnologyTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteClientSideSecret(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">deleteClientSideSecret</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreGUID,
+ <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Removes the named client-side secret from the secrets store</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeSummaryListResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeSummaryListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findTechnologyTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of deployed implementation type metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/gaf/rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/gaf/rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the engine actions that are still in process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeReportResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeReportResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeDetail(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeDetail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the requested deployed implementation type metadata element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeElements(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeReportResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeReportResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeDetail(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeDetail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the requested deployed implementation type metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeHierarchyResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeHierarchyResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeElements(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the requested deployed implementation type metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeHierarchyResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeHierarchyResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypeHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getTechnologyTypeHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the requested deployed implementation type metadata element and its subtypes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeSummaryListResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeSummaryListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypesForOpenMetadataType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getTechnologyTypesForOpenMetadataType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/TechnologyTypeSummaryListResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeSummaryListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTechnologyTypesForOpenMetadataType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getTechnologyTypesForOpenMetadataType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateEngineActionRequestBody)" class="member-name-link">initiateEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateEngineActionRequestBody)" class="member-name-link">initiateEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName,
  <a href="../../../frameworkservices/gaf/rest/InitiateEngineActionRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateEngineActionRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a governance action in the metadata store which will trigger the governance action service
  associated with the supplied request type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="../../../frameworkservices/gaf/rest/InitiateGovernanceActionProcessRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateGovernanceActionProcessRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionType(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionTypeRequestBody)" class="member-name-link">initiateGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionType(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionTypeRequestBody)" class="member-name-link">initiateGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="../../../frameworkservices/gaf/rest/InitiateGovernanceActionTypeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateGovernanceActionTypeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the named governance action type as a template, initiate an engine action.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveClientSideSecret(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SecretsCollectionRequestBody)" class="member-name-link">saveClientSideSecret</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreGUID,
+ <a href="../../../commonservices/ffdc/rest/SecretsCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecretsCollectionRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Creates or replaces the details of a client-side secret in the requested secret store.</div>
 </div>
 </div>
 </div>
@@ -345,6 +361,50 @@ loadScripts(document, 'script');</script>
   InvalidParameterException  one of the parameters is invalid
   UserNotAuthorizedException the user is not authorized to issue this request
   PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="saveClientSideSecret(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SecretsCollectionRequestBody)">
+<h3>saveClientSideSecret</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">saveClientSideSecret</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreGUID,
+ <a href="../../../commonservices/ffdc/rest/SecretsCollectionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecretsCollectionRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Creates or replaces the details of a client-side secret in the requested secret store.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>secretsStoreGUID</code> - unique identifier of secret store asset</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>requestBody</code> - details of the secrets collection</dd>
+<dt>Returns:</dt>
+<dd>a list of projects
+ InvalidParameterException  one of the parameters is null or invalid.
+ PropertyServerException    a problem retrieving information from the property server(s).
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteClientSideSecret(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<h3>deleteClientSideSecret</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteClientSideSecret</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreGUID,
+ <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Removes the named client-side secret from the secrets store</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>secretsStoreGUID</code> - unique identifier of secret store asset</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>requestBody</code> - name of the secrets collection</dd>
+<dt>Returns:</dt>
+<dd>a list of projects
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

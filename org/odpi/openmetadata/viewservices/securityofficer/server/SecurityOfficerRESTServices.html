@@ -112,26 +112,40 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteUserAccount(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteSecurityAccessControl(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accountUserId)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the account for a user with the platform security connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachGovernanceZones(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachGovernanceZones</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteUserAccount(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accountUserId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clear the account for a user with the platform security connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachGovernanceZones(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachGovernanceZones</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceZoneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedGovernanceZoneGUID,
  <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach governance zone from a hierarchical relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SecurityAccessControlResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityAccessControlResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecurityAccessControl(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return details of a security access control registered with the platform security connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/UserAccountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UserAccountResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserAccount(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accountUserId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of a user account registered with the platform security connector.</div>
+<div class="block">Return details of a security access control registered with the platform security connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkGovernanceZones(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkGovernanceZones</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -142,11 +156,18 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach governance zones in a hierarchy.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserAccount(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody)" class="member-name-link">setUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecurityAccessControl(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlRequestBody)" class="member-name-link">setSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="../../../commonservices/ffdc/rest/SecurityAccessControlRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityAccessControlRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a new security access control or update an existing one.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserAccount(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody)" class="member-name-link">setUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
  <a href="../../../commonservices/ffdc/rest/UserAccountRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UserAccountRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a new user account or update an existing one.</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a new security access control or update an existing one.</div>
 </div>
 </div>
 </div>
@@ -189,14 +210,14 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setUserAccount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
  <a href="../../../commonservices/ffdc/rest/UserAccountRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UserAccountRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Set up a new user account or update an existing one.
+<div class="block">Set up a new security access control or update an existing one.
  This is account is registered with the platform security connector.  The user
- requires operator permission for the platform unless it is their own user account they are updating.</div>
+ requires operator permission for the platform unless it is their own security access control they are updating.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>platformGUID</code> - unique identifier of the platform</dd>
-<dd><code>requestBody</code> - containing the user account properties.</dd>
+<dd><code>requestBody</code> - containing the security access control properties.</dd>
 <dt>Returns:</dt>
 <dd>void or exceptions that occur when trying to create the connector:
  InvalidParameterException  one of the parameters is null or invalid.
@@ -211,14 +232,14 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/UserAccountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UserAccountResponse</a></span>&nbsp;<span class="element-name">getUserAccount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accountUserId)</span></div>
-<div class="block">Return details of a user account registered with the platform security connector.</div>
+<div class="block">Return details of a security access control registered with the platform security connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>platformGUID</code> - unique identifier of the platform</dd>
 <dd><code>accountUserId</code> - name of the connector provider class</dd>
 <dt>Returns:</dt>
-<dd>user account bean or exceptions that occur when trying to create the connector:
+<dd>security access control bean or exceptions that occur when trying to create the connector:
  InvalidParameterException  one of the parameters is null or invalid.
  PropertyServerException    a problem retrieving information from the property server(s).
  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
@@ -237,6 +258,68 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>platformGUID</code> - unique identifier of the platform</dd>
 <dd><code>accountUserId</code> - name of the connector provider class</dd>
+<dt>Returns:</dt>
+<dd>void or exceptions that occur when trying to create the connector:
+ InvalidParameterException  one of the parameters is null or invalid.
+ PropertyServerException    a problem retrieving information from the property server(s).
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecurityAccessControl(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlRequestBody)">
+<h3>setSecurityAccessControl</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setSecurityAccessControl</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="../../../commonservices/ffdc/rest/SecurityAccessControlRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityAccessControlRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Set up a new security access control or update an existing one.
+ This is account is registered with the platform security connector.  The user
+ requires operator permission for the platform.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>platformGUID</code> - unique identifier of the platform</dd>
+<dd><code>requestBody</code> - containing the security access control properties.</dd>
+<dt>Returns:</dt>
+<dd>void or exceptions that occur when trying to create the connector:
+ InvalidParameterException  one of the parameters is null or invalid.
+ PropertyServerException    a problem retrieving information from the property server(s).
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecurityAccessControl(java.lang.String,java.lang.String,java.lang.String)">
+<h3>getSecurityAccessControl</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SecurityAccessControlResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityAccessControlResponse</a></span>&nbsp;<span class="element-name">getSecurityAccessControl</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlName)</span></div>
+<div class="block">Return details of a security access control registered with the platform security connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>platformGUID</code> - unique identifier of the platform</dd>
+<dd><code>controlName</code> - name of the connector provider class</dd>
+<dt>Returns:</dt>
+<dd>security access control bean or exceptions that occur when trying to create the connector:
+ InvalidParameterException  one of the parameters is null or invalid.
+ PropertyServerException    a problem retrieving information from the property server(s).
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteSecurityAccessControl(java.lang.String,java.lang.String,java.lang.String)">
+<h3>deleteSecurityAccessControl</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteSecurityAccessControl</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlName)</span></div>
+<div class="block">Clear the account for a user with the platform security connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>platformGUID</code> - unique identifier of the platform</dd>
+<dd><code>controlName</code> - name of the control</dd>
 <dt>Returns:</dt>
 <dd>void or exceptions that occur when trying to create the connector:
  InvalidParameterException  one of the parameters is null or invalid.

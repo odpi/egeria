@@ -532,9 +532,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.</div>
+<div class="block">Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
@@ -559,7 +559,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the zone membership to decrease its visibility.  The defaultZones are defined in the user directory.</div>
 <dl class="notes">
