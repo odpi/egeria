@@ -374,7 +374,7 @@ public class ProductDefinitionBean implements ProductDefinition
     @Override
     public String getVersionIdentifier()
     {
-        return "6.0-SNAPSHOT";
+        return "6.1-SNAPSHOT";
     }
 
 

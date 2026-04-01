@@ -143,7 +143,7 @@ public enum DataSetTemplateType implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "6.0-SNAPSHOT";
+        return "6.1-SNAPSHOT";
     }
 
 

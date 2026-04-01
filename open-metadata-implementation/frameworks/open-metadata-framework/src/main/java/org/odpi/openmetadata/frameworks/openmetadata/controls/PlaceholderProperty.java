@@ -104,7 +104,7 @@ public enum PlaceholderProperty
     VERSION_IDENTIFIER ("versionIdentifier",
                         "The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
                         DataType.STRING.getDisplayName(),
-                        "6.0-SNAPSHOT"),
+                        "6.1-SNAPSHOT"),
 
     /**
      * The unique identifier of the home metadata collection for associated elements.
