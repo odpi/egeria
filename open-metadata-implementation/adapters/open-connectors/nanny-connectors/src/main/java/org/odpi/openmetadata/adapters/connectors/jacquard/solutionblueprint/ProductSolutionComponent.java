@@ -23,7 +23,7 @@ public enum ProductSolutionComponent
                        DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
                        "Jacquard Digital Product Loom",
                        "Defines and maintains digital products based on the content of the open metadata repositories.  These products are assembled into a digital product catalog along with a glossary and data dictionary.  This integration connector is started when the Open Metadata Digital Product Archive is loaded.  It is responsible for detecting opportunities for open metadata digital products, creating a catalog entry for them and then maintaining last update information in the product information.  This is used to drive the distribution of open metadata updates to subscribers.",
-                       "6.0-SNAPSHOT",
+                       "6.0",
                        new ProductSolutionBlueprint[]{
                                ProductSolutionBlueprint.ALL,
                                ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -37,7 +37,7 @@ public enum ProductSolutionComponent
                           DeployedImplementationType.DATA_SET.getDeployedImplementationType(),
                           "Open Metadata Product",
                           "This is the component that represents the data for an open metadata digital products.",
-                          "6.0-SNAPSHOT",
+                          "6.0",
                           new ProductSolutionBlueprint[]{
                                   ProductSolutionBlueprint.ALL,
                                   ProductSolutionBlueprint.SEARCHING_FOR_DATA,
@@ -54,7 +54,7 @@ public enum ProductSolutionComponent
                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
                          "Baudot Subscription Manager",
                          "This is the service that monitors for changes in registered products and notifies subscribers when changes occur.",
-                         "6.0-SNAPSHOT",
+                         "6.0",
                          new ProductSolutionBlueprint[]{
                                  ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
                                  ProductSolutionBlueprint.JACQUARD,
@@ -68,7 +68,7 @@ public enum ProductSolutionComponent
                           DeployedImplementationType.GOVERNANCE_SERVICE.getDeployedImplementationType(),
                           "Digital Product Provisioning Pipeline",
                           "This is the service that copies the product data to each of the subscribers' delivery location.",
-                          "6.0-SNAPSHOT",
+                          "6.0",
                           new ProductSolutionBlueprint[]{
                                   ProductSolutionBlueprint.ALL,
                                   ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -83,7 +83,7 @@ public enum ProductSolutionComponent
                               DeployedImplementationType.GOVERNANCE_SERVICE.getDeployedImplementationType(),
                               "Digital Product Delivery Location",
                               "This is the service that copies the product data to each of the subscribers' delivery location.",
-                              "6.0-SNAPSHOT",
+                              "6.0",
                               new ProductSolutionBlueprint[]{
                                       ProductSolutionBlueprint.ALL,
                                       ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -99,7 +99,7 @@ public enum ProductSolutionComponent
                                 null,
                                 "Digital Product Community",
                                 "The community of interest for those people who are using the open metadata digital products.",
-                                "6.0-SNAPSHOT",
+                                "6.0",
                                 new ProductSolutionBlueprint[]{
                                         ProductSolutionBlueprint.ALL,
                                         ProductSolutionBlueprint.PRODUCT_COMMUNITY},
@@ -111,7 +111,7 @@ public enum ProductSolutionComponent
                     null,
                     "Product Catalog",
                     "Supports the process of locating the appropriate digital product by providing organized, searchable descriptions of the digital products to the product consumers.",
-                    "6.0-SNAPSHOT",
+                    "6.0",
                     new ProductSolutionBlueprint[]{
                             ProductSolutionBlueprint.ALL,
                             ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -126,7 +126,7 @@ public enum ProductSolutionComponent
                              null,
                              "Create New Product Subscription",
                              "The process of setting up the subscription for a new consumer.",
-                             "6.0-SNAPSHOT",
+                             "6.0",
                              new ProductSolutionBlueprint[]{
                                      ProductSolutionBlueprint.ALL,
                                      ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -139,7 +139,7 @@ public enum ProductSolutionComponent
                                 null,
                                 "Cancel Product Subscription",
                                 "The process of cancelling an existing consumer's subscription to a digital product.",
-                                "6.0-SNAPSHOT",
+                                "6.0",
                                 new ProductSolutionBlueprint[]{
                                         ProductSolutionBlueprint.ALL,
                                         ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
@@ -153,7 +153,7 @@ public enum ProductSolutionComponent
                           null,
                           "Metadata Access Store",
                           "The server that provides access to the open metadata ecosystem.",
-                          "6.0-SNAPSHOT",
+                          "6.0",
                           new ProductSolutionBlueprint[]{
                                   ProductSolutionBlueprint.ALL,
                                   ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
