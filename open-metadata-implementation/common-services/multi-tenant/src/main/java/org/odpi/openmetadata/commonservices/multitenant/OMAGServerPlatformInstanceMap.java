@@ -33,7 +33,7 @@ public class OMAGServerPlatformInstanceMap
     private static final Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
     private static final Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
 
-    private static final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.0-SNAPSHOT)";
+    private static final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.1-SNAPSHOT)";
     private static String   organizationName = null;
     private final static Date   platformStartTime = new Date();
 
