@@ -48,7 +48,7 @@ import java.util.Map;
 public class ConnectorContextBase
 {
     protected final PropertyHelper          propertyHelper = new PropertyHelper();
-    protected final String                  egeriaRelease  = "6.0-SNAPSHOT";
+    protected final String                  egeriaRelease  = "6.0";
 
     protected final OpenMetadataClient      openMetadataClient;
     protected final AssetHandler            assetHandler;

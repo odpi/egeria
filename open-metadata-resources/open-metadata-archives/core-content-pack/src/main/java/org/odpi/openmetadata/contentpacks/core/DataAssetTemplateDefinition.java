@@ -821,7 +821,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "6.0-SNAPSHOT";
+        return "6.0";
     }
 
 

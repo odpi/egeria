@@ -1518,7 +1518,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     @Override
     public String getVersionIdentifier()
     {
-        return "6.0-SNAPSHOT";
+        return "6.0";
     }
 
 
