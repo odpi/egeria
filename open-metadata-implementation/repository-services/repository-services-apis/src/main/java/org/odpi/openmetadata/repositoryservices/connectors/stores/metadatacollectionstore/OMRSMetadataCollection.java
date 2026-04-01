@@ -1030,7 +1030,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<EntityDetail> findEntitiesByProperty(String                    userId,
                                                                String                    entityTypeGUID,
@@ -1087,7 +1086,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                                      String                    entityTypeGUID,
@@ -1147,8 +1145,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     public abstract List<EntityDetail> findEntitiesByPropertyValue(String                userId,
                                                                    String                entityTypeGUID,
@@ -1304,7 +1300,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<Relationship> findRelationships(String                    userId,
                                                           String                    relationshipTypeGUID,
@@ -1361,7 +1356,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<Relationship> findRelationshipsByProperty(String                    userId,
                                                                     String                    relationshipTypeGUID,
@@ -1391,9 +1385,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param searchString            String Java regular expression used to match against any of the String property values
      *                                within the relationship instances of the specified type(s).
      *                                This parameter must not be null.
-     * @param startsWith
-     * @param endsWith
-     * @param ignoreCase
+     * @param startsWith              should the property start with the search string
+     * @param endsWith                should the property end with the search string
+     * @param ignoreCase              should the search be case-insensitive
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
@@ -1417,13 +1411,14 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     public abstract List<Relationship> findRelationshipsByPropertyValue(String                    userId,
                                                                         String                    relationshipTypeGUID,
-                                                                        String searchString,
-                                                                        boolean startsWith, boolean endsWith, boolean ignoreCase, int                       fromRelationshipElement,
+                                                                        String                    searchString,
+                                                                        boolean                   startsWith,
+                                                                        boolean                   endsWith,
+                                                                        boolean                   ignoreCase,
+                                                                        int                       fromRelationshipElement,
                                                                         List<InstanceStatus>      limitResultsByStatus,
                                                                         Date                      asOfTime,
                                                                         String                    sequencingProperty,

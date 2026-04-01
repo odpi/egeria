@@ -141,8 +141,8 @@ public class SecurityOfficerResource
                     url="https://egeria-project.org/services/platform-services/overview"))
 
     public VoidResponse setSecurityAccessControl(@PathVariable String serverName,
-                                       @PathVariable String platformGUID,
-                                       @RequestBody(required = false) SecurityAccessControlRequestBody requestBody)
+                                                 @PathVariable String platformGUID,
+                                                 @RequestBody(required = false) SecurityAccessControlRequestBody requestBody)
     {
         return restAPI.setSecurityAccessControl(serverName, platformGUID, requestBody);
     }
@@ -154,7 +154,7 @@ public class SecurityOfficerResource
      *
      * @param serverName  name of called server
      * @param platformGUID unique identifier of the platform
-     * @param controlName    user id of the account
+     * @param controlName    name of the control
      * @return user account response
      */
     @GetMapping(path = "/platforms/{platformGUID}/security-access-control/{controlName}")
@@ -179,7 +179,7 @@ public class SecurityOfficerResource
      *
      * @param serverName  name of called server
      * @param platformGUID unique identifier of the platform
-     * @param controlName    user id of the control
+     * @param controlName    name of the control
      * @return void response
      */
     @DeleteMapping(path = "/platforms/{platformGUID}/security-access-control/{controlName}")

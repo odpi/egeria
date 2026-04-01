@@ -448,7 +448,9 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.CATALOG_TARGET_NAME.name,
                                                                      catalogTargetProperties.getCatalogTargetName());
-
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name,
+                                                                     catalogTargetProperties.getMetadataCollectionQualifiedName());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                      catalogTargetProperties.getMetadataSourceQualifiedName());
@@ -1063,6 +1065,9 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.CONNECTOR_USER_ID.name,
                                                                      registeredIntegrationConnectorProperties.getConnectorUserId());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name,
+                                                                     registeredIntegrationConnectorProperties.getMetadataCollectionQualifiedName());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                      registeredIntegrationConnectorProperties.getMetadataSourceQualifiedName());

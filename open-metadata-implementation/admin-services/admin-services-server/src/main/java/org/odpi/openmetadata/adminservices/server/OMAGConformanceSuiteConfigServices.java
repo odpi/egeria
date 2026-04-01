@@ -182,12 +182,6 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
             serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             configAuditTrail = serverConfig.getAuditTrail();
 
-            if (repositoryPerformanceWorkbenchConfig != null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " enable repository performance to test " + repositoryPerformanceWorkbenchConfig.getTutRepositoryServerName() + ".");
-                conformanceSuiteConfig.setRepositoryPerformanceConfig(repositoryPerformanceWorkbenchConfig);
-            }
-
             serverConfig.setConformanceSuiteConfig(conformanceSuiteConfig);
 
             configAuditTrail.add(new Date() + " " + userId + " finished adding configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");

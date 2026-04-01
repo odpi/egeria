@@ -4,10 +4,6 @@ package org.odpi.openmetadata.conformance.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWorkPad;
-import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWorkbench;
-import org.odpi.openmetadata.conformance.workbenches.performance.connectorconsumer.PerformanceSuiteConnectorConsumer;
-import org.odpi.openmetadata.conformance.workbenches.performance.listener.PerformanceSuiteOMRSTopicListener;
 import org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer.ConformanceSuiteConnectorConsumer;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceWorkbenchWorkPad;
@@ -154,31 +150,6 @@ public class ConformanceSuiteOperationalServices
             enterpriseTopicConnector.registerListener(omrsTopicListener, workBenchName);
         }
 
-        if (conformanceSuiteConfig.getRepositoryPerformanceConfig() != null)
-        {
-            final String workBenchName = "Repository Performance Workbench";
-            PerformanceWorkPad performanceWorkPad = new PerformanceWorkPad(localServerUserId,
-                                                                           localServerSecretStoreProvider,
-                                                                           localServerSecretStoreLocation,
-                                                                           localServerSecretStoreCollection,
-                                                                           maxPageSize,
-                                                                           auditLog,
-                                                                           conformanceSuiteConfig.getRepositoryPerformanceConfig());
-            workbenchWorkPads.add(performanceWorkPad);
-
-            PerformanceWorkbench performanceWorkbench = new PerformanceWorkbench(performanceWorkPad);
-            runningWorkbenches.add(performanceWorkbench);
-
-            Thread performanceWorkbenchThread = new Thread(performanceWorkbench, workBenchName);
-            performanceWorkbenchThread.start();
-
-            PerformanceSuiteConnectorConsumer connectorConsumer = new PerformanceSuiteConnectorConsumer(performanceWorkPad);
-            enterpriseConnectorManager.registerConnectorConsumer(connectorConsumer);
-
-            PerformanceSuiteOMRSTopicListener omrsTopicListener = new PerformanceSuiteOMRSTopicListener(performanceWorkPad);
-
-            enterpriseTopicConnector.registerListener(omrsTopicListener, workBenchName);
-        }
 
         instanceMap.setNewInstance(localServerName, new ConformanceServicesInstance(new TechnologyUnderTestWorkPad(workbenchWorkPads),
                                                                                     runningWorkbenches,

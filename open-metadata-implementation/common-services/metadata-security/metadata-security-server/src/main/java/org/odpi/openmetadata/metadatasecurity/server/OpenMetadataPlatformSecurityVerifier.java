@@ -223,7 +223,18 @@ public class OpenMetadataPlatformSecurityVerifier
 
             try
             {
-                return userSecurityConnector.getUserAccount(accountUserId);
+                OpenMetadataUserAccount userAccount = userSecurityConnector.getUserAccount(accountUserId);
+
+                if (userAccount != null)
+                {
+                    /*
+                     * Remove sensitive information from the user account before returning.
+                     */
+                    userAccount.setSecrets(null);
+                    return userAccount;
+                }
+
+                return null;
             }
             catch (Exception error)
             {

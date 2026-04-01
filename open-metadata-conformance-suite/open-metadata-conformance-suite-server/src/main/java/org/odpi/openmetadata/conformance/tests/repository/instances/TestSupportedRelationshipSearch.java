@@ -2112,8 +2112,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
                             // Literalise the string
                             String currentValue = (String) ppv.getPrimitiveValue();
-                            String litValue = repositoryHelper.getExactMatchRegex(currentValue);
-                            newPpv.setPrimitiveValue(litValue);
+                            newPpv.setPrimitiveValue(currentValue);
                             literalisedInstanceProperties.setProperty(propertyName, newPpv);
                         }
 
@@ -2200,8 +2199,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     public String literaliseStringProperty(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getExactMatchRegex(value);
-        return litValue;
+        //String litValue = repositoryHelper.getExactMatchRegex(value);
+        return value;
     }
 
     /*
@@ -2211,8 +2210,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     public String literaliseStringPropertyExact(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getExactMatchRegex(value);
-        return litValue;
+        //String litValue = repositoryHelper.getExactMatchRegex(value);
+        return value;
     }
 
     /*
@@ -2222,8 +2221,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     public String literaliseStringPropertyStartsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getStartsWithRegex(value);
-        return litValue;
+        // String litValue = repositoryHelper.getStartsWithRegex(value);
+        return value;
     }
 
     /*
@@ -2233,8 +2232,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     public String literaliseStringPropertyEndsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getEndsWithRegex(value);
-        return litValue;
+        //String litValue = repositoryHelper.getEndsWithRegex(value);
+        return value;
     }
 
     /*
@@ -2244,8 +2243,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
     public String literaliseStringPropertyContains(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getContainsRegex(value);
-        return litValue;
+        // String litValue = repositoryHelper.getContainsRegex(value);
+        return value;
     }
 
 

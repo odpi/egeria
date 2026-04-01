@@ -317,7 +317,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                 if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
                     (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
                     (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DATABASE.typeName)) &&
-                        (homeMetadataCollectionId.equals(integrationContext.getMetadataSourceGUID())))
+                        (homeMetadataCollectionId.equals(integrationContext.getMetadataCollectionGUID())))
                 {
                     OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
                                                                                                         integrationContext,

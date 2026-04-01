@@ -111,7 +111,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException, ConnectorCheckedException
     {
-        RelatedElementsIterator volumeIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator volumeIterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,

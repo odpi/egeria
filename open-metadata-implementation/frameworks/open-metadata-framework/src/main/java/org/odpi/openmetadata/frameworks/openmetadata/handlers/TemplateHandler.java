@@ -361,15 +361,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
         PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
 
         requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-
-        if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
-        {
-            requestedPropertyValue.setPrimitiveValue(".*" + Pattern.quote(searchValue) + ".*");
-        }
-        else
-        {
-            requestedPropertyValue.setPrimitiveValue(searchValue);
-        }
+        requestedPropertyValue.setPrimitiveValue(searchValue);
         requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
 
         PropertyCondition nameCondition = new PropertyCondition();

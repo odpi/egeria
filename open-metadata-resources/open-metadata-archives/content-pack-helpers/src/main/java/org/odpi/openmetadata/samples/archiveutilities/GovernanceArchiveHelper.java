@@ -303,6 +303,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param configurationProperties any configuration properties
      * @param templates specific templates to use
      * @param metadataSourceQualifiedName metadata source qualified name for the cataloguing
+     * @param metadataCollectionQualifiedName metadata collection qualified name for the cataloguing
      */
     public void addCatalogTargetRelationship(String              integrationConnectorGUID,
                                              String              targetElementGUID,
@@ -310,7 +311,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                              String              connectionName,
                                              Map<String, Object> configurationProperties,
                                              Map<String, String> templates,
-                                             String              metadataSourceQualifiedName)
+                                             String              metadataSourceQualifiedName,
+                                             String              metadataCollectionQualifiedName)
     {
         final String methodName = "addCatalogTargetRelationship";
 
@@ -325,6 +327,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONFIGURATION_PROPERTIES.name, configurationProperties, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TEMPLATES.name, templates, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name, metadataSourceQualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name, metadataCollectionQualifiedName, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(integrationConnectorGUID + "_to_" + targetElementGUID + "_catalog_target_relationship"),
@@ -382,7 +385,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param integrationGroupGUID unique identifier of the integration group
      * @param connectorName name of the connector used in messages and REST calls
      * @param connectorUserId  userId for the connector to use (overrides the server's userId)
-     * @param metadataSourceQualifiedName unique name of the metadata collection for anything catalogued by this connector
+     * @param metadataSourceQualifiedName unique name of the metadata source for anything catalogued by this connector
+     * @param metadataCollectionQualifiedName unique name of the metadata collection for anything catalogued by this connector
      * @param refreshTimeInterval how long (in minutes) between each refresh of the connector
      * @param generateIntegrationReport should the integration connector produce integration reports when it refreshes?
      * @param integrationConnectorGUID unique identifier of the integration connector
@@ -391,6 +395,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   String              connectorName,
                                                   String              connectorUserId,
                                                   String              metadataSourceQualifiedName,
+                                                  String              metadataCollectionQualifiedName,
                                                   long                refreshTimeInterval,
                                                   boolean             generateIntegrationReport,
                                                   String              integrationConnectorGUID)
@@ -405,6 +410,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.CONNECTOR_NAME.name, connectorName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONNECTOR_USER_ID.name, connectorUserId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name, metadataCollectionQualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name, metadataSourceQualifiedName, methodName);
         properties = archiveHelper.addLongPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFRESH_TIME_INTERVAL.name, refreshTimeInterval, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name, generateIntegrationReport, methodName);

@@ -787,7 +787,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
         PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
 
         requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        requestedPropertyValue.setPrimitiveValue(".*" + Pattern.quote(classificationPropertyValue) + ".*");
+        requestedPropertyValue.setPrimitiveValue(classificationPropertyValue);
         requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
 
         List<PropertyCondition> conditions = new ArrayList<>();
@@ -972,7 +972,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param anchorGUID unique identifier of anchor
-     * @param queryOptions multiple options to control the query
+     * @param searchOptions multiple options to control the query
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
@@ -980,12 +980,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
-    public abstract AnchorSearchMatches findElementsForAnchor(String       userId,
-                                                              String       searchString,
-                                                              String       anchorGUID,
-                                                              QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException;
+    public abstract AnchorSearchMatches findElementsForAnchor(String        userId,
+                                                              String        searchString,
+                                                              String        anchorGUID,
+                                                              SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
 
     /**

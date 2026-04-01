@@ -578,6 +578,18 @@ public class PropertyHelper
                     {
                         elementHeader.setMemento(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_LIST_MEMBERSHIP_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setSecurityListMembership(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setSecurityTags(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setUserAccountProfile(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
                     {
                         elementHeader.setTemplate(this.getElementClassification(attachedClassification));

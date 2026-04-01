@@ -688,6 +688,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         {
             CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
+            catalogTargetProperties.setMetadataCollectionQualifiedName(dataLakeCatalogQualifiedName);
             catalogTargetProperties.setMetadataSourceQualifiedName(dataLakeCatalogQualifiedName);
 
             catalogTargetProperties.setCatalogTargetName("dataFolder");

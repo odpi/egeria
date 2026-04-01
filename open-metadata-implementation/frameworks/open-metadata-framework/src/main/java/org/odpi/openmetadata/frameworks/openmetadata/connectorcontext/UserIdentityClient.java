@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileId
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Collections;
@@ -325,6 +326,24 @@ public class UserIdentityClient extends ConnectorContextClientBase
                                                                                                   UserNotAuthorizedException
     {
         return userIdentityHandler.getUserIdentitiesByName(connectorUserId, name, queryOptions);
+    }
+
+    /**
+     * Returns the named user identity.
+     *
+     * @param userId                   name of the element to return - match is full text match in qualifiedName or name
+     * @param getOptions multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElement getUserIdentityByUserId(String     userId,
+                                                           GetOptions getOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        return userIdentityHandler.getUserIdentityByUserId(connectorUserId, userId, getOptions);
     }
 
 

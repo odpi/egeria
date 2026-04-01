@@ -114,7 +114,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                                           UserNotAuthorizedException,
                                                                                                           ConnectorCheckedException
     {
-        RelatedElementsIterator tableIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator tableIterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,

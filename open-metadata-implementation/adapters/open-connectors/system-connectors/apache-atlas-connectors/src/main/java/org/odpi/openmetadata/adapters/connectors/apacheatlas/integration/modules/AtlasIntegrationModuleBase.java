@@ -173,7 +173,7 @@ public abstract class AtlasIntegrationModuleBase
     protected boolean isAtlasOwnedElement(ElementHeader elementHeader)
     {
         return (elementHeader.getOrigin().getHomeMetadataCollectionId() != null) &&
-                       (elementHeader.getOrigin().getHomeMetadataCollectionId().equals(myContext.getMetadataSourceGUID()));
+                       (elementHeader.getOrigin().getHomeMetadataCollectionId().equals(myContext.getMetadataCollectionGUID()));
     }
 
 
@@ -317,7 +317,7 @@ public abstract class AtlasIntegrationModuleBase
         final String methodName = "getAtlasGUID";
 
         RelatedMetadataElementSummary relatedExternalIdentifier = externalIdClient.getRelatedExternalId(metadataElement,
-                                                                                                        myContext.getMetadataSourceGUID(),
+                                                                                                        myContext.getMetadataCollectionGUID(),
                                                                                                         null);
 
         if ((relatedExternalIdentifier != null) &&
@@ -329,11 +329,11 @@ public abstract class AtlasIntegrationModuleBase
         auditLog.logMessage(methodName, AtlasIntegrationAuditCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
                                                                                                           metadataElement.getElementHeader().getType().getTypeName(),
                                                                                                           metadataElement.getElementHeader().getGUID(),
-                                                                                                          myContext.getMetadataSourceGUID()));
+                                                                                                          myContext.getMetadataCollectionGUID()));
         throw new InvalidParameterException(AtlasIntegrationErrorCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
                                                                                                               metadataElement.getElementHeader().getType().getTypeName(),
                                                                                                               metadataElement.getElementHeader().getGUID(),
-                                                                                                              myContext.getMetadataSourceGUID()),
+                                                                                                              myContext.getMetadataCollectionGUID()),
                                             this.getClass().getName(),
                                             methodName,
                                             OpenMetadataProperty.KEY.name);
@@ -377,11 +377,11 @@ public abstract class AtlasIntegrationModuleBase
         auditLog.logMessage(methodName, AtlasIntegrationAuditCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
                                                                                                           metadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                           metadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                          myContext.getMetadataSourceGUID()));
+                                                                                                          myContext.getMetadataCollectionGUID()));
         throw new InvalidParameterException(AtlasIntegrationErrorCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
                                                                                                               metadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                               metadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                              myContext.getMetadataSourceGUID()),
+                                                                                                              myContext.getMetadataCollectionGUID()),
                                             this.getClass().getName(),
                                             methodName,
                                             OpenMetadataProperty.KEY.name);
@@ -406,7 +406,7 @@ public abstract class AtlasIntegrationModuleBase
         final String methodName = "egeriaUpdateRequired";
 
         RelatedMetadataElementSummary relatedExternalId = externalIdClient.getRelatedExternalId(egeriaMetadataElement,
-                                                                                                myContext.getMetadataSourceGUID(),
+                                                                                                myContext.getMetadataCollectionGUID(),
                                                                                                 atlasEntity.getGuid());
 
         if (relatedExternalId == null)
@@ -415,13 +415,13 @@ public abstract class AtlasIntegrationModuleBase
                                 AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                    egeriaMetadataElement.getElementHeader().getType().getTypeName(),
                                                                                                    egeriaMetadataElement.getElementHeader().getGUID(),
-                                                                                                   myContext.getMetadataSourceGUID(),
+                                                                                                   myContext.getMetadataCollectionGUID(),
                                                                                                    atlasEntity.getGuid(),
                                                                                                    atlasEntity.getTypeName()));
             throw new PropertyServerException(AtlasIntegrationErrorCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                                  egeriaMetadataElement.getElementHeader().getType().getTypeName(),
                                                                                                                  egeriaMetadataElement.getElementHeader().getGUID(),
-                                                                                                                 myContext.getMetadataSourceGUID(),
+                                                                                                                 myContext.getMetadataCollectionGUID(),
                                                                                                                  atlasEntity.getGuid(),
                                                                                                                  atlasEntity.getTypeName()),
                                               this.getClass().getName(),
@@ -487,7 +487,7 @@ public abstract class AtlasIntegrationModuleBase
         final String methodName = "atlasUpdateRequired";
 
         RelatedMetadataElementSummary relatedExternalId = externalIdClient.getRelatedExternalId(egeriaMetadataElement,
-                                                                                                myContext.getMetadataSourceGUID(),
+                                                                                                myContext.getMetadataCollectionGUID(),
                                                                                                 atlasEntity.getGuid());
 
         if (relatedExternalId == null)
@@ -545,7 +545,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                                        atlasEntity.getVersion());
 
         RelatedMetadataElementSummary relatedExternalId = externalIdClient.getRelatedExternalId(egeriaElement,
-                                                                                                myContext.getMetadataSourceGUID(),
+                                                                                                myContext.getMetadataCollectionGUID(),
                                                                                                 atlasEntity.getGuid());
 
         if (relatedExternalId != null)
@@ -560,13 +560,13 @@ public abstract class AtlasIntegrationModuleBase
                                 AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                    egeriaElement.getElementHeader().getType().getTypeName(),
                                                                                                    egeriaElement.getElementHeader().getGUID(),
-                                                                                                   myContext.getMetadataSourceGUID(),
+                                                                                                   myContext.getMetadataCollectionGUID(),
                                                                                                    atlasEntity.getGuid(),
                                                                                                    atlasEntity.getTypeName()));
             throw new PropertyServerException(AtlasIntegrationErrorCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                                  egeriaElement.getElementHeader().getType().getTypeName(),
                                                                                                                  egeriaElement.getElementHeader().getGUID(),
-                                                                                                                 myContext.getMetadataSourceGUID(),
+                                                                                                                 myContext.getMetadataCollectionGUID(),
                                                                                                                  atlasEntity.getGuid(),
                                                                                                                  atlasEntity.getTypeName()),
                                               this.getClass().getName(),
@@ -724,7 +724,7 @@ public abstract class AtlasIntegrationModuleBase
          * Check that the Atlas Glossary's GUID is stored as an external identifier.
          */
         RelatedMetadataElementSummary relatedExternalId = externalIdClient.getRelatedExternalId(egeriaElement,
-                                                                                                myContext.getMetadataSourceGUID(),
+                                                                                                myContext.getMetadataCollectionGUID(),
                                                                                                 atlasGUID);
 
         if ((relatedExternalId != null) && (relatedExternalId.getRelatedElement().getProperties() instanceof ExternalIdProperties externalIdProperties))

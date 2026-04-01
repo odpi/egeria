@@ -58,6 +58,9 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       primaryKey               = null;
     private ElementClassification       knownDuplicate           = null;
     private ElementClassification       consolidateDuplicate     = null;
+    private ElementClassification       securityTags             = null;
+    private ElementClassification       securityListMembership   = null;
+    private ElementClassification       userAccountProfile       = null;
     private ElementClassification       projectClassification    = null;
     private List<ElementClassification> collectionKinds          = null;
     private List<ElementClassification> locationKinds            = null;
@@ -108,6 +111,9 @@ public class ElementHeader extends ElementControlHeader
             this.primaryKey               = template.getPrimaryKey();
             this.knownDuplicate           = template.getKnownDuplicate();
             this.consolidateDuplicate     = template.getConsolidateDuplicate();
+            this.securityListMembership   = template.getSecurityListMembership();
+            this.userAccountProfile       = template.getUserAccountProfile();
+            this.securityTags             = template.getSecurityTags();
             this.projectClassification    = template.getProjectClassification();
             this.collectionKinds          = template.getCollectionKinds();
             this.locationKinds            = template.getLocationKinds();
@@ -616,6 +622,72 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the SecurityTags classification - attached to any referenceable metadata element.
+     *
+     * @return classification
+     */
+    public ElementClassification getSecurityTags()
+    {
+        return securityTags;
+    }
+
+
+    /**
+     * Set up the SecurityTags classification - attached to any referenceable metadata element.
+     *
+     * @param securityTags classification
+     */
+    public void setSecurityTags(ElementClassification securityTags)
+    {
+        this.securityTags = securityTags;
+    }
+
+
+    /**
+     * Return the SecurityListMembership classification - only attached to a user identity entity.
+     *
+     * @return classification
+     */
+    public ElementClassification getSecurityListMembership()
+    {
+        return securityListMembership;
+    }
+
+
+    /**
+     * Set up the SecurityListMembership classification - only attached to a user identity entity.
+     *
+     * @param securityListMembership classification
+     */
+    public void setSecurityListMembership(ElementClassification securityListMembership)
+    {
+        this.securityListMembership = securityListMembership;
+    }
+
+
+    /**
+     * Return the UserAccountProfile classification - only attached to a secrets collection entity.
+     *
+     * @return classification
+     */
+    public ElementClassification getUserAccountProfile()
+    {
+        return userAccountProfile;
+    }
+
+
+    /**
+     * Set up the UserAccountProfile classification - only attached to a secrets collection entity.
+     *
+     * @param userAccountProfile classification
+     */
+    public void setUserAccountProfile(ElementClassification userAccountProfile)
+    {
+        this.userAccountProfile = userAccountProfile;
+    }
+
+
+    /**
      * Return whether this element has a known duplicate.
      *
      * @return classification
@@ -802,6 +874,9 @@ public class ElementHeader extends ElementControlHeader
                 ", primaryKey=" + primaryKey +
                 ", knownDuplicate=" + knownDuplicate +
                 ", consolidateDuplicate=" + consolidateDuplicate +
+                ", securityTags=" + securityTags +
+                ", securityListMembership=" + securityListMembership +
+                ", userAccountProfile=" + userAccountProfile +
                 ", projectClassification=" + projectClassification +
                 ", collectionRoles=" + collectionKinds +
                 ", locationRoles=" + locationKinds +
@@ -809,6 +884,7 @@ public class ElementHeader extends ElementControlHeader
                 ", otherClassifications=" + otherClassifications +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -847,6 +923,9 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(primaryKey, that.primaryKey) &&
                 Objects.equals(knownDuplicate, that.knownDuplicate) &&
                 Objects.equals(consolidateDuplicate, that.consolidateDuplicate) &&
+                Objects.equals(securityTags, that.securityTags) &&
+                Objects.equals(securityListMembership, that.securityListMembership) &&
+                Objects.equals(userAccountProfile, that.userAccountProfile) &&
                 Objects.equals(projectClassification, that.projectClassification) &&
                 Objects.equals(collectionKinds, that.collectionKinds) &&
                 Objects.equals(locationKinds, that.locationKinds) &&
@@ -868,7 +947,9 @@ public class ElementHeader extends ElementControlHeader
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
                             dataScope, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
-                            knownDuplicate, consolidateDuplicate, projectClassification,
+                            knownDuplicate, consolidateDuplicate,
+                            securityTags, securityListMembership, userAccountProfile,
+                            projectClassification,
                             collectionKinds, locationKinds, projectKinds, otherClassifications);
     }
 }
