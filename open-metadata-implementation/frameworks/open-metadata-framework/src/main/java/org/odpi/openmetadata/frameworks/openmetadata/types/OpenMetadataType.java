@@ -3408,6 +3408,36 @@ public enum OpenMetadataType
                                           AssociatedSecurityListProperties.class),
 
     /**
+     * Links a secrets collection to a security list.
+     */
+    SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP("da48a31b-cbdf-42f7-9062-e9c0a68d256e",
+                                                  "SecretsCollectionSecurityList",
+                                                  OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                                  "6b60904a-9f15-41ad-82f0-7c136445346d",
+                                                  "Links a security access control to a security list.",
+                                                  SecretsCollectionSecurityListProperties.class),
+
+    /**
+     * Links a secrets collection to a security access control.
+     */
+    RESOURCE_PERMISSIONS_RELATIONSHIP("f7416148-c8ca-42e4-bbf0-2e536b7ecd21",
+                                      "ResourcePermissions",
+                                      OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                      "cc1e20d2-7801-4962-8e01-d1e6d9fee468",
+                                      "Links a secrets collection to a security access control.",
+                                      ResourcePermissionsProperties.class),
+
+    /**
+     * Links a user identity to a secrets collection that includes a user account for this userId.
+     */
+    USER_ACCOUNT_RELATIONSHIP("d64a07e4-688a-448a-a66f-6891bb341c88",
+                                      "UserAccount",
+                                      OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                      "84aa7a82-46d6-41c3-a947-46f4c0de8d3a",
+                                      "Links a user identity to a secrets collection that includes a user account for this userId.",
+                                      UserAccountProperties.class),
+
+    /**
      * Defines the element's membership of the governance zones.
      */
     ZONE_MEMBERSHIP_CLASSIFICATION("52993f4b-d853-47ae-a2e6-f22b96863533",

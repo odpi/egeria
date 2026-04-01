@@ -379,7 +379,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public List<EntityDetail> findEntitiesByProperty(String                    userId,
@@ -573,7 +572,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  classification.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
@@ -701,8 +699,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                    entity.
      * @throws PagingErrorException       the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     @Override
     public  List<EntityDetail> findEntitiesByPropertyValue(String                userId,
@@ -994,7 +990,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationships(String                    userId,
@@ -1100,7 +1095,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
@@ -1202,8 +1196,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws PropertyErrorException     a problem with one of the other parameters.
      * @throws PagingErrorException       the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     @Override
     public  List<Relationship> findRelationshipsByPropertyValue(String                    userId,

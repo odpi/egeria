@@ -290,6 +290,7 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_USER_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_TIME_INTERVAL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE));
@@ -349,6 +350,7 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIGURATION_PROPERTIES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TEMPLATES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
 

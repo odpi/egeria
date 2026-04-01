@@ -21,6 +21,7 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 # Set up new users in the user directory
+# https://egeria-project.org/concepts/secrets-store-connector/
 
 @platformGUID=add guid here
 @accountUserId=add userId here
@@ -46,7 +47,7 @@ Content-Type: application/json
     "class" : "OpenMetadataUserAccount",
     "userId": "",
     "userName": "",
-    "userAccountType": "",
+    "userAccountType": "EMPLOYEE",
     "employeeNumber": "",
     "employeeType": "",
     "givenName": "",
@@ -93,6 +94,78 @@ Authorization: Bearer {{token}}
 # @return void response
 #
 DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/user-accounts/{{accountUserId}}
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# Manage security access controls.
+# https://egeria-project.org/concepts/security-access-control/
+
+@ controlName=add name here
+
+###
+# @name setSecurityAccessControl
+# Set up or update a security access control in the platform metadata security connector.
+# The user requires operator permission for the platform.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param requestBody requestBody used to create and configure the connector that performs platform security
+# @return void response
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/security-access-control
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SecurityAccessControlRequestBody",
+  "securityAccessControl": {
+    "controlName": "{{controlName}}",
+    "displayName": "",
+    "description": "",
+    "controlTypeName": "",
+    "associatedSecurityList": {
+       "operationName" : [ "listOrUser1", "listOrUser2" ]
+    },
+    "mappingProperties": {
+       "property1" : "propertyValue1"
+    },
+    "securityLabels": [],
+    "securityProperties": {
+       "property1" : "propertyValue1"
+    },
+    "otherProperties": {
+       "property1" : "propertyValue1"
+    }
+  }
+}
+
+
+###
+# @name getSecurityAccessControl
+# Return the security access control object from the platform metadata security connector.  Null is returned if no control has been set up.
+# The user requires operator permission for the platform.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param controlName    name of the control
+# @return user account response
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/security-access-control/{{controlName}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name deleteSecurityAccessControl
+# Clear the named security access control with the platform security connector.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param controlName    name of the control
+# @return void response
+#
+DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/security-access-control/{{controlName}}
 Authorization: Bearer {{token}}
 
 

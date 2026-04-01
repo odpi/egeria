@@ -2241,9 +2241,15 @@ public enum OpenMetadataProperty
     CONNECTION_NAME("connectionName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of connection to use to access the associated resource.  If this is null, the connection for the asset associated with the catalog target is used.  The asset may be the catalog target itself or the catalog target's anchor.", null, "88bef8a2-a23a-433e-ad37-c4e640397ea8"),
 
     /**
-     * Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.
+     * Qualified name of a software server capability that is the owner of the metadata catalogued by the integration connector.
      */
-    METADATA_SOURCE_QUALIFIED_NAME("metadataSourceQualifiedName", DataType.STRING, DataType.STRING.getDisplayName(), "Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.", null, "5538fcb0-b3d9-4870-8d1f-1d2752c75255"),
+    METADATA_SOURCE_QUALIFIED_NAME("metadataSourceQualifiedName", DataType.STRING, DataType.STRING.getDisplayName(), "Qualified name of a software server capability that is the owner of the metadata catalogued by the integration connector.", null, "5538fcb0-b3d9-4870-8d1f-1d2752c75255"),
+
+
+    /**
+     * Qualified name of a metadata collection asset that is the home of the metadata catalogued by the integration connector.
+     */
+    METADATA_COLLECTION_QUALIFIED_NAME("metadataCollectionQualifiedName", DataType.STRING, DataType.STRING.getDisplayName(), "Qualified name of a metadata collection asset that is the home of the metadata catalogued by the integration connector.", null, "4dffd93d-c7f5-4772-b2c4-9b0594666a99"),
 
     /**
      * Map from name (such as open metadata type name) to guid of the element that defines the scope of the data.

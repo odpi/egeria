@@ -120,13 +120,13 @@ public interface MetadataElementInterface
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
      * The breadth of the search is determined by the supplied anchorGUID.
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param anchorGUID unique identifier of anchor
-     * @param queryOptions multiple options to control the query
+     * @param searchOptions multiple options to control the query
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
@@ -136,9 +136,9 @@ public interface MetadataElementInterface
     AnchorSearchMatches findElementsForAnchor(String              userId,
                                               String              searchString,
                                               String              anchorGUID,
-                                              QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
+                                              SearchOptions       searchOptions) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 
 
     /**

@@ -24,6 +24,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.Project
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.ReferenceableFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.NetworkGatewayLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
@@ -89,13 +92,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = ReportOriginatorProperties.class, name = "ReportOriginatorProperties"),
                 @JsonSubTypes.Type(value = ReportSubjectProperties.class, name = "ReportSubjectProperties"),
+                @JsonSubTypes.Type(value = ResourcePermissionsProperties.class, name = "ResourcePermissionsProperties"),
                 @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = SchemaAttributeDefinitionProperties.class, name = "SchemaAttributeDefinitionProperties"),
                 @JsonSubTypes.Type(value = SchemaTypeDefinitionProperties.class, name = "SchemaTypeDefinitionProperties"),
+                @JsonSubTypes.Type(value = SecretsCollectionSecurityListProperties.class, name = "SecretsCollectionSecurityListProperties"),
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
+                @JsonSubTypes.Type(value = UserAccountProperties.class, name = "UserAccountProperties"),
         })
 public class LabeledRelationshipProperties extends RelationshipBeanProperties
 {

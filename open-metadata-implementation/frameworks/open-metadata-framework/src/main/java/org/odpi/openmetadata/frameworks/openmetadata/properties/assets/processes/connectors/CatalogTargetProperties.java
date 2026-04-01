@@ -25,13 +25,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTargetProperties extends RelationshipBeanProperties
 {
-    private String                   catalogTargetName           = null;
-    private String                   metadataSourceQualifiedName = null;
-    private String                   connectionName              = null;
-    private Map<String, Object>      configurationProperties     = null;
-    private Map<String, String>      templates                   = null;
-    private PermittedSynchronization permittedSynchronization    = null;
-    private DeleteMethod             deleteMethod                = null;
+    private String                   catalogTargetName               = null;
+    private String                   metadataCollectionQualifiedName = null;
+    private String                   metadataSourceQualifiedName     = null;
+    private String                   connectionName                  = null;
+    private Map<String, Object>      configurationProperties         = null;
+    private Map<String, String>      templates                       = null;
+    private PermittedSynchronization permittedSynchronization        = null;
+    private DeleteMethod             deleteMethod                    = null;
 
 
     /**
@@ -55,13 +56,14 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            catalogTargetName = template.getCatalogTargetName();
-            metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
-            connectionName = template.getConnectionName();
-            configurationProperties  = template.getConfigurationProperties();
-            templates                = template.getTemplates();
-            permittedSynchronization = template.getPermittedSynchronization();
-            deleteMethod = template.getDeleteMethod();
+            catalogTargetName               = template.getCatalogTargetName();
+            metadataCollectionQualifiedName = template.getMetadataCollectionQualifiedName();
+            metadataSourceQualifiedName     = template.getMetadataSourceQualifiedName();
+            connectionName                  = template.getConnectionName();
+            configurationProperties         = template.getConfigurationProperties();
+            templates                       = template.getTemplates();
+            permittedSynchronization        = template.getPermittedSynchronization();
+            deleteMethod                    = template.getDeleteMethod();
         }
     }
 
@@ -85,6 +87,28 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     public String getCatalogTargetName()
     {
         return catalogTargetName;
+    }
+
+
+    /**
+     * Return the qualified name of the metadata collection for this integration connector.
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionQualifiedName()
+    {
+        return metadataCollectionQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the metadata collection for this integration connector.
+     *
+     * @param metadataCollectionQualifiedName string name
+     */
+    public void setMetadataCollectionQualifiedName(String metadataCollectionQualifiedName)
+    {
+        this.metadataCollectionQualifiedName = metadataCollectionQualifiedName;
     }
 
 
@@ -241,6 +265,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     {
         return "CatalogTargetProperties{" +
                 "catalogTargetName='" + catalogTargetName + '\'' +
+                ", metadataCollectionQualifiedName='" + metadataCollectionQualifiedName + '\'' +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", connectionName='" + connectionName + '\'' +
                 ", configurationProperties=" + configurationProperties +
@@ -265,6 +290,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
         if (!super.equals(objectToCompare)) return false;
         CatalogTargetProperties that = (CatalogTargetProperties) objectToCompare;
         return Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(metadataCollectionQualifiedName, that.metadataCollectionQualifiedName) &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(connectionName, that.connectionName) &&
                 Objects.equals(configurationProperties, that.configurationProperties) &&
@@ -283,6 +309,6 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templates, permittedSynchronization, deleteMethod);
+        return Objects.hash(super.hashCode(), catalogTargetName, metadataCollectionQualifiedName, metadataSourceQualifiedName, connectionName, configurationProperties, templates, permittedSynchronization, deleteMethod);
     }
 }

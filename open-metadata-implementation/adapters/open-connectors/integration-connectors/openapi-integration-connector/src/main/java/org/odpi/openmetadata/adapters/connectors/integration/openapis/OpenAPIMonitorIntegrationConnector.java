@@ -432,7 +432,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(".*.", myContext.getEndpointClient().getSearchOptions());
+        List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(null, myContext.getEndpointClient().getSearchOptions());
         String                        endpointGUID = null;
         String                        endpointQualifiedName = "ServerEndpoint:" + url;
 

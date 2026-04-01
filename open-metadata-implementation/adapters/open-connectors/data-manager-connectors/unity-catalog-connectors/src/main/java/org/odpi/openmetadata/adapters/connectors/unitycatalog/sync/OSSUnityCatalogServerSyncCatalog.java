@@ -600,7 +600,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                 CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
                 catalogTargetProperties.setCatalogTargetName(ucCatalogName);
-                catalogTargetProperties.setMetadataSourceQualifiedName(metadataCollectionName);
+                catalogTargetProperties.setMetadataCollectionQualifiedName(metadataCollectionName);
                 catalogTargetProperties.setTemplates(templates);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();

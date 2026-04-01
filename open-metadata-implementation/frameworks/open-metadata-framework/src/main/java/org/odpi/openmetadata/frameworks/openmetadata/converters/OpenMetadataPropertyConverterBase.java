@@ -11155,6 +11155,28 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
+    public String removeMetadataCollectionQualifiedName(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMetadataCollectionQualifiedName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
     public String removeConnectionName(ElementProperties  elementProperties)
     {
         final String methodName = "removeConnectionName";
@@ -12814,6 +12836,7 @@ public class OpenMetadataPropertyConverterBase
                 relationshipBeanProperties = new CatalogTargetProperties();
 
                 ((CatalogTargetProperties)relationshipBeanProperties).setCatalogTargetName(this.removeCatalogTargetName(elementProperties));
+                ((CatalogTargetProperties)relationshipBeanProperties).setMetadataCollectionQualifiedName(this.removeMetadataCollectionQualifiedName(elementProperties));
                 ((CatalogTargetProperties)relationshipBeanProperties).setMetadataSourceQualifiedName(this.removeMetadataSourceQualifiedName(elementProperties));
                 ((CatalogTargetProperties)relationshipBeanProperties).setConnectionName(this.removeConnectionName(elementProperties));
                 ((CatalogTargetProperties)relationshipBeanProperties).setConfigurationProperties(this.removeConfigurationProperties(elementProperties));
@@ -13547,6 +13570,7 @@ public class OpenMetadataPropertyConverterBase
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setConnectorName(this.removeConnectorName(elementProperties));
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setConnectorUserId(this.removeConnectorUserId(elementProperties));
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setMetadataSourceQualifiedName(this.removeMetadataSourceQualifiedName(elementProperties));
+                ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setMetadataCollectionQualifiedName(this.removeMetadataCollectionQualifiedName(elementProperties));
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setStartDate(this.removeStartDate(elementProperties));
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setRefreshTimeInterval(this.removeRefreshTimeInterval(elementProperties));
                 ((RegisteredIntegrationConnectorProperties)relationshipBeanProperties).setConnectorShutdownDate(this.removeConnectorShutdownDate(elementProperties));
@@ -13636,6 +13660,14 @@ public class OpenMetadataPropertyConverterBase
                 ((ResourceListProperties)relationshipBeanProperties).setDisplayName(this.removeDisplayName(elementProperties));
                 ((ResourceListProperties)relationshipBeanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ResourcePermissionsProperties();
+
+                ((ResourcePermissionsProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ResourcePermissionsProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ResourceProfileDataProperties();
@@ -13675,6 +13707,14 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new SearchKeywordLinkProperties();
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new SecretsCollectionSecurityListProperties();
+
+                ((SecretsCollectionSecurityListProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((SecretsCollectionSecurityListProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName))
             {
@@ -13848,6 +13888,14 @@ public class OpenMetadataPropertyConverterBase
                 ((UsedInContextProperties)relationshipBeanProperties).setConfidence(this.removeConfidence(elementProperties));
                 ((UsedInContextProperties)relationshipBeanProperties).setSteward(this.removeSteward(elementProperties));
                 ((UsedInContextProperties)relationshipBeanProperties).setSource(this.removeSource(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new UserAccountProperties();
+
+                ((UserAccountProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((UserAccountProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName))
             {

@@ -1612,6 +1612,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                 integrationConnectorDefinition.getConnectorName(),
                                                                 integrationConnectorDefinition.getConnectorUserId(),
                                                                 integrationConnectorDefinition.getMetadataSourceQualifiedName(),
+                                                                integrationConnectorDefinition.getMetadataCollectionQualifiedName(),
                                                                 integrationConnectorDefinition.getRefreshTimeInterval(),
                                                                 true,
                                                                 integrationConnectorDefinition.getGUID());
@@ -1746,6 +1747,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                            lovelaceServiceDefinition.getCatalogTargetGUID(),
                                                            lovelaceServiceDefinition.getCatalogTargetName(),
                                                            lovelaceServiceDefinition.getCatalogTargetName(),
+                                                           null,
                                                            null,
                                                            null,
                                                            null);

@@ -70,8 +70,12 @@ public class RegisteredIntegrationConnectorConverter
                                                                                              OpenMetadataProperty.CONNECTOR_USER_ID.name,
                                                                                              instanceProperties,
                                                                                              methodName));
-                registrationProperties.setMetadataSourceQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                                                         OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
+                registrationProperties.setMetadataCollectionQualifiedName(repositoryHelper.getStringProperty(serviceName,
+                                                                                                             OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
+                                                                                                             instanceProperties,
+                                                                                                             methodName));
+                registrationProperties.setMetadataCollectionQualifiedName(repositoryHelper.getStringProperty(serviceName,
+                                                                                                         OpenMetadataProperty.METADATA_COLLECTION_QUALIFIED_NAME.name,
                                                                                                          instanceProperties,
                                                                                                          methodName));
                 registrationProperties.setStartDate(repositoryHelper.getDateProperty(serviceName,

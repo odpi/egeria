@@ -384,7 +384,7 @@ public class IntegrationGroupHandler
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataSourceQualifiedName(),
+                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataCollectionQualifiedName(),
                                                                            registeredIntegrationConnectorElement.getProperties().getConnection(),
                                                                            registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),

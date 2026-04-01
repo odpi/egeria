@@ -347,68 +347,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Retrieve the metadata elements that contain the requested string.
-     *
-     * @param userId caller's userId
-     * @param searchString name to retrieve
-     * @param requestedTypeName optional type name to restrict search to a specific type of element (and their subtypes)
-     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements (or null if no elements match the name)
-     * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException a problem accessing the metadata store
-     */
-    public List<B> findMetadataElementsWithString(String              userId,
-                                                  String              searchString,
-                                                  String              requestedTypeName,
-                                                  List<ElementStatus> limitResultsByStatus,
-                                                  Date                asOfTime,
-                                                  String              sequencingProperty,
-                                                  SequencingOrder     sequencingOrder,
-                                                  boolean             forLineage,
-                                                  boolean             forDuplicateProcessing,
-                                                  Date                effectiveTime,
-                                                  int                 startFrom,
-                                                  int                 pageSize,
-                                                  String              methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        final String searchStringParameterName = "searchString";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        return this.findBeans(userId,
-                              searchString,
-                              searchStringParameterName,
-                              this.getEntityTypeGUID(requestedTypeName),
-                              this.getEntityTypeName(requestedTypeName),
-                              getInstanceStatuses(limitResultsByStatus),
-                              asOfTime,
-                              getSequencingOrder(sequencingOrder),
-                              sequencingProperty,
-                              forLineage,
-                              forDuplicateProcessing,
-                              startFrom,
-                              pageSize,
-                              effectiveTime,
-                              methodName);
-    }
-
-
-    /**
      * Retrieve the metadata elements that are of the correct type.
      *
      * @param userId caller's userId

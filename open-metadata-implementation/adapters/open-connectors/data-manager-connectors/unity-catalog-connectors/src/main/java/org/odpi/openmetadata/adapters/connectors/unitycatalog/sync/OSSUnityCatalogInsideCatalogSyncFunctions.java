@@ -110,7 +110,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "refreshEgeriaFunctions";
 
-        RelatedElementsIterator functionIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator functionIterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
                                                                                catalogTargetName,
                                                                                connectorName,
                                                                                parentGUID,

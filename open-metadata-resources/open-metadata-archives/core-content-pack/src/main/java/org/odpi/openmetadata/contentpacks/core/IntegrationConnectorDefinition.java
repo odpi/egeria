@@ -52,6 +52,7 @@ public enum IntegrationConnectorDefinition
                            "SampleDataCataloguer",
                            "sampledatacatnpa",
                            null,
+                           null,
                            "loading-bay/sample-data",
                            getAllFileCataloguerConfigProperties(),
                            1440,
@@ -72,6 +73,7 @@ public enum IntegrationConnectorDefinition
                             OMArchiveFilesMonitorIntegrationProvider.class.getName(),
                             "ContentPacksCataloguer",
                             "contentpackcatnpa",
+                            null,
                             null,
                             "content-packs",
                             getFileCataloguerConfigProperties(),
@@ -94,6 +96,7 @@ public enum IntegrationConnectorDefinition
                             "SecretsStoreCataloguer",
                             "secretsstorecatnpa",
                             null,
+                             null,
                             "secrets",
                             getFileCataloguerConfigProperties(),
                             60,
@@ -116,6 +119,7 @@ public enum IntegrationConnectorDefinition
                               "filescatnpa",
                               null,
                               null,
+                              null,
                               getFileCataloguerConfigProperties(),
                               60,
                               new DeployedImplementationTypeDefinition[]{DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
@@ -135,6 +139,7 @@ public enum IntegrationConnectorDefinition
                                     DataFolderMonitorIntegrationProvider.class.getName(),
                                     "MaintainLastUpdateDate",
                                     "datafoldercatnpa",
+                                    null,
                                     null,
                                     null,
                                     getAllFileCataloguerConfigProperties(),
@@ -159,6 +164,7 @@ public enum IntegrationConnectorDefinition
                     null,
                     null,
                     null,
+                    null,
                     60,
                     new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE},
                     "855a6c95-ee48-4f79-a7ce-c0b660012d30",
@@ -178,6 +184,7 @@ public enum IntegrationConnectorDefinition
                                PostgresServerIntegrationProvider.class.getName(),
                                "PostgreSQLServerCataloguer",
                                "postgrescatnpa",
+                               null,
                                null,
                                null,
                                getPostgreSQLServerConfigProperties(),
@@ -203,6 +210,7 @@ public enum IntegrationConnectorDefinition
                           null,
                           null,
                           null,
+                          null,
                           60,
                           new DeployedImplementationTypeDefinition[]{AtlasDeployedImplementationType.APACHE_ATLAS_SERVER},
                           "174a5f66-eb58-4a67-b886-288988b8e330",
@@ -221,6 +229,7 @@ public enum IntegrationConnectorDefinition
                             KafkaTopicIntegrationProvider.class.getName(),
                             "ApacheKafkaCataloguer",
                             "kafkacatnpa",
+                            null,
                             null,
                             null,
                             null,
@@ -245,6 +254,7 @@ public enum IntegrationConnectorDefinition
                    null,
                    null,
                    null,
+                   null,
                    60,
                    new DeployedImplementationTypeDefinition[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM},
                    "22bcb015-84ab-4503-9619-231896c33828",
@@ -266,6 +276,7 @@ public enum IntegrationConnectorDefinition
                           null,
                           null,
                           null,
+                          null,
                           60,
                           new DeployedImplementationTypeDefinition[]{UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER},
                           "0102f808-2ee3-42d4-a769-95c891517876",
@@ -284,6 +295,7 @@ public enum IntegrationConnectorDefinition
                          OSSUnityCatalogServerSyncProvider.class.getName(),
                          "UnityCatalogServerSynchronizer",
                          "ucservernpa",
+                         null,
                          null,
                          null,
                          getUCServerConfigProperties(),
@@ -308,6 +320,7 @@ public enum IntegrationConnectorDefinition
                                     null,
                                     null,
                                     null,
+                                    null,
                                     60,
                                     new DeployedImplementationTypeDefinition[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM},
                                     "2eed7ad8-9189-4971-ba67-2de94efc7db3",
@@ -326,6 +339,7 @@ public enum IntegrationConnectorDefinition
                                APIBasedOpenLineageLogStoreProvider.class.getName(),
                                "OpenLineageAPIPublisher",
                                "olapipubnpa",
+                               null,
                                null,
                                null,
                                null,
@@ -349,6 +363,7 @@ public enum IntegrationConnectorDefinition
                                 FileBasedOpenLineageLogStoreProvider.class.getName(),
                                 "OpenLineageFilePublisher",
                                 "olfilepubnpa",
+                                null,
                                 null,
                                 "logs/openlineage",
                                 null,
@@ -374,6 +389,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
+                              null,
                               60,
                               null,
                               "df6a2737-c574-4383-85e7-9e0708ea9f62",
@@ -392,6 +408,7 @@ public enum IntegrationConnectorDefinition
                             OpenLineageCataloguerIntegrationProvider.class.getName(),
                             "OpenLineageCataloguer",
                             "olcatnpa",
+                            null,
                             null,
                             null,
                             null,
@@ -416,6 +433,7 @@ public enum IntegrationConnectorDefinition
                                 null,
                                 null,
                                 null,
+                                null,
                                 60,
                                 null,
                                 "638322ff-3c26-4259-8c46-70f969fbe5cd",
@@ -437,6 +455,7 @@ public enum IntegrationConnectorDefinition
                       null,
                       null,
                       null,
+                      null,
                       60,
                       null,
                       ProductSolutionComponent.JACQUARD_HARVESTER.getGUID(),
@@ -455,6 +474,7 @@ public enum IntegrationConnectorDefinition
                               BabbageAnalyticalEngineProvider.class.getName(),
                               "BabbageAnalyticalEngine",
                               "babbagenpa",
+                              null,
                               null,
                               null,
                               null,
@@ -536,6 +556,7 @@ public enum IntegrationConnectorDefinition
     private final String                                 connectorName;
     private final String                                 connectorUserId;
     private final String                                 metadataSourceQualifiedName;
+    private final String                                 metadataCollectionQualifiedName;
     private final String                                 endpointAddress;
     private final Map<String, Object>                    configurationProperties;
     private final long                                   refreshTimeInterval;
@@ -559,7 +580,8 @@ public enum IntegrationConnectorDefinition
      * @param connectorProviderClassName provider class name for the implementation
      * @param connectorName name of the connector when it is running (stored in relationship between group and connector)
      * @param connectorUserId runtime userId (stored in relationship between group and connector)
-     * @param metadataSourceQualifiedName metadata collection for newly created elements from this connector
+     * @param metadataSourceQualifiedName metadata source for newly created elements from this connector
+     * @param metadataCollectionQualifiedName metadata collection for newly created elements from this connector
      * @param endpointAddress optional endpoint address for the connector's connection
      * @param configurationProperties configuration properties for the integration connector's connection
      * @param refreshTimeInterval how often should it refresh (initial value)
@@ -581,6 +603,7 @@ public enum IntegrationConnectorDefinition
                                    String                                 connectorName,
                                    String                                 connectorUserId,
                                    String                                 metadataSourceQualifiedName,
+                                   String                                 metadataCollectionQualifiedName,
                                    String                                 endpointAddress,
                                    Map<String, Object>                    configurationProperties,
                                    long                                   refreshTimeInterval,
@@ -602,6 +625,7 @@ public enum IntegrationConnectorDefinition
         this.connectorName                         = connectorName;
         this.connectorUserId                       = connectorUserId;
         this.metadataSourceQualifiedName           = metadataSourceQualifiedName;
+        this.metadataCollectionQualifiedName       = metadataCollectionQualifiedName;
         this.endpointAddress                       = endpointAddress;
         this.configurationProperties               = configurationProperties;
         this.refreshTimeInterval                   = refreshTimeInterval;
@@ -704,6 +728,17 @@ public enum IntegrationConnectorDefinition
     public String getMetadataSourceQualifiedName()
     {
         return metadataSourceQualifiedName;
+    }
+
+
+    /**
+     * Return the optional metadata collection qualified name for the connector.
+     *
+     * @return string
+     */
+    public String getMetadataCollectionQualifiedName()
+    {
+        return metadataCollectionQualifiedName;
     }
 
 

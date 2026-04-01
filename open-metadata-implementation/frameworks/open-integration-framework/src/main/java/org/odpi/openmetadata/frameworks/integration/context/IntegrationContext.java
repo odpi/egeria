@@ -160,15 +160,15 @@ public class IntegrationContext extends ConnectorContextBase
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
     {
-        String metadataSourceName = requestedCatalogTarget.getMetadataSourceQualifiedName();
+        String metadataSourceName = requestedCatalogTarget.getMetadataCollectionQualifiedName();
 
         if (metadataSourceName == null)
         {
             metadataSourceName = externalSourceName; // default to the value set up for the connector in RegisteredIntegrationConnector
         }
 
-        String metadataSourceGUID = getMetadataSourceGUID(metadataSourceName,
-                                                          requestedCatalogTarget.getCatalogTargetElement());
+        String metadataSourceGUID = getMetadataCollectionGUID(metadataSourceName,
+                                                              requestedCatalogTarget.getCatalogTargetElement());
 
         return new CatalogTargetContext(localServerName,
                                         localServiceName,
@@ -388,7 +388,7 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @return  string name
      */
-    public String getMetadataSourceGUID()
+    public String getMetadataCollectionGUID()
     {
         return externalSourceGUID;
     }
@@ -400,39 +400,39 @@ public class IntegrationContext extends ConnectorContextBase
      * of a software capability,  This qualified name is supplied through open metadata values and may be incorrect
      * which is why any exceptions from retrieving the software capability are passed through to the caller.
      *
-     * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
+     * @param metadataCollectionQualifiedName supplied qualified name for the metadata collection
      *
      * @return null or unique identifier of the associated software capability
      * @throws InvalidParameterException the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
      * @throws PropertyServerException a problem accessing the metadata store
      */
-    private String getMetadataSourceGUID(String                  metadataSourceQualifiedName,
-                                         OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
+    private String getMetadataCollectionGUID(String                  metadataCollectionQualifiedName,
+                                             OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        if (metadataSourceQualifiedName != null)
+        if (metadataCollectionQualifiedName != null)
         {
-            if (externalSourceCache.get(metadataSourceQualifiedName) != null)
+            if (externalSourceCache.get(metadataCollectionQualifiedName) != null)
             {
-                return externalSourceCache.get(metadataSourceQualifiedName);
+                return externalSourceCache.get(metadataCollectionQualifiedName);
             }
             else
             {
                 AssetClient assetClient = this.getAssetClient(OpenMetadataType.METADATA_COLLECTION.typeName);
 
-                String metadataSourceGUID = assetClient.setUpMetadataSource(metadataSourceQualifiedName,
+                String metadataCollectionGUID = assetClient.setUpMetadataSource(metadataCollectionQualifiedName,
                                                                             catalogTargetElement.getElementHeader().getGUID(),
                                                                             connectorName,
                                                                             connectorUserId,
                                                                             ElementOriginCategory.EXTERNAL_SOURCE);
 
-                if (metadataSourceGUID != null)
+                if (metadataCollectionGUID != null)
                 {
-                    externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
+                    externalSourceCache.put(metadataCollectionQualifiedName, metadataCollectionGUID);
 
-                    return metadataSourceGUID;
+                    return metadataCollectionGUID;
                 }
             }
         }

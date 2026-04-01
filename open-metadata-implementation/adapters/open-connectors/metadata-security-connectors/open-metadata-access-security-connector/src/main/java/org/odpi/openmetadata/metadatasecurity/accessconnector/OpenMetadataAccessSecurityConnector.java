@@ -434,10 +434,10 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         /*
          * Does the account type match one of the listed groups?
          */
-        if (((userAccount.getAccountType() == UserAccountType.EMPLOYEE) && (associatedSecurityList.contains(employeeUsersGroup))) ||
-            ((userAccount.getAccountType() == UserAccountType.CONTRACTOR) && (associatedSecurityList.contains(contractorUsersGroup))) ||
-            ((userAccount.getAccountType() == UserAccountType.EXTERNAL) && (associatedSecurityList.contains(externalUsersGroup))) ||
-            ((userAccount.getAccountType() == UserAccountType.DIGITAL) && (associatedSecurityList.contains(digitalUsersGroup))))
+        if (((userAccount.getUserAccountType() == UserAccountType.EMPLOYEE) && (associatedSecurityList.contains(employeeUsersGroup))) ||
+            ((userAccount.getUserAccountType() == UserAccountType.CONTRACTOR) && (associatedSecurityList.contains(contractorUsersGroup))) ||
+            ((userAccount.getUserAccountType() == UserAccountType.EXTERNAL) && (associatedSecurityList.contains(externalUsersGroup))) ||
+            ((userAccount.getUserAccountType() == UserAccountType.DIGITAL) && (associatedSecurityList.contains(digitalUsersGroup))))
         {
             return true;
         }

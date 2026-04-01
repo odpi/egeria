@@ -60,7 +60,7 @@ public class UserAccount
         if (template != null)
         {
             this.userName        = template.getUserName();
-            this.userAccountType = template.getAccountType();
+            this.userAccountType = template.getUserAccountType();
             this.employeeNumber  = template.getEmployeeNumber();
             this.employeeType = template.getEmployeeType();
             this.displayName = template.getDisplayName();
@@ -104,7 +104,7 @@ public class UserAccount
      *
      * @return account type enum
      */
-    public UserAccountType getAccountType()
+    public UserAccountType getUserAccountType()
     {
         return userAccountType;
     }
@@ -115,7 +115,7 @@ public class UserAccount
      *
      * @param userAccountType enum
      */
-    public void setAccountType(UserAccountType userAccountType)
+    public void setUserAccountType(UserAccountType userAccountType)
     {
         this.userAccountType = userAccountType;
     }

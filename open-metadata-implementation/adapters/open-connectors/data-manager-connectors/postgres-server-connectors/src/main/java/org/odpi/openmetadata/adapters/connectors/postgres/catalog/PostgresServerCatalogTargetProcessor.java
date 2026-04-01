@@ -473,6 +473,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
                 catalogTargetProperties.setCatalogTargetName(databaseName);
                 catalogTargetProperties.setMetadataSourceQualifiedName(dbmsQualifiedName);
+                catalogTargetProperties.setMetadataCollectionQualifiedName(dbmsQualifiedName);
                 catalogTargetProperties.setTemplates(templates);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();

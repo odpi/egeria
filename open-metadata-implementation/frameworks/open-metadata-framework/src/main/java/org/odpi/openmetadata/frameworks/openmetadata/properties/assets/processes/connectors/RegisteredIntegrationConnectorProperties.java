@@ -24,12 +24,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredIntegrationConnectorProperties extends RelationshipBeanProperties
 {
-    private String                   connectorName               = null;
-    private String                   connectorUserId             = null;
-    private String                   metadataSourceQualifiedName = null;
-    private Date                     startDate                   = null;
-    private long                     refreshTimeInterval         = 0L;
-    private Date                     connectorShutdownDate       = null;
+    private String                   connectorName                    = null;
+    private String                   connectorUserId                  = null;
+    private String                   metadataCollectionQualifiedName  = null;
+    private String                   metadataSourceQualifiedName      = null;
+    private Date                     startDate                        = null;
+    private long                     refreshTimeInterval              = 0L;
+    private Date                     connectorShutdownDate            = null;
     private PermittedSynchronization permittedSynchronization         = null;
     private boolean                  generateConnectorActivityReports = true;
 
@@ -57,6 +58,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
         {
             connectorName                    = template.getConnectorName();
             connectorUserId                  = template.getConnectorUserId();
+            metadataCollectionQualifiedName  = template.getMetadataCollectionQualifiedName();
             metadataSourceQualifiedName      = template.getMetadataSourceQualifiedName();
             startDate                        = template.getStartDate();
             refreshTimeInterval              = template.getRefreshTimeInterval();
@@ -112,6 +114,28 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     public void setConnectorUserId(String connectorUserId)
     {
         this.connectorUserId = connectorUserId;
+    }
+
+
+    /**
+     * Return the qualified name of the metadata collection for this integration connector.
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionQualifiedName()
+    {
+        return metadataCollectionQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the metadata collection for this integration connector.
+     *
+     * @param metadataCollectionQualifiedName string name
+     */
+    public void setMetadataCollectionQualifiedName(String metadataCollectionQualifiedName)
+    {
+        this.metadataCollectionQualifiedName = metadataCollectionQualifiedName;
     }
 
 
@@ -268,6 +292,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
         return "RegisteredIntegrationConnectorProperties{" +
                 "connectorName='" + connectorName + '\'' +
                 ", connectorUserId='" + connectorUserId + '\'' +
+                ", metadataCollectionQualifiedName='" + metadataCollectionQualifiedName + '\'' +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", startDate=" + startDate +
                 ", refreshTimeInterval=" + refreshTimeInterval +
@@ -295,6 +320,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
                 generateConnectorActivityReports == that.generateConnectorActivityReports &&
                 Objects.equals(connectorName, that.connectorName) &&
                 Objects.equals(connectorUserId, that.connectorUserId) &&
+                Objects.equals(metadataCollectionQualifiedName, that.metadataCollectionQualifiedName) &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(connectorShutdownDate, that.connectorShutdownDate) &&
@@ -310,6 +336,6 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), connectorName, connectorUserId, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate, permittedSynchronization, generateConnectorActivityReports);
+        return Objects.hash(super.hashCode(), connectorName, connectorUserId, metadataCollectionQualifiedName, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate, permittedSynchronization, generateConnectorActivityReports);
     }
 }

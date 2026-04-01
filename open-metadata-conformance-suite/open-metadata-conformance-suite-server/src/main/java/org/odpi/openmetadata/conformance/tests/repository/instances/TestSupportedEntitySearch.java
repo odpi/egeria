@@ -1842,76 +1842,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
 
-    /**
-     *  Method to find all the string values and literalise them for exact match.
-     *  The InstanceProperties passed in should already have been populated with the desired test values.
-     */
-    public InstanceProperties literaliseMatchProperties(String userId, TypeDef typeDef, InstanceProperties matchProperties)
-    {
-
-        if (matchProperties == null)
-            return null;
-
-
-
-        Map<String, InstancePropertyValue> properties = matchProperties.getInstanceProperties();
-
-
-        /*
-         * Get the trivial case out of the way - whatecver we were passed - pass it back
-         */
-        if (properties == null)
-            return matchProperties;
-
-
-        try
-        {
-            /*
-             * Clone the match properties to a new IP object, iterate over the matchProperties and for any that are primitive string type call the repo helper and set the literalised value in the cloned properties object
-             */
-            InstanceProperties literalisedInstanceProperties = new InstanceProperties(matchProperties);
-
-            OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-
-            Iterator<String> propertyNames = matchProperties.getPropertyNames();
-
-            if (propertyNames != null)
-            {
-                while (propertyNames.hasNext())
-                {
-                    String propertyName = propertyNames.next();
-                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
-
-                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
-                    if (ipCat == InstancePropertyCategory.PRIMITIVE)
-                    {
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
-                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                        if (pdCat == OM_PRIMITIVE_TYPE_STRING)
-                        {
-                            PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
-                            // Literalise the string
-                            String currentValue = (String) ppv.getPrimitiveValue();
-                            String litValue = repositoryHelper.getExactMatchRegex(currentValue);
-                            newPpv.setPrimitiveValue(litValue);
-                            literalisedInstanceProperties.setProperty(propertyName, newPpv);
-                        }
-
-                    }
-                }
-
-            }
-            return literalisedInstanceProperties;
-
-        }
-        catch (Exception e)
-        {
-            return null;  // This should force an InvalidParameterException from the MDC under test.
-        }
-
-    }
-
-
     /*
      * Return the union of the two lists
      */
@@ -1976,7 +1906,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringProperty(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        return repositoryHelper.getExactMatchRegex(value);
+        //return repositoryHelper.getExactMatchRegex(value);
+        return value;
     }
 
     /**
@@ -1986,7 +1917,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyExact(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        return repositoryHelper.getExactMatchRegex(value);
+        // return repositoryHelper.getExactMatchRegex(value);
+        return value;
     }
 
     /**
@@ -1996,7 +1928,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyStartsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        return repositoryHelper.getStartsWithRegex(value);
+        //return repositoryHelper.getStartsWithRegex(value);
+        return value;
     }
 
     /**
@@ -2006,7 +1939,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyEndsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        return repositoryHelper.getEndsWithRegex(value);
+        // return repositoryHelper.getEndsWithRegex(value);
+        return value;
     }
 
     /**
@@ -2016,7 +1950,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyContains(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        return repositoryHelper.getContainsRegex(value);
+        //return repositoryHelper.getContainsRegex(value);
+        return value;
     }
 
 

@@ -577,9 +577,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         /*
          * Need either a type name or a query string to have a valid query
          */
-        String queryTypeName = this.getQueryTypeName(searchOptions);
-
-        if (queryTypeName == null)
+        if ((searchOptions == null) ||
+                ((searchOptions.getMetadataElementTypeName() == null) &&
+                        ((searchOptions.getMetadataElementSubtypeNames() == null) || searchOptions.getMetadataElementSubtypeNames().isEmpty())))
         {
             invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         }
@@ -607,19 +607,19 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param anchorGUID unique identifier of anchor
-     * @param queryOptions multiple options to control the query
+     * @param searchOptions multiple options to control the query
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException  the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
-    public AnchorSearchMatches findElementsForAnchor(String       userId,
-                                                     String       searchString,
-                                                     String       anchorGUID,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public AnchorSearchMatches findElementsForAnchor(String        userId,
+                                                     String        searchString,
+                                                     String        anchorGUID,
+                                                     SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName                = "findElementsForAnchor";
         final String contextParameterName      = "anchorGUID";
@@ -627,10 +627,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-string/for-anchor/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, contextParameterName, methodName);
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody(queryOptions);
+        if ((searchOptions == null) ||
+                ((searchOptions.getMetadataElementTypeName() == null) &&
+                        ((searchOptions.getMetadataElementSubtypeNames() == null) || searchOptions.getMetadataElementSubtypeNames().isEmpty())))
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody(searchOptions);
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
@@ -677,8 +683,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-string/in-anchor-domain/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         invalidParameterHandler.validateName(anchorDomainName, contextParameterName, methodName);
+
+        if ((searchOptions == null) ||
+                ((searchOptions.getMetadataElementTypeName() == null) &&
+                        ((searchOptions.getMetadataElementSubtypeNames() == null) || searchOptions.getMetadataElementSubtypeNames().isEmpty())))
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody(searchOptions);
 
@@ -726,8 +738,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-string/in-anchor-scope/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         invalidParameterHandler.validateGUID(anchorScopeGUID, contextParameterName, methodName);
+
+        if ((searchOptions == null) ||
+                ((searchOptions.getMetadataElementTypeName() == null) &&
+                        ((searchOptions.getMetadataElementSubtypeNames() == null) || searchOptions.getMetadataElementSubtypeNames().isEmpty())))
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody(searchOptions);
 
