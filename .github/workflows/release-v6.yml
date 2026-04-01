@@ -46,19 +46,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: build and publish to maven central
-        uses: gradle/gradle-build-action@v3
-        with:
-          cache-read-only: false
-          arguments: build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
-        # Import secrets needed for code signing and distribution
-        env:
-          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
-          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_mavenRepoUrl: https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
-          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
-          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
       # QEMU is needed for ARM64 build for egeria-configure
       # egeria-configure needs to install utilities
       - name: Set up QEMU
@@ -78,6 +65,19 @@ jobs:
           tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:stable, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:stable
           context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
+      - name: build and publish to maven central
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
+        # Import secrets needed for code signing and distribution
+        env:
+          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
+          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_mavenRepoUrl: https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
+          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
         uses: actions/upload-artifact@v4.4.0
