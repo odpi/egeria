@@ -85,8 +85,7 @@ org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues
-org.odpi.openmetadata.adapters.connectors.organizationinsight.controls
-org.odpi.openmetadata.adapters.connectors.organizationinsight.ffdc
+org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
@@ -110,6 +109,7 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc
+org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile
 org.odpi.openmetadata.adapters.connectors.subscriptions
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors

@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/basicfiles/BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></code>, <code><a href="../../../adapters/connectors/integration/csvlineageimporter/CSVLineageImporterConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterConnector</a></code>, <code><a href="DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/GovernanceActionOpenLineageIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">GovernanceActionOpenLineageIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/egeriainfrastructure/platform/catalog/OMAGServerPlatformCatalogConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog">OMAGServerPlatformCatalogConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openapis/OpenAPIMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">OpenAPIMonitorIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/integration/basicfiles/BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></code>, <code><a href="../../../adapters/connectors/integration/csvlineageimporter/CSVLineageImporterConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterConnector</a></code>, <code><a href="DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/GovernanceActionOpenLineageIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">GovernanceActionOpenLineageIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openapis/OpenAPIMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">OpenAPIMonitorIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">IntegrationConnectorBase</span>
@@ -115,25 +115,22 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
-<div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="RequestedCatalogTargetsManager.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">RequestedCatalogTargetsManager</a></code></div>
+<div class="col-second even-row-color"><code><a href="#catalogTargetsManager" class="member-name-link">catalogTargetsManager</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="RequestedCatalogTargetsManager.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">RequestedCatalogTargetsManager</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#catalogTargetsManager" class="member-name-link">catalogTargetsManager</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-first even-row-color"><code><a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
+<div class="col-second even-row-color"><code><a href="#integrationContext" class="member-name-link">integrationContext</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#integrationContext" class="member-name-link">integrationContext</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
-<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
+<code><a href="../../connectors/ConnectorBase.html#auditLog">auditLog</a>, <a href="../../connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -240,12 +237,6 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="auditLog">
-<h3>auditLog</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></span>&nbsp;<span class="element-name">auditLog</span></div>
-</section>
-</li>
 <li>
 <section class="detail" id="connectorName">
 <h3>connectorName</h3>

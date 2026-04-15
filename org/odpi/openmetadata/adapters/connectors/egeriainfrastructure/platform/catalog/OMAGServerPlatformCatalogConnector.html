@@ -75,7 +75,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.Connector</a>
 <div class="inheritance"><a href="../../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorBase</a>
 <div class="inheritance"><a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase</a>
+<div class="inheritance"><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogConnector</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,12 +85,11 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code>, <code><a href="../../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></code></dd>
+<dd><code><a href="../../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="../../../../../frameworks/integration/connectors/CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a></code>, <code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerPlatformCatalogConnector</span>
-<span class="extends-implements">extends <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a>
-implements <a href="../../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></span></div>
+<span class="extends-implements">extends <a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -106,11 +107,14 @@ implements <a href="../../../../../frameworks/openmetadata/events/OpenMetadataEv
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></h3>
+<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#lastRefreshCompleteTime">lastRefreshCompleteTime</a></code></div>
+<div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
-<code><a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#auditLog">auditLog</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#catalogTargetsManager">catalogTargetsManager</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#connectorName">connectorName</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#integrationContext">integrationContext</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#propertyHelper">propertyHelper</a></code></div>
+<code><a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#catalogTargetsManager">catalogTargetsManager</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#connectorName">connectorName</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#integrationContext">integrationContext</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#propertyHelper">propertyHelper</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
+<code><a href="../../../../../frameworks/connectors/ConnectorBase.html#auditLog">auditLog</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -137,25 +141,24 @@ implements <a href="../../../../../frameworks/openmetadata/events/OpenMetadataEv
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">getNewRequestedCatalogTargetSkeleton</a><wbr>(<a href="../../../../../frameworks/opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a>&nbsp;retrievedCatalogTarget,
+ <a href="../../../../../frameworks/integration/context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
+ <a href="../../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Called each time an event that is published by the OMF, it is looking for Software Server Platforms
- to add to monitoredPlatforms.</div>
+<div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></h3>
+<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a>, <a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#refresh()">refresh</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
 <code><a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#engage()">engage</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getNetworkAddress(org.odpi.openmetadata.frameworks.connectors.Connector)">getNetworkAddress</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#passEventToCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetEventProcessor,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">passEventToCatalogTargets</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#refreshCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator)">refreshCatalogTargets</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setConnectorName(java.lang.String)">setConnectorName</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)">setContext</a></code></div>
@@ -216,35 +219,28 @@ implements <a href="../../../../../frameworks/openmetadata/events/OpenMetadataEv
 </section>
 </li>
 <li>
-<section class="detail" id="refresh()">
-<h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
-             throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
- Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
- as well as any external REST API calls to explicitly refresh the connector.
- This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
- catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
- actually exist in the event broker.</div>
+<section class="detail" id="getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">
+<h3>getNewRequestedCatalogTargetSkeleton</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></span>&nbsp;<span class="element-name">getNewRequestedCatalogTargetSkeleton</span><wbr><span class="parameters">(<a href="../../../../../frameworks/opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a>&nbsp;retrievedCatalogTarget,
+ <a href="../../../../../frameworks/integration/context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
+ <a href="../../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span>
+                                                            throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is not able to refresh the metadata.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
-<h3>processEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span></div>
-<div class="block">Called each time an event that is published by the OMF, it is looking for Software Server Platforms
- to add to monitoredPlatforms.</div>
-<dl class="notes">
+<dd><code><a href="../../../../../frameworks/integration/connectors/CatalogTargetFactory.html#getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">getNewRequestedCatalogTargetSkeleton</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../frameworks/integration/connectors/CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></code></dd>
+<dd><code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">getNewRequestedCatalogTargetSkeleton</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>event</code> - event object - call getEventType to find out what type of event.</dd>
+<dd><code>retrievedCatalogTarget</code> - details of the open metadata elements describing the catalog target</dd>
+<dd><code>catalogTargetContext</code> - specialized context for this catalog target</dd>
+<dd><code>connectorToTarget</code> - connector to access the target resource</dd>
+<dt>Returns:</dt>
+<dd>new processor based on the catalog target information</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with setting up the catalog target.</dd>
+<dd><code><a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector has been disconnected</dd>
 </dl>
 </section>
 </li>

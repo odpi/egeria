@@ -151,46 +151,54 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return information about a user.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setPlatformSecurityConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setPlatformSecurityConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUserList(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus,org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType)" class="member-name-link">getUserList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
+ <a href="../../frameworks/connectors/properties/users/UserAccountStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">UserAccountStatus</a>&nbsp;userAccountStatus,
+ <a href="../../frameworks/connectors/properties/users/UserAccountType.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">UserAccountType</a>&nbsp;userAccountType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the list of defined users.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setPlatformSecurityConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setPlatformSecurityConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURL,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Override the default location of the configuration documents.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setSecurityAccessControl(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl)" class="member-name-link">setSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setSecurityAccessControl(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl)" class="member-name-link">setSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  <a href="../properties/OpenMetadataSecurityAccessControl.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataSecurityAccessControl</a>&nbsp;securityAccessControl)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Update information about a specific security access control.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#updateLoginUserAccount(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">updateLoginUserAccount</a><wbr>(<a href="../properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a>&nbsp;userAccount)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#updateLoginUserAccount(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">updateLoginUserAccount</a><wbr>(<a href="../properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a>&nbsp;userAccount)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Update information about a specific user.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#updateUserAccount(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">updateUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#updateUserAccount(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">updateUserAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
  <a href="../properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a>&nbsp;userAccount)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Update information about a specific user.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsOperatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsOperatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsOperatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsOperatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserForNewServer(java.lang.String)" class="member-name-link">validateUserForNewServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserForNewServer(java.lang.String)" class="member-name-link">validateUserForNewServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Check that the calling user is authorized to create new servers.</div>
 </div>
 </div>
@@ -286,6 +294,32 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the elements is invisible to the requesting user.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - unable to retrieve necessary information to make the decision.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUserList(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus,org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType)">
+<h3>getUserList</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getUserList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
+ <a href="../../frameworks/connectors/properties/users/UserAccountStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">UserAccountStatus</a>&nbsp;userAccountStatus,
+ <a href="../../frameworks/connectors/properties/users/UserAccountType.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">UserAccountType</a>&nbsp;userAccountType)</span>
+                                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the list of defined users.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>delegatingUserId</code> - external userId making request</dd>
+<dd><code>userAccountStatus</code> - status of the user - or null for any status</dd>
+<dd><code>userAccountType</code> - type of user - or null for any type</dd>
+<dt>Returns:</dt>
+<dd>list of userIds</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the elements is invisible to the requesting user.</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>

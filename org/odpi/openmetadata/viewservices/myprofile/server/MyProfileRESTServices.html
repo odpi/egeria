@@ -127,7 +127,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyActors(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getMyActors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of actors linked to the user's profile.</div>
+<div class="block">Return the list of actors (roles and userIds) linked to the user's profile.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyAssignedActions(java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ActivityStatusRequestBody)" class="member-name-link">getMyAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -189,7 +189,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logMyActivity(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewAttachmentRequestBody)" class="member-name-link">logMyActivity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the profile for this user.</div>
+<div class="block">Log details of an activity performed by the user.</div>
 </div>
 </div>
 </div>
@@ -315,7 +315,7 @@ loadScripts(document, 'script');</script>
 <h3>getMyActors</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getMyActors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return the list of actors linked to the user's profile.</div>
+<div class="block">Return the list of actors (roles and userIds) linked to the user's profile.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -391,7 +391,7 @@ loadScripts(document, 'script');</script>
 <h3>logMyActivity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">logMyActivity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/NewAttachmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewAttachmentRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Add the profile for this user.</div>
+<div class="block">Log details of an activity performed by the user.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>

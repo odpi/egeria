@@ -459,11 +459,25 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceZoneFilter</span>()</div>
 <div class="block">Return the list of governance zones to restrict the elements (if any) returned to members of these
  zones.  If the value is null (the default) then all matching elements are returned, subject to
- the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
+ the usual security restrictions.  Be aware that the governance zones set on an anchor element apply to all elements anchored to it.
  Any element retrieved that is anchored to another element will not be returned if this filter is set.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of governance zone names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGovernanceZoneFilter(java.util.List)">
+<h3>setGovernanceZoneFilter</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceZoneFilter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;governanceZoneFilter)</span></div>
+<div class="block">Set up the list of governance zones to restrict the elements (if any) returned to members of these
+ zones.  If the value is null (the default) then all matching elements are returned, subject to
+ the usual security restrictions.  Be aware that the governance zones set on an anchor element apply to all elements anchored to it.
+ Any element retrieved that is anchored to another element will not be returned if this filter is set.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>governanceZoneFilter</code> - list of governance zone names</dd>
 </dl>
 </section>
 </li>
@@ -512,20 +526,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>includeOnlyClassifiedElements</code> - list of classification names or null.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setGovernanceZoneFilter(java.util.List)">
-<h3>setGovernanceZoneFilter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceZoneFilter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;governanceZoneFilter)</span></div>
-<div class="block">Set up the list of governance zones to restrict the elements (if any) returned to members of these
- zones.  If the value is null (the default) then all matching elements are returned, subject to
- the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
- Any element retrieved that is anchored to another element will not be returned if this filter is set.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>governanceZoneFilter</code> - list of governance zone names</dd>
 </dl>
 </section>
 </li>

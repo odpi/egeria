@@ -216,14 +216,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Link the related element into the graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentLinksToGraph(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,java.util.List,java.util.List)" class="member-name-link">addSolutionComponentLinksToGraph</a><wbr>(<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;solutionComponentElement,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentLinksToGraph(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,java.util.List,java.util.List,boolean)" class="member-name-link">addSolutionComponentLinksToGraph</a><wbr>(<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;solutionComponentElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionLinkingWireGUIDs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validNodeGUIDs)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validNodeGUIDs,
+ boolean&nbsp;addAllActors)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link a solution component in the graph.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentListToGraph(java.util.List)" class="member-name-link">addSolutionComponentListToGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;requiredSolutionComponents)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentListToGraph(java.util.List,boolean)" class="member-name-link">addSolutionComponentListToGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;requiredSolutionComponents,
+ boolean&nbsp;addAllActors)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This is used for creating solution blueprint or solution component internal graphs.</div>
 </div>
@@ -1260,29 +1262,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addSolutionComponentListToGraph(java.util.List)">
+<section class="detail" id="addSolutionComponentListToGraph(java.util.List,boolean)">
 <h3>addSolutionComponentListToGraph</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionComponentListToGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;requiredSolutionComponents)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionComponentListToGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;requiredSolutionComponents,
+ boolean&nbsp;addAllActors)</span></div>
 <div class="block">This is used for creating solution blueprint or solution component internal graphs.  It adds
- The list of nodes passed in as parameters and then adds the relationships between them, ignoring everything else.</div>
+ the list of nodes passed in as parameters and then adds the relationships between them, ignoring everything else.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>requiredSolutionComponents</code> - list of nodes</dd>
+<dd><code>addAllActors</code> - should any additional actors be added to the graph (true for SolutionComponent, false for solution blueprint.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addSolutionComponentLinksToGraph(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,java.util.List,java.util.List)">
+<section class="detail" id="addSolutionComponentLinksToGraph(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,java.util.List,java.util.List,boolean)">
 <h3>addSolutionComponentLinksToGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionComponentLinksToGraph</span><wbr><span class="parameters">(<a href="../metadataelements/RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;solutionComponentElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionLinkingWireGUIDs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validNodeGUIDs)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validNodeGUIDs,
+ boolean&nbsp;addAllActors)</span></div>
 <div class="block">Link a solution component in the graph.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>solutionComponentElement</code> - element to process</dd>
 <dd><code>solutionLinkingWireGUIDs</code> - list of solution wires already defined</dd>
 <dd><code>validNodeGUIDs</code> - list of solution component nodes that ate allowed in the blueprint</dd>
+<dd><code>addAllActors</code> - should any additional actors be added to the graph (true for SolutionComponent, false for solution blueprint.</dd>
 </dl>
 </section>
 </li>
