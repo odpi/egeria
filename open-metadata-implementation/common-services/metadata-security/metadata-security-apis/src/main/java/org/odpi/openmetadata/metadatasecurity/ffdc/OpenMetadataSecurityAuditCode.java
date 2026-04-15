@@ -190,13 +190,13 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the anchor is null
+     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to access element {1} returned from a {2} operation; it has been filtered from the results
      */
-    NULL_ANCHOR("OPEN-METADATA-SECURITY-0021",
-                AuditLogRecordSeverityLevel.SECURITY,
-                "User {0} is not authorized to issue operation {1} because the element's anchor is null",
-                "The system cannot process a request from the user because the element is not correctly anchored.",
-                "The request fails with a UserNotAuthorizedException exception. Add the Anchors classification and re-run the request."),
+    FILTERED_ELEMENT("OPEN-METADATA-SECURITY-0021",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "User {0} is not authorized to access element {1} returned from a {2} operation; it has been filtered from the results",
+                     "The system has filtered an element from the results because the user does not have the necessary permissions to access it.",
+                     "The element is filtered from the results."),
 
     /**
      * OPEN-METADATA-SECURITY-0022 - User {0} is not recognized

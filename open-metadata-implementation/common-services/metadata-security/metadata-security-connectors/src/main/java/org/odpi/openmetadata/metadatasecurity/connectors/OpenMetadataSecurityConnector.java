@@ -525,13 +525,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @throws UserNotAuthorizedException the authorization check failed
      */
-    protected void throwMissingAnchor(String       userId,
-                                      String       operation,
-                                      String       methodName) throws UserNotAuthorizedException
+    protected void throwFilteredElement(String userId,
+                                        String operation,
+                                        String entityGUID,
+                                        String methodName) throws UserNotAuthorizedException
     {
-        logRecord(methodName, OpenMetadataSecurityAuditCode.NULL_ANCHOR.getMessageDefinition(userId, operation));
+        logRecord(methodName, OpenMetadataSecurityAuditCode.FILTERED_ELEMENT.getMessageDefinition(userId, entityGUID, operation));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NULL_ANCHOR.getMessageDefinition(userId, operation),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.FILTERED_ELEMENT.getMessageDefinition(userId, entityGUID, operation),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -539,12 +540,13 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Write an audit log message and throw exception to record an unauthorized access.
+     * Write an audit log message and throw an exception to record an unauthorized access.
      *
-     * @param userId calling user
-     * @param operation of requested operation
-     * @param methodName calling method
-     *
+     * @param userId         calling user
+     * @param operation      of requested operation
+     * @param entityGUID     unique identifier of the entity
+     * @param entityTypeName name of the entity type
+     * @param methodName     calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
     protected void throwUnauthorizedElementAccess(String userId,

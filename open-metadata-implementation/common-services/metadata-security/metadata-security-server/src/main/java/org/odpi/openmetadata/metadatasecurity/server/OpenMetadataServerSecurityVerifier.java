@@ -471,6 +471,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @param userId calling user
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -481,6 +482,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void validateUserForElementRead(String               userId,
                                            EntityDetail         requestedEntity,
+                                           boolean              isExplicitGetRequest,
                                            OMRSRepositoryHelper repositoryHelper,
                                            String               serviceName,
                                            String               methodName) throws UserNotAuthorizedException,
@@ -489,7 +491,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (elementSecurityConnector != null)
         {
-            elementSecurityConnector.validateUserForElementRead(userId, requestedEntity, repositoryHelper, serviceName, methodName);
+            elementSecurityConnector.validateUserForElementRead(userId, requestedEntity, isExplicitGetRequest, repositoryHelper, serviceName, methodName);
         }
     }
 
@@ -500,6 +502,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId calling user
      * @param anchorEntity entity for the anchor (if extracted - may be null)
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -511,6 +514,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void validateUserForAnchorMemberRead(String               userId,
                                                 EntityDetail         anchorEntity,
                                                 EntityDetail         requestedEntity,
+                                                boolean              isExplicitGetRequest,
                                                 OMRSRepositoryHelper repositoryHelper,
                                                 String               serviceName,
                                                 String               methodName) throws UserNotAuthorizedException,
@@ -519,7 +523,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (elementSecurityConnector != null)
         {
-            elementSecurityConnector.validateUserForAnchorMemberRead(userId, anchorEntity, requestedEntity, repositoryHelper, serviceName, methodName);
+            elementSecurityConnector.validateUserForAnchorMemberRead(userId, anchorEntity, requestedEntity, isExplicitGetRequest, repositoryHelper, serviceName, methodName);
         }
     }
 

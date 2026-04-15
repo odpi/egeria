@@ -54,6 +54,7 @@ public interface OpenMetadataElementSecurity
      *
      * @param userId calling user
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -64,6 +65,7 @@ public interface OpenMetadataElementSecurity
      */
     void validateUserForElementRead(String               userId,
                                     EntityDetail         requestedEntity,
+                                    boolean              isExplicitGetRequest,
                                     OMRSRepositoryHelper repositoryHelper,
                                     String               serviceName,
                                     String               methodName) throws UserNotAuthorizedException,
@@ -307,6 +309,7 @@ public interface OpenMetadataElementSecurity
      * @param userId calling user
      * @param anchorEntity entity for the anchor (if extracted - may be null)
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -316,6 +319,7 @@ public interface OpenMetadataElementSecurity
     void validateUserForAnchorMemberRead(String               userId,
                                          EntityDetail         anchorEntity,
                                          EntityDetail         requestedEntity,
+                                         boolean              isExplicitGetRequest,
                                          OMRSRepositoryHelper repositoryHelper,
                                          String               serviceName,
                                          String               methodName) throws UserNotAuthorizedException,
