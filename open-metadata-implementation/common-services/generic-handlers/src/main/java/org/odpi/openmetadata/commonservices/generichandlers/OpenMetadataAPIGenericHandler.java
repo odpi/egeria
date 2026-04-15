@@ -138,8 +138,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Check that a retrieved entity is readable.  This is always the first check and include checks
-     * for private feedback, connection selection, asset zones and security tags on glossaries
+     * Check that a retrieved entity is readable.  This is always the first check and includes checks
+     * for private feedback, connection selection, and zones
      *
      * @param userId calling user
      * @param connectToEntity entity retrieved
@@ -166,6 +166,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          */
         securityVerifier.validateUserForElementRead(userId,
                                                     connectToEntity,
+                                                    isExplicitGetRequest,
                                                     repositoryHelper,
                                                     serviceName,
                                                     methodName);
@@ -204,7 +205,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param connectToGUID       unique id for the object to connect the attachment to.
      * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
      * @param connectToType       type of the connectToElement.
-     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isExplicitGetRequest Is this request an explicit get request for the element or a find request.
      * @param isUpdate         is this an update request?
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -681,6 +682,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                     securityVerifier.validateUserForAnchorMemberRead(userId,
                                                                      anchorEntity,
                                                                      connectToEntity,
+                                                                     isExplicitGetRequest,
                                                                      repositoryHelper,
                                                                      serviceName,
                                                                      methodName);

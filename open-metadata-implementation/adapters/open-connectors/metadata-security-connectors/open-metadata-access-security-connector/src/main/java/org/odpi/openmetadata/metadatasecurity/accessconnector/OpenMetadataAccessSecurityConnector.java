@@ -1338,6 +1338,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      *
      * @param userId calling user
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -1348,6 +1349,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
     @Override
     public void validateUserForElementRead(String               userId,
                                            EntityDetail         requestedEntity,
+                                           boolean              isExplicitGetRequest,
                                            OMRSRepositoryHelper repositoryHelper,
                                            String               serviceName,
                                            String               methodName) throws UserNotAuthorizedException,
@@ -1365,11 +1367,21 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
             return;
         }
 
-        throwUnauthorizedElementAccess(userId,
-                                       AccessOperation.READ.getName(),
-                                       requestedEntity.getGUID(),
-                                       requestedEntity.getType().getTypeDefName(),
-                                       methodName);
+        if (isExplicitGetRequest)
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.READ.getName(),
+                                           requestedEntity.getGUID(),
+                                           requestedEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+        else
+        {
+            throwFilteredElement(userId,
+                                 AccessOperation.READ.getName(),
+                                 requestedEntity.getGUID(),
+                                 methodName);
+        }
     }
 
 
@@ -1379,6 +1391,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @param userId calling user
      * @param anchorEntity entity for the anchor (if extracted - may be null)
      * @param requestedEntity entity requested by the caller
+     * @param isExplicitGetRequest is this entity requested explicitly
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -1390,6 +1403,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
     public void validateUserForAnchorMemberRead(String               userId,
                                                 EntityDetail         anchorEntity,
                                                 EntityDetail         requestedEntity,
+                                                boolean              isExplicitGetRequest,
                                                 OMRSRepositoryHelper repositoryHelper,
                                                 String               serviceName,
                                                 String               methodName) throws UserNotAuthorizedException,
@@ -1412,11 +1426,21 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                 return;
             }
 
-            throwUnauthorizedElementAccess(userId,
-                                           AccessOperation.READ.getName(),
-                                           requestedEntity.getGUID(),
-                                           requestedEntity.getType().getTypeDefName(),
-                                           methodName);
+            if (isExplicitGetRequest)
+            {
+                throwUnauthorizedElementAccess(userId,
+                                               AccessOperation.READ.getName(),
+                                               requestedEntity.getGUID(),
+                                               requestedEntity.getType().getTypeDefName(),
+                                               methodName);
+            }
+            else
+            {
+                throwFilteredElement(userId,
+                                     AccessOperation.READ.getName(),
+                                     requestedEntity.getGUID(),
+                                     methodName);
+            }
         }
         else
         {
@@ -2621,7 +2645,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                 {
                     try
                     {
-                        validateUserForElementRead(userId, connection, repositoryHelper, serviceName, methodName);
+                        validateUserForElementRead(userId, connection, true, repositoryHelper, serviceName, methodName);
                         visibleConnections.add(connection);
                     }
                     catch (UserNotAuthorizedException error)

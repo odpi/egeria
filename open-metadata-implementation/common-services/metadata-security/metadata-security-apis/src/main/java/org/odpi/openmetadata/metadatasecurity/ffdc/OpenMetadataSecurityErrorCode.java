@@ -239,12 +239,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                            "Investigate and correct the behaviour of the server security connector."),
 
     /**
-     * OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to issue operation {1} because the anchor is null
+     * OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to access element {1} returned from a {2} operation; it has been filtered from the results
      */
-    NULL_ANCHOR(500, "OMAG-SERVER-SECURITY-500-002",
-                "User {0} is not authorized to issue operation {1} on an element because the anchor is null",
-                "The system cannot process a request from the user because the element is not correctly anchored.",
-                "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
+    FILTERED_ELEMENT(500, "OMAG-SERVER-SECURITY-500-002",
+                     "User {0} is not authorized to access element {1} returned from a {2} operation; it has been filtered from the results",
+                     "The system has filtered an element from the results because the user does not have the necessary permissions to access it.",
+                     "The element is filtered from the results."),
 
     ;
 
