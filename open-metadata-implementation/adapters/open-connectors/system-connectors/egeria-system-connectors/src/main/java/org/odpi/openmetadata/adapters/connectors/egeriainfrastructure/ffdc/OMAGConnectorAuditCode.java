@@ -98,11 +98,29 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
     /**
      * The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}
      */
-    REFRESH_SERVER_LINEAGE_BAD_CONNECTOR("OMAG-CONNECTORS-0008",
+    REFRESH_SERVER_LINEAGE_BAD_CONNECTOR("OMAG-CONNECTORS-0009",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}",
                                   "The connector hit a problem refreshing lineage relationships for the server because the resource connector associated with the server is no of the expected type.",
                                   "Correct the connector type linked to the server's connection and the lineage will be updated on the next refresh."),
+
+    /**
+     * The monitoring of OMAG Server Platform '{0}' has started
+     */
+    EGERIA_TARGET_START("OMAG-CONNECTORS-0010",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The monitoring of OMAG Server Platform '{0}' has started",
+                           "The connector will synchronize the configuration of the platform and its servers with its open metadata description.",
+                           "No specific action is required.  This message is to confirm the start of the target processor."),
+
+    /**
+     * Connector {0} is synchronizing metadata for OMAG Server Platform '{1}'
+     */
+    EGERIA_TARGET_REFRESH("OMAG-CONNECTORS-0011",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "Connector {0} is synchronizing metadata for OMAG Server Platform '{1}'",
+                        "The connector is synchronizing the configuration of the platform and its servers with its open metadata description.",
+                        "No specific action is required.  This message is to confirm the refreshing of the target processor."),
 
     ;
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.contentpacks.core.core;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.EgeriaRoleDefinition;
+import org.odpi.openmetadata.adapters.connectors.ExceptionTypeDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
@@ -60,6 +61,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add the root digital product catalog.
          */
         addDigitalProductCatalogDefinition(ContentPackDefinition.CORE_CONTENT_PACK);
+
+        /*
+         * Write exception types used by Egeria's connectors.
+         */
+        writeExceptionTypes();
 
         /*
          * Add valid metadata values for the Survey Action Framework standard controls.
@@ -1357,6 +1363,48 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         return processComponentGUID;
+    }
+
+
+    /**
+     * Creates ExceptionType definitions.
+     */
+    private void writeExceptionTypes()
+    {
+        final String methodName = "writeExceptionTypes";
+
+        for (ExceptionTypeDefinition exceptionTypeDefinition : ExceptionTypeDefinition.values())
+        {
+            archiveHelper.setGUID(exceptionTypeDefinition.getQualifiedName(), exceptionTypeDefinition.getGUID());
+
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.EXCEPTION_TYPE.typeName,
+                                                                exceptionTypeDefinition.getQualifiedName(),
+                                                                exceptionTypeDefinition.getIdentifier(),
+                                                                exceptionTypeDefinition.getDisplayName(),
+                                                                exceptionTypeDefinition.getSummary(),
+                                                                exceptionTypeDefinition.getDescription(),
+                                                                exceptionTypeDefinition.getScope().getPreferredValue(),
+                                                                exceptionTypeDefinition.getDetails(),
+                                                                0,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null);
+
+            assert (exceptionTypeDefinition.getGUID().equals(guid));
+
+            if (exceptionTypeDefinition.isTemplate())
+            {
+                archiveHelper.addTemplateClassification(exceptionTypeDefinition.getGUID(),
+                                                        exceptionTypeDefinition.getTemplateName(),
+                                                        exceptionTypeDefinition.getTemplateDescription(),
+                                                        "V1.0",
+                                                        null,
+                                                        methodName);
+            }
+        }
     }
 
 

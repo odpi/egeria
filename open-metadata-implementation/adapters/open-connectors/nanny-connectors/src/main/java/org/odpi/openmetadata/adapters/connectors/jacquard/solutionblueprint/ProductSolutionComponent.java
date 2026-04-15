@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint;
 
-import org.odpi.openmetadata.adapters.connectors.EgeriaSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
@@ -56,6 +55,7 @@ public enum ProductSolutionComponent
                          "This is the service that monitors for changes in registered products and notifies subscribers when changes occur.",
                          "6.1-SNAPSHOT",
                          new ProductSolutionBlueprint[]{
+                                 ProductSolutionBlueprint.ALL,
                                  ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
                                  ProductSolutionBlueprint.JACQUARD,
                                  ProductSolutionBlueprint.SUBSCRIPTION_MANAGEMENT},

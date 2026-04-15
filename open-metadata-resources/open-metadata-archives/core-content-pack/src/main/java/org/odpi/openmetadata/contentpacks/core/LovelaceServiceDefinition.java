@@ -12,6 +12,9 @@ public enum LovelaceServiceDefinition
                  "Award Karma Points",
                  ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
+    ZONE_MEMBERSHIP_PROFILE(RequestTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceActionTypeGUID(),
+                 "Build Zone Membership Profile",
+                 ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
     ;
 

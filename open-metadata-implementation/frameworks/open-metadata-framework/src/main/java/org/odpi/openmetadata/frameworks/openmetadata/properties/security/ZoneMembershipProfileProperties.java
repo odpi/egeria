@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,7 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ZoneMembershipProfileProperties extends ClassificationBeanProperties
 {
-    private Map<String, Long> typeMembership = null;
+    private long              totalMembership = 0L;
+    private Map<String, Long> typeMembership  = null;
+    private Date              analysisTime    = null;
 
 
     /**
@@ -47,8 +49,32 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
 
         if (template != null)
         {
+            this.totalMembership = template.getTotalMembership();
             this.typeMembership = template.getTypeMembership();
+            this.analysisTime = template.getAnalysisTime();
         }
+    }
+
+
+    /**
+     * Return the total number of elements of all open metadata types in the zone.
+     *
+     * @return long count
+     */
+    public long getTotalMembership()
+    {
+        return totalMembership;
+    }
+
+
+    /**
+     * Set up the total number of elements of all open metadata types in the zone.
+     *
+     * @param totalMembership long count
+     */
+    public void setTotalMembership(long totalMembership)
+    {
+        this.totalMembership = totalMembership;
     }
 
 
@@ -75,6 +101,28 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
 
 
     /**
+     * Return the time the analysis was performed
+     *
+     * @return date/time
+     */
+    public Date getAnalysisTime()
+    {
+        return analysisTime;
+    }
+
+
+    /**
+     * Set the time the analysis was performed
+     *
+     * @param analysisTime date/time
+     */
+    public void setAnalysisTime(Date analysisTime)
+    {
+        this.analysisTime = analysisTime;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -82,8 +130,10 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
     @Override
     public String toString()
     {
-        return "ZoneMembershipProperties{" +
-                "zoneMembership=" + typeMembership +
+        return "ZoneMembershipProfileProperties{" +
+                "totalMembership=" + totalMembership +
+                ", typeMembership=" + typeMembership +
+                ", analysisTime=" + analysisTime +
                 "} " + super.toString();
     }
 
@@ -109,7 +159,8 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
         {
             return false;
         }
-        return Objects.equals(typeMembership, that.typeMembership);
+        return Objects.equals(typeMembership, that.typeMembership) &&
+                totalMembership == that.totalMembership && Objects.equals(analysisTime, that.analysisTime);
     }
 
 
@@ -121,6 +172,6 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeMembership);
+        return Objects.hash(super.hashCode(), totalMembership, typeMembership, analysisTime);
     }
 }

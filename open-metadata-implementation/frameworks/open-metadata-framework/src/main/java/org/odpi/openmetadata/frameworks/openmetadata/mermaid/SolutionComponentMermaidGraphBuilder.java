@@ -52,7 +52,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                 final String subcomponentArea = "Subcomponents";
                 super.startSubgraph(subcomponentArea, VisualStyle.SOLUTION_SUBGRAPH);
 
-                super.addSolutionComponentListToGraph(solutionComponentElement.getNestedSolutionComponents());
+                super.addSolutionComponentListToGraph(solutionComponentElement.getNestedSolutionComponents(), true);
 
                 super.endSubgraph(); // subcomponents
 

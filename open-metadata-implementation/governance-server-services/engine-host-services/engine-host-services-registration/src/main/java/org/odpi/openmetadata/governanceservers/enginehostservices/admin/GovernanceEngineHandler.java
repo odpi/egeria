@@ -50,6 +50,7 @@ public abstract class GovernanceEngineHandler
 
     private final GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
+    private Date lastRefreshTime = null;
 
     /**
      * Create a client-side object for calling a governance engine.
@@ -143,6 +144,8 @@ public abstract class GovernanceEngineHandler
             mySummary.setGovernanceEngineStatus(GovernanceEngineStatus.RUNNING);
         }
 
+        mySummary.setLastRefreshTime(lastRefreshTime);
+
         return mySummary;
     }
 
@@ -181,6 +184,19 @@ public abstract class GovernanceEngineHandler
                                                     PropertyServerException
     {
         final String methodName = "refreshConfig";
+
+        if (lastRefreshTime != null)
+        {
+            Date now = new Date();
+            long diff = now.getTime() - lastRefreshTime.getTime();
+            long tenMinutes = 1000 * 60 * 10;
+            if (diff < tenMinutes)
+            {
+                return;
+            }
+        }
+
+        lastRefreshTime = new Date();
 
         /*
          * Begin by extracting the properties for the governance engine from the metadata server.
@@ -293,6 +309,19 @@ public abstract class GovernanceEngineHandler
                                                                                      PropertyServerException
     {
         final String methodName = "refreshServiceConfig";
+
+        if (lastRefreshTime != null)
+        {
+            Date now = new Date();
+            long diff = now.getTime() - lastRefreshTime.getTime();
+            long tenMinutes = 1000 * 60 * 10;
+            if (diff < tenMinutes)
+            {
+                return;
+            }
+        }
+
+        lastRefreshTime = new Date();
 
         /*
          * Only process service events if the governance engine is known and matches the incoming request.

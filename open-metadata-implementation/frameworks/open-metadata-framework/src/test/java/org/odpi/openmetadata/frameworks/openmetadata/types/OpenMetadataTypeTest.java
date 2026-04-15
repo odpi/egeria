@@ -204,7 +204,10 @@ public class OpenMetadataTypeTest
 
                             OpenMetadataRootProperties newBeanProperties = propertyConverter.getBeanProperties(openMetadataElement);
 
+
                             assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad entity bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
+
+                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
 
                             ElementProperties returnedElementProperties = elementBuilder.getElementProperties(newBeanProperties);
 
@@ -237,6 +240,8 @@ public class OpenMetadataTypeTest
 
                             assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad relationship bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
 
+                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
+
                             ElementProperties returnedElementProperties = relationshipBuilder.getElementProperties(newBeanProperties);
 
                             if (returnedElementProperties == null)
@@ -268,6 +273,8 @@ public class OpenMetadataTypeTest
                             ClassificationBeanProperties newBeanProperties = propertyConverter.getClassificationProperties(attachedClassification);
 
                             assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName());
+
+                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
 
                             ElementProperties returnedElementProperties = classificationBuilder.getElementProperties(newBeanProperties);
 

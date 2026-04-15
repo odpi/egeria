@@ -612,7 +612,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/5/0540-Data-Classes/">...</a>
      */
-    public static final String MODEL_0540_DATA_VALUE_SSPECIFICATION = "https://egeria-project.org/types/5/0540-Data-Value-Specification/";
+    public static final String MODEL_0540_DATA_VALUE_SPECIFICATION = "https://egeria-project.org/types/5/0540-Data-Value-Specification/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0541-Data-Classes-and-Data-Grains/">...</a>

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -80,13 +79,13 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                         " mistake."),
 
     /**
-     * OMAG-SERVER-SECURITY-403-004 - User {0} is not authorized to attach feedback to asset {1}
+     * OMAG-SERVER-SECURITY-403-004 - User {0} is not authorized to attach feedback to element {1}
      */
-    UNAUTHORIZED_ASSET_FEEDBACK(403, "OMAG-SERVER-SECURITY-403-004",
-                             "User {0} is not authorized to attach feedback to asset {1}",
-                             "The system cannot process a request from the user because they do not have access to augment the " +
-                                        "requested asset.  The request fails with a UserNotAuthorizedException exception.",
-                             "Using information about the asset and the user, determine if this result is expected, or if the configuration needs " +
+    UNAUTHORIZED_ADD_FEEDBACK(403, "OMAG-SERVER-SECURITY-403-004",
+                              "User {0} is not authorized to attach feedback to element {1}",
+                              "The system cannot process a request from the user because they do not have access to augment the " +
+                                        "requested element.  The request fails with a UserNotAuthorizedException exception.",
+                              "Using information about the element and the user, determine if this result is expected, or if the configuration needs " +
                                         "to be adjusted to allow this user to perform the request."),
 
     /**
@@ -116,39 +115,19 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
     UNAUTHORIZED_ANCHOR_ACCESS(403, "OMAG-SERVER-SECURITY-403-007",
                                "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
                                "The system cannot process a request from the user because they do not have access to the " +
-                                      "requested asset.  The request fails with a UserNotAuthorizedException exception.",
-                               "Using knowledge about the user and the asset, determine if this is the correct result or " +
+                                      "requested element.  The request fails with a UserNotAuthorizedException exception.",
+                               "Using knowledge about the user and the element, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow access."),
 
     /**
-     * OMAG-SERVER-SECURITY-403-008 - User {0} is not authorized to create an asset of type {1}
+     * OMAG-SERVER-SECURITY-403-008 - User {0} is not authorized to create an element of type {1}
      */
-    UNAUTHORIZED_ASSET_CREATE(403, "OMAG-SERVER-SECURITY-403-008",
-                              "User {0} is not authorized to create an asset of type {1}",
+    UNAUTHORIZED_INSTANCE_CREATE(403, "OMAG-SERVER-SECURITY-403-008",
+                              "User {0} is not authorized to create an element of type {1}",
                               "The system cannot process a request from the user because they do not have authority to create " +
-                                      "an asset of the requested type.  The request fails with a UserNotAuthorizedException exception.",
-                              "Using knowledge about the user and the asset, determine if this is the correct result or " +
-                                      "the configuration needs to be changed to allow the user to create the asset."),
-
-    /**
-     * OMAG-SERVER-SECURITY-403-009 - User {0} is not authorized to change asset {1}
-     */
-    UNAUTHORIZED_ASSET_CHANGE(403, "OMAG-SERVER-SECURITY-403-009",
-                              "User {0} is not authorized to change asset {1}",
-                              "The system cannot process a request from the user because they do not have access to change the " +
-                                      "properties of the requested asset.  The request fails with a UserNotAuthorizedException exception.",
-                              "Using knowledge about the user and the asset, determine if this is the correct result or " +
-                                      "the configuration needs to be changed to allow the user to update the asset."),
-
-    /**
-     * OMAG-SERVER-SECURITY-403-010 - User {0} is not authorized to change asset {1} because it has missing properties: {2}
-     */
-    INCOMPLETE_ASSET(         403, "OMAG-SERVER-SECURITY-403-010",
-                              "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
-                              "The system cannot process a request from the user because the asset is not correctly or completely filled out." +
-                                      "  The request fails with a UserNotAuthorizedException exception.",
-                              "Using knowledge about the asset determine why the properties are missing and whether it needs to be " +
-                                      "updated, or that the user should not be accessing the asset."),
+                                      "an element of the requested type.  The request fails with a UserNotAuthorizedException exception.",
+                              "Using knowledge about the user and the element, determine if this is the correct result or " +
+                                      "the configuration needs to be changed to allow the user to create the element."),
 
     /**
      * OMAG-SERVER-SECURITY-403-011 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
@@ -227,12 +206,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
 
 
     /**
-     * OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on glossary {2}
+     * OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on {2} element {3}
      */
     UNAUTHORIZED_ELEMENT_ACCESS(403, "OMAG-SERVER-SECURITY-403-020",
                                 "User {0} is not authorized to issue an operation {1} on {2} element {3}",
                                 "The security service detected an unauthorized access to a glossary.",
-                                "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
+                                "Review the security policies and settings to determine if this access to the element should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**

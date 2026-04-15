@@ -10,6 +10,8 @@ import org.odpi.openmetadata.adminservices.server.OMAGServerErrorHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -137,6 +139,42 @@ public class OMAGServerPlatformSecurityServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.clearPlatformSecurityConnection(userId, delegatingUserId);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+    /**
+     * Return the list of users from the platform metadata security connector.  Null is returned if no platform security or user accounts have been set up.
+     *
+     * @param delegatingUserId external userId making request
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return user list response
+     */
+    public synchronized NameListResponse getUserList(String            delegatingUserId,
+                                                     UserAccountStatus userAccountStatus,
+                                                     UserAccountType   userAccountType)
+    {
+        final String methodName = "getUserList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, methodName);
+
+        NameListResponse response = new NameListResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response.setNames(OpenMetadataPlatformSecurityVerifier.getUserList(userId, delegatingUserId, userAccountStatus, userAccountType));
         }
         catch (Throwable error)
         {

@@ -212,9 +212,10 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
      *
      * @param file Java File accessor
      * @param methodName calling method
+     * @return unique identifier of the catalogued element
      */
-    private synchronized void catalogFile(File   file,
-                                          String methodName)
+    protected synchronized String catalogFile(File   file,
+                                              String methodName)
     {
         if (integrationConnector.isActive())
         {
@@ -281,6 +282,8 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                                                                                                                     properties.getPathName(),
                                                                                                                                     guid));
                             }
+
+                            return guid;
                         }
                     }
                     else
@@ -319,6 +322,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                             placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
                         }
                         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+                        placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
 
                         String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
                                                                          fileTemplateGUID,
@@ -334,47 +338,51 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                                         newFileGUID,
                                                         fileClassification.getDeployedImplementationType(),
                                                         fileTemplateGUID));
-                        }
 
-                        if (newFileProcessName != null)
-                        {
-                            StewardshipAction stewardshipAction = integrationConnector.integrationContext.getStewardshipAction();
 
-                            Map<String, String> requestParameters = new HashMap<>();
-
-                            if (configurationProperties != null)
+                            if (newFileProcessName != null)
                             {
-                                for (String configurationProperty : configurationProperties.keySet())
+                                StewardshipAction stewardshipAction = integrationConnector.integrationContext.getStewardshipAction();
+
+                                Map<String, String> requestParameters = new HashMap<>();
+
+                                if (configurationProperties != null)
                                 {
-                                    if (configurationProperties.get(configurationProperty) != null)
+                                    for (String configurationProperty : configurationProperties.keySet())
                                     {
-                                        requestParameters.put(configurationProperty, configurationProperties.get(configurationProperty).toString());
+                                        if (configurationProperties.get(configurationProperty) != null)
+                                        {
+                                            requestParameters.put(configurationProperty, configurationProperties.get(configurationProperty).toString());
+                                        }
                                     }
                                 }
+
+                                List<NewActionTarget> actionTargets = new ArrayList<>();
+
+                                NewActionTarget actionTarget = new NewActionTarget();
+
+                                actionTarget.setActionTargetGUID(newFileGUID);
+                                actionTarget.setActionTargetName("sourceFile");
+                                actionTargets.add(actionTarget);
+
+                                stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  actionTargets,
+                                                                                  null,
+                                                                                  requestParameters,
+                                                                                  connectorName,
+                                                                                  null);
                             }
-
-                            List<NewActionTarget> actionTargets = new ArrayList<>();
-
-                            NewActionTarget actionTarget = new NewActionTarget();
-
-                            actionTarget.setActionTargetGUID(newFileGUID);
-                            actionTarget.setActionTargetName("sourceFile");
-                            actionTargets.add(actionTarget);
-
-                            stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
-                                                                              null,
-                                                                              null,
-                                                                              actionTargets,
-                                                                              null,
-                                                                              requestParameters,
-                                                                              connectorName,
-                                                                              null);
                         }
+
+                        return newFileGUID;
                     }
                 }
                 else
                 {
                     updateFileInCatalog(file);
+                    return cataloguedElement.getElementHeader().getGUID();
                 }
             }
             catch (Exception error)
@@ -392,6 +400,8 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                 }
             }
         }
+
+        return null;
     }
 
 

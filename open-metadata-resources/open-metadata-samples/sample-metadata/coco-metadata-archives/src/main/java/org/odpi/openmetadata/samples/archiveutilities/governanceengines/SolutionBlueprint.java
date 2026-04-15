@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.CollectionDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionBlueprintDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
@@ -25,6 +26,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                 PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                 PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                null,
                                 null,
                                 true),
 
@@ -53,6 +55,16 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                       SolutionComponent.SET_UP_DATA_LAKE,
                                       SolutionComponent.SET_UP_CLINICAL_TRIAL
                               },
+                              new ActorRoleDefinition[]{
+                                      SolutionRoleDefinition.CLINICAL_TRIAL_MANAGER,
+                                      SolutionRoleDefinition.CLINICAL_TRIAL_DATA_ENGINEER,
+                                      SolutionRoleDefinition.CLINICAL_TRIAL_RESEARCHER,
+                                      SolutionRoleDefinition.CLINICAL_TRIAL_SPONSOR,
+                                      SolutionRoleDefinition.CLINICAL_TRIAL_DATA_SCIENTIST,
+                                      SolutionRoleDefinition.CLINICAL_TRIALS_EXECUTIVE,
+                                      SolutionRoleDefinition.PARTICIPATING_HOSPITAL,
+                                      SolutionRoleDefinition.PARTICIPATING_HOSPITAL_COORDINATOR
+                              },
                               false),
 
 
@@ -72,19 +84,25 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                       SolutionComponent.ACCOUNTING_LEDGER,
                                       SolutionComponent.GOODS_INVENTORY,
                               },
-                              false),
+                             new ActorRoleDefinition[]{
+                                     SolutionRoleDefinition.SUSTAINABILITY_LEADER,
+                                     SolutionRoleDefinition.SUSTAINABILITY_EXECUTIVE,
+                                     SolutionRoleDefinition.SUSTAINABILITY_CHAMPION
+                             },
+                             false),
 
     /**
      * A description of how an order for a personalized medicine prescription is fulfilled by Coco Pharmaceuticals.
      */
     PERSONALIZED_MEDICINE_ORDER_FULFILLMENT("9b1d5648-58b9-4fc8-959c-ed0316068d75",
-                             "Personalized Medicine Order Fulfillment Solution Blueprint",
-                             "A description of how an order for a personalized medicine prescription is fulfilled by Coco Pharmaceuticals.",
-                             "V1.0",
-                             new SolutionComponentDefinition[]{
-                                     SolutionComponent.ACCOUNTING_LEDGER
-                             },
-                             false),
+                                            "Personalized Medicine Order Fulfillment Solution Blueprint",
+                                            "A description of how an order for a personalized medicine prescription is fulfilled by Coco Pharmaceuticals.",
+                                            "V1.0",
+                                            new SolutionComponentDefinition[]{
+                                                    SolutionComponent.ACCOUNTING_LEDGER
+                                            },
+                                            null,
+                                            false),
 
     /**
      * A description of how information about Coco Pharmaceuticals employees is managed.
@@ -96,6 +114,9 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                         new SolutionComponentDefinition[]{
                                 SolutionComponent.EMPLOYEE_EXPENSE_TOOL
                         },
+                        new ActorRoleDefinition[]{
+                                SolutionRoleDefinition.EMPLOYEE
+                        },
                         false),
 
     /**
@@ -105,6 +126,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                     "Automated Manufacturing Control",
                                     "A description of how the new industry 4.0 manufacturing control system operates.",
                                     "0.5.9.1",
+                                    null,
                                     null,
                                     false),
 
@@ -118,6 +140,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                          new SolutionComponentDefinition[]{
                                  SolutionComponent.GOODS_INVENTORY
                          },
+                         null,
                          false),
 
     HAZARDOUS_MATERIAL_MANAGEMENT("f1a008b9-bace-4d37-8dd8-d24fb45477e2",
@@ -127,16 +150,18 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                   new SolutionComponentDefinition[]{
                                           SolutionComponent.HAZMAT_INVENTORY
                                   },
+                                  null,
                                   false),
 
     ;
 
 
-    private final String  guid;
-    private final String  displayName;
-    private final String  description;
-    private final String  versionIdentifier;
+    private final String                        guid;
+    private final String                        displayName;
+    private final String                        description;
+    private final String                        versionIdentifier;
     private final SolutionComponentDefinition[] solutionComponents;
+    private final ActorRoleDefinition[]         solutionRoles;
 
     private final boolean isTemplate;
 
@@ -155,6 +180,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                       String                        description,
                       String                        versionIdentifier,
                       SolutionComponentDefinition[] solutionComponents,
+                      ActorRoleDefinition[]         solutionRoles,
                       boolean                       isTemplate)
     {
         this.guid               = guid;
@@ -162,6 +188,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
         this.description        = description;
         this.versionIdentifier  = versionIdentifier;
         this.solutionComponents = solutionComponents;
+        this.solutionRoles      = solutionRoles;
         this.isTemplate         = isTemplate;
     }
 
@@ -274,6 +301,23 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
         if (solutionComponents != null)
         {
             return new ArrayList<>(Arrays.asList(solutionComponents));
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of roles that are members of the solution blueprint.
+     *
+     * @return list of role definitions
+     */
+    @Override
+    public List<ActorRoleDefinition> getSolutionRoles()
+    {
+        if (solutionRoles != null)
+        {
+            return new ArrayList<>(Arrays.asList(solutionRoles));
         }
 
         return null;

@@ -61,7 +61,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:organization-insights')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:lovelace-insights')
     implementation project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

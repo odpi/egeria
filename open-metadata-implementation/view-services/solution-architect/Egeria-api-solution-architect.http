@@ -196,47 +196,6 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
-###
-
-# @name composeInformationSupplyChains
-# Connect a nested information supply chain to its parent. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "properties": {
-    "class": "InformationSupplyChainCompositionProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-
-# @name decomposeInformationSupplyChains
-# Detach a nested information supply chain from its parent. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
 
 ###
 # @name deleteInformationSupplyChain
@@ -261,7 +220,6 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
-
 
 
 ###
@@ -388,9 +346,6 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
-
-###
-
 
 ###
 # =====================================================================================================================
@@ -539,20 +494,34 @@ Content-Type: application/json
   "mergeUpdate": true
 }
 
+###
+
+@parentGUID=add guid here
 
 ###
-# @name linkSolutionComponentToBlueprint
-# Connect a solution blueprint to a solution component. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/solution-components/{{solutionComponentGUID}}/attach
+# @name linkSolutionDesign
+# Attach a solution blueprint to the element that it describes.
+#
+# @param serverName         name of called server
+# @param parentGUID  unique identifier of the element being described
+# @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+# @param requestBody  description of the relationship.
+#
+# @return void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/elements/{{parentGUID}}/solution-designs/{{solutionBlueprintGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
   "properties": {
-    "class": "SolutionBlueprintCompositionProperties",
-    "role": "Add role that the component plays in the solution blueprint here",
-    "description": "Add description of the solution component in the context of the solution blueprint.",
+    "class": "SolutionDesignProperties",
+    "label": "Add label for this design",
+    "description": "Add description of the solution .",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
@@ -565,10 +534,20 @@ Content-Type: application/json
 
 
 ###
-
-# @name detachSolutionComponentFromBlueprint
-# Detach a solution component from a solution blueprint. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/solution-components/{{solutionComponentGUID}}/detach
+# @name detachSolutionDesign
+# Detach a solution blueprint from the element it describes.
+#
+# @param serverName         name of called server
+# @param parentGUID  unique identifier of the element being described
+# @param solutionBlueprintGUID      unique identifier of the solution blueprint
+# @param requestBody  description of the relationship.
+#
+# @return void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/elements/{{parentGUID}}/solution-designs/{{solutionBlueprintGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

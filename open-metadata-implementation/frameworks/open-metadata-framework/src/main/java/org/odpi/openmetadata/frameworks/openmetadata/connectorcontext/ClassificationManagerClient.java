@@ -283,6 +283,34 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
         return stewardshipManagementHandler.getRelatedRootElements(connectorUserId, elementGUID, guidPropertyName, startingAtEnd, relationshipTypeName, OpenMetadataType.OPEN_METADATA_ROOT.typeName, queryOptions, methodName);
     }
 
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param classificationName name of classification
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param searchOptions multiple options to control the query
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> findElementsByClassificationWithPropertyValue(String        classificationName,
+                                                                                       String        propertyValue,
+                                                                                       List<String>  propertyNames,
+                                                                                       SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
+    {
+        return stewardshipManagementHandler.findElementsByClassificationWithPropertyValue(connectorUserId, classificationName, propertyValue, propertyNames, searchOptions);
+    }
+
+
     /**
      * Return information about the elements classified with the confidence classification.
      *

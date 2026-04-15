@@ -62,6 +62,27 @@ Content-Type: application/json
 DELETE {{baseURL}}/open-metadata/platform-services/server-platform/security/connection
 Authorization: Bearer {{token}}
 
+
+###
+# @name Get User List
+# Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
+GET {{baseURL}}/open-metadata/platform-services/server-platform/security/user-list
+Authorization: Bearer {{token}}
+
+
+###
+# @name Get Active User List
+# Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
+GET {{baseURL}}/open-metadata/platform-services/server-platform/security/user-list?userAccountStatus=AVAILABLE
+Authorization: Bearer {{token}}
+
+###
+# @name Get Contractor User List
+# Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
+GET {{baseURL}}/open-metadata/platform-services/server-platform/security/user-list?userAccountType=CONTRACTOR
+Authorization: Bearer {{token}}
+
+
 ###
 # @name Get registered access services
 # Retrieve the list of Open Metadata Access Services (OMASs) that are supported by this OMAG Server Platform.

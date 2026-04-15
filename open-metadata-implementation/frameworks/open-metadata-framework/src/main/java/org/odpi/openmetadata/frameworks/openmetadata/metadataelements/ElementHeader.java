@@ -37,6 +37,7 @@ public class ElementHeader extends ElementControlHeader
     private String                      guid                     = null;
     private ElementClassification       anchor                   = null;
     private ElementClassification       zoneMembership           = null;
+    private ElementClassification       zoneMembershipProfile    = null;
     private ElementClassification       impact                   = null;
     private ElementClassification       criticality              = null;
     private ElementClassification       confidentiality          = null;
@@ -90,6 +91,7 @@ public class ElementHeader extends ElementControlHeader
             this.guid                     = template.getGUID();
             this.anchor                   = template.getAnchor();
             this.zoneMembership           = template.getZoneMembership();
+            this.zoneMembershipProfile    = template.getZoneMembershipProfile();
             this.impact                   = template.getImpact();
             this.criticality              = template.getCriticality();
             this.confidentiality          = template.getConfidentiality();
@@ -179,7 +181,7 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
-     * Return the zoneMembership classification.
+     * Return the ZoneMembership classification.
      *
      * @return classification
      */
@@ -190,7 +192,7 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
-     * Set up the zoneMembership classification.
+     * Set up the ZoneMembership classification.
      *
      * @param zoneMembership classification
      */
@@ -198,6 +200,31 @@ public class ElementHeader extends ElementControlHeader
     {
         this.zoneMembership = zoneMembership;
     }
+
+
+
+    /**
+     * Return the ZoneMembershipProfile classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getZoneMembershipProfile()
+    {
+        return zoneMembershipProfile;
+    }
+
+
+    /**
+     * Set up the ZoneMembershipProfile classification.
+     *
+     * @param zoneMembershipProfile classification
+     */
+    public void setZoneMembershipProfile(ElementClassification zoneMembershipProfile)
+    {
+        this.zoneMembershipProfile = zoneMembershipProfile;
+    }
+
+
 
 
     /**
@@ -853,6 +880,7 @@ public class ElementHeader extends ElementControlHeader
                 "guid='" + guid + '\'' +
                 ", anchor=" + anchor +
                 ", zoneMembership=" + zoneMembership +
+                ", zoneMembershipProfile=" + zoneMembershipProfile +
                 ", impact=" + impact +
                 ", criticality=" + criticality +
                 ", confidentiality=" + confidentiality +
@@ -902,6 +930,7 @@ public class ElementHeader extends ElementControlHeader
         return Objects.equals(guid, that.guid) &&
                 Objects.equals(anchor, that.anchor) &&
                 Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(zoneMembershipProfile, that.zoneMembershipProfile) &&
                 Objects.equals(impact, that.impact) &&
                 Objects.equals(criticality, that.criticality) &&
                 Objects.equals(confidentiality, that.confidentiality) &&
@@ -942,7 +971,7 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, impact, criticality,
+        return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, zoneMembershipProfile, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
                             dataScope, dataAssetEncoding,

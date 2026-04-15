@@ -20,6 +20,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMet
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActivityEntryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.BlogEntryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.JournalEntryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
@@ -261,7 +264,7 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Return the list of actors linked to the user's profile.
+     * Return the list of actors (roles and userIds) linked to the user's profile.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody    optional properties to restrict search by and control how the results are formatted
@@ -437,7 +440,7 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Add the profile for this user.
+     * Log details of an activity performed by the user.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody properties for the profile
@@ -483,7 +486,7 @@ public class MyProfileRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
                 {
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, notificationProperties, actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new ActivityEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
 
                     response.setGUID(notificationGUID);
                 }
@@ -622,7 +625,7 @@ public class MyProfileRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
                 {
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, notificationProperties, actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new BlogEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
 
                     response.setGUID(notificationGUID);
                 }
@@ -699,7 +702,7 @@ public class MyProfileRESTServices extends TokenController
                     zoneMembershipProperties.setZoneMembership(Collections.singletonList(userId));
                     initialClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
 
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, initialClassifications, notificationProperties, actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String notificationGUID = assetHandler.createNoteLogEntry(userId, initialClassifications, new JournalEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
 
                     response.setGUID(notificationGUID);
                 }

@@ -20,10 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.slf4j.Logger;
@@ -865,6 +862,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 securityVerifier.validateUserForAnchorClassify(userId,
                                                                anchorEntity,
                                                                classificationTypeName,
+                                                               classificationProperties,
                                                                repositoryHelper,
                                                                serviceName,
                                                                methodName);
@@ -874,6 +872,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 securityVerifier.validateUserForElementClassify(userId,
                                                                 beanEntity,
                                                                 classificationTypeName,
+                                                                classificationProperties,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 methodName);
@@ -1163,28 +1162,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (beanEntity != null)
         {
-            /*
-             * Check that the user is able to change the classification attached to the element.
-             */
-            if (anchorEntity != null)
-            {
-                securityVerifier.validateUserForAnchorClassify(userId,
-                                                               anchorEntity,
-                                                               classificationTypeName,
-                                                               repositoryHelper,
-                                                               serviceName,
-                                                               methodName);
-            }
-            else
-            {
-                securityVerifier.validateUserForElementClassify(userId,
-                                                                beanEntity,
-                                                                classificationTypeName,
-                                                                repositoryHelper,
-                                                                serviceName,
-                                                                methodName);
-            }
-
             Classification existingClassification = this.getExistingClassification(beanEntity, classificationTypeName);
 
             invalidParameterHandler.validateObject(existingClassification, classificationTypeName, methodName);
@@ -1196,6 +1173,32 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 newProperties = new InstanceProperties();
             }
 
+            newProperties = this.setUpEffectiveDates(newProperties, effectiveFrom, effectiveTo);
+
+            /*
+             * Check that the user is able to change the classification attached to the element.
+             */
+            if (anchorEntity != null)
+            {
+                securityVerifier.validateUserForAnchorClassify(userId,
+                                                               anchorEntity,
+                                                               classificationTypeName,
+                                                               newProperties,
+                                                               repositoryHelper,
+                                                               serviceName,
+                                                               methodName);
+            }
+            else
+            {
+                securityVerifier.validateUserForElementClassify(userId,
+                                                                beanEntity,
+                                                                classificationTypeName,
+                                                                newProperties,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+            }
+
             repositoryHandler.reclassifyEntity(userId,
                                                externalSourceGUID,
                                                externalSourceName,
@@ -1205,7 +1208,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                classificationTypeGUID,
                                                classificationTypeName,
                                                existingClassification,
-                                               this.setUpEffectiveDates(newProperties, effectiveFrom, effectiveTo),
+                                               newProperties,
                                                forLineage,
                                                forDuplicateProcessing,
                                                effectiveTime,
@@ -8250,6 +8253,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         invalidParameterHandler.validateGUID(startingElementGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachingElementGUID, attachingGUIDParameterName, methodName);
 
+        boolean multiLink = false;
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName,
+                                                            attachmentTypeName);
+
+        if (typeDef instanceof RelationshipDef relationshipDef)
+        {
+            multiLink = relationshipDef.getMultiLink();
+        }
+
         EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
                                                                      startingElementGUID,
                                                                      startingGUIDParameterName,
@@ -8367,87 +8379,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          * The calls above validate the existence of the two entities and that they are visible to the user.
          * An exception is thrown if there are any problems.
          * The anchor entities are returned if there are anchor entities associated with a specific end.
-         *
-         * The next test ensures that the effectivity dates in the new relationship's properties are compatible with the
-         * existing relationships.
          */
-        List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
-                                                                                                     bean1Entity,
-                                                                                                     startingElementTypeName,
-                                                                                                     bean2Entity.getGUID(),
-                                                                                                     attachmentTypeGUID,
-                                                                                                     attachmentTypeName,
-                                                                                                     2,
-                                                                                                     null,
-                                                                                                     null,
-                                                                                                     SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                     null,
-                                                                                                     forLineage,
-                                                                                                     forDuplicateProcessing,
-                                                                                                     effectiveFrom,
-                                                                                                     effectiveTo,
-                                                                                                     true,
-                                                                                                     methodName);
 
         Relationship newRelationship;
 
-        if (existingRelationships != null)
+        /*
+         * If the relationship is a multi-link it is ok to create a new relationship.
+         */
+        if (multiLink)
         {
-            if (existingRelationships.size() == 1)
-            {
-                newRelationship = repositoryHandler.updateRelationshipProperties(userId,
-                                                                                 externalSourceGUID,
-                                                                                 externalSourceName,
-                                                                                 existingRelationships.get(0),
-                                                                                 relationshipProperties,
-                                                                                 methodName);
-            }
-            else
-            {
-                String guids = null;
-
-                for (Relationship relationship : existingRelationships)
-                {
-                    if (relationship != null)
-                    {
-                        if (guids == null)
-                        {
-                            guids = "[";
-                        }
-                        else
-                        {
-                            guids = ", ";
-                        }
-
-                        guids = guids + relationship.getGUID() + " ";
-                    }
-                }
-
-                if (guids == null)
-                {
-                    guids = "[]";
-                }
-                else
-                {
-                    guids = guids + "]";
-                }
-
-                throw new InvalidParameterException(GenericHandlersErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(attachmentTypeName,
-                                                                                                                               startingElementTypeName,
-                                                                                                                               bean1Entity.getGUID(),
-                                                                                                                               attachingElementTypeName,
-                                                                                                                               bean2Entity.getGUID(),
-                                                                                                                               guids,
-                                                                                                                               methodName,
-                                                                                                                               serverName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    attachmentTypeName);
-            }
-        }
-        else
-        {
-           newRelationship = repositoryHandler.createRelationship(userId,
+            newRelationship = repositoryHandler.createRelationship(userId,
                                                                    attachmentTypeGUID,
                                                                    externalSourceGUID,
                                                                    externalSourceName,
@@ -8456,100 +8397,94 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                    relationshipProperties,
                                                                    methodName);
         }
-
-        /*
-         * Final stage is to add the latest change classification to the anchor(s).
-         * The act of creating the relationship may set up the anchor GUID in either element.
-         */
-        if (anchor1Entity == null)
+        else // uniLink
         {
-            String startingElementAnchorGUID = this.reEvaluateAnchorGUID(bean1Entity.getGUID(),
-                                                                         startingGUIDParameterName,
-                                                                         startingElementTypeName,
-                                                                         bean1Entity,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime,
-                                                                         methodName);
+            /*
+             * The next test ensures that only one relationship of this type is created between the 2 elements.
+             */
+            List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                                         bean1Entity,
+                                                                                                         startingElementTypeName,
+                                                                                                         bean2Entity.getGUID(),
+                                                                                                         attachmentTypeGUID,
+                                                                                                         attachmentTypeName,
+                                                                                                         2,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                         null,
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         effectiveFrom,
+                                                                                                         effectiveTo,
+                                                                                                         true,
+                                                                                                         methodName);
 
-            if (startingElementAnchorGUID != null)
+
+            if (existingRelationships != null)
             {
-                if ((anchor2Entity != null) && (anchor2Entity.getGUID().equals(startingElementAnchorGUID)))
+                if (existingRelationships.size() == 1)
                 {
-                    anchor1Entity = anchor2Entity; // save a lookup
-                }
-                else if (startingElementAnchorGUID.equals(bean1Entity.getGUID()))
-                {
-                    anchor1Entity = bean1Entity;
-                }
-                else if (startingElementAnchorGUID.equals(bean2Entity.getGUID()))
-                {
-                    anchor1Entity = bean2Entity;
+                    newRelationship = repositoryHandler.updateRelationshipProperties(userId,
+                                                                                     externalSourceGUID,
+                                                                                     externalSourceName,
+                                                                                     existingRelationships.get(0),
+                                                                                     relationshipProperties,
+                                                                                     methodName);
                 }
                 else
                 {
-                    final String anchorGUIDParameterName = "startingElementAnchorGUID";
+                    String guids = null;
 
-                    anchor1Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                      startingElementAnchorGUID,
-                                                                      anchorGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
+                    for (Relationship relationship : existingRelationships)
+                    {
+                        if (relationship != null)
+                        {
+                            if (guids == null)
+                            {
+                                guids = "[";
+                            }
+                            else
+                            {
+                                guids = ", ";
+                            }
+
+                            guids = guids + relationship.getGUID() + " ";
+                        }
+                    }
+
+                    if (guids == null)
+                    {
+                        guids = "[]";
+                    }
+                    else
+                    {
+                        guids = guids + "]";
+                    }
+
+                    throw new InvalidParameterException(GenericHandlersErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(attachmentTypeName,
+                                                                                                                                   startingElementTypeName,
+                                                                                                                                   bean1Entity.getGUID(),
+                                                                                                                                   attachingElementTypeName,
+                                                                                                                                   bean2Entity.getGUID(),
+                                                                                                                                   guids,
+                                                                                                                                   methodName,
+                                                                                                                                   serverName),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        attachmentTypeName);
                 }
             }
             else
             {
-                anchor1Entity = bean1Entity;
-            }
-        }
-
-        if (anchor2Entity == null)
-        {
-            String attachingElementAnchorGUID = this.reEvaluateAnchorGUID(bean2Entity.getGUID(),
-                                                                          attachingGUIDParameterName,
-                                                                          attachingElementTypeName,
-                                                                          bean2Entity,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-            if (attachingElementAnchorGUID != null)
-            {
-                if (attachingElementAnchorGUID.equals(anchor1Entity.getGUID()))
-                {
-                    anchor2Entity = anchor1Entity; // save a look-up
-                }
-                else if (attachingElementAnchorGUID.equals(bean1Entity.getGUID()))
-                {
-                    anchor2Entity = bean1Entity;
-                }
-                else if (attachingElementAnchorGUID.equals(bean2Entity.getGUID()))
-                {
-                    anchor2Entity = bean2Entity;
-                }
-                else
-                {
-                    final String anchorGUIDParameterName = "attachingElementAnchorGUID";
-
-                    anchor2Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                      attachingElementAnchorGUID,
-                                                                      anchorGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
-                }
-            }
-            else
-            {
-                anchor2Entity = bean2Entity;
+                newRelationship = repositoryHandler.createRelationship(userId,
+                                                                       attachmentTypeGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       bean1Entity.getGUID(),
+                                                                       bean2Entity.getGUID(),
+                                                                       relationshipProperties,
+                                                                       methodName);
             }
         }
 
@@ -8607,254 +8542,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                             attachingElementGUID,
                                                                             relationshipProperties,
                                                                             methodName);
-
-        if (newRelationship != null)
-        {
-            return newRelationship.getGUID();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Creates a relationship between two elements.
-     * Both elements must be visible to the user to allow the link.
-     *
-     * @param userId                    userId of the user making the request
-     * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software capability entity that represented the external source
-     * @param startingElementGUID       unique id for the starting element's entity
-     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
-     * @param startingElementTypeName   type name of the starting element's entity
-     * @param attachingElementGUID      unique id of the entity for the element that is being attached
-     * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
-     * @param attachingElementTypeName  type name of the attaching element's entity
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
-     * @param attachmentTypeName        unique name of type of the relationship to create
-     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName                calling method
-     *
-     * @return unique identifier of the new relationship
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException a problem adding the relationship to the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String multiLinkElementToElement(String             userId,
-                                            String             externalSourceGUID,
-                                            String             externalSourceName,
-                                            String             startingElementGUID,
-                                            String             startingGUIDParameterName,
-                                            String             startingElementTypeName,
-                                            String             attachingElementGUID,
-                                            String             attachingGUIDParameterName,
-                                            String             attachingElementTypeName,
-                                            boolean            forLineage,
-                                            boolean            forDuplicateProcessing,
-                                            String             attachmentTypeGUID,
-                                            String             attachmentTypeName,
-                                            InstanceProperties relationshipProperties,
-                                            Date               effectiveTime,
-                                            String             methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startingElementGUID, startingGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(attachingElementGUID, attachingGUIDParameterName, methodName);
-
-        EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                     startingElementGUID,
-                                                                     startingGUIDParameterName,
-                                                                     startingElementTypeName,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-        EntityDetail anchor1Entity = this.validateEntityAndAnchorForRead(userId,
-                                                                         startingElementTypeName,
-                                                                         bean1Entity,
-                                                                         startingGUIDParameterName,
-                                                                         true,
-                                                                         false,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-        EntityDetail bean2Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                     attachingElementGUID,
-                                                                     attachingGUIDParameterName,
-                                                                     attachingElementTypeName,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-        EntityDetail anchor2Entity = this.validateEntityAndAnchorForRead(userId,
-                                                                         attachingElementTypeName,
-                                                                         bean2Entity,
-                                                                         attachingGUIDParameterName,
-                                                                         true,
-                                                                         false,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-        /*
-         * Check that the user is able to create relationships
-         */
-        if (anchor1Entity != null)
-        {
-            if (anchor1Entity.getGUID().equals(anchor2Entity.getGUID()))
-            {
-                securityVerifier.validateUserForAnchorMemberUpdate(userId,
-                                                                   anchor1Entity,
-                                                                   repositoryHelper,
-                                                                   serviceName,
-                                                                   methodName);
-            }
-            else
-            {
-                securityVerifier.validateUserForAnchorAttach(userId,
-                                                             anchor1Entity,
-                                                             bean2Entity,
-                                                             attachmentTypeName,
-                                                             repositoryHelper,
-                                                             serviceName,
-                                                             methodName);
-            }
-        }
-        else if (anchor2Entity == null)
-        {
-            securityVerifier.validateUserForElementAttach(userId,
-                                                          bean1Entity,
-                                                          bean2Entity,
-                                                          attachmentTypeName,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          methodName);
-        }
-        else // anchor1 is null but anchor2 is not
-        {
-            securityVerifier.validateUserForAnchorAttach(userId,
-                                                         anchor2Entity,
-                                                         bean1Entity,
-                                                         attachmentTypeName,
-                                                         repositoryHelper,
-                                                         serviceName,
-                                                         methodName);
-        }
-
-        Relationship newRelationship = repositoryHandler.createRelationship(userId,
-                                                                            attachmentTypeGUID,
-                                                                            externalSourceGUID,
-                                                                            externalSourceName,
-                                                                            bean1Entity.getGUID(),
-                                                                            bean2Entity.getGUID(),
-                                                                            relationshipProperties,
-                                                                            methodName);
-
-        /*
-         * Final stage is to add the latest change classification to the anchor(s).
-         * The act of creating the relationship may set up the anchor GUID in either element.
-         */
-        if (anchor1Entity == null)
-        {
-            String startingElementAnchorGUID = this.reEvaluateAnchorGUID(bean1Entity.getGUID(),
-                                                                         startingGUIDParameterName,
-                                                                         startingElementTypeName,
-                                                                         bean1Entity,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-            if (startingElementAnchorGUID != null)
-            {
-                if ((anchor2Entity != null) && (anchor2Entity.getGUID().equals(startingElementAnchorGUID)))
-                {
-                    anchor1Entity = anchor2Entity; // save a lookup
-                }
-                else if (startingElementAnchorGUID.equals(bean1Entity.getGUID()))
-                {
-                    anchor1Entity = bean1Entity;
-                }
-                else if (startingElementAnchorGUID.equals(bean2Entity.getGUID()))
-                {
-                    anchor1Entity = bean2Entity;
-                }
-                else
-                {
-                    final String anchorGUIDParameterName = "startingElementAnchorGUID";
-
-                    anchor1Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                      startingElementAnchorGUID,
-                                                                      anchorGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
-                }
-            }
-            else
-            {
-                anchor1Entity = bean1Entity;
-            }
-        }
-
-        if (anchor2Entity == null)
-        {
-            String attachingElementAnchorGUID = this.reEvaluateAnchorGUID(bean2Entity.getGUID(),
-                                                                          attachingGUIDParameterName,
-                                                                          attachingElementTypeName,
-                                                                          bean2Entity,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-            if (attachingElementAnchorGUID != null)
-            {
-                if (attachingElementAnchorGUID.equals(anchor1Entity.getGUID()))
-                {
-                    anchor2Entity = anchor1Entity; // save a look-up
-                }
-                else if (attachingElementAnchorGUID.equals(bean1Entity.getGUID()))
-                {
-                    anchor2Entity = bean1Entity;
-                }
-                else if (attachingElementAnchorGUID.equals(bean2Entity.getGUID()))
-                {
-                    anchor2Entity = bean2Entity;
-                }
-                else
-                {
-                    final String anchorGUIDParameterName = "attachingElementAnchorGUID";
-
-                    anchor2Entity = repositoryHandler.getEntityByGUID(userId,
-                                                                      attachingElementAnchorGUID,
-                                                                      anchorGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
-                }
-            }
-            else
-            {
-                anchor2Entity = bean2Entity;
-            }
-        }
 
         if (newRelationship != null)
         {

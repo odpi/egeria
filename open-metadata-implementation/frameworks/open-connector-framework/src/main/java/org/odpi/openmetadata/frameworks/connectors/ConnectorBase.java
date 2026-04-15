@@ -124,7 +124,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     * Log an audit log record for an event, decision, error, or exception detected by the connector.
      *
      * @param messageDefinition description of the audit log record including specific resources involved
      * @param actionDescription calling method

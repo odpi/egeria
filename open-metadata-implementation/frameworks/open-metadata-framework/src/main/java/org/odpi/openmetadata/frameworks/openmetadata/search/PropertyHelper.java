@@ -162,29 +162,8 @@ public class PropertyHelper
                                                 methodName,
                                                 searchParameter);
         }
-        else
-        {
-            /*
-             * This test just validated that the regular expression in the search parameter is valid.
-             */
-            final String testString = "abcdefghijklmnopqrstuvwxyz";
-
-            try
-            {
-                testString.matches(searchString);
-            }
-            catch (Exception error)
-            {
-                throw new InvalidParameterException(OMFErrorCode.INVALID_SEARCH_STRING.getMessageDefinition(searchParameter,
-                                                                                                                   methodName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   error.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    searchParameter);
-            }
-        }
     }
+
 
     /**
      * Throw an exception if the supplied paging values don't make sense. If page size is zero it means return as much as there is.
@@ -517,6 +496,10 @@ public class PropertyHelper
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
                     {
                         elementHeader.setZoneMembership(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_PROFILE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setZoneMembershipProfile(this.getElementClassification(attachedClassification));
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.IMPACT_CLASSIFICATION.typeName))
                     {

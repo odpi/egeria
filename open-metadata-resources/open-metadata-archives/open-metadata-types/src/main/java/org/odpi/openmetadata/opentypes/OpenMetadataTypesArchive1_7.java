@@ -249,6 +249,7 @@ public class OpenMetadataTypesArchive1_7
      */
     private void add0435PolicyManagementCapabilities()
     {
+        this.archiveBuilder.addClassificationDef(getPolicyManagementPointClassification());
         this.archiveBuilder.addClassificationDef(getPolicyAdministrationPointClassification());
         this.archiveBuilder.addClassificationDef(getPolicyDecisionPointClassification());
         this.archiveBuilder.addClassificationDef(getPolicyEnforcementPointClassification());
@@ -257,9 +258,9 @@ public class OpenMetadataTypesArchive1_7
     }
 
 
-    private ClassificationDef getPolicyAdministrationPointClassification()
+    private ClassificationDef getPolicyManagementPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION,
                                                                                  null,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
@@ -269,100 +270,57 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
+    }
+
+    private ClassificationDef getPolicyAdministrationPointClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
     }
 
 
     private ClassificationDef getPolicyDecisionPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
     }
 
 
     private ClassificationDef getPolicyEnforcementPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
     }
 
 
     private ClassificationDef getPolicyInformationPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
     }
 
 
     private ClassificationDef getPolicyRetrievalPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
     }
 
 

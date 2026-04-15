@@ -313,22 +313,24 @@ public class GovernanceEngineConfigurationHandler
                                                                              defaultAnalysisParameters,
                                                                              methodName);
 
-        governanceEngineHandler.multiLinkElementToElement(userId,
-                                                          null,
-                                                          null,
-                                                          governanceEngineGUID,
-                                                          governanceEngineGUIDParameter,
-                                                          OpenMetadataType.GOVERNANCE_ENGINE.typeName,
-                                                          governanceServiceGUID,
-                                                          governanceServiceGUIDParameter,
-                                                          OpenMetadataType.GOVERNANCE_SERVICE.typeName,
-                                                          false,
-                                                          false,
-                                                          OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
-                                                          OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
-                                                          instanceProperties,
-                                                          new Date(),
-                                                          methodName);
+        governanceEngineHandler.linkElementToElement(userId,
+                                                     null,
+                                                     null,
+                                                     governanceEngineGUID,
+                                                     governanceEngineGUIDParameter,
+                                                     OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                     governanceServiceGUID,
+                                                     governanceServiceGUIDParameter,
+                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeName,
+                                                     false,
+                                                     false,
+                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
+                                                     instanceProperties,
+                                                     new Date(),
+                                                     null,
+                                                     null,
+                                                     methodName);
     }
 
 

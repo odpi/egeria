@@ -19,7 +19,6 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
                              "Egeria Open Source Community",
                              "Open Source Community developing the Egeria Software and related resources."),
 
-
     /**
      * A person or system maintaining and using open metadata.
      */
@@ -28,7 +27,6 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
                        "OPEN-METADATA-USER",
                        "Open Metadata User",
                        "A person or system maintaining and using open metadata."),
-
 
     /**
      * A person/system capable of writing python code.
@@ -39,18 +37,27 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
                       "Python Programmer",
                       "A person/system capable of writing python code."),
 
+    /**
+     * A person/process responsible for the security of the open metadata ecosystem.
+     */
     SECURITY_MANAGER("731c2c95-201e-4b04-859d-b8a2a8de0800",
                      OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                      "SECURITY-MANAGER",
                      "Security Manager",
                      "A person/process responsible for the security of the open metadata ecosystem."),
 
+    /**
+     * A person responsible for the development and management of digital products.
+     */
     DIGITAL_PRODUCT_MANAGER("51538271-3464-4efe-b2f2-4c30a2230589",
                             OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                             "DIGITAL-PRODUCT-MANAGER",
                             "Digital Product Manager",
                             "A person responsible for the development and management of digital products."),
 
+    /**
+     * A person responsible for the management and operation of the Open Metadata runtime environments.  This includes Egeria and its dependent software.
+     */
     RUNTIME_MANAGER("19d7e01f-6177-452e-afda-d6311900f900",
                     OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                     "RUNTIME-MANAGER",
@@ -167,6 +174,6 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
     @Override
     public String toString()
     {
-        return "OpenMetadataRoleDefinition{" + "identifier='" + identifier + '}';
+        return "EgeriaRoleDefinition{" + "identifier='" + identifier + '}';
     }
 }

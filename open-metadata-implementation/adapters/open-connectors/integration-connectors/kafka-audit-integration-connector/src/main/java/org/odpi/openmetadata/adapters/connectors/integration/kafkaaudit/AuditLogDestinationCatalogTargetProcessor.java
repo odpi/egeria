@@ -28,7 +28,7 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
 
 
     /**
-     * Copy/clone constructor
+     * Principle constructor
      *
      * @param template object to copy
      * @param catalogTargetContext specialized context for this catalog target

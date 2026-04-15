@@ -766,13 +766,13 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
+                if (requestBody.getProperties() instanceof NestedDataFieldProperties nestedDataFieldProperties)
                 {
                     handler.linkNestedDataFields(userId,
                                                  parentDataFieldGUID,
                                                  nestedDataFieldGUID,
                                                  requestBody,
-                                                 memberDataFieldProperties);
+                                                 nestedDataFieldProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
@@ -784,7 +784,7 @@ public class DataDesignerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(MemberDataFieldProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(NestedDataFieldProperties.class.getName(), methodName);
                 }
             }
             else

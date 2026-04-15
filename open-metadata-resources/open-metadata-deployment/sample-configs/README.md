@@ -28,7 +28,7 @@ The Apache Kafka broker should be listening at `localhost:9092`.
   [Open Lineage Content Pack](https://egeria-project.org/content-packs/open-lineage-content-pack/overview/),
   [PostgreSQL Content Pack](https://egeria-project.org/content-packs/postgres-content-pack/overview/),
   [Jacquard Harvester Content Pack](https://egeria-project.org/content-packs/jacquard-harvester-content-pack/overview/) and
-  [Jacquard Harvester Content Pack](https://egeria-project.org/content-packs/organization-insight-content-pack/overview/).
+  [Organization Insight Content Pack](https://egeria-project.org/content-packs/organization-insight-content-pack/overview/).
 
 * **integration-daemon** is an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/) that
   runs [Integration Connectors](https://egeria-project.org/concepts/integration-connectors/).

@@ -121,6 +121,68 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
 
     /**
+     * Return the list of defined users.
+     *
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return list of userIds
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    @Override
+    public List<String> getUserList(UserAccountStatus userAccountStatus,
+                                    UserAccountType   userAccountType) throws UserNotAuthorizedException,
+                                                                              InvalidParameterException,
+                                                                              PropertyServerException
+    {
+        if (secretsStoreConnectorMap != null)
+        {
+            for (SecretsStoreConnector secretsStoreConnector : secretsStoreConnectorMap.values())
+            {
+                if (secretsStoreConnector != null)
+                {
+                    try
+                    {
+                        Map<String, UserAccount> users = secretsStoreConnector.getUsers();
+                        if (users != null)
+                        {
+                            List<String> userIds = new ArrayList<>();
+
+                            for (String userId : users.keySet())
+                            {
+                                if (userId != null)
+                                {
+                                    UserAccount userAccount = users.get(userId);
+
+                                    if (userAccount != null)
+                                    {
+                                        if ((userAccountStatus == null) || (userAccountStatus == userAccount.getUserAccountStatus()))
+                                        {
+                                            if ((userAccountType == null) || (userAccountType == userAccount.getUserAccountType()))
+                                            {
+                                                userIds.add(userId);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            return userIds;
+                        }
+                    }
+                    catch (ConnectorCheckedException error)
+                    {
+                        // No users
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve information about a specific user.  This is used during a user's request for a token
      *
      * @param userId calling user
@@ -152,6 +214,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                             {
                                 logRecord(methodName, OpenMetadataSecurityAuditCode.EXPIRED_USER.getMessageDefinition(userId));
                             }
+
                             return new OpenMetadataUserAccount(userId, userAccount);
                         }
                     }
@@ -161,6 +224,33 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                     }
                 }
             }
+        }
+
+        throwUnknownUser(userId, null, methodName);
+        return null; // not reached
+    }
+
+
+    /**
+     * Check that the user is valid.
+     *
+     * @param userId calling user
+     * @param methodName calling method
+     * @return user account of exception
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    private OpenMetadataUserAccount getActiveUserAccount(String userId,
+                                                         String methodName) throws UserNotAuthorizedException,
+                                                                                   InvalidParameterException,
+                                                                                   PropertyServerException
+    {
+        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+
+        if ((userAccount != null) && (userAccount.getUserAccountStatus() == UserAccountStatus.AVAILABLE))
+        {
+            return userAccount;
         }
 
         throwUnknownUser(userId, null, methodName);
@@ -394,6 +484,15 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
+        final String methodName = "validateUserInGroup";
+
+        /*
+         * The user must have a valid account.
+         */
+        OpenMetadataUserAccount userAccount = this.getActiveUserAccount(userId, methodName);
+
+        assert  (userAccount != null);
+
         /*
          * If there is no security control, then all users can access this element.
          */
@@ -426,10 +525,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
             return true;
         }
 
-        /*
-         * More information is needed for additional checks.
-         */
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+
 
         /*
          * Does the account type match one of the listed groups?
@@ -880,7 +976,12 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                         InvalidParameterException,
                                                                         PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        final String methodName = "getZonesForUser";
+
+        /*
+         * The user must have a valid account.
+         */
+        OpenMetadataUserAccount userAccount = this.getActiveUserAccount(userId, methodName);
 
         HashSet<String> returnZones = new HashSet<>();
 
@@ -976,8 +1077,6 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * Determine whether the user is permitted to perform the desired operation based on the element's zones.
      *
      * @param userId identifier of user
-     * @param entityGUID unique identifier of entity
-     * @param entityTypeName open metadata type name
      * @param classifications list of classifications from entity
      * @param operation operation that they wish to perform
      * @param maintainers list of maintainers of the entity
@@ -988,78 +1087,164 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
-    protected void validateZoneAccess(String                  userId,
-                                      String                  entityGUID,
-                                      String                  entityTypeName,
-                                      List<Classification>    classifications,
-                                      AccessOperation         operation,
-                                      List<String>            maintainers,
-                                      OMRSRepositoryHelper    repositoryHelper,
-                                      String                  serviceName,
-                                      String                  methodName) throws UserNotAuthorizedException,
-                                                                                 InvalidParameterException,
-                                                                                 PropertyServerException
+    protected boolean validateZoneAccess(String                  userId,
+                                         List<Classification>    classifications,
+                                         AccessOperation         operation,
+                                         List<String>            maintainers,
+                                         OMRSRepositoryHelper    repositoryHelper,
+                                         String                  serviceName,
+                                         String                  methodName) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException
     {
         /*
-         * The user must have a valid account.  An exception is thrown if there is no account,
-         * or it is not in a state to use.
+         * The user must have a valid account.
          */
-        if ((repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.OPEN_METADATA_ROOT.typeName)) && (classifications != null))
+        OpenMetadataUserAccount userAccount = this.getActiveUserAccount(userId, methodName);
+
+        assert userAccount != null;
+
+        /*
+         * Other security checks are driven by the zone membership classification
+         */
+        if (classifications != null)
         {
-            InstanceProperties zoneMembershipProperties = repositoryHelper.getClassificationProperties(serviceName,
-                                                                                                       classifications,
-                                                                                                       OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                       methodName);
+            List<String> zoneMembership = this.getZoneMembership(classifications,
+                                                                 repositoryHelper,
+                                                                 serviceName,
+                                                                 methodName);
 
-            if (zoneMembershipProperties != null)
+            if ((zoneMembership != null) && (! zoneMembership.isEmpty()))
             {
-                List<String> zoneMembership = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                      OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                                      zoneMembershipProperties,
-                                                                                      methodName);
-
-                if (zoneMembership != null)
+                int securedZoneCount = 0;
+                for (String zoneName : zoneMembership)
                 {
-                    for (String zoneName : zoneMembership)
+                    if (userId.equals(zoneName))
                     {
-                        if (zoneName != null)
+                        return true;
+                    }
+                    else if (zoneName != null)
+                    {
+                        List<String> associatedSecurityList = getAssociatedSecurityListForZone(zoneName, operation);
+
+                        /*
+                         * If the zone has no associated security list, then it is not a secured zone and is ignored.
+                         * This is different from giving everyone access.
+                         */
+                        if (associatedSecurityList != null)
                         {
-                            List<String> associatedSecurityList = getAssociatedSecurityListForZone(zoneName, operation);
+                            securedZoneCount++;
 
-                            if (associatedSecurityList != null)
+                            /*
+                             * Does the security list permit any user to access this service?
+                             */
+                            if (associatedSecurityList.contains(allUsersGroup))
                             {
-                                OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+                                return true;
+                            }
 
-                                if (userAccount.getSecurityGroups() != null)
+                            /*
+                             * Does the account type match one of the listed groups?
+                             */
+                            if (((userAccount.getUserAccountType() == UserAccountType.EMPLOYEE) && (associatedSecurityList.contains(employeeUsersGroup))) ||
+                                    ((userAccount.getUserAccountType() == UserAccountType.CONTRACTOR) && (associatedSecurityList.contains(contractorUsersGroup))) ||
+                                    ((userAccount.getUserAccountType() == UserAccountType.EXTERNAL) && (associatedSecurityList.contains(externalUsersGroup))) ||
+                                    ((userAccount.getUserAccountType() == UserAccountType.DIGITAL) && (associatedSecurityList.contains(digitalUsersGroup))))
+                            {
+                                return true;
+                            }
+
+                            if (userAccount.getSecurityGroups() != null)
+                            {
+                                for (String securityGroupName : userAccount.getSecurityGroups())
                                 {
-                                    for (String securityGroupName : userAccount.getSecurityGroups())
+                                    if (associatedSecurityList.contains(securityGroupName))
                                     {
-                                        if (associatedSecurityList.contains(securityGroupName))
-                                        {
-                                            return;
-                                        }
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if (userAccount.getSecurityRoles() != null)
+                            if (userAccount.getSecurityRoles() != null)
+                            {
+                                for (String securityRoleName : userAccount.getSecurityRoles())
                                 {
-                                    for (String securityRoleName : userAccount.getSecurityRoles())
+                                    if (associatedSecurityList.contains(securityRoleName))
                                     {
-                                        if (associatedSecurityList.contains(securityRoleName))
-                                        {
-                                            return;
-                                        }
+                                        return true;
                                     }
                                 }
+                            }
 
-                                // todo check ownership, maintainers, allUsers and other dynamic groups
-                                //      throw exception InvalidParameter exception if read and UserNotAuthorized for other
+                            List<String> instanceBasedLists = this.getInstanceBasedGroups(userId, classifications, maintainers, repositoryHelper);
+
+                            if (instanceBasedLists != null)
+                            {
+                                for (String groupName : instanceBasedLists)
+                                {
+                                    if (associatedSecurityList.contains(groupName))
+                                    {
+                                        return true;
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
+                if (securedZoneCount > 0)
+                {
+                    return false;
+                }
             }
         }
+
+        /*
+         * If this point is reached, the user has access.
+         */
+        return true;
+    }
+
+
+    /**
+     * Determine if the user is an instance owner based on the classifications and maintainers.
+     *
+     * @param userId identifier of user
+     * @param classifications list of classifications from entity
+     * @param maintainers list of maintainers for the entity
+     * @param repositoryHelper helper object to access repository services
+     * @return list of additional groups the user should be added to based on their relationship with the instance.
+     */
+    List<String> getInstanceBasedGroups(String               userId,
+                                        List<Classification> classifications,
+                                        List<String>         maintainers,
+                                        OMRSRepositoryHelper repositoryHelper)
+    {
+        List<String> instanceBasedLists = new ArrayList<>();
+
+        /*
+         * The userId is a special group name for private content.
+         */
+        instanceBasedLists.add(userId);
+
+        if (isUserAnOwner(userId, classifications, repositoryHelper))
+        {
+            instanceBasedLists.add(instanceOwnersGroup);
+        }
+
+        if (maintainers != null)
+        {
+            if (maintainers.contains(userId))
+            {
+                instanceBasedLists.add(existingMaintainersGroup);
+            }
+            else
+            {
+                instanceBasedLists.add(newMaintainersGroup);
+            }
+        }
+
+        return instanceBasedLists;
     }
 
 
@@ -1131,17 +1316,20 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                                PropertyServerException
     {
         /*
-         * Check to see if there is a group for the
+         * Check to see if there is a control for the operation
          */
-        validateZoneAccess(userId,
-                           "<notAllocated>",
-                           entityTypeName,
-                           classifications,
-                           AccessOperation.CREATE,
-                           Collections.singletonList(userId),
-                           repositoryHelper,
-                           serviceName,
-                           methodName);
+        if (validateZoneAccess(userId,
+                               classifications,
+                               AccessOperation.CREATE,
+                               Collections.singletonList(userId),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedInstanceCreate(userId, entityTypeGUID, methodName);
     }
 
 
@@ -1166,15 +1354,22 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                    InvalidParameterException,
                                                                                    PropertyServerException
     {
-        validateZoneAccess(userId,
-                           requestedEntity.getGUID(),
-                           requestedEntity.getType().getTypeDefName(),
-                           requestedEntity.getClassifications(),
-                           AccessOperation.READ,
-                           requestedEntity.getMaintainedBy(),
-                           repositoryHelper,
-                           serviceName,
-                           methodName);
+        if (validateZoneAccess(userId,
+                               requestedEntity.getClassifications(),
+                               AccessOperation.READ,
+                               requestedEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       requestedEntity.getGUID(),
+                                       requestedEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
@@ -1201,7 +1396,47 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                         InvalidParameterException,
                                                                                         PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (repositoryHelper.getClassificationProperties(serviceName,
+                                                         requestedEntity.getClassifications(),
+                                                         OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                         methodName) != null)
+        {
+            if (validateZoneAccess(userId,
+                                   requestedEntity.getClassifications(),
+                                   AccessOperation.READ,
+                                   requestedEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.READ.getName(),
+                                           requestedEntity.getGUID(),
+                                           requestedEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+        else
+        {
+            if (validateZoneAccess(userId,
+                                   anchorEntity.getClassifications(),
+                                   AccessOperation.READ,
+                                   requestedEntity.getMaintainedBy(), // todo is this right or should it be the anchor entity's?
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.READ.getName(),
+                                          anchorEntity.getGUID(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          methodName);
+        }
     }
 
 
@@ -1228,7 +1463,22 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                            InvalidParameterException,
                                                                                            PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (validateZoneAccess(userId,
+                               originalEntity.getClassifications(),
+                               AccessOperation.UPDATE_PROPERTIES,
+                               originalEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.UPDATE_PROPERTIES.getName(),
+                                       originalEntity.getGUID(),
+                                       originalEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
@@ -1246,16 +1496,31 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementStatusUpdate(String userId,
-                                                   EntityDetail originalEntity,
-                                                   InstanceStatus newStatus,
+    public void validateUserForElementStatusUpdate(String               userId,
+                                                   EntityDetail         originalEntity,
+                                                   InstanceStatus       newStatus,
                                                    OMRSRepositoryHelper repositoryHelper,
-                                                   String serviceName,
-                                                   String methodName) throws UserNotAuthorizedException,
-                                                                             InvalidParameterException,
-                                                                             PropertyServerException
+                                                   String               serviceName,
+                                                   String               methodName) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
+                                                                                           PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (validateZoneAccess(userId,
+                               originalEntity.getClassifications(),
+                               AccessOperation.UPDATE_STATUS,
+                               originalEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.UPDATE_STATUS.getName(),
+                                       originalEntity.getGUID(),
+                                       originalEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
@@ -1274,17 +1539,45 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementAttach(String userId,
-                                             EntityDetail startingEntity,
-                                             EntityDetail attachingEntity,
-                                             String relationshipName,
+    public void validateUserForElementAttach(String               userId,
+                                             EntityDetail         startingEntity,
+                                             EntityDetail         attachingEntity,
+                                             String               relationshipName,
                                              OMRSRepositoryHelper repositoryHelper,
-                                             String serviceName,
-                                             String methodName) throws UserNotAuthorizedException,
-                                                                       InvalidParameterException,
-                                                                       PropertyServerException
+                                             String               serviceName,
+                                             String               methodName) throws UserNotAuthorizedException,
+                                                                                     InvalidParameterException,
+                                                                                     PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (! validateZoneAccess(userId,
+                                 startingEntity.getClassifications(),
+                                 AccessOperation.ATTACH,
+                                 startingEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.ATTACH.getName(),
+                                           startingEntity.getGUID(),
+                                           startingEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+
+        if (! validateZoneAccess(userId,
+                                 attachingEntity.getClassifications(),
+                                 AccessOperation.ATTACH,
+                                 attachingEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.ATTACH.getName(),
+                                           attachingEntity.getGUID(),
+                                           attachingEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
@@ -1303,17 +1596,45 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementDetach(String userId,
-                                             EntityDetail startingEntity,
-                                             EntityDetail detachingEntity,
-                                             String relationshipName,
+    public void validateUserForElementDetach(String               userId,
+                                             EntityDetail         startingEntity,
+                                             EntityDetail         detachingEntity,
+                                             String               relationshipName,
                                              OMRSRepositoryHelper repositoryHelper,
-                                             String serviceName,
-                                             String methodName) throws UserNotAuthorizedException,
-                                                                       InvalidParameterException,
-                                                                       PropertyServerException
+                                             String               serviceName,
+                                             String               methodName) throws UserNotAuthorizedException,
+                                                                                     InvalidParameterException,
+                                                                                     PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (! validateZoneAccess(userId,
+                                 startingEntity.getClassifications(),
+                                 AccessOperation.DETACH,
+                                 startingEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.DETACH.getName(),
+                                           startingEntity.getGUID(),
+                                           startingEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+
+        if (! validateZoneAccess(userId,
+                                 detachingEntity.getClassifications(),
+                                 AccessOperation.DETACH,
+                                 detachingEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.DETACH.getName(),
+                                           detachingEntity.getGUID(),
+                                           detachingEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
@@ -1332,22 +1653,46 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementAddFeedback(String userId,
-                                                  EntityDetail originalEntity,
-                                                  EntityDetail feedbackEntity,
+    public void validateUserForElementAddFeedback(String               userId,
+                                                  EntityDetail         originalEntity,
+                                                  EntityDetail         feedbackEntity,
                                                   OMRSRepositoryHelper repositoryHelper,
-                                                  String serviceName,
-                                                  String methodName) throws UserNotAuthorizedException,
-                                                                            InvalidParameterException,
-                                                                            PropertyServerException
+                                                  String               serviceName,
+                                                  String               methodName) throws UserNotAuthorizedException,
+                                                                                          InvalidParameterException,
+                                                                                          PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (! validateZoneAccess(userId,
+                                 originalEntity.getClassifications(),
+                                 AccessOperation.ADD_FEEDBACK,
+                                 originalEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAddFeedback(userId, originalEntity.getGUID(), methodName);
+        }
+
+        if (! validateZoneAccess(userId,
+                                 feedbackEntity.getClassifications(),
+                                 AccessOperation.READ,
+                                 feedbackEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.READ.getName(),
+                                           feedbackEntity.getGUID(),
+                                           feedbackEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
     /**
      * Tests for whether a specific user should have the right to detach feedback - such as comments,
-     * ratings, tags and likes, to the element.
+     * ratings, tags, and likes, to the element.
      *
      * @param userId           identifier of user
      * @param originalEntity   original entity details
@@ -1360,16 +1705,44 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementDeleteFeedback(String userId,
-                                                     EntityDetail originalEntity,
-                                                     EntityDetail feedbackEntity,
+    public void validateUserForElementDeleteFeedback(String               userId,
+                                                     EntityDetail         originalEntity,
+                                                     EntityDetail         feedbackEntity,
                                                      OMRSRepositoryHelper repositoryHelper,
-                                                     String serviceName,
-                                                     String methodName) throws UserNotAuthorizedException,
-                                                                               InvalidParameterException,
-                                                                               PropertyServerException
+                                                     String               serviceName,
+                                                     String               methodName) throws UserNotAuthorizedException,
+                                                                                             InvalidParameterException,
+                                                                                             PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (! validateZoneAccess(userId,
+                                 originalEntity.getClassifications(),
+                                 AccessOperation.DELETE_FEEDBACK,
+                                 originalEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.DELETE_FEEDBACK.getName(),
+                                           originalEntity.getGUID(),
+                                           originalEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+
+        if (! validateZoneAccess(userId,
+                                 feedbackEntity.getClassifications(),
+                                 AccessOperation.READ,
+                                 feedbackEntity.getMaintainedBy(),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.READ.getName(),
+                                           feedbackEntity.getGUID(),
+                                           feedbackEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
@@ -1379,6 +1752,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @param userId             identifier of user
      * @param originalEntity     original entity details
      * @param classificationName name of the classification
+     * @param classificationProperties new properties
      * @param repositoryHelper   helper for OMRS objects
      * @param serviceName        calling service
      * @param methodName         calling method
@@ -1387,16 +1761,85 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementClassify(String userId,
-                                               EntityDetail originalEntity,
-                                               String classificationName,
+    public void validateUserForElementClassify(String               userId,
+                                               EntityDetail         originalEntity,
+                                               String               classificationName,
+                                               InstanceProperties   classificationProperties,
                                                OMRSRepositoryHelper repositoryHelper,
-                                               String serviceName,
-                                               String methodName) throws UserNotAuthorizedException,
-                                                                         InvalidParameterException,
-                                                                         PropertyServerException
+                                               String               serviceName,
+                                               String               methodName) throws UserNotAuthorizedException,
+                                                                                       InvalidParameterException,
+                                                                                       PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+        {
+            if (validateZoneAccess(userId,
+                                   originalEntity.getClassifications(),
+                                   AccessOperation.PUBLISH,
+                                   originalEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            List<String> originalZones = this.getZoneMembership(originalEntity.getClassifications(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+            List<String> newZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                            OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                            classificationProperties,
+                                                                            methodName);
+
+            throwUnauthorizedZoneChange(userId, originalEntity.getGUID(), originalZones, newZones, methodName);
+        }
+        else
+        {
+            if (validateZoneAccess(userId,
+                                   originalEntity.getClassifications(),
+                                   AccessOperation.CLASSIFY,
+                                   originalEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.CLASSIFY.getName(),
+                                           originalEntity.getGUID(),
+                                           originalEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
+    }
+
+
+    /**
+     * Extract the zone membership from an entity's classifications.
+     *
+     * @param classifications  classifications from entity
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName      calling service
+     * @param methodName       calling method
+     * @return list of zones or null if no zones
+     */
+    private List<String> getZoneMembership(List<Classification> classifications,
+                                           OMRSRepositoryHelper repositoryHelper,
+                                           String               serviceName,
+                                           String               methodName)
+    {
+        InstanceProperties classificationProperties = repositoryHelper.getClassificationProperties(serviceName,
+                                                                                                   classifications,
+                                                                                                   OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                   methodName);
+
+        return repositoryHelper.getStringArrayProperty(serviceName,
+                                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                       classificationProperties,
+                                                       methodName);
     }
 
 
@@ -1414,16 +1857,55 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForElementDeclassify(String userId,
-                                                 EntityDetail originalEntity,
-                                                 String classificationName,
+    public void validateUserForElementDeclassify(String               userId,
+                                                 EntityDetail         originalEntity,
+                                                 String               classificationName,
                                                  OMRSRepositoryHelper repositoryHelper,
-                                                 String serviceName,
-                                                 String methodName) throws UserNotAuthorizedException,
-                                                                           InvalidParameterException,
-                                                                           PropertyServerException
+                                                 String               serviceName,
+                                                 String               methodName) throws UserNotAuthorizedException,
+                                                                                         InvalidParameterException,
+                                                                                         PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+        {
+            if (validateZoneAccess(userId,
+                                   originalEntity.getClassifications(),
+                                   AccessOperation.PUBLISH,
+                                   originalEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            List<String> originalZones = this.getZoneMembership(originalEntity.getClassifications(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+            List<String> newZones = new ArrayList<>();
+
+            throwUnauthorizedZoneChange(userId, originalEntity.getGUID(), originalZones, newZones, methodName);
+        }
+        else
+        {
+            if (validateZoneAccess(userId,
+                                   originalEntity.getClassifications(),
+                                   AccessOperation.DECLASSIFY,
+                                   originalEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedElementAccess(userId,
+                                           AccessOperation.DECLASSIFY.getName(),
+                                           originalEntity.getGUID(),
+                                           originalEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
@@ -1448,7 +1930,25 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (validateZoneAccess(userId,
+                               anchorEntity.getClassifications(),
+                               AccessOperation.CREATE,
+                               Collections.singletonList(userId),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedAnchorAccess(userId,
+                                      AccessOperation.CREATE.getName(),
+                                      anchorEntity.getType().getTypeDefName(),
+                                      anchorEntity.getGUID(),
+                                      methodName);
     }
 
 
@@ -1475,7 +1975,25 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (validateZoneAccess(userId,
+                               anchorEntity.getClassifications(),
+                               AccessOperation.UPDATE_PROPERTIES,
+                               Collections.singletonList(userId),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedAnchorAccess(userId,
+                                      AccessOperation.UPDATE_PROPERTIES.getName(),
+                                      anchorEntity.getType().getTypeDefName(),
+                                      anchorEntity.getGUID(),
+                                      methodName);
     }
 
 
@@ -1502,7 +2020,25 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                                 InvalidParameterException,
                                                                                                 PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (validateZoneAccess(userId,
+                               anchorEntity.getClassifications(),
+                               AccessOperation.UPDATE_STATUS,
+                               Collections.singletonList(userId),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedAnchorAccess(userId,
+                                      AccessOperation.UPDATE_STATUS.getName(),
+                                      anchorEntity.getType().getTypeDefName(),
+                                      anchorEntity.getGUID(),
+                                      methodName);
     }
 
 
@@ -1521,22 +2057,55 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorAttach(String userId,
-                                            EntityDetail anchorEntity,
-                                            EntityDetail attachingEntity,
-                                            String relationshipName,
+    public void validateUserForAnchorAttach(String               userId,
+                                            EntityDetail         anchorEntity,
+                                            EntityDetail         attachingEntity,
+                                            String               relationshipName,
                                             OMRSRepositoryHelper repositoryHelper,
-                                            String serviceName,
-                                            String methodName) throws UserNotAuthorizedException,
-                                                                      InvalidParameterException,
-                                                                      PropertyServerException
+                                            String               serviceName,
+                                            String               methodName) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                               anchorEntity.getClassifications(),
+                               AccessOperation.ATTACH,
+                               Collections.singletonList(userId),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.ATTACH.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               attachingEntity.getClassifications(),
+                               AccessOperation.READ,
+                               attachingEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       attachingEntity.getGUID(),
+                                       attachingEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
     /**
-     * Tests for whether a specific user should have the right to link unanchored  elements
+     * Tests for whether a specific user should have the right to unlink anchored elements
      *
      * @param userId           identifier of user
      * @param anchorEntity     anchor details
@@ -1550,23 +2119,56 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorDetach(String userId,
-                                            EntityDetail anchorEntity,
-                                            EntityDetail detachingEntity,
-                                            String relationshipName,
+    public void validateUserForAnchorDetach(String               userId,
+                                            EntityDetail         anchorEntity,
+                                            EntityDetail         detachingEntity,
+                                            String               relationshipName,
                                             OMRSRepositoryHelper repositoryHelper,
-                                            String serviceName,
-                                            String methodName) throws UserNotAuthorizedException,
-                                                                      InvalidParameterException,
-                                                                      PropertyServerException
+                                            String               serviceName,
+                                            String               methodName) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                                 anchorEntity.getClassifications(),
+                                 AccessOperation.DETACH,
+                                 Collections.singletonList(userId),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.DETACH.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               detachingEntity.getClassifications(),
+                               AccessOperation.READ,
+                               detachingEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       detachingEntity.getGUID(),
+                                       detachingEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
     /**
      * Tests for whether a specific user should have the right to attach feedback - such as comments,
-     * ratings, tags and likes, to the anchor or member element.
+     * ratings, tags, and likes, to the anchor or member element.
      *
      * @param userId           identifier of user
      * @param anchorEntity     anchor details
@@ -1579,22 +2181,55 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorAddFeedback(String userId,
-                                                 EntityDetail anchorEntity,
-                                                 EntityDetail feedbackEntity,
+    public void validateUserForAnchorAddFeedback(String               userId,
+                                                 EntityDetail         anchorEntity,
+                                                 EntityDetail         feedbackEntity,
                                                  OMRSRepositoryHelper repositoryHelper,
-                                                 String serviceName,
-                                                 String methodName) throws UserNotAuthorizedException,
-                                                                           InvalidParameterException,
-                                                                           PropertyServerException
+                                                 String               serviceName,
+                                                 String               methodName) throws UserNotAuthorizedException,
+                                                                                         InvalidParameterException,
+                                                                                         PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                                 anchorEntity.getClassifications(),
+                                 AccessOperation.ADD_FEEDBACK,
+                                 Collections.singletonList(userId),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.ADD_FEEDBACK.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               feedbackEntity.getClassifications(),
+                               AccessOperation.READ,
+                               feedbackEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       feedbackEntity.getGUID(),
+                                       feedbackEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
     /**
      * Tests for whether a specific user should have the right to detach feedback - such as comments,
-     * ratings, tags and likes, to the anchor or member element.
+     * ratings, tag,s and likes, to the anchor or member element.
      *
      * @param userId           identifier of user
      * @param anchorEntity     anchor details
@@ -1607,43 +2242,120 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorDeleteFeedback(String userId,
-                                                    EntityDetail anchorEntity,
-                                                    EntityDetail feedbackEntity,
+    public void validateUserForAnchorDeleteFeedback(String               userId,
+                                                    EntityDetail         anchorEntity,
+                                                    EntityDetail         feedbackEntity,
                                                     OMRSRepositoryHelper repositoryHelper,
-                                                    String serviceName,
-                                                    String methodName) throws UserNotAuthorizedException,
-                                                                              InvalidParameterException,
-                                                                              PropertyServerException
+                                                    String               serviceName,
+                                                    String               methodName) throws UserNotAuthorizedException,
+                                                                                            InvalidParameterException,
+                                                                                            PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                                 anchorEntity.getClassifications(),
+                                 AccessOperation.DELETE_FEEDBACK,
+                                 Collections.singletonList(userId),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.DELETE_FEEDBACK.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               feedbackEntity.getClassifications(),
+                               AccessOperation.READ,
+                               feedbackEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       feedbackEntity.getGUID(),
+                                       feedbackEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
     /**
      * Tests for whether a specific user should have the right to add or update a classification on this anchor or member element.
      *
-     * @param userId             identifier of user
-     * @param anchorEntity       anchor details
-     * @param classificationName name of the classification
-     * @param repositoryHelper   helper for OMRS objects
-     * @param serviceName        calling service
-     * @param methodName         calling method
+     * @param userId                   identifier of user
+     * @param anchorEntity             anchor details
+     * @param classificationName       name of the classification
+     * @param classificationProperties new properties
+     * @param repositoryHelper         helper for OMRS objects
+     * @param serviceName              calling service
+     * @param methodName               calling method
      * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorClassify(String userId,
-                                              EntityDetail anchorEntity,
-                                              String classificationName,
+    public void validateUserForAnchorClassify(String               userId,
+                                              EntityDetail         anchorEntity,
+                                              String               classificationName,
+                                              InstanceProperties   classificationProperties,
                                               OMRSRepositoryHelper repositoryHelper,
-                                              String serviceName,
-                                              String methodName) throws UserNotAuthorizedException,
-                                                                        InvalidParameterException,
-                                                                        PropertyServerException
+                                              String               serviceName,
+                                              String               methodName) throws UserNotAuthorizedException,
+                                                                                      InvalidParameterException,
+                                                                                      PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+        {
+            if (validateZoneAccess(userId,
+                                   anchorEntity.getClassifications(),
+                                   AccessOperation.PUBLISH,
+                                   anchorEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            List<String> originalZones = this.getZoneMembership(anchorEntity.getClassifications(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+            List<String> newZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                            OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                            classificationProperties,
+                                                                            methodName);
+
+            throwUnauthorizedZoneChange(userId, anchorEntity.getGUID(), originalZones, newZones, methodName);
+        }
+        else
+        {
+            if (validateZoneAccess(userId,
+                                   anchorEntity.getClassifications(),
+                                   AccessOperation.CLASSIFY,
+                                   anchorEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedAnchorAccess(userId,
+                                           AccessOperation.CLASSIFY.getName(),
+                                           anchorEntity.getGUID(),
+                                           anchorEntity.getType().getTypeDefName(),
+                                           methodName);
+        }
     }
 
 
@@ -1661,16 +2373,55 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
     @Override
-    public void validateUserForAnchorDeclassify(String userId,
-                                                EntityDetail anchorEntity,
-                                                String classificationName,
+    public void validateUserForAnchorDeclassify(String               userId,
+                                                EntityDetail         anchorEntity,
+                                                String               classificationName,
                                                 OMRSRepositoryHelper repositoryHelper,
-                                                String serviceName,
-                                                String methodName) throws UserNotAuthorizedException,
-                                                                          InvalidParameterException,
-                                                                          PropertyServerException
+                                                String               serviceName,
+                                                String               methodName) throws UserNotAuthorizedException,
+                                                                                        InvalidParameterException,
+                                                                                        PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationName))
+        {
+            if (validateZoneAccess(userId,
+                                   anchorEntity.getClassifications(),
+                                   AccessOperation.PUBLISH,
+                                   anchorEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            List<String> originalZones = this.getZoneMembership(anchorEntity.getClassifications(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+            List<String> newZones = new ArrayList<>();
+
+            throwUnauthorizedZoneChange(userId, anchorEntity.getGUID(), originalZones, newZones, methodName);
+        }
+        else
+        {
+            if (validateZoneAccess(userId,
+                                   anchorEntity.getClassifications(),
+                                   AccessOperation.DECLASSIFY,
+                                   anchorEntity.getMaintainedBy(),
+                                   repositoryHelper,
+                                   serviceName,
+                                   methodName))
+            {
+                return;
+            }
+
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.DECLASSIFY.getName(),
+                                          anchorEntity.getGUID(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          methodName);
+        }
     }
 
 
@@ -1696,7 +2447,40 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                                 anchorEntity.getClassifications(),
+                                 AccessOperation.DELETE_MEMBER,
+                                 Collections.singletonList(userId),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.DELETE_MEMBER.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               obsoleteEntity.getClassifications(),
+                               AccessOperation.READ,
+                               obsoleteEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       obsoleteEntity.getGUID(),
+                                       obsoleteEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 
@@ -1721,12 +2505,27 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                      InvalidParameterException,
                                                                                      PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        if (validateZoneAccess(userId,
+                               entity.getClassifications(),
+                               AccessOperation.DELETE,
+                               entity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.DELETE.getName(),
+                                       entity.getGUID(),
+                                       entity.getType().getTypeDefName(),
+                                       methodName);
     }
 
+
     /**
-     * Tests for whether a specific user should have the right to attach feedback - such as comments,
-     * ratings, tags and likes, to the element.
+     * Tests for whether a specific user should have the right to attach a new anchored element.
      *
      * @param userId           identifier of user
      * @param anchorEntity     anchor details
@@ -1750,7 +2549,40 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                        InvalidParameterException,
                                                                                        PropertyServerException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
+        /*
+         * Check to see if there is a control for the operation
+         */
+        if (! validateZoneAccess(userId,
+                                 anchorEntity.getClassifications(),
+                                 AccessOperation.ADD_MEMBER,
+                                 Collections.singletonList(userId),
+                                 repositoryHelper,
+                                 serviceName,
+                                 methodName))
+        {
+            throwUnauthorizedAnchorAccess(userId,
+                                          AccessOperation.ADD_MEMBER.getName(),
+                                          anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
+                                          methodName);
+        }
+
+        if (validateZoneAccess(userId,
+                               newMemberEntity.getClassifications(),
+                               AccessOperation.READ,
+                               newMemberEntity.getMaintainedBy(),
+                               repositoryHelper,
+                               serviceName,
+                               methodName))
+        {
+            return;
+        }
+
+        throwUnauthorizedElementAccess(userId,
+                                       AccessOperation.READ.getName(),
+                                       newMemberEntity.getGUID(),
+                                       newMemberEntity.getType().getTypeDefName(),
+                                       methodName);
     }
 
 

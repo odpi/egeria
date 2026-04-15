@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,50 +53,53 @@ public class IntegrationContext extends ConnectorContextBase
 
     protected final PermittedSynchronization permittedSynchronization;
 
-    private boolean isRefreshInProgress = false;
+    private boolean isRefreshInProgress      = false;
+    private Date    refreshStartTime         = null;
+    private long    minMinutesBetweenRefresh = 0;
+
     private boolean listenerRegistered = false;
 
     /**
      * Constructor handles standard values for all integration contexts.
      *
-     * @param localServerName name of local server
-     * @param localServiceName name of the service to call
-     * @param externalSourceGUID metadata collection unique id
-     * @param externalSourceName metadata collection unique name
-     * @param connectorId unique identifier of the connector (used to configure the event listener)
-     * @param connectorName name of connector from config
-     * @param connectorUserId userId for the connector
-     * @param connectorGUID unique identifier of the integration connector entity (maybe null)
+     * @param localServerName           name of local server
+     * @param localServiceName          name of the service to call
+     * @param externalSourceGUID        metadata collection unique id
+     * @param externalSourceName        metadata collection unique name
+     * @param connectorId               unique identifier of the connector (used to configure the event listener)
+     * @param connectorName             name of connector from config
+     * @param connectorUserId           userId for the connector
+     * @param connectorGUID             unique identifier of the integration connector entity (maybe null)
      * @param generateIntegrationReport should the connector generate an integration reports?
-     * @param permittedSynchronization enum
-     * @param openMetadataClient client to access open metadata store
-     * @param openMetadataEventClient client to access open metadata events
-     * @param connectedAssetClient client for working with connectors
-     * @param governanceConfiguration client for managing catalog targets
-     * @param openGovernanceClient client for initiating governance actions
-     * @param auditLog logging destination
-     * @param maxPageSize max number of elements that can be returned on a query
-     * @param deleteMethod default delete method
+     * @param permittedSynchronization  enum
+     * @param openMetadataClient        client to access open metadata store
+     * @param openMetadataEventClient   client to access open metadata events
+     * @param connectedAssetClient      client for working with connectors
+     * @param governanceConfiguration   client for managing catalog targets
+     * @param openGovernanceClient      client for initiating governance actions
+     * @param auditLog                  logging destination
+     * @param maxPageSize               max number of elements that can be returned on a query
+     * @param deleteMethod              default delete method
      */
-    public IntegrationContext(String                       localServerName,
-                              String                       localServiceName,
-                              String                       externalSourceGUID,
-                              String                       externalSourceName,
-                              String                       connectorId,
-                              String                       connectorName,
-                              String                       connectorUserId,
-                              String                       connectorGUID,
-                              boolean                      generateIntegrationReport,
-                              PermittedSynchronization     permittedSynchronization,
-                              OpenMetadataClient           openMetadataClient,
-                              OpenMetadataEventClient      openMetadataEventClient,
-                              ConnectedAssetClient         connectedAssetClient,
-                              OpenLineageListenerManager   openLineageListenerManager,
-                              GovernanceConfiguration      governanceConfiguration,
-                              OpenGovernanceClient         openGovernanceClient,
-                              AuditLog                     auditLog,
-                              int                          maxPageSize,
-                              DeleteMethod                 deleteMethod)
+    public IntegrationContext(String localServerName,
+                              String localServiceName,
+                              String externalSourceGUID,
+                              String externalSourceName,
+                              String connectorId,
+                              String connectorName,
+                              String connectorUserId,
+                              String connectorGUID,
+                              boolean generateIntegrationReport,
+                              PermittedSynchronization permittedSynchronization,
+                              OpenMetadataClient openMetadataClient,
+                              OpenMetadataEventClient openMetadataEventClient,
+                              ConnectedAssetClient connectedAssetClient,
+                              OpenLineageListenerManager openLineageListenerManager,
+                              GovernanceConfiguration governanceConfiguration,
+                              OpenGovernanceClient openGovernanceClient,
+                              AuditLog auditLog,
+                              int maxPageSize,
+                              DeleteMethod deleteMethod)
     {
         super(localServerName,
               localServiceName,
@@ -117,21 +121,21 @@ public class IntegrationContext extends ConnectorContextBase
         this.connectedAssetClient       = connectedAssetClient;
         this.permittedSynchronization   = permittedSynchronization;
 
-        this.openMetadataEventClient    = openMetadataEventClient;
+        this.openMetadataEventClient = openMetadataEventClient;
 
-        this.connectedAssetContext      = new ConnectedAssetContext(connectorUserId, connectedAssetClient);
+        this.connectedAssetContext = new ConnectedAssetContext(connectorUserId, connectedAssetClient);
 
 
-        this.stewardshipAction          = new StewardshipAction(this,
-                                                                localServerName,
-                                                                localServiceName,
-                                                                connectorUserId,
-                                                                connectorGUID,
-                                                                externalSourceGUID,
-                                                                externalSourceName,
-                                                                openGovernanceClient,
-                                                                auditLog,
-                                                                maxPageSize);
+        this.stewardshipAction = new StewardshipAction(this,
+                                                       localServerName,
+                                                       localServiceName,
+                                                       connectorUserId,
+                                                       connectorGUID,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       openGovernanceClient,
+                                                       auditLog,
+                                                       maxPageSize);
 
         this.notificationManagerClient = new NotificationManagerClient(this,
                                                                        localServerName,
@@ -157,8 +161,8 @@ public class IntegrationContext extends ConnectorContextBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public CatalogTargetContext getCatalogTargetContext(CatalogTarget requestedCatalogTarget) throws InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
         String metadataSourceName = requestedCatalogTarget.getMetadataCollectionQualifiedName();
 
@@ -227,7 +231,10 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param event bean for the event
      */
-    public void publishOpenLineageRunEvent(OpenLineageRunEvent event) { openLineageListenerManager.publishOpenLineageRunEvent(event); }
+    public void publishOpenLineageRunEvent(OpenLineageRunEvent event)
+    {
+        openLineageListenerManager.publishOpenLineageRunEvent(event);
+    }
 
 
     /* ========================================================
@@ -246,18 +253,16 @@ public class IntegrationContext extends ConnectorContextBase
     }
 
 
-
-
     /**
      * Determine whether a particular element should be catalogued.  The include list takes precedent over
      * the exclude list.
      *
-     * @param elementName name of the element
+     * @param elementName   name of the element
      * @param excludedNames list of names to exclude (null means ignore value)
      * @param includedNames list of names to include (null means ignore value)
      * @return flag indicating whether to work with the database
      */
-    public boolean elementShouldBeCatalogued(String       elementName,
+    public boolean elementShouldBeCatalogued(String elementName,
                                              List<String> excludedNames,
                                              List<String> includedNames)
     {
@@ -272,7 +277,7 @@ public class IntegrationContext extends ConnectorContextBase
         }
         else if (excludedNames != null)
         {
-            return ! excludedNames.contains(elementName);
+            return !excludedNames.contains(elementName);
         }
 
         return true;
@@ -294,7 +299,6 @@ public class IntegrationContext extends ConnectorContextBase
     {
         return !listenerRegistered;
     }
-
 
 
     /**
@@ -365,7 +369,10 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @return string guid
      */
-    public String getIntegrationConnectorGUID() { return connectorGUID; }
+    public String getIntegrationConnectorGUID()
+    {
+        return connectorGUID;
+    }
 
 
     /**
@@ -373,7 +380,7 @@ public class IntegrationContext extends ConnectorContextBase
      * Used to control external provenance and as a parent for some asset cataloguing.
      * If null the provenance is LOCAL_COHORT.
      *
-     * @return  string name
+     * @return string name
      */
     public String getMetadataSourceQualifiedName()
     {
@@ -386,13 +393,12 @@ public class IntegrationContext extends ConnectorContextBase
      * Used to control external provenance and as a parent for some asset cataloguing.
      * If null the provenance is LOCAL_COHORT.
      *
-     * @return  string name
+     * @return string name
      */
     public String getMetadataCollectionGUID()
     {
         return externalSourceGUID;
     }
-
 
 
     /**
@@ -401,16 +407,15 @@ public class IntegrationContext extends ConnectorContextBase
      * which is why any exceptions from retrieving the software capability are passed through to the caller.
      *
      * @param metadataCollectionQualifiedName supplied qualified name for the metadata collection
-     *
      * @return null or unique identifier of the associated software capability
-     * @throws InvalidParameterException the unique name is null or not known.
+     * @throws InvalidParameterException  the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
-     * @throws PropertyServerException a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
-    private String getMetadataCollectionGUID(String                  metadataCollectionQualifiedName,
+    private String getMetadataCollectionGUID(String metadataCollectionQualifiedName,
                                              OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         if (metadataCollectionQualifiedName != null)
         {
@@ -423,10 +428,10 @@ public class IntegrationContext extends ConnectorContextBase
                 AssetClient assetClient = this.getAssetClient(OpenMetadataType.METADATA_COLLECTION.typeName);
 
                 String metadataCollectionGUID = assetClient.setUpMetadataSource(metadataCollectionQualifiedName,
-                                                                            catalogTargetElement.getElementHeader().getGUID(),
-                                                                            connectorName,
-                                                                            connectorUserId,
-                                                                            ElementOriginCategory.EXTERNAL_SOURCE);
+                                                                                catalogTargetElement.getElementHeader().getGUID(),
+                                                                                connectorName,
+                                                                                connectorUserId,
+                                                                                ElementOriginCategory.EXTERNAL_SOURCE);
 
                 if (metadataCollectionGUID != null)
                 {
@@ -450,7 +455,7 @@ public class IntegrationContext extends ConnectorContextBase
      */
     public boolean noRefreshInProgress()
     {
-        return ! isRefreshInProgress;
+        return !isRefreshInProgress;
     }
 
 
@@ -459,9 +464,11 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param refreshInProgress boolean flag
      */
-    public void setRefreshInProgress(boolean refreshInProgress)
+    public void setRefreshInProgress(boolean refreshInProgress,
+                                     long    minMinutesBetweenRefresh)
     {
         isRefreshInProgress = refreshInProgress;
+        this.minMinutesBetweenRefresh = minMinutesBetweenRefresh;
 
         if (connectorActivityReportWriter != null)
         {
@@ -474,5 +481,45 @@ public class IntegrationContext extends ConnectorContextBase
                 connectorActivityReportWriter.setRefreshEndDate();
             }
         }
+    }
+
+
+    public Date getRefreshStartTime()
+    {
+        return refreshStartTime;
+    }
+
+    /**
+     * Return the time when the next refresh is scheduled to start.
+     * This is the earliest time - it may be later if the Integration Daemon is busy.
+     *
+     * @return date/time or null if no refresh is scheduled.
+     */
+    public Date getNextScheduledRefreshTime()
+    {
+        if (minMinutesBetweenRefresh == 0)
+        {
+            return null;
+        }
+
+        if (refreshStartTime == null)
+        {
+            return new Date(System.currentTimeMillis() + (minMinutesBetweenRefresh * 60 * 1000));
+        }
+        else
+        {
+            return new Date(refreshStartTime.getTime() + (minMinutesBetweenRefresh * 60 * 1000));
+        }
+    }
+
+
+    /**
+     * Return the minimum minutes between refreshes.  This is used to schedule the next refresh.
+     *
+     * @return long
+     */
+    public long getMinMinutesBetweenRefresh()
+    {
+        return minMinutesBetweenRefresh;
     }
 }

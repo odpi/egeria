@@ -282,7 +282,7 @@ public class OpenMetadataPropertyConverterBase
      */
     public Map<String, Object> getRemainingExtendedProperties(ElementProperties  elementProperties)
     {
-        if (elementProperties != null)
+        if ((elementProperties != null) && (elementProperties.getPropertyCount() > 0))
         {
             return propertyHelper.getElementPropertiesAsMap(elementProperties);
         }
@@ -3433,6 +3433,50 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Retrieve the  analysis time from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected Date removeAnalysisTime(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAnalysisTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                            OpenMetadataProperty.ANALYSIS_TIME.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the total membership analysis from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected long removeTotalMembership(ElementProperties elementProperties)
+    {
+        final String methodName = "removeTotalMembership";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_MEMBERSHIP.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
      * Retrieve the userIds from the properties of the zone membership classification.
      *
      * @param elementProperties properties from the classification
@@ -6411,6 +6455,28 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the type property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeProcess(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeProcess";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PROCESS.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the usage property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -8484,6 +8550,52 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeLongProperty(localServiceName,
                                                      OpenMetadataProperty.REPEAT_INTERVAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeMatchingValues(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeMatchingValues";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.MATCHING_VALUES.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeNonMatchingValues(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeNonMatchingValues";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.NON_MATCHING_VALUES.name,
                                                      elementProperties,
                                                      methodName);
         }
@@ -12137,6 +12249,14 @@ public class OpenMetadataPropertyConverterBase
                 ((AnchorsProperties)beanProperties).setAnchorDomainName(this.removeAnchorDomainName(elementProperties));
                 ((AnchorsProperties)beanProperties).setAnchorScopeGUIDs(this.removeAnchorScopeGUIDs(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.AUDIT_LOG_CLASSIFICATION.typeName))
+            {
+                beanProperties = new AuditLogProperties();
+
+                ((AuditLogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((AuditLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((AuditLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName))
             {
                 beanProperties = new BusinessSignificantProperties();
@@ -12155,6 +12275,10 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName))
             {
                 beanProperties = new CampaignProperties();
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.CLASS_WORD_CLASSIFICATION.typeName))
+            {
+                beanProperties = new ClassWordProperties();
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName))
             {
@@ -12328,6 +12452,39 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new ElementSupplementProperties();
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.EXCEPTION_BACKLOG_CLASSIFICATION.typeName))
+            {
+                beanProperties = new ExceptionBacklogProperties();
+
+                ((ExceptionBacklogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((ExceptionBacklogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((ExceptionBacklogProperties)beanProperties).setSource(this.removeSource(elementProperties));
+                ((ExceptionBacklogProperties)beanProperties).setSteward(this.removeSteward(elementProperties));
+                ((ExceptionBacklogProperties)beanProperties).setStewardTypeName(this.removeStewardTypeName(elementProperties));
+                ((ExceptionBacklogProperties)beanProperties).setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName))
+            {
+                if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.CONTROL_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new ControlPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new EnforcementPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new VerificationPointProperties();
+                }
+                else
+                {
+                    beanProperties = new ExecutionPointProperties();
+                }
+
+                ((ExecutionPointProperties)beanProperties).setQualifiedName(this.removeQualifiedName(elementProperties));
+
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.EXPERIMENT_CLASSIFICATION.typeName))
             {
                 beanProperties = new ExperimentProperties();
@@ -12397,6 +12554,28 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new ListenerInterfaceProperties();
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.LINEAGE_LOG_CLASSIFICATION.typeName))
+            {
+                beanProperties = new LineageLogProperties();
+
+                ((LineageLogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((LineageLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((LineageLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.LOG_ANALYSIS_CLASSIFICATION.typeName))
+            {
+                beanProperties = new LogAnalysisProperties();
+
+                ((LogAnalysisProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setSource(this.removeSource(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setDataCollectionStartTime(this.removeDataCollectionStartTime(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setDataCollectionEndTime(this.removeDataCollectionEndTime(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setValues(this.removeValues(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setCounts(this.removeCounts(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setFlags(this.removeFlags(elementProperties));
+                ((LogAnalysisProperties)beanProperties).setDates(this.removeDates(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName))
             {
                 beanProperties = new MementoProperties();
@@ -12408,9 +12587,21 @@ public class OpenMetadataPropertyConverterBase
                 ((MementoProperties)beanProperties).setArchiveMethod(this.removeArchiveMethod(elementProperties));
                 ((MementoProperties)beanProperties).setArchiveProperties(this.removeArchiveProperties(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.METERING_LOG_CLASSIFICATION.typeName))
+            {
+                beanProperties = new MeteringLogProperties();
+
+                ((MeteringLogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((MeteringLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((MeteringLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.MOBILE_RESOURCE_CLASSIFICATION.typeName))
             {
                 beanProperties = new MobileResourceProperties();
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.MODIFIER_CLASSIFICATION.typeName))
+            {
+                beanProperties = new ModifierProperties();
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName))
             {
@@ -12429,12 +12620,47 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new PersonalProjectProperties();
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName))
+            {
+                if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new PolicyAdministrationPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new PolicyDecisionPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new PolicyEnforcementPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new PolicyInformationPointProperties();
+                }
+                else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION.typeName))
+                {
+                    beanProperties = new PolicyRetrievalPointProperties();
+                }
+                else
+                {
+                    beanProperties = new PolicyManagementPointProperties();
+                }
+
+                ((PolicyManagementPointProperties)beanProperties).setLabel(this.removeLabel(elementProperties));
+                ((PolicyManagementPointProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
+                ((PolicyManagementPointProperties)beanProperties).setPointType(this.removePointType(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName))
             {
                 beanProperties = new PrimaryKeyProperties();
 
                 ((PrimaryKeyProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
                 ((PrimaryKeyProperties)beanProperties).setKeyPattern(this.removeKeyPattern(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.PRIME_WORD_CLASSIFICATION.typeName))
+            {
+                beanProperties = new PrimeWordProperties();
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.PROJECT_CLASSIFICATION_CLASSIFICATION.typeName))
             {
@@ -12486,6 +12712,14 @@ public class OpenMetadataPropertyConverterBase
 
                 ((SecurityListMembershipProperties)beanProperties).setSecurityGroups(this.removeGroups(elementProperties));
                 ((SecurityListMembershipProperties)beanProperties).setSecurityRoles(this.removeRoles(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_LOG_CLASSIFICATION.typeName))
+            {
+                beanProperties = new SecurityLogProperties();
+
+                ((SecurityLogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                ((SecurityLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
+                ((SecurityLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName))
             {
@@ -12558,7 +12792,9 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new ZoneMembershipProfileProperties();
 
+                ((ZoneMembershipProfileProperties)beanProperties).setTotalMembership(this.removeTotalMembership(elementProperties));
                 ((ZoneMembershipProfileProperties)beanProperties).setTypeMembership(this.removeTypeMembership(elementProperties));
+                ((ZoneMembershipProfileProperties)beanProperties).setAnalysisTime(this.removeAnalysisTime(elementProperties));
             }
             else
             {
@@ -12710,11 +12946,17 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new AnnotationExtensionProperties();
+
+                ((AnnotationExtensionProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((AnnotationExtensionProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ANNOTATION_MATCH_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new AnnotationMatchProperties();
 
+                ((AnnotationMatchProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((AnnotationMatchProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((AnnotationMatchProperties)relationshipBeanProperties).setMethod(this.removeMethod(elementProperties));
                 ((AnnotationMatchProperties)relationshipBeanProperties).setThreshold(this.removeThreshold(elementProperties));
             }
@@ -12753,6 +12995,13 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new APIResponseProperties();
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ApprovedPurposeProperties();
+
+                ((ApprovedPurposeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ApprovedPurposeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ArchiveContentsProperties();
@@ -12771,6 +13020,9 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new AssociatedAnnotationProperties();
+
+                ((AssociatedAnnotationProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((AssociatedAnnotationProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName))
             {
@@ -13067,6 +13319,20 @@ public class OpenMetadataPropertyConverterBase
                 ((DataMappingProperties)relationshipBeanProperties).setQuery(this.removeQuery(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setQueryId(this.removeQueryId(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new DataProcessingSpecificationProperties();
+
+                ((DataProcessingSpecificationProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DataProcessingSpecificationProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new DataProcessingTargetProperties();
+
+                ((DataProcessingTargetProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DataProcessingTargetProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new DataSetContentProperties();
@@ -13108,6 +13374,13 @@ public class OpenMetadataPropertyConverterBase
                 ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
                 ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new DetailedProcessingActionProperties();
+
+                ((DetailedProcessingActionProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DetailedProcessingActionProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new DigitalProductDependencyProperties();
@@ -13138,6 +13411,20 @@ public class OpenMetadataPropertyConverterBase
                 ((EmbeddedConnectionProperties)relationshipBeanProperties).setDisplayName(this.removeDisplayName(elementProperties));
                 ((EmbeddedConnectionProperties)relationshipBeanProperties).setArguments(this.removeArguments(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ExceptionProperties();
+
+                ((ExceptionProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setLastReviewTime(this.removeLastReviewTime(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setReviewDate(this.removeReviewDate(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setConditions(this.removeConditions(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setSteward(this.removeSteward(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setStewardTypeName(this.removeStewardTypeName(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setNotes(this.removeNotes(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ExternalIdLinkProperties();
@@ -13163,7 +13450,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new GovernanceActionExecutorProperties();
 
-                ((GovernanceActionExecutorProperties)relationshipBeanProperties).setRequestType(this.removeGuard(elementProperties));
+                ((GovernanceActionExecutorProperties)relationshipBeanProperties).setRequestType(this.removeRequestType(elementProperties));
                 ((GovernanceActionExecutorProperties)relationshipBeanProperties).setRequestParameters(this.removeRequestParameters(elementProperties));
                 ((GovernanceActionExecutorProperties)relationshipBeanProperties).setRequestParameterFilter(this.removeRequestParameterFilter(elementProperties));
                 ((GovernanceActionExecutorProperties)relationshipBeanProperties).setRequestParameterMap(this.removeRequestParameterMap(elementProperties));
@@ -13360,6 +13647,9 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new LinkedMediaProperties();
+
+                ((LinkedMediaProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LinkedMediaProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName))
             {
@@ -13468,6 +13758,9 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PEER_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new PeerProperties();
+
+                ((PeerProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((PeerProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PEER_DUPLICATE_LINK.typeName))
             {
@@ -13479,6 +13772,13 @@ public class OpenMetadataPropertyConverterBase
                 ((PeerDuplicateLinkProperties)relationshipBeanProperties).setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
                 ((PeerDuplicateLinkProperties)relationshipBeanProperties).setSource(this.removeSource(elementProperties));
                 ((PeerDuplicateLinkProperties)relationshipBeanProperties).setNotes(this.removeNotes(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new PermittedProcessingProperties();
+
+                ((PermittedProcessingProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((PermittedProcessingProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName))
             {
@@ -13580,6 +13880,9 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REGULATION_CERTIFICATION_TYPE.typeName))
             {
                 relationshipBeanProperties = new RegulationCertificationTypeProperties();
+
+                ((RegulationCertificationTypeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((RegulationCertificationTypeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName))
             {
@@ -13671,6 +13974,13 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ResourceProfileDataProperties();
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ROLED_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new RoledRelationshipProperties();
+
+                ((RoledRelationshipProperties)relationshipBeanProperties).setRole(this.removeRole(elementProperties));
+                ((RoledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName))
             {
@@ -13909,6 +14219,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new ValidValueMemberProperties();
 
+                ((ValidValueMemberProperties)relationshipBeanProperties).setOrdinal(this.removeOrdinal(elementProperties));
                 ((ValidValueMemberProperties)relationshipBeanProperties).setIsDefaultValue(this.removeIsDefaultValue(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName))
@@ -13949,15 +14260,24 @@ public class OpenMetadataPropertyConverterBase
                 if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.LINEAGE_RELATIONSHIP.typeName))
                 {
                     relationshipBeanProperties = new LineageRelationshipProperties();
+
+                    ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                 }
                 else
                 {
                     relationshipBeanProperties = new LabeledRelationshipProperties();
                 }
+
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ROLED_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new RoledRelationshipProperties();
+
+                ((RoledRelationshipProperties)relationshipBeanProperties).setRole(this.removeRole(elementProperties));
+                ((RoledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
             }
             else
             {
@@ -14151,6 +14471,10 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new DataFieldAnnotationProperties();
                             }
+
+                            ((DataFieldAnnotationProperties)beanProperties).setDataType(this.removeDataType(elementProperties));
+                            ((DataFieldAnnotationProperties)beanProperties).setMatchingValues(this.removeMatchingValues(elementProperties));
+                            ((DataFieldAnnotationProperties)beanProperties).setNonMatchingValues(this.removeNonMatchingValues(elementProperties));
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName))
                         {
@@ -14581,6 +14905,10 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new DataProcessingPurposeProperties();
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXCEPTION_TYPE.typeName))
+                            {
+                                beanProperties = new ExceptionTypeProperties();
+                            }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION.typeName))
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
@@ -14771,7 +15099,10 @@ public class OpenMetadataPropertyConverterBase
                         /*
                          * These are the standard properties for a governance definition.
                          */
+                        ((GovernanceDefinitionProperties)beanProperties).setDomainIdentifier(this.removeDomainIdentifier(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setSummary(this.removeSummary(elementProperties));
+                        ((GovernanceDefinitionProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
+                        ((GovernanceDefinitionProperties)beanProperties).setScope(this.removeScope(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setImportance(this.removeImportance(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setImplications(this.removeImplications(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setOutcomes(this.removeOutcomes(elementProperties));
@@ -15522,7 +15853,22 @@ public class OpenMetadataPropertyConverterBase
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTIFICATION.typeName))
                             {
-                                beanProperties = new NotificationProperties();
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ACTIVITY_ENTRY.typeName))
+                                {
+                                    beanProperties = new ActivityEntryProperties();
+                                }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.BLOG_ENTRY.typeName))
+                                {
+                                    beanProperties = new BlogEntryProperties();
+                                }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.JOURNAL_ENTRY.typeName))
+                                {
+                                    beanProperties = new JournalEntryProperties();
+                                }
+                                else
+                                {
+                                    beanProperties = new NotificationProperties();
+                                }
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ENGINE_ACTION.typeName))
                             {
@@ -15684,6 +16030,8 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new ITInfrastructureProperties();
                             }
+
+                            ((ITInfrastructureProperties)beanProperties).setUserId(this.removeUserId(elementProperties));
                         }
                         else
                         {

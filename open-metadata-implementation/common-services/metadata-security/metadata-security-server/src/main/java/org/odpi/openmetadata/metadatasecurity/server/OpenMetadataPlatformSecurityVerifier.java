@@ -4,6 +4,8 @@ package org.odpi.openmetadata.metadatasecurity.server;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -13,6 +15,8 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataUserSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
+
+import java.util.List;
 
 
 /**
@@ -158,6 +162,49 @@ public class OpenMetadataPlatformSecurityVerifier
         platformSecurityConnection = null;
         platformSecurityConnector  = null;
         userSecurityConnector      = null;
+    }
+
+
+
+    /**
+     * Return the list of defined users.
+     *
+     * @param userId           calling user
+     * @param delegatingUserId external userId making request
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return list of userIds
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    public static synchronized List<String> getUserList(String            userId,
+                                                        String            delegatingUserId,
+                                                        UserAccountStatus userAccountStatus,
+                                                        UserAccountType   userAccountType) throws UserNotAuthorizedException,
+                                                                                                  InvalidParameterException,
+                                                                                                  PropertyServerException
+    {
+        if (userSecurityConnector != null)
+        {
+            /*
+             * Validate that someone has authority to retrieve the user list.
+             */
+            validatePlatformOperator(userId, delegatingUserId);
+
+            try
+            {
+                return userSecurityConnector.getUserList(userAccountStatus, userAccountType);
+            }
+            catch (Exception error)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
 

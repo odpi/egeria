@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -166,7 +167,7 @@ public class DataFieldClient extends ConnectorContextClientBase
     public void linkNestedDataFields(String                    parentDataFieldGUID,
                                      String                    nestedDataFieldGUID,
                                      MakeAnchorOptions         makeAnchorOptions,
-                                     MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                     NestedDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {

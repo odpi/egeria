@@ -904,7 +904,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUMMARY, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.SUMMARY.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.EXPLANATION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.EXPLANATION.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.EXPRESSION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.EXPRESSION.name, annotationElement.getElementProperties(), methodName));
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CONFIDENCE_LEVEL, propertyHelper.getIntProperty(connectorName, OpenMetadataProperty.CONFIDENCE_LEVEL.name, annotationElement.getElementProperties(), methodName));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CONFIDENCE_LEVEL, propertyHelper.getIntProperty(connectorName, OpenMetadataProperty.CONFIDENCE.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.JSON_PROPERTIES, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.JSON_PROPERTIES.name, annotationElement.getElementProperties(), methodName));
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, relatedAnnotationSubject.getElement().getElementGUID());

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -31,6 +30,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
     private static final List<String> peerGovDefinitionTypes = List.of(OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName);
+
+    private static final List<String> supportingGovDefinitionTypes = List.of(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                                                                             OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName);
+
 
     private static final List<String> lineageRelationships = List.of(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
@@ -109,16 +112,18 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setActionsForTarget(super.getRelatedElements(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setExternalReferences(super.getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setReferencingElements(super.getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setExternalReferences(super.getRelatedElements(List.of(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName),
+                                                                                     relatedMetadataElements,
+                                                                                     false));
+            attributedMetadataElement.setReferencingElements(super.getRelatedElements(List.of(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                              OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
+                                                                                              OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName),
+                                                                                      relatedMetadataElements,
+                                                                                      true));
             processedRelationshipTypes.add(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setExternalReferences(super.getRelatedElements(OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setReferencingElements(super.getRelatedElements(OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setExternalReferences(super.getRelatedElements(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setReferencingElements(super.getRelatedElements(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setAlsoKnownAs(super.getRelatedElements(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -147,8 +152,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setNestedLocations(super.getRelatedElements(OpenMetadataType.NESTED_LOCATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setGroupingLocations(super.getRelatedElements(OpenMetadataType.NESTED_LOCATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.NESTED_LOCATION_RELATIONSHIP.typeName);
-            attributedMetadataElement.setPeerLocations(super.getRelatedElements(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setPeerLocations(super.getRelatedElements(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setPeerLocations(super.getRelatedElements(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName, relatedMetadataElements));
             processedRelationshipTypes.add(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setServerEndpoints(super.getRelatedElements(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -191,8 +195,8 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setContacts(super.getRelatedElements(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setPeerPersons(super.getRelatedElements(OpenMetadataType.PEER_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setPeerPersons(super.getRelatedElements(OpenMetadataType.PEER_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setMyPeers(super.getRelatedElements(OpenMetadataType.PEER_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setMyFollowers(super.getRelatedElements(OpenMetadataType.PEER_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.PEER_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setSubTeams(super.getRelatedElements(OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -264,22 +268,18 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
              */
 
             attributedMetadataElement.setConnectorType(super.getRelatedElement(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setEndpoint(super.getRelatedElement(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setConnections(super.getRelatedElements(List.of(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
+                                                                                      OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName), relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setEmbeddedConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setParentConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
-
-
 
             attributedMetadataElement.setDataSetContent(super.getRelatedElements(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setSupportedDataSets(super.getRelatedElements(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
@@ -313,8 +313,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setNestedFolders(super.getRelatedElements(OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setLinkedMediaFiles(super.getRelatedElements(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setLinkedMediaFiles(super.getRelatedElements(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setLinkedMediaFiles(super.getRelatedElements(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName, relatedMetadataElements));
             processedRelationshipTypes.add(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setAssociatedLogs(super.getRelatedElements(OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -371,14 +370,23 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setPeerGovernanceDefinitions(super.getRelatedElements(peerGovDefinitionTypes, relatedMetadataElements));
             processedRelationshipTypes.addAll(peerGovDefinitionTypes);
 
-            attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName);
-            attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName);
+            attributedMetadataElement.setSupportingGovernanceDefinitions(super.getRelatedElements(supportingGovDefinitionTypes, relatedMetadataElements, false));
+            attributedMetadataElement.setSupportedGovernanceDefinitions(super.getRelatedElements(supportingGovDefinitionTypes, relatedMetadataElements, true));
+            processedRelationshipTypes.addAll(supportingGovDefinitionTypes);
 
-            attributedMetadataElement.setAssociatedSecurityGroups(super.getRelatedElements(OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setUserAccounts(super.getRelatedElements(OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setConfiguredInSecurityCollections(super.getRelatedElements(OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setSecurityAccessControls(super.getRelatedElements(OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDefinedInSecretsCollection(super.getRelatedElements(OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setSecurityLists(super.getRelatedElements(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setListedInSecretsCollection(super.getRelatedElements(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setAssociatedSecurityLists(super.getRelatedElements(OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setUsedInAccessControls(super.getRelatedElements(OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName);
 
@@ -400,6 +408,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setSubscribers(super.getRelatedElements(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setInterestingNotificationTypes(super.getRelatedElements(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setExceptions(super.getRelatedElements(OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setExcludedFromRequirements(super.getRelatedElements(OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setSupportedGovernanceServices(super.getRelatedElements(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setCalledFromGovernanceEngines(super.getRelatedElements(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName, relatedMetadataElements, true));
@@ -444,89 +456,42 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setCertifiedElements(super.getRelatedElements(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setAgreementActors(super.getRelatedElements(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setInvolvedInAgreements(super.getRelatedElements(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setAgreementItems(super.getRelatedElements(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setAgreementContents(super.getRelatedElements(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setContracts(super.getRelatedElements(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setAgreementsForContract(super.getRelatedElements(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName);
-
 
             /*
              * Area 5
              */
-            List<RelatedMetadataElementSummary> parentSchemaElements = new ArrayList<>();
-            List<RelatedMetadataElementSummary> parentSchemaElementsForRelationship;
-
-            attributedMetadataElement.setSchemaOptions(super.getRelatedElements(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setSchemaType(super.getRelatedElement(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDescribesStructure(super.getRelatedElement(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setSchemaAttributes(super.getRelatedElements(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setSchemaAttributes(super.getRelatedElements(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
-
+            attributedMetadataElement.setSchemaAttributes(super.getRelatedElements(List.of(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName),
+                                                                                   relatedMetadataElements,
+                                                                                   false));
+            attributedMetadataElement.setSchemaOptions(super.getRelatedElements(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setExternalSchemaType(super.getRelatedElement(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setMapToElement(super.getRelatedElement(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setMapFromElement(super.getRelatedElement(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
-            processedRelationshipTypes.add(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setQueries(super.getRelatedElements(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            parentSchemaElementsForRelationship = super.getRelatedElements(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, true);
-            if (parentSchemaElementsForRelationship != null)
-            {
-                parentSchemaElements.addAll(parentSchemaElementsForRelationship);
-            }
+
+            attributedMetadataElement.setParentSchemaElements(super.getRelatedElements(List.of(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName),
+                                                                                       relatedMetadataElements,
+                                                                                       true));
+
+            processedRelationshipTypes.add(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
 
-            if (! parentSchemaElements.isEmpty())
-            {
-                attributedMetadataElement.setParentSchemaElements(parentSchemaElements);
-            }
 
             attributedMetadataElement.setForeignKeys(super.getRelatedElements(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setLinkedToPrimaryKey(super.getRelatedElement(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName, relatedMetadataElements, true));
@@ -614,7 +579,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setAssociatedAnnotations(super.getRelatedElements(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setAnnotationSubjects(super.getRelatedElements(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName);
-            attributedMetadataElement.setAnnotationMatches(super.getRelatedElement(OpenMetadataType.ANNOTATION_MATCH_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAnnotationMatches(super.getRelatedElements(OpenMetadataType.ANNOTATION_MATCH_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setMatchedByAnnotations(super.getRelatedElements(OpenMetadataType.ANNOTATION_MATCH_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ANNOTATION_MATCH_RELATIONSHIP.typeName);
             attributedMetadataElement.setResourceProfileData(super.getRelatedElements(OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -630,6 +595,18 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setUsesDigitalProducts(super.getRelatedElements(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setUsedByDigitalProducts(super.getRelatedElements(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setAgreementActors(super.getRelatedElements(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setInvolvedInAgreements(super.getRelatedElements(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setAgreementItems(super.getRelatedElements(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAgreementContents(super.getRelatedElements(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setContracts(super.getRelatedElements(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAgreementsForContract(super.getRelatedElements(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setDigitalSubscriptions(super.getRelatedElements(OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDigitalSubscribers(super.getRelatedElements(OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName, relatedMetadataElements, true));

@@ -1,4 +1,5 @@
-# Egeria-people-organizer-api
+# Egeria-api-people-organizer
+# Define links between people and teams to show how an organization is linked together.
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -50,6 +51,8 @@ Content-Type: application/json
   "forDuplicateProcessing" : false,
   "properties": {
     "class": "PeerProperties",
+    "label" : "add label here",
+    "description" : "add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }

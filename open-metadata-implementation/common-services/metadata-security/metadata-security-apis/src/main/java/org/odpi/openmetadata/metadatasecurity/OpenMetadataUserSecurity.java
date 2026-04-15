@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.metadatasecurity;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -17,6 +19,21 @@ import java.util.List;
  */
 public interface OpenMetadataUserSecurity
 {
+    /**
+     * Return the list of defined users.
+     *
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return list of userIds
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    List<String> getUserList(UserAccountStatus userAccountStatus,
+                             UserAccountType   userAccountType) throws UserNotAuthorizedException,
+                                                                       InvalidParameterException,
+                                                                       PropertyServerException;
+
     /**
      * Retrieve information about a specific user
      *

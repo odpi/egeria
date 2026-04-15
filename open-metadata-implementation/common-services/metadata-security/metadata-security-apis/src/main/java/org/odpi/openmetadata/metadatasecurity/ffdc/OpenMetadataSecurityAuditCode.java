@@ -90,12 +90,12 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to asset {1}
+     * OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to element {1}
      */
     UNAUTHORIZED_ADD_FEEDBACK("OPEN-METADATA-SECURITY-0008",
                               AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to attach feedback to asset {1}",
-                              "The security service detected an unauthorized change to an asset.",
+                              "User {0} is not authorized to attach feedback to element {1}",
+                              "The security service detected an unauthorized change to an element.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
@@ -115,7 +115,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_CONNECTION_ACCESS("OPEN-METADATA-SECURITY-0010",
                                    AuditLogRecordSeverityLevel.SECURITY,
                                    "User {0} is not authorized to use connection {1}",
-                                   "The security service detected an unauthorized access to an asset.",
+                                   "The security service detected an unauthorized access to an asset's connection.",
                                    "Review the security policies and settings to determine if this access should be allowed or not." +
                                            "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
@@ -128,35 +128,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                "The security service detected an unauthorized access to a member of the anchor element.",
                                "Review the security policies and settings to determine if this access should be allowed or not." +
                                        "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0012 - User {0} is not authorized to create an asset of type {1}
-     */
-    UNAUTHORIZED_ASSET_CREATE("OPEN-METADATA-SECURITY-0012",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to create an asset of type {1}",
-                              "The security service detected an unauthorized create of an asset.",
-                              "Review the security policies and settings to determine if this create should be allowed or not." +
-                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0013 - User {0} is not authorized to change asset {1}
-     */
-    UNAUTHORIZED_ASSET_CHANGE("OPEN-METADATA-SECURITY-0013",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to change asset {1}",
-                              "The security service detected an unauthorized access to an asset.",
-                              "Review the security policies and settings to determine if this access should be allowed or not." +
-                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0014 - User {0} is not authorized to change asset {1} because it has missing properties: {2}
-     */
-    INCOMPLETE_ASSET("OPEN-METADATA-SECURITY-0014",
-                     AuditLogRecordSeverityLevel.SECURITY,
-                     "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
-                     "The system cannot process a request from the user because the asset is not correctly or completely filled out.",
-                     "The request fails with a UserNotAuthorizedException exception."),
 
     /**
      * OPEN-METADATA-SECURITY-0015 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
@@ -194,7 +165,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0018",
                                  AuditLogRecordSeverityLevel.SECURITY,
                                  "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
-                                 "The security service detected an unauthorized access of an open metadata type.",
+                                 "The security service detected an unauthorized access of an open metadata instance.",
                                  "Review the security policies and settings to determine if this access should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 

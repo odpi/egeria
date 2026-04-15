@@ -17,10 +17,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The IntegrationGroupHandler is responsible for maintaining information about the integration connectors in an integration group.
@@ -39,9 +36,11 @@ public class IntegrationGroupHandler
 
     private final GovernanceConfigurationClient configurationClient;        /* Initialized in constructor */
 
-    private final IntegrationConnectorCacheMap           integrationConnectorLookupTable;
-    private final IntegrationContextManager              integrationContextManager;
+    private final IntegrationConnectorCacheMap     integrationConnectorLookupTable;
+    private final IntegrationContextManager        integrationContextManager;
     private List<IntegrationConnectorHandler>      connectorHandlers = new ArrayList<>();
+
+    private Date lastRefreshTime = null;
 
     /**
      * Create a client-side object for managing an integration connector.
@@ -91,7 +90,7 @@ public class IntegrationGroupHandler
      *
      * @return integration group summary
      */
-    public IntegrationGroupSummary getSummary()
+    public synchronized IntegrationGroupSummary getSummary()
     {
         IntegrationGroupSummary mySummary = new IntegrationGroupSummary();
 
@@ -145,6 +144,8 @@ public class IntegrationGroupHandler
             mySummary.setIntegrationGroupStatus(IntegrationGroupStatus.RUNNING);
         }
 
+        mySummary.setLastRefreshTime(lastRefreshTime);
+
         return mySummary;
     }
 
@@ -154,7 +155,7 @@ public class IntegrationGroupHandler
      *
      * @return string or null
      */
-    public  String getIntegrationGroupGUID()
+    public String getIntegrationGroupGUID()
     {
         return integrationGroupGUID;
     }
@@ -179,11 +180,24 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public  void refreshConfig() throws InvalidParameterException,
-                                        UserNotAuthorizedException,
-                                        PropertyServerException
+    public synchronized void refreshConfig() throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException
     {
         final String methodName = "refreshConfig";
+
+        if (lastRefreshTime != null)
+        {
+            Date now = new Date();
+            long diff = now.getTime() - lastRefreshTime.getTime();
+            long tenMinutes = 1000 * 60 * 10;
+            if (diff < tenMinutes)
+            {
+                return;
+            }
+        }
+
+        lastRefreshTime = new Date();
 
         /*
          * Begin by extracting the properties for the integration group from the metadata server.
@@ -325,9 +339,9 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public  void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public synchronized void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "refreshConnectorConfig";
 
@@ -370,39 +384,39 @@ public class IntegrationGroupHandler
             {
                 try
                 {
-                    String                    userId = serverUserId;
+                    String userId = serverUserId;
 
-                        if (registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId() != null)
-                        {
-                            userId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
-                        }
+                    if (registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId() != null)
+                    {
+                        userId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
+                    }
 
-                        connectorHandler = new IntegrationConnectorHandler(registeredIntegrationConnectorElement.getConnectorId(),
-                                                                           registeredIntegrationConnectorElement.getElementHeader().getGUID(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName(),
-                                                                           userId,
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataCollectionQualifiedName(),
-                                                                           registeredIntegrationConnectorElement.getProperties().getConnection(),
-                                                                           registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports(),
-                                                                           serverName,
-                                                                           integrationContextManager,
-                                                                           auditLog);
-                        /*
-                         * This is a local list for status reporting
-                         */
-                        connectorHandlers.add(connectorHandler);
+                    connectorHandler = new IntegrationConnectorHandler(registeredIntegrationConnectorElement.getConnectorId(),
+                                                                       registeredIntegrationConnectorElement.getElementHeader().getGUID(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName(),
+                                                                       userId,
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataCollectionQualifiedName(),
+                                                                       registeredIntegrationConnectorElement.getProperties().getConnection(),
+                                                                       registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
+                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports(),
+                                                                       serverName,
+                                                                       integrationContextManager,
+                                                                       auditLog);
+                    /*
+                     * This is a local list for status reporting
+                     */
+                    connectorHandlers.add(connectorHandler);
 
-                        /*
-                         * This is the full list of connectors running in the integration daemon.
-                         */
-                        integrationConnectorLookupTable.putHandlerByConnectorId(registeredIntegrationConnectorElement.getConnectorId(),
-                                                                                connectorHandler,
-                                                                                false);
+                    /*
+                     * This is the full list of connectors running in the integration daemon.
+                     */
+                    integrationConnectorLookupTable.putHandlerByConnectorId(registeredIntegrationConnectorElement.getConnectorId(),
+                                                                            connectorHandler,
+                                                                            false);
                 }
                 catch (Exception error)
                 {

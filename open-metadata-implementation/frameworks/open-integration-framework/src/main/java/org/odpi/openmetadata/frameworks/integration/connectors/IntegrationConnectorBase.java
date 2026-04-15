@@ -30,7 +30,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                                                                                 AuditLoggingComponent,
                                                                                 VirtualConnectorExtension
 {
-    protected AuditLog                 auditLog                    = null;
     protected String                   connectorName               = null;
     public    IntegrationContext       integrationContext          = null;
 

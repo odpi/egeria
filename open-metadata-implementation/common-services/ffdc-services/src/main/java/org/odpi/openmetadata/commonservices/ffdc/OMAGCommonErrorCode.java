@@ -291,10 +291,10 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                     "Update the caller to provide the request body of the recommended type."),
 
     /**
-     * OMAG-COMMON-400-032 - The value passed on the {0} parameter of the {1} operation is invalid
+     * OMAG-COMMON-400-032 - The value {0} passed on the {1} parameter of the {2} operation is invalid
      */
     INVALID_PARAMETER(400, "OMAG-COMMON-400-032",
-                "The value passed on the {0} parameter of the {1} operation is invalid",
+                "The value {0} passed on the {1} parameter of the {2} operation is invalid",
                 "The system cannot process the request without a valid value for this parameter.",
                 "Correct the code in the caller to provide a valid value."),
 

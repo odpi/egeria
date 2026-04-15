@@ -75,7 +75,7 @@ Authorization: Bearer {{garyToken}}
 Content-Type: application/json
 
 ###
-# @name getPlatformReport (callie)
+# @name getPlatformReport (callie) - fails with a security error
 # Returns details about the running platform.
 
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/{{omagServerPlatformGUID}}/report

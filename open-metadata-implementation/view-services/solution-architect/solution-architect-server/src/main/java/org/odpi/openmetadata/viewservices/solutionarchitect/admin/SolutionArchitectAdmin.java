@@ -11,7 +11,7 @@ import org.odpi.openmetadata.viewservices.solutionarchitect.ffdc.SolutionArchite
 import org.odpi.openmetadata.viewservices.solutionarchitect.server.SolutionArchitectInstance;
 
 /**
- * SolutionArchitectAdmin is the class that is called by the View Server to initialize and terminate
+ * SolutionArchitectAdmin is the class that it called by the View Server to initialize and terminate
  * the Solution Architect OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
  */
 public class SolutionArchitectAdmin extends ViewServiceAdmin

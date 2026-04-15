@@ -36,6 +36,9 @@ public class OMAGServerPlatformProperties
     private List<OMAGServerProperties>  omagServers                  = null;
 
 
+    /**
+     * Default constructor
+     */
     public OMAGServerPlatformProperties()
     {
     }

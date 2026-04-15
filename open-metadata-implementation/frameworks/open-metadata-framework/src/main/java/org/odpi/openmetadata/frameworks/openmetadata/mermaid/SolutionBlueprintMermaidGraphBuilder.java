@@ -32,7 +32,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             {
                 super.startSubgraph("Components and Actors", VisualStyle.SOLUTION_BLUEPRINT_GRAPH);
 
-                super.addSolutionComponentListToGraph(solutionBlueprintElement.getCollectionMembers());
+                super.addSolutionComponentListToGraph(solutionBlueprintElement.getCollectionMembers(), false);
 
                 super.endSubgraph();
             }

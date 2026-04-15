@@ -2438,7 +2438,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
 
             /*
-             * Add the solution components to the blueprints.  A map of qualifiedNames to GUIDs is maintained to
+             * Add the solution components to open metadata.  A map of qualifiedNames to GUIDs is maintained to
              * enable the components to be linked together - and to their solution roles.
              */
             for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
@@ -2492,7 +2492,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             /*
              * Link the components together
              */
-
             for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
             {
                 SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
@@ -2548,16 +2547,30 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                  */
                 if (! ProductSolutionBlueprint.ALL.getQualifiedName().equals(productSolutionBlueprint.getQualifiedName()))
                 {
+                    CollectionClient collectionClient = integrationContext.getCollectionClient();
+
+                    /*
+                     * Retrieve or create the nested blueprint.
+                     */
                     String nestedBlueprintGUID = findSolutionBlueprint(productSolutionBlueprint, newElementOptions);
 
                     for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
                     {
                         if ((solutionComponentDefinition.getConsumingBlueprints() != null) && (solutionComponentDefinition.getConsumingBlueprints().contains(productSolutionBlueprint)))
                         {
-                            CollectionClient collectionClient = integrationContext.getCollectionClient();
-
                             collectionClient.addToCollection(nestedBlueprintGUID,
                                                              qualifiedNameToGUIDMap.get(solutionComponentDefinition.getQualifiedName()),
+                                                             null,
+                                                             null);
+                        }
+                    }
+
+                    for (ProductRoleDefinition productRoleDefinition : ProductRoleDefinition.values())
+                    {
+                        if ((productRoleDefinition.getConsumingBlueprints() != null) && (productRoleDefinition.getConsumingBlueprints().contains(productSolutionBlueprint)))
+                        {
+                            collectionClient.addToCollection(nestedBlueprintGUID,
+                                                             productRoles.get(productRoleDefinition.getQualifiedName()),
                                                              null,
                                                              null);
                         }
@@ -2657,8 +2670,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Add all the defined roles for this solution.
      *
      * @return map of qualified names to GUIDs
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
+     * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */

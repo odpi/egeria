@@ -87,6 +87,11 @@ public enum SolutionComponentActor implements SolutionComponentActorDefinition
                                          SolutionComponent.SUSTAINABILITY_DASHBOARDS,
                                          "Review Status",
                                          "Reviews current status of company's sustainability position."),
+
+    EMPLOYEE_TO_EXPENSE_TOOL(SolutionRoleDefinition.EMPLOYEE,
+                             SolutionComponent.EMPLOYEE_EXPENSE_TOOL,
+                                         "Complete Expense Report",
+                                         "Records and categorizes expense in order to receive reimbursement."),
     ;
 
     final SolutionRoleDefinition solutionRole;

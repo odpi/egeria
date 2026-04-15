@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpenMetadataUserAccount extends UserAccount
 {
-    private String userId = null;
+    private String       userId      = null;
+    private List<String> secretNames = null;
 
     /**
      * Default constructor
@@ -38,12 +41,17 @@ public class OpenMetadataUserAccount extends UserAccount
      * @param userId      associated user account identifier
      * @param userAccount super class properties
      */
-    public OpenMetadataUserAccount(String userId,
+    public OpenMetadataUserAccount(String      userId,
                                    UserAccount userAccount)
     {
         super(userAccount);
 
         this.userId = userId;
+
+        if (super.getSecrets() != null)
+        {
+            secretNames = new ArrayList<>(super.getSecrets().keySet());
+        }
     }
 
 
@@ -70,6 +78,28 @@ public class OpenMetadataUserAccount extends UserAccount
 
 
     /**
+     * Return the list of secret names associated with this user account.
+     *
+     * @return null or list of secret names
+     */
+    public List<String> getSecretNames()
+    {
+        return secretNames;
+    }
+
+
+    /**
+     * Set up the list of secret names associated with this user account.
+     *
+     * @param secretNames null or list of secret names
+     */
+    public void setSecretNames(List<String> secretNames)
+    {
+        this.secretNames = secretNames;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -78,9 +108,11 @@ public class OpenMetadataUserAccount extends UserAccount
     public String toString()
     {
         return "OpenMetadataUserAccount{" +
-                "userId=" + userId +
+                "userId='" + userId + '\'' +
+                ", secretNames=" + secretNames +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -96,7 +128,7 @@ public class OpenMetadataUserAccount extends UserAccount
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         OpenMetadataUserAccount that = (OpenMetadataUserAccount) objectToCompare;
-        return Objects.equals(userId, that.userId);
+        return Objects.equals(userId, that.userId) && Objects.equals(secretNames, that.secretNames);
     }
 
 
@@ -108,6 +140,6 @@ public class OpenMetadataUserAccount extends UserAccount
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userId);
+        return Objects.hash(super.hashCode(), userId, secretNames);
     }
 }

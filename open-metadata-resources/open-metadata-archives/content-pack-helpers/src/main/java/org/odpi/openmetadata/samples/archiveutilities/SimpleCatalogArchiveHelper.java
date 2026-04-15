@@ -395,6 +395,17 @@ public class SimpleCatalogArchiveHelper
                                                null);
                 }
             }
+
+
+            if (solutionBlueprint.getSolutionRoles() != null)
+            {
+                for (ActorRoleDefinition actorRoleDefinition : solutionBlueprint.getSolutionRoles())
+                {
+                    this.addMemberToCollection(solutionBlueprint.getGUID(),
+                                               actorRoleDefinition.getGUID(),
+                                               null);
+                }
+            }
         }
     }
 

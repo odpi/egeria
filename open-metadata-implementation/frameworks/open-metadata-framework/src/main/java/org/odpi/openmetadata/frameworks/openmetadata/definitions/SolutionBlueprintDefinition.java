@@ -29,4 +29,11 @@ public interface SolutionBlueprintDefinition extends DesignModelDefinition
      */
     List<SolutionComponentDefinition> getSolutionComponents();
 
+
+    /**
+     * Return the list of roles that are members of the solution blueprint.
+     *
+     * @return list of role definitions
+     */
+    List<ActorRoleDefinition> getSolutionRoles();
 }

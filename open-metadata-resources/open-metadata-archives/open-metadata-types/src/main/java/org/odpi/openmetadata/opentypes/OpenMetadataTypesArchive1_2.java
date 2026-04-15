@@ -1833,8 +1833,18 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getITInfrastructureEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.IT_INFRASTRUCTURE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.INFRASTRUCTURE.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.IT_INFRASTRUCTURE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.INFRASTRUCTURE.typeName));
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ID));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
     private EntityDef getHostEntity()
@@ -1846,7 +1856,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getOperatingPlatformEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.OPERATING_PLATFORM,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
@@ -1957,20 +1967,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getSoftwareServerPlatformEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVER_PLATFORM,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ID));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVER_PLATFORM,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
     }
 
 
@@ -1993,20 +1991,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getSoftwareServerEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVER,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ID));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
     }
 
     private EntityDef getEndpointEntity()
@@ -2684,8 +2670,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "peers";
-        final String                     end1AttributeDescription     = "List of this person's peer network.";
+        final String                     end1AttributeName            = "myFollowers";
+        final String                     end1AttributeDescription     = "List of people who have created a peer network connection to me.";
         final String                     end1AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON.typeName),
@@ -2699,7 +2685,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "peers";
+        final String                     end2AttributeName            = "myPeers";
         final String                     end2AttributeDescription     = "List of this person's peer network.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -4928,6 +4914,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -7684,15 +7671,16 @@ public class OpenMetadataTypesArchive1_2
 
     private void add0460GovernanceControls()
     {
+        this.archiveBuilder.addClassificationDef(getExecutionPointClassification());
         this.archiveBuilder.addClassificationDef(getControlPointClassification());
         this.archiveBuilder.addClassificationDef(getVerificationPointClassification());
         this.archiveBuilder.addClassificationDef(getEnforcementPointClassification());
     }
 
 
-    private ClassificationDef getControlPointClassification()
+    private ClassificationDef getExecutionPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONTROL_POINT_CLASSIFICATION,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.EXECUTION_POINT_CLASSIFICATION,
                                                                                  null,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
@@ -7709,44 +7697,30 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
+    private ClassificationDef getControlPointClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.CONTROL_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  false);
+    }
+
 
     private ClassificationDef getVerificationPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION,
-                                                  null,
+        return archiveHelper.getClassificationDef(OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 
 
     private ClassificationDef getEnforcementPointClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION,
-                                                  null,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 
 
@@ -9171,7 +9145,7 @@ public class OpenMetadataTypesArchive1_2
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        for (CriticalityLevel enumValues : CriticalityLevel.values())
+        for (DataValueAssignmentStatus enumValues : DataValueAssignmentStatus.values())
         {
             elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
                                                          enumValues.name(),
@@ -10033,12 +10007,8 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_CARDINALITY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_CARDINALITY));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.COVERAGE_CATEGORY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UNIQUE_VALUES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORDERED_VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -10280,7 +10250,7 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLE_SIZE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLE_PERCENT));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLING_METHOD));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE_LEVEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UNITS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ABSOLUTE_UNCERTAINTY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIVE_UNCERTAINTY));
