@@ -658,7 +658,7 @@ public class IntegrationConnectorHandler
         if (integrationConnectorStatus == IntegrationConnectorStatus.WAITING)
         {
             updateStatus(IntegrationConnectorStatus.REFRESHING);
-            integrationContextRefreshProxy.setRefreshInProgress(true);
+            integrationContextRefreshProxy.setRefreshInProgress(true, minMinutesBetweenRefresh);
 
             return true;
         }
@@ -722,7 +722,7 @@ public class IntegrationConnectorHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        integrationContextRefreshProxy.setRefreshInProgress(false);
+        integrationContextRefreshProxy.setRefreshInProgress(false, minMinutesBetweenRefresh);
         updateStatus(IntegrationConnectorStatus.WAITING);
 
         if (auditLog != null)

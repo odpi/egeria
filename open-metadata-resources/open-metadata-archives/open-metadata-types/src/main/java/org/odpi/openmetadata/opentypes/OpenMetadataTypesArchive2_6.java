@@ -775,9 +775,6 @@ public class OpenMetadataTypesArchive2_6
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BACKGROUND));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INCIDENT_CLASSIFIERS));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.INCIDENT_STATUS));
 

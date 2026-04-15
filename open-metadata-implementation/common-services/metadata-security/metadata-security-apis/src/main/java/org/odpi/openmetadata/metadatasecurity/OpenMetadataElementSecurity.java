@@ -216,6 +216,7 @@ public interface OpenMetadataElementSecurity
      * @param userId identifier of user
      * @param originalEntity original entity details
      * @param classificationName name of the classification
+     * @param classificationProperties new properties
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -225,6 +226,7 @@ public interface OpenMetadataElementSecurity
     void validateUserForElementClassify(String               userId,
                                         EntityDetail         originalEntity,
                                         String               classificationName,
+                                        InstanceProperties   classificationProperties,
                                         OMRSRepositoryHelper repositoryHelper,
                                         String               serviceName,
                                         String               methodName) throws UserNotAuthorizedException,
@@ -488,6 +490,7 @@ public interface OpenMetadataElementSecurity
      * @param userId identifier of user
      * @param anchorEntity anchor details
      * @param classificationName name of the classification
+     * @param classificationProperties new properties
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
      * @param methodName calling method
@@ -497,6 +500,7 @@ public interface OpenMetadataElementSecurity
     void validateUserForAnchorClassify(String               userId,
                                        EntityDetail         anchorEntity,
                                        String               classificationName,
+                                       InstanceProperties   classificationProperties,
                                        OMRSRepositoryHelper repositoryHelper,
                                        String               serviceName,
                                        String               methodName) throws UserNotAuthorizedException,

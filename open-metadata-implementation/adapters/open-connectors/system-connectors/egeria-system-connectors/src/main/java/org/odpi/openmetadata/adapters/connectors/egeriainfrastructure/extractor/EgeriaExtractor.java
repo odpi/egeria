@@ -15,6 +15,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -223,6 +225,24 @@ public class EgeriaExtractor
                                                                                PropertyServerException
     {
         return platformServicesClient.getUserAccount(accountUserId);
+    }
+
+
+    /**
+     * Return the list of users registered with the platform security connector.
+     *
+     * @param status status of the user - or null for any status
+     * @param type   type of user - or null for any type  * @return list of userIds in the user directory
+     * @throws UserNotAuthorizedException the supplied user id (from bearer token) is not authorized to issue this command.
+     * @throws InvalidParameterException  invalid parameter.
+     * @throws PropertyServerException    unusual state in the platform.
+     */
+    public List<String> getUserList(UserAccountStatus status,
+                                    UserAccountType   type) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException
+    {
+        return platformServicesClient.getUserList(status, type);
     }
 
 

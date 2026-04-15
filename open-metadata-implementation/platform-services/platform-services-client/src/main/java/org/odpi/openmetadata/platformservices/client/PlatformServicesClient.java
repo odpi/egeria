@@ -10,13 +10,13 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
-import org.odpi.openmetadata.frameworks.connectors.properties.users.SecurityAccessControl;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecretsCollection;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 import org.odpi.openmetadata.platformservices.properties.PublicProperties;
@@ -315,6 +315,41 @@ public class PlatformServicesClient
         UserAccountResponse response = restClient.callUserAccountResponseGetRESTCall(methodName, urlTemplate, accountUserId, delegatingUserId);
 
         return response.getUserAccount();
+    }
+
+
+    /**
+     * Return the list of users registered with the platform security connector.
+     *
+     * @param status status of the user - or null for any status
+     * @param type   type of user - or null for any type
+     * @return list of userIds in the user directory
+     * @throws UserNotAuthorizedException the supplied user id (from bearer token) is not authorized to issue this command.
+     * @throws InvalidParameterException  invalid parameter.
+     * @throws PropertyServerException    unusual state in the platform.
+     */
+    public List<String> getUserList(UserAccountStatus status,
+                                    UserAccountType   type) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException
+    {
+        final String methodName = "getUserList";
+
+        String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/user-list?delegatingUserId={0}";
+
+        if (status != null)
+        {
+            urlTemplate =  urlTemplate + "&userAccountStatus=" + status.name();
+        }
+
+        if (type != null)
+        {
+            urlTemplate = urlTemplate + "&userAccountType=" + type.name();
+        }
+
+        NameListResponse response = restClient.callNameListGetRESTCall(methodName, urlTemplate, delegatingUserId);
+
+        return response.getNames();
     }
 
 

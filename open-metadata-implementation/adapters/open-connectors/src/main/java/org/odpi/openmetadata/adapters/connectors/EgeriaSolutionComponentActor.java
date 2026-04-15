@@ -23,6 +23,11 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
                     "writes python code for",
                     "Coders developing new function in an interactive style."),
 
+    USER_TO_PYEGERIA(EgeriaRoleDefinition.PYTHON_PROGRAMMER,
+                    DeployedImplementationType.PYEGERIA.getSolutionComponent(),
+                    "writes python code for",
+                    "Coders developing new function in python classes and scripts."),
+
     USER_TO_MY_EGERIA(EgeriaRoleDefinition.OPEN_METADATA_USER,
                       EgeriaSolutionComponent.MY_EGERIA,
                       "interacts with",

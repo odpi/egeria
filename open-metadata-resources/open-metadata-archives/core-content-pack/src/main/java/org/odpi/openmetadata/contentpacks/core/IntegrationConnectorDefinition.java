@@ -478,7 +478,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
-                              60,
+                              60*24, // 24 hours
                               null,
                               "2e7ec1b4-a8ba-4be6-b345-2c1735a94c7a",
                               "Babbage Analytical Engine",

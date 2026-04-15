@@ -124,11 +124,10 @@ public class SolutionArchitectResource
     public BooleanResponse updateInformationSupplyChain(@PathVariable String                                  serverName,
                                                         @PathVariable String                                  informationSupplyChainGUID,
                                                         @RequestBody (required = false)
-                                                            UpdateElementRequestBody requestBody)
+                                                        UpdateElementRequestBody requestBody)
     {
         return restAPI.updateInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
-
 
 
     /**
@@ -153,13 +152,13 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public VoidResponse linkPeersInInformationSupplyChain(@PathVariable
-                                     String                                serverName,
-                                                        @PathVariable
-                                     String peerOneGUID,
-                                                        @PathVariable
-                                     String peerTwoGUID,
-                                                        @RequestBody (required = false)
-                                                              NewRelationshipRequestBody requestBody)
+                                                          String                                serverName,
+                                                          @PathVariable
+                                                          String peerOneGUID,
+                                                          @PathVariable
+                                                          String peerTwoGUID,
+                                                          @RequestBody (required = false)
+                                                          NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
@@ -187,83 +186,15 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public VoidResponse unlinkPeerInformationSupplyChains(@PathVariable
-                                       String                    serverName,
-                                       @PathVariable
-                                       String peerOneGUID,
-                                       @PathVariable
-                                       String peerTwoGUID,
-                                       @RequestBody (required = false)
-                                                              DeleteRelationshipRequestBody requestBody)
-    {
-        return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
-    }
-
-
-    /**
-     * Connect a nested information supply chain to its parent.
-     *
-     * @param serverName         name of called server
-     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
-     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/attach")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="composeInformationSupplyChains",
-            description="Connect a nested information supply chain to its parent.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/information-supply-chain"))
-
-    public VoidResponse composeInformationSupplyChains(@PathVariable
-                                                        String                                serverName,
-                                                        @PathVariable
-                                                        String informationSupplyChainGUID,
-                                                        @PathVariable
-                                                        String nestedInformationSupplyChainGUID,
-                                                        @RequestBody (required = false)
-                                                           NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.composeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a nested information supply chain from its parent.
-     *
-     * @param serverName         name of called server
-     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
-     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/detach")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="decomposeInformationSupplyChains",
-            description="Detach a nested information supply chain from its parent.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/information-supply-chain"))
-
-    public VoidResponse decomposeInformationSupplyChains(@PathVariable
                                                           String                    serverName,
                                                           @PathVariable
-                                                          String informationSupplyChainGUID,
+                                                          String peerOneGUID,
                                                           @PathVariable
-                                                          String nestedInformationSupplyChainGUID,
+                                                          String peerTwoGUID,
                                                           @RequestBody (required = false)
-                                                             DeleteRelationshipRequestBody requestBody)
+                                                          DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.decomposeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
+        return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
 
 
@@ -292,7 +223,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String                    informationSupplyChainGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteElementRequestBody requestBody)
+                                                     DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
@@ -319,11 +250,11 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public OpenMetadataRootElementsResponse getInformationSupplyChainsByName(@PathVariable
-                                                                            String            serverName,
-                                                                            @RequestParam (required = false, defaultValue = "true")
-                                                                            boolean           addImplementation,
-                                                                            @RequestBody (required = false)
-                                                                            FilterRequestBody requestBody)
+                                                                             String            serverName,
+                                                                             @RequestParam (required = false, defaultValue = "true")
+                                                                             boolean           addImplementation,
+                                                                             @RequestBody (required = false)
+                                                                             FilterRequestBody requestBody)
     {
         return restAPI.getInformationSupplyChainsByName(serverName, addImplementation,  requestBody);
     }
@@ -350,11 +281,11 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public OpenMetadataRootElementsResponse findInformationSupplyChains(@PathVariable
-                                                                       String                  serverName,
-                                                                       @RequestParam (required = false, defaultValue = "true")
-                                                                       boolean                 addImplementation,
-                                                                       @RequestBody (required = false)
-                                                                       SearchStringRequestBody requestBody)
+                                                                        String                  serverName,
+                                                                        @RequestParam (required = false, defaultValue = "true")
+                                                                        boolean                 addImplementation,
+                                                                        @RequestBody (required = false)
+                                                                        SearchStringRequestBody requestBody)
     {
         return restAPI.findInformationSupplyChains(serverName, addImplementation, requestBody);
     }
@@ -383,13 +314,13 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public OpenMetadataRootElementResponse getInformationSupplyChainByGUID(@PathVariable
-                                                                          String             serverName,
-                                                                          @PathVariable
-                                                                          String             informationSupplyChainGUID,
-                                                                          @RequestParam (required = false, defaultValue = "true")
-                                                                          boolean            addImplementation,
-                                                                          @RequestBody (required = false)
-                                                                              GetRequestBody requestBody)
+                                                                           String             serverName,
+                                                                           @PathVariable
+                                                                           String             informationSupplyChainGUID,
+                                                                           @RequestParam (required = false, defaultValue = "true")
+                                                                           boolean            addImplementation,
+                                                                           @RequestBody (required = false)
+                                                                           GetRequestBody requestBody)
     {
         return restAPI.getInformationSupplyChainByGUID(serverName, informationSupplyChainGUID, addImplementation, requestBody);
     }
@@ -473,88 +404,18 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public BooleanResponse updateSolutionBlueprint(@PathVariable
-                                                String                                  serverName,
-                                                @PathVariable
-                                                String                                  solutionBlueprintGUID,
-                                                @RequestBody (required = false)
-                                                UpdateElementRequestBody requestBody)
+                                                   String                                  serverName,
+                                                   @PathVariable
+                                                   String                                  solutionBlueprintGUID,
+                                                   @RequestBody (required = false)
+                                                   UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
 
 
     /**
-     * Attach a solution component to a solution blueprint.
-     *
-     * @param serverName         name of called server
-     * @param parentSolutionBlueprintGUID  unique identifier of the first solution blueprint
-     * @param solutionComponentGUID      unique identifier of the second solution blueprint
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/attach")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="linkSolutionComponentToBlueprint",
-            description="Attach a solution component to a solution blueprint.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-blueprint"))
-
-    public VoidResponse linkSolutionComponentToBlueprint(@PathVariable
-                                                         String                                serverName,
-                                                         @PathVariable
-                                                         String parentSolutionBlueprintGUID,
-                                                         @PathVariable
-                                                         String solutionComponentGUID,
-                                                         @RequestBody (required = false)
-                                                             NewRelationshipRequestBody requestBody)
-    {
-        return restAPI.linkSolutionComponentToBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
-    }
-
-
-    /**
-     * Detach a solution component from a solution blueprint.
-     *
-     * @param serverName         name of called server
-     * @param parentSolutionBlueprintGUID  unique identifier of the first solution blueprint
-     * @param solutionComponentGUID      unique identifier of the second solution blueprint
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/detach")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="detachSolutionComponentFromBlueprint",
-            description="Detach a solution component from a solution blueprint.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/solution-blueprint"))
-
-    public VoidResponse detachSolutionComponentFromBlueprint(@PathVariable
-                                                             String                    serverName,
-                                                             @PathVariable
-                                                             String parentSolutionBlueprintGUID,
-                                                             @PathVariable
-                                                             String solutionComponentGUID,
-                                                             @RequestBody (required = false)
-                                                                 DeleteRelationshipRequestBody requestBody)
-    {
-        return restAPI.detachSolutionComponentFromBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
-    }
-
-
-
-
-    /**
-     * Attach a solution blueprint to the element that is describes.
+     * Attach a solution blueprint to the element that ir describes.
      *
      * @param serverName         name of called server
      * @param parentGUID  unique identifier of the element being described
@@ -570,18 +431,18 @@ public class SolutionArchitectResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="linkSolutionDesign",
-            description="Attach a solution blueprint to the element that is describes.",
+            description="Attach a solution blueprint to the element that it describes.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public VoidResponse linkSolutionDesign(@PathVariable
-                                               String                                serverName,
+                                           String                                serverName,
                                            @PathVariable
                                            String parentGUID,
                                            @PathVariable
-                                               String solutionBlueprintGUID,
+                                           String solutionBlueprintGUID,
                                            @RequestBody (required = false)
-                                               NewRelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -609,13 +470,13 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public VoidResponse detachSolutionDesign(@PathVariable
-                                                 String                    serverName,
+                                             String                    serverName,
                                              @PathVariable
                                              String parentGUID,
                                              @PathVariable
-                                                 String solutionBlueprintGUID,
+                                             String solutionBlueprintGUID,
                                              @RequestBody (required = false)
-                                                 DeleteRelationshipRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -646,7 +507,7 @@ public class SolutionArchitectResource
                                                 @PathVariable
                                                 String                    solutionBlueprintGUID,
                                                 @RequestBody (required = false)
-                                                    DeleteElementRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
@@ -699,11 +560,11 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(@PathVariable
-                                                                String             serverName,
-                                                                @PathVariable
-                                                                String             solutionBlueprintGUID,
-                                                                @RequestBody (required = false)
-                                                                    GetRequestBody requestBody)
+                                                                      String             serverName,
+                                                                      @PathVariable
+                                                                      String             solutionBlueprintGUID,
+                                                                      @RequestBody (required = false)
+                                                                      GetRequestBody requestBody)
     {
         return restAPI.getSolutionBlueprintByGUID(serverName, solutionBlueprintGUID, requestBody);
     }
@@ -729,8 +590,8 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
     public OpenMetadataRootElementsResponse findSolutionBlueprints(@PathVariable String                  serverName,
-                                                             @RequestBody  (required = false)
-                                                             SearchStringRequestBody requestBody)
+                                                                   @RequestBody  (required = false)
+                                                                   SearchStringRequestBody requestBody)
     {
         return restAPI.findSolutionBlueprints(serverName, requestBody);
     }
@@ -764,7 +625,7 @@ public class SolutionArchitectResource
                                                    @PathVariable
                                                    String                     dataFieldGUID,
                                                    @RequestBody (required = false)
-                                                       NewRelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionComponentActor(serverName, solutionRoleGUID, dataFieldGUID, requestBody);
     }
@@ -798,7 +659,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String solutionComponentGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteRelationshipRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentActor(serverName, solutionRoleGUID, solutionComponentGUID, requestBody);
     }
@@ -920,7 +781,7 @@ public class SolutionArchitectResource
                                          @PathVariable
                                          String                     subcomponentGUID,
                                          @RequestBody (required = false)
-                                             NewRelationshipRequestBody requestBody)
+                                         NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSubcomponent(serverName, solutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -954,7 +815,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String subcomponentGUID,
                                            @RequestBody (required = false)
-                                               DeleteRelationshipRequestBody requestBody)
+                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -982,13 +843,13 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public VoidResponse linkSolutionLinkingWire(@PathVariable
-                                         String                     serverName,
-                                         @PathVariable
-                                         String solutionComponentOneGUID,
-                                         @PathVariable
-                                         String solutionComponentTwoGUID,
-                                         @RequestBody (required = false)
-                                                    NewRelationshipRequestBody requestBody)
+                                                String                     serverName,
+                                                @PathVariable
+                                                String solutionComponentOneGUID,
+                                                @PathVariable
+                                                String solutionComponentTwoGUID,
+                                                @RequestBody (required = false)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -1016,13 +877,13 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public VoidResponse detachSolutionLinkingWire(@PathVariable
-                                           String                    serverName,
-                                           @PathVariable
-                                           String solutionComponentOneGUID,
-                                           @PathVariable
-                                           String solutionComponentTwoGUID,
-                                           @RequestBody (required = false)
-                                                      DeleteRelationshipRequestBody requestBody)
+                                                  String                    serverName,
+                                                  @PathVariable
+                                                  String solutionComponentOneGUID,
+                                                  @PathVariable
+                                                  String solutionComponentTwoGUID,
+                                                  @RequestBody (required = false)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -1052,8 +913,8 @@ public class SolutionArchitectResource
                                                 String                    serverName,
                                                 @PathVariable
                                                 String                    solutionComponentGUID,
-                                               @RequestBody (required = false)
-                                                    DeleteElementRequestBody requestBody)
+                                                @RequestBody (required = false)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }
@@ -1079,9 +940,9 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public OpenMetadataRootElementsResponse getSolutionComponentsByName(@PathVariable
-                                                                  String            serverName,
-                                                                  @RequestBody (required = false)
-                                                                  FilterRequestBody requestBody)
+                                                                        String            serverName,
+                                                                        @RequestBody (required = false)
+                                                                        FilterRequestBody requestBody)
     {
         return restAPI.getSolutionComponentsByName(serverName, requestBody);
     }
@@ -1107,8 +968,8 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-component"))
 
     public OpenMetadataRootElementsResponse findSolutionComponents(@PathVariable String                  serverName,
-                                                             @RequestBody (required = false)
-                                                             SearchStringRequestBody requestBody)
+                                                                   @RequestBody (required = false)
+                                                                   SearchStringRequestBody requestBody)
     {
         return restAPI.findSolutionComponents(serverName,  requestBody);
     }
@@ -1136,11 +997,11 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/solution-role"))
 
     public OpenMetadataRootElementResponse getSolutionComponentByGUID(@PathVariable
-                                                                String             serverName,
-                                                                @PathVariable
-                                                                String             solutionComponentGUID,
-                                                                @RequestBody (required = false)
-                                                                    GetRequestBody requestBody)
+                                                                      String             serverName,
+                                                                      @PathVariable
+                                                                      String             solutionComponentGUID,
+                                                                      @RequestBody (required = false)
+                                                                      GetRequestBody requestBody)
     {
         return restAPI.getSolutionComponentByGUID(serverName, solutionComponentGUID, requestBody);
     }

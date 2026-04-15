@@ -1,0 +1,370 @@
+# Egeria-coco-peer-networks
+# Sets up peer networks for different Coco Pharmaceuticals persona - it assumes CocoComboArchive is loaded.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "ivorpadlock",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# ProfileGUIDs
+
+###
+# @name getIvorPadlockByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Ivor Padlock",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("ivorPadlockGUID", response.body.guid); %}
+
+###
+# @name getSallyCounterByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Sally Counter",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("sallyCounterGUID", response.body.guid); %}
+
+
+###
+# @name getLemmieStageByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Lemmie Stage",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("lemmieStageGUID", response.body.guid); %}
+
+
+###
+# @name getGaryGeekeByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Gary Geeke",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("garyGeekeGUID", response.body.guid); %}
+
+
+###
+# @name getJulesKeeperByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Jules Keeper",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("julesKeeperGUID", response.body.guid); %}
+
+###
+# @name getSidneySeekerByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Sidney Seeker",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("sidneySeekerGUID", response.body.guid); %}
+
+
+###
+# @name getTanyaTidieByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Tanya Tidie",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("tanyaTidieGUID", response.body.guid); %}
+
+###
+# @name getPeterProfileByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Peter Profile",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("peterProfileGUID", response.body.guid); %}
+
+###
+# =====================================================================================================================
+# Create Ivor Padlock's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "ivorpadlock",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# @name linkPeerPerson Ivor to Gary Geeke
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{garyGeekeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "IT Systems Security",
+    "description" : "Working together on threat modelling, security patch management and user security management policy."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Lemmie Stage
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{lemmieStageGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Software Deployment Security",
+    "description" : "Lemmie sets up the software systems which includes their security settings. Key input to threat modelling exercise."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Jules Keeper
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{julesKeeperGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Data Strategy and Security",
+    "description" : "Working together on data security strategy, particularly around data use for clinical trials, analytics and AI."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Sally Counter
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{sallyCounterGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Laptop help",
+    "description" : "A whiz with Windows."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Tanya Tidie
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{tanyaTidieGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Clinical Trials Security Requirements",
+    "description" : "Keeps me up-to-date on the data use across all of the clinical trials."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Sidney Seeker
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{sidneySeekerGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Security Consultant",
+    "description" : "Investigating rogue suppliers."
+  }
+}
+
+###
+# @name linkPeerPerson Ivor to Peter Profile
+# Attach a person profile to one of its peers.
+#
+# @param personOneGUID          unique identifier of the first person profile
+# @param personTwoGUID          unique identifier of the second person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{peterProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PeerProperties",
+    "label" : "Data Lake Security",
+    "description" : "Builds pipelines feeding the data lake."
+  }
+}
+
+###
+# @name Get My Profile
+# Return the profile for this user.
+#
+# @param serverName name of the server instances for this request
+# @param requestBody optional properties to restrict search by and control how the results are formatted
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}

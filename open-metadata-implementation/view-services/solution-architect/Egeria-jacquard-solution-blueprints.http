@@ -37,7 +37,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Open Metadata Digital Product Catalog Solution Blueprint",
+  "searchString" : "Digital Product",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -54,7 +54,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Open Metadata Digital Product Catalog Solution Blueprint"
+  "filter" : "Open Metadata Digital Product Catalog Solution"
 }
 
 
@@ -66,7 +66,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Jacquard Digital Product Loom Solution Blueprint"
+  "filter" : "Jacquard Digital Product Loom"
 }
 
 ###

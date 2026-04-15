@@ -86,7 +86,8 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> contactDetails = null; // ContactThrough (0111)
     private List<RelatedMetadataElementSummary> contacts       = null; // ContactThrough (0111)
 
-    private List<RelatedMetadataElementSummary> peerPersons = null; // Peer (0112)
+    private List<RelatedMetadataElementSummary> myFollowers = null; // Peer (0112)
+    private List<RelatedMetadataElementSummary> myPeers = null; // Peer (0112)
 
     private RelatedMetadataElementSummary       superTeam = null; // TeamStructure (0115)
     private List<RelatedMetadataElementSummary> subTeams  = null; // TeamStructure (0115)
@@ -198,8 +199,17 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> supportedGovernanceDefinitions  = null;
     private List<RelatedMetadataElementSummary> supportingGovernanceDefinitions = null;
 
-    private List<RelatedMetadataElementSummary> usedInAccessControls = null;     // AssociatedSecurityGroup (0423)
-    private List<RelatedMetadataElementSummary> associatedSecurityGroups = null; // AssociatedSecurityGroup (0423)
+    private List<RelatedMetadataElementSummary> configuredInSecurityCollections = null; // UserAccount (0423)
+    private List<RelatedMetadataElementSummary> userAccounts                    = null; // UserAccount (0423)
+
+    private List<RelatedMetadataElementSummary> definedInSecretsCollection = null; // ResourcePermissions (0423)
+    private List<RelatedMetadataElementSummary> securityAccessControls     = null; // ResourcePermissions (0423)
+
+    private List<RelatedMetadataElementSummary> listedInSecretsCollection = null; // SecretsCollectionSecurityList (0423)
+    private List<RelatedMetadataElementSummary> securityLists             = null; // SecretsCollectionSecurityList (0423)
+
+    private List<RelatedMetadataElementSummary> usedInAccessControls    = null;     // AssociatedSecurityGroup (0423)
+    private List<RelatedMetadataElementSummary> associatedSecurityLists = null; // AssociatedSecurityGroup (0423)
 
     private RelatedMetadataElementSummary       inheritsFromZone = null; // ZoneHierarchy (0424)
     private List<RelatedMetadataElementSummary> controlsZones = null; // ZoneHierarchy (0424)
@@ -214,6 +224,9 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> monitoredResources           = null; // MonitoredResource (0451)
     private List<RelatedMetadataElementSummary> interestingNotificationTypes = null; // NotificationSubscriber (0451)
     private List<RelatedMetadataElementSummary> subscribers                  = null; // NotificationSubscriber (0451)
+
+    private List<RelatedMetadataElementSummary> excludedFromRequirements    = null; // Exception (0455)
+    private List<RelatedMetadataElementSummary> exceptions                  = null; // Exception (0455)
 
     private List<RelatedMetadataElementSummary> calledFromGovernanceEngines = null; // SupportedGovernanceService (0461)
     private List<RelatedMetadataElementSummary> supportedGovernanceServices = null; // SupportedGovernanceService (0461)
@@ -313,10 +326,10 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> previousAnnotations           = null; // AnnotationExtension (0610)
     private List<RelatedMetadataElementSummary> annotationExtensions          = null; // AnnotationExtension (0610)
     private List<RelatedMetadataElementSummary> annotationSubjects            = null; // AssociatedAnnotation (0610)
-    private List<RelatedMetadataElementSummary> associatedAnnotations  = null; // AssociatedAnnotation (0610)
-    private RelatedMetadataElementSummary       annotationMatches          = null; // DiscoveredSchemaType (0615)
-    private List<RelatedMetadataElementSummary> matchedByAnnotations       = null; // DiscoveredSchemaType (0615)
-    private List<RelatedMetadataElementSummary> resourceProfileAnnotations = null; // ResourceProfileData (0620)
+    private List<RelatedMetadataElementSummary> associatedAnnotations         = null; // AssociatedAnnotation (0610)
+    private List<RelatedMetadataElementSummary> annotationMatches             = null; // DiscoveredSchemaType (0615)
+    private List<RelatedMetadataElementSummary> matchedByAnnotations          = null; // DiscoveredSchemaType (0615)
+    private List<RelatedMetadataElementSummary> resourceProfileAnnotations    = null; // ResourceProfileData (0620)
     private List<RelatedMetadataElementSummary> resourceProfileData           = null; // ResourceProfileData (0620)
     private List<RelatedMetadataElementSummary> identifiedByRequestForActions = null; // RequestForActionTarget (0660)
     private List<RelatedMetadataElementSummary> requestForActionTargets       = null; // RequestForActionTarget (0660)
@@ -466,7 +479,8 @@ public class AttributedMetadataElement implements MetadataElement
             contactDetails = template.getContactDetails();
             contacts       = template.getContacts();
 
-            peerPersons    = template.getPeerPersons();
+            myFollowers = template.getMyFollowers();
+            myPeers = template.getMyPeers();
 
             superTeam = template.getSuperTeam();
             subTeams  = template.getSubTeams();
@@ -572,8 +586,17 @@ public class AttributedMetadataElement implements MetadataElement
             supportedGovernanceDefinitions = template.getSupportedGovernanceDefinitions();
             supportingGovernanceDefinitions = template.getSupportingGovernanceDefinitions();
 
-            usedInAccessControls = template.getUsedInAccessControls();
-            associatedSecurityGroups = template.getAssociatedSecurityGroups();
+            configuredInSecurityCollections = template.getConfiguredInSecurityCollections();
+            userAccounts                    = template.getUserAccounts();
+
+            definedInSecretsCollection = template.getDefinedInSecretsCollection();
+            securityAccessControls     = template.getSecurityAccessControls();
+
+            listedInSecretsCollection = template.getListedInSecretsCollection();
+            securityLists             = template.getSecurityLists();
+
+            usedInAccessControls    = template.getUsedInAccessControls();
+            associatedSecurityLists = template.getAssociatedSecurityLists();
 
             inheritsFromZone = template.getInheritsFromZone();
             controlsZones = template.getControlsZones();
@@ -588,6 +611,9 @@ public class AttributedMetadataElement implements MetadataElement
             monitoredResources           = template.getMonitoredResources();
             interestingNotificationTypes = template.getInterestingNotificationTypes();
             subscribers                  = template.getSubscribers();
+
+            excludedFromRequirements    = template.getExcludedFromRequirements();
+            exceptions                  = template.getExceptions();
 
             calledFromGovernanceEngines = template.getCalledFromGovernanceEngines();
             supportedGovernanceServices = template.getSupportedGovernanceServices();
@@ -1367,16 +1393,25 @@ public class AttributedMetadataElement implements MetadataElement
     }
 
 
-    public List<RelatedMetadataElementSummary> getPeerPersons()
+    public List<RelatedMetadataElementSummary> getMyFollowers()
     {
-        return peerPersons;
+        return myFollowers;
     }
 
-    public void setPeerPersons(List<RelatedMetadataElementSummary> peerPersons)
+    public void setMyFollowers(List<RelatedMetadataElementSummary> myFollowers)
     {
-        this.peerPersons = peerPersons;
+        this.myFollowers = myFollowers;
     }
 
+    public List<RelatedMetadataElementSummary> getMyPeers()
+    {
+        return myPeers;
+    }
+
+    public void setMyPeers(List<RelatedMetadataElementSummary> myPeers)
+    {
+        this.myPeers = myPeers;
+    }
 
     public RelatedMetadataElementSummary getSuperTeam()
     {
@@ -2404,6 +2439,66 @@ public class AttributedMetadataElement implements MetadataElement
         this.supportingGovernanceDefinitions = supportingGovernanceDefinitions;
     }
 
+    public List<RelatedMetadataElementSummary> getConfiguredInSecurityCollections()
+    {
+        return configuredInSecurityCollections;
+    }
+
+    public void setConfiguredInSecurityCollections(List<RelatedMetadataElementSummary> configuredInSecurityCollections)
+    {
+        this.configuredInSecurityCollections = configuredInSecurityCollections;
+    }
+
+    public List<RelatedMetadataElementSummary> getUserAccounts()
+    {
+        return userAccounts;
+    }
+
+    public void setUserAccounts(List<RelatedMetadataElementSummary> userAccounts)
+    {
+        this.userAccounts = userAccounts;
+    }
+
+    public List<RelatedMetadataElementSummary> getDefinedInSecretsCollection()
+    {
+        return definedInSecretsCollection;
+    }
+
+    public void setDefinedInSecretsCollection(List<RelatedMetadataElementSummary> definedInSecretsCollection)
+    {
+        this.definedInSecretsCollection = definedInSecretsCollection;
+    }
+
+    public List<RelatedMetadataElementSummary> getSecurityAccessControls()
+    {
+        return securityAccessControls;
+    }
+
+    public void setSecurityAccessControls(List<RelatedMetadataElementSummary> securityAccessControls)
+    {
+        this.securityAccessControls = securityAccessControls;
+    }
+
+    public List<RelatedMetadataElementSummary> getListedInSecretsCollection()
+    {
+        return listedInSecretsCollection;
+    }
+
+    public void setListedInSecretsCollection(List<RelatedMetadataElementSummary> listedInSecretsCollection)
+    {
+        this.listedInSecretsCollection = listedInSecretsCollection;
+    }
+
+    public List<RelatedMetadataElementSummary> getSecurityLists()
+    {
+        return securityLists;
+    }
+
+    public void setSecurityLists(List<RelatedMetadataElementSummary> securityLists)
+    {
+        this.securityLists = securityLists;
+    }
+
     public List<RelatedMetadataElementSummary> getUsedInAccessControls()
     {
         return usedInAccessControls;
@@ -2414,14 +2509,14 @@ public class AttributedMetadataElement implements MetadataElement
         this.usedInAccessControls = usedInAccessControls;
     }
 
-    public List<RelatedMetadataElementSummary> getAssociatedSecurityGroups()
+    public List<RelatedMetadataElementSummary> getAssociatedSecurityLists()
     {
-        return associatedSecurityGroups;
+        return associatedSecurityLists;
     }
 
-    public void setAssociatedSecurityGroups(List<RelatedMetadataElementSummary> associatedSecurityGroups)
+    public void setAssociatedSecurityLists(List<RelatedMetadataElementSummary> associatedSecurityLists)
     {
-        this.associatedSecurityGroups = associatedSecurityGroups;
+        this.associatedSecurityLists = associatedSecurityLists;
     }
 
     public RelatedMetadataElementSummary getInheritsFromZone()
@@ -2525,6 +2620,26 @@ public class AttributedMetadataElement implements MetadataElement
         this.subscribers = subscribers;
     }
 
+
+    public List<RelatedMetadataElementSummary> getExcludedFromRequirements()
+    {
+        return excludedFromRequirements;
+    }
+
+    public void setExcludedFromRequirements(List<RelatedMetadataElementSummary> excludedFromRequirements)
+    {
+        this.excludedFromRequirements = excludedFromRequirements;
+    }
+
+    public List<RelatedMetadataElementSummary> getExceptions()
+    {
+        return exceptions;
+    }
+
+    public void setExceptions(List<RelatedMetadataElementSummary> exceptions)
+    {
+        this.exceptions = exceptions;
+    }
 
     public List<RelatedMetadataElementSummary> getCalledFromGovernanceEngines()
     {
@@ -3672,12 +3787,12 @@ public class AttributedMetadataElement implements MetadataElement
         this.associatedAnnotations = associatedAnnotations;
     }
 
-    public RelatedMetadataElementSummary getAnnotationMatches()
+    public List<RelatedMetadataElementSummary> getAnnotationMatches()
     {
         return annotationMatches;
     }
 
-    public void setAnnotationMatches(RelatedMetadataElementSummary annotationMatches)
+    public void setAnnotationMatches(List<RelatedMetadataElementSummary> annotationMatches)
     {
         this.annotationMatches = annotationMatches;
     }
@@ -4113,7 +4228,7 @@ public class AttributedMetadataElement implements MetadataElement
                 ", hostedITAssets=" + hostedITAssets +
                 ", deployedTo=" + deployedTo +
                 ", storageVolumes=" + storageVolumes +
-                ", hostsUsingStorageVolume=" + providesStorageFor +
+                ", providesStorageFor=" + providesStorageFor +
                 ", consumedByCapabilities=" + consumedByCapabilities +
                 ", capabilityConsumedAssets=" + capabilityConsumedAssets +
                 ", capabilities=" + capabilities +
@@ -4126,7 +4241,8 @@ public class AttributedMetadataElement implements MetadataElement
                 ", userIdentities=" + userIdentities +
                 ", contactDetails=" + contactDetails +
                 ", contacts=" + contacts +
-                ", peerPersons=" + peerPersons +
+                ", myFollowers=" + myFollowers +
+                ", myPeers=" + myPeers +
                 ", superTeam=" + superTeam +
                 ", subTeams=" + subTeams +
                 ", profilesForAsset=" + profilesForAsset +
@@ -4206,8 +4322,14 @@ public class AttributedMetadataElement implements MetadataElement
                 ", peerGovernanceDefinitions=" + peerGovernanceDefinitions +
                 ", supportedGovernanceDefinitions=" + supportedGovernanceDefinitions +
                 ", supportingGovernanceDefinitions=" + supportingGovernanceDefinitions +
+                ", configuredInSecurityCollections=" + configuredInSecurityCollections +
+                ", userAccounts=" + userAccounts +
+                ", definedInSecretsCollection=" + definedInSecretsCollection +
+                ", securityAccessControls=" + securityAccessControls +
+                ", listedInSecretsCollection=" + listedInSecretsCollection +
+                ", securityLists=" + securityLists +
                 ", usedInAccessControls=" + usedInAccessControls +
-                ", associatedSecurityGroups=" + associatedSecurityGroups +
+                ", associatedSecurityLists=" + associatedSecurityLists +
                 ", inheritsFromZone=" + inheritsFromZone +
                 ", controlsZones=" + controlsZones +
                 ", broaderSubjectArea=" + broaderSubjectArea +
@@ -4218,6 +4340,8 @@ public class AttributedMetadataElement implements MetadataElement
                 ", monitoredResources=" + monitoredResources +
                 ", interestingNotificationTypes=" + interestingNotificationTypes +
                 ", subscribers=" + subscribers +
+                ", excludedFromRequirements=" + excludedFromRequirements +
+                ", exceptions=" + exceptions +
                 ", calledFromGovernanceEngines=" + calledFromGovernanceEngines +
                 ", supportedGovernanceServices=" + supportedGovernanceServices +
                 ", associatedGovernanceActions=" + associatedGovernanceActions +
@@ -4350,8 +4474,9 @@ public class AttributedMetadataElement implements MetadataElement
     {
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         AttributedMetadataElement that = (AttributedMetadataElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) && Objects.equals(sampleData, that.sampleData) && Objects.equals(sourcesOfSampleData, that.sourcesOfSampleData) && Objects.equals(templateCreatedElements, that.templateCreatedElements) && Objects.equals(sourcedFromTemplate, that.sourcedFromTemplate) && Objects.equals(templatesForCataloguing, that.templatesForCataloguing) && Objects.equals(templateUses, that.templateUses) && Objects.equals(actionSource, that.actionSource) && Objects.equals(requestedActions, that.requestedActions) && Objects.equals(actionCause, that.actionCause) && Objects.equals(relatedActions, that.relatedActions) && Objects.equals(actionTargets, that.actionTargets) && Objects.equals(actionsForTarget, that.actionsForTarget) && Objects.equals(searchKeywords, that.searchKeywords) && Objects.equals(keywordElements, that.keywordElements) && Objects.equals(externalReferences, that.externalReferences) && Objects.equals(referencingElements, that.referencingElements) && Objects.equals(alsoKnownAs, that.alsoKnownAs) && Objects.equals(equivalentElements, that.equivalentElements) && Objects.equals(resourceList, that.resourceList) && Objects.equals(resourceListUsers, that.resourceListUsers) && Objects.equals(providesMoreInformation, that.providesMoreInformation) && Objects.equals(describes, that.describes) && Objects.equals(propertyFacets, that.propertyFacets) && Objects.equals(facetedElements, that.facetedElements) && Objects.equals(memberOfCollections, that.memberOfCollections) && Objects.equals(collectionMembers, that.collectionMembers) && Objects.equals(knownLocations, that.knownLocations) && Objects.equals(localResources, that.localResources) && Objects.equals(peerLocations, that.peerLocations) && Objects.equals(groupingLocations, that.groupingLocations) && Objects.equals(nestedLocations, that.nestedLocations) && Objects.equals(serverEndpoints, that.serverEndpoints) && Objects.equals(serverForEndpoint, that.serverForEndpoint) && Objects.equals(hostedITAssets, that.hostedITAssets) && Objects.equals(deployedTo, that.deployedTo) && Objects.equals(storageVolumes, that.storageVolumes) && Objects.equals(providesStorageFor, that.providesStorageFor) && Objects.equals(consumedByCapabilities, that.consumedByCapabilities) && Objects.equals(capabilityConsumedAssets, that.capabilityConsumedAssets) && Objects.equals(capabilities, that.capabilities) && Objects.equals(hostedByDeployedITInfrastructure, that.hostedByDeployedITInfrastructure) && Objects.equals(cohortMembership, that.cohortMembership) && Objects.equals(registeredWithCohorts, that.registeredWithCohorts) && Objects.equals(visibleEndpoints, that.visibleEndpoints) && Objects.equals(visibleInNetworks, that.visibleInNetworks) && Objects.equals(userProfile, that.userProfile) && Objects.equals(userIdentities, that.userIdentities) && Objects.equals(contactDetails, that.contactDetails) && Objects.equals(contacts, that.contacts) && Objects.equals(peerPersons, that.peerPersons) && Objects.equals(superTeam, that.superTeam) && Objects.equals(subTeams, that.subTeams) && Objects.equals(profilesForAsset, that.profilesForAsset) && Objects.equals(assetsUsingProfile, that.assetsUsingProfile) && Objects.equals(performsRoles, that.performsRoles) && Objects.equals(rolePerformers, that.rolePerformers) && Objects.equals(relevantToScopes, that.relevantToScopes) && Objects.equals(scopedElements, that.scopedElements) && Objects.equals(assignmentScope, that.assignmentScope) && Objects.equals(assignedActors, that.assignedActors) && Objects.equals(contributionRecord, that.contributionRecord) && Objects.equals(contributorProfile, that.contributorProfile) && Objects.equals(dependentProjects, that.dependentProjects) && Objects.equals(dependsOnProjects, that.dependsOnProjects) && Objects.equals(managingProjects, that.managingProjects) && Objects.equals(managedProjects, that.managedProjects) && Objects.equals(likes, that.likes) && Objects.equals(likedElement, that.likedElement) && Objects.equals(informalTags, that.informalTags) && Objects.equals(taggedElements, that.taggedElements) && Objects.equals(reviews, that.reviews) && Objects.equals(reviewedElement, that.reviewedElement) && Objects.equals(comments, that.comments) && Objects.equals(commentedOnElement, that.commentedOnElement) && Objects.equals(answeredQuestions, that.answeredQuestions) && Objects.equals(acceptedAnswers, that.acceptedAnswers) && Objects.equals(crowdSourcingContributors, that.crowdSourcingContributors) && Objects.equals(crowdSourcedContributions, that.crowdSourcedContributions) && Objects.equals(noteLogSubjects, that.noteLogSubjects) && Objects.equals(noteLogs, that.noteLogs) && Objects.equals(presentInNoteLogs, that.presentInNoteLogs) && Objects.equals(noteLogEntries, that.noteLogEntries) && Objects.equals(connections, that.connections) && Objects.equals(connectorType, that.connectorType) && Objects.equals(endpoint, that.endpoint) && Objects.equals(connectedAssets, that.connectedAssets) && Objects.equals(embeddedConnections, that.embeddedConnections) && Objects.equals(parentConnections, that.parentConnections) && Objects.equals(supportedDataSets, that.supportedDataSets) && Objects.equals(dataSetContent, that.dataSetContent) && Objects.equals(apiEndpoints, that.apiEndpoints) && Objects.equals(supportedAPIs, that.supportedAPIs) && Objects.equals(parentProcesses, that.parentProcesses) && Objects.equals(childProcesses, that.childProcesses) && Objects.equals(ports, that.ports) && Objects.equals(portOwningProcesses, that.portOwningProcesses) && Objects.equals(portDelegatingFrom, that.portDelegatingFrom) && Objects.equals(portDelegatingTo, that.portDelegatingTo) && Objects.equals(homeFolder, that.homeFolder) && Objects.equals(nestedFiles, that.nestedFiles) && Objects.equals(linkedFiles, that.linkedFiles) && Objects.equals(linkedFolders, that.linkedFolders) && Objects.equals(parentFolder, that.parentFolder) && Objects.equals(nestedFolders, that.nestedFolders) && Objects.equals(linkedMediaFiles, that.linkedMediaFiles) && Objects.equals(associatedLogs, that.associatedLogs) && Objects.equals(associatedLogSubjects, that.associatedLogSubjects) && Objects.equals(archiveContents, that.archiveContents) && Objects.equals(packagedInArchiveFiles, that.packagedInArchiveFiles) && Objects.equals(reportOriginator, that.reportOriginator) && Objects.equals(generatedReports, that.generatedReports) && Objects.equals(reportSubjects, that.reportSubjects) && Objects.equals(reports, that.reports) && Objects.equals(priorReports, that.priorReports) && Objects.equals(followOnReports, that.followOnReports) && Objects.equals(relatedTerms, that.relatedTerms) && Objects.equals(usedInContexts, that.usedInContexts) && Objects.equals(contextRelevantTerms, that.contextRelevantTerms) && Objects.equals(meaningForDataElements, that.meaningForDataElements) && Objects.equals(meanings, that.meanings) && Objects.equals(semanticDefinitions, that.semanticDefinitions) && Objects.equals(semanticallyAssociatedDefinitions, that.semanticallyAssociatedDefinitions) && Objects.equals(supplementaryProperties, that.supplementaryProperties) && Objects.equals(supplementsElement, that.supplementsElement) && Objects.equals(governedBy, that.governedBy) && Objects.equals(governedElements, that.governedElements) && Objects.equals(peerGovernanceDefinitions, that.peerGovernanceDefinitions) && Objects.equals(supportedGovernanceDefinitions, that.supportedGovernanceDefinitions) && Objects.equals(supportingGovernanceDefinitions, that.supportingGovernanceDefinitions) && Objects.equals(usedInAccessControls, that.usedInAccessControls) && Objects.equals(associatedSecurityGroups, that.associatedSecurityGroups) && Objects.equals(inheritsFromZone, that.inheritsFromZone) && Objects.equals(controlsZones, that.controlsZones) && Objects.equals(broaderSubjectArea, that.broaderSubjectArea) && Objects.equals(nestedSubjectAreas, that.nestedSubjectAreas) && Objects.equals(metrics, that.metrics) && Objects.equals(measurements, that.measurements) && Objects.equals(monitoredThrough, that.monitoredThrough) && Objects.equals(monitoredResources, that.monitoredResources) && Objects.equals(interestingNotificationTypes, that.interestingNotificationTypes) && Objects.equals(subscribers, that.subscribers) && Objects.equals(calledFromGovernanceEngines, that.calledFromGovernanceEngines) && Objects.equals(supportedGovernanceServices, that.supportedGovernanceServices) && Objects.equals(associatedGovernanceActions, that.associatedGovernanceActions) && Objects.equals(predefinedTargetForAction, that.predefinedTargetForAction) && Objects.equals(triggeredFrom, that.triggeredFrom) && Objects.equals(firstStep, that.firstStep) && Objects.equals(dependedOnProcessSteps, that.dependedOnProcessSteps) && Objects.equals(followOnProcessSteps, that.followOnProcessSteps) && Objects.equals(supportsGovernanceActions, that.supportsGovernanceActions) && Objects.equals(governanceActionExecutor, that.governanceActionExecutor) && Objects.equals(includedInIntegrationGroups, that.includedInIntegrationGroups) && Objects.equals(supportedIntegrationConnectors, that.supportedIntegrationConnectors) && Objects.equals(refreshedByConnectors, that.refreshedByConnectors) && Objects.equals(catalogTargets, that.catalogTargets) && Objects.equals(peerDuplicateOrigin, that.peerDuplicateOrigin) && Objects.equals(peerDuplicatePartner, that.peerDuplicatePartner) && Objects.equals(consolidatedDuplicateOrigin, that.consolidatedDuplicateOrigin) && Objects.equals(consolidatedDuplicateResult, that.consolidatedDuplicateResult) && Objects.equals(impactedResources, that.impactedResources) && Objects.equals(incidentReports, that.incidentReports) && Objects.equals(licenses, that.licenses) && Objects.equals(licensedElements, that.licensedElements) && Objects.equals(certifications, that.certifications) && Objects.equals(certifiedElements, that.certifiedElements) && Objects.equals(schemaType, that.schemaType) && Objects.equals(describesStructure, that.describesStructure) && Objects.equals(parentSchemaElements, that.parentSchemaElements) && Objects.equals(schemaOptions, that.schemaOptions) && Objects.equals(schemaAttributes, that.schemaAttributes) && Objects.equals(externalSchemaType, that.externalSchemaType) && Objects.equals(mapFromElement, that.mapFromElement) && Objects.equals(mapToElement, that.mapToElement) && Objects.equals(queries, that.queries) && Objects.equals(linkedToPrimaryKey, that.linkedToPrimaryKey) && Objects.equals(foreignKeys, that.foreignKeys) && Objects.equals(vertices, that.vertices) && Objects.equals(edges, that.edges) && Objects.equals(describedByDataValueSpecifications, that.describedByDataValueSpecifications) && Objects.equals(dataValueSpecifications, that.dataValueSpecifications) && Objects.equals(assignedToDataValueSpecifications, that.assignedToDataValueSpecifications) && Objects.equals(assignedDataValueSpecifications, that.assignedDataValueSpecifications) && Objects.equals(superDataValueSpecification, that.superDataValueSpecification) && Objects.equals(subDataValueSpecifications, that.subDataValueSpecifications) && Objects.equals(madeOfDataClasses, that.madeOfDataClasses) && Objects.equals(partOfDataClasses, that.partOfDataClasses) &&  Objects.equals(validValues, that.validValues) && Objects.equals(validValueConsumers, that.validValueConsumers) && Objects.equals(referenceValues, that.referenceValues) && Objects.equals(assignedItems, that.assignedItems) && Objects.equals(matchingValues, that.matchingValues) && Objects.equals(consistentValues, that.consistentValues) && Objects.equals(associatedValues, that.associatedValues) && Objects.equals(validValueMembers, that.validValueMembers) && Objects.equals(memberOfValidValueSets, that.memberOfValidValueSets) && Objects.equals(validValueImplementations, that.validValueImplementations) && Objects.equals(canonicalValidValues, that.canonicalValidValues) && Objects.equals(specificationProperties, that.specificationProperties) && Objects.equals(specificationPropertyUsers, that.specificationPropertyUsers) && Objects.equals(dataStructureDefinition, that.dataStructureDefinition) && Objects.equals(usedInCertifications, that.usedInCertifications) && Objects.equals(dataDescription, that.dataDescription) && Objects.equals(describesDataFor, that.describesDataFor) && Objects.equals(containsDataFields, that.containsDataFields) && Objects.equals(partOfDataStructures, that.partOfDataStructures) && Objects.equals(parentDataFields, that.parentDataFields) && Objects.equals(nestedDataFields, that.nestedDataFields) && Objects.equals(linkedToDataFields, that.linkedToDataFields) && Objects.equals(linkedFromDataFields, that.linkedFromDataFields) && Objects.equals(derivedFromDataStructure, that.derivedFromDataStructure) && Objects.equals(equivalentSchemaType, that.equivalentSchemaType) && Objects.equals(derivedFromDataField, that.derivedFromDataField) && Objects.equals(equivalentSchemaAttribute, that.equivalentSchemaAttribute) && Objects.equals(fromSurveyReport, that.fromSurveyReport) && Objects.equals(reportedAnnotations, that.reportedAnnotations) && Objects.equals(previousAnnotations, that.previousAnnotations) && Objects.equals(annotationExtensions, that.annotationExtensions) && Objects.equals(annotationSubjects, that.annotationSubjects) && Objects.equals(associatedAnnotations, that.associatedAnnotations) && Objects.equals(annotationMatches, that.annotationMatches) && Objects.equals(matchedByAnnotations, that.matchedByAnnotations) && Objects.equals(resourceProfileAnnotations, that.resourceProfileAnnotations) && Objects.equals(resourceProfileData, that.resourceProfileData) && Objects.equals(identifiedByRequestForActions, that.identifiedByRequestForActions) && Objects.equals(requestForActionTargets, that.requestForActionTargets) && Objects.equals(usedByDigitalProducts, that.usedByDigitalProducts) && Objects.equals(usesDigitalProducts, that.usesDigitalProducts) && Objects.equals(agreementItems, that.agreementItems) && Objects.equals(agreementContents, that.agreementContents) && Objects.equals(agreementActors, that.agreementActors) && Objects.equals(involvedInAgreements, that.involvedInAgreements) && Objects.equals(contracts, that.contracts) && Objects.equals(agreementsForContract, that.agreementsForContract) && Objects.equals(digitalSubscribers, that.digitalSubscribers) && Objects.equals(digitalSubscriptions, that.digitalSubscriptions) && Objects.equals(consumingBusinessCapabilities, that.consumingBusinessCapabilities) && Objects.equals(usesDigitalServices, that.usesDigitalServices) && Objects.equals(supportsBusinessCapabilities, that.supportsBusinessCapabilities) && Objects.equals(dependsOnBusinessCapabilities, that.dependsOnBusinessCapabilities) && Objects.equals(supplyFrom, that.supplyFrom) && Objects.equals(supplyTo, that.supplyTo) && Objects.equals(usedInSolutionComponents, that.usedInSolutionComponents) && Objects.equals(nestedSolutionComponents, that.nestedSolutionComponents) && Objects.equals(interactingWithActors, that.interactingWithActors) && Objects.equals(interactingWithSolutionComponents, that.interactingWithSolutionComponents) && Objects.equals(solutionComponent, that.solutionComponent) && Objects.equals(solutionPorts, that.solutionPorts) && Objects.equals(wiredTo, that.wiredTo) && Objects.equals(alignsToPort, that.alignsToPort) && Objects.equals(delegationPorts, that.delegationPorts) && Objects.equals(derivedFrom, that.derivedFrom) && Objects.equals(implementedBy, that.implementedBy) && Objects.equals(usedInImplementationOf, that.usedInImplementationOf) && Objects.equals(implementationResources, that.implementationResources) && Objects.equals(describesDesignOf, that.describesDesignOf) && Objects.equals(solutionDesigns, that.solutionDesigns) && Objects.equals(lineageLinkage, that.lineageLinkage) && Objects.equals(otherRelatedElements, that.otherRelatedElements) && Objects.equals(relatedBy, that.relatedBy);
+        return Objects.equals(elementHeader, that.elementHeader) && Objects.equals(sampleData, that.sampleData) && Objects.equals(sourcesOfSampleData, that.sourcesOfSampleData) && Objects.equals(templateCreatedElements, that.templateCreatedElements) && Objects.equals(sourcedFromTemplate, that.sourcedFromTemplate) && Objects.equals(templatesForCataloguing, that.templatesForCataloguing) && Objects.equals(templateUses, that.templateUses) && Objects.equals(actionSource, that.actionSource) && Objects.equals(requestedActions, that.requestedActions) && Objects.equals(actionCause, that.actionCause) && Objects.equals(relatedActions, that.relatedActions) && Objects.equals(actionTargets, that.actionTargets) && Objects.equals(actionsForTarget, that.actionsForTarget) && Objects.equals(searchKeywords, that.searchKeywords) && Objects.equals(keywordElements, that.keywordElements) && Objects.equals(externalReferences, that.externalReferences) && Objects.equals(referencingElements, that.referencingElements) && Objects.equals(alsoKnownAs, that.alsoKnownAs) && Objects.equals(equivalentElements, that.equivalentElements) && Objects.equals(resourceList, that.resourceList) && Objects.equals(resourceListUsers, that.resourceListUsers) && Objects.equals(providesMoreInformation, that.providesMoreInformation) && Objects.equals(describes, that.describes) && Objects.equals(propertyFacets, that.propertyFacets) && Objects.equals(facetedElements, that.facetedElements) && Objects.equals(memberOfCollections, that.memberOfCollections) && Objects.equals(collectionMembers, that.collectionMembers) && Objects.equals(knownLocations, that.knownLocations) && Objects.equals(localResources, that.localResources) && Objects.equals(peerLocations, that.peerLocations) && Objects.equals(groupingLocations, that.groupingLocations) && Objects.equals(nestedLocations, that.nestedLocations) && Objects.equals(serverEndpoints, that.serverEndpoints) && Objects.equals(serverForEndpoint, that.serverForEndpoint) && Objects.equals(hostedITAssets, that.hostedITAssets) && Objects.equals(deployedTo, that.deployedTo) && Objects.equals(storageVolumes, that.storageVolumes) && Objects.equals(providesStorageFor, that.providesStorageFor) && Objects.equals(consumedByCapabilities, that.consumedByCapabilities) && Objects.equals(capabilityConsumedAssets, that.capabilityConsumedAssets) && Objects.equals(capabilities, that.capabilities) && Objects.equals(hostedByDeployedITInfrastructure, that.hostedByDeployedITInfrastructure) && Objects.equals(cohortMembership, that.cohortMembership) && Objects.equals(registeredWithCohorts, that.registeredWithCohorts) && Objects.equals(visibleEndpoints, that.visibleEndpoints) && Objects.equals(visibleInNetworks, that.visibleInNetworks) && Objects.equals(userProfile, that.userProfile) && Objects.equals(userIdentities, that.userIdentities) && Objects.equals(contactDetails, that.contactDetails) && Objects.equals(contacts, that.contacts) && Objects.equals(myFollowers, that.myFollowers) && Objects.equals(myPeers, that.myPeers) && Objects.equals(superTeam, that.superTeam) && Objects.equals(subTeams, that.subTeams) && Objects.equals(profilesForAsset, that.profilesForAsset) && Objects.equals(assetsUsingProfile, that.assetsUsingProfile) && Objects.equals(performsRoles, that.performsRoles) && Objects.equals(rolePerformers, that.rolePerformers) && Objects.equals(relevantToScopes, that.relevantToScopes) && Objects.equals(scopedElements, that.scopedElements) && Objects.equals(assignmentScope, that.assignmentScope) && Objects.equals(assignedActors, that.assignedActors) && Objects.equals(contributionRecord, that.contributionRecord) && Objects.equals(contributorProfile, that.contributorProfile) && Objects.equals(dependentProjects, that.dependentProjects) && Objects.equals(dependsOnProjects, that.dependsOnProjects) && Objects.equals(managingProjects, that.managingProjects) && Objects.equals(managedProjects, that.managedProjects) && Objects.equals(likes, that.likes) && Objects.equals(likedElement, that.likedElement) && Objects.equals(informalTags, that.informalTags) && Objects.equals(taggedElements, that.taggedElements) && Objects.equals(reviews, that.reviews) && Objects.equals(reviewedElement, that.reviewedElement) && Objects.equals(comments, that.comments) && Objects.equals(commentedOnElement, that.commentedOnElement) && Objects.equals(answeredQuestions, that.answeredQuestions) && Objects.equals(acceptedAnswers, that.acceptedAnswers) && Objects.equals(crowdSourcingContributors, that.crowdSourcingContributors) && Objects.equals(crowdSourcedContributions, that.crowdSourcedContributions) && Objects.equals(noteLogSubjects, that.noteLogSubjects) && Objects.equals(noteLogs, that.noteLogs) && Objects.equals(presentInNoteLogs, that.presentInNoteLogs) && Objects.equals(noteLogEntries, that.noteLogEntries) && Objects.equals(connections, that.connections) && Objects.equals(connectorType, that.connectorType) && Objects.equals(endpoint, that.endpoint) && Objects.equals(connectedAssets, that.connectedAssets) && Objects.equals(embeddedConnections, that.embeddedConnections) && Objects.equals(parentConnections, that.parentConnections) && Objects.equals(supportedDataSets, that.supportedDataSets) && Objects.equals(dataSetContent, that.dataSetContent) && Objects.equals(apiEndpoints, that.apiEndpoints) && Objects.equals(supportedAPIs, that.supportedAPIs) && Objects.equals(parentProcesses, that.parentProcesses) && Objects.equals(childProcesses, that.childProcesses) && Objects.equals(ports, that.ports) && Objects.equals(portOwningProcesses, that.portOwningProcesses) && Objects.equals(portDelegatingFrom, that.portDelegatingFrom) && Objects.equals(portDelegatingTo, that.portDelegatingTo) && Objects.equals(homeFolder, that.homeFolder) && Objects.equals(nestedFiles, that.nestedFiles) && Objects.equals(linkedFiles, that.linkedFiles) && Objects.equals(linkedFolders, that.linkedFolders) && Objects.equals(parentFolder, that.parentFolder) && Objects.equals(nestedFolders, that.nestedFolders) && Objects.equals(linkedMediaFiles, that.linkedMediaFiles) && Objects.equals(associatedLogs, that.associatedLogs) && Objects.equals(associatedLogSubjects, that.associatedLogSubjects) && Objects.equals(archiveContents, that.archiveContents) && Objects.equals(packagedInArchiveFiles, that.packagedInArchiveFiles) && Objects.equals(reportOriginator, that.reportOriginator) && Objects.equals(generatedReports, that.generatedReports) && Objects.equals(reportSubjects, that.reportSubjects) && Objects.equals(reports, that.reports) && Objects.equals(priorReports, that.priorReports) && Objects.equals(followOnReports, that.followOnReports) && Objects.equals(relatedTerms, that.relatedTerms) && Objects.equals(usedInContexts, that.usedInContexts) && Objects.equals(contextRelevantTerms, that.contextRelevantTerms) && Objects.equals(meaningForDataElements, that.meaningForDataElements) && Objects.equals(meanings, that.meanings) && Objects.equals(semanticDefinitions, that.semanticDefinitions) && Objects.equals(semanticallyAssociatedDefinitions, that.semanticallyAssociatedDefinitions) && Objects.equals(supplementaryProperties, that.supplementaryProperties) && Objects.equals(supplementsElement, that.supplementsElement) && Objects.equals(governedBy, that.governedBy) && Objects.equals(governedElements, that.governedElements) && Objects.equals(peerGovernanceDefinitions, that.peerGovernanceDefinitions) && Objects.equals(supportedGovernanceDefinitions, that.supportedGovernanceDefinitions) && Objects.equals(supportingGovernanceDefinitions, that.supportingGovernanceDefinitions) && Objects.equals(configuredInSecurityCollections, that.configuredInSecurityCollections) && Objects.equals(userAccounts, that.userAccounts) && Objects.equals(definedInSecretsCollection, that.definedInSecretsCollection) && Objects.equals(securityAccessControls, that.securityAccessControls) && Objects.equals(listedInSecretsCollection, that.listedInSecretsCollection) && Objects.equals(securityLists, that.securityLists) && Objects.equals(usedInAccessControls, that.usedInAccessControls) && Objects.equals(associatedSecurityLists, that.associatedSecurityLists) && Objects.equals(inheritsFromZone, that.inheritsFromZone) && Objects.equals(controlsZones, that.controlsZones) && Objects.equals(broaderSubjectArea, that.broaderSubjectArea) && Objects.equals(nestedSubjectAreas, that.nestedSubjectAreas) && Objects.equals(metrics, that.metrics) && Objects.equals(measurements, that.measurements) && Objects.equals(monitoredThrough, that.monitoredThrough) && Objects.equals(monitoredResources, that.monitoredResources) && Objects.equals(interestingNotificationTypes, that.interestingNotificationTypes) && Objects.equals(subscribers, that.subscribers) && Objects.equals(excludedFromRequirements, that.excludedFromRequirements) && Objects.equals(exceptions, that.exceptions) && Objects.equals(calledFromGovernanceEngines, that.calledFromGovernanceEngines) && Objects.equals(supportedGovernanceServices, that.supportedGovernanceServices) && Objects.equals(associatedGovernanceActions, that.associatedGovernanceActions) && Objects.equals(predefinedTargetForAction, that.predefinedTargetForAction) && Objects.equals(triggeredFrom, that.triggeredFrom) && Objects.equals(firstStep, that.firstStep) && Objects.equals(dependedOnProcessSteps, that.dependedOnProcessSteps) && Objects.equals(followOnProcessSteps, that.followOnProcessSteps) && Objects.equals(supportsGovernanceActions, that.supportsGovernanceActions) && Objects.equals(governanceActionExecutor, that.governanceActionExecutor) && Objects.equals(includedInIntegrationGroups, that.includedInIntegrationGroups) && Objects.equals(supportedIntegrationConnectors, that.supportedIntegrationConnectors) && Objects.equals(refreshedByConnectors, that.refreshedByConnectors) && Objects.equals(catalogTargets, that.catalogTargets) && Objects.equals(peerDuplicateOrigin, that.peerDuplicateOrigin) && Objects.equals(peerDuplicatePartner, that.peerDuplicatePartner) && Objects.equals(consolidatedDuplicateOrigin, that.consolidatedDuplicateOrigin) && Objects.equals(consolidatedDuplicateResult, that.consolidatedDuplicateResult) && Objects.equals(impactedResources, that.impactedResources) && Objects.equals(incidentReports, that.incidentReports) && Objects.equals(licenses, that.licenses) && Objects.equals(licensedElements, that.licensedElements) && Objects.equals(certifications, that.certifications) && Objects.equals(certifiedElements, that.certifiedElements) && Objects.equals(schemaType, that.schemaType) && Objects.equals(describesStructure, that.describesStructure) && Objects.equals(parentSchemaElements, that.parentSchemaElements) && Objects.equals(schemaOptions, that.schemaOptions) && Objects.equals(schemaAttributes, that.schemaAttributes) && Objects.equals(externalSchemaType, that.externalSchemaType) && Objects.equals(mapFromElement, that.mapFromElement) && Objects.equals(mapToElement, that.mapToElement) && Objects.equals(queries, that.queries) && Objects.equals(linkedToPrimaryKey, that.linkedToPrimaryKey) && Objects.equals(foreignKeys, that.foreignKeys) && Objects.equals(vertices, that.vertices) && Objects.equals(edges, that.edges) && Objects.equals(describedByDataValueSpecifications, that.describedByDataValueSpecifications) && Objects.equals(dataValueSpecifications, that.dataValueSpecifications) && Objects.equals(assignedToDataValueSpecifications, that.assignedToDataValueSpecifications) && Objects.equals(assignedDataValueSpecifications, that.assignedDataValueSpecifications) && Objects.equals(superDataValueSpecification, that.superDataValueSpecification) && Objects.equals(subDataValueSpecifications, that.subDataValueSpecifications) && Objects.equals(madeOfDataClasses, that.madeOfDataClasses) && Objects.equals(partOfDataClasses, that.partOfDataClasses) && Objects.equals(validValues, that.validValues) && Objects.equals(validValueConsumers, that.validValueConsumers) && Objects.equals(referenceValues, that.referenceValues) && Objects.equals(assignedItems, that.assignedItems) && Objects.equals(matchingValues, that.matchingValues) && Objects.equals(consistentValues, that.consistentValues) && Objects.equals(associatedValues, that.associatedValues) && Objects.equals(validValueMembers, that.validValueMembers) && Objects.equals(memberOfValidValueSets, that.memberOfValidValueSets) && Objects.equals(validValueImplementations, that.validValueImplementations) && Objects.equals(canonicalValidValues, that.canonicalValidValues) && Objects.equals(specificationProperties, that.specificationProperties) && Objects.equals(specificationPropertyUsers, that.specificationPropertyUsers) && Objects.equals(dataStructureDefinition, that.dataStructureDefinition) && Objects.equals(usedInCertifications, that.usedInCertifications) && Objects.equals(dataDescription, that.dataDescription) && Objects.equals(describesDataFor, that.describesDataFor) && Objects.equals(containsDataFields, that.containsDataFields) && Objects.equals(partOfDataStructures, that.partOfDataStructures) && Objects.equals(parentDataFields, that.parentDataFields) && Objects.equals(nestedDataFields, that.nestedDataFields) && Objects.equals(linkedToDataFields, that.linkedToDataFields) && Objects.equals(linkedFromDataFields, that.linkedFromDataFields) && Objects.equals(derivedFromDataStructure, that.derivedFromDataStructure) && Objects.equals(equivalentSchemaType, that.equivalentSchemaType) && Objects.equals(derivedFromDataField, that.derivedFromDataField) && Objects.equals(equivalentSchemaAttribute, that.equivalentSchemaAttribute) && Objects.equals(fromSurveyReport, that.fromSurveyReport) && Objects.equals(reportedAnnotations, that.reportedAnnotations) && Objects.equals(previousAnnotations, that.previousAnnotations) && Objects.equals(annotationExtensions, that.annotationExtensions) && Objects.equals(annotationSubjects, that.annotationSubjects) && Objects.equals(associatedAnnotations, that.associatedAnnotations) && Objects.equals(annotationMatches, that.annotationMatches) && Objects.equals(matchedByAnnotations, that.matchedByAnnotations) && Objects.equals(resourceProfileAnnotations, that.resourceProfileAnnotations) && Objects.equals(resourceProfileData, that.resourceProfileData) && Objects.equals(identifiedByRequestForActions, that.identifiedByRequestForActions) && Objects.equals(requestForActionTargets, that.requestForActionTargets) && Objects.equals(usedByDigitalProducts, that.usedByDigitalProducts) && Objects.equals(usesDigitalProducts, that.usesDigitalProducts) && Objects.equals(agreementItems, that.agreementItems) && Objects.equals(agreementContents, that.agreementContents) && Objects.equals(agreementActors, that.agreementActors) && Objects.equals(involvedInAgreements, that.involvedInAgreements) && Objects.equals(contracts, that.contracts) && Objects.equals(agreementsForContract, that.agreementsForContract) && Objects.equals(digitalSubscribers, that.digitalSubscribers) && Objects.equals(digitalSubscriptions, that.digitalSubscriptions) && Objects.equals(consumingBusinessCapabilities, that.consumingBusinessCapabilities) && Objects.equals(usesDigitalServices, that.usesDigitalServices) && Objects.equals(supportsBusinessCapabilities, that.supportsBusinessCapabilities) && Objects.equals(dependsOnBusinessCapabilities, that.dependsOnBusinessCapabilities) && Objects.equals(supplyFrom, that.supplyFrom) && Objects.equals(supplyTo, that.supplyTo) && Objects.equals(usedInSolutionComponents, that.usedInSolutionComponents) && Objects.equals(nestedSolutionComponents, that.nestedSolutionComponents) && Objects.equals(interactingWithActors, that.interactingWithActors) && Objects.equals(interactingWithSolutionComponents, that.interactingWithSolutionComponents) && Objects.equals(solutionComponent, that.solutionComponent) && Objects.equals(solutionPorts, that.solutionPorts) && Objects.equals(wiredTo, that.wiredTo) && Objects.equals(alignsToPort, that.alignsToPort) && Objects.equals(delegationPorts, that.delegationPorts) && Objects.equals(derivedFrom, that.derivedFrom) && Objects.equals(implementedBy, that.implementedBy) && Objects.equals(usedInImplementationOf, that.usedInImplementationOf) && Objects.equals(implementationResources, that.implementationResources) && Objects.equals(describesDesignOf, that.describesDesignOf) && Objects.equals(solutionDesigns, that.solutionDesigns) && Objects.equals(lineageLinkage, that.lineageLinkage) && Objects.equals(otherRelatedElements, that.otherRelatedElements) && Objects.equals(relatedBy, that.relatedBy);
     }
+
 
     /**
      * Create a hash code for this element type.
@@ -4361,6 +4486,6 @@ public class AttributedMetadataElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, sampleData, sourcesOfSampleData, templateCreatedElements, sourcedFromTemplate, templatesForCataloguing, templateUses, actionSource, requestedActions, actionCause, relatedActions, actionTargets, actionsForTarget, searchKeywords, keywordElements, externalReferences, referencingElements, alsoKnownAs, equivalentElements, resourceList, resourceListUsers, providesMoreInformation, describes, propertyFacets, facetedElements, memberOfCollections, collectionMembers, knownLocations, localResources, peerLocations, groupingLocations, nestedLocations, serverEndpoints, serverForEndpoint, hostedITAssets, deployedTo, storageVolumes, providesStorageFor, consumedByCapabilities, capabilityConsumedAssets, capabilities, hostedByDeployedITInfrastructure, cohortMembership, registeredWithCohorts, visibleEndpoints, visibleInNetworks, userProfile, userIdentities, contactDetails, contacts, peerPersons, superTeam, subTeams, profilesForAsset, assetsUsingProfile, performsRoles, rolePerformers, relevantToScopes, scopedElements, assignmentScope, assignedActors, contributionRecord, contributorProfile, dependentProjects, dependsOnProjects, managingProjects, managedProjects, likes, likedElement, informalTags, taggedElements, reviews, reviewedElement, comments, commentedOnElement, answeredQuestions, acceptedAnswers, crowdSourcingContributors, crowdSourcedContributions, noteLogSubjects, noteLogs, presentInNoteLogs, noteLogEntries, connections, connectorType, endpoint, connectedAssets, embeddedConnections, parentConnections, supportedDataSets, dataSetContent, apiEndpoints, supportedAPIs, parentProcesses, childProcesses, ports, portOwningProcesses, portDelegatingFrom, portDelegatingTo, homeFolder, nestedFiles, linkedFiles, linkedFolders, parentFolder, nestedFolders, linkedMediaFiles, associatedLogs, associatedLogSubjects, archiveContents, packagedInArchiveFiles, reportOriginator, generatedReports, reportSubjects, reports, priorReports, followOnReports, relatedTerms, usedInContexts, contextRelevantTerms, meaningForDataElements, meanings, semanticDefinitions, semanticallyAssociatedDefinitions, supplementaryProperties, supplementsElement, governedBy, governedElements, peerGovernanceDefinitions, supportedGovernanceDefinitions, supportingGovernanceDefinitions, usedInAccessControls, associatedSecurityGroups, inheritsFromZone, controlsZones, broaderSubjectArea, nestedSubjectAreas, metrics, measurements, monitoredThrough, monitoredResources, interestingNotificationTypes, subscribers, calledFromGovernanceEngines, supportedGovernanceServices, associatedGovernanceActions, predefinedTargetForAction, triggeredFrom, firstStep, dependedOnProcessSteps, followOnProcessSteps, supportsGovernanceActions, governanceActionExecutor, includedInIntegrationGroups, supportedIntegrationConnectors, refreshedByConnectors, catalogTargets, peerDuplicateOrigin, peerDuplicatePartner, consolidatedDuplicateOrigin, consolidatedDuplicateResult, impactedResources, incidentReports, licenses, licensedElements, certifications, certifiedElements, schemaType, describesStructure, parentSchemaElements, schemaOptions, schemaAttributes, externalSchemaType, mapFromElement, mapToElement, queries, linkedToPrimaryKey, foreignKeys, vertices, edges, describedByDataValueSpecifications, dataValueSpecifications, assignedToDataValueSpecifications, assignedDataValueSpecifications, superDataValueSpecification, subDataValueSpecifications, madeOfDataClasses, partOfDataClasses, validValues, validValueConsumers, referenceValues, assignedItems, matchingValues, consistentValues, associatedValues, validValueMembers, memberOfValidValueSets, validValueImplementations, canonicalValidValues, specificationProperties, specificationPropertyUsers, dataStructureDefinition, usedInCertifications, dataDescription, describesDataFor, containsDataFields, partOfDataStructures, parentDataFields, nestedDataFields, linkedToDataFields, linkedFromDataFields, derivedFromDataStructure, equivalentSchemaType, derivedFromDataField, equivalentSchemaAttribute, fromSurveyReport, reportedAnnotations, previousAnnotations, annotationExtensions, annotationSubjects, associatedAnnotations, annotationMatches, matchedByAnnotations, resourceProfileAnnotations, resourceProfileData, identifiedByRequestForActions, requestForActionTargets, usedByDigitalProducts, usesDigitalProducts, agreementItems, agreementContents, agreementActors, involvedInAgreements, contracts, agreementsForContract, digitalSubscribers, digitalSubscriptions, consumingBusinessCapabilities, usesDigitalServices, supportsBusinessCapabilities, dependsOnBusinessCapabilities, supplyFrom, supplyTo, usedInSolutionComponents, nestedSolutionComponents, interactingWithActors, interactingWithSolutionComponents, solutionComponent, solutionPorts, wiredTo, alignsToPort, delegationPorts, derivedFrom, implementedBy, usedInImplementationOf, implementationResources, describesDesignOf, solutionDesigns, lineageLinkage, otherRelatedElements, relatedBy);
+        return Objects.hash(elementHeader, sampleData, sourcesOfSampleData, templateCreatedElements, sourcedFromTemplate, templatesForCataloguing, templateUses, actionSource, requestedActions, actionCause, relatedActions, actionTargets, actionsForTarget, searchKeywords, keywordElements, externalReferences, referencingElements, alsoKnownAs, equivalentElements, resourceList, resourceListUsers, providesMoreInformation, describes, propertyFacets, facetedElements, memberOfCollections, collectionMembers, knownLocations, localResources, peerLocations, groupingLocations, nestedLocations, serverEndpoints, serverForEndpoint, hostedITAssets, deployedTo, storageVolumes, providesStorageFor, consumedByCapabilities, capabilityConsumedAssets, capabilities, hostedByDeployedITInfrastructure, cohortMembership, registeredWithCohorts, visibleEndpoints, visibleInNetworks, userProfile, userIdentities, contactDetails, contacts, myFollowers, myPeers, superTeam, subTeams, profilesForAsset, assetsUsingProfile, performsRoles, rolePerformers, relevantToScopes, scopedElements, assignmentScope, assignedActors, contributionRecord, contributorProfile, dependentProjects, dependsOnProjects, managingProjects, managedProjects, likes, likedElement, informalTags, taggedElements, reviews, reviewedElement, comments, commentedOnElement, answeredQuestions, acceptedAnswers, crowdSourcingContributors, crowdSourcedContributions, noteLogSubjects, noteLogs, presentInNoteLogs, noteLogEntries, connections, connectorType, endpoint, connectedAssets, embeddedConnections, parentConnections, supportedDataSets, dataSetContent, apiEndpoints, supportedAPIs, parentProcesses, childProcesses, ports, portOwningProcesses, portDelegatingFrom, portDelegatingTo, homeFolder, nestedFiles, linkedFiles, linkedFolders, parentFolder, nestedFolders, linkedMediaFiles, associatedLogs, associatedLogSubjects, archiveContents, packagedInArchiveFiles, reportOriginator, generatedReports, reportSubjects, reports, priorReports, followOnReports, relatedTerms, usedInContexts, contextRelevantTerms, meaningForDataElements, meanings, semanticDefinitions, semanticallyAssociatedDefinitions, supplementaryProperties, supplementsElement, governedBy, governedElements, peerGovernanceDefinitions, supportedGovernanceDefinitions, supportingGovernanceDefinitions, configuredInSecurityCollections, userAccounts, definedInSecretsCollection, securityAccessControls, listedInSecretsCollection, securityLists, usedInAccessControls, associatedSecurityLists, inheritsFromZone, controlsZones, broaderSubjectArea, nestedSubjectAreas, metrics, measurements, monitoredThrough, monitoredResources, interestingNotificationTypes, subscribers, excludedFromRequirements, exceptions, calledFromGovernanceEngines, supportedGovernanceServices, associatedGovernanceActions, predefinedTargetForAction, triggeredFrom, firstStep, dependedOnProcessSteps, followOnProcessSteps, supportsGovernanceActions, governanceActionExecutor, includedInIntegrationGroups, supportedIntegrationConnectors, refreshedByConnectors, catalogTargets, peerDuplicateOrigin, peerDuplicatePartner, consolidatedDuplicateOrigin, consolidatedDuplicateResult, impactedResources, incidentReports, licenses, licensedElements, certifications, certifiedElements, schemaType, describesStructure, parentSchemaElements, schemaOptions, schemaAttributes, externalSchemaType, mapFromElement, mapToElement, queries, linkedToPrimaryKey, foreignKeys, vertices, edges, describedByDataValueSpecifications, dataValueSpecifications, assignedToDataValueSpecifications, assignedDataValueSpecifications, superDataValueSpecification, subDataValueSpecifications, madeOfDataClasses, partOfDataClasses, validValues, validValueConsumers, referenceValues, assignedItems, matchingValues, consistentValues, associatedValues, validValueMembers, memberOfValidValueSets, validValueImplementations, canonicalValidValues, specificationProperties, specificationPropertyUsers, dataStructureDefinition, usedInCertifications, dataDescription, describesDataFor, containsDataFields, partOfDataStructures, parentDataFields, nestedDataFields, linkedToDataFields, linkedFromDataFields, derivedFromDataStructure, equivalentSchemaType, derivedFromDataField, equivalentSchemaAttribute, fromSurveyReport, reportedAnnotations, previousAnnotations, annotationExtensions, annotationSubjects, associatedAnnotations, annotationMatches, matchedByAnnotations, resourceProfileAnnotations, resourceProfileData, identifiedByRequestForActions, requestForActionTargets, usedByDigitalProducts, usesDigitalProducts, agreementItems, agreementContents, agreementActors, involvedInAgreements, contracts, agreementsForContract, digitalSubscribers, digitalSubscriptions, consumingBusinessCapabilities, usesDigitalServices, supportsBusinessCapabilities, dependsOnBusinessCapabilities, supplyFrom, supplyTo, usedInSolutionComponents, nestedSolutionComponents, interactingWithActors, interactingWithSolutionComponents, solutionComponent, solutionPorts, wiredTo, alignsToPort, delegationPorts, derivedFrom, implementedBy, usedInImplementationOf, implementationResources, describesDesignOf, solutionDesigns, lineageLinkage, otherRelatedElements, relatedBy);
     }
 }

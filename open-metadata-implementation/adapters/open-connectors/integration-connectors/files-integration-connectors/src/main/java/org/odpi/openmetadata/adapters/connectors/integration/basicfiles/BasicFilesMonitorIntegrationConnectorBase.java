@@ -419,9 +419,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * @param deployedImplementationType deployed implementation type to use if the folder is not catalogued
      * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
-    OpenMetadataRootElement getFolderElement(File   dataFolderFile, 
-                                             String assetTypeName, 
-                                             String deployedImplementationType) throws ConnectorCheckedException
+    synchronized OpenMetadataRootElement getFolderElement(File   dataFolderFile,
+                                                          String assetTypeName,
+                                                          String deployedImplementationType) throws ConnectorCheckedException
     {
         final String methodName = "getFolderElementByPathName";
 

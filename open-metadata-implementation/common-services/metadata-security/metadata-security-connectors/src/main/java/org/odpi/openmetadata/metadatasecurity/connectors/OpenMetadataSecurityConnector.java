@@ -19,6 +19,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -33,14 +38,42 @@ import java.util.List;
 public class OpenMetadataSecurityConnector extends ConnectorBase implements AuditLoggingComponent
 
 {
-    protected       String platformName = null;
-    protected       String serverName   = "platform";
-    protected       String           localServerUserId = null;
-    protected       String           connectorName     = null;
+    protected String platformName      = null;
+    protected String serverName        = "platform";
+    protected String localServerUserId = null;
+    protected String connectorName     = null;
 
     protected final String unknownTypeName = "<Unknown>";
 
 
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the connector.
+     * If there is no audit log, the message is also logged to the security log.
+     *
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param actionDescription calling method
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition)
+    {
+        super.logRecord(actionDescription, messageDefinition);
+        
+        if (auditLog == null)
+        {
+            String messageString = serverName + " " + messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("logs/security/security.log", true)))
+            {
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                writer.write(timestamp + " " + messageString);
+                writer.newLine();
+            }
+            catch (IOException e)
+            {
+                System.err.println("Failed to write to security log: " + e.getMessage());
+            }
+        }
+    }
+    
 
     /**
      * Write a log message to say that the connector is initializing.
@@ -249,7 +282,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
         logRecord(methodName,
                   OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CREATE.getMessageDefinition(userId, typeGUID, serverName));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE.getMessageDefinition(userId, typeGUID, serverName),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_CREATE.getMessageDefinition(userId, typeGUID, serverName),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -473,11 +506,10 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                 String       methodName) throws UserNotAuthorizedException
     {
         logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ADD_FEEDBACK.getMessageDefinition(userId,
-                                                                                               elementGUID));
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ADD_FEEDBACK.getMessageDefinition(userId, elementGUID));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_FEEDBACK.getMessageDefinition(userId,
-                                                                                                                            elementGUID),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ADD_FEEDBACK.getMessageDefinition(userId,
+                                                                                                                          elementGUID),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);

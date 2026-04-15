@@ -237,6 +237,34 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.SOURCE.name,
                                                                          dataValueAssignmentProperties.getSource());
                 }
+                else if (properties instanceof ExceptionProperties exceptionProperties)
+                {
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.LAST_REVIEW_TIME.name,
+                                                                       exceptionProperties.getLastReviewTime());
+
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.REVIEW_DATE.name,
+                                                                       exceptionProperties.getReviewDate());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CONDITIONS.name,
+                                                                         exceptionProperties.getConditions());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.STEWARD.name,
+                                                                         exceptionProperties.getSteward());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                                         exceptionProperties.getStewardTypeName());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                                         exceptionProperties.getStewardPropertyName());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.NOTES.name,
+                                                                         exceptionProperties.getNotes());
+                }
                 else if (properties instanceof NetworkGatewayLinkProperties networkGatewayLinkProperties)
                 {
                     elementProperties = propertyHelper.addStringProperty(elementProperties,

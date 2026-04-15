@@ -213,6 +213,32 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a list of names object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    NameListResponse callNameListGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        NameListResponse restResult = this.callGetRESTCall(methodName, NameListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a SecurityAccessControl object.
      *
      * @param methodName  name of the method being called.

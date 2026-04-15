@@ -34,18 +34,19 @@ public class IntegrationContextRefreshProxy
      * @throws UserNotAuthorizedException the user is not authorized
      * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
-    public void setRefreshInProgress(boolean refreshInProgress) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    public void setRefreshInProgress(boolean refreshInProgress,
+                                     long    minMinutesBetweenRefresh) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         if (refreshInProgress)
         {
             this.integrationContext.startRecording();
-            this.integrationContext.setRefreshInProgress(true);
+            this.integrationContext.setRefreshInProgress(true, minMinutesBetweenRefresh);
         }
         else
         {
-            this.integrationContext.setRefreshInProgress(false);
+            this.integrationContext.setRefreshInProgress(false, minMinutesBetweenRefresh);
             this.integrationContext.publishReport();
         }
     }

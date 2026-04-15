@@ -787,7 +787,7 @@ Content-Type: application/json
 
 ###
 # @name find an element that is in the "sustainability" zone.
-# Notice that although the additionalProperties is a map, we use a primitive to describe the leaf node value we want.
+# Notice that although the zoneMembership is an array, we use a primitive to describe the leaf node value we want.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
 Authorization: Bearer {{token}}
 Content-Type: application/json

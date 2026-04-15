@@ -122,7 +122,7 @@ public enum RequestTypeDefinition
                                 ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
-     * one-time-notification
+     * award-karma-points
      */
     AWARD_KARMA_POINTS(GovernanceActionTypeDefinition.AWARD_KARMA_POINTS.getGovernanceRequestType(),
                        null,
@@ -136,6 +136,23 @@ public enum RequestTypeDefinition
                        "Award Karma Points",
                        "Monitors contributions to the open metadata ecosystem and awards karma points to the users responsible.",
                        ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+    /**
+     * build-zone-membership-profile
+     */
+    BUILD_ZONE_MEMBERSHIP_PROFILE(GovernanceActionTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceRequestType(),
+                       null,
+                       null,
+                       null,
+                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE,
+                       GovernanceActionTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceActionTypeGUID(),
+                       null,
+                       "3e1d7e33-f871-4a4f-b50d-25e59516f7bd",
+                       "Build Zone Membership Profile",
+                       "Counts the elements of each type in each Governance Zone.",
+                       ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
 
     /**
      * provision-tabular-data-set

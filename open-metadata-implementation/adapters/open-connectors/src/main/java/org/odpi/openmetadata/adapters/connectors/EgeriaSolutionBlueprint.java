@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors;
 
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionBlueprintDefinition;import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
@@ -28,50 +29,61 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
                                        EgeriaSolutionComponent.EGERIA_BUILD,
                                        DeployedImplementationType.OPEN_METADATA_ARCHIVE.getSolutionComponent(),
                                        EgeriaSolutionComponent.LOAD_ARCHIVE,
-                                       DeployedImplementationType.OPEN_METADATA_REPOSITORY.getSolutionComponent()}),
+                                       DeployedImplementationType.OPEN_METADATA_REPOSITORY.getSolutionComponent()},
+                               new ActorRoleDefinition[]{
+                                       EgeriaRoleDefinition.EGERIA_COMMUNITY,
+                                       EgeriaRoleDefinition.OPEN_METADATA_USER}),
 
 
     /**
      * Description of the simple open metadata deployment environment used for evaluation and small team deployments.
      */
     EGERIA_WORKSPACES_INFRA("1d1fa174-273f-42bd-a8c0-3470fbc70fdf",
-                      "EGERIA-WORKSPACES-RUNTIMES",
-                      "Egeria Workspaces Runtimes Solution Blueprint",
-                      "These are the main technology runtimes that are set up by Egeria Workspaces.  Egeria Workspaces provide a simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset.",
-                      new SolutionComponentDefinition[]{
-                              DeployedImplementationType.APACHE_AIRFLOW_SERVER.getSolutionComponent(),
-                              EgeriaSolutionComponent.OL_PROXY,
-                              EgeriaSolutionComponent.WORKSPACES_POSTGRES_SERVER,
-                              EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getSolutionComponent(),
-                              DeployedImplementationType.MARQUEZ_SERVER.getSolutionComponent(),
-                              EgeriaSolutionComponent.APACHE_WEB_SERVER,
-                              EgeriaSolutionComponent.PYEGERIA_WEB,
-                              DeployedImplementationType.APACHE_SUPERSET.getSolutionComponent(),
-                              EgeriaSolutionComponent.APACHE_KAFKA,
-                              EgeriaSolutionComponent.JUPYTER_HUB,
-                      }),
+                            "EGERIA-WORKSPACES-RUNTIMES",
+                            "Egeria Workspaces Runtimes Solution Blueprint",
+                            "These are the main technology runtimes that are set up by Egeria Workspaces.  Egeria Workspaces provide a simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset.",
+                            new SolutionComponentDefinition[]{
+                                    DeployedImplementationType.APACHE_AIRFLOW_SERVER.getSolutionComponent(),
+                                    EgeriaSolutionComponent.OL_PROXY,
+                                    EgeriaSolutionComponent.WORKSPACES_POSTGRES_SERVER,
+                                    EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getSolutionComponent(),
+                                    DeployedImplementationType.MARQUEZ_SERVER.getSolutionComponent(),
+                                    EgeriaSolutionComponent.APACHE_WEB_SERVER,
+                                    EgeriaSolutionComponent.PYEGERIA_WEB,
+                                    DeployedImplementationType.APACHE_SUPERSET.getSolutionComponent(),
+                                    EgeriaSolutionComponent.APACHE_KAFKA,
+                                    EgeriaSolutionComponent.JUPYTER_HUB,
+                            },
+                            new ActorRoleDefinition[]{
+                                    EgeriaRoleDefinition.OPEN_METADATA_USER}),
 
+    /**
+     * Description of the main servers that are set up by Egeria Workspaces.  Egeria Workspaces provide a simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset.
+     */
     EGERIA_WORKSPACES_SERVERS("572ae03b-21c1-4277-8606-8db5d3593a50",
-                      "EGERIA-WORKSPACES-SERVERS",
-                      "Egeria Workspaces Servers Solution Blueprint",
-                      "These are the main servers that are set up by Egeria Workspaces.  Egeria Workspaces provide a simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset.",
-                      new SolutionComponentDefinition[]{
-                              EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponent(),
-                              DeployedImplementationType.APACHE_AIRFLOW_SERVER.getSolutionComponent(),
-                              EgeriaSolutionComponent.OL_PROXY,
-                              EgeriaSolutionComponent.OL_KAFKA_TOPIC,
-                              EgeriaSolutionComponent.AUDIT_LOG_TOPIC,
-                              EgeriaSolutionComponent.OPEN_METADATA_TOPIC,
-                              EgeriaSolutionComponent.OPEN_GOVERNANCE_TOPIC,
-                              EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getSolutionComponent(),
-                              EgeriaDeployedImplementationType.VIEW_SERVER.getSolutionComponent(),
-                              EgeriaDeployedImplementationType.ENGINE_HOST.getSolutionComponent(),
-                              DeployedImplementationType.PYEGERIA.getSolutionComponent(),
-                              EgeriaSolutionComponent.DR_EGERIA,
-                              EgeriaSolutionComponent.HEY_EGERIA,
-                              EgeriaSolutionComponent.MY_EGERIA,
-                              DeployedImplementationType.JUPYTER_NOTEBOOK.getSolutionComponent(),
-                      }),
+                              "EGERIA-WORKSPACES-SERVERS",
+                              "Egeria Workspaces Servers Solution Blueprint",
+                              "These are the main servers that are set up by Egeria Workspaces.  Egeria Workspaces provide a simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset.",
+                              new SolutionComponentDefinition[]{
+                                      EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponent(),
+                                      DeployedImplementationType.APACHE_AIRFLOW_SERVER.getSolutionComponent(),
+                                      EgeriaSolutionComponent.OL_PROXY,
+                                      EgeriaSolutionComponent.OL_KAFKA_TOPIC,
+                                      EgeriaSolutionComponent.AUDIT_LOG_TOPIC,
+                                      EgeriaSolutionComponent.OPEN_METADATA_TOPIC,
+                                      EgeriaSolutionComponent.OPEN_GOVERNANCE_TOPIC,
+                                      EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getSolutionComponent(),
+                                      EgeriaDeployedImplementationType.VIEW_SERVER.getSolutionComponent(),
+                                      EgeriaDeployedImplementationType.ENGINE_HOST.getSolutionComponent(),
+                                      DeployedImplementationType.PYEGERIA.getSolutionComponent(),
+                                      EgeriaSolutionComponent.DR_EGERIA,
+                                      EgeriaSolutionComponent.HEY_EGERIA,
+                                      EgeriaSolutionComponent.MY_EGERIA,
+                                      DeployedImplementationType.JUPYTER_NOTEBOOK.getSolutionComponent(),
+                              },
+                              new ActorRoleDefinition[]{
+                                      EgeriaRoleDefinition.PYTHON_PROGRAMMER,
+                                      EgeriaRoleDefinition.OPEN_METADATA_USER}),
 
 
     /**
@@ -86,15 +98,18 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
                             EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getSolutionComponent(),
                             DeployedImplementationType.OPEN_METADATA_REPOSITORY.getSolutionComponent(),
                             EgeriaDeployedImplementationType.ENGINE_HOST.getSolutionComponent(),
-                            EgeriaDeployedImplementationType.VIEW_SERVER.getSolutionComponent()}),
+                            EgeriaDeployedImplementationType.VIEW_SERVER.getSolutionComponent()},
+                    null),
 
     ;
 
-    private final String                         guid;
+    private final String                        guid;
     private final String                        identifier;
     private final String                        displayName;
     private final String                        description;
     private final SolutionComponentDefinition[] solutionComponents;
+    private final ActorRoleDefinition[]         solutionRoles;
+
 
     /**
      * Construct an enum instance.
@@ -109,13 +124,15 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
                             String                            identifier,
                             String                            displayName,
                             String                            description,
-                            SolutionComponentDefinition[]     solutionComponents)
+                            SolutionComponentDefinition[]     solutionComponents,
+                            ActorRoleDefinition[]             solutionRoles)
     {
         this.guid                    = guid;
         this.identifier              = identifier;
         this.displayName             = displayName;
         this.description             = description;
         this.solutionComponents      = solutionComponents;
+        this.solutionRoles           = solutionRoles;
     }
 
 
@@ -187,6 +204,23 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
         if (solutionComponents != null)
         {
             return new ArrayList<>(Arrays.asList(solutionComponents));
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of roles that are members of the solution blueprint.
+     *
+     * @return list of role definitions
+     */
+    @Override
+    public List<ActorRoleDefinition> getSolutionRoles()
+    {
+        if (solutionRoles != null)
+        {
+            return new ArrayList<>(Arrays.asList(solutionRoles));
         }
 
         return null;

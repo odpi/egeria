@@ -1042,14 +1042,7 @@ public class MermaidGraphBuilderBase
 
                 spacedName.append(c);
 
-                if (c == '[')
-                {
-                    newTypeName = true;
-                }
-                else
-                {
-                    newTypeName = false;
-                }
+                newTypeName = c == '[';
             }
         }
 
@@ -2175,11 +2168,13 @@ public class MermaidGraphBuilderBase
 
     /**
      * This is used for creating solution blueprint or solution component internal graphs.  It adds
-     * The list of nodes passed in as parameters and then adds the relationships between them, ignoring everything else.
+     * the list of nodes passed in as parameters and then adds the relationships between them, ignoring everything else.
      *
      * @param requiredSolutionComponents list of nodes
+     * @param addAllActors should any additional actors be added to the graph (true for SolutionComponent, false for solution blueprint.
      */
-    public void addSolutionComponentListToGraph(List<RelatedMetadataElementSummary> requiredSolutionComponents)
+    public void addSolutionComponentListToGraph(List<RelatedMetadataElementSummary> requiredSolutionComponents,
+                                                boolean                             addAllActors)
     {
         List<String> solutionLinkingWireGUIDs = new ArrayList<>();
         List<String> validNodeGUIDs           = new ArrayList<>();
@@ -2193,7 +2188,8 @@ public class MermaidGraphBuilderBase
         {
             for (RelatedMetadataElementSummary node : requiredSolutionComponents)
             {
-                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                if ((node != null) && ((propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)) ||
+                                       (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.ACTOR.typeName))))
                 {
                     validNodeGUIDs.add(node.getRelatedElement().getElementHeader().getGUID());
 
@@ -2228,7 +2224,8 @@ public class MermaidGraphBuilderBase
                      */
                     this.addSolutionComponentLinksToGraph(node,
                                                           solutionLinkingWireGUIDs,
-                                                          validNodeGUIDs);
+                                                          validNodeGUIDs,
+                                                          addAllActors);
                 }
             }
         }
@@ -2241,10 +2238,12 @@ public class MermaidGraphBuilderBase
      * @param solutionComponentElement element to process
      * @param solutionLinkingWireGUIDs list of solution wires already defined
      * @param validNodeGUIDs list of solution component nodes that ate allowed in the blueprint
+     * @param addAllActors should any additional actors be added to the graph (true for SolutionComponent, false for solution blueprint.
      */
     public void addSolutionComponentLinksToGraph(RelatedMetadataElementSummary solutionComponentElement,
                                                  List<String>                  solutionLinkingWireGUIDs,
-                                                 List<String>                  validNodeGUIDs)
+                                                 List<String>                  validNodeGUIDs,
+                                                 boolean                       addAllActors)
 
     {
         if (solutionComponentElement != null)
@@ -2263,7 +2262,7 @@ public class MermaidGraphBuilderBase
                             /*
                              * Only actors can be added to the graph at this point.
                              */
-                            if (propertyHelper.isTypeOf(line.getRelatedElement().getElementHeader(), OpenMetadataType.ACTOR.typeName))
+                            if ((addAllActors) && (propertyHelper.isTypeOf(line.getRelatedElement().getElementHeader(), OpenMetadataType.ACTOR.typeName)))
                             {
                                 appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                      relatedComponentDisplayName,

@@ -157,12 +157,207 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        update0112Person();
+        update01135ActionsForPeople();
+        update0424GovernanceZones();
+        update0455ExceptionManagement();
     }
 
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    private void update0112Person()
+    {
+        this.archiveBuilder.addTypeDefPatch(getPeerRelationshipPatch());
+    }
+
+    private TypeDefPatch getPeerRelationshipPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PEER_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update01135ActionsForPeople()
+    {
+        this.archiveBuilder.addEntityDef(getActivityEntryEntity());
+        this.archiveBuilder.addEntityDef(getBlogEntryEntity());
+        this.archiveBuilder.addEntityDef(getJournalEntryEntity());
+    }
+
+
+    private EntityDef getActivityEntryEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTIVITY_ENTRY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName));
+    }
+
+    private EntityDef getBlogEntryEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.BLOG_ENTRY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName));
+    }
+
+    private EntityDef getJournalEntryEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.JOURNAL_ENTRY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName));
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0424GovernanceZones()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateZoneMembershipProfileClassification());
+    }
+
+    private TypeDefPatch updateZoneMembershipProfileClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ZONE_MEMBERSHIP_PROFILE_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TYPE_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_TIME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0455ExceptionManagement()
+    {
+        this.archiveBuilder.addClassificationDef(getSecurityLogClassification());
+        this.archiveBuilder.addEntityDef(getExceptionTypeEntity());
+        this.archiveBuilder.addRelationshipDef(getExceptionRelationship());
+    }
+
+    private ClassificationDef getSecurityLogClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SECURITY_LOG_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+    private EntityDef getExceptionTypeEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXCEPTION_TYPE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
+    }
+
+
+    private RelationshipDef getExceptionRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.EXCEPTION_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        relationshipDef.setMultiLink(true);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "exceptions";
+        final String                     end1AttributeDescription     = "Types of exception assigned to this element.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "excludedFromRequirements";
+        final String                     end2AttributeDescription     = "The elements that are non-compliant with the associated policy.  The exception type defines the nature of the non-compliance.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.EXCEPTION_TYPE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_REVIEW_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REVIEW_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONDITIONS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
 
 
     /*

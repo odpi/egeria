@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -568,6 +569,58 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                                             PropertyServerException
     {
         return openMetadataClient.getMetadataElementHistory(connectorUserId, elementGUID, queryOptions);
+    }
+
+
+    /**
+     * Retrieve metadata elements with the requested classification containing any of the supplied list of property
+     * names exactly matching the supplied value.
+     *
+     * @param classificationName         name of the classification
+     * @param classificationPropertyNames property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String       classificationName,
+                                                                                      List<String> classificationPropertyNames,
+                                                                                      String       classificationPropertyValue,
+                                                                                      QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        return openMetadataClient.getMetadataElementsByClassificationPropertyValue(connectorUserId, classificationName, classificationPropertyNames, classificationPropertyValue, queryOptions);
+    }
+
+
+    /**
+     * Retrieve metadata elements with the requested classification containing any of the supplied list of property
+     * names exactly matching the supplied value.
+     *
+     * @param classificationName         name of the classification
+     * @param classificationPropertyNames property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param searchOptions multiple options to control the query
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsByClassificationPropertyValue(String                classificationName,
+                                                                                       List<String>          classificationPropertyNames,
+                                                                                       String                classificationPropertyValue,
+                                                                                       SearchOptions         searchOptions) throws InvalidParameterException,
+                                                                                                                                   UserNotAuthorizedException,
+                                                                                                                                   PropertyServerException
+    {
+        return openMetadataClient.findMetadataElementsByClassificationPropertyValue(connectorUserId, classificationName, classificationPropertyNames, classificationPropertyValue, searchOptions);
     }
 
 

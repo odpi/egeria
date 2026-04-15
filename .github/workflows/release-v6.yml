@@ -46,7 +46,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      # QEMU is needed for ARM64 build for egeria-configure
+      # Just build but don't publish (yet)
+      - name: build (no publish to maven central)
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: build
       # egeria-configure needs to install utilities
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

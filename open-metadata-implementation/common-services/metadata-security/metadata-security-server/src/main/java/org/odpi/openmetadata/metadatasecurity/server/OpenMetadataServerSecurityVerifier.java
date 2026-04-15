@@ -772,6 +772,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId             identifier of user
      * @param originalEntity     original entity details
      * @param classificationName name of the classification
+     * @param classificationProperties new properties
      * @param repositoryHelper   helper for OMRS objects
      * @param serviceName        calling service
      * @param methodName         calling method
@@ -783,6 +784,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void validateUserForElementClassify(String               userId,
                                                EntityDetail         originalEntity,
                                                String               classificationName,
+                                               InstanceProperties   classificationProperties,
                                                OMRSRepositoryHelper repositoryHelper,
                                                String               serviceName,
                                                String               methodName) throws UserNotAuthorizedException,
@@ -791,7 +793,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (elementSecurityConnector != null)
         {
-            elementSecurityConnector.validateUserForElementClassify(userId, originalEntity, classificationName, repositoryHelper, serviceName, methodName);
+            elementSecurityConnector.validateUserForElementClassify(userId, originalEntity, classificationName, classificationProperties, repositoryHelper, serviceName, methodName);
         }
     }
 
@@ -990,6 +992,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId             identifier of user
      * @param anchorEntity       anchor details
      * @param classificationName name of the classification
+     * @param classificationProperties new properties
      * @param repositoryHelper   helper for OMRS objects
      * @param serviceName        calling service
      * @param methodName         calling method
@@ -1001,6 +1004,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void validateUserForAnchorClassify(String               userId,
                                               EntityDetail         anchorEntity,
                                               String               classificationName,
+                                              InstanceProperties   classificationProperties,
                                               OMRSRepositoryHelper repositoryHelper,
                                               String               serviceName,
                                               String               methodName) throws UserNotAuthorizedException,
@@ -1009,7 +1013,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (elementSecurityConnector != null)
         {
-            elementSecurityConnector.validateUserForAnchorClassify(userId, anchorEntity, classificationName, repositoryHelper, serviceName, methodName);
+            elementSecurityConnector.validateUserForAnchorClassify(userId, anchorEntity, classificationName, classificationProperties, repositoryHelper, serviceName, methodName);
         }
     }
 

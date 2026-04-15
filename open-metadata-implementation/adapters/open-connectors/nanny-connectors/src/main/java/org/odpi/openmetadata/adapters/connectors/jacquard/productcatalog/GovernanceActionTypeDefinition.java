@@ -24,6 +24,12 @@ public enum GovernanceActionTypeDefinition
                           "de681791-d978-4d5a-9828-6e19025e3a17"),
 
     /**
+     * build-zone-membership-profile
+     */
+    BUILD_ZONE_MEMBERSHIP_PROFILE("build-zone-membership-profile",
+                       "70ab5403-96b3-4075-8d86-998d0a39c146"),
+
+    /**
      * provision-tabular-data-set
      */
     PROVISION_TABULAR("provision-tabular-data-set",

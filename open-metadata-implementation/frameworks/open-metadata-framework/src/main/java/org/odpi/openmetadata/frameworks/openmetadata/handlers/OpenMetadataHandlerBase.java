@@ -946,7 +946,7 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Filter element based on zone membership.
+     * Filter element based on zone membership.  The element has to be explicitly in all the requested zones.
      *
      * @param classification Anchors or ZoneMembership classification.
      * @param requiredZones supplied zones to scan for
@@ -957,18 +957,15 @@ public class OpenMetadataHandlerBase
     {
         final String methodName = "checkElementZoneMembership";
 
-        if (classification != null)
+        if ((requiredZones != null) && (! requiredZones.isEmpty()))
         {
-            List<String> elementZones = propertyHelper.getStringArrayProperty(localServiceName,
-                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                              classification.getClassificationProperties(),
-                                                                              methodName);
-            if ((elementZones == null) || (elementZones.isEmpty()))
+            if (classification != null)
             {
-                return true;
-            }
-            else
-            {
+                List<String> elementZones = propertyHelper.getStringArrayProperty(localServiceName,
+                                                                                  OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                  classification.getClassificationProperties(),
+                                                                                  methodName);
+
                 for (String requiredZone : requiredZones)
                 {
                     if (requiredZone != null)
@@ -980,6 +977,8 @@ public class OpenMetadataHandlerBase
                     }
                 }
             }
+
+            return false;
         }
 
         return true;
@@ -1260,6 +1259,14 @@ public class OpenMetadataHandlerBase
                                                                                         OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName),
                                                                                 queryOptions,
                                                                                 1));
+
+            rootElement.setSecurityAccessControls(this.getElementHierarchies(userId,
+                                                                             rootElement.getSecurityAccessControls(),
+                                                                             1,
+                                                                             OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName,
+                                                                             null,
+                                                                             queryOptions,
+                                                                             1));
 
             rootElement.setAssignedActors(this.getElementHierarchies(userId,
                                                                       rootElement.getAssignedActors(),

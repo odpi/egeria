@@ -89,11 +89,11 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                    "It is possible to query the result of the monitoring request through Egeria's Open Metadata REST APIs."),
 
     /**
-     * OMES-WATCHDOG-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread
+     * OMES-WATCHDOG-ACTION-0020 - The {0} governance action service for request type {1} is continuing to run in a background thread
      */
     WATCHDOG_ACTION_SERVICE_RETURNED("OMES-WATCHDOG-ACTION-0020",
                                        AuditLogRecordSeverityLevel.INFO,
-                                       "The {0} watchdog action service {1} for request type {2} is continuing to run in a background thread",
+                                       "The {0} watchdog action service for request type {1} is continuing to run in a background thread",
                                        "A watchdog action service has returned from the start() method without setting up the completion status prior to returning.",
                                        "Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to" +
                                                "still be running at this stage because it will have registered a listener."),

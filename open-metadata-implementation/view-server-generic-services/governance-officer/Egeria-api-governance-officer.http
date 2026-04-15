@@ -322,8 +322,8 @@ Content-Type: application/json
 
 
 ###
-# @name createSecurityGroup (with parent)
-# Create an anchored governance definition linked to a parent of type SecurityGroup
+# @name createSecurityAccessControl (with parent)
+# Create an anchored governance definition linked to a parent
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -346,7 +346,7 @@ Content-Type: application/json
   },
   "parentAtEnd1": false,
   "properties": {
-    "class" : "SecurityGroupProperties",
+    "class" : "SecurityAccessControlProperties",
     "domainIdentifier": 0,
     "distinguishedName" : "",
     "qualifiedName": "add unique name here",

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
     private String                 governanceEngineDescription = null;
     private GovernanceEngineStatus governanceEngineStatus      = null;
     private List<String>           governanceRequestTypes      = null;
+    private Date                   lastRefreshTime             = null;
 
 
     /**
@@ -51,13 +53,14 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
 
         if (template != null)
         {
-            governanceEngineName = template.getGovernanceEngineName();
-            governanceEngineTypeName = template.getGovernanceEngineTypeName();
-            governanceEngineService = template.getGovernanceEngineService();
-            governanceEngineGUID = template.getGovernanceEngineGUID();
+            governanceEngineName        = template.getGovernanceEngineName();
+            governanceEngineTypeName    = template.getGovernanceEngineTypeName();
+            governanceEngineService     = template.getGovernanceEngineService();
+            governanceEngineGUID        = template.getGovernanceEngineGUID();
             governanceEngineDescription = template.getGovernanceEngineDescription();
-            governanceEngineStatus = template.getGovernanceEngineStatus();
-            governanceRequestTypes = template.getGovernanceRequestTypes();
+            governanceEngineStatus      = template.getGovernanceEngineStatus();
+            governanceRequestTypes      = template.getGovernanceRequestTypes();
+            lastRefreshTime             = template.getLastRefreshTime();
         }
     }
 
@@ -173,6 +176,7 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
         return governanceEngineDescription;
     }
 
+
     /**
      * Set up the description of the governance engine.
      *
@@ -238,6 +242,30 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
 
 
     /**
+     * Return the timestamp of the last refresh of the integration group configuration.
+     * This is throttled to a minimum 10 minute interval.
+     *
+     * @return last refresh time
+     */
+    public Date getLastRefreshTime()
+    {
+        return lastRefreshTime;
+    }
+
+
+    /**
+     * Set the timestamp of the last refresh of the integration group configuration.
+     * This is throttled to a minimum 10 minute interval.
+     *
+     * @param lastRefreshTime last refresh time
+     */
+    public void setLastRefreshTime(Date lastRefreshTime)
+    {
+        this.lastRefreshTime = lastRefreshTime;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return description of the object values
@@ -253,6 +281,7 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
                 ", governanceEngineDescription='" + governanceEngineDescription + '\'' +
                 ", governanceEngineStatus=" + governanceEngineStatus +
                 ", governanceRequestTypes=" + governanceRequestTypes +
+                ", lastRefreshTime=" + lastRefreshTime +
                 "} " + super.toString();
     }
 
@@ -270,7 +299,14 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         GovernanceEngineSummary that = (GovernanceEngineSummary) objectToCompare;
-        return Objects.equals(governanceEngineName, that.governanceEngineName) && Objects.equals(governanceEngineTypeName, that.governanceEngineTypeName) && Objects.equals(governanceEngineService, that.governanceEngineService) && Objects.equals(governanceEngineGUID, that.governanceEngineGUID) && Objects.equals(governanceEngineDescription, that.governanceEngineDescription) && governanceEngineStatus == that.governanceEngineStatus && Objects.equals(governanceRequestTypes, that.governanceRequestTypes);
+        return Objects.equals(governanceEngineName, that.governanceEngineName) &&
+                Objects.equals(governanceEngineTypeName, that.governanceEngineTypeName) &&
+                Objects.equals(governanceEngineService, that.governanceEngineService) &&
+                Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
+                Objects.equals(governanceEngineDescription, that.governanceEngineDescription) &&
+                Objects.equals(lastRefreshTime, that.lastRefreshTime) &&
+                governanceEngineStatus == that.governanceEngineStatus &&
+                Objects.equals(governanceRequestTypes, that.governanceRequestTypes);
     }
 
     /**
@@ -281,6 +317,8 @@ public class GovernanceEngineSummary extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), governanceEngineName, governanceEngineTypeName, governanceEngineService, governanceEngineGUID, governanceEngineDescription, governanceEngineStatus, governanceRequestTypes);
+        return Objects.hash(super.hashCode(), governanceEngineName, governanceEngineTypeName, governanceEngineService,
+                            governanceEngineGUID, governanceEngineDescription, governanceEngineStatus,
+                            governanceRequestTypes, lastRefreshTime);
     }
 }

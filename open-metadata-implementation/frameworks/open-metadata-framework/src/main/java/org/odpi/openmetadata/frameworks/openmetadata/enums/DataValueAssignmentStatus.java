@@ -59,11 +59,11 @@ public enum DataValueAssignmentStatus implements OpenMetadataEnum
     ;
 
     private static final String ENUM_TYPE_GUID  = "2611892f-0527-478f-8843-a3aa2b9abb47";
-    private static final String ENUM_TYPE_NAME  = "DataDefinitionAssignmentStatus";
+    private static final String ENUM_TYPE_NAME  = "DataValueAssignmentStatus";
 
     private static final String ENUM_DESCRIPTION = "Defines the provenance and confidence of an assignment of a data definition such as a data class or a data grain to an element.";
     private static final String ENUM_DESCRIPTION_GUID = "36d8a171-1b8d-4f7e-88f1-f89b9566f33a";
-    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0540_DATA_VALUE_SSPECIFICATION;
+    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0540_DATA_VALUE_SPECIFICATION;
 
     private final String descriptionGUID;
 

@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformSecurityServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,6 +108,30 @@ public class OMAGServerPlatformSecurityResource
         return adminSecurityAPI.clearPlatformSecurityConnection(delegatingUserId);
     }
 
+
+    /**
+     * Return the list of users from the platform metadata security connector.  Null is returned if no platform security or user accounts have been set up.
+     *
+     * @param delegatingUserId external userId making request
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return user list response
+     */
+    @GetMapping(path = "/user-list")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getUserList",
+            description="Return the list of users from the platform metadata security connector.  Null is returned if no platform security or user accounts have been set up.",
+            externalDocs=@ExternalDocumentation(description="Metadata Security",
+                    url="https://egeria-project.org/features/metadata-security/overview/"))
+
+
+    public NameListResponse getUserList(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                        @Parameter(description="UserAccountStatus enum")  @RequestParam(required = false) UserAccountStatus userAccountStatus,
+                                        @Parameter(description="UserAccountType enum")  @RequestParam(required = false) UserAccountType userAccountType)
+    {
+        return adminSecurityAPI.getUserList(delegatingUserId, userAccountStatus, userAccountType);
+    }
 
     /**
      * Set up a user account in the platform metadata security connector

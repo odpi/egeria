@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class IntegrationGroupSummary
     private String                           integrationGroupDescription = null;
     private IntegrationGroupStatus           integrationGroupStatus      = null;
     private List<IntegrationConnectorReport> integrationConnectorReports = null;
+    private Date                             lastRefreshTime             = null;
 
 
     /**
@@ -50,6 +52,7 @@ public class IntegrationGroupSummary
             integrationGroupDescription = template.getIntegrationGroupDescription();
             integrationGroupStatus      = template.getIntegrationGroupStatus();
             integrationConnectorReports = template.getIntegrationConnectorReports();
+            lastRefreshTime             = template.getLastRefreshTime();
         }
     }
 
@@ -164,6 +167,31 @@ public class IntegrationGroupSummary
         this.integrationConnectorReports = integrationConnectorReports;
     }
 
+
+    /**
+     * Return the timestamp of the last refresh of the integration group configuration.
+     * This is throttled to a minimum 10 minute interval.
+     *
+     * @return last refresh time
+     */
+    public Date getLastRefreshTime()
+    {
+        return lastRefreshTime;
+    }
+
+
+    /**
+     * Set the timestamp of the last refresh of the integration group configuration.
+     * This is throttled to a minimum 10 minute interval.
+     *
+     * @param lastRefreshTime last refresh time
+     */
+    public void setLastRefreshTime(Date lastRefreshTime)
+    {
+        this.lastRefreshTime = lastRefreshTime;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -178,6 +206,7 @@ public class IntegrationGroupSummary
                 ", integrationGroupDescription='" + integrationGroupDescription + '\'' +
                 ", integrationGroupStatus=" + integrationGroupStatus +
                 ", integrationConnectorReports=" + integrationConnectorReports +
+                ", lastRefreshTime=" + lastRefreshTime +
                 '}';
     }
 
@@ -204,7 +233,8 @@ public class IntegrationGroupSummary
                        Objects.equals(integrationGroupGUID, that.integrationGroupGUID) &&
                 Objects.equals(integrationGroupDescription, that.integrationGroupDescription) &&
                 integrationGroupStatus == that.integrationGroupStatus &&
-                Objects.equals(integrationConnectorReports, that.integrationConnectorReports);
+                Objects.equals(integrationConnectorReports, that.integrationConnectorReports) &&
+                Objects.equals(lastRefreshTime, that.lastRefreshTime);
     }
 
 
@@ -216,6 +246,6 @@ public class IntegrationGroupSummary
    @Override
    public int hashCode()
    {
-       return Objects.hash(integrationGroupName, integrationGroupGUID, integrationGroupDescription, integrationGroupStatus, integrationConnectorReports);
+       return Objects.hash(integrationGroupName, integrationGroupGUID, integrationGroupDescription, integrationGroupStatus, integrationConnectorReports, lastRefreshTime);
    }
 }

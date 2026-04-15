@@ -14,6 +14,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Q
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
+import org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.LovelaceZoneMembershipProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
@@ -395,6 +396,18 @@ public enum GovernanceServiceDefinition
                           ResourceUse.GENERATE_INSIGHT,
                           DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
                           ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+    /**
+     * Lovelace Zone Membership Profiler Governance Action Service
+     */
+    BUILD_ZONE_MEMBERSHIP_PROFILE("d16b5da8-3a76-499c-9cb0-c7184dd2dfb3",
+                       "zone-memebership-profile-governance-service",
+                       "Lovelace Zone Membership Profiler Governance Action Service",
+                       new LovelaceZoneMembershipProfilerServiceProvider(),
+                       ResourceUse.GENERATE_INSIGHT,
+                       DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                       ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
     ;
 
     private final String                               guid;

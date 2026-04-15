@@ -227,7 +227,7 @@ public class QueryOptions extends PagingOptions
     /**
      * Return the list of governance zones to restrict the elements (if any) returned to members of these
      * zones.  If the value is null (the default) then all matching elements are returned, subject to
-     * the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
+     * the usual security restrictions.  Be aware that the governance zones set on an anchor element apply to all elements anchored to it.
      * Any element retrieved that is anchored to another element will not be returned if this filter is set.
      *
      * @return list of governance zone names
@@ -237,6 +237,19 @@ public class QueryOptions extends PagingOptions
         return governanceZoneFilter;
     }
 
+
+    /**
+     * Set up the list of governance zones to restrict the elements (if any) returned to members of these
+     * zones.  If the value is null (the default) then all matching elements are returned, subject to
+     * the usual security restrictions.  Be aware that the governance zones set on an anchor element apply to all elements anchored to it.
+     * Any element retrieved that is anchored to another element will not be returned if this filter is set.
+     *
+     * @param governanceZoneFilter list of governance zone names
+     */
+    public void setGovernanceZoneFilter(List<String> governanceZoneFilter)
+    {
+        this.governanceZoneFilter = governanceZoneFilter;
+    }
 
 
     /**
@@ -284,20 +297,6 @@ public class QueryOptions extends PagingOptions
     public void setIncludeOnlyClassifiedElements(List<String> includeOnlyClassifiedElements)
     {
         this.includeOnlyClassifiedElements = includeOnlyClassifiedElements;
-    }
-
-
-    /**
-     * Set up the list of governance zones to restrict the elements (if any) returned to members of these
-     * zones.  If the value is null (the default) then all matching elements are returned, subject to
-     * the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
-     * Any element retrieved that is anchored to another element will not be returned if this filter is set.
-     *
-     * @param governanceZoneFilter list of governance zone names
-     */
-    public void setGovernanceZoneFilter(List<String> governanceZoneFilter)
-    {
-        this.governanceZoneFilter = governanceZoneFilter;
     }
 
 

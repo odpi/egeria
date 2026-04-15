@@ -65,6 +65,11 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
                              "SustainabilityChampion",
                              "Sustainability Champion",
                              "A Coco Pharmaceuticals employee focused on improving sustainability in their work environment."),
+
+    EMPLOYEE("9d35b578-c275-4a06-bcfd-8685a088a726",
+                            "Employee",
+                            "Employee",
+                            "Any Coco Pharmaceuticals employee."),
     ;
 
     private final String                 guid;

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
@@ -655,6 +656,13 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS.name,
                                                                                  infrastructureProperties.getUserDefinedDeploymentStatus());
+
+                            if (properties instanceof ITInfrastructureProperties itInfrastructureProperties)
+                            {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                   OpenMetadataProperty.USER_ID.name,
+                                                                                   itInfrastructureProperties.getUserId());
+                            }
                         }
                     }
                     else if (properties instanceof AuthoredReferenceableProperties authoredReferenceableProperties)
@@ -1424,6 +1432,10 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.SCOPE.name,
                                                                                  governanceDefinitionProperties.getScope());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.USAGE.name,
+                                                                                 governanceDefinitionProperties.getUsage());
 
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.IMPORTANCE.name,

@@ -166,7 +166,7 @@ public enum OpenMetadataProperty
     /**
      * Properties to locate the real-world counterpart in the archive.
      */
-    ARCHIVE_PROPERTIES("archiveProperties", DataType.STRING, DataType.STRING.getDisplayName(), "Properties to locate the real-world counterpart in the archive.", null, "d149d2d8-f181-4c20-8d68-5460f54bece5"),
+    ARCHIVE_PROPERTIES("archiveProperties", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Properties to locate the real-world counterpart in the archive.", null, "d149d2d8-f181-4c20-8d68-5460f54bece5"),
 
     /**
      * The unique identifier of the referenceable that this element is directly or indirectly anchored to.
@@ -174,9 +174,9 @@ public enum OpenMetadataProperty
     ANCHOR_GUID("anchorGUID", DataType.STRING, DataType.STRING.getDisplayName(), "The unique identifier of the referenceable that this element is directly or indirectly anchored to.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "e7de4efc-6fa4-4942-97eb-e9b5be701875"),
 
     /**
-     * Unique name of the type of the anchor.
+     * Unique name of the anchor element's type.
      */
-    ANCHOR_TYPE_NAME("anchorTypeName", DataType.STRING, DataType.STRING.getDisplayName(), "Unique name of the type of the anchor.", "Asset", "605c9dd5-fa79-4457-b299-9169c5567f97"),
+    ANCHOR_TYPE_NAME("anchorTypeName", DataType.STRING, DataType.STRING.getDisplayName(), "Unique name of the anchor element's type.", "Asset", "605c9dd5-fa79-4457-b299-9169c5567f97"),
 
     /**
      * Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.
@@ -249,9 +249,19 @@ public enum OpenMetadataProperty
     ZONE_MEMBERSHIP("zoneMembership", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
 
     /**
-     * The statistics describing the types of the membership of the zone.
+     * The statistics describing the types of elements that are members of the zone.
      */
-    TYPE_MEMBERSHIP("zoneMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of the membership of the zone.", null, "725bdba1-1b0a-4c9f-ae01-3eb69248f273"),
+    TYPE_MEMBERSHIP("typeMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of elements that are members of the zone.", null, "725bdba1-1b0a-4c9f-ae01-3eb69248f273"),
+
+    /**
+     * The statistics describing the types of elements that are members of the zone.
+     */
+    ANALYSIS_TIME("analysisTime", DataType.DATE, DataType.DATE.getDisplayName(), "The statistics describing the types of elements that are members of the zone.", null, "8d1f61f8-d91e-4852-b4ae-508b915699e5"),
+
+    /**
+     * The statistics describing the element count for each zone.
+     */
+    TOTAL_MEMBERSHIP("totalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The statistics describing the element count for each zone.", null, "59af4502-6cad-42e3-a9f6-3b72470a5d9c"),
 
     /**
      * Definition of the types of assets that belong in this zone.

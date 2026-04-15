@@ -345,7 +345,7 @@ public class OpenMetadataTypesArchive6_0
      */
 
     /**
-     * A new classification for Collection
+     * A new subtypes for Collection
      */
     private void update0021Collections()
     {

@@ -1,0 +1,371 @@
+# Egeria-coco-audit-users
+# A demonstration on access user identities, user accounts, their definitions and any exceptions.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run these requests to create/refresh the token.
+
+# @name Token (log in as Gary Geeke who is a system administrator)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "garygeeke",
+  "password" : "secret"
+}
+
+> {% client.global.set("garyToken", response.body); %}
+
+
+###
+
+# @name Token (log in as Ivor Padlock who is a security officer and has access to all of the user information)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "ivorpadlock",
+  "password" : "secret"
+}
+
+> {% client.global.set("ivorToken", response.body); %}
+
+
+###
+
+# @name Token (log in as Callie Quartile who is a aata scientist without priviledges to audit users.)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "calliequartile",
+  "password" : "secret"
+}
+
+> {% client.global.set("callieToken", response.body); %}
+
+###
+# =====================================================================================================================
+# Retrieve the platform GUID
+# https://egeria-project.org/types/0037-Software-Server-Platforms/
+
+###
+# @name getPlatformsByName
+# Returns the list of platforms with a particular name. The name is specified in the filter.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "filter" : "Local OMAG Server Platform"
+}
+
+> {% client.global.set("omagServerPlatformGUID", response.body.elements[0].elementHeader.guid); %}
+
+
+
+###
+# ========================================================================================
+# Retrieve Secret Collections
+#
+
+###
+# @name findAssets (SecretCollections) using gary's token
+# Retrieve the list of asset metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "cocoUserDirectory",
+  "metadataElementTypeName": "SecretsCollection"
+}
+
+###
+# @name findAssets (SecretCollections) using ivor's token
+# Retrieve the list of asset metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
+Authorization: Bearer {{ivorToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "cocoUserDirectory",
+  "metadataElementTypeName": "SecretsCollection"
+}
+
+###
+# ========================================================================================
+# Retrieve user identities
+#
+
+###
+# @name findUserIdentities (gary)
+# Retrieve the list of user identity metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+
+
+###
+# @name findUserIdentities (ivor)
+# Retrieve the list of user identity metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
+Authorization: Bearer {{ivorToken}}
+Content-Type: application/json
+
+
+
+
+###
+# ========================================================================================
+# Retrieve exception types
+#
+
+###
+# @name: getUserAccount
+# Return the user account object for the requested user from the platform metadata security connector.  Null is returned if no platform security or user account has been set up.
+# The user requires operator permission for the platform unless it is their own user account they are retrieving.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param accountUserId    user id of the account
+# @return user account response
+#
+## Gary can see Callie's account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/calliequartile
+Authorization: Bearer {{garyToken}}
+
+###
+## Callie can see her own account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/calliequartile
+Authorization: Bearer {{callieToken}}
+
+###
+## Callie can not see Gary's account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/garygeeke
+Authorization: Bearer {{callieToken}}
+
+###
+## Gary can see his account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/garygeeke
+Authorization: Bearer {{garyToken}}
+
+###
+## Gary can see his account
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/garygeeke
+Authorization: Bearer {{garyToken}}
+
+###
+# ========================================================================================
+# Setting up new user account for Freddie Mercury
+#
+###
+
+@accountUserId=freddiemercury
+
+###
+## If the account does not exist, nothing is returned.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/{{accountUserId}}
+Authorization: Bearer {{garyToken}}
+
+###
+
+# @name: setUserAccount
+# Set up or update a user account in the platform metadata security connector
+# The user requires operator permission for the platform.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param requestBody requestBody used to create and configure the connector that performs platform security
+# @return void response
+#/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "UserAccountRequestBody",
+  "userAccount": {
+    "class" : "OpenMetadataUserAccount",
+    "userId": "{{accountUserId}}",
+    "userName": "Freddie Mercury",
+    "userAccountType": "EXTERNAL",
+    "employeeNumber": "",
+    "employeeType": "",
+    "givenName": "Freddie",
+    "surname": "Mercury",
+    "email": "freddiemercury@queen.com",
+    "securityRoles": ["serverOperator", "serverInvestigator"],
+    "userAccountStatus": "CREDENTIALS_EXPIRED",
+    "secrets": {
+      "clearPassword" : "itsakindofmagic"
+    }
+  }
+}
+
+
+###
+
+# @name Token (log in as Freddie Mercury, our new user, without new password - it fails)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{accountUserId}}",
+  "password" : "itsakindofmagic"
+}
+
+> {% client.global.set("freddieToken", response.body); %}
+
+###
+
+# @name Token (log in as Freddie Mercury, our new user, with new password)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{accountUserId}}",
+  "password" : "itsakindofmagic",
+  "newPassword": "magic, magic"
+}
+
+> {% client.global.set("freddieToken", response.body); %}
+
+
+###
+## Show that freddie can see his account - and his password is encrypted.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts/{{accountUserId}}
+Authorization: Bearer {{freddieToken}}
+
+###
+# @name Token (log in as Freddie Mercury, our new user, with password)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{accountUserId}}",
+  "password" : "magic, magic"
+}
+
+> {% client.global.set("freddieToken", response.body); %}
+
+###
+# @name getPlatformReport (freddie)
+# Returns details about the running platform.
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/{{omagServerPlatformGUID}}/report
+Authorization: Bearer {{freddieToken}}
+Content-Type: application/json
+
+###
+# @name Get Freddie's Profile (none returned)
+# Return the profile for Freddie.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{freddieToken}}
+Content-Type: application/json
+
+
+###
+# @name Add Freddie's Profile
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/new
+Authorization: Bearer {{freddieToken}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": true,
+  "properties": {
+    "class" : "PersonProperties",
+    "qualifiedName": "PersonProperties::Freddie Mercury",
+    "displayName": "Freddie Mercury",
+    "courtesyTitle" : "Mr",
+    "initials" : "F",
+    "givenNames" : "Freddie",
+    "surname" : "Mercury",
+    "fullName" : "Mr Freddie Mercury",
+    "pronouns" : "He/Him/His",
+    "jobTitle" : "Lead singer for Queen",
+    "preferredLanguage" : "English",
+    "residentCountry" : "UK",
+    "timeZone" : "GMT",
+    "description": "Beloved singer and song-writer."
+  }
+}
+
+
+###
+# @name Get Freddie's Profile
+# Return the profile for Freddie.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{freddieToken}}
+Content-Type: application/json
+
+
+###
+# ========================================================================================
+# Can Callie update her own User Account?   She attempts to give herself admin privileges
+#
+###
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts
+Authorization: Bearer {{callieToken}}
+Content-Type: application/json
+
+{
+  "class": "UserAccountResponse",
+  "requestId": "a30a2090-cf6f-4d9a-8b5c-633f88707763",
+  "relatedHTTPCode": 200,
+  "userAccount": {
+    "userName": "Callie Quartile",
+    "securityRoles": [
+      "serverAdministrator",
+      "dataScientist",
+      "clinicalTrials",
+      "openMetadataMember"
+    ],
+    "userAccountStatus": "AVAILABLE",
+    "secrets": {
+      "clearPassword": "secret"
+    },
+    "userId": "calliequartile"
+  }
+}
+
+

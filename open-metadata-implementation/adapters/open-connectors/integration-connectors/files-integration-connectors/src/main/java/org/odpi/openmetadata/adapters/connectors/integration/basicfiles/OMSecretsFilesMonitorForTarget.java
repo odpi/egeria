@@ -13,15 +13,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.*;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.UserIdentityClient;
+import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
@@ -38,6 +41,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -46,6 +50,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
     private static final Logger log = LoggerFactory.getLogger(OMSecretsFilesMonitorForTarget.class);
 
     private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
+    private final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
 
 
     /**
@@ -87,6 +92,34 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
 
     /**
+     * Refresh the metadata for the folder.
+     */
+    @Override
+    public void refresh()
+    {
+        super.refresh();
+
+        final String methodName = "refresh";
+
+        try
+        {
+            processUserIdentities();
+        }
+        catch (Exception error)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       methodName,
+                                                                                                                       error.getMessage()));
+            }
+        }
+    }
+
+
+    /**
      * Return the unique identifier of a new metadata element describing the file.
      *
      * @param typeName subtype name for file
@@ -117,6 +150,20 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         }
 
         return fileAssetGUID;
+    }
+
+
+    /**
+     * Catalog a file.
+     *
+     * @param file       Java File accessor
+     * @param methodName calling method
+     * @return unique identifier of the file asset
+     */
+    protected synchronized String catalogFile(File  file,
+                                              String methodName)
+    {
+        return super.catalogFile(file, methodName);
     }
 
 
@@ -227,8 +274,6 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                                     PropertyServerException,
                                                                                                     ConnectorCheckedException
     {
-        final String methodName = "catalogSecretsCollection";
-
         OpenMetadataStore openMetadataStore = integrationConnector.integrationContext.getOpenMetadataStore();
 
         String qualifiedName = OpenMetadataType.SECRETS_COLLECTION.typeName + "::" + fileAssetGUID + "::" + secretsCollectionName;
@@ -262,7 +307,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
             dataSetContentProperties.setISCQualifiedName(EgeriaInformationSupplyChainDefinition.SECURITY.getQualifiedName());
 
             /*
-             * The secrets collection is not added to the security zone because it need to be visible to the data
+             * The secrets collection is not added to the security zone because it needs to be visible to the data
              * engineers configuring cataloguing.
              */
             secretsCollectionGUID = integrationConnector.integrationContext.getAssetClient().createAsset(options,
@@ -271,141 +316,148 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                                          dataSetContentProperties);
         }
 
-        Map<String, String> userMap = new HashMap<>();
-        Map<String, String> listMap = new HashMap<>();
+        AssetClient assetClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.SECRETS_COLLECTION.typeName);
 
+        OpenMetadataRootElement secretsCollectionElement = assetClient.getAssetByGUID(secretsCollectionGUID, assetClient.getGetOptions());
+
+
+        /*
+         * Users are not catalogued by this connector - however, a profile of the connected users is added
+         * as a classification to the secrets collection.
+         */
         if (secretsCollection.getUsers() != null)
         {
-            long userAccountCount       = 0L;
-            long employeeAccountCount   = 0L;
-            long contractorAccountCount = 0L;
-            long externalAccountCount   = 0L;
-            long digitalAccountCount    = 0L;
-            long activeAccountCount     = 0L;
-            long expiredAccountCount    = 0L;
-            long lockedAccountCount     = 0L;
-            long disabledAccountCount   = 0L;
+            UserAccountProfileProperties userAccountProfileProperties = this.getUserAccountProfileProperties(secretsCollection, secretsStoreConnector);
 
-            /*
-             * Iterate through user accounts and extract useful information.
-             */
-            for (String userId : secretsCollection.getUsers().keySet())
-            {
-                /*
-                 * Retrieve user account from secrets store connector.  The connector is
-                 * used because it means the lists are properly filled out.
-                 */
-                UserAccount userAccount = secretsStoreConnector.getUser(userId);
-
-                if (userAccount != null)
-                {
-                    userAccountCount++;
-
-                    if (userAccount.getUserAccountStatus() == UserAccountStatus.AVAILABLE)
-                    {
-                        activeAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountStatus() == UserAccountStatus.CREDENTIALS_EXPIRED)
-                    {
-                        expiredAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountStatus() == UserAccountStatus.LOCKED)
-                    {
-                        lockedAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountStatus() == UserAccountStatus.DISABLED)
-                    {
-                        disabledAccountCount++;
-                    }
-
-                    if (userAccount.getUserAccountType() == UserAccountType.EMPLOYEE)
-                    {
-                        employeeAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountType() == UserAccountType.CONTRACTOR)
-                    {
-                        contractorAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountType() == UserAccountType.EXTERNAL)
-                    {
-                        externalAccountCount++;
-                    }
-                    else if (userAccount.getUserAccountType() == UserAccountType.DIGITAL)
-                    {
-                        digitalAccountCount++;
-                    }
-
-                    String userIdentityGUID = processUserIdentity(userId, userAccount);
-                    if (userIdentityGUID != null)
-                    {
-                        userMap.put(userId, userIdentityGUID);
-                    }
-                }
-            }
-
-            if (userAccountCount > 0)
-            {
-                UserAccountProfileProperties userAccountProfileProperties = new UserAccountProfileProperties();
-
-                userAccountProfileProperties.setUserAccountCount(userAccountCount);
-                userAccountProfileProperties.setActiveAccountCount(activeAccountCount);
-                userAccountProfileProperties.setExpiredAccountCount(expiredAccountCount);
-                userAccountProfileProperties.setLockedAccountCount(lockedAccountCount);
-                userAccountProfileProperties.setDisabledAccountCount(disabledAccountCount);
-                userAccountProfileProperties.setEmployeeAccountCount(employeeAccountCount);
-                userAccountProfileProperties.setContractorAccountCount(contractorAccountCount);
-                userAccountProfileProperties.setDigitalAccountCount(digitalAccountCount);
-                userAccountProfileProperties.setExternalAccountCount(externalAccountCount);
-
-                integrationConnector.integrationContext.getOpenMetadataStore().classifyMetadataElementInStore(secretsCollectionGUID,
-                                                                                                              OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName,
-                                                                                                              null,
-                                                                                                              classificationBuilder.getNewElementProperties(userAccountProfileProperties));
-            }
+            integrationConnector.integrationContext.getOpenMetadataStore().classifyMetadataElementInStore(secretsCollectionGUID,
+                                                                                                          OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName,
+                                                                                                          null,
+                                                                                                          classificationBuilder.getNewElementProperties(userAccountProfileProperties));
         }
+
+        /*
+         * Now check that the security lists are synchronized.
+         */
+        Map<String, String> listMap;
 
         if (secretsCollection.getNamedLists() != null)
         {
-            CollectionClient collectionClient = integrationConnector.integrationContext.getCollectionClient(OpenMetadataType.SECURITY_LIST.typeName);
-
             /*
-             * Iterate through the security groups and roles, extracting useful information.
+             * This will create/update all lists in the secrets store - the map is for easy lookup
              */
-            for (String listName : secretsCollection.getNamedLists().keySet())
+            listMap = this.getListMap(secretsCollectionGUID, secretsCollection);
+        }
+        else
+        {
+            listMap = new HashMap<>();
+        }
+
+        /*
+         * Check that none of the existing lists have been deleted.
+         */
+        if (secretsCollectionElement.getSecurityLists() != null)
+        {
+            for (RelatedMetadataElementSummary existingSecurityList : secretsCollectionElement.getSecurityLists())
             {
-                NewElementOptions options = new NewElementOptions();
-
-                options.setAnchorGUID(secretsCollectionGUID);
-                options.setIsOwnAnchor(false);
-                options.setParentGUID(secretsCollectionGUID);
-                options.setParentAtEnd1(false);
-                options.setParentRelationshipTypeName(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName);
-
-
-                if (listName != null)
+                if ((existingSecurityList != null) &&
+                        (existingSecurityList.getRelatedElement().getProperties() instanceof SecurityListProperties securityListProperties))
                 {
+                    String securityListGUID = listMap.get(securityListProperties.getDisplayName());
 
+                    if (securityListGUID == null)
+                    {
+                        openMetadataStore.deleteMetadataElementInStore(existingSecurityList.getRelatedElement().getElementHeader().getGUID(), false);
+                    }
                 }
             }
         }
+
+        /*
+         * Finally, work through the security access controls.
+         * The relationships to the security list are multi-link. This means that
+         * the management of the relationships needs to be more controlled.
+         * First, get details of all the existing relationships for each control.
+         */
+        Map<String, Map<String, Map<String, String>>> existingControlOperations = this.getExistingControlOperations(secretsCollectionElement);
+
+        /*
+         * Make sure each defined control is created, linked to the right security lists and
+         * the details added to the control map.
+         */
+        List<String> controlRelationshipList = this.setUpControls(secretsCollectionGUID,
+                                                                  secretsCollection,
+                                                                  listMap,
+                                                                  existingControlOperations);
+
+        /*
+         * Now delete the relationships that are no longer required.
+         */
+        if (secretsCollectionElement.getSecurityAccessControls() != null)
+        {
+            for (RelatedMetadataElementSummary existingControl : secretsCollectionElement.getSecurityAccessControls())
+            {
+                if ((existingControl instanceof RelatedMetadataHierarchySummary hierarchySummary) &&
+                        (hierarchySummary.getNestedElements() != null))
+                {
+                    for (RelatedMetadataElementSummary nestedElement : hierarchySummary.getNestedElements())
+                    {
+                        if (nestedElement != null)
+                        {
+                            if (! controlRelationshipList.contains(nestedElement.getRelationshipHeader().getGUID()))
+                            {
+                                openMetadataStore.deleteRelationshipInStore(nestedElement.getRelationshipHeader().getGUID());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return secretsCollectionGUID;
+    }
+
+
+    /**
+     * Retrieve the control map for the secrets collection.
+     *
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param secretsCollection collection of secrets
+     * @param listMap map of security list names to GUIDs
+     * @param existingControlOperations existing control operations
+     * @return list of AssociatedSecurityList relationship GUIDs that are valid
+     */
+    private List<String> setUpControls(String                                        secretsCollectionGUID,
+                                       SecretsCollection                             secretsCollection,
+                                       Map<String, String>                           listMap,
+                                       Map<String, Map<String, Map<String, String>>> existingControlOperations) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
+    {
+        List<String> relationshipList = new ArrayList<>();
+
+        OpenMetadataStore          openMetadataStore = integrationConnector.integrationContext.getOpenMetadataStore();
+        GovernanceDefinitionClient governanceDefinitionClient = integrationConnector.integrationContext.getGovernanceDefinitionClient(OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName);
 
         if (secretsCollection.getSecurityAccessControls() != null)
         {
             /*
-             * Iterate through the security groups and roles, extracting useful information.
+             * Iterate through the security access controls, extracting useful information.
              */
             for (String controlName : secretsCollection.getSecurityAccessControls().keySet())
             {
                 if (controlName != null)
                 {
                     /*
-                     * Retrieve the control from secrets store connector.  The connector is
-                     * used because it means the controls are properly filled out.
+                     * Retrieve the control from secrets store connector.  The connector is not used because it fills out
+                     * all the derived lists for access control validation.
+                     * We want the controls modelled here as they are defined.
                      */
-                    SecurityAccessControl securityAccessControl = secretsStoreConnector.getSecurityAccessControl(controlName);
+                    SecurityAccessControl securityAccessControl = secretsCollection.getSecurityAccessControls().get(controlName);
 
                     if (securityAccessControl != null)
                     {
+                        /*
+                         * Create or update the control description in open metadata.
+                         */
                         String controlQualifiedName = OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName + "::" + secretsCollectionGUID + "::" + controlName;
                         SecurityAccessControlProperties securityAccessControlProperties = new SecurityAccessControlProperties();
 
@@ -426,106 +478,460 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                         securityAccessControlProperties.setDisplayName(securityAccessControl.getDisplayName());
                         securityAccessControlProperties.setDescription(securityAccessControl.getDescription());
 
-                        String securityAccessControlGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(qualifiedName,
+                        String securityAccessControlGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(controlQualifiedName,
                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name);
                         if (securityAccessControlGUID == null)
                         {
-                            NewElementOptions options = new NewElementOptions();
+                            NewElementOptions newElementOptions = new NewElementOptions();
+
+                            newElementOptions.setAnchorGUID(secretsCollectionGUID);
+                            newElementOptions.setIsOwnAnchor(false);
+                            newElementOptions.setParentGUID(secretsCollectionGUID);
+                            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName);
+
+                            securityAccessControlGUID = governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
+                                                                                                              null,
+                                                                                                              securityAccessControlProperties,
+                                                                                                              null);
+                        }
+                        else
+                        {
+                            governanceDefinitionClient.updateGovernanceDefinition(securityAccessControlGUID,
+                                                                                  governanceDefinitionClient.getUpdateOptions(false),
+                                                                                  securityAccessControlProperties);
+                        }
+
+                        /*
+                         * Now set up the AssociatedSecurityList relationships that describe the permissions for the
+                         * control.
+                         */
+                        Map<String, Map<String, String>> existingOperations = existingControlOperations.get(controlName);
+
+                        if (existingOperations == null)
+                        {
+                            existingOperations = new HashMap<>();
+                        }
+
+                        if (securityAccessControl.getAssociatedSecurityList() != null)
+                        {
+                            for (String operationName : securityAccessControl.getAssociatedSecurityList().keySet())
+                            {
+                                if (operationName != null)
+                                {
+                                    AssociatedSecurityListProperties associatedSecurityListProperties = new AssociatedSecurityListProperties();
+                                    associatedSecurityListProperties.setOperationName(operationName);
+
+                                    Map<String, String> existingSecurityLists = existingOperations.get(operationName);
+
+                                    if (existingSecurityLists == null)
+                                    {
+                                        existingSecurityLists = new HashMap<>();
+                                    }
+
+                                    List<String> securityListForControl = securityAccessControl.getAssociatedSecurityList().get(operationName);
+
+                                    if (securityListForControl != null)
+                                    {
+                                        for (String securityListName : securityListForControl)
+                                        {
+                                            if (securityListName != null)
+                                            {
+                                                String securityListGUID = listMap.get(securityListName);
+
+                                                if (securityListGUID != null)
+                                                {
+                                                    String relationshipGUID = existingSecurityLists.get(securityListGUID);
+                                                    if (relationshipGUID == null)
+                                                    {
+                                                        relationshipGUID = openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName,
+                                                                                                                          securityAccessControlGUID,
+                                                                                                                          securityListGUID,
+                                                                                                                          openMetadataStore.getMakeAnchorOptions(false),
+                                                                                                                          relationshipBuilder.getNewElementProperties(associatedSecurityListProperties));
+                                                    }
+
+                                                    relationshipList.add(relationshipGUID);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        return secretsCollectionGUID;
+        return relationshipList;
+    }
+
+    /**
+     * Retrieves summary profile properties for user accounts by analyzing their statuses and types.
+     * The method processes user details from the given SecretsCollection and interacts with the
+     * provided YAMLSecretsStoreConnector to retrieve additional user account details.
+     *
+     * @param secretsCollection      the collection of secrets containing user identifiers to process
+     * @param secretsStoreConnector  a connector to the secrets store, used to fetch user account details
+     * @return a UserAccountProfileProperties object containing aggregated profile data
+     *         such as counts of different user account statuses and types, or null if no accounts exist
+     * @throws ConnectorCheckedException if an error occurs while retrieving user account information
+     */
+    private UserAccountProfileProperties getUserAccountProfileProperties(SecretsCollection         secretsCollection,
+                                                                         YAMLSecretsStoreConnector secretsStoreConnector) throws ConnectorCheckedException
+    {
+        long userAccountCount       = 0L;
+        long employeeAccountCount   = 0L;
+        long contractorAccountCount = 0L;
+        long externalAccountCount   = 0L;
+        long digitalAccountCount    = 0L;
+        long activeAccountCount     = 0L;
+        long expiredAccountCount    = 0L;
+        long lockedAccountCount     = 0L;
+        long disabledAccountCount   = 0L;
+
+        /*
+         * Iterate through user accounts and extract useful information.
+         */
+        for (String userId : secretsCollection.getUsers().keySet())
+        {
+            /*
+             * Retrieve user account from secrets store connector.  The connector is
+             * used because it means the lists are properly filled out.
+             */
+            UserAccount userAccount = secretsStoreConnector.getUser(userId);
+
+            if (userAccount != null)
+            {
+                userAccountCount++;
+
+                if (userAccount.getUserAccountStatus() == UserAccountStatus.AVAILABLE)
+                {
+                    activeAccountCount++;
+                }
+                else if (userAccount.getUserAccountStatus() == UserAccountStatus.CREDENTIALS_EXPIRED)
+                {
+                    expiredAccountCount++;
+                }
+                else if (userAccount.getUserAccountStatus() == UserAccountStatus.LOCKED)
+                {
+                    lockedAccountCount++;
+                }
+                else if (userAccount.getUserAccountStatus() == UserAccountStatus.DISABLED)
+                {
+                    disabledAccountCount++;
+                }
+
+                if (userAccount.getUserAccountType() == UserAccountType.EMPLOYEE)
+                {
+                    employeeAccountCount++;
+                }
+                else if (userAccount.getUserAccountType() == UserAccountType.CONTRACTOR)
+                {
+                    contractorAccountCount++;
+                }
+                else if (userAccount.getUserAccountType() == UserAccountType.EXTERNAL)
+                {
+                    externalAccountCount++;
+                }
+                else if (userAccount.getUserAccountType() == UserAccountType.DIGITAL)
+                {
+                    digitalAccountCount++;
+                }
+            }
+        }
+
+        if (userAccountCount > 0)
+        {
+            UserAccountProfileProperties userAccountProfileProperties = new UserAccountProfileProperties();
+
+            userAccountProfileProperties.setUserAccountCount(userAccountCount);
+            userAccountProfileProperties.setActiveAccountCount(activeAccountCount);
+            userAccountProfileProperties.setExpiredAccountCount(expiredAccountCount);
+            userAccountProfileProperties.setLockedAccountCount(lockedAccountCount);
+            userAccountProfileProperties.setDisabledAccountCount(disabledAccountCount);
+            userAccountProfileProperties.setEmployeeAccountCount(employeeAccountCount);
+            userAccountProfileProperties.setContractorAccountCount(contractorAccountCount);
+            userAccountProfileProperties.setDigitalAccountCount(digitalAccountCount);
+            userAccountProfileProperties.setExternalAccountCount(externalAccountCount);
+
+            return userAccountProfileProperties;
+        }
+
+        return null;
     }
 
 
     /**
-     * If there is a corresponding userIdentity, set up appropriate classifications and return its GUID.
+     * This will create/update all lists in the secrets store - the returned map is for easy lookup.
+     * All lists are created in the "security" zone, so they are only visible to security officers.
      *
-     * @param userId      userId for user account
-     * @param userAccount corresponding user account
-     * @return guid or null
+     * @param secretsCollectionGUID unique identifier of the secrets collection that is the anchor of the lists.
+     * @param secretsCollection content of the secrets collection that needs cataloguing
+     * @return lookup map of list name to list GUID
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to perform this operation
+
+     */
+    private Map<String, String> getListMap(String            secretsCollectionGUID,
+                                           SecretsCollection secretsCollection) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        Map<String, String> listMap = new HashMap<>();
+
+        OpenMetadataStore openMetadataStore = integrationConnector.integrationContext.getOpenMetadataStore();
+        CollectionClient  collectionClient  = integrationConnector.integrationContext.getCollectionClient(OpenMetadataType.SECURITY_LIST.typeName);
+
+        NewElementOptions options = new NewElementOptions();
+
+        options.setAnchorGUID(secretsCollectionGUID);
+        options.setIsOwnAnchor(false);
+        options.setParentGUID(secretsCollectionGUID);
+        options.setParentAtEnd1(false);
+        options.setParentRelationshipTypeName(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName);
+
+        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+        ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
+
+        zoneMembershipProperties.setZoneMembership(Collections.singletonList(GovernanceZoneName.SECURITY.getZoneName()));
+        initialClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
+
+        /*
+         * Iterate through the security groups and roles, extracting useful information.
+         * This first pass makes sure the groups are all defined.
+         */
+        for (String listName : secretsCollection.getNamedLists().keySet())
+        {
+            if (listName != null)
+            {
+                String listQualifiedName = OpenMetadataType.SECURITY_LIST.typeName + "::" + secretsCollectionGUID + "::" + listName;
+                String listGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(listQualifiedName,
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name);
+                if (listGUID == null)
+                {
+                    NamedList              namedList = secretsCollection.getNamedLists().get(listName);
+                    SecurityListProperties securityListProperties;
+
+                    if (OpenMetadataType.SECURITY_GROUP.typeName.equals(namedList.getListTypeName()))
+                    {
+                        securityListProperties = new SecurityGroupProperties();
+                    }
+                    else if (OpenMetadataType.SECURITY_ROLE.typeName.equals(namedList.getListTypeName()))
+                    {
+                        securityListProperties = new SecurityRoleProperties();
+                    }
+                    else
+                    {
+                        securityListProperties = new SecurityListProperties();
+                    }
+
+                    securityListProperties.setQualifiedName(listQualifiedName);
+                    securityListProperties.setDisplayName(listName);
+                    securityListProperties.setDescription(namedList.getDescription());
+                    securityListProperties.setDistinguishedName(namedList.getDistinguishedName());
+
+                    listGUID = collectionClient.createCollection(options, initialClassifications, securityListProperties, null);
+                }
+
+                listMap.put(listName, listGUID);
+            }
+        }
+
+        /*
+         * Now that all the lists are defined, iterate through the lists again to be sure the relationships are correct.
+         */
+        for (String listName : secretsCollection.getNamedLists().keySet())
+        {
+            if (listName != null)
+            {
+                String listGUID = listMap.get(listName);
+
+                /*
+                 * This retrieve should succeed because the element has just been either retrieved or created
+                 * in the logic above.  The test for null is a precaution against a timing window where another
+                 * process is also editing these elements.
+                 */
+                OpenMetadataRootElement securityListElement = collectionClient.getCollectionByGUID(listGUID, collectionClient.getGetOptions());
+
+                if (securityListElement != null)
+                {
+                    NamedList namedList = secretsCollection.getNamedLists().get(listName);
+
+                    if ((namedList.getListMembers() != null) && (!namedList.getListMembers().isEmpty()))
+                    {
+                        for (String listMemberName : namedList.getListMembers())
+                        {
+                            if (listMemberName != null)
+                            {
+                                /*
+                                 * If the membership relationship is already present, this will be a no-op.
+                                 */
+                                collectionClient.addToCollection(listGUID,
+                                                                 listMap.get(listMemberName),
+                                                                 collectionClient.getMakeAnchorOptions(false),
+                                                                 null);
+                            }
+                        }
+                    }
+
+                    if (securityListElement.getCollectionMembers() != null)
+                    {
+                        /*
+                         * Check if any nested lists have been removed since the last time.
+                         */
+                        for (RelatedMetadataElementSummary collectionMember : securityListElement.getCollectionMembers())
+                        {
+                            if ((collectionMember != null) && (collectionMember.getRelatedElement().getProperties() instanceof SecurityListProperties securityListProperties))
+                            {
+                                if (listMap.get(securityListProperties.getDisplayName()) == null)
+                                {
+                                    collectionClient.removeFromCollection(listGUID,
+                                                                          collectionMember.getRelatedElement().getElementHeader().getGUID(),
+                                                                          collectionClient.getDeleteOptions(false));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return listMap;
+    }
+
+
+    /**
+     * Return the list of existing control operations for the given secrets collection element.
+     *
+     * @param secretsCollectionElement current information about the secrets collection from open metadata
+     * @return map of control name to operation name to the list of list names to relationship GUIDs
+     */
+    Map<String, Map<String, Map<String, String>>> getExistingControlOperations(OpenMetadataRootElement secretsCollectionElement)
+    {
+        Map<String, Map<String, Map<String, String>>> existingControlOperations = new HashMap<>();
+
+        if ((secretsCollectionElement != null) && (secretsCollectionElement.getSecurityAccessControls() != null))
+        {
+            for (RelatedMetadataElementSummary control : secretsCollectionElement.getSecurityAccessControls())
+            {
+                if ((control != null) && (control.getRelatedElement().getProperties() instanceof SecurityAccessControlProperties securityAccessControlProperties))
+                {
+                    String controlName = securityAccessControlProperties.getIdentifier();
+
+                    Map<String, Map<String, String>> existingOperations = existingControlOperations.get(controlName);
+
+                    if (existingOperations == null)
+                    {
+                        existingOperations = new HashMap<>();
+                    }
+
+                    if (control instanceof RelatedMetadataHierarchySummary hierarchySummary)
+                    {
+                        if (hierarchySummary.getNestedElements() != null)
+                        {
+                            for (RelatedMetadataElementSummary nestedList : hierarchySummary.getNestedElements())
+                            {
+                                if ((nestedList != null) &&
+                                        (propertyHelper.isTypeOf(nestedList.getRelationshipHeader(), OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName)) &&
+                                        (nestedList.getRelationshipProperties() instanceof AssociatedSecurityListProperties associatedSecurityListProperties))
+                                {
+                                    String operationName = associatedSecurityListProperties.getOperationName();
+
+                                    Map<String, String> existingLists = existingOperations.get(operationName);
+
+                                    if (existingLists == null)
+                                    {
+                                        existingLists = new HashMap<>();
+                                    }
+
+                                    existingLists.put(nestedList.getRelatedElement().getElementHeader().getGUID(),
+                                                      nestedList.getRelationshipHeader().getGUID());
+                                    existingOperations.put(operationName, existingLists);
+                                }
+                            }
+                        }
+                    }
+
+                    existingControlOperations.put(controlName, existingOperations);
+                }
+            }
+        }
+
+        return existingControlOperations;
+    }
+
+
+
+    /**
+     * Ensure all UserIdentity elements are in the security zone.
+     * Also, a user is supposed to be able to see its own user identity so the userId is added as a zone.
+     *
      * @throws InvalidParameterException  invalid parameter
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException user is not authorized to perform this operation
      */
-    private String processUserIdentity(String      userId,
-                                       UserAccount userAccount) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    private void processUserIdentities() throws InvalidParameterException,
+                                                PropertyServerException,
+                                                UserNotAuthorizedException
     {
         UserIdentityClient userIdentityClient = integrationConnector.integrationContext.getUserIdentityClient();
 
-        OpenMetadataRootElement userIdentity = userIdentityClient.getUserIdentityByUserId(userId, null);
+        List<OpenMetadataRootElement> userIdentities = userIdentityClient.findUserIdentities(null, userIdentityClient.getSearchOptions());
 
-        if (userIdentity != null)
+        if (userIdentities != null)
         {
-            /*
-             * Decorate the user identity with the groups and roles from the user account.  The security
-             * connector does an iterative navigation through the lists to return all the security groups
-             * and roles for the user.  This means we can take the lists from the user account and
-             * add them to the user identity.
-             */
-            SecurityListMembershipProperties securityListMembershipProperties = new SecurityListMembershipProperties();
-
-            securityListMembershipProperties.setSecurityGroups(userAccount.getSecurityGroups());
-            securityListMembershipProperties.setSecurityRoles(userAccount.getSecurityRoles());
-
-            if (userIdentity.getElementHeader().getSecurityListMembership() == null)
+            for (OpenMetadataRootElement userIdentity : userIdentities)
             {
-                integrationConnector.integrationContext.getOpenMetadataStore().classifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                              OpenMetadataType.SECURITY_LIST_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                              null,
-                                                                                                              classificationBuilder.getNewElementProperties(securityListMembershipProperties));
-            }
-            else
-            {
-                integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                                OpenMetadataType.SECURITY_LIST_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                                null,
-                                                                                                                classificationBuilder.getNewElementProperties(securityListMembershipProperties));
-            }
-
-            /*
-             * The user identity should be in the security zone.
-             */
-            if (userIdentity.getElementHeader().getZoneMembership() == null)
-            {
-                ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
-
-                zoneMembershipProperties.setZoneMembership(Collections.singletonList(GovernanceZoneName.SECURITY.getZoneName()));
-
-                integrationConnector.integrationContext.getOpenMetadataStore().classifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                              OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                              null,
-                                                                                                              classificationBuilder.getNewElementProperties(zoneMembershipProperties));
-            }
-            else if (userIdentity.getElementHeader().getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties)
-            {
-                if (zoneMembershipProperties.getZoneMembership() == null)
+                if ((userIdentity != null) &&
+                        (userIdentity.getProperties() instanceof UserIdentityProperties userIdentityProperties) &&
+                        (userIdentityProperties.getUserId() != null))
                 {
-                    zoneMembershipProperties.setZoneMembership(Collections.singletonList(GovernanceZoneName.SECURITY.getZoneName()));
+                    /*
+                     * The user identity should be in the security zone.
+                     */
+                    if (userIdentity.getElementHeader().getZoneMembership() == null)
+                    {
+                        ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
 
-                    integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                                    OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                                    null,
-                                                                                                                    classificationBuilder.getNewElementProperties(zoneMembershipProperties));
-                }
-                else if (!zoneMembershipProperties.getZoneMembership().contains(GovernanceZoneName.SECURITY.getZoneName()))
-                {
-                    zoneMembershipProperties.getZoneMembership().add(GovernanceZoneName.SECURITY.getZoneName());
+                        zoneMembershipProperties.setZoneMembership(List.of(GovernanceZoneName.SECURITY.getZoneName(), userIdentityProperties.getUserId()));
 
-                    integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                                    OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                                    null,
-                                                                                                                    classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                        integrationConnector.integrationContext.getOpenMetadataStore().classifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
+                                                                                                                      OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                                      null,
+                                                                                                                      classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                    }
+                    else if (userIdentity.getElementHeader().getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties)
+                    {
+                        if (zoneMembershipProperties.getZoneMembership() == null)
+                        {
+                            zoneMembershipProperties.setZoneMembership(List.of(GovernanceZoneName.SECURITY.getZoneName(), userIdentityProperties.getUserId()));
+
+                            integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
+                                                                                                                            OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                                            null,
+                                                                                                                            classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                        }
+                        else // preserve any existing zone membership
+                        {
+                            if (! zoneMembershipProperties.getZoneMembership().contains(GovernanceZoneName.SECURITY.getZoneName()))
+                            {
+                                zoneMembershipProperties.getZoneMembership().add(GovernanceZoneName.SECURITY.getZoneName());
+                            }
+                            if (! zoneMembershipProperties.getZoneMembership().contains(userIdentityProperties.getUserId()))
+                            {
+                                zoneMembershipProperties.getZoneMembership().add(userIdentityProperties.getUserId());
+                            }
+
+                            integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
+                                                                                                                            OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                                            null,
+                                                                                                                            classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                        }
+                    }
                 }
             }
-            return userIdentity.getElementHeader().getGUID();
         }
 
-        return null;
     }
 }

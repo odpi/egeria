@@ -20,23 +20,24 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
-import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -63,7 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
+public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnectorBase
 {
     Map<String, PlatformDetails> monitoredPlatforms = new HashMap<>();
 
@@ -111,21 +112,6 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
         final String methodName = "start";
 
-        try
-        {
-            integrationContext.registerListener(this);
-        }
-        catch (Exception error)
-        {
-            throw new ConnectorCheckedException(OMAGConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 error.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
-        }
-
         /*
          * Record the start
          */
@@ -138,91 +124,49 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
         try
         {
+            /*
+             * Check to see if the local platform is catalogued.  This may simply retrieve an existing element
+             * or create a new one.
+             */
+            String platformGUID = catalogPlatform(integrationContext.getMetadataAccessServerPlatformURLRoot());
+
+            /*
+             * Now retrieve the full platform element to see if it is registered as a catalog target.
+             */
             AssetClient   assetClient   = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
-            SearchOptions searchOptions = assetClient.getSearchOptions(0, integrationContext.getMaxPageSize());
 
-            /*
-             * Ignore the templates
-             */
-            searchOptions.setSkipClassifiedElements(List.of(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName));
+            OpenMetadataRootElement softwarePlatform = assetClient.getAssetByGUID(platformGUID, assetClient.getGetOptions());
 
-            List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(null, searchOptions);
-
-            /*
-             * This is the bootstrap situation - create a platform for the local metadata store.
-             */
-            if ((softwarePlatforms == null) || (softwarePlatforms.isEmpty()))
+            if ((softwarePlatform != null) && (softwarePlatform.getProperties() instanceof SoftwareServerPlatformProperties softwareServerPlatformProperties))
             {
-                catalogPlatform(integrationContext.getMetadataAccessServerPlatformURLRoot());
-            }
-        }
-        catch (Exception error)
-        {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                 error.getClass().getName(),
-                                                                                                 methodName,
-                                                                                                 error.getMessage()));
-        }
-    }
-
-
-    /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     * This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
-     * catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
-     * actually exist in the event broker.
-     *
-     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
-     */
-    @Override
-    public void refresh() throws ConnectorCheckedException
-    {
-        final String methodName = "refresh";
-
-        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
-        try
-        {
-            /*
-             * Ensure we have all the known OMAG Server Platforms
-             */
-            SearchOptions searchOptions = assetClient.getSearchOptions(0, integrationContext.getMaxPageSize());
-
-            List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(null, searchOptions);
-
-            while (softwarePlatforms != null)
-            {
-                for (OpenMetadataRootElement softwarePlatform : softwarePlatforms)
+                if (softwarePlatform.getRefreshedByConnectors() != null)
                 {
-                    if (softwarePlatform != null)
+                    for (RelatedMetadataElementSummary refreshedByConnector : softwarePlatform.getRefreshedByConnectors())
                     {
-                        if (softwarePlatform.getProperties() instanceof SoftwareServerPlatformProperties softwareServerPlatformProperties)
+                        if ((refreshedByConnector != null) &&
+                                (refreshedByConnector.getRelatedElement().getElementHeader().getGUID().equals(integrationContext.getIntegrationConnectorGUID())))
                         {
-                            this.assessElementForMonitoring(softwarePlatform.getElementHeader(),
-                                                            softwareServerPlatformProperties.getDisplayName(),
-                                                            softwareServerPlatformProperties.getDeployedImplementationType());
+                            /*
+                             * Already registered as a catalog target.  Nothing to do.
+                             */
+                            return;
                         }
                     }
                 }
 
-                searchOptions.setStartFrom(searchOptions.getStartFrom() + integrationContext.getMaxPageSize());
-                softwarePlatforms = assetClient.findAssets(null, searchOptions);
+
+                /*
+                 * If the platform is not registered as a catalog target, then register it.
+                 * Once registered, the platform's metadata will be refreshed on each refresh() call.
+                 * This is performed by OMAGServerPlatformCatalogTargetProcessor.
+                 */
+                CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+                catalogTargetProperties.setCatalogTargetName(softwareServerPlatformProperties.getDisplayName() + "(" + softwarePlatform.getElementHeader().getGUID() + ")");
+                assetClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
+                                             platformGUID,
+                                             assetClient.getMakeAnchorOptions(false),
+                                             catalogTargetProperties);
             }
-
-
-            /*
-             * The monitored platforms list has been built up from the platforms catalogued in open metadata.
-             * Now it is time to catalog the servers running on these platforms.
-             */
-            processPlatforms();
-
-            /*
-             * Now all the servers are catalogued and up to date, loop through them all and test that
-             * the lineage relationships between them are still correct.
-             */
-            checkServerLineage();
         }
         catch (Exception error)
         {
@@ -236,29 +180,28 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
 
     /**
-     * Called each time an event that is published by the OMF, it is looking for Software Server Platforms
-     * to add to monitoredPlatforms.
+     * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
+     *
+     * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param catalogTargetContext   specialized context for this catalog target
+     * @param connectorToTarget      connector to access the target resource
+     * @return new processor based on the catalog target information
+     * @throws ConnectorCheckedException  a problem with setting up the catalog target.
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override
-    public void processEvent(OpenMetadataOutTopicEvent event)
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget, CatalogTargetContext catalogTargetContext, Connector connectorToTarget) throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        final String methodName = "processEvent";
-
-        if (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName))
+        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName))
         {
-            String deployedImplementationType = propertyHelper.getStringProperty(connectorName,
-                                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                                 event.getElementProperties(),
-                                                                                 methodName);
-            String displayName = propertyHelper.getStringProperty(connectorName,
-                                                                OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                event.getElementProperties(),
-                                                                methodName);
-
-            assessElementForMonitoring(event.getElementHeader(),
-                                       displayName,
-                                       deployedImplementationType);
+            return new OMAGServerPlatformCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                 catalogTargetContext,
+                                                                 connectorToTarget,
+                                                                 connectorName,
+                                                                 auditLog);
         }
+
+        return null;
     }
 
 
@@ -871,13 +814,14 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
      * Create a metadata element to represent the local platform.
      *
      * @param platformURLRoot location of the platform
+     * @return platform GUID
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException no repo
      * @throws UserNotAuthorizedException security problem
      */
-    private void catalogPlatform(String platformURLRoot) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    private String catalogPlatform(String platformURLRoot) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         OpenMetadataStore openMetadataAccess = integrationContext.getOpenMetadataStore();
 
@@ -945,6 +889,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
             governanceDefinitionClient.linkDesignToImplementation(solutionComponentGUID, platformGUID, new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()), implementedByProperties);
         }
+
+        return platformGUID;
     }
 
 

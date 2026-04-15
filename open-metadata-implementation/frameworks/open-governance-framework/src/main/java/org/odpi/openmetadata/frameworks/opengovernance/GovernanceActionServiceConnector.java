@@ -35,7 +35,6 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
                                                                                         AuditLoggingComponent
 {
     protected String          governanceServiceName = "<Unknown>";
-    protected AuditLog        auditLog = null;
     protected PropertyHelper  propertyHelper = new PropertyHelper();
 
     /**

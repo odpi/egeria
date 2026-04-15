@@ -103,7 +103,7 @@ public class OpenGovernanceOutTopicListener implements OpenMetadataEventListener
      *
      * @param event event bring news of the change
      */
-    private void processIntegrationGroupEvent(OpenMetadataOutTopicEvent event)
+    private synchronized void processIntegrationGroupEvent(OpenMetadataOutTopicEvent event)
     {
         final String actionDescription = "processIntegrationGroupEvent";
 
@@ -137,8 +137,8 @@ public class OpenGovernanceOutTopicListener implements OpenMetadataEventListener
      * @param integrationConnectorHeader triggering element
      * @param event full event
      */
-    private void processIntegrationConnectorEvent(ElementHeader             integrationConnectorHeader,
-                                                  OpenMetadataOutTopicEvent event)
+    private synchronized void processIntegrationConnectorEvent(ElementHeader             integrationConnectorHeader,
+                                                               OpenMetadataOutTopicEvent event)
     {
         final String actionDescription = "processIntegrationConnectorEvent";
 

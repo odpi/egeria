@@ -4,48 +4,93 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The ProductRoleDefinition is used to feed the definition of the actor roles for
  * Coco Pharmaceuticals' product catalog.
  */
 public enum ProductRoleDefinition
 {
+    /**
+     * The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.
+     */
     PRODUCT_MANAGER(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName,
                     "OpenMetadataProductManagerRole",
                     "Open Metadata Product Manager",
-                    "The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues."),
+                    "The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.",
+                    new ProductSolutionBlueprint[] {
+                            ProductSolutionBlueprint.ALL
+                    }),
 
+    /**
+     * The product developer role covers the implementation of the digital products built around open metadata.
+     */
     PRODUCT_DEVELOPER( OpenMetadataType.IT_PROFILE_ROLE.typeName,
                       "OpenMetadataProductDeveloperRole",
                       "Open Metadata Product Developer",
-                      "The product developer role covers the implementation of the digital products built around open metadata."),
+                      "The product developer role covers the implementation of the digital products built around open metadata.",
+                       new ProductSolutionBlueprint[] {
+                               ProductSolutionBlueprint.ALL
+                       }),
 
 
+    /**
+     * The Jacquard support role covers the support of the Jacquard Digital Product Loom connector and subscription management.
+     */
     JACQUARD_SUPPORT(OpenMetadataType.PERSON_ROLE.typeName,
                      "JacquardSupportRole",
                      "Open Metadata Digital Product Loom (Jacquard) Support Role",
-                     "The Jacquard support role covers the support of the Jacquard Digital Product Loom connector and subscription management."),
+                     "The Jacquard support role covers the support of the Jacquard Digital Product Loom connector and subscription management.",
+                     new ProductSolutionBlueprint[] {
+                             ProductSolutionBlueprint.ALL
+                     }),
 
 
+    /**
+     * Subscriber to one of the open metadata data products from the Open Metadata Ecosystem.
+     */
     PRODUCT_SUBSCRIBER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                      "OpenMetadataProductSubscriber",
                      "Open Metadata Product Subscriber",
-                     "Subscriber to one of the open metadata data products from Egeria."),
+                     "Subscriber to one of the open metadata data products from Open Metadata Ecosystem.",
+                       new ProductSolutionBlueprint[] {
+                               ProductSolutionBlueprint.ALL,
+                               ProductSolutionBlueprint.CANCELLING_SUBSCRIPTION,
+                               ProductSolutionBlueprint.CREATING_SUBSCRIPTION,
+                               ProductSolutionBlueprint.JACQUARD,
+                               ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER,
+                               ProductSolutionBlueprint.SEARCHING_FOR_DATA
+                       }),
 
+
+    /**
+     * Consumer of the data provisioned from one of the open metadata data products from the Open Metadata Ecosystem.
+     */
     PRODUCT_CONSUMER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                      "OpenMetadataProductConsumer",
                      "Open Metadata Product Consumer",
-                     "Consumer of the data provisioned from one of the open metadata data products from Egeria."),
+                     "Consumer of the data provisioned from one of the open metadata data products from the Open Metadata Ecosystem.",
+                     new ProductSolutionBlueprint[] {
+                             ProductSolutionBlueprint.ALL,
+                             ProductSolutionBlueprint.CANCELLING_SUBSCRIPTION,
+                             ProductSolutionBlueprint.CREATING_SUBSCRIPTION,
+                             ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER
+                     }),
 
+
+    /**
+     * Community to exchange information and collect feedback about the open metadata digital products.
+     */
     PRODUCT_COMMUNITY_MEMBER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                      "OpenMetadataProductMember",
                      "Open Metadata Digital Product Community Member",
-                     "Community to exchange information and collect feedback about the open metadata digital products."),
-
-    EGERIA_COMMUNITY(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                             "EgeriaOpenSourceCommunity",
-                             "Egeria Open Source Community",
-                             "Open Source Community developing the Egeria Software and related resources."),
+                     "Community to exchange information and collect feedback about the open metadata digital products.",
+                             new ProductSolutionBlueprint[] {
+                                     ProductSolutionBlueprint.ALL,
+                                     ProductSolutionBlueprint.PRODUCT_COMMUNITY
+                             }),
 
     ;
 
@@ -53,6 +98,7 @@ public enum ProductRoleDefinition
     private final String identifier;
     private final String displayName;
     private final String description;
+    private final ProductSolutionBlueprint[] consumingBlueprints;
 
 
     /**
@@ -65,12 +111,14 @@ public enum ProductRoleDefinition
     ProductRoleDefinition(String typeName,
                           String identifier,
                           String displayName,
-                          String description)
+                          String description,
+                          ProductSolutionBlueprint[] consumingBlueprints)
     {
         this.typeName    = typeName;
         this.identifier  = identifier;
         this.displayName = displayName;
         this.description = description;
+        this.consumingBlueprints    = consumingBlueprints;
     }
 
 
@@ -124,6 +172,22 @@ public enum ProductRoleDefinition
     public String getDescription()
     {
         return description;
+    }
+
+
+    /**
+     * Return the list of blueprints to connect this component to.
+     *
+     * @return list or null
+     */
+    public List<ProductSolutionBlueprint> getConsumingBlueprints()
+    {
+        if (consumingBlueprints == null)
+        {
+            return null;
+        }
+
+        return Arrays.asList(consumingBlueprints);
     }
 
 

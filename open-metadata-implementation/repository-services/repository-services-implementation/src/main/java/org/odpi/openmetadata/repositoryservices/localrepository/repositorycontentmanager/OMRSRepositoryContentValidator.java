@@ -725,7 +725,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String userIdParameterName = "userId";
 
-        if ((userId == null) || (userId.length() == 0))
+        if ((userId == null) || (userId.isEmpty()))
         {
             throw new InvalidParameterException(OMRSErrorCode.NULL_USER_ID.getMessageDefinition(userIdParameterName, methodName, sourceName),
                                                 this.getClass().getName(),
@@ -3581,7 +3581,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         final String  stringDelimiter = ", ";
         final String  stringEnd = " ]";
 
-        String        results = null;
+        StringBuilder results = null;
 
         if (instanceProperties != null)
         {
@@ -3593,11 +3593,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (results == null)
                 {
-                    results = getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results = new StringBuilder(getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
                 else
                 {
-                    results = results + stringDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results.append(stringDelimiter).append(getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
             }
         }
@@ -3621,7 +3621,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         final String  mappingDelimiter = " -> ";
         final String  stringEnd = " }";
 
-        String        results = null;
+        StringBuilder results = null;
 
         if (instanceProperties != null)
         {
@@ -3633,11 +3633,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (results == null)
                 {
-                    results = propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results = new StringBuilder(propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
                 else
                 {
-                    results = results + stringDelimiter + propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results.append(stringDelimiter).append(propertyName).append(mappingDelimiter).append(getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
             }
         }
@@ -3661,7 +3661,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         final String  mappingDelimiter = " : ";
         final String  stringEnd = " }";
 
-        String        results = null;
+        StringBuilder results = null;
 
         if (instanceProperties != null)
         {
@@ -3673,11 +3673,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (results == null)
                 {
-                    results = propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results = new StringBuilder(propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
                 else
                 {
-                    results = results + stringDelimiter + propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                    results.append(stringDelimiter).append(propertyName).append(mappingDelimiter).append(getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName)));
                 }
             }
         }
@@ -4117,26 +4117,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (category.equals(PRIMITIVE))
         {
             PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
-            switch (ppv.getPrimitiveDefCategory())
+            return switch (ppv.getPrimitiveDefCategory())
             {
-                case OM_PRIMITIVE_TYPE_DATE:
-                case OM_PRIMITIVE_TYPE_LONG:
-                    return BigDecimal.valueOf((Long)ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_SHORT:
-                    return BigDecimal.valueOf((Short)ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_INT:
-                    return BigDecimal.valueOf((Integer)ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_FLOAT:
-                    return BigDecimal.valueOf((Float) ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_DOUBLE:
-                    return BigDecimal.valueOf((Double) ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                    return new BigDecimal((BigInteger)ppv.getPrimitiveValue());
-                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                    return (BigDecimal) ppv.getPrimitiveValue();
-                default:
-                    return null;
-            }
+                case OM_PRIMITIVE_TYPE_DATE,
+                     OM_PRIMITIVE_TYPE_LONG -> BigDecimal.valueOf((Long) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_SHORT -> BigDecimal.valueOf((Short) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_INT -> BigDecimal.valueOf((Integer) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_FLOAT -> BigDecimal.valueOf((Float) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_DOUBLE -> BigDecimal.valueOf((Double) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_BIGINTEGER -> new BigDecimal((BigInteger) ppv.getPrimitiveValue());
+                case OM_PRIMITIVE_TYPE_BIGDECIMAL -> (BigDecimal) ppv.getPrimitiveValue();
+                default -> null;
+            };
         }
         return null;
     }

@@ -156,7 +156,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
                                      String                    parentDataFieldGUID,
                                      String                    nestedDataFieldGUID,
                                      MakeAnchorOptions         makeAnchorOptions,
-                                     MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                     NestedDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {

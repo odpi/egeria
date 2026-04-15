@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataClassAssignmentProperties links an element to a data class to indicate that the data class describes its logical data type.
+ * DataValueAssignmentProperties links an element to a data class/grain to indicate that the data class describes its logical data type.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -251,7 +251,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
     @Override
     public String toString()
     {
-        return "DataClassAssignmentProperties{" +
+        return "DataValueAssignmentProperties{" +
                 "method='" + method + '\'' +
                 ", status=" + assignmentStatus +
                 ", confidence=" + confidence +
