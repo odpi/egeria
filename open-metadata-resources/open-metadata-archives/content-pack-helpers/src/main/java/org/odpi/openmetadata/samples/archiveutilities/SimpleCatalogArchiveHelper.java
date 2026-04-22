@@ -1645,16 +1645,16 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Link a person profile to a person role.
+     * Link a Person actor profile to a person role.
      *
      * @param personQName qualified name of the person profile
      * @param personRoleQName qualified name of the person role
-     * @param isHeadcountSpecified is this appointment public?
+     * @param isTimeAllocationSpecified is this appointment full-time?
      */
     public void addPersonRoleAppointmentRelationship(String  personQName,
                                                      String  personRoleQName,
-                                                     boolean isHeadcountSpecified,
-                                                     int     headcount)
+                                                     boolean isTimeAllocationSpecified,
+                                                     int     percentageTimeAllocation)
     {
         final String methodName = "addPersonRoleAppointmentRelationship";
 
@@ -1666,9 +1666,9 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = null;
 
-        if (isHeadcountSpecified)
+        if (isTimeAllocationSpecified)
         {
-            properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.HEAD_COUNT.name, headcount, methodName);
+            properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.HEAD_COUNT.name, percentageTimeAllocation, methodName);
         }
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,

@@ -8256,12 +8256,18 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         invalidParameterHandler.validateGUID(attachingElementGUID, attachingGUIDParameterName, methodName);
 
         boolean multiLink = false;
+        boolean reversible = false;
         TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName,
                                                             attachmentTypeName);
 
         if (typeDef instanceof RelationshipDef relationshipDef)
         {
             multiLink = relationshipDef.getMultiLink();
+
+            if (relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+            {
+                reversible = true;
+            }
         }
 
         EntityDetail bean1Entity = repositoryHandler.getEntityByGUID(userId,
@@ -8422,6 +8428,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                                          true,
                                                                                                          methodName);
 
+            if ((existingRelationships == null) && (reversible))
+            {
+                existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                          bean2Entity,
+                                                                                          startingElementTypeName,
+                                                                                          bean1Entity.getGUID(),
+                                                                                          attachmentTypeGUID,
+                                                                                          attachmentTypeName,
+                                                                                          1,
+                                                                                          null,
+                                                                                          null,
+                                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                                          null,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveFrom,
+                                                                                          effectiveTo,
+                                                                                          true,
+                                                                                          methodName);
+            }
 
             if (existingRelationships != null)
             {

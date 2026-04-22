@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ###
 
-# @name Token (log in as Callie Quartile who is a aata scientist without priviledges to audit users.)
+# @name Token (log in as Callie Quartile who is a data scientist without priviledges to audit users.)
 POST {{baseURL}}/api/token
 Content-Type: application/json
 
@@ -74,15 +74,7 @@ Content-Type: application/json
 
 ###
 # @name findAssets (SecretCollections) using gary's token
-# Retrieve the list of asset metadata elements that contain the search string.
-#
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    a problem reported in the open metadata server(s)
-#
+# The secrets collections are returned by the
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
 Authorization: Bearer {{garyToken}}
 Content-Type: application/json

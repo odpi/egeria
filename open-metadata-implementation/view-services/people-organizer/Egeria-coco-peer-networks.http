@@ -20,7 +20,7 @@ Content-Type: application/json
 # ProfileGUIDs
 
 ###
-# @name getIvorPadlockByUniqueName
+# @name getAngelaCummingsByUniqueName
 # Retrieve the Person actor profile using its display name
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
@@ -29,14 +29,14 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Ivor Padlock",
+  "name" : "Angela Cummings",
   "namePropertyName" : "displayName"
 }
 
-> {% client.global.set("ivorPadlockGUID", response.body.guid); %}
+> {% client.global.set("angelaCummingsGUID", response.body.guid); %}
 
 ###
-# @name getSallyCounterByUniqueName
+# @name getBobNitterByUniqueName
 # Retrieve the Person actor profile using its display name
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
@@ -45,15 +45,14 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Sally Counter",
+  "name" : "Bob Nitter",
   "namePropertyName" : "displayName"
 }
 
-> {% client.global.set("sallyCounterGUID", response.body.guid); %}
-
+> {% client.global.set("bobNitterGUID", response.body.guid); %}
 
 ###
-# @name getLemmieStageByUniqueName
+# @name getCallieQuartileByUniqueName
 # Retrieve the Person actor profile using its display name
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
@@ -62,12 +61,59 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Lemmie Stage",
+  "name" : "Callie Quartile",
   "namePropertyName" : "displayName"
 }
 
-> {% client.global.set("lemmieStageGUID", response.body.guid); %}
+> {% client.global.set("callieQuartileGUID", response.body.guid); %}
 
+###
+# @name getDesSignaByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Des Signa",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("desSignaGUID", response.body.guid); %}
+
+###
+# @name getErinOverviewByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Erin Overview",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("erinOverviewGUID", response.body.guid); %}
+
+###
+# @name getFaithBrokerByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Faith Broker",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("faithBrokerGUID", response.body.guid); %}
 
 ###
 # @name getGaryGeekeByUniqueName
@@ -85,6 +131,53 @@ Content-Type: application/json
 
 > {% client.global.set("garyGeekeGUID", response.body.guid); %}
 
+###
+# @name getGrantAbleByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Grant Able",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("grantAbleGUID", response.body.guid); %}
+
+###
+# @name getHarryHopefulByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Harry Hopeful",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("harryHopefulGUID", response.body.guid); %}
+
+###
+# @name getIvorPadlockByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Ivor Padlock",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("ivorPadlockGUID", response.body.guid); %}
 
 ###
 # @name getJulesKeeperByUniqueName
@@ -103,7 +196,7 @@ Content-Type: application/json
 > {% client.global.set("julesKeeperGUID", response.body.guid); %}
 
 ###
-# @name getSidneySeekerByUniqueName
+# @name getJulieStitchedByUniqueName
 # Retrieve the Person actor profile using its display name
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
@@ -112,15 +205,14 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Sidney Seeker",
+  "name" : "Julie Stitched",
   "namePropertyName" : "displayName"
 }
 
-> {% client.global.set("sidneySeekerGUID", response.body.guid); %}
-
+> {% client.global.set("julieStitchedGUID", response.body.guid); %}
 
 ###
-# @name getTanyaTidieByUniqueName
+# @name getLemmieStageByUniqueName
 # Retrieve the Person actor profile using its display name
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
@@ -129,11 +221,27 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Tanya Tidie",
+  "name" : "Lemmie Stage",
   "namePropertyName" : "displayName"
 }
 
-> {% client.global.set("tanyaTidieGUID", response.body.guid); %}
+> {% client.global.set("lemmieStageGUID", response.body.guid); %}
+
+###
+# @name getNancyNoahByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Nancy Noah",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("nancyNoahGUID", response.body.guid); %}
 
 ###
 # @name getPeterProfileByUniqueName
@@ -152,6 +260,391 @@ Content-Type: application/json
 > {% client.global.set("peterProfileGUID", response.body.guid); %}
 
 ###
+# @name getPollyTaskerByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Polly Tasker",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("pollyTaskerGUID", response.body.guid); %}
+
+###
+# @name getReggieMintByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Reggie Mint",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("reggieMintGUID", response.body.guid); %}
+
+###
+# @name getRobbieRecordsByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Robbie Records",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("robbieRecordsGUID", response.body.guid); %}
+
+###
+# @name getSallyCounterByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Sally Counter",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("sallyCounterGUID", response.body.guid); %}
+
+###
+# @name getSidneySeekerByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Sidney Seeker",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("sidneySeekerGUID", response.body.guid); %}
+
+###
+# @name getStewFasterByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Stew Faster",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("stewFasterGUID", response.body.guid); %}
+
+###
+# @name getTanyaTidieByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Tanya Tidie",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("tanyaTidieGUID", response.body.guid); %}
+
+###
+# @name getTessaTubeByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Tessa Tube",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("tessaTubeGUID", response.body.guid); %}
+
+###
+# @name getTomTallyByUniqueName
+# Retrieve the Person actor profile using its display name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "name" : "Tom Tally",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("tomTallyGUID", response.body.guid); %}
+
+###
+# =====================================================================================================================
+# Create Angela Cummings' peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "angelacummings",
+  "password" : "secret"
+}
+
+> {% client.global.set("angelaToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{angelaToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Bob Nitter's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "bobnitter",
+  "password" : "secret"
+}
+
+> {% client.global.set("bobToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{bobToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Callie Quartile's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "calliequartile",
+  "password" : "secret"
+}
+
+> {% client.global.set("callieToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{callieToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Erin Overview's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "erinoverview",
+  "password" : "secret"
+}
+
+> {% client.global.set("erinToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{erinToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Faith Broker's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "faithbroker",
+  "password" : "secret"
+}
+
+> {% client.global.set("faithToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{faithToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Gary Geeke's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "garygeeke",
+  "password" : "secret"
+}
+
+> {% client.global.set("garyToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Grant Able's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "grantable",
+  "password" : "secret"
+}
+
+> {% client.global.set("grantToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{grantToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Harry Hopeful's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "harryhopeful",
+  "password" : "secret"
+}
+
+> {% client.global.set("harryToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{harryToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
 # =====================================================================================================================
 # Create Ivor Padlock's peer network
 
@@ -164,7 +657,7 @@ Content-Type: application/json
   "password" : "secret"
 }
 
-> {% client.global.set("token", response.body); %}
+> {% client.global.set("ivorToken", response.body); %}
 
 ###
 # @name linkPeerPerson Ivor to Gary Geeke
@@ -180,7 +673,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{garyGeekeGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -206,7 +699,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{lemmieStageGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -232,7 +725,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{julesKeeperGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -258,7 +751,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{sallyCounterGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -284,7 +777,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{tanyaTidieGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -310,7 +803,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{sidneySeekerGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -336,7 +829,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{ivorPadlockGUID}}/peer-persons/{{peterProfileGUID}}/attach
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
 {
@@ -349,18 +842,439 @@ Content-Type: application/json
 }
 
 ###
-# @name Get My Profile
+# @name Get Profile
 # Return the profile for this user.
-#
-# @param serverName name of the server instances for this request
-# @param requestBody optional properties to restrict search by and control how the results are formatted
-#
-# @return profile response object or
-# InvalidParameterException the userId is null or invalid or
-# PropertyServerException a problem retrieving information from the property server(s) or
-# UserNotAuthorizedException the requesting user is not authorized to issue this request.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
-Authorization: Bearer {{token}}
+Authorization: Bearer {{ivorToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Jules Keper's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "juleskeeper",
+  "password" : "secret"
+}
+
+> {% client.global.set("julesToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{julesToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Julie Stitched's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "juliestitched",
+  "password" : "secret"
+}
+
+> {% client.global.set("julieToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{julieToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Lemmie Stage's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "lemmiestage",
+  "password" : "secret"
+}
+
+> {% client.global.set("lemmieToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{lemmieToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Nancy Noah's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "nancynoah",
+  "password" : "secret"
+}
+
+> {% client.global.set("nancyToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{nancyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Peter Profile's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("peterToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Polly Tasker's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "pollytasker",
+  "password" : "secret"
+}
+
+> {% client.global.set("pollyToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{pollyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Reggie Mint's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "reggiemint",
+  "password" : "secret"
+}
+
+> {% client.global.set("reggieToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{reggieToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Robbie Record's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "robbierecords",
+  "password" : "secret"
+}
+
+> {% client.global.set("robbieToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{robbieToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Sally Counter's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "sallycounter",
+  "password" : "secret"
+}
+
+> {% client.global.set("sallyToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{sallyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Sidney Seeker's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "sidneyseeker",
+  "password" : "secret"
+}
+
+> {% client.global.set("sidneyToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{sidneyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Stew Faster's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "stewfaster",
+  "password" : "secret"
+}
+
+> {% client.global.set("stewToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{stewToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+###
+# =====================================================================================================================
+# Create Tanya Tidie's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "tanyatidie",
+  "password" : "secret"
+}
+
+> {% client.global.set("tanyaToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{tanyaToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Tessa Tube's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "tessatube",
+  "password" : "secret"
+}
+
+> {% client.global.set("tessaToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{tessaToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["Peer"],
+  "maxMermaidNodeCount": 50
+}
+
+
+###
+# =====================================================================================================================
+# Create Tom Tally's peer network
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "tomtally",
+  "password" : "secret"
+}
+
+> {% client.global.set("tomToken", response.body); %}
+
+
+
+###
+# @name Get Profile
+# Return the profile for this user.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{tomToken}}
 Content-Type: application/json
 
 {

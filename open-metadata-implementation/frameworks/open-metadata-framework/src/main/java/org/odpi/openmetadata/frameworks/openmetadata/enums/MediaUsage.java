@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The MediaUsage defines how a related media reference can be used in conjunction with the asset properties.
+ * The MediaUsage defines how a related media reference can be used in conjunction with the element's properties.
  * These usage options are not mutually exclusive.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -20,24 +20,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum MediaUsage implements OpenMetadataEnum
 {
     /**
-     * Provides a small image to represent the asset in tree views and graphs.
+     * Provides a small image to represent the element in tree views and graphs.
      */
-    ICON           ("a54bdf05-b0e4-4b7d-a4c6-171eb5a1106f", 0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
+    ICON           ("a54bdf05-b0e4-4b7d-a4c6-171eb5a1106f", 0, "Icon", "Provides a small image to represent the element in tree views and graphs."),
 
     /**
-     * Provides a small image about the asset that can be used in lists.
+     * Provides a small image about the element that can be used in lists.
      */
-    THUMBNAIL      ("af0ba30c-dc67-4b12-863c-9a4bf955a197", 1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
+    THUMBNAIL      ("af0ba30c-dc67-4b12-863c-9a4bf955a197", 1, "Thumbnail", "Provides a small image about the element that can be used in lists."),
 
     /**
-     * Illustrates how the asset works or what it contains. It is complementary to the asset's description.
+     * Illustrates how the element works or what it contains. It is complementary to the element's description.
      */
-    ILLUSTRATION   ("cc3cc0b9-dbd1-4e3e-a97b-8a57d77a09cf", 2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
+    ILLUSTRATION   ("cc3cc0b9-dbd1-4e3e-a97b-8a57d77a09cf", 2, "Illustration", "Illustrates how the element works or what it contains. It is complementary to the element's description."),
 
     /**
-     * Provides guidance to a person on how to use the asset.
+     * Provides guidance to a person on how to use the element.
      */
-    USAGE_GUIDANCE ("7d51d180-52f4-46a5-b4f4-14fed97dcdb6", 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
+    USAGE_GUIDANCE ("7d51d180-52f4-46a5-b4f4-14fed97dcdb6", 3, "Usage Guidance", "Provides guidance to a person on how to use the associated element."),
 
     /**
      * Another usage.

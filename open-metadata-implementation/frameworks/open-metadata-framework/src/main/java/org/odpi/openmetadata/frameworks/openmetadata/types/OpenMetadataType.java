@@ -282,7 +282,6 @@ public enum OpenMetadataType
                                      "Provides a link to a keyword that helps to identify specific elements in a search.",
                                      SearchKeywordLinkProperties.class),
 
-
     /**
      * An action that has been identified to support the development, improvement, or remedy of an object or situation.
      */
@@ -292,7 +291,6 @@ public enum OpenMetadataType
            "d1df6cb0-80af-473f-aacf-f29972fd4c34",
            "An action that has been identified to support the development, improvement, or remedy of an object or situation.",
            ActionProperties.class),
-
 
     /**
      * The source of the action, such as a person, meeting, or a governance action.
@@ -314,7 +312,6 @@ public enum OpenMetadataType
                          "Identifies the cause/sponsor that requires the action to be performed.",
                          ActionsProperties.class),
 
-
     /**
      * Associates an action with one or more elements to work on.
      */
@@ -324,7 +321,6 @@ public enum OpenMetadataType
                                "e087a192-707d-41fb-97c6-84861383e4b5",
                                "Associates an action with one or more elements to work on.",
                                ActionTargetProperties.class),
-
 
     /**
      * Link to external information.
@@ -337,13 +333,13 @@ public enum OpenMetadataType
                                          ExternalReferenceLinkProperties.class),
 
     /**
-     * A link to an external reference source such as a web page, article or book.
+     * A link to an external reference source such as a web page, article, or book.
      */
     EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
                        "ExternalReference",
                        OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
                        "cd59edf8-ef6d-4436-bfc5-e93403238df4",
-                       "A link to an external reference source such as a web page, article or book.",
+                       "A link to an external reference source such as a web page, article, or book.",
                        ExternalReferenceProperties.class),
 
     /**
@@ -377,7 +373,6 @@ public enum OpenMetadataType
                           "A link to a data set on an external site.",
                           ExternalModelSourceProperties.class),
 
-
     /**
      * Images, video, or sound media.
      */
@@ -389,23 +384,23 @@ public enum OpenMetadataType
                   RelatedMediaProperties.class),
 
     /**
-     * Link to related media such as images, videos and audio.
+     * Link to related media such as images, videos, and audio.
      */
     MEDIA_REFERENCE_RELATIONSHIP("1353400f-b0ab-4ab9-ab09-3045dd8a7140",
                                  "MediaReference",
                                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                                  "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
-                                 "Link to related media such as images, videos and audio.",
+                                 "Link to related media such as images, videos, and audio.",
                                  MediaReferenceProperties.class),
 
     /**
-     * Images, video or sound media.
+     * Images, video, or sound media.
      */
     CITED_DOCUMENT("a52fb0d9-35aa-4483-9ccd-3c0795b07a8e",
                    "CitedDocument",
                    OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
                    "895d9504-3354-4639-9852-acf3aa2e42a6",
-                   "Images, video or sound media.",
+                   "Images, video, or sound media.",
                    CitedDocumentProperties.class),
 
     /**

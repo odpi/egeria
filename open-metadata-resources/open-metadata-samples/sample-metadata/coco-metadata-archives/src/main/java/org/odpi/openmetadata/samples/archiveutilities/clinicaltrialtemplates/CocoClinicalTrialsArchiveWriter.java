@@ -15,8 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.DataProcessingPurposeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoDataProcessingPurposeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoLicenseTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
@@ -255,7 +255,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                null,
                                                CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
-        String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
+        String licenseTypeGUID = archiveHelper.getGUID(CocoLicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 
         Map<String, String> entitlements = new HashMap<>();
         entitlements.put("research", "true");
@@ -284,7 +284,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                  null,
                                  licenseTypeGUID);
 
-        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(CocoDataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
 
         archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
 
@@ -464,7 +464,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                null,
                                                CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
-        String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
+        String licenseTypeGUID = archiveHelper.getGUID(CocoLicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 
         Map<String, String> entitlements = new HashMap<>();
         entitlements.put("research", "true");
@@ -493,7 +493,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                  null,
                                  licenseTypeGUID);
 
-        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(CocoDataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
 
         archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
 

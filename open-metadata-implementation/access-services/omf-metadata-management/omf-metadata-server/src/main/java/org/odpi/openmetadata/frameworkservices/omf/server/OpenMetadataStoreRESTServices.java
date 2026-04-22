@@ -3665,7 +3665,18 @@ public class OpenMetadataStoreRESTServices
                 openMetadataRelationshipDef.setPropagationRule(this.getPropagationRule(relationshipDef.getPropagationRule()));
                 openMetadataRelationshipDef.setEndDef1(this.getRelationshipEndDef(relationshipDef.getEndDef1()));
                 openMetadataRelationshipDef.setEndDef2(this.getRelationshipEndDef(relationshipDef.getEndDef2()));
-                openMetadataRelationshipDef.setMultiLink(relationshipDef.getMultiLink());
+                if (relationshipDef.getMultiLink())
+                {
+                    openMetadataRelationshipDef.setRelationshipCategory(OpenMetadataRelationshipCategory.MULTI_LINK);
+                }
+                else if (relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                {
+                    openMetadataRelationshipDef.setRelationshipCategory(OpenMetadataRelationshipCategory.REVERSIBLE);
+                }
+                else
+                {
+                    openMetadataRelationshipDef.setRelationshipCategory(OpenMetadataRelationshipCategory.UNI_LINK);
+                }
 
                 openMetadataTypeDef = openMetadataRelationshipDef;
                 openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);

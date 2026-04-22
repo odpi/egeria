@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Identifier - to uniquely identify the message</li>
- *     <li>Severity - is this an event, decision, action, error or exception</li>
+ *     <li>Severity - is this an event, decision, action, error, or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
  *     <li>SystemAction - describes the result of the situation</li>
@@ -109,16 +109,16 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
      */
     EGERIA_TARGET_START("OMAG-CONNECTORS-0010",
                            AuditLogRecordSeverityLevel.INFO,
-                           "The monitoring of OMAG Server Platform '{0}' has started",
+                           "The monitoring of OMAG Server Platform {0} has started",
                            "The connector will synchronize the configuration of the platform and its servers with its open metadata description.",
                            "No specific action is required.  This message is to confirm the start of the target processor."),
 
     /**
-     * Connector {0} is synchronizing metadata for OMAG Server Platform '{1}'
+     * Connector {0} is synchronizing metadata for OMAG Server Platform: {1}
      */
     EGERIA_TARGET_REFRESH("OMAG-CONNECTORS-0011",
                         AuditLogRecordSeverityLevel.INFO,
-                        "Connector {0} is synchronizing metadata for OMAG Server Platform '{1}'",
+                        "Connector {0} is synchronizing metadata for OMAG Server Platform: {1}",
                         "The connector is synchronizing the configuration of the platform and its servers with its open metadata description.",
                         "No specific action is required.  This message is to confirm the refreshing of the target processor."),
 

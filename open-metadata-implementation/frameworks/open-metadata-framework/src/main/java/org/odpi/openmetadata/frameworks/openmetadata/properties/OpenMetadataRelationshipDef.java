@@ -13,19 +13,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OpenMetadataRelationshipDef describes the type of a relationship.  A relationships links two entities together.
+ * OpenMetadataRelationshipDef describes a type of relationship.  A relationship links two entities together.
  * The OpenMetadataRelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
- * defines if this relationship allows classifications to propagate through it.
+ * defines if this relationship allows classifications to propagate through it and how many instances of this
+ * relationship type are allowed between two elements in a single direction.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
 {
-    private OpenMetadataClassificationPropagationRule propagationRule = OpenMetadataClassificationPropagationRule.NONE;
-    private OpenMetadataRelationshipEndDef            endDef1         = null;
-    private OpenMetadataRelationshipEndDef            endDef2         = null;
-    private boolean                                   multiLink       = false;
+    private OpenMetadataClassificationPropagationRule propagationRule      = OpenMetadataClassificationPropagationRule.NONE;
+    private OpenMetadataRelationshipEndDef            endDef1              = null;
+    private OpenMetadataRelationshipEndDef            endDef2              = null;
+    private OpenMetadataRelationshipCategory          relationshipCategory = null;
 
 
     /**
@@ -34,25 +35,6 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
     public OpenMetadataRelationshipDef()
     {
         super(OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
-    }
-
-
-    /**
-     * Typical constructor is passed the properties of the typedef's super class being constructed.
-     *
-     * @param category    category of this OpenMetadataTypeDef
-     * @param guid        unique id for the OpenMetadataTypeDef
-     * @param name        unique name for the OpenMetadataTypeDef
-     * @param version     active version number for the OpenMetadataTypeDef
-     * @param versionName name for the active version of the OpenMetadataTypeDef
-     */
-    public OpenMetadataRelationshipDef(OpenMetadataTypeDefCategory category,
-                                       String          guid,
-                                       String          name,
-                                       long            version,
-                                       String          versionName)
-    {
-        super(category, guid, name, version, versionName);
     }
 
 
@@ -67,10 +49,10 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
 
         if (templateTypeDef != null)
         {
-            this.propagationRule = templateTypeDef.getPropagationRule();
-            this.endDef1 = templateTypeDef.getEndDef1();
-            this.endDef2 = templateTypeDef.getEndDef2();
-            this.multiLink = templateTypeDef.getMultiLink();
+            this.propagationRule      = templateTypeDef.getPropagationRule();
+            this.endDef1              = templateTypeDef.getEndDef1();
+            this.endDef2              = templateTypeDef.getEndDef2();
+            this.relationshipCategory = templateTypeDef.getRelationshipCategory();
         }
     }
 
@@ -158,24 +140,24 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
 
 
     /**
-     * Return whether multiple relationships of this type are allowed between the same two entities.
+     * Return the relationship category.
      *
-     * @return boolean flag
+     * @return enum
      */
-    public boolean getMultiLink()
+    public OpenMetadataRelationshipCategory getRelationshipCategory()
     {
-        return multiLink;
+        return relationshipCategory;
     }
 
 
     /**
-     * Set up whether multiple relationships of this type are allowed between the same two entities.
+     * Set up the relationship category.
      *
-     * @param multiLink boolean flag
+     * @param relationshipCategory enum
      */
-    public void setMultiLink(boolean multiLink)
+    public void setRelationshipCategory(OpenMetadataRelationshipCategory relationshipCategory)
     {
-        this.multiLink = multiLink;
+        this.relationshipCategory = relationshipCategory;
     }
 
 
@@ -191,7 +173,7 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
                 "propagationRule=" + propagationRule +
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
-                ", multiLink=" + multiLink +
+                ", relationshipCategory=" + relationshipCategory +
                 "} " + super.toString();
     }
 
@@ -217,10 +199,10 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
             return false;
         }
         OpenMetadataRelationshipDef that = (OpenMetadataRelationshipDef) objectToCompare;
-        return multiLink == that.multiLink &&
-                       propagationRule == that.propagationRule &&
-                       Objects.equals(endDef1, that.endDef1) &&
-                       Objects.equals(endDef2, that.endDef2);
+        return propagationRule == that.propagationRule &&
+               Objects.equals(endDef1, that.endDef1) &&
+               Objects.equals(endDef2, that.endDef2) &&
+               relationshipCategory == that.relationshipCategory;
     }
 
 
@@ -232,6 +214,6 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, multiLink);
+        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, relationshipCategory);
     }
 }
