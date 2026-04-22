@@ -18,6 +18,7 @@ public enum DeptDefinition
           new PersonDefinition[]{PersonDefinition.ZACH_NOW, PersonDefinition.TERRI_DARING, PersonDefinition.STEVE_STARTER},
           new PersonDefinition[]{PersonDefinition.REGGIE_MINT, PersonDefinition.JULES_KEEPER, PersonDefinition.FAITH_BROKER, PersonDefinition.IVOR_PADLOCK, PersonDefinition.STEW_FASTER},
           0,
+          10,
           null,
           BusinessAreaDefinition.GOVERNANCE,
           ScopeDefinition.WITHIN_ORGANIZATION),
@@ -29,6 +30,7 @@ public enum DeptDefinition
              new PersonDefinition[]{PersonDefinition.ZACH_NOW, PersonDefinition.TERRI_DARING, PersonDefinition.STEVE_STARTER},
              null,
              0,
+             3,
              null,
              BusinessAreaDefinition.GOVERNANCE,
              ScopeDefinition.WITHIN_ORGANIZATION),
@@ -39,6 +41,7 @@ public enum DeptDefinition
                FOUNDERS,
                new PersonDefinition[]{PersonDefinition.STEVE_STARTER},
                null,
+               1,
                1,
                WorkLocationDefinition.AMSTERDAM_SITE,
                null,
@@ -51,6 +54,7 @@ public enum DeptDefinition
               new PersonDefinition[]{PersonDefinition.FAITH_BROKER},
               null,
               3,
+              3,
               WorkLocationDefinition.AMSTERDAM_SITE,
               BusinessAreaDefinition.HR,
               ScopeDefinition.WITHIN_ORGANIZATION),
@@ -62,6 +66,7 @@ public enum DeptDefinition
               new PersonDefinition[]{PersonDefinition.IVOR_PADLOCK},
               null,
               2,
+               3,
               WorkLocationDefinition.AMSTERDAM_SITE,
               BusinessAreaDefinition.GOVERNANCE,
               ScopeDefinition.WITHIN_ORGANIZATION),
@@ -72,6 +77,7 @@ public enum DeptDefinition
              DeptDefinition.AMSTERDAM,
              null,
              null,
+             5,
              5,
              WorkLocationDefinition.AMSTERDAM_SITE,
              BusinessAreaDefinition.SALES,
@@ -84,6 +90,7 @@ public enum DeptDefinition
                   new PersonDefinition[]{PersonDefinition.STEVE_STARTER},
                   null,
                   12,
+                  12,
                   WorkLocationDefinition.AMSTERDAM_SITE,
                   BusinessAreaDefinition.RESEARCH,
                   ScopeDefinition.WITHIN_SITE),
@@ -94,6 +101,7 @@ public enum DeptDefinition
                        DeptDefinition.AMSTERDAM,
                        null,
                        null,
+                       8,
                        8,
                        WorkLocationDefinition.AMSTERDAM_SITE,
                        BusinessAreaDefinition.CLINICAL_TRIALS,
@@ -106,6 +114,7 @@ public enum DeptDefinition
                  new PersonDefinition[]{PersonDefinition.STEVE_STARTER},
                  new PersonDefinition[]{PersonDefinition.GARY_GEEKE, PersonDefinition.POLLY_TASKER},
                  0,
+              3,
                  WorkLocationDefinition.AMSTERDAM_SITE,
                  BusinessAreaDefinition.IT,
                  ScopeDefinition.WITHIN_ORGANIZATION),
@@ -117,6 +126,7 @@ public enum DeptDefinition
               new PersonDefinition[]{PersonDefinition.POLLY_TASKER},
               new PersonDefinition[]{PersonDefinition.BOB_NITTER, PersonDefinition.LEMMIE_STAGE, PersonDefinition.NANCY_NOAH, PersonDefinition.DES_SIGNA},
               1,
+              4,
               WorkLocationDefinition.AMSTERDAM_SITE,
               null,
               ScopeDefinition.WITHIN_ORGANIZATION),
@@ -127,6 +137,7 @@ public enum DeptDefinition
                   DeptDefinition.IT_GLOBAL,
                   new PersonDefinition[]{PersonDefinition.GARY_GEEKE},
                   null,
+                  2,
                   2,
                   WorkLocationDefinition.AMSTERDAM_SITE,
                   null,
@@ -139,6 +150,7 @@ public enum DeptDefinition
                   null,
                   null,
                   6,
+                  6,
                   WorkLocationDefinition.AMSTERDAM_SITE,
                   BusinessAreaDefinition.DISTRIBUTION,
                   ScopeDefinition.WITHIN_REGION),
@@ -149,6 +161,7 @@ public enum DeptDefinition
             FOUNDERS,
             new PersonDefinition[]{PersonDefinition.TERRI_DARING},
             null,
+            1,
             1,
             WorkLocationDefinition.LONDON_SITE,
             null,
@@ -161,6 +174,7 @@ public enum DeptDefinition
                new PersonDefinition[]{PersonDefinition.TERRI_DARING},
                null,
                7,
+               10,
                WorkLocationDefinition.LONDON_SITE,
                BusinessAreaDefinition.RESEARCH,
                ScopeDefinition.WITHIN_SITE),
@@ -169,8 +183,9 @@ public enum DeptDefinition
                        "Clinical Trials Team (UK)",
                        "Team coordinating the clinical trials with a variety of hospitals in the UK.",
                        DeptDefinition.LONDON,
+                       new PersonDefinition[]{PersonDefinition.TESSA_TUBE},
                        null,
-                       null,
+                       2,
                        2,
                        WorkLocationDefinition.LONDON_SITE,
                        BusinessAreaDefinition.CLINICAL_TRIALS,
@@ -183,6 +198,7 @@ public enum DeptDefinition
         new PersonDefinition[]{PersonDefinition.JULES_KEEPER},
         new PersonDefinition[]{PersonDefinition.ERIN_OVERVIEW, PersonDefinition.PETER_PROFILE},
         2,
+        2,
         WorkLocationDefinition.LONDON_SITE,
         BusinessAreaDefinition.GOVERNANCE,
         ScopeDefinition.WITHIN_ORGANIZATION),
@@ -194,6 +210,7 @@ public enum DeptDefinition
             new PersonDefinition[]{PersonDefinition.REGGIE_MINT},
             new PersonDefinition[]{PersonDefinition.TOM_TALLY, PersonDefinition.SIDNEY_SEEKER},
             1,
+            3,
             WorkLocationDefinition.LONDON_SITE,
             BusinessAreaDefinition.FINANCE,
             ScopeDefinition.WITHIN_ORGANIZATION),
@@ -205,6 +222,7 @@ public enum DeptDefinition
              new PersonDefinition[]{PersonDefinition.TOM_TALLY},
              new PersonDefinition[]{PersonDefinition.SALLY_COUNTER},
              4,
+             5,
              WorkLocationDefinition.LONDON_SITE,
              null,
              ScopeDefinition.WITHIN_ORGANIZATION),
@@ -213,8 +231,9 @@ public enum DeptDefinition
              "Sales",
              "Team selling Coco Pharmaceuticals products to hospitals in UK.",
              DeptDefinition.LONDON,
+             new PersonDefinition[]{PersonDefinition.HARRY_HOPEFUL},
              null,
-             null,
+             4,
              4,
              WorkLocationDefinition.LONDON_SITE,
              BusinessAreaDefinition.SALES,
@@ -227,6 +246,7 @@ public enum DeptDefinition
               null,
               null,
               2,
+              2,
               WorkLocationDefinition.LONDON_SITE,
               BusinessAreaDefinition.IT,
               ScopeDefinition.WITHIN_SITE),
@@ -237,6 +257,7 @@ public enum DeptDefinition
               FOUNDERS,
               new PersonDefinition[]{PersonDefinition.ZACH_NOW},
               null,
+              1,
               1,
               WorkLocationDefinition.NEW_YORK_SITE,
               null,
@@ -249,6 +270,7 @@ public enum DeptDefinition
                  new PersonDefinition[]{PersonDefinition.TESSA_TUBE},
                  null,
                  10,
+                 12,
                  WorkLocationDefinition.NEW_YORK_SITE,
                  BusinessAreaDefinition.RESEARCH,
                  ScopeDefinition.WITHIN_SITE),
@@ -260,6 +282,7 @@ public enum DeptDefinition
                        new PersonDefinition[]{PersonDefinition.TESSA_TUBE},
                        new PersonDefinition[]{PersonDefinition.CALLIE_QUARTILE, PersonDefinition.TANYA_TIDIE},
                        8,
+                       10,
                        WorkLocationDefinition.NEW_YORK_SITE,
                        BusinessAreaDefinition.CLINICAL_TRIALS,
                        ScopeDefinition.WITHIN_REGION),
@@ -271,6 +294,7 @@ public enum DeptDefinition
              new PersonDefinition[]{PersonDefinition.HARRY_HOPEFUL},
              null,
              6,
+             6,
              WorkLocationDefinition.NEW_YORK_SITE,
              BusinessAreaDefinition.SALES,
              ScopeDefinition.WITHIN_REGION),
@@ -279,8 +303,9 @@ public enum DeptDefinition
               "New York Information Technology Team",
               "Team managing IT resources for New York Site.",
               DeptDefinition.NEW_YORK,
+              new PersonDefinition[]{PersonDefinition.GARY_GEEKE},
               null,
-              null,
+              2,
               2,
               WorkLocationDefinition.NEW_YORK_SITE,
               BusinessAreaDefinition.IT,
@@ -290,9 +315,10 @@ public enum DeptDefinition
             "Austin Site",
             "Austin Employees",
             FOUNDERS,
+            new PersonDefinition[]{PersonDefinition.STEW_FASTER},
             null,
-            null,
-            1,
+            15,
+            15,
             WorkLocationDefinition.AUSTIN_SITE,
             null,
             ScopeDefinition.WITHIN_SITE),
@@ -301,8 +327,9 @@ public enum DeptDefinition
                  "Austin Factory",
                  "Team producing and delivering products to customers based in Austin, TX.",
                  DeptDefinition.AUSTIN,
+                 new PersonDefinition[]{PersonDefinition.STEW_FASTER},
                  null,
-                 null,
+                 16,
                  16,
                  WorkLocationDefinition.AUSTIN_SITE,
                  BusinessAreaDefinition.MANUFACTURING,
@@ -312,8 +339,9 @@ public enum DeptDefinition
                   "Austin Office Team",
                   "Team managing administration for Austin operation.",
                   DeptDefinition.AUSTIN,
+                  new PersonDefinition[]{PersonDefinition.REGGIE_MINT},
                   null,
-                  null,
+                  9,
                   9,
                   WorkLocationDefinition.AUSTIN_SITE,
                   BusinessAreaDefinition.MANUFACTURING,
@@ -323,8 +351,9 @@ public enum DeptDefinition
           "Austin Information Technology Team",
           "Team managing IT resources for Austin manufacturing.",
           DeptDefinition.AUSTIN,
+          new PersonDefinition[]{PersonDefinition.GARY_GEEKE},
           null,
-          null,
+          4,
           4,
           WorkLocationDefinition.AUSTIN_SITE,
           BusinessAreaDefinition.IT,
@@ -338,6 +367,7 @@ public enum DeptDefinition
                 new PersonDefinition[]{PersonDefinition.STEW_FASTER},
                 null,
                 1,
+                1,
                 WorkLocationDefinition.WINCHESTER_SITE,
                 null,
                 ScopeDefinition.WITHIN_SITE),
@@ -349,28 +379,31 @@ public enum DeptDefinition
                 new PersonDefinition[]{PersonDefinition.STEW_FASTER},
                 null,
                 14,
+                14,
                 WorkLocationDefinition.WINCHESTER_SITE,
                 BusinessAreaDefinition.MANUFACTURING,
                 ScopeDefinition.WORLD),
 
     WINCH_OFFICE("0015",
                 "Winchester Manufacturing Office",
-                "Office team based in Winchester, UK.",
+                "Office team based in London, UK.",
                 DeptDefinition.WINCHESTER,
-                new PersonDefinition[]{PersonDefinition.STEW_FASTER},
+                new PersonDefinition[]{PersonDefinition.REGGIE_MINT},
                 null,
                 0,
+                 4,
                 WorkLocationDefinition.WINCHESTER_SITE,
                 BusinessAreaDefinition.MANUFACTURING,
                 ScopeDefinition.WORLD),
 
     WINCH_OFFICE_LOCAL("0016",
-                 "Winchester Manufacturing Office",
+                 "Winchester Manufacturing Office (Local)",
                  "Team responsible for administration of the Winchester Manufacturing Operation based in Winchester, UK.",
                  DeptDefinition.WINCH_OFFICE,
-                 null,
+                       new PersonDefinition[]{PersonDefinition.REGGIE_MINT},
                  null,
                  4,
+                 0,
                  WorkLocationDefinition.WINCHESTER_SITE,
                  BusinessAreaDefinition.MANUFACTURING,
                  ScopeDefinition.WORLD),
@@ -382,6 +415,7 @@ public enum DeptDefinition
                  new PersonDefinition[]{PersonDefinition.STEW_FASTER},
                  null,
                  5,
+                         5,
                  WorkLocationDefinition.WINCHESTER_SITE,
                  BusinessAreaDefinition.MANUFACTURING,
                  ScopeDefinition.WORLD),
@@ -393,6 +427,7 @@ public enum DeptDefinition
               null,
               null,
               5,
+              3,
               WorkLocationDefinition.WINCHESTER_SITE,
               BusinessAreaDefinition.IT,
               ScopeDefinition.WITHIN_SITE),
@@ -403,6 +438,7 @@ public enum DeptDefinition
                     DeptDefinition.WINCHESTER,
                     null,
                     null,
+                    10,
                     10,
                     WorkLocationDefinition.WINCHESTER_SITE,
                     BusinessAreaDefinition.DISTRIBUTION,
@@ -415,6 +451,7 @@ public enum DeptDefinition
         null,
         null,
         1,
+        1,
         WorkLocationDefinition.KANSAS_CITY_SITE,
         null,
         ScopeDefinition.WITHIN_SITE),
@@ -425,6 +462,7 @@ public enum DeptDefinition
               DeptDefinition.KC,
               null,
               null,
+              3,
               3,
               WorkLocationDefinition.KANSAS_CITY_SITE,
               BusinessAreaDefinition.DISTRIBUTION,
@@ -437,6 +475,7 @@ public enum DeptDefinition
                 null,
                 null,
                 7,
+                7,
                 WorkLocationDefinition.KANSAS_CITY_SITE,
                 BusinessAreaDefinition.DISTRIBUTION,
                 ScopeDefinition.WITHIN_COUNTRY),
@@ -447,6 +486,7 @@ public enum DeptDefinition
               FOUNDERS,
               null,
               null,
+              1,
               1,
               WorkLocationDefinition.EDMONTON_SITE,
               null,
@@ -459,6 +499,7 @@ public enum DeptDefinition
                    null,
                    null,
                    17,
+                   17,
                    WorkLocationDefinition.AUSTIN_SITE,
                    BusinessAreaDefinition.MANUFACTURING,
                    ScopeDefinition.WITHIN_REGION),
@@ -469,6 +510,7 @@ public enum DeptDefinition
                 DeptDefinition.EDMONTON,
                 null,
                 null,
+                4,
                 4,
                 WorkLocationDefinition.EDMONTON_SITE,
                 BusinessAreaDefinition.MANUFACTURING,
@@ -481,6 +523,7 @@ public enum DeptDefinition
              null,
              null,
              3,
+             3,
              WorkLocationDefinition.EDMONTON_SITE,
              BusinessAreaDefinition.IT,
              ScopeDefinition.WITHIN_SITE),
@@ -491,6 +534,7 @@ public enum DeptDefinition
              DeptDefinition.EDMONTON,
              null,
              null,
+             5,
              5,
              WorkLocationDefinition.EDMONTON_SITE,
              BusinessAreaDefinition.DISTRIBUTION,
@@ -505,6 +549,7 @@ public enum DeptDefinition
     private final PersonDefinition[]     leaders;
     private final PersonDefinition[]     members;
     private final int                    additionalMembers;
+    private final int                    teamHeadCount;
     private final WorkLocationDefinition workLocation;
     private final BusinessAreaDefinition businessArea;
     private final ScopeDefinition        businessAreaScope;
@@ -519,6 +564,7 @@ public enum DeptDefinition
      * @param leaders person to link into the leadership role
      * @param members list of people who are members of the team or organization
      * @param additionalMembers anonymous people to make up staff complement
+     * @param teamHeadCount number of people that are budgeted for the team
      * @param workLocation which work location to associate the anonymous people with
      * @param businessArea which business area is this team supporting
      * @param businessAreaScope what is the scope of this team's responsibility?
@@ -530,6 +576,7 @@ public enum DeptDefinition
                    PersonDefinition[]     leaders,
                    PersonDefinition[]     members,
                    int                    additionalMembers,
+                   int                    teamHeadCount,
                    WorkLocationDefinition workLocation,
                    BusinessAreaDefinition businessArea,
                    ScopeDefinition        businessAreaScope)
@@ -541,6 +588,7 @@ public enum DeptDefinition
         this.leaders = leaders;
         this.members = members;
         this.additionalMembers = additionalMembers;
+        this.teamHeadCount = teamHeadCount;
         this.workLocation = workLocation;
         this.businessArea = businessArea;
         this.businessAreaScope = businessAreaScope;
@@ -648,6 +696,16 @@ public enum DeptDefinition
         return additionalMembers;
     }
 
+
+    /**
+     * Return the number of people that are budgeted for the team.
+     *
+     * @return int
+     */
+    public int getTeamHeadCount()
+    {
+        return teamHeadCount;
+    }
 
     /**
      * Return the work location.

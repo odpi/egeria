@@ -47,11 +47,11 @@ public enum InformationSupplyChain
                             "This is the template used to create the information supply chains for the clinical trial."),
 
     /**
-     * Delivering data relating to the XXX clinical trial from the hospitals to the Coco Researchers.
+     * Delivering data for the XXX clinical trial from the hospitals to the Coco Researchers.
      */
     CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE("1f71e403-1187-4f03-a1dd-ae7dc105f06f",
                                                  "Clinical Trial Treatment Validation::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
-                                                 "Delivering data relating to the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
+                                                 "Delivering data for the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
                                                  ScopeDefinition.WITHIN_PROJECT,
                                                  new String[]
                                                  {

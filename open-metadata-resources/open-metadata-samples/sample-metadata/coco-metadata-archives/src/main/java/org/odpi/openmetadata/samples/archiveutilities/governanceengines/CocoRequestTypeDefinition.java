@@ -5,8 +5,8 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CertificationTypeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoCertificationTypeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoProjectDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialActionTarget;
 
 import java.util.ArrayList;
@@ -30,33 +30,33 @@ public enum CocoRequestTypeDefinition
                      CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
                      CocoGovernanceServiceDefinition.SET_UP_DATA_LAKE,
                      "4c33571b-043b-4fba-9b4f-ada7cd8910d3",
-                     ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                     CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
 
     /**
      * nominate-hospital
      */
     NOMINATE_HOSPITAL("nominate-hospital",
-                     null,
-                     null,
-                     null,
-                     CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
-                     CocoGovernanceServiceDefinition.NOMINATE_HOSPITAL,
+                      null,
+                      null,
+                      null,
+                      CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
+                      CocoGovernanceServiceDefinition.NOMINATE_HOSPITAL,
                       "25f1f005-d051-4f78-a56a-7b94eda114aa",
-                     ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                      CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
 
     /**
      * certify-hospital
      */
     CERTIFY_HOSPITAL("certify-hospital",
-                      null,
-                      null,
-                      null,
-                      CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
-                      CocoGovernanceServiceDefinition.CERTIFY_HOSPITAL,
+                     null,
+                     null,
+                     null,
+                     CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
+                     CocoGovernanceServiceDefinition.CERTIFY_HOSPITAL,
                      "12746ea1-750b-43ef-b6d8-74c145c0d18c",
-                      ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                     CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
 
     /**
@@ -69,19 +69,19 @@ public enum CocoRequestTypeDefinition
                      CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
                      CocoGovernanceServiceDefinition.HOSPITAL_ONBOARDING,
                      "7d12e715-53c6-4c33-bc05-7db9156056c8",
-                     ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                     CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
     /**
      * check-weekly-measurements-data-quality
      */
     CHECK_DATA("check-weekly-measurements-data-quality",
-                     null,
-                     null,
-                     null,
-                     CocoGovernanceEngineDefinition.ASSET_QUALITY_ENGINE,
-                     CocoGovernanceServiceDefinition.WEEKLY_MEASUREMENTS_DATA_QUALITY,
-                     "7494e350-1478-491a-90c1-e22856a47372",
-                     ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+               null,
+               null,
+               null,
+               CocoGovernanceEngineDefinition.ASSET_QUALITY_ENGINE,
+               CocoGovernanceServiceDefinition.WEEKLY_MEASUREMENTS_DATA_QUALITY,
+               "7494e350-1478-491a-90c1-e22856a47372",
+               CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
 
     /**
@@ -94,7 +94,7 @@ public enum CocoRequestTypeDefinition
                           CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
                           CocoGovernanceServiceDefinition.SET_UP_CLINICAL_TRIAL,
                           "23ceab08-f644-49c7-b7f3-95f39fe41c84",
-                          ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                          CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
     /**
      * simulate-ftp
@@ -106,7 +106,7 @@ public enum CocoRequestTypeDefinition
                  CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
                  CocoGovernanceServiceDefinition.FILE_PROVISIONER,
                  "286599f7-8f05-4378-84f0-7e9af5dfad7f",
-                 ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+                 CocoProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
     ;
 
@@ -128,21 +128,21 @@ public enum CocoRequestTypeDefinition
         NewActionTarget newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.CLINICAL_TRIAL_CERTIFICATION_TYPE.getName());
-        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.APPROVED_CLINICAL_TRIAL.getGUID());
+        newActionTarget.setActionTargetGUID(CocoCertificationTypeDefinition.APPROVED_CLINICAL_TRIAL.getGUID());
 
         actionTargetList.add(newActionTarget);
 
         newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE_TEMPLATE.getName());
-        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.CLINICAL_TRIAL_APPROVED_HOSPITAL.getGUID());
+        newActionTarget.setActionTargetGUID(CocoCertificationTypeDefinition.CLINICAL_TRIAL_APPROVED_HOSPITAL.getGUID());
 
         actionTargetList.add(newActionTarget);
 
         newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE.getName());
-        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.WEEKLY_MEASUREMENTS_APPROVED_DATA.getGUID());
+        newActionTarget.setActionTargetGUID(CocoCertificationTypeDefinition.WEEKLY_MEASUREMENTS_APPROVED_DATA.getGUID());
 
         actionTargetList.add(newActionTarget);
 

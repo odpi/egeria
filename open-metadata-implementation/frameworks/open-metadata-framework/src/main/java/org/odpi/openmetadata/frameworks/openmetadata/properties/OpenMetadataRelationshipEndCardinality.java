@@ -10,8 +10,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipCardinality is used in a OpenMetadataRelationshipEndDef to indicate how many relationships of this type
- * can be connected to an entity instance.:
+ * RelationshipCardinality is used in an OpenMetadataRelationshipEndDef to indicate how many relationships of this type
+ * can be connected to an element instance:
  * <ul>
  *     <li>
  *         UNKNOWN: uninitialized cardinality.
@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *                       to an instance of the OpenMetadataEntityDef.  This relationship is written as 0..1 in UML.
  *     </li>
  *     <li>
- *         ANY_NUMBER: means there can be none, one or many instances of this relationship connected
+ *         ANY_NUMBER: means there can be none, one, or many instances of this relationship connected
  *                      to an instance of the OpenMetadataEntityDef. This relationship is often written as 0..* or * in UML.
  *     </li>
  * </ul>

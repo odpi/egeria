@@ -59,6 +59,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     public void getArchiveContent()
     {
         writeDomains();
+        writeCocoCollections();
         writeLicenseTypes();
         writeCertificationTypes();
         writeDataProcessingPurposes();
@@ -129,12 +130,57 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     }
 
 
+    public void writeCocoCollections()
+    {
+        for (CocoCollectionDefinition collectionDefinition : CocoCollectionDefinition.values())
+        {
+            archiveHelper.setGUID(collectionDefinition.getQualifiedName(), collectionDefinition.getGUID());
+
+            if (collectionDefinition.getParent() == null)
+            {
+                archiveHelper.addCollection(collectionDefinition.getTypeName(),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            collectionDefinition.getClassificationName(),
+                                            collectionDefinition.getQualifiedName(),
+                                            collectionDefinition.getDisplayName(),
+                                            collectionDefinition.getDescription(),
+                                            collectionDefinition.getCategory(),
+                                            null,
+                                            null,
+                                            null);
+            }
+            else
+            {
+                archiveHelper.addCollection(collectionDefinition.getTypeName(),
+                                            collectionDefinition.getParent().getGUID(),
+                                            collectionDefinition.getParent().getTypeName(),
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            collectionDefinition.getClassificationName(),
+                                            collectionDefinition.getQualifiedName(),
+                                            collectionDefinition.getDisplayName(),
+                                            collectionDefinition.getDescription(),
+                                            collectionDefinition.getCategory(),
+                                            null,
+                                            null,
+                                            null);
+
+                archiveHelper.addMemberToCollection(collectionDefinition.getParent().getGUID(),
+                                                    collectionDefinition.getGUID(),
+                                                    null);
+            }
+        }
+    }
+
     /**
      * Creates LicenceType definitions.
      */
     private void writeLicenseTypes()
     {
-        for (LicenseTypeDefinition licenseTypeDefinition : LicenseTypeDefinition.values())
+        for (CocoLicenseTypeDefinition licenseTypeDefinition : CocoLicenseTypeDefinition.values())
         {
             archiveHelper.addGovernanceDefinition(OpenMetadataType.LICENSE_TYPE.typeName,
                                                   licenseTypeDefinition.getQualifiedName(),
@@ -162,7 +208,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String methodName = "writeCertificationTypes";
 
-        for (CertificationTypeDefinition certificationTypeDefinition : CertificationTypeDefinition.values())
+        for (CocoCertificationTypeDefinition certificationTypeDefinition : CocoCertificationTypeDefinition.values())
         {
             archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
 
@@ -202,7 +248,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeDataProcessingPurposes()
     {
-        for (DataProcessingPurposeDefinition dataProcessingPurposeDefinition : DataProcessingPurposeDefinition.values())
+        for (CocoDataProcessingPurposeDefinition dataProcessingPurposeDefinition : CocoDataProcessingPurposeDefinition.values())
         {
             archiveHelper.addGovernanceDefinition(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
                                                   dataProcessingPurposeDefinition.getQualifiedName(),
@@ -286,7 +332,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeCommunities()
     {
-        for (CommunityDefinition communityDefinition : CommunityDefinition.values())
+        for (CocoCommunityDefinition communityDefinition : CocoCommunityDefinition.values())
         {
             archiveHelper.addCommunity(null,
                                        communityDefinition.getQualifiedName(),
@@ -383,7 +429,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeProjects()
     {
-        for (ProjectDefinition projectDefinition : ProjectDefinition.values())
+        for (CocoProjectDefinition projectDefinition : CocoProjectDefinition.values())
         {
             archiveHelper.addProject(null,
                                      projectDefinition.getQualifiedName(),
@@ -426,7 +472,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
             if (projectDefinition.getDependentOn() != null)
             {
-                for (ProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
+                for (CocoProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
                 {
                     archiveHelper.addProjectDependencyRelationship(dependentOnProject.getQualifiedName(),
                                                                    projectDefinition.getQualifiedName(),

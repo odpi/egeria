@@ -321,8 +321,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        null,
                                        null,
-                                       false,
-                                       0,
+                                       true,
+                                       deptDefinition.getTeamHeadCount(),
                                        null,
                                        null);
 
@@ -353,6 +353,29 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     deptDefinition.getQualifiedName(),
                                                                     AssignmentType.OWNER.getDisplayName(),
                                                                     deptDefinition.getBusinessAreaScope().getPreferredValue());
+            }
+        }
+
+        /*
+         * The original code above only added one additional member to
+         * each department - the loop below adds the other members.
+         * It is coded this way to honour the original appointments.
+         */
+        for (DeptDefinition deptDefinition : DeptDefinition.values())
+        {
+            String membershipRoleQName = "TeamMembers::" + deptDefinition.getQualifiedName();
+
+
+
+            if (deptDefinition.getAdditionalMembers() > 1)
+            {
+                for (int i = 1; i < deptDefinition.getAdditionalMembers(); i++)
+                {
+                    archiveHelper.addPersonRoleAppointmentRelationship(getAnonymousMember(deptDefinition.getWorkLocation()),
+                                                                       membershipRoleQName,
+                                                                       false,
+                                                                       0);
+                }
             }
         }
     }

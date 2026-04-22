@@ -118,7 +118,7 @@ public enum ProductFolderDefinition
 
 
     /**
-     * Returns the unique name for the subject area entity.
+     * Returns the unique name for the collection entity.
      *
      * @return qualified name
      */

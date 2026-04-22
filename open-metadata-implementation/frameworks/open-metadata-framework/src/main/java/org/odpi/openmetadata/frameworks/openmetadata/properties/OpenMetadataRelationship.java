@@ -23,17 +23,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationship extends ElementControlHeader
 {
-    private String                  relationshipGUID       = null;
-    private ElementType             relationshipType       = null;
-    private Date                    effectiveFromTime      = null;
-    private Date                    effectiveToTime        = null;
-    private ElementProperties       relationshipProperties = null;
-    private String                  labelAtEnd1            = null;
-    private String                  elementGUIDAtEnd1      = null;
-    private OpenMetadataElementStub elementAtEnd1          = null;
-    private String                  labelAtEnd2            = null;
-    private String                  elementGUIDAtEnd2      = null;
-    private OpenMetadataElementStub elementAtEnd2          = null;
+    private String                           relationshipGUID       = null;
+    private ElementType                      relationshipType       = null;
+    private Date                             effectiveFromTime      = null;
+    private Date                             effectiveToTime        = null;
+    private ElementProperties                relationshipProperties = null;
+    private String                           labelAtEnd1            = null;
+    private String                           elementGUIDAtEnd1      = null;
+    private OpenMetadataElementStub          elementAtEnd1          = null;
+    private String                           labelAtEnd2            = null;
+    private String                           elementGUIDAtEnd2      = null;
+    private OpenMetadataElementStub          elementAtEnd2          = null;
 
 
     /**
@@ -65,6 +65,8 @@ public class OpenMetadataRelationship extends ElementControlHeader
             elementGUIDAtEnd2      = template.getElementGUIDAtEnd2();
             labelAtEnd1            = template.getLabelAtEnd1();
             labelAtEnd2            = template.getLabelAtEnd2();
+            elementAtEnd1          = template.getElementAtEnd1();
+            elementAtEnd2          = template.getElementAtEnd2();
         }
     }
 
@@ -311,23 +313,18 @@ public class OpenMetadataRelationship extends ElementControlHeader
     public String toString()
     {
         return "OpenMetadataRelationship{" +
-                       "relationshipGUID='" + relationshipGUID + '\'' +
-                       ", relationshipType=" + relationshipType +
-                       ", effectiveFromTime=" + effectiveFromTime +
-                       ", effectiveToTime=" + effectiveToTime +
-                       ", relationshipProperties=" + relationshipProperties +
-                       ", labelAtEnd1='" + labelAtEnd1 + '\'' +
-                       ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
-                       ", elementAtEnd1='" + elementAtEnd1 + '\'' +
-                       ", labelAtEnd2='" + labelAtEnd2 + '\'' +
-                       ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
-                       ", elementAtEnd2='" + elementAtEnd2 + '\'' +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "relationshipGUID='" + relationshipGUID + '\'' +
+                ", relationshipType=" + relationshipType +
+                ", effectiveFromTime=" + effectiveFromTime +
+                ", effectiveToTime=" + effectiveToTime +
+                ", relationshipProperties=" + relationshipProperties +
+                ", labelAtEnd1='" + labelAtEnd1 + '\'' +
+                ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
+                ", elementAtEnd1=" + elementAtEnd1 +
+                ", labelAtEnd2='" + labelAtEnd2 + '\'' +
+                ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
+                ", elementAtEnd2=" + elementAtEnd2 +
+                "} " + super.toString();
     }
 
 
