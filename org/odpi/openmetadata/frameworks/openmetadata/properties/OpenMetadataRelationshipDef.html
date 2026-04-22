@@ -86,9 +86,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataRelationshipDef</span>
 <span class="extends-implements">extends <a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span></div>
-<div class="block">OpenMetadataRelationshipDef describes the type of a relationship.  A relationships links two entities together.
+<div class="block">OpenMetadataRelationshipDef describes a type of relationship.  A relationship links two entities together.
  The OpenMetadataRelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
- defines if this relationship allows classifications to propagate through it.</div>
+ defines if this relationship allows classifications to propagate through it and how many instances of this
+ relationship type are allowed between two elements in a single direction.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -126,14 +127,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor creates a copy of the supplied template.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory,java.lang.String,java.lang.String,long,java.lang.String)" class="member-name-link">OpenMetadataRelationshipDef</a><wbr>(<a href="OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- long&nbsp;version,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionName)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Typical constructor is passed the properties of the typedef's super class being constructed.</div>
-</div>
 </div>
 </section>
 </li>
@@ -168,15 +161,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the details associated with the second end of the relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultiLink()" class="member-name-link">getMultiLink</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropagationRule()" class="member-name-link">getPropagationRule</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether multiple relationships of this type are allowed between the same two entities.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropagationRule()" class="member-name-link">getPropagationRule</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the rule that determines if classifications are propagated across this relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipCategory()" class="member-name-link">getRelationshipCategory</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the relationship category.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -194,14 +187,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the details associated with the second end of the relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMultiLink(boolean)" class="member-name-link">setMultiLink</a><wbr>(boolean&nbsp;multiLink)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropagationRule(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataClassificationPropagationRule)" class="member-name-link">setPropagationRule</a><wbr>(<a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a>&nbsp;propagationRule)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether multiple relationships of this type are allowed between the same two entities.</div>
+<div class="block">Set up the rule that determines if classifications are propagated across this relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropagationRule(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataClassificationPropagationRule)" class="member-name-link">setPropagationRule</a><wbr>(<a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a>&nbsp;propagationRule)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipCategory)" class="member-name-link">setRelationshipCategory</a><wbr>(<a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a>&nbsp;relationshipCategory)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the rule that determines if classifications are propagated across this relationship.</div>
+<div class="block">Set up the relationship category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -239,25 +232,6 @@ loadScripts(document, 'script');</script>
 <h3>OpenMetadataRelationshipDef</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataRelationshipDef</span>()</div>
 <div class="block">Minimal constructor builds an empty OpenMetadataRelationshipDef</div>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory,java.lang.String,java.lang.String,long,java.lang.String)">
-<h3>OpenMetadataRelationshipDef</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataRelationshipDef</span><wbr><span class="parameters">(<a href="OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- long&nbsp;version,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionName)</span></div>
-<div class="block">Typical constructor is passed the properties of the typedef's super class being constructed.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>category</code> - category of this OpenMetadataTypeDef</dd>
-<dd><code>guid</code> - unique id for the OpenMetadataTypeDef</dd>
-<dd><code>name</code> - unique name for the OpenMetadataTypeDef</dd>
-<dd><code>version</code> - active version number for the OpenMetadataTypeDef</dd>
-<dd><code>versionName</code> - name for the active version of the OpenMetadataTypeDef</dd>
-</dl>
 </section>
 </li>
 <li>
@@ -359,24 +333,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMultiLink()">
-<h3>getMultiLink</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getMultiLink</span>()</div>
-<div class="block">Return whether multiple relationships of this type are allowed between the same two entities.</div>
+<section class="detail" id="getRelationshipCategory()">
+<h3>getRelationshipCategory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a></span>&nbsp;<span class="element-name">getRelationshipCategory</span>()</div>
+<div class="block">Return the relationship category.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>boolean flag</dd>
+<dd>enum</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setMultiLink(boolean)">
-<h3>setMultiLink</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMultiLink</span><wbr><span class="parameters">(boolean&nbsp;multiLink)</span></div>
-<div class="block">Set up whether multiple relationships of this type are allowed between the same two entities.</div>
+<section class="detail" id="setRelationshipCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipCategory)">
+<h3>setRelationshipCategory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipCategory</span><wbr><span class="parameters">(<a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a>&nbsp;relationshipCategory)</span></div>
+<div class="block">Set up the relationship category.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>multiLink</code> - boolean flag</dd>
+<dd><code>relationshipCategory</code> - enum</dd>
 </dl>
 </section>
 </li>
