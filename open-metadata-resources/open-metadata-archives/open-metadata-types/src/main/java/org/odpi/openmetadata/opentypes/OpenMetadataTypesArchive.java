@@ -157,6 +157,7 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        update0019MoreInformation();
         update0112Person();
         update01135ActionsForPeople();
         update0424GovernanceZones();
@@ -167,6 +168,41 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    private void update0019MoreInformation()
+    {
+        this.archiveBuilder.addTypeDefPatch(getResourceListRelationshipPatch());
+    }
+
+    private TypeDefPatch getResourceListRelationshipPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        TypeDefAttribute typeDefAttribute = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
+        typeDefAttribute.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(typeDefAttribute);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 
     private void update0112Person()
     {

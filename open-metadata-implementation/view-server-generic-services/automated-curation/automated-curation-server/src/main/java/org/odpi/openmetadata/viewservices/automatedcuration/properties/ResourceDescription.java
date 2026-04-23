@@ -55,7 +55,7 @@ public class ResourceDescription extends RefDataElementBase
         if (template != null)
         {
             this.resourceUse          = template.getResourceUse();
-            super.displayName         = template.getDisplayName();
+            super.displayName         = template.getLabel();
             super.description         = template.getDescription();
             this.additionalProperties = template.getAdditionalProperties();
         }
