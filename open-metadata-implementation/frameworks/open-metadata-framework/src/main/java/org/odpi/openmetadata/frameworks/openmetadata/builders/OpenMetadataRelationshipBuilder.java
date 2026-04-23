@@ -1130,9 +1130,19 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.RESOURCE_USE.name,
                                                                      resourceListProperties.getResourceUse());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                     resourceListProperties.getDisplayName());
+                if (resourceListProperties.getLabel() != null)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LABEL.name,
+                                                                         resourceListProperties.getLabel());
+                }
+                else
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LABEL.name,
+                                                                         resourceListProperties.getResourceUse());
+                }
+
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                      resourceListProperties.getDescription());

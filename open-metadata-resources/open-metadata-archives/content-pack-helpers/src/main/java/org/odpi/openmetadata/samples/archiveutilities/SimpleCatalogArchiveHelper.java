@@ -1101,6 +1101,8 @@ public class SimpleCatalogArchiveHelper
                                                                                   resourceUse,
                                                                                   methodName);
 
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, resourceUse, methodName);
+
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                properties,
                                                                OpenMetadataProperty.DESCRIPTION.name,
@@ -1137,6 +1139,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(resourceGUID));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RESOURCE_USE.name, resourceUse, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, resourceUse, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, resourceUseDescription, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, resourceUseProperties, methodName);
 

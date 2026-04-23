@@ -88,6 +88,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.awt.color.ICC_ColorSpace;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13960,7 +13961,13 @@ public class OpenMetadataPropertyConverterBase
 
                 ((ResourceListProperties)relationshipBeanProperties).setResourceUse(this.removeResourceUse(elementProperties));
                 ((ResourceListProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((ResourceListProperties)relationshipBeanProperties).setDisplayName(this.removeDisplayName(elementProperties));
+
+                String label = this.removeLabel(elementProperties);
+                if (label == null)
+                {
+                    label = this.removeDisplayName(elementProperties);
+                }
+                ((ResourceListProperties)relationshipBeanProperties).setLabel(label);
                 ((ResourceListProperties)relationshipBeanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName))

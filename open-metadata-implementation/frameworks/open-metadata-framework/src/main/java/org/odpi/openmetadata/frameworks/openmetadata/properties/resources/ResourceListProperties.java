@@ -24,9 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceListProperties extends RelationshipBeanProperties
 {
-    String              resourceUse          = null;
-    String              displayName          = null;
-    String              description          = null;
+    String resourceUse = null;
+    String label       = null;
+    String description = null;
     Map<String, String> additionalProperties = null;
 
 
@@ -51,9 +51,9 @@ public class ResourceListProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.resourceUse          = template.getResourceUse();
-            this.displayName          = template.getDisplayName();
-            this.description          = template.getDescription();
+            this.resourceUse = template.getResourceUse();
+            this.label       = template.getLabel();
+            this.description = template.getDescription();
             this.additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -86,20 +86,20 @@ public class ResourceListProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public String getDisplayName()
+    public String getLabel()
     {
-        return displayName;
+        return label;
     }
 
 
     /**
      * Set up the name of the resource use - used for command menus and buttons.
      *
-     * @param displayName name
+     * @param label name
      */
-    public void setDisplayName(String displayName)
+    public void setLabel(String label)
     {
-        this.displayName = displayName;
+        this.label = label;
     }
 
 
@@ -157,7 +157,7 @@ public class ResourceListProperties extends RelationshipBeanProperties
     {
         return "ResourceListProperties{" +
                 "resourceUse='" + resourceUse + '\'' +
-                ", displayName='" + displayName + '\'' +
+                ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
@@ -187,7 +187,7 @@ public class ResourceListProperties extends RelationshipBeanProperties
         }
         ResourceListProperties that = (ResourceListProperties) objectToCompare;
         return Objects.equals(resourceUse, that.resourceUse) &&
-                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(label, that.label) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
@@ -201,6 +201,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), resourceUse, displayName, description, additionalProperties);
+        return Objects.hash(super.hashCode(), resourceUse, label, description, additionalProperties);
     }
 }
