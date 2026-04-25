@@ -435,7 +435,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
     {
         List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(null, myContext.getEndpointClient().getSearchOptions());
         String                        endpointGUID = null;
-        String                        endpointQualifiedName = "ServerEndpoint::" + url;
+        String                        endpointQualifiedName = "ServerEndpoint:" + url;
 
         if (endpointElements != null)
         {
@@ -446,6 +446,18 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                     if (endpointQualifiedName.equals(endpointProperties.getQualifiedName()))
                     {
                         endpointGUID = endpointElement.getElementHeader().getGUID();
+
+                        if (endpointProperties.getNetworkAddress() == null)
+                        {
+                            /*
+                             * This corrects a bug where an earlier version of the connector did not set the network address.
+                             */
+                            endpointProperties.setNetworkAddress(url);
+
+                            myContext.getEndpointClient().updateEndpoint(endpointElement.getElementHeader().getGUID(),
+                                                                         myContext.getEndpointClient().getUpdateOptions(true),
+                                                                         endpointProperties);
+                        }
                     }
                 }
             }
