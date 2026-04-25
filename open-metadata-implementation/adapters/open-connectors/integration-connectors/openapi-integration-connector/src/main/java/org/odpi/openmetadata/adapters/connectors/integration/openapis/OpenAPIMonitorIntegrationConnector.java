@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
@@ -265,10 +266,10 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                 final String elementType = "Endpoint";
 
                 auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.BAD_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                          elementType,
-                                                                                                          methodName,
-                                                                                                          endpointElement.toString()));
+                                    OpenAPIIntegrationConnectorAuditCode.BAD_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                           elementType,
+                                                                                                           methodName,
+                                                                                                           endpointElement.getElementHeader().getGUID()));
 
 
             }
@@ -445,6 +446,18 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                     if (endpointQualifiedName.equals(endpointProperties.getQualifiedName()))
                     {
                         endpointGUID = endpointElement.getElementHeader().getGUID();
+
+                        if (endpointProperties.getNetworkAddress() == null)
+                        {
+                            /*
+                             * This corrects a bug where an earlier version of the connector did not set the network address.
+                             */
+                            endpointProperties.setNetworkAddress(url);
+
+                            myContext.getEndpointClient().updateEndpoint(endpointElement.getElementHeader().getGUID(),
+                                                                         myContext.getEndpointClient().getUpdateOptions(true),
+                                                                         endpointProperties);
+                        }
                     }
                 }
             }
@@ -455,6 +468,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointQualifiedName);
+            properties.setNetworkAddress(url);
 
             if (openAPISpecification.getInfo() != null)
             {

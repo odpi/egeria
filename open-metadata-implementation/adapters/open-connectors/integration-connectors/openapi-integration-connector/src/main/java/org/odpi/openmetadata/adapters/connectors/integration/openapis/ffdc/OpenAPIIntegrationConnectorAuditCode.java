@@ -98,11 +98,11 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                              "its next periodic refresh or you can force it to refresh immediately by calling the refresh" +
                              "operation on the integration daemon."),
 
-    BAD_ELEMENT("OPEN-API-INTEGRATION-CONNECTOR-0016",
-                     AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector retrieved an invalid {1} element in method {2}.  Element content is: {3}",
-                     "The metadata element is ignored.",
-                     "Investigate why this element is incomplete."),
+    BAD_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0016",
+                 AuditLogRecordSeverityLevel.ERROR,
+                 "The {0} integration connector retrieved an invalid {1} element in method {2}.  Element guid is: {3}",
+                 "The metadata element is ignored.",
+                 "Investigate why this element is incomplete."),
 
     UNEXPECTED_EXCEPTION( "OPEN-API-INTEGRATION-CONNECTOR-0029",
                           AuditLogRecordSeverityLevel.EXCEPTION,
