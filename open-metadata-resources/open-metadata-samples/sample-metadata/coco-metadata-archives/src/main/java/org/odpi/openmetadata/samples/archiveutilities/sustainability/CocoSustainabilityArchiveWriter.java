@@ -4,9 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -14,11 +12,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -229,7 +227,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
         for (SustainabilityRoleDefinition roleDefinition : SustainabilityRoleDefinition.values())
         {
-            archiveHelper.addGovernanceRole(roleDefinition.getTypeName(),
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_ROLE.typeName,
+                                            List.of(roleDefinition.getGroupName()),
                                             roleDefinition.getQualifiedName(),
                                             SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
                                             roleDefinition.getIdentifier(),
@@ -306,8 +305,9 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                       null);
 
 
-            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
-            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_ROLE.typeName + ": " + domainDefinition.getQualifiedName();
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_ROLE.typeName,
+                                            List.of(ActorRoleGroup.GOVERNANCE_OFFICER.getName()),
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
                                             "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
@@ -479,7 +479,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
             String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
 
-            archiveHelper.addActorRole(OpenMetadataType.PROJECT_MANAGER.typeName,
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.PROJECT_MANAGER.getName()),
                                        projectManagerQName,
                                        projectDefinition.getIdentifier() + ":ProjectManager",
                                        projectDefinition.getDisplayName() + " project manager",

@@ -31,10 +31,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.S
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
@@ -88,7 +86,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.awt.color.ICC_ColorSpace;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -6736,6 +6733,27 @@ public class OpenMetadataPropertyConverterBase
                                                        OpenMetadataProperty.SCOPE.name,
                                                        elementProperties,
                                                        methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string list or null
+     */
+    protected List<String> removeActorRoleGroups(ElementProperties elementProperties)
+    {
+        final String methodName = "removeActorRoleGroups";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.ACTOR_ROLE_GROUPS.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
         return null;
@@ -15388,78 +15406,11 @@ public class OpenMetadataPropertyConverterBase
                     {
                         if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PERSON_ROLE.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COMMUNITY_MEMBER.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ROLE.typeName))
                             {
-                                beanProperties = new CommunityMemberProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CROWD_SOURCING_CONTRIBUTOR.typeName))
-                            {
-                                beanProperties = new CrowdSourcingContributorProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName))
-                            {
-                                beanProperties = new DigitalProductManagerProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ROLE.typeName))
-                            {
-                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ASSET_OWNER.typeName))
-                                {
-                                    beanProperties = new AssetOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.BUSINESS_OWNER.typeName))
-                                {
-                                    beanProperties = new BusinessOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COMPONENT_OWNER.typeName))
-                                {
-                                    beanProperties = new ComponentOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_ITEM_OWNER.typeName))
-                                {
-                                    beanProperties = new DataItemOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LOCATION_OWNER.typeName))
-                                {
-                                    beanProperties = new LocationOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_OFFICER.typeName))
-                                {
-                                    beanProperties = new GovernanceOfficerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_REPRESENTATIVE.typeName))
-                                {
-                                    beanProperties = new GovernanceRepresentativeProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_OWNER.typeName))
-                                {
-                                    beanProperties = new SolutionOwnerProperties();
-                                }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SUBJECT_AREA_OWNER.typeName))
-                                {
-                                    beanProperties = new SubjectAreaOwnerProperties();
-                                }
-                                else
-                                {
-                                    beanProperties = new GovernanceRoleProperties();
-                                }
+                                beanProperties = new GovernanceRoleProperties();
 
                                 ((GovernanceRoleProperties) beanProperties).setDomainIdentifier(this.removeDomainIdentifier(elementProperties));
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTE_LOG_AUTHOR.typeName))
-                            {
-                                beanProperties = new NoteLogAuthorProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT_MANAGER.typeName))
-                            {
-                                beanProperties = new ProjectManagerProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TEAM_LEADER.typeName))
-                            {
-                                beanProperties = new TeamLeaderProperties();
-                            }
-                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TEAM_MEMBER.typeName))
-                            {
-                                beanProperties = new TeamMemberProperties();
                             }
                             else
                             {
@@ -15496,6 +15447,7 @@ public class OpenMetadataPropertyConverterBase
                         }
 
                         ((ActorRoleProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                        ((ActorRoleProperties)beanProperties).setActorRoleGroups(this.removeActorRoleGroups(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.USER_IDENTITY.typeName))
                     {

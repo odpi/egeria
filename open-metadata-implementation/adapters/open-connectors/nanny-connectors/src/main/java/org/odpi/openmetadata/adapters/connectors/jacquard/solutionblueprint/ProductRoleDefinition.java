@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Arrays;
@@ -16,7 +17,8 @@ public enum ProductRoleDefinition
     /**
      * The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.
      */
-    PRODUCT_MANAGER(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName,
+    PRODUCT_MANAGER(OpenMetadataType.PERSON_ROLE.typeName,
+                    List.of(ActorRoleGroup.DIGITAL_PRODUCT_MANAGER.getName()),
                     "OpenMetadataProductManagerRole",
                     "Open Metadata Product Manager",
                     "The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.",
@@ -27,10 +29,11 @@ public enum ProductRoleDefinition
     /**
      * The product developer role covers the implementation of the digital products built around open metadata.
      */
-    PRODUCT_DEVELOPER( OpenMetadataType.IT_PROFILE_ROLE.typeName,
-                      "OpenMetadataProductDeveloperRole",
-                      "Open Metadata Product Developer",
-                      "The product developer role covers the implementation of the digital products built around open metadata.",
+    PRODUCT_DEVELOPER( OpenMetadataType.PERSON_ROLE.typeName,
+                       List.of(ActorRoleGroup.SOFTWARE_DEVELOPER.getName()),
+                       "OpenMetadataProductDeveloperRole",
+                       "Open Metadata Product Developer",
+                       "The product developer role covers the implementation of the digital products built around open metadata.",
                        new ProductSolutionBlueprint[] {
                                ProductSolutionBlueprint.ALL
                        }),
@@ -40,6 +43,7 @@ public enum ProductRoleDefinition
      * The Jacquard support role covers the support of the Jacquard Digital Product Loom connector and subscription management.
      */
     JACQUARD_SUPPORT(OpenMetadataType.PERSON_ROLE.typeName,
+                     List.of(ActorRoleGroup.SOFTWARE_DEVELOPER.getName()),
                      "JacquardSupportRole",
                      "Open Metadata Digital Product Loom (Jacquard) Support Role",
                      "The Jacquard support role covers the support of the Jacquard Digital Product Loom connector and subscription management.",
@@ -52,9 +56,10 @@ public enum ProductRoleDefinition
      * Subscriber to one of the open metadata data products from the Open Metadata Ecosystem.
      */
     PRODUCT_SUBSCRIBER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                     "OpenMetadataProductSubscriber",
-                     "Open Metadata Product Subscriber",
-                     "Subscriber to one of the open metadata data products from Open Metadata Ecosystem.",
+                       null,
+                       "OpenMetadataProductSubscriber",
+                       "Open Metadata Product Subscriber",
+                       "Subscriber to one of the open metadata data products from Open Metadata Ecosystem.",
                        new ProductSolutionBlueprint[] {
                                ProductSolutionBlueprint.ALL,
                                ProductSolutionBlueprint.CANCELLING_SUBSCRIPTION,
@@ -69,6 +74,7 @@ public enum ProductRoleDefinition
      * Consumer of the data provisioned from one of the open metadata data products from the Open Metadata Ecosystem.
      */
     PRODUCT_CONSUMER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
+                     null,
                      "OpenMetadataProductConsumer",
                      "Open Metadata Product Consumer",
                      "Consumer of the data provisioned from one of the open metadata data products from the Open Metadata Ecosystem.",
@@ -84,9 +90,10 @@ public enum ProductRoleDefinition
      * Community to exchange information and collect feedback about the open metadata digital products.
      */
     PRODUCT_COMMUNITY_MEMBER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                     "OpenMetadataProductMember",
-                     "Open Metadata Digital Product Community Member",
-                     "Community to exchange information and collect feedback about the open metadata digital products.",
+                             List.of(ActorRoleGroup.COMMUNITY_MEMBER.getName()),
+                             "OpenMetadataProductMember",
+                             "Open Metadata Digital Product Community Member",
+                             "Community to exchange information and collect feedback about the open metadata digital products.",
                              new ProductSolutionBlueprint[] {
                                      ProductSolutionBlueprint.ALL,
                                      ProductSolutionBlueprint.PRODUCT_COMMUNITY
@@ -94,31 +101,37 @@ public enum ProductRoleDefinition
 
     ;
 
-    private final String typeName;
-    private final String identifier;
-    private final String displayName;
-    private final String description;
+    private final String                     typeName;
+    private final List<String>               actorRoleGroups;
+    private final String                     identifier;
+    private final String                     displayName;
+    private final String                     description;
     private final ProductSolutionBlueprint[] consumingBlueprints;
 
 
     /**
      * ProductRoleDefinition constructor creates an instance of the enum
      *
-     * @param identifier   unique Id for the role
-     * @param displayName   text for the role
-     * @param description   description of the assets in the role
+     * @param typeName            type of role
+     * @param actorRoleGroups     groups of actors that can perform this role
+     * @param identifier          unique Id for the role
+     * @param displayName         text for the role
+     * @param description         description of the assets in the role
+     * @param consumingBlueprints list of blueprints that consume this role
      */
-    ProductRoleDefinition(String typeName,
-                          String identifier,
-                          String displayName,
-                          String description,
+    ProductRoleDefinition(String                     typeName,
+                          List<String>               actorRoleGroups,
+                          String                     identifier,
+                          String                     displayName,
+                          String                     description,
                           ProductSolutionBlueprint[] consumingBlueprints)
     {
-        this.typeName    = typeName;
-        this.identifier  = identifier;
-        this.displayName = displayName;
-        this.description = description;
-        this.consumingBlueprints    = consumingBlueprints;
+        this.typeName            = typeName;
+        this.actorRoleGroups     = actorRoleGroups;
+        this.identifier          = identifier;
+        this.displayName         = displayName;
+        this.description         = description;
+        this.consumingBlueprints = consumingBlueprints;
     }
 
 
@@ -131,6 +144,18 @@ public enum ProductRoleDefinition
     {
         return typeName;
     }
+
+
+    /**
+     * Return the list of actor role groups that can perform this role.
+     *
+     * @return list (or null)
+     */
+    public List<String> getActorRoleGroups()
+    {
+        return actorRoleGroups;
+    }
+
 
     /**
      * Returns the unique name for the role entity.

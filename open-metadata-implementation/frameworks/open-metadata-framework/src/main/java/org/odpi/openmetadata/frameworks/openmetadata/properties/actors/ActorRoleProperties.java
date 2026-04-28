@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,7 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ActorRoleProperties extends ActorProperties
 {
-    private String scope = null;
+    private String       scope           = null;
+    private List<String> actorRoleGroups = null;
 
 
     /**
@@ -66,6 +68,7 @@ public class ActorRoleProperties extends ActorProperties
         if (template != null)
         {
             this.scope = template.getScope();
+            this.actorRoleGroups = template.getActorRoleGroups();
         }
     }
 
@@ -95,6 +98,28 @@ public class ActorRoleProperties extends ActorProperties
 
 
     /**
+     * Return the optional list of groups that this role belongs to.
+     *
+     * @return null or list
+     */
+    public List<String> getActorRoleGroups()
+    {
+        return actorRoleGroups;
+    }
+
+
+    /**
+     * Set up the optional list of groups that this role belongs to.
+     *
+     * @param actorRoleGroups list of group names
+     */
+    public void setActorRoleGroups(List<String> actorRoleGroups)
+    {
+        this.actorRoleGroups = actorRoleGroups;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -104,6 +129,7 @@ public class ActorRoleProperties extends ActorProperties
     {
         return "ActorRoleProperties{" +
                 "scope='" + scope + '\'' +
+                ", actorRoleGroups=" + actorRoleGroups +
                 "} " + super.toString();
     }
 
@@ -130,7 +156,7 @@ public class ActorRoleProperties extends ActorProperties
             return false;
         }
         ActorRoleProperties that = (ActorRoleProperties) objectToCompare;
-        return Objects.equals(scope, that.scope);
+        return Objects.equals(scope, that.scope) && Objects.equals(actorRoleGroups, that.actorRoleGroups);
     }
 
 
@@ -142,6 +168,6 @@ public class ActorRoleProperties extends ActorProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), scope);
+        return Objects.hash(super.hashCode(), scope, actorRoleGroups);
     }
 }

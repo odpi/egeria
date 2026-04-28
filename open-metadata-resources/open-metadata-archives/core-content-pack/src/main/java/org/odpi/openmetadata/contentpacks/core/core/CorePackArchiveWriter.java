@@ -306,6 +306,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                        additionalProperties);
         }
 
+
         /*
          * Add the valid metadata values used in the projectStatus property of the Project entity.
          */
@@ -332,6 +333,26 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                        null,
                                        category.getName());
         }
+
+        /*
+         * Add the valid metadata values used in the actorRoleGroups list in  the PersonRole entity.
+         */
+        for (ActorRoleGroup actorRoleGroup : ActorRoleGroup.values())
+        {
+            this.addValidMetadataValue(actorRoleGroup.getGUID(),
+                                       actorRoleGroup.getName(),
+                                       actorRoleGroup.getDescription(),
+                                       DataType.STRING.getDisplayName(),
+                                       OpenMetadataProperty.ACTOR_ROLE_GROUPS.name,
+                                       null,
+                                       null,
+                                       actorRoleGroup.getName(),
+                                       0,
+                                       false,
+                                       true,
+                                       null);
+        }
+
 
 
         /*

@@ -159,6 +159,7 @@ public class OpenMetadataTypesArchive
          */
         update0019MoreInformation();
         update0112Person();
+        update0118ActorRoles();
         update01135ActionsForPeople();
         update0424GovernanceZones();
         update0455ExceptionManagement();
@@ -199,6 +200,7 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
 
     }
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -232,6 +234,296 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
 
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0118ActorRoles()
+    {
+        this.archiveBuilder.addTypeDefPatch(getActorRolePatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateAssetOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateBusinessOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateCommunityMemberPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateComponentOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateCrowdSourcingContributorPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateDataItemOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateDigitalProductManagerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceOfficerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceRepresentativePatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateLocationOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateNoteLogAuthorPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateProjectManagerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateSolutionOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateSubjectAreaOwnerPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateTeamMemberPatch());
+        this.archiveBuilder.addTypeDefPatch(deprecateTeamLeaderPatch());
+    }
+
+    private TypeDefPatch getActorRolePatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTOR_ROLE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTOR_ROLE_GROUPS));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
+
+    private TypeDefPatch deprecateAssetOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateBusinessOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateCommunityMemberPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMMUNITY_MEMBER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateComponentOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMPONENT_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateCrowdSourcingContributorPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CROWD_SOURCING_CONTRIBUTOR.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateDataItemOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_ITEM_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateDigitalProductManagerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateGovernanceOfficerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_OFFICER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateGovernanceRepresentativePatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_REPRESENTATIVE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateLocationOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LOCATION_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateNoteLogAuthorPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTE_LOG_AUTHOR.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateProjectManagerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_MANAGER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateSolutionOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateSubjectAreaOwnerPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUBJECT_AREA_OWNER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateTeamMemberPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_MEMBER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateTeamLeaderPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_LEADER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -290,7 +292,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
             String leadershipRoleQName = "TeamLeader::" + deptDefinition.getQualifiedName();
-            archiveHelper.addActorRole(OpenMetadataType.TEAM_LEADER.typeName,
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.TEAM_LEADER.getName()),
                                        leadershipRoleQName,
                                        leadershipRoleQName,
                                        null,
@@ -315,7 +318,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             }
 
             String membershipRoleQName = "TeamMembers::" + deptDefinition.getQualifiedName();
-            archiveHelper.addActorRole(OpenMetadataType.TEAM_MEMBER.typeName,
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.TEAM_MEMBER.getName()),
                                        membershipRoleQName,
                                        membershipRoleQName,
                                        null,

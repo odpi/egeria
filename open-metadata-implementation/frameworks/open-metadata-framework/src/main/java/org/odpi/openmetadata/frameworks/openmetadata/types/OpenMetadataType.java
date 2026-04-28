@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.AnalyticsModelRunProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.DeployedAnalyticsModelProperties;
@@ -26,10 +25,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
@@ -1545,8 +1542,7 @@ public enum OpenMetadataType
                 "TeamMember",
                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
                 "69b06feb-3880-4796-ae15-f85fcce35900",
-                "Person assigned to a team.",
-                TeamMemberProperties.class),
+                "Person assigned to a team."),
 
     /**
      * Person leading a team.
@@ -1555,27 +1551,26 @@ public enum OpenMetadataType
                 "TeamLeader",
                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
                 "021c3a71-c912-49e1-a099-1866746e4825",
-                "Person leading a team.",
-                TeamLeaderProperties.class),
+                "Person leading a team."),
 
     /**
-     * Links a profile, role or project to the elements that they are responsible for managing.
+     * Links a profile, role, or project to the elements that they are responsible for managing.
      */
     ASSIGNMENT_SCOPE_RELATIONSHIP("e3fdafe3-692a-46c6-a595-c538cc189dd9",
                                   "AssignmentScope",
                                   OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
                                   "d2f5cbd5-36f7-4471-83fb-b1aec78d39df",
-                                  "Links a profile, role or project to the elements that they are responsible for managing.",
+                                  "Links a profile, role, or project to the elements that they are responsible for managing.",
                                   AssignmentScopeProperties.class),
 
     /**
-     * Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope.
+     * Link between a scope - such as a digital product, infrastructure element, or organization - and an element restricted the scope.
      */
     SCOPED_BY_RELATIONSHIP("3845b5cc-8c85-462f-b7e6-47472a568793",
                            "ScopedBy",
                            OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
                            "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
-                           "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition.",
+                           "Link between a scope - such as a digital product, infrastructure element, or organization - and an element restricted the scope, such as a governance definition.",
                            ScopedByProperties.class),
 
 
@@ -1617,8 +1612,7 @@ public enum OpenMetadataType
                     "ProjectManager",
                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                     "fbc22a33-8a07-45a3-afdf-839717be9f05",
-                    "A person with overall responsibility for one or more projects.",
-                    ProjectManagerProperties.class),
+                    "A person with overall responsibility for one or more projects."),
 
     /**
      * A nesting relationship between projects.
@@ -1801,8 +1795,7 @@ public enum OpenMetadataType
                      "CommunityMember",
                      OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
                      "38833f01-dbad-4cf7-b825-54a9a97d6d78",
-                     "A person who has joined a community.",
-                     CommunityMemberProperties.class),
+                     "A person who has joined a community."),
 
 
     /**
@@ -1902,8 +1895,7 @@ public enum OpenMetadataType
                                "CrowdSourcingContributor",
                                OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
                                "ee2046c9-aadd-4519-a76d-43e6cfce03a8",
-                               "Person contributing new content.",
-                               CrowdSourcingContributorProperties.class),
+                               "Person contributing new content."),
 
     /**
      * Defines one of the actors contributing content to a new description or asset.
@@ -1952,8 +1944,7 @@ public enum OpenMetadataType
                     "NoteLogAuthor",
                     OpenMetadataWikiPages.MODEL_0160_NOTES,
                     "58213b72-68b7-4259-938c-f0f5c59396b0",
-                    "A person adding notes to a note log.",
-                    NoteLogAuthorProperties.class),
+                    "A person adding notes to a note log."),
 
 
     /* ============================================================================================================================*/
@@ -3784,8 +3775,7 @@ public enum OpenMetadataType
                        "GovernanceOfficer",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "be460431-d42b-40a8-a4dd-616082c51c88",
-                       "Person responsible for a governance domain.",
-                       GovernanceOfficerProperties.class),
+                       "Person responsible for a governance domain."),
 
     /**
      * A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.
@@ -3794,8 +3784,7 @@ public enum OpenMetadataType
                               "GovernanceRepresentative",
                               OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                               "d22a5441-3470-4bf9-9412-12c9a7864955",
-                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.",
-                              GovernanceRepresentativeProperties.class),
+                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties."),
 
     /**
      * A role defining a responsibility for activity at a particular location.
@@ -3804,8 +3793,7 @@ public enum OpenMetadataType
                    "LocationOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "4fea5fc9-eb6e-412e-a68f-f3041dda47ad",
-                   "A role defining a responsibility for activity at a particular location.",
-                   LocationOwnerProperties.class),
+                   "A role defining a responsibility for activity at a particular location."),
 
     /**
      * A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.
@@ -3814,8 +3802,7 @@ public enum OpenMetadataType
                    "BusinessOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "5707d6ff-2db5-431f-9e21-a92a9a20a62c",
-                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.",
-                   BusinessOwnerProperties.class),
+                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss."),
 
     /**
      * A role defining a responsibility for an IT solution.
@@ -3824,8 +3811,7 @@ public enum OpenMetadataType
                    "SolutionOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "eef70090-0ac9-4b9c-8de1-611660ca4387",
-                   "A role defining a responsibility for an IT solution.",
-                   SolutionOwnerProperties.class),
+                   "A role defining a responsibility for an IT solution."),
 
     /**
      * A role defining a responsibility to manage an asset.
@@ -3834,8 +3820,7 @@ public enum OpenMetadataType
                 "AssetOwner",
                 OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                 "5042920d-859f-4a7c-af3c-008a5ef1e388",
-                "A role defining a responsibility to manage an asset.",
-                AssetOwnerProperties.class),
+                "A role defining a responsibility to manage an asset."),
 
     /**
      * A role defining a responsibility to manage the development and maintenance of a subject area.
@@ -3844,8 +3829,7 @@ public enum OpenMetadataType
                        "SubjectAreaOwner",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "f8ee2921-90e1-4d12-aa7b-bedb8f2ee545",
-                       "A role defining a responsibility to manage the development and maintenance of a subject area.",
-                       SubjectAreaOwnerProperties.class),
+                       "A role defining a responsibility to manage the development and maintenance of a subject area."),
 
     /**
      * An ownership role for a component - typically part of an asset.
@@ -3854,18 +3838,16 @@ public enum OpenMetadataType
                     "ComponentOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "d19d94eb-f53d-4eed-a87c-d6b026d96aa6",
-                    "An ownership role for a component - typically part of an asset.",
-                    ComponentOwnerProperties.class),
+                    "An ownership role for a component - typically part of an asset."),
 
     /**
-     * An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.
+     * An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end-to-end validation of the values as they move from asset to asset.
      */
     DATA_ITEM_OWNER("69836cfd-39b8-460b-8727-b04e19210069",
                     "DataItemOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "13a43ee5-acad-4e67-a4d2-4f4d87e1abea",
-                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.",
-                    DataItemOwnerProperties.class),
+                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end-to-end validation of the values as they move from asset to asset."),
 
     /**
      * A definition for how the effectiveness of the governance program is measured.
@@ -5904,8 +5886,7 @@ public enum OpenMetadataType
                             "DigitalProductManager",
                             OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                            "Role responsible for managing a digital product.",
-                            DigitalProductManagerProperties.class),
+                            "Role responsible for managing a digital product."),
 
 
     /**

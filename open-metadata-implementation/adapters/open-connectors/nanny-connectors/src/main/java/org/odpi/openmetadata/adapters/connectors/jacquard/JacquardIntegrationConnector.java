@@ -36,7 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.DigitalProductManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
@@ -59,6 +59,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
@@ -529,9 +530,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
 
-        DigitalProductManagerProperties personRoleProperties = new DigitalProductManagerProperties();
+        PersonRoleProperties personRoleProperties = new PersonRoleProperties();
 
         personRoleProperties.setQualifiedName(productDefinition.getQualifiedName() + "_productManager");
+        personRoleProperties.setActorRoleGroups(List.of(ActorRoleGroup.DIGITAL_PRODUCT_MANAGER.getName()));
         personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
         personRoleProperties.setDescription(ProductRoleDefinition.PRODUCT_MANAGER.getDescription());
 
@@ -2746,6 +2748,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             ActorRoleProperties actorRoleProperties = new ActorRoleProperties();
 
             actorRoleProperties.setTypeName(productRoleDefinition.getTypeName());
+            actorRoleProperties.setActorRoleGroups(productRoleDefinition.getActorRoleGroups());
             actorRoleProperties.setQualifiedName(roleQualifiedName);
             actorRoleProperties.setDisplayName(productRoleDefinition.getDisplayName());
             actorRoleProperties.setDescription(productRoleDefinition.getDescription());

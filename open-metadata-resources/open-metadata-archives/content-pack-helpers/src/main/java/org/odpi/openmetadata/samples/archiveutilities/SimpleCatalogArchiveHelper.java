@@ -419,6 +419,7 @@ public class SimpleCatalogArchiveHelper
             this.setGUID(solutionRoleDefinition.getQualifiedName(), solutionRoleDefinition.getGUID());
 
             String solutionRoleGUID = this.addActorRole(solutionRoleDefinition.getTypeName(),
+                                                        null,
                                                         solutionRoleDefinition.getQualifiedName(),
                                                         solutionRoleDefinition.getIdentifier(),
                                                         solutionRoleDefinition.getDisplayName(),
@@ -1527,6 +1528,7 @@ public class SimpleCatalogArchiveHelper
      * Add a new person role.
      *
      * @param suppliedTypeName type name to use for the person role
+     * @param actorRoleGroups list of groups that this role belongs to
      * @param qualifiedName qualified name of role
      * @param identifier unique code
      * @param name display name
@@ -1539,6 +1541,7 @@ public class SimpleCatalogArchiveHelper
      * @return unique identifier of the new profile
      */
     public  String addActorRole(String              suppliedTypeName,
+                                List<String>        actorRoleGroups,
                                 String              qualifiedName,
                                 String              identifier,
                                 String              name,
@@ -1559,6 +1562,7 @@ public class SimpleCatalogArchiveHelper
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTOR_ROLE_GROUPS.name, actorRoleGroups, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
@@ -1591,6 +1595,7 @@ public class SimpleCatalogArchiveHelper
      * Add a new person role.
      *
      * @param suppliedTypeName type name to use for the person role
+     * @param actorRoleGroups list of groups that this role belongs to
      * @param qualifiedName qualified name of role
      * @param domainIdentifier identifier of governance domain
      * @param identifier unique code
@@ -1604,6 +1609,7 @@ public class SimpleCatalogArchiveHelper
      * @return unique identifier of the new profile
      */
     public  String addGovernanceRole(String              suppliedTypeName,
+                                     List<String>        actorRoleGroups,
                                      String              qualifiedName,
                                      int                 domainIdentifier,
                                      String              identifier,
@@ -1622,8 +1628,17 @@ public class SimpleCatalogArchiveHelper
         {
             typeName = OpenMetadataType.GOVERNANCE_ROLE.typeName;
         }
+        else
+        {
+            /*
+             * Ensure that the supplied type is not an actor or person role because these types do not support domainIdentifier.
+             */
+            assert (! OpenMetadataType.PERSON_ROLE.typeName.equals(typeName));
+            assert (! OpenMetadataType.ACTOR_ROLE.typeName.equals(typeName));
+        }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTOR_ROLE_GROUPS.name, actorRoleGroups, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
