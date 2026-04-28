@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
  * The SolutionRoleDefinition is used to feed the definition of the solution roles for
@@ -167,6 +168,15 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
     {
         return ScopeDefinition.WITHIN_SOLUTION.getPreferredValue();
     }
+
+
+    /**
+     * Return the type of this element.
+     *
+     * @return string
+     */
+    @Override
+    public String getTypeName() { return OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName; }
 
 
     /**

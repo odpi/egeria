@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinit
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -107,8 +109,9 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                       null);
 
 
-            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
-            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_ROLE.typeName + ": " + domainDefinition.getQualifiedName();
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_ROLE.typeName,
+                                            List.of(ActorRoleGroup.GOVERNANCE_OFFICER.getName()),
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
                                             "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
@@ -346,7 +349,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
+                archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                           List.of(ActorRoleGroup.COMMUNITY_MEMBER.getName()),
                                            leaderRoleQName,
                                            "Community Leader of " + communityDefinition.getDisplayName(),
                                            null,
@@ -369,7 +373,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
+                archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                           List.of(ActorRoleGroup.COMMUNITY_MEMBER.getName()),
                                            memberRoleQName,
                                            "Community Member of " + communityDefinition.getDisplayName(),
                                            null,
@@ -398,7 +403,15 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (GovernanceRoleDefinition roleDefinition : GovernanceRoleDefinition.values())
         {
-            archiveHelper.addGovernanceRole(roleDefinition.getTypeName(),
+            List<String> personRoleGroup = null;
+
+            if (roleDefinition.getGroupName() != null)
+            {
+                personRoleGroup = List.of(roleDefinition.getGroupName());
+            }
+
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_ROLE.typeName,
+                                            personRoleGroup,
                                             roleDefinition.getQualifiedName(),
                                             roleDefinition.getDomain().getDomainIdentifier(),
                                             roleDefinition.getIdentifier(),
@@ -450,7 +463,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
             String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
 
-            archiveHelper.addActorRole(OpenMetadataType.PROJECT_MANAGER.typeName,
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.PROJECT_MANAGER.getName()),
                                        projectManagerQName,
                                        projectDefinition.getIdentifier() + ":ProjectManager",
                                        projectDefinition.getDisplayName() + " project manager",

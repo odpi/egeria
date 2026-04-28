@@ -335,6 +335,11 @@ public enum OpenMetadataProperty
     ROLE_TYPE("roleType", DataType.STRING, CrowdSourcingRole.getOpenTypeName(), "Role of contributor.", "Contributor", "05fdcacb-b7ec-475c-96eb-600fbbc1fb88"),
 
     /**
+     * Optional group names such as asset-owner, team-leader, governance-officer.
+     */
+    ACTOR_ROLE_GROUPS("actorRoleGroups", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Optional group names such as asset-owner, team-leader, governance-officer.", "project-manager", "ad5b99c6-1c60-497d-9c79-c0b4b98ef513"),
+
+    /**
      * The courtesy title for the person.
      */
     COURTESY_TITLE("courtesyTitle", DataType.STRING, DataType.STRING.getDisplayName(), "The honorific title for the person.", "Dr", "c669dc73-3ae3-4350-95b7-4508a85bfc94"),

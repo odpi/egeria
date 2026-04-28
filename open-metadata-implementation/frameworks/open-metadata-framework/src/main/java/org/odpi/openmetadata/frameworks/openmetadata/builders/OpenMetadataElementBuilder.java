@@ -229,6 +229,11 @@ public class OpenMetadataElementBuilder
                                                                                  OpenMetadataProperty.SCOPE.name,
                                                                                  actorRoleProperties.getScope());
 
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.ACTOR_ROLE_GROUPS.name,
+                                                                                      actorRoleProperties.getActorRoleGroups());
+
+
                             if (properties instanceof PersonRoleProperties personRoleProperties)
                             {
                                 if (properties instanceof GovernanceRoleProperties governanceRoleProperties)

@@ -26,8 +26,8 @@ public enum GovernanceRoleDefinition
 
     ;
 
-    private final String typeName;
-    private final GovernanceDomainDefinition    domain;
+    private final String                     groupName;
+    private final GovernanceDomainDefinition domain;
     private final String identifier;
     private final String  displayName;
     private final String  description;
@@ -40,7 +40,7 @@ public enum GovernanceRoleDefinition
     /**
      * SustainabilityRoleDefinition constructor creates an instance of the enum
      *
-     * @param typeName name of the type for the role
+     * @param groupName name of the group for the role
      * @param domain governance domain for this role
      * @param identifier   unique Id for the role
      * @param displayName   text for the role
@@ -49,7 +49,7 @@ public enum GovernanceRoleDefinition
      * @param headCountSet should the headcount property be set?
      * @param headCount   criteria for inclusion
      */
-    GovernanceRoleDefinition(String                     typeName,
+    GovernanceRoleDefinition(String                     groupName,
                              GovernanceDomainDefinition domain,
                              String                     identifier,
                              String                     displayName,
@@ -59,8 +59,8 @@ public enum GovernanceRoleDefinition
                              int                        headCount,
                              PersonDefinition[]         appointees)
     {
-        this.typeName = typeName;
-        this.domain = domain;
+        this.groupName = groupName;
+        this.domain    = domain;
         this.identifier = identifier;
         this.displayName = displayName;
         this.description = description;
@@ -76,10 +76,11 @@ public enum GovernanceRoleDefinition
      *
      * @return type name
      */
-    public String getTypeName()
+    public String getGroupName()
     {
-        return typeName;
+        return groupName;
     }
+
 
 
     /**
@@ -89,7 +90,7 @@ public enum GovernanceRoleDefinition
      */
     public String getQualifiedName()
     {
-        return typeName + "::" + identifier;
+        return groupName + "::" + identifier;
     }
 
     
