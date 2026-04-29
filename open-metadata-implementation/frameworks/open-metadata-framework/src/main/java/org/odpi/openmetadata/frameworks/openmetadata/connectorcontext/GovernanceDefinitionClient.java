@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -327,6 +328,49 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                           PropertyServerException
     {
         governanceDefinitionHandler.removeGovernanceDefinitionFromElement(connectorUserId, elementGUID, definitionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Link a regulation governance definition to an organization using the Regulator relationship.
+     *
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param makeAnchorOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void addRegulatorToRegulation(String              regulationGUID,
+                                         String              regulatorGUID,
+                                         MakeAnchorOptions   makeAnchorOptions,
+                                         RegulatorProperties properties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        governanceDefinitionHandler.addRegulatorToRegulation(connectorUserId, regulationGUID, regulatorGUID, makeAnchorOptions, properties);
+    }
+
+
+    /**
+     * Remove the Regulator relationship between a regulation governance definition and an organization.
+     *
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void removeRegulatorFromRegulation(String        regulationGUID,
+                                              String        regulatorGUID,
+                                              DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        governanceDefinitionHandler.removeRegulatorFromRegulation(connectorUserId, regulationGUID, regulatorGUID, deleteOptions);
     }
 
 

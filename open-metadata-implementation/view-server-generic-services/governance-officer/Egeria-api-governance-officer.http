@@ -197,6 +197,76 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+
+@regulationGUID=add guid here
+@regulatorGUID=add guid here
+
+### 
+# @name addRegulatorToRegulation
+# Link a regulation governance definition to an organization using the Regulator relationship.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param regulationGUID unique identifier of the regulation
+# @param regulatorGUID identifier of the organization to link
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException full path or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/regulations/{{regulationGUID}}/regulators/organizations/{{regulatorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RegulatorProperties",
+    "label": "",
+    "description": "",
+    "scope": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name removeRegulatorFromRegulation
+# Remove the Regulator relationship between a regulation governance definition and an organization.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param regulationGUID unique identifier of the regulation
+# @param regulatorGUID identifier of the organization to link
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException full path or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/regulations/{{regulationGUID}}/regulators/organizations/{{regulatorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name createGovernanceControl (with parent)

@@ -13903,6 +13903,14 @@ public class OpenMetadataPropertyConverterBase
                 ((RegulationCertificationTypeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((RegulationCertificationTypeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REGULATOR_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new RegulatorProperties();
+
+                ((RegulatorProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((RegulatorProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((RegulatorProperties)relationshipBeanProperties).setScope(this.removeScope(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new RelatedContextEventProperties();

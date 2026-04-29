@@ -358,6 +358,72 @@ public class GovernanceOfficerResource
 
 
     /**
+     * Link a regulation governance definition to an organization using the Regulator relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/regulations/{regulationGUID}/regulators/organizations/{regulatorGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addRegulatorToRegulation",
+            description="Link a regulation governance definition to an organization using the Regulator relationship.",
+            externalDocs=@ExternalDocumentation(description="Regulations",
+                    url="https://egeria-project.org/types/4/0405-Governance-Drivers/"))
+
+    public VoidResponse addRegulatorToRegulation(@PathVariable String       serverName,
+                                                 @PathVariable String       urlMarker,
+                                                 @PathVariable String       regulationGUID,
+                                                 @PathVariable String       regulatorGUID,
+                                                 @RequestBody  (required = false)
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.addRegulatorToRegulation(serverName, urlMarker, regulationGUID, regulatorGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the Regulator relationship between a regulation governance definition and an organization.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/regulations/{regulationGUID}/regulators/organizations/{regulatorGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removeRegulatorFromRegulation",
+            description="Remove the Regulator relationship between a regulation governance definition and an organization.",
+            externalDocs=@ExternalDocumentation(description="Regulations",
+                    url="https://egeria-project.org/types/4/0405-Governance-Drivers/"))
+
+    public VoidResponse removeRegulatorFromRegulation(@PathVariable String  serverName,
+                                                      @PathVariable String  urlMarker,
+                                                      @PathVariable String  regulationGUID,
+                                                      @PathVariable String  regulatorGUID,
+                                                      @RequestBody  (required = false)
+                                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.removeRegulatorFromRegulation(serverName, urlMarker, regulationGUID, regulatorGUID, requestBody);
+    }
+
+
+    /**
      * Attach a governance metric to an asset that represents the data store where the measurements are located.
      *
      * @param serverName  name of the server instance to connect to

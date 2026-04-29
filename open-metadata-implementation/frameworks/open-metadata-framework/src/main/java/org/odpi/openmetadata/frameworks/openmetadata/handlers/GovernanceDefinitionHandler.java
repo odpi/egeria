@@ -401,6 +401,70 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Link a regulation governance definition to an organization using the Regulator relationship.
+     *
+     * @param userId calling user
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param makeAnchorOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void addRegulatorToRegulation(String              userId,
+                                         String              regulationGUID,
+                                         String              regulatorGUID,
+                                         MakeAnchorOptions   makeAnchorOptions,
+                                         RegulatorProperties properties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGULATOR_RELATIONSHIP.typeName,
+                                                        regulationGUID,
+                                                        regulatorGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the Regulator relationship between a regulation governance definition and an organization.
+     *
+     * @param userId calling user
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void removeRegulatorFromRegulation(String        userId,
+                                              String        regulationGUID,
+                                              String        regulatorGUID,
+                                              DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName            = "removeRegulatorFromRegulation";
+        final String end1GUIDParameterName = "regulationGUID";
+        final String end2GUIDParameterName = "regulatorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(regulationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(regulatorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGULATOR_RELATIONSHIP.typeName,
+                                                        regulationGUID,
+                                                        regulatorGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
      * Attach an actor to an element that describes its scope.
      *
      * @param userId                        userId of the user making the request

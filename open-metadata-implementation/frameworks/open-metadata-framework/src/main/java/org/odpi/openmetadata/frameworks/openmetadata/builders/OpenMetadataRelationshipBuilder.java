@@ -305,6 +305,18 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.DESCRIPTION.name,
                                                                          referenceableFacetProperties.getDescription());
                 }
+                else if (properties instanceof RegulatorProperties regulatorProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.SCOPE.name,
+                                                                         regulatorProperties.getScope());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LABEL.name,
+                                                                         regulatorProperties.getLabel());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DESCRIPTION.name,
+                                                                         regulatorProperties.getDescription());
+                }
                 else if (properties instanceof RelatedContextEventProperties relatedContextEventProperties)
                 {
                     elementProperties = propertyHelper.addIntProperty(elementProperties,

@@ -508,8 +508,6 @@ public class GovernanceOfficerRESTServices extends TokenController
     }
 
 
-
-
     /**
      * Link a governance definition to an element using the GovernedBy relationship.
      *
@@ -572,6 +570,10 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                              requestBody,
                                                              null);
                 }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernedByProperties.class.getName(), methodName);
+                }
             }
         }
         catch (Throwable error)
@@ -632,6 +634,132 @@ public class GovernanceOfficerRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Link a regulation governance definition to an organization using the Regulator relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addRegulatorToRegulation(String                     serverName,
+                                                 String                     urlMarker,
+                                                 String                     regulationGUID,
+                                                 String                     regulatorGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "addRegulatorToRegulation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.addRegulatorToRegulation(userId,
+                                                 regulationGUID,
+                                                 regulatorGUID,
+                                                 null,
+                                                 null);
+            }
+            else
+            {
+                if (requestBody.getProperties() instanceof RegulatorProperties regulatorProperties)
+                {
+                    handler.addRegulatorToRegulation(userId,
+                                                     regulationGUID,
+                                                     regulatorGUID,
+                                                     requestBody,
+                                                     regulatorProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addRegulatorToRegulation(userId,
+                                                     regulationGUID,
+                                                     regulatorGUID,
+                                                     requestBody,
+                                                     null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(RegulatorProperties.class.getName(), methodName);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Remove the Regulator relationship between a regulation governance definition and an organization.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param regulatorGUID identifier of the organization to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse removeRegulatorFromRegulation(String                        serverName,
+                                                      String                        urlMarker,
+                                                      String                        regulationGUID,
+                                                      String                        regulatorGUID,
+                                                      DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "removeRegulatorFromRegulation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.removeRegulatorFromRegulation(userId, regulationGUID, regulatorGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 
 
     /**

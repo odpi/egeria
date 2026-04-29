@@ -3135,14 +3135,24 @@ public enum OpenMetadataType
                         BusinessImperativeProperties.class),
 
     /**
-     * Identifies a regulation related to data that must be supported.
+     * Identifies a regulation related that must be supported.
      */
     REGULATION("e3c4293d-8846-4500-b0c0-197d73aba8b0",
                "Regulation",
                OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                "4c00dcc9-cf73-4c1f-bd7c-2f365bfb5aec",
-               "Identifies a regulation related to data that must be supported.",
+               "Identifies a regulation that must be supported.",
                RegulationProperties.class),
+
+    /**
+     * Links a regulator organization to the regulation it enforces.
+     */
+    REGULATOR_RELATIONSHIP("a2ecbfdf-595c-4342-8de4-04cf5dd28a17",
+               "Regulator",
+               OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
+               "9d969156-b330-4773-a239-5cbf888fd934",
+               "Links a regulator organization to the regulation it enforces.",
+               RegulatorProperties.class),
 
     /**
      * An specific requirement in a regulation.
