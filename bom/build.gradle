@@ -82,7 +82,7 @@ ext {
     openlineageVersion = '1.37.0'
     ossVersion = '4.16.0'
     //      TODO: Held as data engine breaks
-    mockitoVersion = '4.11.0'
+    mockitoVersion = '5.2.0'
     plexusVersion = '4.0.2'
     postgresVersion = '42.7.8' // already there
     nettyVersion = '4.2.7.Final'
