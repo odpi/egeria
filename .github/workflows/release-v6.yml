@@ -85,7 +85,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: Assemblies
           path: open-metadata-distribution/omag-server-platform/build/distributions/*.gz
