@@ -5,8 +5,9 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.SustainabilityDomainDefinition;
 
 /**
- * The CocoGovernanceZoneDefinition is used to feed the definition of the governance zones for
- * Coco Pharmaceuticals.
+ * The CocoGovernanceZoneDefinition is used to add governance zones to other elements.
+ * The definition of the governance zone is in the coco user directory,
+ * and this is catalogued by SecretsStoreCataloguer.
  */
 public enum CocoGovernanceZoneDefinition
 {

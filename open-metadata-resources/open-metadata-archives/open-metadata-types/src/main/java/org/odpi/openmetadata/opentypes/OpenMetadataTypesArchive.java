@@ -162,6 +162,7 @@ public class OpenMetadataTypesArchive
         update0118ActorRoles();
         update01135ActionsForPeople();
         update0405GovernanceDrivers();
+        update0423SecurityDefinitions();
         update0424GovernanceZones();
         update0455ExceptionManagement();
     }
@@ -619,6 +620,32 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0423SecurityDefinitions()
+    {
+        this.archiveBuilder.addEntityDef(getServiceAccessControlEntity());
+    }
+
+    private EntityDef getServiceAccessControlEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SERVICE_ACCESS_CONTROL,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAPPING_PROPERTIES));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0424GovernanceZones()
     {
         this.archiveBuilder.addTypeDefPatch(updateZoneMembershipProfileClassification());
@@ -641,6 +668,10 @@ public class OpenMetadataTypesArchive
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_MEMBERSHIP));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TYPE_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHORED_TYPE_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALL_TYPE_MEMBERSHIP));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_TIME));
 
         typeDefPatch.setPropertyDefinitions(properties);

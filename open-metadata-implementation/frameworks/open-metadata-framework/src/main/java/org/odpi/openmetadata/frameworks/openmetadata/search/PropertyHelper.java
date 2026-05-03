@@ -1903,7 +1903,74 @@ public class PropertyHelper
                     MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
 
                     mapTypePropertyValue.setMapValues(addPropertyMap(null, propertyAsMap));
-                    mapTypePropertyValue.setTypeName("map");
+
+                    String elementType = null;
+
+                    for (Object arrayValueObject : propertyAsMap.values())
+                    {
+                        if (arrayValueObject instanceof String)
+                        {
+                            if (elementType == null)
+                            {
+                                elementType = "string";
+                            }
+                            else if (! elementType.equals("string"))
+                            {
+                                elementType = "object";
+                            }
+                        }
+                        else if (arrayValueObject instanceof Boolean)
+                        {
+                            if (elementType == null)
+                            {
+                                elementType = "boolean";
+                            }
+                            else if (! elementType.equals("boolean"))
+                            {
+                                elementType = "object";
+                            }
+                        }
+                        else if (arrayValueObject instanceof Integer)
+                        {
+                            if (elementType == null)
+                            {
+                                elementType = "int";
+                            }
+                            else if (! elementType.equals("int"))
+                            {
+                                elementType = "object";
+                            }
+                        }
+                        else if (arrayValueObject instanceof Long)
+                        {
+                            if (elementType == null)
+                            {
+                                elementType = "long";
+                            }
+                            else if (! elementType.equals("long"))
+                            {
+                                elementType = "object";
+                            }
+                        }
+                        else if (arrayValueObject instanceof Date)
+                        {
+                            if (elementType == null)
+                            {
+                                elementType = "date";
+                            }
+                            else if (! elementType.equals("date"))
+                            {
+                                elementType = "object";
+                            }
+                        }
+                    }
+
+                    if (elementType != null)
+                    {
+                        elementType = "object";
+                    }
+
+                    mapTypePropertyValue.setTypeName("map<string," + elementType + ">");
 
                     resultingProperties.setProperty(mapPropertyName, mapTypePropertyValue);
                     propertyCount++;

@@ -83,7 +83,7 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
                  */
                 AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
-                List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(catalogTargetElement.getElementHeader().getGUID(),
+                List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(governanceActionTypeProperties.getQualifiedName(),
                                                                                               Collections.singletonList(ActivityStatus.IN_PROGRESS),
                                                                                               assetClient.getSearchOptions(0, 0));
 

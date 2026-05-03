@@ -25,6 +25,10 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
 {
     private long              totalMembership = 0L;
     private Map<String, Long> typeMembership  = null;
+    private long              anchoredTotalMembership = 0L;
+    private Map<String, Long> anchoredTypeMembership  = null;
+    private long              allTotalMembership = 0L;
+    private Map<String, Long> allTypeMembership  = null;
     private Date              analysisTime    = null;
 
 
@@ -51,6 +55,10 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
         {
             this.totalMembership = template.getTotalMembership();
             this.typeMembership = template.getTypeMembership();
+            this.anchoredTotalMembership = template.getAnchoredTotalMembership();
+            this.anchoredTypeMembership = template.getAnchoredTypeMembership();
+            this.allTotalMembership = template.getAllTotalMembership();
+            this.allTypeMembership = template.getAllTypeMembership();
             this.analysisTime = template.getAnalysisTime();
         }
     }
@@ -101,6 +109,94 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
 
 
     /**
+     * Return the total anchored elements of all open metadata types in the zone.
+     *
+     * @return long count
+     */
+    public long getAnchoredTotalMembership()
+    {
+        return anchoredTotalMembership;
+    }
+
+
+    /**
+     * Set up the total anchored elements of all open metadata types in the zone.
+     *
+     * @param anchoredTotalMembership long count
+     */
+    public void setAnchoredTotalMembership(long anchoredTotalMembership)
+    {
+        this.anchoredTotalMembership = anchoredTotalMembership;
+    }
+
+
+    /**
+     * Return the list of open metadata type Names mapped to the count of anchored instances of that type in the zone.
+     *
+     * @return map
+     */
+    public Map<String, Long> getAnchoredTypeMembership()
+    {
+        return anchoredTypeMembership;
+    }
+
+
+    /**
+     * Set up the list of open metadata type Names mapped to the count of anchored instances of that type in the zone.
+     *
+     * @param anchoredTypeMembership map
+     */
+    public void setAnchoredTypeMembership(Map<String, Long> anchoredTypeMembership)
+    {
+        this.anchoredTypeMembership = anchoredTypeMembership;
+    }
+
+
+    /**
+     * Return the total elements of all open metadata types in the zone.
+     *
+     * @return long count
+     */
+    public long getAllTotalMembership()
+    {
+        return allTotalMembership;
+    }
+
+
+    /**
+     * Set up the total elements of all open metadata types in the zone.
+     *
+     * @param allTotalMembership long count
+     */
+    public void setAllTotalMembership(long allTotalMembership)
+    {
+        this.allTotalMembership = allTotalMembership;
+    }
+
+
+    /**
+     * Return the list of open metadata type names mapped to the count of all instances of that type in the zone.
+     *
+     * @return map
+     */
+    public Map<String, Long> getAllTypeMembership()
+    {
+        return allTypeMembership;
+    }
+
+
+    /**
+     * Set up the list of open metadata type names mapped to the count of all instances of that type in the zone.
+     *
+     * @param allTypeMembership map
+     */
+    public void setAllTypeMembership(Map<String, Long> allTypeMembership)
+    {
+        this.allTypeMembership = allTypeMembership;
+    }
+
+
+    /**
      * Return the time the analysis was performed
      *
      * @return date/time
@@ -133,6 +229,10 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
         return "ZoneMembershipProfileProperties{" +
                 "totalMembership=" + totalMembership +
                 ", typeMembership=" + typeMembership +
+                ", anchoredTotalMembership=" + anchoredTotalMembership +
+                ", anchoredTypeMembership=" + anchoredTypeMembership +
+                ", allTotalMembership=" + allTotalMembership +
+                ", allTypeMembership=" + allTypeMembership +
                 ", analysisTime=" + analysisTime +
                 "} " + super.toString();
     }
@@ -160,7 +260,12 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
             return false;
         }
         return Objects.equals(typeMembership, that.typeMembership) &&
-                totalMembership == that.totalMembership && Objects.equals(analysisTime, that.analysisTime);
+                totalMembership == that.totalMembership &&
+                Objects.equals(anchoredTotalMembership, that.anchoredTotalMembership) &&
+                Objects.equals(anchoredTypeMembership, that.anchoredTypeMembership) &&
+                Objects.equals(allTotalMembership, that.allTotalMembership) &&
+                Objects.equals(allTypeMembership, that.allTypeMembership) &&
+                Objects.equals(analysisTime, that.analysisTime);
     }
 
 
@@ -172,6 +277,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), totalMembership, typeMembership, analysisTime);
+        return Objects.hash(super.hashCode(), totalMembership, typeMembership, anchoredTotalMembership,
+                            anchoredTypeMembership, allTotalMembership, allTypeMembership, analysisTime);
     }
 }

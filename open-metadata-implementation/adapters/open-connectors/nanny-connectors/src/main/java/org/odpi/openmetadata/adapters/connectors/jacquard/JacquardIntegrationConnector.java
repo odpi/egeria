@@ -2319,6 +2319,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
+        GovernanceDefinitionProperties governanceDefinitionProperties = getGovernanceDefinitionProperties(governanceDefinition);
+
         /*
          * If the GovernanceDefinition is already present then return its GUID
          */
@@ -2335,6 +2337,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 governanceDefinition.getType(),
                                                                                                                 governanceDefinition.getDisplayName(),
                                                                                                                 existingGovernanceDefinition.getElementHeader().getGUID()));
+
+                    governanceDefinitionClient.updateGovernanceDefinition(existingGovernanceDefinition.getElementHeader().getGUID(),
+                                                                          governanceDefinitionClient.getUpdateOptions(true),
+                                                                          governanceDefinitionProperties);
+
                     return existingGovernanceDefinition.getElementHeader().getGUID();
                 }
             }
@@ -2342,7 +2349,29 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         /*
          * This is the first time...
+         *
+         * Each governance definition is created as independent elements, and they are not linked together (yet)
          */
+        NewElementOptions newElementOptions = new NewElementOptions(governanceDefinitionClient.getMetadataSourceOptions());
+        newElementOptions.setIsOwnAnchor(true);
+
+        String governanceDefinitionGUID = governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
+                                                                                                null,
+                                                                                                governanceDefinitionProperties,
+                                                                                                null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 governanceDefinition.getType(),
+                                                                                                 governanceDefinition.getDisplayName(),
+                                                                                                 governanceDefinitionGUID));
+
+        return governanceDefinitionGUID;
+    }
+
+
+    GovernanceDefinitionProperties getGovernanceDefinitionProperties(ProductGovernanceDefinition governanceDefinition)
+    {
         GovernanceDefinitionProperties governanceDefinitionProperties = new GovernanceDefinitionProperties();
 
         governanceDefinitionProperties.setTypeName(governanceDefinition.getType());
@@ -2378,24 +2407,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             governanceDefinitionProperties.setExtendedProperties(extendedProperties);
         }
 
-        /*
-         * Each governance definition is created as independent elements, and they are not linked together (yet)
-         */
-        NewElementOptions newElementOptions = new NewElementOptions(governanceDefinitionClient.getMetadataSourceOptions());
-        newElementOptions.setIsOwnAnchor(true);
-
-        String governanceDefinitionGUID =  governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
-                                                                     null,
-                                                                     governanceDefinitionProperties,
-                                                                     null);
-
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 governanceDefinition.getType(),
-                                                                                                 governanceDefinition.getDisplayName(),
-                                                                                                 governanceDefinitionGUID));
-
-        return governanceDefinitionGUID;
+        return governanceDefinitionProperties;
     }
 
 

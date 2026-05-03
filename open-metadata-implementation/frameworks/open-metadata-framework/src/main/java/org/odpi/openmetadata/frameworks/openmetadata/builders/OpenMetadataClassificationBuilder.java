@@ -155,6 +155,10 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                           OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name,
                                                                           anchorsProperties.getAnchorScopeGUIDs());
+
+                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                          OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                          anchorsProperties.getZoneMembership());
             }
             else if (properties instanceof AuditLogProperties auditLogProperties)
             {
@@ -798,6 +802,18 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addLongMapProperty(elementProperties,
                                                                       OpenMetadataProperty.TYPE_MEMBERSHIP.name,
                                                                       zoneMembershipProperties.getTypeMembership());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.name,
+                                                                   zoneMembershipProperties.getAnchoredTotalMembership());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.ANCHORED_TYPE_MEMBERSHIP.name,
+                                                                      zoneMembershipProperties.getAnchoredTypeMembership());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.name,
+                                                                   zoneMembershipProperties.getAllTotalMembership());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.ALL_TYPE_MEMBERSHIP.name,
+                                                                      zoneMembershipProperties.getAllTypeMembership());
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.ANALYSIS_TIME.name,
                                                                    zoneMembershipProperties.getAnalysisTime());

@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.OrganizationDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
@@ -65,7 +64,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         writeLicenseTypes();
         writeCertificationTypes();
         writeDataProcessingPurposes();
-        writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
         writeProjects();
@@ -270,34 +268,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                   null);
         }
     }
-
-
-    /**
-     * Creates Governance Zone definitions.
-     */
-    private void writeZones()
-    {
-        for (CocoGovernanceZoneDefinition zoneDefinition : CocoGovernanceZoneDefinition.values())
-        {
-            archiveHelper.setGUID(zoneDefinition.getQualifiedName(), zoneDefinition.getGUID());
-
-            String zoneGUID = archiveHelper.addGovernanceZone(zoneDefinition.getQualifiedName(),
-                                                              zoneDefinition.getZoneName(),
-                                                              zoneDefinition.getDisplayName(),
-                                                              zoneDefinition.getDescription(),
-                                                              zoneDefinition.getCriteria(),
-                                                              OrganizationDefinition.COCO.getDisplayName(),
-                                                              zoneDefinition.getDomainIdentifier(),
-                                                              null);
-
-            assert (zoneDefinition.getGUID().equals(zoneGUID));
-
-            if (zoneDefinition.getParentZoneGUID() != null)
-
-              archiveHelper.addZoneHierarchy(zoneDefinition.getParentZoneGUID(), zoneDefinition.getGUID());
-        }
-    }
-
 
 
     /**

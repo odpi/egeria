@@ -126,7 +126,7 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Set up the default type name if nothing is supplied by the caller.
+     * Set up the default type name if not supplied by the caller.
      *
      * @param suppliedOptions options from caller
      * @return updated options
@@ -145,7 +145,7 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Set up the default type name if nothing is supplied by the caller.
+     * Set up the default type name if not supplied by the caller.
      *
      * @param suppliedOptions options from caller
      * @return updated options
@@ -164,7 +164,7 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Set up the default type name if nothing is supplied by the caller.
+     * Set up the default type name if not supplied by the caller.
      *
      * @param suppliedOptions options from caller
      * @return updated options
@@ -326,7 +326,7 @@ public class OpenMetadataHandlerBase
      * Update the properties of an element.
      *
      * @param userId            userId of the user making the request.
-     * @param elementGUID       unique identifier of the element (returned from create)
+     * @param elementGUID       unique identifier of the element (returned from the create method)
      * @param guidParameterName name of unique identifier
      * @param updateOptions     provides a structure for the additional options when updating an element.
      * @param properties        properties for the element
@@ -725,10 +725,10 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve details of a requested actor, unless element has already been retrieved.
+     * Retrieve details of a requested actor, unless an element has already been retrieved.
      *
      * @param userId calling user
-     * @param actorName name of actor
+     * @param actorName name of an actor
      * @param actorPropertyName property name it represents
      * @param actorMap map of other actors already received
      * @param queryOptions               multiple options to control the query
@@ -785,7 +785,7 @@ public class OpenMetadataHandlerBase
      *
      * @param element header of the element
      * @param getOptions options from the caller
-     * @return boolean - true to return element
+     * @return boolean - true to return the element
      */
     private boolean filterBySubtypes(OpenMetadataElement element,
                                      GetOptions          getOptions)
@@ -818,7 +818,7 @@ public class OpenMetadataHandlerBase
      *
      * @param retrievedElement element to test
      * @param queryOptions requested options
-     * @return boolean; true if element is to be returned
+     * @return boolean; true if the element is to be returned
      */
     private boolean filterByClassifications(String              userId,
                                             OpenMetadataElement retrievedElement,
@@ -850,7 +850,7 @@ public class OpenMetadataHandlerBase
             if (queryOptions.getIncludeOnlyClassifiedElements() != null)
             {
                 /*
-                 * Ignore elements that have are missing a required classification.
+                 * Ignore elements that are missing a required classification.
                  */
                 for (String requiredClassificationName : queryOptions.getIncludeOnlyClassifiedElements())
                 {
@@ -1508,6 +1508,31 @@ public class OpenMetadataHandlerBase
                 rootElement.setOrganizationTreeMermaidGraph(organizationTreeMermaidGraphBuilder.getMermaidGraph());
             }
 
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.COLLECTION.typeName)) && (rootElement.getCollectionMembers() != null))
+            {
+                CollectionMermaidMindMapBuilder collectionMermaidMindMapBuilder = new CollectionMermaidMindMapBuilder(rootElement);
+                rootElement.setCollectionMermaidMindMap(collectionMermaidMindMapBuilder.getMermaidMindMap());
+            }
+
+            if (rootElement.getElementHeader().getZoneMembershipProfile() != null)
+            {
+                ZoneProfileMermaidPieChartBuilder         pieChartBuilder         = new ZoneProfileMermaidPieChartBuilder(rootElement);
+                ZoneProfileAnchoredMermaidPieChartBuilder anchoredPieChartBuilder = new ZoneProfileAnchoredMermaidPieChartBuilder(rootElement);
+                ZoneProfileAllMermaidPieChartBuilder      allPieChartBuilder      = new ZoneProfileAllMermaidPieChartBuilder(rootElement);
+
+                rootElement.setZoneProfileMermaidPieChart(pieChartBuilder.getMermaidPieChart());
+                rootElement.setZoneProfileAnchoredMermaidPieChart(anchoredPieChartBuilder.getMermaidPieChart());
+                rootElement.setZoneProfileAllMermaidPieChart(allPieChartBuilder.getMermaidPieChart());
+            }
+
+            if (rootElement.getElementHeader().getUserAccountProfile() != null)
+            {
+                UserAccountStatusProfileMermaidPieChartBuilder statusPieChartBuilder = new UserAccountStatusProfileMermaidPieChartBuilder(rootElement);
+                UserAccountTypeProfileMermaidPieChartBuilder   typePieChartBuilder   = new UserAccountTypeProfileMermaidPieChartBuilder(rootElement);
+
+                rootElement.setUserAccountStatusProfileMermaidPieChart(statusPieChartBuilder.getMermaidPieChart());
+                rootElement.setUserAccountTypeProfileMermaidPieChart(typePieChartBuilder.getMermaidPieChart());
+            }
         }
 
         return rootElement;
@@ -1517,7 +1542,7 @@ public class OpenMetadataHandlerBase
     /**
      * Create a composite mermaid graph from the returned elements.
      *
-     * @param searchString string used to create list - used in title of the mermaid graph
+     * @param searchString string used to create list - used in the title of the mermaid graph
      * @param elements elements returned from the query
      * @return mermaid string
      */
@@ -1538,7 +1563,7 @@ public class OpenMetadataHandlerBase
     /**
      * Create a composite mermaid graph from the returned elements.
      *
-     * @param searchString string used to create list - used in title of the mermaid graph
+     * @param searchString string used to create list - used in the title of the mermaid graph
      * @param elements elements returned from the query
      * @param maxMermaidNodeCount  maximum nodes linked by a particular relationship to an element to include in the graph
      * @return mermaid string
@@ -1855,7 +1880,7 @@ public class OpenMetadataHandlerBase
                 workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
 
                 /*
-                 * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
+                 * If there are no side relationships, then we can optimize and only receive the main hierarchical relationship.
                  */
                 String receiveRelationshipName = null;
                 int    receiveParentEnd = 0;
@@ -2016,7 +2041,7 @@ public class OpenMetadataHandlerBase
      *
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the governance-action-service can't access the element
      * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getRootElementByUniqueName(String     userId,
@@ -2054,7 +2079,7 @@ public class OpenMetadataHandlerBase
      *
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the governance-action-service can't access the element
      * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getLineageElementByUniqueName(String     userId,
@@ -2089,7 +2114,7 @@ public class OpenMetadataHandlerBase
      *
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the governance-action-service can't access the element
      * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getDeletedElementByUniqueName(String     userId,
@@ -2132,7 +2157,7 @@ public class OpenMetadataHandlerBase
      * Returns the list of elements of the appropriate type with a particular name.
      *
      * @param userId                   userId of the user making the request
-     * @param name                     name of the element to return - match is full text match in qualifiedName or name
+     * @param name                     the name of the element to return - match is full text match in qualifiedName or name
      * @param propertyNames            list of property names to consider
      * @param suppliedQueryOptions             multiple options to control the query
      * @param methodName               calling method
@@ -2181,7 +2206,7 @@ public class OpenMetadataHandlerBase
      * Returns the named element.
      *
      * @param userId                   userId of the user making the request
-     * @param name                     name of the element to return - match is full text match in qualifiedName or name
+     * @param name                     the name of the element to return - match is full text match in qualifiedName or name
      * @param propertyName            property name to consider
      * @param suppliedGetOptions            multiple options to control the query
      * @param methodName               calling method
@@ -2375,7 +2400,7 @@ public class OpenMetadataHandlerBase
 
     /**
      * Retrieve elements with the requested classification name. It is also possible to limit the results
-     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * by specifying a type name for the elements that should be returned. If no type name is specified, then
      * any type of element may be returned.
      *
      * @param userId calling user
@@ -2401,7 +2426,7 @@ public class OpenMetadataHandlerBase
 
         List<OpenMetadataElement> elements = openMetadataClient.getMetadataElementsByClassification(userId,
                                                                                                     classificationName,
-                                                                                                    queryOptions);;
+                                                                                                    queryOptions);
 
         return this.convertRootElements(userId, elements, queryOptions, methodName);
     }

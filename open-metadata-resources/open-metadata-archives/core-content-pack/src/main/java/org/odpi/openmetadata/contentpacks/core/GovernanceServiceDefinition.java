@@ -401,7 +401,7 @@ public enum GovernanceServiceDefinition
      * Lovelace Zone Membership Profiler Governance Action Service
      */
     BUILD_ZONE_MEMBERSHIP_PROFILE("d16b5da8-3a76-499c-9cb0-c7184dd2dfb3",
-                       "zone-memebership-profile-governance-service",
+                       "zone-membership-profile-governance-service",
                        "Lovelace Zone Membership Profiler Governance Action Service",
                        new LovelaceZoneMembershipProfilerServiceProvider(),
                        ResourceUse.GENERATE_INSIGHT,

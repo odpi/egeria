@@ -587,7 +587,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
          * Finally, a user has full access to a governance zone that has the same name as the user's userId.
          */
         return ((securityAccessControl.getControlTypeName().equals(OpenMetadataType.GOVERNANCE_ZONE.typeName)
-                && (userId.equals(securityAccessControl.getDisplayName()))));
+                && (userId.equals(securityAccessControl.getControlDisplayName()))));
     }
 
 

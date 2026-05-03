@@ -244,14 +244,24 @@ public enum OpenMetadataProperty
     OWNER_PROPERTY_NAME("ownerPropertyName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the property from the element used to identify the owner.", "qualifiedName", "9d1fdeb4-132a-4ec7-8312-dc9362e4f2f7"),
 
     /**
-     * The list of governance zones that this asset belongs to.
+     * The list of governance zones that this element belongs to.
      */
-    ZONE_MEMBERSHIP("zoneMembership", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
+    ZONE_MEMBERSHIP("zoneMembership", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The list of governance zones that this element belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
 
     /**
-     * The statistics describing the types of elements that are members of the zone.
+     * The statistics describing the types of anchor elements that are members of the zone.
      */
-    TYPE_MEMBERSHIP("typeMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of elements that are members of the zone.", null, "725bdba1-1b0a-4c9f-ae01-3eb69248f273"),
+    TYPE_MEMBERSHIP("typeMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of anchor elements that are members of the zone.  This count is derived from the setting of the ZoneMembership classification.", null, "725bdba1-1b0a-4c9f-ae01-3eb69248f273"),
+
+    /**
+     * The statistics describing the types of elements that are members of the zone due to an anchor association.  This profile is derived from the setting of zoneMembership in the Anchors classification.
+     */
+    ANCHORED_TYPE_MEMBERSHIP("anchoredTypeMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of elements that are members of the zone due to an anchor association.  This profile is derived from the setting of zoneMembership in the Anchors classification.", null, "388bb2d6-4579-400f-a67e-1bf900e4d7c1"),
+
+    /**
+     * The statistics describing the types of elements that are members of the zone either explicitly or via an anchor association.
+     */
+    ALL_TYPE_MEMBERSHIP("allTypeMembership", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "The statistics describing the types of elements that are members of the zone either explicitly or via an anchor association.   This profile is the combination of typeMembership and anchoredTypeMembership.", null, "5a57eb6c-00ce-4a2d-ac5e-f59eecf93acf"),
 
     /**
      * The statistics describing the types of elements that are members of the zone.
@@ -259,9 +269,19 @@ public enum OpenMetadataProperty
     ANALYSIS_TIME("analysisTime", DataType.DATE, DataType.DATE.getDisplayName(), "The statistics describing the types of elements that are members of the zone.", null, "8d1f61f8-d91e-4852-b4ae-508b915699e5"),
 
     /**
-     * The statistics describing the element count for each zone.
+     * The anchor element count for the attached governance zone.
      */
-    TOTAL_MEMBERSHIP("totalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The statistics describing the element count for each zone.", null, "59af4502-6cad-42e3-a9f6-3b72470a5d9c"),
+    TOTAL_MEMBERSHIP("totalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor element count for the attached governance zone.", null, "59af4502-6cad-42e3-a9f6-3b72470a5d9c"),
+
+    /**
+     * The anchored element count for the attached governance zone.
+     */
+    ANCHORED_TOTAL_MEMBERSHIP("anchoredTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchored element count for the attached governance zone.", null, "be78c74c-e579-44fd-8fd8-de4b17af43ab"),
+
+    /**
+     * The anchor and anchored elements count for the attached governance zone.
+     */
+    ALL_TOTAL_MEMBERSHIP("allTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor and anchored elements count for the attached governance zone.", null, "42120d2f-76fa-4cce-ac71-0cadc9b3146e"),
 
     /**
      * Definition of the types of assets that belong in this zone.
@@ -2730,19 +2750,19 @@ public enum OpenMetadataProperty
     LICENSEE_PROPERTY_NAME("licenseePropertyName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the property from the element used to identify the licensee property.", null, "ab10a18d-f449-4450-913b-e44055d5e3b8"),
 
     /**
-     * The list of rights and permissions granted.
+     * The named list of rights and permissions granted.
      */
-    ENTITLEMENTS("entitlements", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The list of rights and permissions granted.", null, "e7e05bae-2e26-4f5e-97a8-ae6f524b77b5"),
+    ENTITLEMENTS("entitlements", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The named list of rights and permissions granted.", null, "e7e05bae-2e26-4f5e-97a8-ae6f524b77b5"),
 
     /**
-     * The list of limiting conditions or measures imposed.
+     * The named list of limiting conditions or measures imposed.
      */
-    RESTRICTIONS("restrictions", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The list of limiting conditions or measures imposed.", null, "2119de4f-22ba-4979-b7ab-e926386b96da"),
+    RESTRICTIONS("restrictions", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The named list of limiting conditions or measures imposed.", null, "2119de4f-22ba-4979-b7ab-e926386b96da"),
 
     /**
-     * The list of actions, duties, or commitments required.
+     * The named list of actions, duties, or commitments required.
      */
-    OBLIGATIONS("obligations", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The list of actions, duties, or commitments required.", null, "d5aa9324-70f9-40c1-9f3c-da28c8f7e6bf"),
+    OBLIGATIONS("obligations", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The named list of actions, duties, or commitments required.", null, "d5aa9324-70f9-40c1-9f3c-da28c8f7e6bf"),
 
     /**
      * Prefix for element names to ensure uniqueness.

@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityAccessControl
 {
-    private String                    displayName            = null;
+    private String                    controlDisplayName     = null;
     private String                    controlTypeName        = null;
     private Map<String, String>       mappingProperties      = null;
     private String                    description            = null;
@@ -50,8 +50,8 @@ public class SecurityAccessControl
     {
         if (template != null)
         {
-            this.displayName            = template.getDisplayName();
-            this.controlTypeName        = template.getControlTypeName();
+            this.controlDisplayName = template.getControlDisplayName();
+            this.controlTypeName    = template.getControlTypeName();
             this.mappingProperties      = template.getMappingProperties();
             this.description            = template.getDescription();
             this.associatedSecurityList = template.getAssociatedSecurityList();
@@ -67,20 +67,20 @@ public class SecurityAccessControl
      *
      * @return string name
      */
-    public String getDisplayName()
+    public String getControlDisplayName()
     {
-        return displayName;
+        return controlDisplayName;
     }
 
 
     /**
      * Set up the name of the security access control.
      *
-     * @param displayName string name
+     * @param controlDisplayName string name
      */
-    public void setDisplayName(String displayName)
+    public void setControlDisplayName(String controlDisplayName)
     {
-        this.displayName = displayName;
+        this.controlDisplayName = controlDisplayName;
     }
 
 
@@ -250,7 +250,7 @@ public class SecurityAccessControl
     public String toString()
     {
         return "SecurityAccessControl{" +
-                "controlDisplayName='" + displayName + '\'' +
+                "controlDisplayName='" + controlDisplayName + '\'' +
                 ", controlTypeName='" + controlTypeName + '\'' +
                 ", mappingProperties=" + mappingProperties +
                 ", description='" + description + '\'' +
@@ -274,7 +274,7 @@ public class SecurityAccessControl
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SecurityAccessControl that = (SecurityAccessControl) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(controlDisplayName, that.controlDisplayName) &&
                 Objects.equals(controlTypeName, that.controlTypeName) &&
                 Objects.equals(mappingProperties, that.mappingProperties) &&
                 Objects.equals(description, that.description) &&
@@ -292,6 +292,6 @@ public class SecurityAccessControl
     @Override
     public int hashCode()
     {
-        return Objects.hash(displayName, controlTypeName, mappingProperties, description, associatedSecurityList, securityLabels, securityProperties, otherProperties);
+        return Objects.hash(controlDisplayName, controlTypeName, mappingProperties, description, associatedSecurityList, securityLabels, securityProperties, otherProperties);
     }
 }

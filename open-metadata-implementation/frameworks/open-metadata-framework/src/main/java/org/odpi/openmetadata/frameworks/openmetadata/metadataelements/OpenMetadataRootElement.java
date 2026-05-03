@@ -37,14 +37,21 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     private Map<String, List<SpecificationProperty>>   specification = null;
 
     /*
-     * These are mermaid markdown version of the values from the properties and retrieved relationships.
+     * These are the mermaid Markdown versions of the values from the properties and retrieved relationships.
      */
-    private String mermaidGraph                     = null;
-    private String rootHierarchyMermaidGraph        = null;
-    private String specificationMermaidGraph        = null;
-    private String solutionBlueprintMermaidGraph    = null;
-    private String solutionSubcomponentMermaidGraph = null;
-    private String organizationTreeMermaidGraph     = null;
+    private String mermaidGraph                            = null;
+    private String rootHierarchyMermaidGraph               = null;
+    private String specificationMermaidGraph               = null;
+    private String solutionBlueprintMermaidGraph           = null;
+    private String solutionSubcomponentMermaidGraph        = null;
+    private String organizationTreeMermaidGraph            = null;
+    private String collectionMermaidMindMap                = null;
+    private String zoneProfileMermaidPieChart              = null;
+    private String zoneProfileAnchoredMermaidPieChart      = null;
+    private String zoneProfileAllMermaidPieChart           = null;
+    private String userAccountTypeProfileMermaidPieChart   = null;
+    private String userAccountStatusProfileMermaidPieChart = null;
+
 
     /**
      * Default constructor
@@ -66,14 +73,20 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
         if (template != null)
         {
-            properties                       = template.getProperties();
-            specification                    = template.getSpecification();
-            mermaidGraph                     = template.getMermaidGraph();
-            rootHierarchyMermaidGraph        = template.getRootHierarchyMermaidGraph();
-            specificationMermaidGraph        = template.getSpecificationMermaidGraph();
-            solutionBlueprintMermaidGraph    = template.getSolutionBlueprintMermaidGraph();
-            solutionSubcomponentMermaidGraph = template.getSolutionSubcomponentMermaidGraph();
-            organizationTreeMermaidGraph     = template.getOrganizationTreeMermaidGraph();
+            properties                              = template.getProperties();
+            specification                           = template.getSpecification();
+            mermaidGraph                            = template.getMermaidGraph();
+            rootHierarchyMermaidGraph               = template.getRootHierarchyMermaidGraph();
+            specificationMermaidGraph               = template.getSpecificationMermaidGraph();
+            solutionBlueprintMermaidGraph           = template.getSolutionBlueprintMermaidGraph();
+            solutionSubcomponentMermaidGraph        = template.getSolutionSubcomponentMermaidGraph();
+            organizationTreeMermaidGraph            = template.getOrganizationTreeMermaidGraph();
+            collectionMermaidMindMap                = template.getCollectionMermaidMindMap();
+            zoneProfileMermaidPieChart              = template.getZoneProfileMermaidPieChart();
+            zoneProfileAnchoredMermaidPieChart      = template.getZoneProfileAnchoredMermaidPieChart();
+            zoneProfileAllMermaidPieChart           = template.getZoneProfileAllMermaidPieChart();
+            userAccountTypeProfileMermaidPieChart   = template.getUserAccountTypeProfileMermaidPieChart();
+            userAccountStatusProfileMermaidPieChart = template.getUserAccountStatusProfileMermaidPieChart();
         }
     }
 
@@ -255,6 +268,138 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
+     * Return the mermaid graph of a collection using the mind map pattern.
+     *
+     * @return mermaid markdown
+     */
+    public String getCollectionMermaidMindMap()
+    {
+        return collectionMermaidMindMap;
+    }
+
+
+    /**
+     * Set up the mermaid graph of a collection using the mind map pattern.
+     *
+     * @param collectionMermaidMindMap mermaid markdown
+     */
+    public void setCollectionMermaidMindMap(String collectionMermaidMindMap)
+    {
+        this.collectionMermaidMindMap = collectionMermaidMindMap;
+    }
+
+
+    /**
+     * Return the mermaid pie chart of a zone profile.
+     *
+     * @return mermaid markdown
+     */
+    public String getZoneProfileMermaidPieChart()
+    {
+        return zoneProfileMermaidPieChart;
+    }
+
+
+    /**
+     * Set up the mermaid pie chart of a zone profile.
+     *
+     * @param zoneProfileMermaidPieChart mermaid markdown
+     */
+    public void setZoneProfileMermaidPieChart(String zoneProfileMermaidPieChart)
+    {
+        this.zoneProfileMermaidPieChart = zoneProfileMermaidPieChart;
+    }
+
+
+    /**
+     * Return the mermaid pie chart of a zone profile showing the anchored elements included in the zone through their anchor's membership.
+     *
+     * @return mermaid markdown
+     */
+    public String getZoneProfileAnchoredMermaidPieChart()
+    {
+        return zoneProfileAnchoredMermaidPieChart;
+    }
+
+
+    /**
+     * Set up the mermaid pie chart of a zone profile showing the anchored elements included in the zone through their anchor's membership.
+     *
+     * @param zoneProfileAnchoredMermaidPieChart mermaid markdown
+     */
+    public void setZoneProfileAnchoredMermaidPieChart(String zoneProfileAnchoredMermaidPieChart)
+    {
+        this.zoneProfileAnchoredMermaidPieChart = zoneProfileAnchoredMermaidPieChart;
+    }
+
+
+    /**
+     * Return the mermaid pie chart of a zone profile showing all elements included in the zone.
+     *
+     * @return mermaid markdown
+     */
+    public String getZoneProfileAllMermaidPieChart()
+    {
+        return zoneProfileAllMermaidPieChart;
+    }
+
+
+    /**
+     * Set up the mermaid pie chart of a zone profile showing all elements included in the zone.
+     *
+     * @param zoneProfileAllMermaidPieChart mermaid markdown
+     */
+    public void setZoneProfileAllMermaidPieChart(String zoneProfileAllMermaidPieChart)
+    {
+        this.zoneProfileAllMermaidPieChart = zoneProfileAllMermaidPieChart;
+    }
+
+
+    /**
+     * Return the mermaid pie chart of a user account type profile.
+     *
+     * @return mermaid markdown
+     */
+    public String getUserAccountTypeProfileMermaidPieChart()
+    {
+        return userAccountTypeProfileMermaidPieChart;
+    }
+
+
+    /**
+     * Set up the mermaid pie chart of a user account type profile.
+     *
+     * @param userAccountTypeProfileMermaidPieChart mermaid markdown
+     */
+    public void setUserAccountTypeProfileMermaidPieChart(String userAccountTypeProfileMermaidPieChart)
+    {
+        this.userAccountTypeProfileMermaidPieChart = userAccountTypeProfileMermaidPieChart;
+    }
+
+
+    /**
+     * Return the mermaid pie chart of a user account status profile.
+     *
+     * @return mermaid markdown
+     */
+    public String getUserAccountStatusProfileMermaidPieChart()
+    {
+        return userAccountStatusProfileMermaidPieChart;
+    }
+
+
+    /**
+     * Set up the mermaid pie chart of a user account status profile.
+     *
+     * @param userAccountStatusProfileMermaidPieChart mermaid markdown
+     */
+    public void setUserAccountStatusProfileMermaidPieChart(String userAccountStatusProfileMermaidPieChart)
+    {
+        this.userAccountStatusProfileMermaidPieChart = userAccountStatusProfileMermaidPieChart;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -271,8 +416,15 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
                 ", solutionBlueprintMermaidGraph='" + solutionBlueprintMermaidGraph + '\'' +
                 ", solutionSubcomponentMermaidGraph='" + solutionSubcomponentMermaidGraph + '\'' +
                 ", organizationTreeMermaidGraph='" + organizationTreeMermaidGraph + '\'' +
+                ", collectionMermaidMindMap='" + collectionMermaidMindMap + '\'' +
+                ", zoneProfileMermaidPieChart='" + zoneProfileMermaidPieChart + '\'' +
+                ", zoneProfileAnchoredMermaidPieChart='" + zoneProfileAnchoredMermaidPieChart + '\'' +
+                ", zoneProfileAllMermaidPieChart='" + zoneProfileAllMermaidPieChart + '\'' +
+                ", userAccountTypeProfileMermaidPieChart='" + userAccountTypeProfileMermaidPieChart + '\'' +
+                ", userAccountStatusProfileMermaidPieChart='" + userAccountStatusProfileMermaidPieChart + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -283,7 +435,6 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         OpenMetadataRootElement that = (OpenMetadataRootElement) objectToCompare;
@@ -294,7 +445,13 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
                 Objects.equals(specificationMermaidGraph, that.specificationMermaidGraph) &&
                 Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph) &&
                 Objects.equals(solutionSubcomponentMermaidGraph, that.solutionSubcomponentMermaidGraph) &&
-                Objects.equals(organizationTreeMermaidGraph, that.organizationTreeMermaidGraph);
+                Objects.equals(organizationTreeMermaidGraph, that.organizationTreeMermaidGraph) &&
+                Objects.equals(collectionMermaidMindMap, that.collectionMermaidMindMap) &&
+                Objects.equals(userAccountStatusProfileMermaidPieChart, that.userAccountStatusProfileMermaidPieChart) &&
+                Objects.equals(userAccountTypeProfileMermaidPieChart, that.userAccountTypeProfileMermaidPieChart) &&
+                Objects.equals(zoneProfileMermaidPieChart, that.zoneProfileMermaidPieChart) &&
+                Objects.equals(zoneProfileAnchoredMermaidPieChart, that.zoneProfileAnchoredMermaidPieChart) &&
+                Objects.equals(zoneProfileAllMermaidPieChart, that.zoneProfileAllMermaidPieChart);
     }
 
 
@@ -306,6 +463,10 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, specification, mermaidGraph, rootHierarchyMermaidGraph, specificationMermaidGraph, solutionBlueprintMermaidGraph, solutionSubcomponentMermaidGraph, organizationTreeMermaidGraph);
+        return Objects.hash(super.hashCode(), properties, specification, mermaidGraph, rootHierarchyMermaidGraph,
+                            specificationMermaidGraph, solutionBlueprintMermaidGraph, solutionSubcomponentMermaidGraph,
+                            organizationTreeMermaidGraph, collectionMermaidMindMap, zoneProfileMermaidPieChart,
+                            zoneProfileAnchoredMermaidPieChart, zoneProfileAllMermaidPieChart,
+                            userAccountStatusProfileMermaidPieChart, userAccountTypeProfileMermaidPieChart);
     }
 }

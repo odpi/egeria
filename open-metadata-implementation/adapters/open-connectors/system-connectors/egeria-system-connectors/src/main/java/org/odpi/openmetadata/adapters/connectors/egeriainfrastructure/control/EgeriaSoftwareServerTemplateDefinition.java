@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * A description of the default Egeria software server templates.
  * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
- * to the supplied connector type and an endpoint,
+ * to the supplied connector type and an endpoint.
  */
 public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
 {

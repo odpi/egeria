@@ -26,6 +26,7 @@ public class AnchorsProperties extends ClassificationBeanProperties
     private String       anchorTypeName   = null;
     private String       anchorDomainName = null;
     private List<String> anchorScopeGUIDs = null;
+    private List<String> zoneMembership   = null;
 
 
     /**
@@ -53,6 +54,7 @@ public class AnchorsProperties extends ClassificationBeanProperties
             this.anchorTypeName   = template.getAnchorTypeName();
             this.anchorDomainName = template.getAnchorDomainName();
             this.anchorScopeGUIDs = template.getAnchorScopeGUIDs();
+            this.zoneMembership   = template.getZoneMembership();
         }
     }
 
@@ -146,6 +148,28 @@ public class AnchorsProperties extends ClassificationBeanProperties
 
 
     /**
+     * Return the list of zones that the anchor is a member of.
+     *
+     * @return list of strings
+     */
+    public List<String> getZoneMembership()
+    {
+        return zoneMembership;
+    }
+
+
+    /**
+     * Set up the list of zones that the anchor is a member of.
+     *
+     * @param zoneMembership list of strings
+     */
+    public void setZoneMembership(List<String> zoneMembership)
+    {
+        this.zoneMembership = zoneMembership;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -178,7 +202,8 @@ public class AnchorsProperties extends ClassificationBeanProperties
         return Objects.equals(anchorGUID, that.anchorGUID) &&
                 Objects.equals(anchorTypeName, that.anchorTypeName) &&
                 Objects.equals(anchorDomainName, that.anchorDomainName) &&
-                Objects.equals(anchorScopeGUIDs, that.anchorScopeGUIDs);
+                Objects.equals(anchorScopeGUIDs, that.anchorScopeGUIDs) &&
+                Objects.equals(zoneMembership, that.zoneMembership);
     }
 
     /**
@@ -189,6 +214,6 @@ public class AnchorsProperties extends ClassificationBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUIDs);
+        return Objects.hash(super.hashCode(), anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUIDs, zoneMembership);
     }
 }

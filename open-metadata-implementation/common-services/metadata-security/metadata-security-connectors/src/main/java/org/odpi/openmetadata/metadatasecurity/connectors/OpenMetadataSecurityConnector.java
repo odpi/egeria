@@ -530,9 +530,9 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                         String entityGUID,
                                         String methodName) throws UserNotAuthorizedException
     {
-        logRecord(methodName, OpenMetadataSecurityAuditCode.FILTERED_ELEMENT.getMessageDefinition(userId, entityGUID, operation));
+        logRecord(methodName, OpenMetadataSecurityAuditCode.FILTERED_ELEMENT.getMessageDefinition(entityGUID, userId));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.FILTERED_ELEMENT.getMessageDefinition(userId, entityGUID, operation),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.FILTERED_ELEMENT.getMessageDefinition(entityGUID, userId),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
