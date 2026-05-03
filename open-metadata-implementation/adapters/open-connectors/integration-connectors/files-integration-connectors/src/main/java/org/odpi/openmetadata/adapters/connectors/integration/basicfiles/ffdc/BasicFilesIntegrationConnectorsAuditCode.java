@@ -276,13 +276,22 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                              "Ensure that the path name of the folder matches the location of the directory that the connector is to monitor.  Correct it if necessary, otherwise, once the directory has been created, the connector will start monitoring it on the next refresh."),
 
     /**
-     * BASIC-FILES-INTEGRATION-CONNECTORS-0023 - The {0} connector received an unexpected {1} exception during method {2}; the error message was: {3}
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0024 - The {0} connector received an unexpected {1} exception during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("BASIC-FILES-INTEGRATION-CONNECTORS-0024",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} connector received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0025 - The {0} connector detected an unknown list name {1} nested in list {2} in secrets collection {3} ({4}); the associated security list element is: {5}
+     */
+    UNKNOWN_LIST_NAME("BASIC-FILES-INTEGRATION-CONNECTORS-0025",
+                         AuditLogRecordSeverityLevel.SECURITY,
+                         "The {0} connector detected an unknown list name {1} nested in list {2} in secrets collection {3} ({4}); the associated security list element is: {5}",
+                         "The connector skips the unknown name in the list and continues processing the list.",
+                         "Use the details from the error message to either remove, or define the named list."),
     ;
 
     private final String                      logMessageId;

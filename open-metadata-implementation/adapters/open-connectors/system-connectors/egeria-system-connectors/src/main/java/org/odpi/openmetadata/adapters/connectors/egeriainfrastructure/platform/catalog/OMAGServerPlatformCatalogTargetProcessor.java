@@ -546,6 +546,9 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         SearchOptions searchOptions = userIdentityClient.getSearchOptions(0, integrationContext.getMaxPageSize());
         List<OpenMetadataRootElement> userElements = userIdentityClient.findUserIdentities(null, searchOptions);
 
+        /*
+         * Iterate through the user identity elements and add a SecurityListClassification to each one that is defined in the secrets store.
+         */
         while (userElements != null)
         {
             for (OpenMetadataRootElement userElement : userElements)

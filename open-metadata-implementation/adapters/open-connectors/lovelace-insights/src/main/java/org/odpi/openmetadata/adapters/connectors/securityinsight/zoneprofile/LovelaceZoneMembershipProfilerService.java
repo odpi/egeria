@@ -41,7 +41,7 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
     /**
      * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is where the function of the watchdog action service is implemented.
-     * This is a standard method from the Open Connector Framework (OCF) so
+     * This is a standard method from the Open Connector Framework (OCF), so
      * be sure to call super.start() in your version.
      *
      * @throws ConnectorCheckedException a problem within the watchdog action service.
@@ -75,7 +75,7 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
                 {
                     if ((governanceZoneElement != null) && (governanceZoneElement.getProperties() instanceof GovernanceZoneProperties governanceZoneProperties))
                     {
-                        ZoneMembershipProfileProperties zoneMembershipProfile = getGovernanceZoneTypeMembership(governanceZoneProperties.getIdentifier());;
+                        ZoneMembershipProfileProperties zoneMembershipProfile = getGovernanceZoneTypeMembership(governanceZoneProperties.getIdentifier());
 
                         if (governanceZoneElement.getElementHeader().getZoneMembershipProfile() == null)
                         {
@@ -120,11 +120,11 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
 
 
     /**
-     * Add up the number of elements fround for each type in the named zone.
+     * Add up the elements found for each type in the named zone.
      *
      * @param zoneName name of zone to lookup
      * @return analysis of the zone
-     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws InvalidParameterException  one of the search parameters is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    a problem accessing the metadata store
      */
@@ -132,44 +132,93 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-
         Map<String, Long> membershipCounts = new HashMap<>();
-        long totalMembership = 0L;
+        Map<String, Long> anchoredMembershipCounts = new HashMap<>();
+        Map<String, Long> allMembershipCounts = new HashMap<>();
 
+        /*
+         * Consult the anchors classification to find the anchor elements for this zone.
+         */
+        long totalMembership = countZoneMembers(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                zoneName,
+                                                membershipCounts,
+                                                allMembershipCounts);
+        log.debug("Membership counts for zone {} are {}", zoneName, membershipCounts);
+
+        /*
+         * Consult the anchors classification to find the anchored elements for this zone.
+         */
+        long anchoredTotalMembership = countZoneMembers(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                zoneName,
+                                                anchoredMembershipCounts,
+                                                allMembershipCounts);
+        log.debug("Anchored Membership counts for zone {} are {}", zoneName, anchoredMembershipCounts);
+
+        long allTotalMembership = totalMembership + anchoredTotalMembership;
+
+        ZoneMembershipProfileProperties membershipProfile = new ZoneMembershipProfileProperties();
+        membershipProfile.setTotalMembership(totalMembership);
+        membershipProfile.setTypeMembership(membershipCounts);
+        membershipProfile.setAnchoredTotalMembership(anchoredTotalMembership);
+        membershipProfile.setAnchoredTypeMembership(anchoredMembershipCounts);
+        membershipProfile.setAllTotalMembership(allTotalMembership);
+        membershipProfile.setAllTypeMembership(allMembershipCounts);
+        membershipProfile.setAnalysisTime(new Date());
+
+        return membershipProfile;
+    }
+
+
+    /**
+     * Counts the number of elements that belong to a specified zone and are classified with a specific classification.
+     * It also updates maps containing membership counts per type for the given zone and across all zones.
+     *
+     * @param classificationName the name of the classification to filter metadata elements by.
+     * @param zoneName the name of the zone to search for classified metadata elements.
+     * @param membershipCounts a map to track the count of classified metadata elements per type within the specified zone.
+     * @param allMembershipCounts a map to track the count of classified metadata elements per type across all zones.
+     * @return the total number of classified metadata elements found in the specified zone.
+     * @throws InvalidParameterException if any of the search parameters are invalid.
+     * @throws PropertyServerException if there is a problem accessing the metadata store.
+     * @throws UserNotAuthorizedException if the user is not authorized to perform this operation.
+     */
+    private long countZoneMembers(String classificationName,
+                                  String zoneName,
+                                  Map<String, Long> membershipCounts,
+                                  Map<String, Long> allMembershipCounts) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();
         QueryOptions      queryOptions      = openMetadataStore.getQueryOptions(0, governanceContext.getMaxPageSize());
 
-        List<OpenMetadataElement> elements = openMetadataStore.getMetadataElementsByClassificationPropertyValue(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+        List<OpenMetadataElement> elements = openMetadataStore.getMetadataElementsByClassificationPropertyValue(classificationName,
                                                                                                                 List.of(OpenMetadataProperty.ZONE_MEMBERSHIP.name),
                                                                                                                 zoneName,
                                                                                                                 queryOptions);
+        long membershipCount = 0L;
+
         while (elements != null)
         {
             for (OpenMetadataElement element : elements)
             {
                 if (element != null)
                 {
-                    totalMembership++;
+                    membershipCount++;
                     String elementType = element.getType().getTypeName();
 
                     membershipCounts.merge(elementType, 1L, Long::sum);
+                    allMembershipCounts.merge(elementType, 1L, Long::sum);
                 }
             }
 
             queryOptions.setStartFrom(queryOptions.getStartFrom() + governanceContext.getMaxPageSize());
-            elements = openMetadataStore.getMetadataElementsByClassificationPropertyValue(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+            elements = openMetadataStore.getMetadataElementsByClassificationPropertyValue(classificationName,
                                                                                           List.of(OpenMetadataProperty.ZONE_MEMBERSHIP.name),
                                                                                           zoneName,
                                                                                           queryOptions);
         }
 
-        log.debug("Membership counts for zone {} are {}", zoneName, membershipCounts);
-
-        ZoneMembershipProfileProperties membershipProfile = new ZoneMembershipProfileProperties();
-        membershipProfile.setTotalMembership(totalMembership);
-        membershipProfile.setTypeMembership(membershipCounts);
-        membershipProfile.setAnalysisTime(new Date());
-
-        return membershipProfile;
+        return membershipCount;
     }
 }

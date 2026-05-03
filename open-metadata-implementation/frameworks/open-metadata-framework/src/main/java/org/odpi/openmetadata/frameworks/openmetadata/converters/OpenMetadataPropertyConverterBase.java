@@ -3256,7 +3256,7 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the  configuration properties property from the supplied element properties.
+     * Extract and delete the configuration properties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -3431,6 +3431,50 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Retrieve the type membership analysis from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected Map<String, Long> removeAnchoredTypeMembership(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAnchoredTypeMembership";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.ANCHORED_TYPE_MEMBERSHIP.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the type membership analysis from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected Map<String, Long> removeAllTypeMembership(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAllTypeMembership";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.ALL_TYPE_MEMBERSHIP.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve the  analysis time from the properties of the zone membership profile classification.
      *
      * @param elementProperties properties from the classification
@@ -3466,6 +3510,50 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeLongProperty(localServiceName,
                                                      OpenMetadataProperty.TOTAL_MEMBERSHIP.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Retrieve the total membership analysis from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected long removeAnchoredTotalMembership(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAnchoredTotalMembership";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Retrieve the total membership analysis from the properties of the zone membership profile classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected long removeAllTotalMembership(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAllTotalMembership";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.name,
                                                      elementProperties,
                                                      methodName);
         }
@@ -12267,6 +12355,7 @@ public class OpenMetadataPropertyConverterBase
                 ((AnchorsProperties)beanProperties).setAnchorTypeName(this.removeAnchorTypeName(elementProperties));
                 ((AnchorsProperties)beanProperties).setAnchorDomainName(this.removeAnchorDomainName(elementProperties));
                 ((AnchorsProperties)beanProperties).setAnchorScopeGUIDs(this.removeAnchorScopeGUIDs(elementProperties));
+                ((AnchorsProperties)beanProperties).setZoneMembership(this.removeZoneMembership(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.AUDIT_LOG_CLASSIFICATION.typeName))
             {
@@ -12813,6 +12902,10 @@ public class OpenMetadataPropertyConverterBase
 
                 ((ZoneMembershipProfileProperties)beanProperties).setTotalMembership(this.removeTotalMembership(elementProperties));
                 ((ZoneMembershipProfileProperties)beanProperties).setTypeMembership(this.removeTypeMembership(elementProperties));
+                ((ZoneMembershipProfileProperties)beanProperties).setAnchoredTotalMembership(this.removeAnchoredTotalMembership(elementProperties));
+                ((ZoneMembershipProfileProperties)beanProperties).setAnchoredTypeMembership(this.removeAnchoredTypeMembership(elementProperties));
+                ((ZoneMembershipProfileProperties)beanProperties).setAllTotalMembership(this.removeAllTotalMembership(elementProperties));
+                ((ZoneMembershipProfileProperties)beanProperties).setAllTypeMembership(this.removeAllTypeMembership(elementProperties));
                 ((ZoneMembershipProfileProperties)beanProperties).setAnalysisTime(this.removeAnalysisTime(elementProperties));
             }
             else

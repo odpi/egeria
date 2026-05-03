@@ -31,10 +31,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.*;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileExtension;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -104,6 +106,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         try
         {
             processUserIdentities();
+            refreshSecurityAccessControls();
         }
         catch (Exception error)
         {
@@ -293,7 +296,14 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
             secretsCollectionProperties.setQualifiedName(qualifiedName);
             secretsCollectionProperties.setResourceName(secretsCollectionName);
-            secretsCollectionProperties.setDisplayName(secretsCollection.getDisplayName());
+            if (secretsCollection.getDisplayName() == null)
+            {
+                secretsCollectionProperties.setDisplayName(secretsCollectionName);
+            }
+            else
+            {
+                secretsCollectionProperties.setDisplayName(secretsCollection.getDisplayName());
+            }
             secretsCollectionProperties.setDescription(secretsCollection.getDescription());
 
             Map<String, String> additionalProperties = new HashMap<>();
@@ -439,6 +449,8 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
         if (secretsCollection.getSecurityAccessControls() != null)
         {
+            Map<String, String> controlNameToGUIDMap = new HashMap<>();
+
             /*
              * Iterate through the security access controls, extracting useful information.
              */
@@ -458,7 +470,6 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                         /*
                          * Create or update the control description in open metadata.
                          */
-                        String controlQualifiedName = OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName + "::" + secretsCollectionGUID + "::" + controlName;
                         SecurityAccessControlProperties securityAccessControlProperties = new SecurityAccessControlProperties();
 
                         if (OpenMetadataType.GOVERNANCE_ZONE.typeName.equals(securityAccessControl.getControlTypeName()))
@@ -473,10 +484,32 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                             securityAccessControlProperties = serviceAccessControlProperties;
                         }
 
+                        String controlQualifiedName = securityAccessControlProperties.getTypeName() + "::" + secretsCollectionGUID + "::" + controlName;
+
                         securityAccessControlProperties.setQualifiedName(controlQualifiedName);
                         securityAccessControlProperties.setIdentifier(controlName);
-                        securityAccessControlProperties.setDisplayName(securityAccessControl.getDisplayName());
+                        securityAccessControlProperties.setDisplayName(securityAccessControl.getControlDisplayName());
                         securityAccessControlProperties.setDescription(securityAccessControl.getDescription());
+
+                        if (securityAccessControl.getOtherProperties() != null)
+                        {
+                            Object criteria = securityAccessControl.getOtherProperties().get(OpenMetadataProperty.CRITERIA.name);
+
+                            if ((criteria != null) && (securityAccessControlProperties instanceof GovernanceZoneProperties governanceZoneProperties))
+                            {
+                                governanceZoneProperties.setCriteria(criteria.toString());
+                            }
+
+                            Object domainIdentifier = securityAccessControl.getOtherProperties().get(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
+                            if (domainIdentifier instanceof Integer integer)
+                            {
+                                securityAccessControlProperties.setDomainIdentifier(integer);
+                            }
+                            else if (domainIdentifier instanceof String string)
+                            {
+                                securityAccessControlProperties.setDomainIdentifier(Integer.parseInt(string));
+                            }
+                        }
 
                         String securityAccessControlGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(controlQualifiedName,
                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name);
@@ -500,6 +533,8 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                   governanceDefinitionClient.getUpdateOptions(false),
                                                                                   securityAccessControlProperties);
                         }
+
+                        controlNameToGUIDMap.put(controlName, securityAccessControlGUID);
 
                         /*
                          * Now set up the AssociatedSecurityList relationships that describe the permissions for the
@@ -555,6 +590,39 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Iterate through the security access controls, extracting useful information.
+             */
+            for (String controlName : secretsCollection.getSecurityAccessControls().keySet())
+            {
+                if (controlName != null)
+                {
+                    SecurityAccessControl securityAccessControl = secretsCollection.getSecurityAccessControls().get(controlName);
+
+                    if ((securityAccessControl != null) && (securityAccessControl.getOtherProperties() != null))
+                    {
+                        Object inheritsFromZone = securityAccessControl.getOtherProperties().get("inheritsFromZone");
+                        if (inheritsFromZone != null)
+                        {
+                            String parentZoneName = inheritsFromZone.toString();
+                            if (parentZoneName != null)
+                            {
+                                String parentZoneGUID = controlNameToGUIDMap.get(parentZoneName);
+                                String childZoneName  = controlNameToGUIDMap.get(controlName);
+
+                                if ((parentZoneGUID != null) && (childZoneName != null))
+                                {
+                                    governanceDefinitionClient.linkGovernanceZones(parentZoneGUID,
+                                                                                   childZoneName,
+                                                                                   governanceDefinitionClient.getMakeAnchorOptions(false),
+                                                                                   null);
                                 }
                             }
                         }
@@ -677,6 +745,8 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
     private Map<String, String> getListMap(String            secretsCollectionGUID,
                                            SecretsCollection secretsCollection) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "getListMap";
+
         Map<String, String> listMap = new HashMap<>();
 
         OpenMetadataStore openMetadataStore = integrationConnector.integrationContext.getOpenMetadataStore();
@@ -687,7 +757,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         options.setAnchorGUID(secretsCollectionGUID);
         options.setIsOwnAnchor(false);
         options.setParentGUID(secretsCollectionGUID);
-        options.setParentAtEnd1(false);
+        options.setParentAtEnd1(true);
         options.setParentRelationshipTypeName(OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName);
 
         Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
@@ -764,13 +834,26 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                         {
                             if (listMemberName != null)
                             {
-                                /*
-                                 * If the membership relationship is already present, this will be a no-op.
-                                 */
-                                collectionClient.addToCollection(listGUID,
-                                                                 listMap.get(listMemberName),
-                                                                 collectionClient.getMakeAnchorOptions(false),
-                                                                 null);
+                                if (listMap.get(listMemberName) != null)
+                                {
+                                    /*
+                                     * If the membership relationship is already present, this will be a no-op.
+                                     */
+                                    collectionClient.addToCollection(listGUID,
+                                                                     listMap.get(listMemberName),
+                                                                     collectionClient.getMakeAnchorOptions(false),
+                                                                     null);
+                                }
+                                else
+                                {
+                                    auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.UNKNOWN_LIST_NAME.getMessageDefinition(connectorName,
+                                                                                                                                        listMemberName,
+                                                                                                                                        listName,
+                                                                                                                                        secretsCollection.getDisplayName(),
+                                                                                                                                        secretsCollectionGUID,
+                                                                                                                                        listGUID));
+                                }
                             }
                         }
                     }
@@ -933,5 +1016,45 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
             }
         }
 
+    }
+
+
+    /**
+     * Refresh the information about the security access controls found in the secrets store file.
+     */
+    private void refreshSecurityAccessControls()
+    {
+        final String methodName = "refreshSecurityAccessControls";
+
+        try
+        {
+            AssetClient fileClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
+
+            QueryOptions queryOptions = fileClient.getQueryOptions(0, fileClient.getMaxPagingSize());
+
+            List<OpenMetadataRootElement> matchingFiles = fileClient.getAssetsByDeployedImplementationType(DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getDeployedImplementationType(), queryOptions);
+
+            while (matchingFiles != null)
+            {
+                for (OpenMetadataRootElement file : matchingFiles)
+                {
+                    if ((file != null) && (file.getElementHeader().getTemplate() == null)) // don't process templates
+                    {
+                        catalogSecretsCollections(file.getElementHeader().getGUID());
+                    }
+                }
+
+                queryOptions = fileClient.getQueryOptions(queryOptions.getStartFrom() + fileClient.getMaxPagingSize(), fileClient.getMaxPagingSize());
+                matchingFiles = fileClient.getAssetsByDeployedImplementationType(DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getDeployedImplementationType(), queryOptions);
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName,
+                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   error.getMessage()));
+        }
     }
 }

@@ -7,7 +7,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -425,11 +427,11 @@ public enum ProductGovernanceDefinition
      *
      * @return list
      */
-    public List<String> getEntitlements()
+    public Map<String, String> getEntitlements()
     {
         if (entitlements != null)
         {
-            return Arrays.asList(entitlements);
+            return getOrderedList(entitlements);
         }
 
         return null;
@@ -441,14 +443,9 @@ public enum ProductGovernanceDefinition
      *
      * @return list
      */
-    public List<String> getRestrictions()
+    public Map<String, String> getRestrictions()
     {
-        if (restrictions != null)
-        {
-            return Arrays.asList(restrictions);
-        }
-
-        return null;
+        return getOrderedList(restrictions);
     }
 
 
@@ -457,11 +454,33 @@ public enum ProductGovernanceDefinition
      *
      * @return list
      */
-    public List<String> getObligations()
+    public Map<String, String> getObligations()
     {
-        if (obligations != null)
+        return getOrderedList(obligations);
+    }
+
+
+    /**
+     * Concert a list of values into a map of numbered values.
+     *
+     * @param listItems list of values
+     * @return map or null if the list is null
+     */
+    private Map<String, String> getOrderedList(String[] listItems)
+    {
+        if (listItems != null)
         {
-            return Arrays.asList(obligations);
+            Map<String, String> listItemMap = new HashMap<>();
+
+            for (String listItem : listItems)
+            {
+                if (listItem != null)
+                {
+                    listItemMap.put(Integer.toString(listItemMap.size() + 1), listItem);
+                }
+            }
+
+            return listItemMap;
         }
 
         return null;

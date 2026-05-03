@@ -433,6 +433,10 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedElementSummary(openMetadataRootElement.getMapFromElement(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
             super.addRelatedElementSummary(openMetadataRootElement.getMapToElement(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
             super.addRelatedElementSummaries(openMetadataRootElement.getQueries(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(openMetadataRootElement.getContainsOperations(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummary(openMetadataRootElement.getAPIHeader(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummary(openMetadataRootElement.getAPIRequest(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummary(openMetadataRootElement.getAPIResponse(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
             super.addRelatedElementSummary(openMetadataRootElement.getLinkedToPrimaryKey(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
             super.addRelatedElementSummaries(openMetadataRootElement.getForeignKeys(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());

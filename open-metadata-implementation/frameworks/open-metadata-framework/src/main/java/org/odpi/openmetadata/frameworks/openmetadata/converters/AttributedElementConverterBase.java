@@ -266,19 +266,18 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             /*
              * Area 2
              */
+            attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setConnectorType(super.getRelatedElement(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setEndpoint(super.getRelatedElement(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            attributedMetadataElement.setConnections(super.getRelatedElements(List.of(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
-                                                                                      OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
-                                                                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName), relatedMetadataElements, true));
+            attributedMetadataElement.setEmbeddedConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setParentConnections(super.getRelatedElements(List.of(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName), relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-            processedRelationshipTypes.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setEmbeddedConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setParentConnections(super.getRelatedElements(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setDataSetContent(super.getRelatedElements(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
@@ -473,6 +472,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setMapToElement(super.getRelatedElement(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setMapFromElement(super.getRelatedElement(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setQueries(super.getRelatedElements(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setContainsOperations(super.getRelatedElements(OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAPIHeader(super.getRelatedElement(OpenMetadataType.API_HEADER_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAPIRequest(super.getRelatedElement(OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAPIResponse(super.getRelatedElement(OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName, relatedMetadataElements, false));
 
             attributedMetadataElement.setParentSchemaElements(super.getRelatedElements(List.of(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
                                                                                                OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
@@ -480,7 +483,11 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
                                                                                                OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                                                OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                                                                OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
-                                                                                               OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName),
+                                                                                               OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName),
                                                                                        relatedMetadataElements,
                                                                                        true));
 
@@ -491,6 +498,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             processedRelationshipTypes.add(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.API_HEADER_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName);
+            processedRelationshipTypes.add(OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName);
 
 
             attributedMetadataElement.setForeignKeys(super.getRelatedElements(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName, relatedMetadataElements, false));

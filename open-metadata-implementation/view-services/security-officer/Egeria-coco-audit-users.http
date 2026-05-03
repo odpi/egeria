@@ -53,7 +53,7 @@ Content-Type: application/json
 # https://egeria-project.org/types/0037-Software-Server-Platforms/
 
 ###
-# @name getPlatformsByName
+# @name getPlatformsByName (gary)
 # Returns the list of platforms with a particular name. The name is specified in the filter.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name
 Authorization: Bearer {{garyToken}}
@@ -73,8 +73,9 @@ Content-Type: application/json
 #
 
 ###
-# @name findAssets (SecretCollections) using gary's token
-# The secrets collections are returned by the
+# @name findAssets (SecretCollections) using gary's token (returns UserNotAuthorizedException)
+# The secrets collections are returned by the Asset Maker API.
+# They are in the security governance zone that Gary does nto have access to.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
 Authorization: Bearer {{garyToken}}
 Content-Type: application/json
@@ -87,14 +88,8 @@ Content-Type: application/json
 
 ###
 # @name findAssets (SecretCollections) using ivor's token
-# Retrieve the list of asset metadata elements that contain the search string.
-#
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    a problem reported in the open metadata server(s)
+# The requested security collection is returned with a lot of information about the security
+# settings in the secrets collection.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
 Authorization: Bearer {{ivorToken}}
@@ -113,18 +108,14 @@ Content-Type: application/json
 
 ###
 # @name findUserIdentities (gary)
-# Retrieve the list of user identity metadata elements that contain the search string.
-#
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    a problem reported in the open metadata server(s)
+# Even though all userIdentities are requested, only one is returned, this is gary's own user identity.
+# This allows a user to check their own security settings.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
 Authorization: Bearer {{garyToken}}
 Content-Type: application/json
+
+> {% client.global.set("garyUserIdentityGUID", response.body.elements[0].elementHeader.guid); %}
 
 ###
 # @name getUserIdentityByGUID (gary)
@@ -138,21 +129,14 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/1d1d3d60-3808-4bda-94f0-c3792a53bed6/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{garyUserIdentityGUID}}/retrieve
 Authorization: Bearer {{garyToken}}
 Content-Type: application/json
 
 
 ###
 # @name findUserIdentities (ivor)
-# Retrieve the list of user identity metadata elements that contain the search string.
-#
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    a problem reported in the open metadata server(s)
+# Ivor is able to retrieve all userIdentities
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
 Authorization: Bearer {{ivorToken}}
@@ -161,17 +145,9 @@ Content-Type: application/json
 
 ###
 # @name getUserIdentityByGUID (ivor)
-# Return the properties of a specific user identity.
+# Ivor is able to retrieve gary's user identity
 #
-# @param userIdentityGUID    unique identifier of the required element
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    a problem reported in the open metadata server(s)
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/1d1d3d60-3808-4bda-94f0-c3792a53bed6/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{garyUserIdentityGUID}}/retrieve
 Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
 
@@ -201,8 +177,8 @@ Content-Type: application/json
 #
 
 ###
-# @name findGovernanceDefinitions
-# Retrieve the list of governance definition metadata elements that contain the search string.
+# @name find All GovernanceZones
+# Retrieve all the governance zones
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
 Authorization: Bearer {{ivorToken}}
 Content-Type: application/json
@@ -211,4 +187,33 @@ Content-Type: application/json
   "class" : "SearchStringRequestBody",
   "metadataElementTypeName": "GovernanceZone"
 }
+
+###
+# @name find digital-products GovernanceZone (ivor)
+# Retrieve all the governance zones
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{ivorToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceZone",
+  "searchString": "digital-products"
+}
+
+
+
+###
+# @name find digital-products GovernanceZone (gary)
+# Retrieve all the governance zones
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceZone",
+  "searchString": "digital-products"
+}
+
 
