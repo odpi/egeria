@@ -197,6 +197,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">List of alternative names.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#ALL_TOTAL_MEMBERSHIP" class="member-name-link">ALL_TOTAL_MEMBERSHIP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The anchor and anchored elements count for the attached governance zone.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ALL_TYPE_MEMBERSHIP" class="member-name-link">ALL_TYPE_MEMBERSHIP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The statistics describing the types of elements that are members of the zone either explicitly or via an anchor association.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ALLOWS_DUPLICATE_VALUES" class="member-name-link">ALLOWS_DUPLICATE_VALUES</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.</div>
@@ -228,6 +236,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#ANCHOR_TYPE_NAME" class="member-name-link">ANCHOR_TYPE_NAME</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Unique name of the anchor element's type.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ANCHORED_TOTAL_MEMBERSHIP" class="member-name-link">ANCHORED_TOTAL_MEMBERSHIP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The anchored element count for the attached governance zone.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ANCHORED_TYPE_MEMBERSHIP" class="member-name-link">ANCHORED_TYPE_MEMBERSHIP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The statistics describing the types of elements that are members of the zone due to an anchor association.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ANNOTATION_STATUS" class="member-name-link">ANNOTATION_STATUS</a></code></div>
 <div class="col-last odd-row-color">
@@ -832,7 +848,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ENTITLEMENTS" class="member-name-link">ENTITLEMENTS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The list of rights and permissions granted.</div>
+<div class="block">The named list of rights and permissions granted.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#ESTIMATED_VOLUMETRICS" class="member-name-link">ESTIMATED_VOLUMETRICS</a></code></div>
 <div class="col-last even-row-color">
@@ -1508,7 +1524,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#OBLIGATIONS" class="member-name-link">OBLIGATIONS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The list of actions, duties, or commitments required.</div>
+<div class="block">The named list of actions, duties, or commitments required.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#OFFERING_NAME" class="member-name-link">OFFERING_NAME</a></code></div>
 <div class="col-last odd-row-color">
@@ -2008,7 +2024,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#RESTRICTIONS" class="member-name-link">RESTRICTIONS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The list of limiting conditions or measures imposed.</div>
+<div class="block">The named list of limiting conditions or measures imposed.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#RESULTS" class="member-name-link">RESULTS</a></code></div>
 <div class="col-last even-row-color">
@@ -2348,7 +2364,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#TOTAL_MEMBERSHIP" class="member-name-link">TOTAL_MEMBERSHIP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The statistics describing the element count for each zone.</div>
+<div class="block">The anchor element count for the attached governance zone.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#TRANSFORMATION" class="member-name-link">TRANSFORMATION</a></code></div>
 <div class="col-last odd-row-color">
@@ -2356,7 +2372,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#TYPE_MEMBERSHIP" class="member-name-link">TYPE_MEMBERSHIP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The statistics describing the types of elements that are members of the zone.</div>
+<div class="block">The statistics describing the types of anchor elements that are members of the zone.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNIQUE_VALUES" class="member-name-link">UNIQUE_VALUES</a></code></div>
 <div class="col-last odd-row-color">
@@ -2464,7 +2480,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ZONE_MEMBERSHIP" class="member-name-link">ZONE_MEMBERSHIP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The list of governance zones that this asset belongs to.</div>
+<div class="block">The list of governance zones that this element belongs to.</div>
 </div>
 </div>
 </section>
@@ -2858,14 +2874,28 @@ the order they are declared.</div>
 <section class="detail" id="ZONE_MEMBERSHIP">
 <h3>ZONE_MEMBERSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ZONE_MEMBERSHIP</span></div>
-<div class="block">The list of governance zones that this asset belongs to.</div>
+<div class="block">The list of governance zones that this element belongs to.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TYPE_MEMBERSHIP">
 <h3>TYPE_MEMBERSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TYPE_MEMBERSHIP</span></div>
-<div class="block">The statistics describing the types of elements that are members of the zone.</div>
+<div class="block">The statistics describing the types of anchor elements that are members of the zone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ANCHORED_TYPE_MEMBERSHIP">
+<h3>ANCHORED_TYPE_MEMBERSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ANCHORED_TYPE_MEMBERSHIP</span></div>
+<div class="block">The statistics describing the types of elements that are members of the zone due to an anchor association.  This profile is derived from the setting of zoneMembership in the Anchors classification.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ALL_TYPE_MEMBERSHIP">
+<h3>ALL_TYPE_MEMBERSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ALL_TYPE_MEMBERSHIP</span></div>
+<div class="block">The statistics describing the types of elements that are members of the zone either explicitly or via an anchor association.</div>
 </section>
 </li>
 <li>
@@ -2879,7 +2909,21 @@ the order they are declared.</div>
 <section class="detail" id="TOTAL_MEMBERSHIP">
 <h3>TOTAL_MEMBERSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">TOTAL_MEMBERSHIP</span></div>
-<div class="block">The statistics describing the element count for each zone.</div>
+<div class="block">The anchor element count for the attached governance zone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ANCHORED_TOTAL_MEMBERSHIP">
+<h3>ANCHORED_TOTAL_MEMBERSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ANCHORED_TOTAL_MEMBERSHIP</span></div>
+<div class="block">The anchored element count for the attached governance zone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ALL_TOTAL_MEMBERSHIP">
+<h3>ALL_TOTAL_MEMBERSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ALL_TOTAL_MEMBERSHIP</span></div>
+<div class="block">The anchor and anchored elements count for the attached governance zone.</div>
 </section>
 </li>
 <li>
@@ -6324,21 +6368,21 @@ the order they are declared.</div>
 <section class="detail" id="ENTITLEMENTS">
 <h3>ENTITLEMENTS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">ENTITLEMENTS</span></div>
-<div class="block">The list of rights and permissions granted.</div>
+<div class="block">The named list of rights and permissions granted.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RESTRICTIONS">
 <h3>RESTRICTIONS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">RESTRICTIONS</span></div>
-<div class="block">The list of limiting conditions or measures imposed.</div>
+<div class="block">The named list of limiting conditions or measures imposed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OBLIGATIONS">
 <h3>OBLIGATIONS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">OBLIGATIONS</span></div>
-<div class="block">The list of actions, duties, or commitments required.</div>
+<div class="block">The named list of actions, duties, or commitments required.</div>
 </section>
 </li>
 <li>
