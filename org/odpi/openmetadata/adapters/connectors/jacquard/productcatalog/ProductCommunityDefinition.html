@@ -106,17 +106,25 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#MASTER_DATA_SIG" class="member-name-link">MASTER_DATA_SIG</a></code></div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_SIG" class="member-name-link">GOVERNANCE_SIG</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GovernanceSIG - Community of people focused on the governance products derived from the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MASTER_DATA_SIG" class="member-name-link">MASTER_DATA_SIG</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MasterDataSIG - Community of people focused on master data products derived from the open metadata ecosystem.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OBSERVABILITY_SIG" class="member-name-link">OBSERVABILITY_SIG</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OBSERVABILITY_SIG" class="member-name-link">OBSERVABILITY_SIG</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ObservabilitySIG - Community of people focused on the observability products derived from the open metadata ecosystem.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REFERENCE_DATA_SIG" class="member-name-link">REFERENCE_DATA_SIG</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REFERENCE_DATA_SIG" class="member-name-link">REFERENCE_DATA_SIG</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ReferenceDataSIG - Community of people focused on reference data products derived from the open metadata ecosystem.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SECURITY_SIG" class="member-name-link">SECURITY_SIG</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">SecuritySIG - Community of people focused on the security of the open metadata ecosystem.</div>
 </div>
 </div>
 </section>
@@ -168,6 +176,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#zoneMembership()" class="member-name-link">zoneMembership</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the zone membership for the product.</div>
+</div>
 </div>
 </div>
 </div>
@@ -207,6 +220,20 @@ the order they are declared.</div>
 <h3>OBSERVABILITY_SIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a></span>&nbsp;<span class="element-name">OBSERVABILITY_SIG</span></div>
 <div class="block">ObservabilitySIG - Community of people focused on the observability products derived from the open metadata ecosystem.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_SIG">
+<h3>GOVERNANCE_SIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a></span>&nbsp;<span class="element-name">GOVERNANCE_SIG</span></div>
+<div class="block">GovernanceSIG - Community of people focused on the governance products derived from the open metadata ecosystem.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECURITY_SIG">
+<h3>SECURITY_SIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a></span>&nbsp;<span class="element-name">SECURITY_SIG</span></div>
+<div class="block">SecuritySIG - Community of people focused on the security of the open metadata ecosystem.</div>
 </section>
 </li>
 </ul>
@@ -289,6 +316,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="zoneMembership()">
+<h3>zoneMembership</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">zoneMembership</span>()</div>
+<div class="block">Return the zone membership for the product.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of zone names (default = ["digital-products"])</dd>
 </dl>
 </section>
 </li>

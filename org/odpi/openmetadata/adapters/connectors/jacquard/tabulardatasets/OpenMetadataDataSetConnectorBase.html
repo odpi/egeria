@@ -204,6 +204,18 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extracts the record values from the element properties based on the specified column name.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementRecordValue(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties,java.lang.String,java.util.List)" class="member-name-link">getElementRecordValue</a><wbr>(<a href="../../../../frameworks/openmetadata/properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipBeanProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extracts the record values from the element properties based on the specified column name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary)" class="member-name-link">getRecordValues</a><wbr>(<a href="../../../../frameworks/openmetadata/metadataelements/MetadataRelationshipSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationshipSummary</a>&nbsp;relationshipSummary)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert the root element to a list of column values based on the data spec.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)" class="member-name-link">getRecordValues</a><wbr>(<a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;rootElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -569,6 +581,23 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
+<section class="detail" id="getElementRecordValue(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties,java.lang.String,java.util.List)">
+<h3>getElementRecordValue</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getElementRecordValue</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipBeanProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</span></div>
+<div class="block">Extracts the record values from the element properties based on the specified column name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipBeanProperties</code> - properties object</dd>
+<dd><code>columnName</code> - name of column to extract</dd>
+<dd><code>recordValues</code> - array of values to append to</dd>
+<dt>Returns:</dt>
+<dd>true if the value was successfully extracted, false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">
 <h3>getRecordValues</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRecordValues</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;rootElement)</span>
@@ -577,6 +606,22 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>rootElement</code> - valid value that is a member of the valid value set.</dd>
+<dt>Returns:</dt>
+<dd>list of column value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - an unexpected exception has occurred</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary)">
+<h3>getRecordValues</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRecordValues</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/metadataelements/MetadataRelationshipSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationshipSummary</a>&nbsp;relationshipSummary)</span>
+                                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Convert the root element to a list of column values based on the data spec.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipSummary</code> - valid value that is a member of the valid value set.</dd>
 <dt>Returns:</dt>
 <dd>list of column value</dd>
 <dt>Throws:</dt>

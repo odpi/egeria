@@ -116,19 +116,27 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 </div>
 <div class="col-first even-row-color"><code><a href="#ATTRIBUTES_FOR_TYPES_LIST" class="member-name-link">ATTRIBUTES_FOR_TYPES_LIST</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Open Metadata Types List</div>
+<div class="block">Open Metadata Attributes For Types List</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ATTRIBUTES_LIST" class="member-name-link">ATTRIBUTES_LIST</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Attribute List</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATA_TYPES_LIST" class="member-name-link">DATA_TYPES_LIST</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CERTIFICATIONS" class="member-name-link">CERTIFICATIONS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Details of the certifications known by open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_TYPES_LIST" class="member-name-link">DATA_TYPES_LIST</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Open Metadata Data Types List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DIGITAL_PRODUCTS" class="member-name-link">DIGITAL_PRODUCTS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DIGITAL_PRODUCTS" class="member-name-link">DIGITAL_PRODUCTS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">List of Digital Products</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EXCEPTIONS" class="member-name-link">EXCEPTIONS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Details of the exceptions known by open metadata.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#FILE_MEASUREMENTS" class="member-name-link">FILE_MEASUREMENTS</a></code></div>
 <div class="col-last even-row-color">
@@ -138,13 +146,21 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last odd-row-color">
 <div class="block">File Directory (Folder) Measurements</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GOVERNANCE_OBSERVABILITY" class="member-name-link">GOVERNANCE_OBSERVABILITY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_CONTROLS" class="member-name-link">GOVERNANCE_CONTROLS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Details of the governance controls known by open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_OBSERVABILITY" class="member-name-link">GOVERNANCE_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Governance Observability</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IT_OBSERVABILITY" class="member-name-link">IT_OBSERVABILITY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IT_OBSERVABILITY" class="member-name-link">IT_OBSERVABILITY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">IT Operations Observability</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LICENSES" class="member-name-link">LICENSES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Details of the licenses known by open metadata.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#LOCATIONS" class="member-name-link">LOCATIONS</a></code></div>
 <div class="col-last even-row-color">
@@ -212,6 +228,30 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last odd-row-color">
 <div class="block">Resource Measurements</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#SECRETS_COLLECTIONS" class="member-name-link">SECRETS_COLLECTIONS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the secrets collections known by open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SECRETS_OBSERVABILITY" class="member-name-link">SECRETS_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Secrets Observability</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SECRETS_STORES" class="member-name-link">SECRETS_STORES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the secrets store known by open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SECURITY_OBSERVABILITY" class="member-name-link">SECURITY_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Security Observability</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVERS" class="member-name-link">SERVERS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the servers known by open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SERVICE_OBSERVABILITY" class="member-name-link">SERVICE_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Service Observability</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SURVEY_REPORT_LIST" class="member-name-link">SURVEY_REPORT_LIST</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">List of Survey Reports</div>
@@ -224,14 +264,38 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last even-row-color">
 <div class="block">Open Metadata Types List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_VALUE_SET_LIST" class="member-name-link">VALID_METADATA_VALUE_SET_LIST</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#USER_ACCOUNTS" class="member-name-link">USER_ACCOUNTS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Details of the user accounts defined in a secrets collection.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#USER_IDENTITIES" class="member-name-link">USER_IDENTITIES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the user identities defined for open metadata.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#USER_OBSERVABILITY" class="member-name-link">USER_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">User Observability</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VALID_METADATA_VALUE_SET_LIST" class="member-name-link">VALID_METADATA_VALUE_SET_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Valid Metadata Value Set List - Jacquard dynamically generates a digital product for each valid metadata value set.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#VALID_METADATA_VALUE_SETS" class="member-name-link">VALID_METADATA_VALUE_SETS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_VALUE_SETS" class="member-name-link">VALID_METADATA_VALUE_SETS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Valid Metadata Value Sets - the product definition for each valid metadata value set is dynamically created
  when it is retrieved for the first time.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ZONE_MEMBERSHIP_PROFILE" class="member-name-link">ZONE_MEMBERSHIP_PROFILE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the total count of members and related elements of a specific type in the governance zone.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ZONE_MEMBERSHIP_TOTALS" class="member-name-link">ZONE_MEMBERSHIP_TOTALS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Details of a governance zone and the total count of members and related elements.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ZONE_OBSERVABILITY" class="member-name-link">ZONE_OBSERVABILITY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Governance Zone Observability</div>
 </div>
 </div>
 </section>
@@ -368,6 +432,11 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#zoneMembership()" class="member-name-link">zoneMembership</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the zone membership for the product.</div>
+</div>
 </div>
 </div>
 </div>
@@ -451,7 +520,7 @@ the order they are declared.</div>
 <section class="detail" id="ATTRIBUTES_FOR_TYPES_LIST">
 <h3>ATTRIBUTES_FOR_TYPES_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ATTRIBUTES_FOR_TYPES_LIST</span></div>
-<div class="block">Open Metadata Types List</div>
+<div class="block">Open Metadata Attributes For Types List</div>
 </section>
 </li>
 <li>
@@ -602,10 +671,122 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="GOVERNANCE_CONTROLS">
+<h3>GOVERNANCE_CONTROLS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">GOVERNANCE_CONTROLS</span></div>
+<div class="block">Details of the governance controls known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCEPTIONS">
+<h3>EXCEPTIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">EXCEPTIONS</span></div>
+<div class="block">Details of the exceptions known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CERTIFICATIONS">
+<h3>CERTIFICATIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">CERTIFICATIONS</span></div>
+<div class="block">Details of the certifications known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LICENSES">
+<h3>LICENSES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">LICENSES</span></div>
+<div class="block">Details of the licenses known by open metadata.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="IT_OBSERVABILITY">
 <h3>IT_OBSERVABILITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">IT_OBSERVABILITY</span></div>
 <div class="block">IT Operations Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVERS">
+<h3>SERVERS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SERVERS</span></div>
+<div class="block">Details of the servers known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECURITY_OBSERVABILITY">
+<h3>SECURITY_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SECURITY_OBSERVABILITY</span></div>
+<div class="block">Security Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_OBSERVABILITY">
+<h3>SECRETS_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SECRETS_OBSERVABILITY</span></div>
+<div class="block">Secrets Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_STORES">
+<h3>SECRETS_STORES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SECRETS_STORES</span></div>
+<div class="block">Details of the secrets store known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_COLLECTIONS">
+<h3>SECRETS_COLLECTIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SECRETS_COLLECTIONS</span></div>
+<div class="block">Details of the secrets collections known by open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="USER_OBSERVABILITY">
+<h3>USER_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">USER_OBSERVABILITY</span></div>
+<div class="block">User Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="USER_IDENTITIES">
+<h3>USER_IDENTITIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">USER_IDENTITIES</span></div>
+<div class="block">Details of the user identities defined for open metadata.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="USER_ACCOUNTS">
+<h3>USER_ACCOUNTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">USER_ACCOUNTS</span></div>
+<div class="block">Details of the user accounts defined in a secrets collection.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ZONE_OBSERVABILITY">
+<h3>ZONE_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ZONE_OBSERVABILITY</span></div>
+<div class="block">Governance Zone Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ZONE_MEMBERSHIP_TOTALS">
+<h3>ZONE_MEMBERSHIP_TOTALS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ZONE_MEMBERSHIP_TOTALS</span></div>
+<div class="block">Details of a governance zone and the total count of members and related elements.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ZONE_MEMBERSHIP_PROFILE">
+<h3>ZONE_MEMBERSHIP_PROFILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ZONE_MEMBERSHIP_PROFILE</span></div>
+<div class="block">Details of the total count of members and related elements of a specific type in the governance zone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVICE_OBSERVABILITY">
+<h3>SERVICE_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">SERVICE_OBSERVABILITY</span></div>
+<div class="block">Service Observability</div>
 </section>
 </li>
 </ul>
@@ -917,6 +1098,19 @@ not permitted.)</div>
 <dd><code><a href="ProductDefinition.html#getVersionIdentifier()">getVersionIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="zoneMembership()">
+<h3>zoneMembership</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">zoneMembership</span>()</div>
+<div class="block">Return the zone membership for the product.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#zoneMembership()">zoneMembership</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>list of zone names (default = ["digital-products"])</dd>
 </dl>
 </section>
 </li>
