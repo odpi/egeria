@@ -6294,7 +6294,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                                   null,
-                                                                                  OpenMetadataProperty.LICENSE_GUID.name,
+                                                                                  OpenMetadataProperty.LICENSE_ID.name,
                                                                                   licenseGUID,
                                                                                   methodName);
 
@@ -6447,7 +6447,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                                   null,
-                                                                                  OpenMetadataProperty.CERTIFICATE_GUID.name,
+                                                                                  OpenMetadataProperty.CERTIFICATE_ID.name,
                                                                                   certificationGUID,
                                                                                   methodName);
 

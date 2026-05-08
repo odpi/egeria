@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DynamicOpenMetadataDataSetConnector is the base class for the dynamic tabular data set to allow the provider
+ * OpenMetadataRootDataSetConnectorBase is the base class for the tabular data set built on OpenMetadataRootElements.
+ * The constructor allows the provider
  * to pass the product definition to the open metadata repository.
  */
 public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataDataSetConnectorBase

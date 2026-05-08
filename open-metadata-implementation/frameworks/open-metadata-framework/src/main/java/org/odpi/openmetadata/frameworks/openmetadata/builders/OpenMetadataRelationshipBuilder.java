@@ -522,8 +522,8 @@ public class OpenMetadataRelationshipBuilder
             else if (properties instanceof CertificationProperties certificationProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.CERTIFICATE_GUID.name,
-                                                                     certificationProperties.getCertificateGUID());
+                                                                     OpenMetadataProperty.CERTIFICATE_ID.name,
+                                                                     certificationProperties.getCertificateId());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.COVERAGE_START.name,
@@ -912,8 +912,8 @@ public class OpenMetadataRelationshipBuilder
             else if (properties instanceof LicenseProperties licenseProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.LICENSE_GUID.name,
-                                                                     licenseProperties.getLicenseGUID());
+                                                                     OpenMetadataProperty.LICENSE_ID.name,
+                                                                     licenseProperties.getLicenseId());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.COVERAGE_START.name,

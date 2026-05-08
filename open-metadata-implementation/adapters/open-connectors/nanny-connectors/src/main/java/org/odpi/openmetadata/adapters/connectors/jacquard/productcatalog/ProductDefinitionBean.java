@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
-import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductRoleDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import java.util.ArrayList;
@@ -25,9 +24,6 @@ public class ProductDefinitionBean implements ProductDefinition
     private final String                          category;
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
-    private final ProductRoleDefinition           productManager;
-    private final ProductRoleDefinition           productDeveloper;
-    private final ProductRoleDefinition           productSupport;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
     private final String                          dataSpecTableName;
     private final ProductDataFieldDefinition[]    dataSpecIdentifiers;
@@ -92,9 +88,6 @@ public class ProductDefinitionBean implements ProductDefinition
         this.category                = category;
         this.license                 = license;
         this.community               = community;
-        this.productManager          = ProductRoleDefinition.PRODUCT_MANAGER;
-        this.productDeveloper        = ProductRoleDefinition.PRODUCT_DEVELOPER;
-        this.productSupport          = ProductRoleDefinition.JACQUARD_SUPPORT;
         this.subscriptionTypes       = subscriptionTypes;
         this.dataSpecTableName       = dataSpecTableName;
         this.dataSpecIdentifiers     = dataSpecIdentifiers;

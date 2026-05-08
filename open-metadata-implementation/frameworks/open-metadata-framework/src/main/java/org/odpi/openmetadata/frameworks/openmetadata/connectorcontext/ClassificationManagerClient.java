@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
@@ -98,6 +99,24 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                                             PropertyServerException
     {
         return stewardshipManagementHandler.getRootElementByUniqueName(connectorUserId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param queryOptions details of the search
+     *
+     * @return list of element summaries
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> getRootElementsByType(QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return stewardshipManagementHandler.getRootElementsByType(connectorUserId, queryOptions);
     }
 
 
@@ -281,6 +300,26 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
         final String guidPropertyName = "elementGUID";
 
         return stewardshipManagementHandler.getRelatedRootElements(connectorUserId, elementGUID, guidPropertyName, startingAtEnd, relationshipTypeName, OpenMetadataType.OPEN_METADATA_ROOT.typeName, queryOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param relationshipTypeName name of relationship
+     * @param queryOptions search options
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public List<MetadataRelationshipSummary> getRelationshipsByType(String         relationshipTypeName,
+                                                                    QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        return stewardshipManagementHandler.getRelationships(connectorUserId, relationshipTypeName, queryOptions);
     }
 
 

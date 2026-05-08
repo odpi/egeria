@@ -15,13 +15,13 @@ import java.util.List;
 public enum ProductRoleDefinition
 {
     /**
-     * The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.
+     * The product manager role covering a digital product built around open metadata.  This includes the data contents and subscription issues.
      */
-    PRODUCT_MANAGER(OpenMetadataType.PERSON_ROLE.typeName,
+    PRODUCT_MANAGER(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                     List.of(ActorRoleGroup.DIGITAL_PRODUCT_MANAGER.getName()),
                     "OpenMetadataProductManagerRole",
                     "Open Metadata Product Manager",
-                    "The product manager role covering the digital products built around open metadata.  This includes the data contents and subscription issues.",
+                    "The product manager role covering a digital product built around open metadata.  This includes the data contents and subscription issues.",
                     new ProductSolutionBlueprint[] {
                             ProductSolutionBlueprint.ALL
                     }),

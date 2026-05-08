@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaid
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SubtypesMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -50,10 +49,6 @@ public class OpenMetadataStoreRESTServices
     private final        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OpenMetadataStoreRESTServices.class),
                                                                                         instanceHandler.getServiceName());
-
-
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
@@ -1480,7 +1475,7 @@ public class OpenMetadataStoreRESTServices
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
      *
      * @param serverName name of the server instances for this request
@@ -1772,22 +1767,26 @@ public class OpenMetadataStoreRESTServices
                                                                               requestBody.getForDuplicateProcessing(),
                                                                               requestBody.getEffectiveTime(),
                                                                               methodName);
-                relatedElementList.setStartingElement(handler.getMetadataElementFromEntity(startingEntity, methodName));
-                relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                                     startingEntity,
-                                                                                     startingAtEnd,
-                                                                                     relationshipTypeName,
-                                                                                     requestBody.getMetadataElementTypeName(),
-                                                                                     requestBody.getLimitResultsByStatus(),
-                                                                                     requestBody.getAsOfTime(),
-                                                                                     requestBody.getSequencingProperty(),
-                                                                                     requestBody.getSequencingOrder(),
-                                                                                     requestBody.getForLineage(),
-                                                                                     requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     requestBody.getStartFrom(),
-                                                                                     requestBody.getPageSize(),
-                                                                                     methodName));
+
+                if (startingEntity != null)
+                {
+                    relatedElementList.setStartingElement(handler.getMetadataElementFromEntity(startingEntity, methodName));
+                    relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                                         startingEntity,
+                                                                                         startingAtEnd,
+                                                                                         relationshipTypeName,
+                                                                                         requestBody.getMetadataElementTypeName(),
+                                                                                         requestBody.getLimitResultsByStatus(),
+                                                                                         requestBody.getAsOfTime(),
+                                                                                         requestBody.getSequencingProperty(),
+                                                                                         requestBody.getSequencingOrder(),
+                                                                                         requestBody.getForLineage(),
+                                                                                         requestBody.getForDuplicateProcessing(),
+                                                                                         requestBody.getEffectiveTime(),
+                                                                                         requestBody.getStartFrom(),
+                                                                                         requestBody.getPageSize(),
+                                                                                         methodName));
+                }
             }
             else
             {

@@ -510,7 +510,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         /*
-         * Retrieve all of the entities linked to the relationships.  This is done as a single retrieve
+         * Retrieve all the entities linked to the relationships.  This is done as a single retrieve
          * to minimise the calls to the repositories.  It also performs security checks
          */
         Map<String, EntityDetail> retrievedEntities = this.getValidatedEntities(userId,

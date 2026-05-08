@@ -3,6 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The CommunityDefinition is used to feed the definition of the communities associated with the open metadata
  * product catalog.
@@ -14,14 +20,16 @@ public enum ProductCommunityDefinition
      */
     REFERENCE_DATA_SIG("ReferenceDataSIG",
                        "Open Metadata Reference Data special interest group",
-                       "Community of people focused on reference data products derived from the open metadata ecosystem."),
+                       "Community of people focused on reference data products derived from the open metadata ecosystem.",
+                       null),
 
     /**
      * MasterDataSIG - Community of people focused on master data products derived from the open metadata ecosystem.
      */
     MASTER_DATA_SIG("MasterDataSIG",
                     "Open Metadata Master Data special interest group",
-                    "Community of people focused on master data products derived from the open metadata ecosystem."),
+                    "Community of people focused on master data products derived from the open metadata ecosystem.",
+                    null),
 
 
     /**
@@ -29,13 +37,31 @@ public enum ProductCommunityDefinition
      */
     OBSERVABILITY_SIG("ObservabilitySIG",
                       "Open Metadata Observability special interest group",
-                      "Community of people focused on the observability products derived from the open metadata ecosystem."),
+                      "Community of people focused on the observability products derived from the open metadata ecosystem.",
+                      null),
+
+    /**
+     * GovernanceSIG - Community of people focused on the governance products derived from the open metadata ecosystem.
+     */
+    GOVERNANCE_SIG("GovernanceSIG",
+                      "Open Metadata Observability special interest group",
+                      "Community of people focused on the governance products derived from the open metadata ecosystem.",
+                      null),
+
+    /**
+     * SecuritySIG - Community of people focused on the security of the open metadata ecosystem.
+     */
+    SECURITY_SIG("SecuritySIG",
+                 "Security products special interest group",
+                 "Community of people focused on the security of the open metadata ecosystem.",
+                  new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     ;
 
-    private final String identifier;
-    private final String displayName;
-    private final String description;
+    private final String   identifier;
+    private final String   displayName;
+    private final String   description;
+    private final String[] zoneMembership;
 
 
     /**
@@ -43,16 +69,17 @@ public enum ProductCommunityDefinition
      *
      * @param identifier   unique id for the enum
      * @param displayName   name for the enum
-     * @param description   description of the use of this value
+     * @param description   description of how to use this value
      */
-    ProductCommunityDefinition(String identifier,
-                               String displayName,
-                               String description)
+    ProductCommunityDefinition(String   identifier,
+                               String   displayName,
+                               String   description,
+                               String[] zoneMembership)
     {
         this.identifier  = identifier;
         this.displayName = displayName;
         this.description = description;
-
+        this.zoneMembership = zoneMembership;
     }
 
     /**
@@ -97,6 +124,21 @@ public enum ProductCommunityDefinition
         return description;
     }
 
+
+    /**
+     * Return the zone membership for the product.
+     *
+     * @return list of zone names (default = ["digital-products"])
+     */
+    public List<String> zoneMembership()
+    {
+        if (zoneMembership != null)
+        {
+            return new ArrayList<>(Arrays.asList(zoneMembership));
+        }
+
+        return List.of(GovernanceZoneName.DIGITAL_PRODUCTS.getZoneName());
+    }
 
     /**
      * Output of this enum class and main value.

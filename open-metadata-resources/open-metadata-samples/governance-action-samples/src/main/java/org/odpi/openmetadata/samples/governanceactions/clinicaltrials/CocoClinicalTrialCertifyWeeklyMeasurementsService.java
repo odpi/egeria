@@ -362,7 +362,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                          new Date());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.CERTIFICATE_GUID.name,
+                                                                         OpenMetadataProperty.CERTIFICATE_ID.name,
                                                                          annotationStore.getSurveyReportGUID());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,

@@ -2652,12 +2652,12 @@ public enum OpenMetadataProperty
     /**
      * Unique identifier of the actual certificate.
      */
-    CERTIFICATE_GUID("certificateGUID", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the actual certificate.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "3ff7c882-7bfb-4e42-8cdc-a5c41e4db80b"),
+    CERTIFICATE_ID("certificateId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the actual certificate.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "3ff7c882-7bfb-4e42-8cdc-a5c41e4db80b"),
 
     /**
      * Unique identifier of the actual license.
      */
-    LICENSE_GUID("licenseGUID", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the actual license.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "2bd31f57-2984-4ca9-9dd9-2d86da804a75"),
+    LICENSE_ID("licenseId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the actual license.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "2bd31f57-2984-4ca9-9dd9-2d86da804a75"),
 
     /**
      * Start date for the certification/license.

@@ -2242,18 +2242,18 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getMetadataElementByGUID",
+    @Operation(summary="getRootElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 
-    public OpenMetadataRootElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
-                                                                    @PathVariable String                        urlMarker,
-                                                                    @PathVariable String  elementGUID,
-                                                                    @RequestBody  (required = false)
+    public OpenMetadataRootElementResponse getRootElementByGUID(@PathVariable String  serverName,
+                                                                @PathVariable String                        urlMarker,
+                                                                @PathVariable String  elementGUID,
+                                                                @RequestBody  (required = false)
                                                                     GetRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, requestBody);
+        return restAPI.getRootElementByGUID(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -2272,16 +2272,16 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getMetadataElementByUniqueName",
+    @Operation(summary="getRootElementByUniqueName",
             description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 
-    public OpenMetadataRootElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
-                                                                           @PathVariable String                        urlMarker,
-                                                                           @RequestBody (required = false) FindPropertyNameProperties requestBody)
+    public OpenMetadataRootElementResponse getRootElementByUniqueName(@PathVariable String          serverName,
+                                                                      @PathVariable String                        urlMarker,
+                                                                      @RequestBody (required = false) FindPropertyNameProperties requestBody)
     {
-        return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, requestBody);
+        return restAPI.getRootElementByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -2300,16 +2300,16 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/guid-by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getMetadataElementGUIDByUniqueName",
+    @Operation(summary="getRootElementGUIDByUniqueName",
             description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 
-    public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
-                                                           @PathVariable String                        urlMarker,
-                                                           @RequestBody  FindPropertyNameProperties requestBody)
+    public GUIDResponse getRootElementGUIDByUniqueName(@PathVariable String          serverName,
+                                                       @PathVariable String                        urlMarker,
+                                                       @RequestBody  FindPropertyNameProperties requestBody)
     {
-        return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, requestBody);
+        return restAPI.getRootElementGUIDByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -2328,16 +2328,16 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/by-type")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getElements",
+    @Operation(summary="getRootElementsByType",
             description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public OpenMetadataRootElementsResponse getElements(@PathVariable String                    serverName,
-                                                        @PathVariable String                        urlMarker,
-                                                        @RequestBody  (required = false)
-                                                        ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getRootElementsByType(@PathVariable String                    serverName,
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @RequestBody  (required = false)
+                                                                      ResultsRequestBody requestBody)
     {
-        return restAPI.getElements(serverName, urlMarker, requestBody);
+        return restAPI.getRootElementsByType(serverName, urlMarker, requestBody);
     }
 
 
@@ -2384,16 +2384,16 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/by-exact-property-value")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getElementsByPropertyValue",
+    @Operation(summary="getRootElementsByPropertyValue",
             description="Retrieve elements by a value found in one of the properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the results.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public OpenMetadataRootElementsResponse getElementsByPropertyValue(@PathVariable String                       serverName,
-                                                                       @PathVariable String                        urlMarker,
-                                                                       @RequestBody  (required = false)
-                                                                       FindPropertyNamesProperties requestBody)
+    public OpenMetadataRootElementsResponse getRootElementsByPropertyValue(@PathVariable String                       serverName,
+                                                                           @PathVariable String                        urlMarker,
+                                                                           @RequestBody  (required = false)
+                                                                               FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getElementsByPropertyValue(serverName, urlMarker, requestBody);
+        return restAPI.getRootElementsByPropertyValue(serverName, urlMarker, requestBody);
     }
 
 

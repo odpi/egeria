@@ -43,6 +43,23 @@ public enum ProductCategoryDefinition
      */
     OPEN_METADATA_TYPES ("Open Metadata Types","Details of the open metadata types in operation."),
 
+    /**
+     * Details of the security definitions in operation.
+     */
+    SECURITY ("Security Definitions","Details of the security definitions in operation."),
+
+    /**
+     * Details of the governance definitions and results.
+     */
+    GOVERNANCE ("Governance","Details of the governance definitions and results."),
+
+
+    /**
+     * Details about the IT Infrastructure catalogued in open metadata.
+     */
+    IT_INFRASTRUCTURE ("Security Definitions","Details about the IT Infrastructure catalogued in open metadata"),
+
+
     ;
 
 

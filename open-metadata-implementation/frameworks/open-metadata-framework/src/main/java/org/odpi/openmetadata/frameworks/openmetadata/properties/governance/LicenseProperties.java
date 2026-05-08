@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LicenseProperties extends RelationshipBeanProperties
 {
-    private String              licenseGUID            = null;
-    private Date                coverageStart          = null;
+    private String licenseId     = null;
+    private Date   coverageStart = null;
     private Date                coverageEnd            = null;
     private String              conditions             = null;
     private String              licensedBy             = null;
@@ -63,7 +63,7 @@ public class LicenseProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.licenseGUID            = template.getLicenseGUID();
+            this.licenseId              = template.getLicenseId();
             this.coverageStart          = template.getCoverageStart();
             this.coverageEnd            = template.getCoverageEnd();
             this.conditions             = template.getConditions();
@@ -89,20 +89,20 @@ public class LicenseProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public String getLicenseGUID()
+    public String getLicenseId()
     {
-        return licenseGUID;
+        return licenseId;
     }
 
 
     /**
      * Set up the unique identifier of the license.  This value comes from the license authority.
      *
-     * @param licenseGUID string
+     * @param licenseId string
      */
-    public void setLicenseGUID(String licenseGUID)
+    public void setLicenseId(String licenseId)
     {
-        this.licenseGUID = licenseGUID;
+        this.licenseId = licenseId;
     }
 
 
@@ -467,7 +467,7 @@ public class LicenseProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "LicenseProperties{" +
-                "licenseId='" + licenseGUID + '\'' +
+                "licenseId='" + licenseId + '\'' +
                 ", startDate=" + coverageStart +
                 ", endDate=" + coverageEnd +
                 ", conditions='" + conditions + '\'' +
@@ -511,7 +511,7 @@ public class LicenseProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        return Objects.equals(licenseGUID, that.licenseGUID) &&
+        return Objects.equals(licenseId, that.licenseId) &&
                        Objects.equals(coverageStart, that.coverageStart) &&
                        Objects.equals(coverageEnd, that.coverageEnd) &&
                        Objects.equals(conditions, that.conditions) &&
@@ -539,7 +539,7 @@ public class LicenseProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), licenseGUID, coverageStart, coverageEnd, conditions, licensedBy, licensedByTypeName, licensedByPropertyName,
+        return Objects.hash(super.hashCode(), licenseId, coverageStart, coverageEnd, conditions, licensedBy, licensedByTypeName, licensedByPropertyName,
                             custodian, custodianTypeName, custodianPropertyName, licensee, licenseeTypeName, licenseePropertyName,
                             obligations, restrictions, entitlements, notes);
     }

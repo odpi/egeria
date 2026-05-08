@@ -682,7 +682,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
             LicenseProperties licenseProperties = new LicenseProperties();
 
             licenseProperties.setCoverageStart(new Date());
-            licenseProperties.setLicenseGUID(subscriptionGUID);
+            licenseProperties.setLicenseId(subscriptionGUID);
 
             governanceDefinitionClient.licenseElement(targetAssetGUID,
                                                       licenseTypeGUID,

@@ -5857,6 +5857,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param startingGUID identifier for the entity that the identifier is attached to
      * @param startingGUIDParameterName name of the parameter used to pass the guid
      * @param startingTypeName type name for anchor
+     * @param isExplicitGetRequest has the end user explicitly requested this entity?
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
@@ -5886,6 +5887,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                   String               startingGUID,
                                                   String               startingGUIDParameterName,
                                                   String               startingTypeName,
+                                                  boolean              isExplicitGetRequest,
                                                   String               relationshipTypeGUID,
                                                   String               relationshipTypeName,
                                                   String               resultingElementTypeName,
@@ -6475,13 +6477,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                         if (beanValid)
                         {
                             /*
+                             * This first processing looks at the retrieved entity itself to ensure it is visible.
+                             * An exception is thrown if the entity is not visible.
+                             */
+                            validateRetrievedEntityIsVisible(userId,
+                                                             retrievedEntity,
+                                                             guidParameterName,
+                                                             attachmentEntityTypeName,
+                                                             false,
+                                                             methodName);
+
+                            /*
                              * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
-                             * The exception occurs where the entity is not being managed by this handler, or something equivalent that
-                             * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
-                             * derived and added to the retrievedEntity.
+                             * If the entity is not being managed by this handler, or something equivalent that
+                             * maintains the Anchors classification, it attempts to derive a new Anchors classification
+                             * and add to the retrieved entity.
                              */
                             AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDForEntity(retrievedEntity,
-                                                                                              connectToGUIDParameterName,
+                                                                                              guidParameterName,
                                                                                               forLineage,
                                                                                               forDuplicateProcessing,
                                                                                               effectiveTime,
@@ -6496,20 +6509,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                     anchorGUID = retrievedEntity.getGUID();
                                 }
 
+                                /*
+                                 * Only check the anchor if it has not already been validated.
+                                 */
                                 if (!validatedAnchors.contains(anchorGUID))
                                 {
                                     validatedAnchors.add(anchorGUID);
 
-                                    this.validateEntityAndAnchorForRead(userId,
-                                                                        attachmentEntityTypeName,
-                                                                        retrievedEntity,
-                                                                        guidParameterName,
-                                                                        true,
-                                                                        false,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
+                                    /*
+                                     * If an anchor GUID has been found, then validate it by retrieving the identified entity.
+                                     * Note - anchorIdentifiers may or may not be null if the connectToEntity is actually an anchor.
+                                     */
+                                    validateAnchorGUID(userId,
+                                                       retrievedEntity,
+                                                       anchorIdentifiers,
+                                                       false,
+                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       methodName);
                                 }
                             }
                             else
@@ -6695,8 +6714,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param resultTypeName type of the retrieve entity
      * @param methodName calling method
      * @return B bean
-     * @throws InvalidParameterException one of the properties (probably the GUID) is invalid
-     * @throws PropertyServerException the repository services hit an unexpected problem
+     * @throws InvalidParameterException  one of the properties (probably the GUID) is invalid
+     * @throws PropertyServerException    the repository services hit an unexpected problem
      * @throws UserNotAuthorizedException the user is not permitted to access this entity
      */
     public B getBeanFromRepository(String userId,

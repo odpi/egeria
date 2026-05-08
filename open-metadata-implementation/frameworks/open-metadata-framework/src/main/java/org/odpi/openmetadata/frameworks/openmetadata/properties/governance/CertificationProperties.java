@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CertificationProperties extends RelationshipBeanProperties
 {
-    private String certificateGUID         = null;
+    private String certificateId           = null;
     private Date   coverageStart           = null;
     private Date   coverageEnd             = null;
     private String conditions              = null;
@@ -59,8 +59,8 @@ public class CertificationProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.certificateGUID         = template.getCertificateGUID();
-            this.coverageStart           = template.getCoverageStart();
+            this.certificateId = template.getCertificateId();
+            this.coverageStart = template.getCoverageStart();
             this.coverageEnd             = template.getCoverageEnd();
             this.conditions              = template.getConditions();
             this.certifiedBy             = template.getCertifiedBy();
@@ -82,20 +82,20 @@ public class CertificationProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public String getCertificateGUID()
+    public String getCertificateId()
     {
-        return certificateGUID;
+        return certificateId;
     }
 
 
     /**
      * Set up the unique identifier of the certificate.  This value comes from the certificate authority.
      *
-     * @param certificateGUID string
+     * @param certificateId string
      */
-    public void setCertificateGUID(String certificateGUID)
+    public void setCertificateId(String certificateId)
     {
-        this.certificateGUID = certificateGUID;
+        this.certificateId = certificateId;
     }
 
 
@@ -395,7 +395,7 @@ public class CertificationProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "CertificationProperties{" +
-                "certificateId='" + certificateGUID + '\'' +
+                "certificateId='" + certificateId + '\'' +
                 ", coverageStart=" + coverageStart +
                 ", coverageEnd=" + coverageEnd +
                 ", conditions='" + conditions + '\'' +
@@ -426,7 +426,7 @@ public class CertificationProperties extends RelationshipBeanProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof CertificationProperties))
+        if (! (objectToCompare instanceof CertificationProperties that))
         {
             return false;
         }
@@ -434,9 +434,8 @@ public class CertificationProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        CertificationProperties that = (CertificationProperties) objectToCompare;
-        return Objects.equals(certificateGUID, that.certificateGUID) && Objects.equals(coverageStart,
-                                                                                       that.coverageStart) && Objects.equals(
+        return Objects.equals(certificateId, that.certificateId) && Objects.equals(coverageStart,
+                                                                                   that.coverageStart) && Objects.equals(
                 coverageEnd, that.coverageEnd) && Objects.equals(conditions, that.conditions) && Objects.equals(certifiedBy,
                                                                                                                 that.certifiedBy) && Objects.equals(
                 certifiedByTypeName, that.certifiedByTypeName) && Objects.equals(certifiedByPropertyName,
@@ -457,7 +456,7 @@ public class CertificationProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), certificateGUID, coverageStart, coverageEnd, conditions, certifiedBy, certifiedByTypeName,
+        return Objects.hash(super.hashCode(), certificateId, coverageStart, coverageEnd, conditions, certifiedBy, certifiedByTypeName,
                             certifiedByPropertyName,
                             custodian, custodianTypeName, custodianPropertyName, recipient, recipientTypeName, recipientPropertyName, notes);
     }

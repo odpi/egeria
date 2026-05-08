@@ -68,6 +68,31 @@ public enum ProductDataFieldDefinition
                             ProductGlossaryTermDefinition.GUID),
 
     /**
+     * Unique identifier of an open metadata element.
+     */
+    ELEMENT_GUID("Element Unique Identifier (GUID)",
+                            "Element GUID",
+                            "Unique identifier of an open metadata element.",
+                            DataType.STRING,
+                            null,
+                            null,
+                            true,
+                            false,
+                            ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Identifier for the governance domain.
+     */
+    DOMAIN_IDENTIFIER("Domain Identifier",
+                      "Domain Identifier",
+                      OpenMetadataProperty.DOMAIN_IDENTIFIER.description,
+                      OpenMetadataProperty.DOMAIN_IDENTIFIER.dataType,
+                      null,
+                      null,
+                      false,
+                      false),
+
+    /**
      * Unique identifier of a certification relationship.
      */
     CERTIFICATION_GUID("Certification Unique Identifier (GUID)",
@@ -120,17 +145,386 @@ public enum ProductDataFieldDefinition
                  ProductGlossaryTermDefinition.GUID),
 
     /**
-     * Unique identifier of a profile.
+     * Unique identifier of an exception type.
      */
-    PROFILE_GUID("Profile Unique Identifier (GUID)",
-                 "Profile GUID",
-                 "Unique identifier of a profile.",
+    EXCEPTION_TYPE_GUID("Exception Type Unique Identifier (GUID)",
+                 "Exception Type GUID",
+                 "Unique identifier of an exception type.",
                  DataType.STRING,
                  null,
                  null,
                  true,
                  false,
                  ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Unique identifier of an exception relationship.
+     */
+    EXCEPTION_GUID("Exception Unique Identifier (GUID)",
+                 "Exception GUID",
+                 "Unique identifier of an exception relationship.",
+                 DataType.STRING,
+                 null,
+                 null,
+                 true,
+                 false,
+                 ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Unique identifier of a profile.
+     */
+    PROFILE_GUID("Profile Unique Identifier (GUID)",
+                 "Profile GUID",
+                 "Unique identifier of an actor profile.",
+                 DataType.STRING,
+                 null,
+                 null,
+                 true,
+                 false,
+                 ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Display name from the associated actor profile.
+     */
+    PROFILE_NAME("Profile Name",
+                 "Profile Name",
+                 "Display name from the associated actor profile.",
+                 OpenMetadataProperty.DISPLAY_NAME.dataType,
+                 null,
+                 null,
+                 false,
+                 true),
+
+    /**
+     * Profile Type Name
+     */
+    PROFILE_TYPE_NAME("Profile Type Name",
+                    "Profile Type Name",
+                    "The unique type name of an actor profile.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true,
+                    ProductGlossaryTermDefinition.OPEN_METADATA_TYPE_NAME),
+
+    /**
+     * List of security roles assigned to the user.
+     */
+    SECURITY_ROLES("Security Roles",
+                   "Security Roles",
+                   OpenMetadataProperty.SECURITY_ROLES.description,
+                   OpenMetadataProperty.SECURITY_ROLES.dataType,
+                   null,
+                   null,
+                   false,
+                   true),
+
+    /**
+     * List of security groups assigned to the user.
+     */
+    SECURITY_GROUPS("Security Groups",
+                    "Security Groups",
+                    OpenMetadataProperty.SECURITY_GROUPS.description,
+                    OpenMetadataProperty.SECURITY_GROUPS.dataType,
+                    null,
+                    null,
+                    false,
+                    true),
+
+
+    /**
+     * Unique identifier of the secrets store.
+     */
+    SECRETS_STORE_GUID("Secrets Store GUID",
+                            "Secrets Store GUID",
+                            "Unique identifier of the associated secrets store.",
+                            OpenMetadataProperty.GUID.dataType,
+                            null,
+                            null,
+                            false,
+                            true,
+                            ProductGlossaryTermDefinition.GUID),
+    /**
+     * Unique identifier of a secrets collection where this entry is located.
+     */
+    SECRETS_COLLECTION_GUID("Secrets Collection GUID",
+                            "Secrets Collection GUID",
+                            "Unique identifier of a secrets collection.",
+                            OpenMetadataProperty.GUID.dataType,
+                            null,
+                            null,
+                            false,
+                            true,
+                            ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Resource name of the secrets collection where this entry is located.
+     */
+    SECRETS_COLLECTION_NAME("Secrets Collection Name",
+                            "Secrets Collection Name",
+                            "Resource name of the secrets collection where this entry is located.",
+                            OpenMetadataProperty.RESOURCE_NAME.dataType,
+                            null,
+                            null,
+                            false,
+                            true),
+
+    /**
+     * Minimum time between refreshes of this entry.
+     */
+    REFRESH_TIME_INTERVAL("Refresh Time Interval",
+                            "Refresh Time Interval",
+                          OpenMetadataProperty.REFRESH_TIME_INTERVAL.description,
+                          OpenMetadataProperty.REFRESH_TIME_INTERVAL.dataType,
+                          null,
+                          null,
+                          false,
+                          true),
+
+    /**
+     * Count of user accounts defined in the secrets collection.
+     */
+    USER_ACCOUNT_COUNT("User Account Count",
+                          "User Account Count",
+                          OpenMetadataProperty.USER_ACCOUNT_COUNT.description,
+                          OpenMetadataProperty.USER_ACCOUNT_COUNT.dataType,
+                          null,
+                          null,
+                          false,
+                          true),
+
+    /**
+     * Count of employee user accounts defined in the secrets collection.
+     */
+    EMPLOYEE_ACCOUNT_COUNT("Employee Account Count",
+                       "Employee Account Count",
+                       OpenMetadataProperty.EMPLOYEE_ACCOUNT_COUNT.description,
+                       OpenMetadataProperty.EMPLOYEE_ACCOUNT_COUNT.dataType,
+                       null,
+                       null,
+                       false,
+                       true),
+
+    /**
+     * Count of contractor user accounts defined in the secrets collection.
+     */
+    CONTRACTOR_ACCOUNT_COUNT("Contractor Account Count",
+                           "Contractor Account Count",
+                           OpenMetadataProperty.CONTRACTOR_ACCOUNT_COUNT.description,
+                           OpenMetadataProperty.CONTRACTOR_ACCOUNT_COUNT.dataType,
+                           null,
+                           null,
+                           false,
+                           true),
+
+    /**
+     * Count of external user accounts defined in the secrets collection.
+     */
+    EXTERNAL_ACCOUNT_COUNT("External Account Count",
+                           "External Account Count",
+                           OpenMetadataProperty.EXTERNAL_ACCOUNT_COUNT.description,
+                           OpenMetadataProperty.EXTERNAL_ACCOUNT_COUNT.dataType,
+                           null,
+                           null,
+                           false,
+                           true),
+
+    /**
+     * Count of digital user accounts defined in the secrets collection.
+     */
+    DIGITAL_ACCOUNT_COUNT("Digital Account Count",
+                           "Digital Account Count",
+                           OpenMetadataProperty.DIGITAL_ACCOUNT_COUNT.description,
+                           OpenMetadataProperty.DIGITAL_ACCOUNT_COUNT.dataType,
+                           null,
+                           null,
+                           false,
+                           true),
+
+    /**
+     * Count of active user accounts defined in the secrets collection.
+     */
+    ACTIVE_ACCOUNT_COUNT("Active Account Count",
+                          "Active Account Count",
+                          OpenMetadataProperty.ACTIVE_ACCOUNT_COUNT.description,
+                          OpenMetadataProperty.ACTIVE_ACCOUNT_COUNT.dataType,
+                          null,
+                          null,
+                          false,
+                          true),
+
+    /**
+     * Count of expired user accounts defined in the secrets collection.
+     */
+    EXPIRED_ACCOUNT_COUNT("Expired Account Count",
+                         "Expired Account Count",
+                         OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT.description,
+                         OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT.dataType,
+                         null,
+                         null,
+                         false,
+                         true),
+
+    /**
+     * Count of locked user accounts defined in the secrets collection.
+     */
+    LOCKED_ACCOUNT_COUNT("Locked Account Count",
+                         "Locked Account Count",
+                         OpenMetadataProperty.LOCKED_ACCOUNT_COUNT.description,
+                         OpenMetadataProperty.LOCKED_ACCOUNT_COUNT.dataType,
+                         null,
+                         null,
+                         false,
+                         true),
+
+    /**
+     * Count of disabled user accounts defined in the secrets collection.
+     */
+    DISABLED_ACCOUNT_COUNT("Disabled Account Count",
+                         "Disabled Account Count",
+                         OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.description,
+                         OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.dataType,
+                         null,
+                         null,
+                         false,
+                         true),
+
+    /**
+     * Criteria for inclusion in this collection.
+     */
+    CRITERIA("Criteria",
+             "Criteria",
+             OpenMetadataProperty.CRITERIA.description,
+             OpenMetadataProperty.CRITERIA.dataType,
+             null,
+             null,
+             false,
+             true),
+
+
+    /**
+     * Count of members in a zone.
+     */
+    TOTAL_ELEMENT_MEMBERSHIP("Total Membership of Zone",
+             "Total Membership",
+             OpenMetadataProperty.TOTAL_MEMBERSHIP.description,
+             OpenMetadataProperty.TOTAL_MEMBERSHIP.dataType,
+             null,
+             null,
+             false,
+             true),
+
+    /**
+     * Count of members of a type in a zone.
+     */
+    TOTAL_TYPE_MEMBERSHIP("Total Membership of Zone for Type",
+                     "Total Type Membership",
+                     "Number of members of a specific type within the zone.",
+                     OpenMetadataProperty.TOTAL_MEMBERSHIP.dataType,
+                     null,
+                     null,
+                     false,
+                     true),
+
+    /**
+     * Count of anchored elements of a type in a zone.
+     */
+    ANCHORED_ELEMENT_MEMBERSHIP("Total Anchored Elements of Zone",
+                     "Total Anchored Elements",
+                     OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.description,
+                     OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.dataType,
+                     null,
+                     null,
+                     false,
+                     true),
+
+    /**
+     * Count of anchored elements of a type in a zone.
+     */
+    ANCHORED_TYPE_MEMBERSHIP("Total Anchored Type Elements of Zone for Type",
+                             "Total Anchored Type Elements",
+                             "Number of anchored elements of a specific type within the zone.",
+                             OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.dataType,
+                             null,
+                             null,
+                             false,
+                             true),
+
+
+    /**
+     * Count of anchored elements in a zone.
+     */
+    ALL_ELEMENT_MEMBERSHIP("Total Elements for Zone",
+                           "Total Elements For Zone",
+                           OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.description,
+                           OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.dataType,
+                           null,
+                           null,
+                           false,
+                           true),
+
+
+    /**
+     * Count of anchored elements of a type in a zone.
+     */
+    ALL_TYPE_MEMBERSHIP("Total Elements for Zone of Type",
+                        "Total Elements for Zone of Type",
+                        "Number of elements of a specific type within the zone.",
+                        OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.dataType,
+                        null,
+                        null,
+                        false,
+                        true),
+
+
+    /**
+     * List of governance zones that this element belongs to.
+     */
+    ZONE_MEMBERSHIP("Zone Membership",
+                    "Zone Membership",
+                    OpenMetadataProperty.ZONE_MEMBERSHIP.description,
+                    OpenMetadataProperty.ZONE_MEMBERSHIP.dataType,
+                    null,
+                    null,
+                    false,
+                    true),
+
+    /**
+     * Name of an Egeria OMAG Server.
+     */
+    SERVER_NAME("Server Name",
+                "Server Name",
+                "Name of an Egeria OMAG Server.",
+                DataType.STRING,
+                null,
+                null,
+                false,
+                true),
+
+    /**
+     * Name of an API service.
+     */
+    API_SERVICE_NAME("API Service Name",
+                     "API Service Name",
+                     "Name of an API service.",
+                     DataType.STRING,
+                     null,
+                     null,
+                     false,
+                     true),
+
+    /**
+     * Name of an operation in an API service.
+     */
+    API_OPERATION_NAME("API Operation Name",
+                       "API Operation Name",
+                       "Name of an operation in an API service.",
+                       DataType.STRING,
+                       null,
+                       null,
+                       false,
+                       true),
 
     /**
      * Unique identifier of a survey report for an asset.
@@ -198,7 +592,7 @@ public enum ProductDataFieldDefinition
                         ProductGlossaryTermDefinition.GUID),
 
     /**
-     * Unique identifier of an engine action's target element.
+     * The type of action requested.
      */
     ACTION_REQUEST_NAME("Action Request Name",
                         "Action Request Name",
@@ -279,7 +673,7 @@ public enum ProductDataFieldDefinition
      * The unique identifier of an organization where this digital resource originated.
      */
     ORIGIN_ORGANIZATION_GUID("Origin Organization Unique Identifier (GUID)",
-                             "Owner GUID",
+                             "Origin Organization GUID",
                              "The unique identifier of an organization where this digital resource originated.",
                              DataType.STRING,
                              null,
@@ -292,7 +686,7 @@ public enum ProductDataFieldDefinition
      * The unique identifier of a business capability where this digital resource originated.
      */
     ORIGIN_BUSINESS_CAPABILITY_GUID("Origin Business Capability Unique Identifier (GUID)",
-                                    "Owner GUID",
+                                    "Origin Business Capability GUID",
                                     "The unique identifier of a business capability where this digital resource originated.",
                                     DataType.STRING,
                                     null,
@@ -300,6 +694,258 @@ public enum ProductDataFieldDefinition
                                     true,
                                     false,
                                     ProductGlossaryTermDefinition.GUID),
+
+    /**
+     * Identifier of a steward.
+     */
+    STEWARD("Steward",
+                        "Steward",
+                        OpenMetadataProperty.STEWARD.description,
+                        OpenMetadataProperty.STEWARD.dataType,
+                        null,
+                        null,
+                        true,
+                        true),
+
+    /**
+     * Type name of the element representing a steward.
+     */
+    STEWARD_TYPE_NAME("Steward Type Name",
+            "Steward Type Name",
+            OpenMetadataProperty.STEWARD_TYPE_NAME.description,
+            OpenMetadataProperty.STEWARD_TYPE_NAME.dataType,
+            null,
+            null,
+            true,
+            true),
+
+    /**
+     * Property name identifying a steward.
+     */
+    STEWARD_PROPERTY_NAME("Steward Property Name",
+            "Steward Property Name",
+            OpenMetadataProperty.STEWARD_PROPERTY_NAME.description,
+            OpenMetadataProperty.STEWARD_PROPERTY_NAME.dataType,
+            null,
+            null,
+            true,
+            true),
+
+    /**
+     * Identifier of a custodian.
+     */
+    CUSTODIAN("Custodian",
+            "Custodian",
+            OpenMetadataProperty.CUSTODIAN.description,
+            OpenMetadataProperty.CUSTODIAN.dataType,
+            null,
+            null,
+            true,
+            true),
+
+    /**
+     * Type name of the element representing a custodian.
+     */
+    CUSTODIAN_TYPE_NAME("Custodian Type Name",
+                      "Custodian Type Name",
+                      OpenMetadataProperty.CUSTODIAN_TYPE_NAME.description,
+                      OpenMetadataProperty.CUSTODIAN_TYPE_NAME.dataType,
+                      null,
+                      null,
+                      true,
+                      true),
+
+    /**
+     * Property name identifying a custodian.
+     */
+    CUSTODIAN_PROPERTY_NAME("Custodian Property Name",
+                          "Custodian Property Name",
+                          OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.description,
+                          OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.dataType,
+                          null,
+                          null,
+                          true,
+                          true),
+
+    /**
+     * Identifier of a recipient.
+     */
+    RECIPIENT("Recipient",
+              "Recipient",
+              OpenMetadataProperty.RECIPIENT.description,
+              OpenMetadataProperty.RECIPIENT.dataType,
+              null,
+              null,
+              true,
+              true),
+
+    /**
+     * Type name of the element representing a recipient.
+     */
+    RECIPIENT_TYPE_NAME("Recipient Type Name",
+                        "Recipient Type Name",
+                        OpenMetadataProperty.RECIPIENT_TYPE_NAME.description,
+                        OpenMetadataProperty.RECIPIENT_TYPE_NAME.dataType,
+                        null,
+                        null,
+                        true,
+                        true),
+
+    /**
+     * Property name identifying a recipient.
+     */
+    RECIPIENT_PROPERTY_NAME("Recipient Property Name",
+                            "Recipient Property Name",
+                            OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.description,
+                            OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.dataType,
+                            null,
+                            null,
+                            true,
+                            true),
+
+    /**
+     * Identifier of the actor providing the certification.
+     */
+    CERTIFIED_BY("Certified By",
+              "Certified By",
+              OpenMetadataProperty.CERTIFIED_BY.description,
+              OpenMetadataProperty.CERTIFIED_BY.dataType,
+              null,
+              null,
+              true,
+              true),
+
+    /**
+     * Type name of the element representing the actor providing the certification.
+     */
+    CERTIFIED_BY_TYPE_NAME("Certified By Type Name",
+                        "Certified By Type Name",
+                        OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME.description,
+                        OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME.dataType,
+                        null,
+                        null,
+                        true,
+                        true),
+
+    /**
+     * Property name identifying the actor providing the certification.
+     */
+    CERTIFIED_BY_PROPERTY_NAME("Certified By Property Name",
+                            "Certified By Property Name",
+                            OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.description,
+                            OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.dataType,
+                            null,
+                            null,
+                            true,
+                            true),
+
+    /**
+     * Identifier of the actor providing the license.
+     */
+    LICENSED_BY("Licensed By",
+                 "Licensed By",
+                 OpenMetadataProperty.LICENSED_BY.description,
+                 OpenMetadataProperty.LICENSED_BY.dataType,
+                 null,
+                 null,
+                 true,
+                 true),
+
+    /**
+     * Type name of the element representing the actor providing the license.
+     */
+    LICENSED_BY_TYPE_NAME("Licensed By Type Name",
+                           "Licensed By Type Name",
+                           OpenMetadataProperty.LICENSED_BY_TYPE_NAME.description,
+                           OpenMetadataProperty.LICENSED_BY_TYPE_NAME.dataType,
+                           null,
+                           null,
+                           true,
+                           true),
+
+    /**
+     * Property name identifying the actor providing the license.
+     */
+    LICENSED_BY_PROPERTY_NAME("Licensed By Property Name",
+                               "Licensed By Property Name",
+                               OpenMetadataProperty.LICENSED_BY_PROPERTY_NAME.description,
+                               OpenMetadataProperty.LICENSED_BY_PROPERTY_NAME.dataType,
+                               null,
+                               null,
+                               true,
+                               true),
+
+    /**
+     * Identifier of a licensee.
+     */
+    LICENSEE("Licensee",
+              "Licensee",
+              OpenMetadataProperty.LICENSEE.description,
+              OpenMetadataProperty.LICENSEE.dataType,
+              null,
+              null,
+              true,
+              true),
+
+    /**
+     * Type name of the element representing a licensee.
+     */
+    LICENSEE_TYPE_NAME("Licensee Type Name",
+                        "Licensee Type Name",
+                        OpenMetadataProperty.LICENSEE_TYPE_NAME.description,
+                        OpenMetadataProperty.LICENSEE_TYPE_NAME.dataType,
+                        null,
+                        null,
+                        true,
+                        true),
+
+    /**
+     * Property name identifying a licensee.
+     */
+    LICENSEE_PROPERTY_NAME("Licensee Property Name",
+                            "Licensee Property Name",
+                            OpenMetadataProperty.LICENSEE_PROPERTY_NAME.description,
+                            OpenMetadataProperty.LICENSEE_PROPERTY_NAME.dataType,
+                            null,
+                            null,
+                            true,
+                            true),
+
+    /**
+     * Notes about this element.
+     */
+    NOTES("Notes",
+          "Notes",
+          OpenMetadataProperty.NOTES.description,
+          OpenMetadataProperty.NOTES.dataType,
+          null,
+          null,
+          true,
+          true),
+
+    /**
+     * Time that the coverage starts.
+     */
+    COVERAGE_START("Coverage Start",
+                "Coverage Start",
+                OpenMetadataProperty.COVERAGE_START.description,
+                OpenMetadataProperty.COVERAGE_START.dataType,
+                null,
+                "milliseconds",
+                false,
+                false),
+
+    /**
+     * Time that the coverage stops.
+     */
+    COVERAGE_END("Coverage End",
+                   "Coverage End",
+                   OpenMetadataProperty.COVERAGE_END.description,
+                   OpenMetadataProperty.COVERAGE_END.dataType,
+                   null,
+                   "milliseconds",
+                   false,
+                   false),
 
     /**
      * Time that the element was created.
@@ -320,6 +966,30 @@ public enum ProductDataFieldDefinition
                 "Update Time",
                 OpenMetadataProperty.UPDATE_TIME.description,
                 OpenMetadataProperty.UPDATE_TIME.dataType,
+                null,
+                "milliseconds",
+                false,
+                false),
+
+    /**
+     * The next time the element should be reviewed - null means no review is scheduled.
+     */
+    REVIEW_DATE("Next Review Date",
+                "Next Review Date",
+                OpenMetadataProperty.REVIEW_DATE.description,
+                OpenMetadataProperty.REVIEW_DATE.dataType,
+                null,
+                "milliseconds",
+                false,
+                false),
+
+    /**
+     * The next time the element should be reviewed - null means no review is scheduled.
+     */
+    LAST_REVIEW_TIME("Last Review Time",
+                "Last Review Time",
+                OpenMetadataProperty.LAST_REVIEW_TIME.description,
+                OpenMetadataProperty.LAST_REVIEW_TIME.dataType,
                 null,
                 "milliseconds",
                 false,
@@ -680,6 +1350,32 @@ public enum ProductDataFieldDefinition
 
 
     /**
+     * The type of user associated with the user account.
+     */
+    USER_ACCOUNT_TYPE("User Account Type",
+                      "User Account Type",
+                      "The type of user associated with the user account.",
+                      DataType.STRING,
+                      null,
+                      null,
+                      false,
+                      true),
+
+
+    /**
+     * The status of a user account.
+     */
+    USER_ACCOUNT_STATUS("User Account Status",
+                        "User Account Status",
+                        "The status of a user account.",
+                        DataType.STRING,
+                        null,
+                        null,
+                        false,
+                        true),
+
+
+    /**
      * Created By User Id
      */
     CREATION_BY("Created By User Identifier (userId)",
@@ -880,7 +1576,17 @@ public enum ProductDataFieldDefinition
                           false,
                           true),
 
-
+    /**
+     * Label
+     */
+    LABEL("Label",
+           "Label",
+           OpenMetadataProperty.LABEL.description,
+           OpenMetadataProperty.LABEL.dataType,
+           null,
+           null,
+           false,
+           true),
 
     /**
      * Source
@@ -910,13 +1616,13 @@ public enum ProductDataFieldDefinition
      * Ordinal
      */
     ORDINAL("Ordinal",
-                     "Ordinal",
-                     OpenMetadataProperty.ORDINAL.description,
-                     OpenMetadataProperty.ORDINAL.dataType,
-                     null,
-                     null,
-                     false,
-                     true),
+            "Ordinal",
+            OpenMetadataProperty.ORDINAL.description,
+            OpenMetadataProperty.ORDINAL.dataType,
+            null,
+            null,
+            false,
+            true),
 
     /**
      * Subtypes
@@ -1024,18 +1730,6 @@ public enum ProductDataFieldDefinition
                             true,
                             ProductGlossaryTermDefinition.OPEN_METADATA_TYPE_NAME),
 
-
-    /**
-     * A list of governance zone names that controls visibility to the associated metadata element.
-     */
-    ZONE_NAMES("Governance Zone Names",
-               "Zone Names",
-               "A list of governance zone names that controls visibility to the associated metadata element.",
-               DataType.STRING,
-               null,
-               null,
-               false,
-               true),
 
     CONFIDENTIALITY_LEVEL("Confidentiality Level",
                           "Confidentiality Level",
@@ -1864,14 +2558,14 @@ public enum ProductDataFieldDefinition
      * @param isNullable   is this field nullable
      * @param glossaryTerm optional glossary term for the data field
      */
-    ProductDataFieldDefinition(String                        displayName,
-                               String                        namePattern,
-                               String                        description,
-                               DataType                      dataType,
-                               String                        defaultValue,
-                               String                        units,
-                               boolean                       isIdentifier,
-                               boolean                       isNullable,
+    ProductDataFieldDefinition(String displayName,
+                               String namePattern,
+                               String description,
+                               DataType dataType,
+                               String defaultValue,
+                               String units,
+                               boolean isIdentifier,
+                               boolean isNullable,
                                ProductGlossaryTermDefinition glossaryTerm)
     {
         this.displayName  = displayName;
@@ -1891,21 +2585,21 @@ public enum ProductDataFieldDefinition
      *
      * @param displayName  display name
      * @param namePattern  technical name
-     * @param description  description of the use of this field
+     * @param description  how to use this field
      * @param dataType     type for this field
      * @param defaultValue default value to use if not specified
      * @param units        units that are used in numeric fields
      * @param isIdentifier is this field used as a row/record/object identifier?
      * @param isNullable   is this field nullable
      */
-    ProductDataFieldDefinition(String   displayName,
-                               String   namePattern,
-                               String   description,
+    ProductDataFieldDefinition(String displayName,
+                               String namePattern,
+                               String description,
                                DataType dataType,
-                               String   defaultValue,
-                               String   units,
-                               boolean  isIdentifier,
-                               boolean  isNullable)
+                               String defaultValue,
+                               String units,
+                               boolean isIdentifier,
+                               boolean isNullable)
     {
         this.displayName  = displayName;
         this.namePattern  = namePattern;

@@ -155,6 +155,16 @@ public enum JacquardAuditCode implements AuditLogMessageSet
 
 
     /**
+     * JACQUARD-HARVESTER-0018 - The {0} integration connector has updated an existing digital product {1} called {2}
+     */
+    UPDATED_OPEN_METADATA_PRODUCT("JACQUARD-HARVESTER-0018",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector has updated an existing digital product {1} called {2}",
+                                  "The connector is maintaining the fixed open metadata digital products.",
+                                  "No action is required.  This message is for monitoring the updates to the fixed digital products."),
+
+
+    /**
      * JACQUARD-HARVESTER-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
      */
     UNABLE_TO_REGISTER_LISTENER("JACQUARD-HARVESTER-0032",
