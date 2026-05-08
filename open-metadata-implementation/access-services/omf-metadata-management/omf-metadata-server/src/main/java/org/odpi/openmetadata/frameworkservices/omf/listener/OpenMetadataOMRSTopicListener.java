@@ -994,7 +994,7 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                       fullEntity,
                                                                       guidParameterName,
-                                                                      false,
+                                                                      true,
                                                                       false,
                                                                       true,
                                                                       false,

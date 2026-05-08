@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
-import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductRoleDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -278,7 +278,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                "Open Metadata Types"),
 
     /**
-     * Open Metadata Types List
+     * Open Metadata Attributes For Types List
      */
     ATTRIBUTES_FOR_TYPES_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                               new ProductDefinition[]{ProductDefinitionEnum.OPEN_METADATA_TYPES},
@@ -1149,6 +1149,174 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              null,
                              null),
 
+    /**
+     * Details of the governance controls known by open metadata.
+     */
+    GOVERNANCE_CONTROLS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                   new ProductDefinition[]{ProductDefinitionEnum.GOVERNANCE_OBSERVABILITY},
+                   "Governance Controls",
+                   "GOVERNANCE-CONTROLS",
+                   null,
+                   "Governance Controls",
+                   "A tabular data set where each record describes a governance control from open metadata.",
+                   ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                   ProductGovernanceDefinition.CC_BY_40,
+                   ProductCommunityDefinition.GOVERNANCE_SIG,
+                   new ProductSubscriptionDefinition[]{
+                           ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                           ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                           ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                           ProductSubscriptionDefinition.ONGOING_UPDATE},
+                   "Governance Controls",
+                   new ProductDataFieldDefinition[]{
+                           ProductDataFieldDefinition.GUID},
+                   new ProductDataFieldDefinition[]{
+                           ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                           ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                           ProductDataFieldDefinition.IDENTIFIER,
+                           ProductDataFieldDefinition.URL,
+                           ProductDataFieldDefinition.QUALIFIED_NAME,
+                           ProductDataFieldDefinition.DESCRIPTION,
+                           ProductDataFieldDefinition.DISPLAY_NAME,
+                           ProductDataFieldDefinition.SCOPE,
+                           ProductDataFieldDefinition.CREATE_TIME,
+                           ProductDataFieldDefinition.UPDATE_TIME},
+                   OpenMetadataType.TABULAR_DATA_SET.typeName,
+                   "Data set",
+                   null,
+                   "Governance Controls"),
+
+    /**
+     * Details of the exceptions known by open metadata.
+     */
+    EXCEPTIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+               new ProductDefinition[]{ProductDefinitionEnum.GOVERNANCE_OBSERVABILITY},
+                        "Exceptions",
+                        "EXCEPTIONS",
+                        null,
+                        "Exceptions",
+                        "A tabular data set where each record describes an exception from open metadata.",
+                        ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                        ProductGovernanceDefinition.CC_BY_40,
+                        ProductCommunityDefinition.GOVERNANCE_SIG,
+                        new ProductSubscriptionDefinition[]{
+                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.ONGOING_UPDATE},
+                        "Exceptions",
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.EXCEPTION_GUID},
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                                ProductDataFieldDefinition.EXCEPTION_TYPE_GUID,
+                                ProductDataFieldDefinition.ELEMENT_GUID,
+                                ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                                ProductDataFieldDefinition.LABEL,
+                                ProductDataFieldDefinition.DESCRIPTION,
+                                ProductDataFieldDefinition.LAST_REVIEW_TIME,
+                                ProductDataFieldDefinition.REVIEW_DATE,
+                                ProductDataFieldDefinition.STEWARD,
+                                ProductDataFieldDefinition.STEWARD_TYPE_NAME,
+                                ProductDataFieldDefinition.STEWARD_PROPERTY_NAME,
+                                ProductDataFieldDefinition.NOTES,
+                                ProductDataFieldDefinition.CREATE_TIME,
+                                ProductDataFieldDefinition.UPDATE_TIME},
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
+                        "Data set",
+                        null,
+                        "Exceptions"),
+
+    /**
+     * Details of the certifications known by open metadata.
+     */
+    CERTIFICATIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+               new ProductDefinition[]{ProductDefinitionEnum.GOVERNANCE_OBSERVABILITY},
+               "Certifications",
+               "CERTIFICATIONS",
+               null,
+               "Certifications",
+               "A tabular data set where each record describes a certification known by open metadata.",
+               ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+               ProductGovernanceDefinition.CC_BY_40,
+               ProductCommunityDefinition.GOVERNANCE_SIG,
+               new ProductSubscriptionDefinition[]{
+                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.ONGOING_UPDATE},
+               "Certifications",
+               new ProductDataFieldDefinition[]{
+                       ProductDataFieldDefinition.EXCEPTION_GUID},
+               new ProductDataFieldDefinition[]{
+                       ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                       ProductDataFieldDefinition.EXCEPTION_TYPE_GUID,
+                       ProductDataFieldDefinition.ELEMENT_GUID,
+                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                       ProductDataFieldDefinition.COVERAGE_START,
+                       ProductDataFieldDefinition.COVERAGE_END,
+                       ProductDataFieldDefinition.CERTIFIED_BY,
+                       ProductDataFieldDefinition.CERTIFIED_BY_TYPE_NAME,
+                       ProductDataFieldDefinition.CERTIFIED_BY_PROPERTY_NAME,
+                       ProductDataFieldDefinition.CUSTODIAN,
+                       ProductDataFieldDefinition.CUSTODIAN_TYPE_NAME,
+                       ProductDataFieldDefinition.CUSTODIAN_PROPERTY_NAME,
+                       ProductDataFieldDefinition.RECIPIENT,
+                       ProductDataFieldDefinition.RECIPIENT_TYPE_NAME,
+                       ProductDataFieldDefinition.RECIPIENT_PROPERTY_NAME,
+                       ProductDataFieldDefinition.NOTES,
+                       ProductDataFieldDefinition.CREATE_TIME,
+                       ProductDataFieldDefinition.UPDATE_TIME},
+               OpenMetadataType.TABULAR_DATA_SET.typeName,
+               "Data set",
+               null,
+               "Certifications"),
+
+    /**
+     * Details of the licenses known by open metadata.
+     */
+    LICENSES(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+               new ProductDefinition[]{ProductDefinitionEnum.GOVERNANCE_OBSERVABILITY},
+               "Licenses",
+               "LICENSES",
+               null,
+               "Licenses",
+               "A tabular data set where each record describes a license known by the open metadata.",
+               ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+               ProductGovernanceDefinition.CC_BY_40,
+               ProductCommunityDefinition.GOVERNANCE_SIG,
+               new ProductSubscriptionDefinition[]{
+                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.ONGOING_UPDATE},
+               "Licenses",
+               new ProductDataFieldDefinition[]{
+                       ProductDataFieldDefinition.LICENSE_GUID},
+               new ProductDataFieldDefinition[]{
+                       ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                       ProductDataFieldDefinition.LICENSE_TYPE_GUID,
+                       ProductDataFieldDefinition.ELEMENT_GUID,
+                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                       ProductDataFieldDefinition.COVERAGE_START,
+                       ProductDataFieldDefinition.COVERAGE_END,
+                       ProductDataFieldDefinition.LICENSED_BY,
+                       ProductDataFieldDefinition.LICENSED_BY_TYPE_NAME,
+                       ProductDataFieldDefinition.LICENSED_BY_PROPERTY_NAME,
+                       ProductDataFieldDefinition.CUSTODIAN,
+                       ProductDataFieldDefinition.CUSTODIAN_TYPE_NAME,
+                       ProductDataFieldDefinition.CUSTODIAN_PROPERTY_NAME,
+                       ProductDataFieldDefinition.LICENSEE,
+                       ProductDataFieldDefinition.LICENSEE_TYPE_NAME,
+                       ProductDataFieldDefinition.LICENSEE_PROPERTY_NAME,
+                       ProductDataFieldDefinition.NOTES,
+                       ProductDataFieldDefinition.CREATE_TIME,
+                       ProductDataFieldDefinition.UPDATE_TIME},
+               OpenMetadataType.TABULAR_DATA_SET.typeName,
+               "Data set",
+               null,
+               "Licenses"),
+
     /*
      * =============================================================================================
      */
@@ -1180,6 +1348,416 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      null,
                      null),
 
+    /**
+     * Details of the servers known by open metadata.
+     */
+    SERVERS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                        new ProductDefinition[]{ProductDefinitionEnum.IT_OBSERVABILITY},
+                        "Servers",
+                        "SERVERS",
+                        null,
+                        "Servers",
+                        "A tabular data set where each record describes a server catalogued in open metadata.",
+                        ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                        ProductGovernanceDefinition.CC_BY_40,
+                        ProductCommunityDefinition.OBSERVABILITY_SIG,
+                        new ProductSubscriptionDefinition[]{
+                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.ONGOING_UPDATE},
+                        "Governance Controls",
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.GUID},
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                                ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                                ProductDataFieldDefinition.URL,
+                                ProductDataFieldDefinition.QUALIFIED_NAME,
+                                ProductDataFieldDefinition.DESCRIPTION,
+                                ProductDataFieldDefinition.DISPLAY_NAME,
+                                ProductDataFieldDefinition.SCOPE,
+                                ProductDataFieldDefinition.CREATE_TIME,
+                                ProductDataFieldDefinition.UPDATE_TIME},
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
+                        "Data set",
+                        null,
+                        "Governance Controls"),
+
+    /*
+     * =============================================================================================
+     */
+
+    /**
+     * Security Observability
+     */
+    SECURITY_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                           null,
+                           "Security Observability",
+                           "SECURITY-OBSERVABILITY-FAMILY",
+                           ProductFolderDefinition.PRODUCTS,
+                           "Security Observability",
+                           "Each product in this group publishes insights about the security settings supporting the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductCommunityDefinition.SECURITY_SIG,
+                           new ProductSubscriptionDefinition[]{
+                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.ONGOING_UPDATE
+                           },
+                           null,
+                           null,
+                           null,
+                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           "Data sets",
+                           null,
+                           null,
+                           new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
+
+    /**
+     * Secrets Observability
+     */
+    SECRETS_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                       new ProductDefinition[]{SECURITY_OBSERVABILITY},
+                       "Secrets Observability",
+                       "SECRETS-OBSERVABILITY-FAMILY",
+                       null,
+                       "Secrets Observability",
+                       "Each product in this group publishes insights about the secrets stores and collections known to the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                       ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                       ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                       ProductCommunityDefinition.SECURITY_SIG,
+                       new ProductSubscriptionDefinition[]{
+                               ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                               ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                               ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                               ProductSubscriptionDefinition.ONGOING_UPDATE
+                       },
+                       null,
+                       null,
+                       null,
+                       OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                       "Data sets",
+                       null,
+                       null,
+                       new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
+
+    /**
+     * Details of the secrets store known by open metadata.
+     */
+    SECRETS_STORES(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                    new ProductDefinition[]{ProductDefinitionEnum.SECRETS_OBSERVABILITY},
+                    "Open Metadata Secrets Stores",
+                    "OPEN-METADATA-SECRETS-STORES",
+                    null,
+                    "Open Metadata Secrets Stores",
+                    "A tabular data set where each record describes a secrets store known to open metadata.",
+                    ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.SECURITY_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    "Open Metadata Secrets Stores",
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.ASSET_GUID},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                            ProductDataFieldDefinition.RESOURCE_NAME,
+                            ProductDataFieldDefinition.URL,
+                            ProductDataFieldDefinition.QUALIFIED_NAME,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.NETWORK_ADDRESS,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
+                    OpenMetadataType.TABULAR_DATA_SET.typeName,
+                    "Data set",
+                    null,
+                    "Open Metadata Secrets Stores"),
+
+    /**
+     * Details of the secrets collections known by open metadata.
+     */
+    SECRETS_COLLECTIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                    new ProductDefinition[]{ProductDefinitionEnum.SECRETS_OBSERVABILITY},
+                    "Open Metadata Secrets Collections",
+                    "OPEN-METADATA-SECRETS-COLLECTIONS",
+                    null,
+                    "Open Metadata Secrets Collections",
+                    "A tabular data set where each record describes a user identity and its associated actor profile.",
+                    ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.SECURITY_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    "Open Metadata Secrets Collections",
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.SECRETS_COLLECTION_GUID},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.SECRETS_STORE_GUID,
+                            ProductDataFieldDefinition.SECRETS_COLLECTION_NAME,
+                            ProductDataFieldDefinition.QUALIFIED_NAME,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.REFRESH_TIME_INTERVAL,
+                            ProductDataFieldDefinition.USER_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.EMPLOYEE_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.CONTRACTOR_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.EXTERNAL_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.DIGITAL_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.ACTIVE_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.EXPIRED_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.LOCKED_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.DISABLED_ACCOUNT_COUNT,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
+                    OpenMetadataType.TABULAR_DATA_SET.typeName,
+                    "Data set",
+                    null,
+                    "Open Metadata Secrets Collections"),
+
+
+    /**
+     * User Observability
+     */
+    USER_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                       new ProductDefinition[]{SECURITY_OBSERVABILITY},
+                           "User Observability",
+                           "USER-OBSERVABILITY-FAMILY",
+                           null,
+                           "User Observability",
+                           "Each product in this group publishes insights about the security settings of the users of the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductCommunityDefinition.SECURITY_SIG,
+                           new ProductSubscriptionDefinition[]{
+                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.ONGOING_UPDATE
+                           },
+                           null,
+                           null,
+                           null,
+                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           "Data sets",
+                           null,
+                           null,
+                           new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
+
+    /**
+     * Details of the user identities defined for open metadata.
+     */
+    USER_IDENTITIES(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                    new ProductDefinition[]{ProductDefinitionEnum.USER_OBSERVABILITY},
+                    "Open Metadata User Identities",
+                    "OPEN-METADATA-USER-IDENTITIES",
+                    null,
+                    "Open Metadata User Identities",
+                    "A tabular data set where each record describes a user identity and its associated actor profile.",
+                    ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.SECURITY_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    "Open Metadata User Identities",
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.USER_ID},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.PROFILE_GUID,
+                            ProductDataFieldDefinition.PROFILE_NAME,
+                            ProductDataFieldDefinition.DISTINGUISHED_NAME,
+                            ProductDataFieldDefinition.QUALIFIED_NAME,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.SECURITY_GROUPS,
+                            ProductDataFieldDefinition.SECURITY_ROLES,
+                            ProductDataFieldDefinition.SECRETS_COLLECTION_NAME,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
+                    OpenMetadataType.TABULAR_DATA_SET.typeName,
+                    "Data set",
+                    null,
+                    "Open Metadata User Identities"),
+
+    /**
+     * Details of the user accounts defined in a secrets collection.
+     */
+    USER_ACCOUNTS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                    new ProductDefinition[]{ProductDefinitionEnum.USER_OBSERVABILITY},
+                    "Open Metadata User Accounts",
+                    "OPEN-METADATA-USER-ACCOUNTS",
+                    null,
+                    "Open Metadata User Accounts",
+                    "A tabular data set where each record describes a user account defined in a secrets store.",
+                    ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.SECURITY_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    "Open Metadata User Accounts",
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.USER_ID},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.SECRETS_COLLECTION_NAME,
+                            ProductDataFieldDefinition.NETWORK_ADDRESS,
+                            ProductDataFieldDefinition.DISTINGUISHED_NAME,
+                            ProductDataFieldDefinition.QUALIFIED_NAME,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.USER_ACCOUNT_TYPE,
+                            ProductDataFieldDefinition.USER_ACCOUNT_STATUS,
+                            ProductDataFieldDefinition.SECURITY_GROUPS,
+                            ProductDataFieldDefinition.SECURITY_ROLES,
+                            ProductDataFieldDefinition.CREATE_TIME,
+                            ProductDataFieldDefinition.UPDATE_TIME},
+                    OpenMetadataType.TABULAR_DATA_SET.typeName,
+                    "Data set",
+                    null,
+                    "Open Metadata User Accounts"),
+
+    /**
+     * Governance Zone Observability
+     */
+    ZONE_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                       new ProductDefinition[]{SECURITY_OBSERVABILITY},
+                           "Governance Zone Observability",
+                           "ZONE-OBSERVABILITY-FAMILY",
+                           null,
+                           "Governance Zone Observability",
+                           "Each product in this group publishes insights about the governance zones controlling visibility in the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductCommunityDefinition.SECURITY_SIG,
+                           new ProductSubscriptionDefinition[]{
+                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.ONGOING_UPDATE
+                           },
+                           null,
+                           null,
+                           null,
+                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           "Data sets",
+                           null,
+                           null,
+                           new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
+
+    /**
+     * Details of a governance zone and the total count of members and related elements.
+     */
+    ZONE_MEMBERSHIP_TOTALS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                        new ProductDefinition[]{ProductDefinitionEnum.SECURITY_OBSERVABILITY},
+                        "Zone Membership Totals",
+                        "ZONE-MEMBERSHIP-TOTALS",
+                        null,
+                        "Zone Membership Totals",
+                        "A tabular data set where each record describes a governance zone and the total count of members and related elements.",
+                        ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                        ProductGovernanceDefinition.CC_BY_40,
+                        ProductCommunityDefinition.GOVERNANCE_SIG,
+                        new ProductSubscriptionDefinition[]{
+                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                ProductSubscriptionDefinition.ONGOING_UPDATE},
+                        "Zone Membership Totals",
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.GUID,
+                                ProductDataFieldDefinition.UPDATE_TIME},
+                        new ProductDataFieldDefinition[]{
+                                ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                                ProductDataFieldDefinition.IDENTIFIER,
+                                ProductDataFieldDefinition.CRITERIA,
+                                ProductDataFieldDefinition.TOTAL_ELEMENT_MEMBERSHIP,
+                                ProductDataFieldDefinition.ANCHORED_ELEMENT_MEMBERSHIP,
+                                ProductDataFieldDefinition.ALL_ELEMENT_MEMBERSHIP,
+                                ProductDataFieldDefinition.CREATE_TIME},
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
+                        "Data set",
+                        null,
+                        "Zone Membership Totals"),
+
+    /**
+     * Details of the total count of members and related elements of a specific type in the governance zone.
+     */
+    ZONE_MEMBERSHIP_PROFILE(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                            new ProductDefinition[]{ProductDefinitionEnum.SECURITY_OBSERVABILITY},
+                            "Zone Membership Profile",
+                            "ZONE-MEMBERSHIP-PROFILE",
+                            null,
+                            "Zone Membership Profile",
+                            "A tabular data set where each record describes the total count of members and related elements of a specific type in the governance zone.",
+                            ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                            ProductGovernanceDefinition.CC_BY_40,
+                            ProductCommunityDefinition.GOVERNANCE_SIG,
+                            new ProductSubscriptionDefinition[]{
+                                    ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                    ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                    ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                    ProductSubscriptionDefinition.ONGOING_UPDATE},
+                            "Zone Membership Profile",
+                            new ProductDataFieldDefinition[]{
+                                    ProductDataFieldDefinition.GUID,
+                                    ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                                    ProductDataFieldDefinition.UPDATE_TIME},
+                            new ProductDataFieldDefinition[]{
+                                    ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
+                                    ProductDataFieldDefinition.IDENTIFIER,
+                                    ProductDataFieldDefinition.CRITERIA,
+                                    ProductDataFieldDefinition.TOTAL_TYPE_MEMBERSHIP,
+                                    ProductDataFieldDefinition.ANCHORED_TYPE_MEMBERSHIP,
+                                    ProductDataFieldDefinition.ALL_TYPE_MEMBERSHIP,
+                                    ProductDataFieldDefinition.CREATE_TIME},
+                            OpenMetadataType.TABULAR_DATA_SET.typeName,
+                            "Data set",
+                            null,
+                            "Zone Membership Profile"),
+
+    /**
+     * Service Observability
+     */
+    SERVICE_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                           new ProductDefinition[]{SECURITY_OBSERVABILITY},
+                           "Service Observability",
+                           "SERVICE-OBSERVABILITY-FAMILY",
+                           null,
+                           "Security Observability",
+                           "Each product in this group publishes insights about the servers, services and operations supporting the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductCommunityDefinition.SECURITY_SIG,
+                           new ProductSubscriptionDefinition[]{
+                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.ONGOING_UPDATE
+                           },
+                           null,
+                           null,
+                           null,
+                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           "Data sets",
+                           null,
+                           null,
+                           new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
+
+
     ;
 
 
@@ -1187,15 +1765,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final ProductDefinition[]             productFamilies;
     private final String                          productName;
     private final String                          identifier;
-    private final ProductFolderDefinition         parent;
+    private final ProductFolderDefinition         parentFolder;
     private final String                          displayName;
     private final String                          description;
     private final String                          category;
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
-    private final ProductRoleDefinition           productManager;
-    private final ProductRoleDefinition           productDeveloper;
-    private final ProductRoleDefinition           productSupport;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
     private final String                          dataSpecTableName;
     private final ProductDataFieldDefinition[]    dataSpecIdentifiers;
@@ -1204,6 +1779,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final String                          assetIdentifier;
     private final ConnectorProvider               connectorProvider;
     private final String                          catalogTargetName;
+    private final String[]                        zoneMembership;
 
 
 
@@ -1211,7 +1787,49 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductDefinition[]             productFamilies,
                           String                          productName,
                           String                          identifier,
-                          ProductFolderDefinition         parent,
+                          ProductFolderDefinition         parentFolder,
+                          String                          displayName,
+                          String                          description,
+                          String                          category,
+                          ProductGovernanceDefinition     license,
+                          ProductCommunityDefinition      community,
+                          ProductSubscriptionDefinition[] subscriptionTypes,
+                          String                          dataSpecTableName,
+                          ProductDataFieldDefinition[]    dataSpecIdentifiers,
+                          ProductDataFieldDefinition[]    dataSpecFields,
+                          String                          assetTypeName,
+                          String                          assetIdentifier,
+                          ConnectorProvider               connectorProvider,
+                          String                          catalogTargetName,
+                          String[]                        zoneMembership)
+    {
+        this.typeName            = typeName;
+        this.productFamilies     = productFamilies;
+        this.productName         = productName;
+        this.identifier          = identifier;
+        this.parentFolder        = parentFolder;
+        this.displayName         = displayName;
+        this.description         = description;
+        this.category            = category;
+        this.license             = license;
+        this.community           = community;
+        this.subscriptionTypes   = subscriptionTypes;
+        this.dataSpecTableName   = dataSpecTableName;
+        this.dataSpecIdentifiers = dataSpecIdentifiers;
+        this.dataSpecFields      = dataSpecFields;
+        this.assetTypeName       = assetTypeName;
+        this.assetIdentifier     = assetIdentifier;
+        this.connectorProvider   = connectorProvider;
+        this.catalogTargetName   = catalogTargetName;
+        this.zoneMembership      = zoneMembership;
+    }
+
+
+    ProductDefinitionEnum(String                          typeName,
+                          ProductDefinition[]             productFamilies,
+                          String                          productName,
+                          String                          identifier,
+                          ProductFolderDefinition parentFolder,
                           String                          displayName,
                           String                          description,
                           String                          category,
@@ -1230,15 +1848,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.productFamilies     = productFamilies;
         this.productName         = productName;
         this.identifier          = identifier;
-        this.parent              = parent;
+        this.parentFolder        = parentFolder;
         this.displayName         = displayName;
         this.description         = description;
         this.category            = category;
         this.license             = license;
         this.community           = community;
-        this.productManager      = ProductRoleDefinition.PRODUCT_MANAGER;
-        this.productDeveloper    = ProductRoleDefinition.PRODUCT_DEVELOPER;
-        this.productSupport      = ProductRoleDefinition.JACQUARD_SUPPORT;
         this.subscriptionTypes   = subscriptionTypes;
         this.dataSpecTableName   = dataSpecTableName;
         this.dataSpecIdentifiers = dataSpecIdentifiers;
@@ -1247,6 +1862,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.assetIdentifier     = assetIdentifier;
         this.connectorProvider   = connectorProvider;
         this.catalogTargetName   = catalogTargetName;
+        this.zoneMembership      = null;
     }
 
 
@@ -1324,7 +1940,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     @Override
     public ProductFolderDefinition getFolder()
     {
-        return parent;
+        return parentFolder;
     }
 
 
@@ -1521,6 +2137,22 @@ public enum ProductDefinitionEnum implements ProductDefinition
         return "6.1-SNAPSHOT";
     }
 
+
+    /**
+     * Return the zone membership for the product.
+     *
+     * @return list of zone names (default = ["digital-products"])
+     */
+    @Override
+    public List<String> zoneMembership()
+    {
+        if (zoneMembership != null)
+        {
+            return new ArrayList<>(Arrays.asList(zoneMembership));
+        }
+
+        return List.of(GovernanceZoneName.DIGITAL_PRODUCTS.getZoneName());
+    }
 
     /**
      * String containing the definition values

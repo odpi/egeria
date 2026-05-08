@@ -2895,13 +2895,13 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElement getMetadataElementByGUID(String     userId,
-                                                            String     elementGUID,
-                                                            GetOptions getOptions) throws InvalidParameterException,
+    public OpenMetadataRootElement getRootElementByGUID(String     userId,
+                                                        String     elementGUID,
+                                                        GetOptions getOptions) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        final String methodName = "getMetadataElementByGUID";
+        final String methodName = "getRootElementByGUID";
         final String elementGUIDParameterName = "elementGUID";
 
         propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -2927,12 +2927,12 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public String getMetadataElementGUIDByUniqueName(String     userId,
-                                                     String     uniqueName,
-                                                     String     uniquePropertyName,
-                                                     GetOptions getOptions) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public String getRootElementGUIDByUniqueName(String     userId,
+                                                 String     uniqueName,
+                                                 String     uniquePropertyName,
+                                                 GetOptions getOptions) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         return openMetadataClient.getMetadataElementGUIDByUniqueName(userId, uniqueName, uniquePropertyName, getOptions);
     }
@@ -2949,12 +2949,12 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public List<OpenMetadataRootElement> getElements(String       userId,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<OpenMetadataRootElement> getRootElementsByType(String       userId,
+                                                               QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        final String methodName = "getElements";
+        final String methodName = "getRootElementsByType";
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                                  null,

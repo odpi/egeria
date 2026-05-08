@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductRoleDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
 
 import java.util.Date;
 import java.util.List;
@@ -181,4 +182,15 @@ public interface ProductDefinition
      * @return string
      */
     String getVersionIdentifier();
+
+
+    /**
+     * Return the zone membership for the product.
+     *
+     * @return list of zone names (default = ["digital-products"])
+     */
+    default List<String> zoneMembership()
+    {
+        return List.of(GovernanceZoneName.DIGITAL_PRODUCTS.getZoneName());
+    }
 }

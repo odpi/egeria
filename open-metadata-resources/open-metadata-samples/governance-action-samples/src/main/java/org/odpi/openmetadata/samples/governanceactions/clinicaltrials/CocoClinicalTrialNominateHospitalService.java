@@ -253,7 +253,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                                                                              null);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.CERTIFICATE_GUID.name,
+                                                             OpenMetadataProperty.CERTIFICATE_ID.name,
                                                              UUID.randomUUID().toString());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,

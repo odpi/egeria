@@ -26,7 +26,7 @@ public enum GovernanceZoneName
     DIGITAL_PRODUCTS("digital-products",
                      "Digital Products Zone",
                      "Resources describing the digital products that are being managed by Egeria.",
-                     "Elements related to digital products.",
+                     "Elements related to public digital products.",
                      GovernanceDomain.UNCLASSIFIED.getOrdinal()),
 
     SECURITY("security",

@@ -53,16 +53,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Gloss
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -136,7 +134,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                     methodName);
             }
 
-
             /*
              * These governance definitions support the product catalog initiative.
              * They are linked to the product catalog.
@@ -144,12 +141,19 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             governanceDefinitions = this.getGovernanceDefinitions();
 
             /*
-             * The product folders are set up first so that the top-level folder for the product catalog can be
-             * the anchor scope for everything else.
+             * These definitions feature in the solution blueprint.  It also includes
+             * two generic roles (developer and jacquard support) that apply to all products.
+             * A separate Product Manager role is defined for each product.  The product manager
+             * role created below is a solution actor role for the blueprint.
              */
             productRoles          = this.getProductRoles();
             solutionBlueprintGUID = this.getSolutionBlueprint();
-            productFolders        = this.getProductCatalogFolders();
+
+            /*
+             * The product folders are set up first so that the top-level folder for the product catalog can be
+             * the anchor scope for everything else.
+             */
+            productFolders = this.getProductCatalogFolders();
 
             /*
              * The engine action for the watchdog notification serve is started before the monitored resource
@@ -471,64 +475,62 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         final String methodName = "getProduct";
 
         /*
-         * If the product is already defined, then return its GUID.  This works for products and product families.
+         * If the product is already defined, then extract its element.  This works for products and product families.
          */
-        List<OpenMetadataRootElement> existingProducts = collectionClient.getCollectionsByName(productDefinition.getQualifiedName(), null);
+        OpenMetadataRootElement productElement = classificationManagerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
 
-        if (existingProducts != null)
+        DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
+
+        if (productElement == null)
         {
-            for (OpenMetadataRootElement existingProduct : existingProducts)
-            {
-                if (existingProduct != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
-                                                                                                                existingProduct.getElementHeader().getGUID(),
-                                                                                                                productDefinition.getProductName()));
+            /*
+             * First time, so the product needs to be created, along with its subscription options,
+             * solution blueprint, data spec, notification type and asset.  The asset needs to be
+             * registered as a CatalogTarget.
+             */
+            digitalProductProperties.setIntroductionDate(new Date());
 
-                    refreshProductDefinition(collectionClient, existingProduct, productDefinition);
-                    return existingProduct.getElementHeader().getGUID();
-                }
+            NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+
+            if (productDefinition.getFolder() != null)
+            {
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentGUID(productFolders.get(productDefinition.getFolder().getQualifiedName()));
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            }
+
+            String productGUID = collectionClient.createCollection(newElementOptions,
+                                                                   this.getInitialClassificationProperties(productDefinition.zoneMembership()),
+                                                                   digitalProductProperties,
+                                                                   null);
+
+            auditLog.logMessage(methodName,
+                                JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                                 productGUID,
+                                                                                                 productDefinition.getProductName()));
+
+            productElement = collectionClient.getCollectionByGUID(productGUID, collectionClient.getGetOptions());
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                JacquardAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                                        productElement.getElementHeader().getGUID(),
+                                                                                                        productDefinition.getProductName()));
+
+            if (collectionClient.updateCollection(productElement.getElementHeader().getGUID(),
+                                                  collectionClient.getUpdateOptions(true),
+                                                  digitalProductProperties))
+            {
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.UPDATED_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                                        productElement.getElementHeader().getGUID(),
+                                                                                                        productDefinition.getProductName()));
             }
         }
-
-        /*
-         * First time, so the product needs to be created, along with its subscription options,
-         * solution blueprint, data spec, notification type and asset.  The asset needs to be
-         * registered as a CatalogTarget.
-         */
-        DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
-        digitalProductProperties.setIntroductionDate(new Date());
-
-        NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
-
-        newElementOptions.setIsOwnAnchor(true);
-        newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
-
-        if (productDefinition.getFolder() != null)
-        {
-            newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(productFolders.get(productDefinition.getFolder().getQualifiedName()));
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-        }
-
-        String productGUID = collectionClient.createCollection(newElementOptions,
-                                                               null,
-                                                               digitalProductProperties,
-                                                               null);
-
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
-                                                                                             productGUID,
-                                                                                             productDefinition.getProductName()));
-
-        OpenMetadataRootElement productElement = collectionClient.getCollectionByGUID(productGUID, collectionClient.getGetOptions());
-
-        /*
-         * Link the product manager - each product needs its own product manager.  This project manager is a member
-         * of the appropriate community
-         */
-        ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
 
         PersonRoleProperties personRoleProperties = new PersonRoleProperties();
 
@@ -537,41 +539,56 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
         personRoleProperties.setDescription(ProductRoleDefinition.PRODUCT_MANAGER.getDescription());
 
-        AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+        OpenMetadataRootElement productManagerElement = classificationManagerClient.getRootElementByUniqueName(personRoleProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
 
-        assignmentScopeProperties.setAssignmentType(AssignmentType.OWNER.getDisplayName());
-        assignmentScopeProperties.setDescription(AssignmentType.OWNER.getDescription());
-
-        NewElementOptions roleOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
-
-        roleOptions.setIsOwnAnchor(false);
-        roleOptions.setAnchorGUID(productGUID);
-        roleOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
-
-        roleOptions.setParentGUID(productGUID);
-        roleOptions.setParentAtEnd1(false);
-        roleOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
-
-        String productManagerGUID = actorRoleClient.createActorRole(roleOptions,
-                                                                    null,
-                                                                    personRoleProperties,
-                                                                    assignmentScopeProperties);
-
-        if ((productManagerGUID != null) && (productDefinition.getCommunity() != null))
+        if (productManagerElement == null)
         {
-            assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getDisplayName());
-            assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
+            /*
+             * Link the product manager - each product needs its own product manager.  This project manager is a member
+             * of the appropriate community
+             */
+            ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
 
-            classificationManagerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
-                                                             productManagerGUID,
-                                                             new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                             assignmentScopeProperties);
+
+            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+
+            assignmentScopeProperties.setAssignmentType(AssignmentType.OWNER.getDisplayName());
+            assignmentScopeProperties.setDescription(AssignmentType.OWNER.getDescription());
+
+            NewElementOptions roleOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+            roleOptions.setIsOwnAnchor(false);
+            roleOptions.setAnchorGUID(productElement.getElementHeader().getGUID());
+            roleOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+
+            roleOptions.setParentGUID(productElement.getElementHeader().getGUID());
+            roleOptions.setParentAtEnd1(false);
+            roleOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
+
+            String productManagerGUID = actorRoleClient.createActorRole(roleOptions,
+                                                                        null,
+                                                                        personRoleProperties,
+                                                                        assignmentScopeProperties);
+
+            productManagerElement = classificationManagerClient.getRootElementByGUID(productManagerGUID, collectionClient.getGetOptions());
+
+            if (productDefinition.getCommunity() != null)
+            {
+                assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getDisplayName());
+                assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
+
+                classificationManagerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
+                                                                 productManagerGUID,
+                                                                 new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                                 assignmentScopeProperties);
+            }
         }
 
         /*
          * Link in the license type to the product to show what type of license is granted to the subscriber.
          */
         String licenseTypeGUID = null;
+
         if (productDefinition.getLicense() != null)
         {
             licenseTypeGUID = governanceDefinitions.get(productDefinition.getLicense().getQualifiedName());
@@ -581,7 +598,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             GovernedByProperties governedByProperties = new GovernedByProperties();
             governedByProperties.setLabel("subscriber's license");
             governedByProperties.setDescription("This is the license that a subscriber's asset will be given to access the product data.");
-            governanceDefinitionClient.addGovernanceDefinitionToElement(productGUID, licenseTypeGUID, new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()), governedByProperties);
+            governanceDefinitionClient.addGovernanceDefinitionToElement(productElement.getElementHeader().getGUID(), licenseTypeGUID, new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()), governedByProperties);
         }
 
         /*
@@ -590,7 +607,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if ((propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)) && (productDefinition.getCommunity() != null))
         {
             classificationManagerClient.addScopeToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
-                                                          productGUID,
+                                                          productElement.getElementHeader().getGUID(),
                                                           new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                           null);
         }
@@ -599,6 +616,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * Extract the note log if there is a community for this product
          */
         String communityNoteLogGUID = null;
+
         if (productDefinition.getCommunity() != null)
         {
             communityNoteLogGUID = communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName());
@@ -607,7 +625,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * The data specification lists all the data fields for this product.
          */
-        this.addDataSpec(productDefinition, productGUID);
+        this.addDataSpec(productDefinition, productElement);
 
         /*
          * This asset has a connector to a connector that is able to mine open metadata to create a particular product.
@@ -616,14 +634,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         String productAssetGUID = null;
         if (! propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
         {
-            productAssetGUID = this.addProductAsset(productDefinition, productGUID);
+            productAssetGUID = this.addProductAsset(productDefinition, productElement.getElementHeader().getGUID());
         }
 
         /*
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerGUID);
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID());
 
         /*
          * Register each product as a catalog target, so it is refreshed.
@@ -654,13 +672,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 collectionMembershipProperties.setMembershipType("includes product");
 
                 collectionClient.addToCollection(products.get(productGroup.getQualifiedName()),
-                                                 productGUID,
+                                                 productElement.getElementHeader().getGUID(),
                                                  new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                  collectionMembershipProperties);
             }
         }
 
-        return productGUID;
+        return productElement.getElementHeader().getGUID();
     }
 
 
@@ -668,23 +686,32 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Set up a product's data spec.
      *
      * @param productDefinition description of product
-     * @param productGUID unique identifier of the product
+     * @param productElement details of what is currently stored
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void addDataSpec(ProductDefinition productDefinition,
-                             String            productGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    private void addDataSpec(ProductDefinition       productDefinition,
+                             OpenMetadataRootElement productElement) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         List<ProductDataFieldDefinition> dataFieldIdentifiers = productDefinition.getDataSpecIdentifiers();
         List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpecFields();
 
         if ((dataFieldIdentifiers != null) || (dataFieldDefinitions != null))
         {
+            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+            NewElementOptions newElementOptions = new NewElementOptions(classificationManagerClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+            newElementOptions.setAnchorGUID(productElement.getElementHeader().getGUID());
+            newElementOptions.setParentAtEnd1(true);
+
             DataSpecProperties dataSpecProperties = new DataSpecProperties();
 
             dataSpecProperties.setQualifiedName(productDefinition.getQualifiedName() + "_dataSpec");
@@ -692,27 +719,31 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             dataSpecProperties.setDescription("The data specification lists the fields in the " + productDefinition.getProductName() + " product.");
             dataSpecProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
 
-            CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
+            OpenMetadataRootElement dataSpecElement = classificationManagerClient.getRootElementByUniqueName(dataSpecProperties.getQualifiedName(),
+                                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                             classificationManagerClient.getGetOptions());
+            if (dataSpecElement == null)
+            {
+                CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
+
+
+                newElementOptions.setParentGUID(productElement.getElementHeader().getGUID());
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName);
+
+                DataDescriptionProperties dataDescriptionProperties = new DataDescriptionProperties();
+
+                dataDescriptionProperties.setLabel("data-specification");
+                dataDescriptionProperties.setDescription("Description of the data structure(s) used in this product.  Each data structure is a member of the data specification.");
+
+                String dataSpecGUID = collectionClient.createCollection(newElementOptions,
+                                                                        null,
+                                                                        dataSpecProperties,
+                                                                        dataDescriptionProperties);
+
+                dataSpecElement = collectionClient.getCollectionByGUID(dataSpecGUID, collectionClient.getGetOptions());
+            }
+
             DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
-
-            NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
-
-            newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
-            newElementOptions.setAnchorGUID(productGUID);
-            newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(productGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName);
-
-            DataDescriptionProperties dataDescriptionProperties = new DataDescriptionProperties();
-
-            dataDescriptionProperties.setLabel("data-specification");
-            dataDescriptionProperties.setDescription("Description of the data structure(s) used in this product.  Each data structure is a member of the data specification.");
-
-            String dataSpecGUID = collectionClient.createCollection(newElementOptions,
-                                                                    null,
-                                                                    dataSpecProperties,
-                                                                    dataDescriptionProperties);
 
             DataStructureProperties dataStructureProperties = new DataStructureProperties();
 
@@ -722,79 +753,61 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             dataStructureProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
             dataStructureProperties.setNamePatterns(Collections.singletonList(productDefinition.getDataSpecTableName()));
 
-            newElementOptions.setParentGUID(dataSpecGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            OpenMetadataRootElement dataStructureElement = classificationManagerClient.getRootElementByUniqueName(dataStructureProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, dataStructureClient.getGetOptions());
 
-            String dataStructureGUID = dataStructureClient.createDataStructure(newElementOptions,
-                                                                               null,
-                                                                               dataStructureProperties,
-                                                                               null);
-
-            int fieldPosition = 1;
-
-            if (dataFieldIdentifiers != null)
+            if (dataStructureElement == null)
             {
-                for (ProductDataFieldDefinition dataField : dataFieldIdentifiers)
+                newElementOptions.setParentGUID(dataSpecElement.getElementHeader().getGUID());
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+                String dataStructureGUID = dataStructureClient.createDataStructure(newElementOptions,
+                                                                                   null,
+                                                                                   dataStructureProperties,
+                                                                                   null);
+
+                int fieldPosition = 1;
+
+                // todo - update to handle changes in the data spec
+
+                if (dataFieldIdentifiers != null)
                 {
-                    String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
+                    for (ProductDataFieldDefinition dataField : dataFieldIdentifiers)
+                    {
+                        String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
 
-                    MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
+                        MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
 
-                    memberDataFieldProperties.setCoverageCategory(CoverageCategory.IDENTIFIER);
-                    memberDataFieldProperties.setPosition(fieldPosition);
-                    fieldPosition ++;
+                        memberDataFieldProperties.setCoverageCategory(CoverageCategory.IDENTIFIER);
+                        memberDataFieldProperties.setPosition(fieldPosition);
+                        fieldPosition++;
 
-                    dataStructureClient.linkMemberDataField(dataStructureGUID,
-                                                            dataFieldGUID,
-                                                            new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
-                                                            memberDataFieldProperties);
+                        dataStructureClient.linkMemberDataField(dataStructureGUID,
+                                                                dataFieldGUID,
+                                                                new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
+                                                                memberDataFieldProperties);
+                    }
                 }
-            }
 
-            if (dataFieldDefinitions != null)
-            {
-                for (ProductDataFieldDefinition dataField : dataFieldDefinitions)
+                if (dataFieldDefinitions != null)
                 {
-                    String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
+                    for (ProductDataFieldDefinition dataField : dataFieldDefinitions)
+                    {
+                        String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
 
-                    MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
+                        MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
 
-                    memberDataFieldProperties.setCoverageCategory(CoverageCategory.CORE_DETAIL);
-                    memberDataFieldProperties.setPosition(fieldPosition);
-                    fieldPosition ++;
+                        memberDataFieldProperties.setCoverageCategory(CoverageCategory.CORE_DETAIL);
+                        memberDataFieldProperties.setPosition(fieldPosition);
+                        fieldPosition++;
 
-                    dataStructureClient.linkMemberDataField(dataStructureGUID,
-                                                            dataFieldGUID,
-                                                            new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
-                                                            memberDataFieldProperties);
+                        dataStructureClient.linkMemberDataField(dataStructureGUID,
+                                                                dataFieldGUID,
+                                                                new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
+                                                                memberDataFieldProperties);
+                    }
                 }
             }
         }
-    }
-
-
-    /**
-     * Make any changes to the product description that have occurred since the product was created.
-     *
-     * @param collectionClient  client to update product
-     * @param existingProduct   current product definition
-     * @param productDefinition new description of product
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
-     */
-    private void refreshProductDefinition(CollectionClient        collectionClient,
-                                          OpenMetadataRootElement existingProduct,
-                                          ProductDefinition       productDefinition) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
-    {
-        DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
-
-        collectionClient.updateCollection(existingProduct.getElementHeader().getGUID(),
-                                          collectionClient.getUpdateOptions(true),
-                                          digitalProductProperties);
     }
 
 
@@ -919,8 +932,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * The notification of changes to a subscription is managed via a notification type.
          */
-        GovernanceDefinitionClient notificationTypeClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
-        MakeAnchorOptions          makeAnchorOptions      = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        GovernanceDefinitionClient  notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+        MakeAnchorOptions           makeAnchorOptions            = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
 
@@ -933,82 +947,91 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
         notificationTypeProperties.setNotificationInterval(productSubscriptionDefinition.getNotificationInterval());
 
-        NewElementOptions newElementOptions = new NewElementOptions(notificationTypeClient.getMetadataSourceOptions());
+        OpenMetadataRootElement notificationTypeElement = classificationManagerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
 
-        newElementOptions.setAnchorGUID(productHeader.getGUID());
-        newElementOptions.setAnchorScopeGUIDs(Collections.singletonList(productHeader.getGUID()));
-        newElementOptions.setIsOwnAnchor(false);
-
-        String notificationTypeGUID = notificationTypeClient.createGovernanceDefinition(newElementOptions,
-                                                                                        null,
-                                                                                        notificationTypeProperties,
-                                                                                        null);
-
-        if ((productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.getNotificationInterval() == 0))
+        if (notificationTypeElement == null)
         {
+            NewElementOptions newElementOptions = new NewElementOptions(notificationTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setAnchorGUID(productHeader.getGUID());
+            newElementOptions.setAnchorScopeGUIDs(Collections.singletonList(productHeader.getGUID()));
+            newElementOptions.setIsOwnAnchor(false);
+
+            String notificationTypeGUID = notificationTypeClient.createGovernanceDefinition(newElementOptions,
+                                                                                            null,
+                                                                                            notificationTypeProperties,
+                                                                                            null);
+
+            if ((productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.getNotificationInterval() == 0))
+            {
+                /*
+                 * Only need to register the resource with notification types that use changes to the resource to determine
+                 * when to issue a notification to the subscribers.
+                 */
+                MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
+
+                monitoredResourceProperties.setLabel("product asset");
+                monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
+
+                notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
+            }
+
+            NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
+
             /*
-             * Only need to register the resource with notification types that use changes to the resource to determine
-             * when to issue a notification to the subscribers.
+             * Only link note log to leaf products.
              */
-            MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
+            if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
+            {
+                notificationSubscriberProperties.setLabel("community notifications");
+                notificationSubscriberProperties.setDescription("A note log collects the notifications from the Baudot Subscription Manager based on activity around notification type: " + notificationTypeGUID);
 
-            monitoredResourceProperties.setLabel("product asset");
-            monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
+                notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
+            }
 
-            notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
+            /*
+             * Every product has a product manager.  They receive notifications to enable monitoring of product activity.
+             */
+            if (productManagerGUID != null)
+            {
+                notificationSubscriberProperties.setLabel("product manager notifications");
+                notificationSubscriberProperties.setDescription("Notifications from the Baudot Subscription Manager related to notification type: " + notificationTypeGUID + " are sent to the product manager.");
+
+                notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
+            }
+
+            /*
+             * Save details of the notification type so that it is processed by the Baudot Subscription Manager.
+             */
+            NewActionTarget notificationTarget = new NewActionTarget();
+
+            notificationTarget.setActionTargetGUID(notificationTypeGUID);
+            notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+            if (baudotEngineActionGUID != null)
+            {
+                AssetClient assetClient = integrationContext.getAssetClient();
+
+                ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
+
+                actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+                assetClient.addActionTarget(baudotEngineActionGUID,
+                                            notificationTypeGUID,
+                                            assetClient.getMakeAnchorOptions(false),
+                                            actionTargetProperties);
+            }
+            else // save for when Baudot is running
+            {
+                notificationWatchdogTargets.add(notificationTarget);
+            }
+
+            return notificationTypeGUID;
         }
-
-        NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
-
-        /*
-         * Only link note log to leaf products.
-         */
-        if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
+        else
         {
-            notificationSubscriberProperties.setLabel("community notifications");
-            notificationSubscriberProperties.setDescription("A note log collects the notifications from the Baudot Subscription Manager based on activity around notification type: " + notificationTypeGUID);
-
-            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
+            return notificationTypeElement.getElementHeader().getGUID();
         }
-
-        /*
-         * Every product has a product manager.  They receive notifications to enable monitoring of product activity.
-         */
-        if (productManagerGUID != null)
-        {
-            notificationSubscriberProperties.setLabel("product manager notifications");
-            notificationSubscriberProperties.setDescription("Notifications from the Baudot Subscription Manager related to notification type: " + notificationTypeGUID + " are sent to the product manager.");
-
-            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
-        }
-
-        /*
-         * Save details of the notification type so that it is processed by the Baudot Subscription Manager.
-         */
-        NewActionTarget notificationTarget = new NewActionTarget();
-
-        notificationTarget.setActionTargetGUID(notificationTypeGUID);
-        notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-        if (baudotEngineActionGUID != null)
-        {
-            AssetClient assetClient = integrationContext.getAssetClient();
-
-            ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
-
-            actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-            assetClient.addActionTarget(baudotEngineActionGUID,
-                                        notificationTypeGUID,
-                                        assetClient.getMakeAnchorOptions(false),
-                                        actionTargetProperties);
-        }
-        else // save for when Baudot is running
-        {
-            notificationWatchdogTargets.add(notificationTarget);
-        }
-
-        return notificationTypeGUID;
     }
 
 
@@ -1040,163 +1063,170 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
     {
-        /*
-         * The subscription notification watchdog manager is running.  Now build the governance action process that is
-         * used to add a new subscription of this type.
-         */
-        Map<String, String> additionalRequestParameters = new HashMap<>();
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
 
-        additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), productSubscriptionDefinition.getDisplayName());
-        additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier());
-        additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
+        String processQualifiedName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
 
-        String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier(),
-                                                                                                      "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productName,
-                                                                                                      productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
-                                                                                                      GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
-                                                                                                      additionalRequestParameters,
-                                                                                                      productGUID,
-                                                                                                      Collections.singletonList(productGUID));
+        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationManagerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
 
-        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
-        List<String> actionTargetNames = new ArrayList<>();
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       productGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       productAssetGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName());
-
-        if (licenseTypeGUID != null)
+        if (subscriptionGovernanceActionProcessElement == null)
         {
+            /*
+             * The subscription notification watchdog manager is running.  Now build the governance action process
+             * used to add a new subscription of this type.
+             */
+            Map<String, String> additionalRequestParameters = new HashMap<>();
+
+            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), productSubscriptionDefinition.getDisplayName());
+            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier());
+            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
+
+            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(processQualifiedName,
+                                                                                                          "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productName,
+                                                                                                          productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
+                                                                                                          GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                                                                                                          additionalRequestParameters,
+                                                                                                          productGUID,
+                                                                                                          Collections.singletonList(productGUID));
+
+            OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+            List<String>      actionTargetNames = new ArrayList<>();
+
             openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                            governanceActionProcessGUID,
-                                                           licenseTypeGUID,
+                                                           productGUID,
                                                            null,
                                                            null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
-        }
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()); // always remove
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
 
-
-        if (notificationTypeGUID != null)
-        {
             openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                            governanceActionProcessGUID,
-                                                           notificationTypeGUID,
+                                                           productAssetGUID,
                                                            null,
                                                            null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()));
-        }
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()); // always remove
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName());
 
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       productManagerGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       governanceDefinitions.get(productSubscriptionDefinition.getServiceLevelObjective().getQualifiedName()),
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName());
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceActionTypeGUID(),
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName());
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceActionTypeGUID(),
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
-        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName());
-
-        /*
-         * Remove the specification properties for the action targets that have already been supplied.  This means
-         * that the remaining specification properties cover the ones that the caller needs to supply.
-         */
-        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
-
-        OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, governanceDefinitionClient.getGetOptions());
-
-        if (governanceActionProcess.getSpecificationProperties() != null)
-        {
-            for (RelatedMetadataElementSummary specificationProperties : governanceActionProcess.getSpecificationProperties())
+            if (licenseTypeGUID != null)
             {
-                if ((specificationProperties != null) && (specificationProperties.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                               governanceActionProcessGUID,
+                                                               licenseTypeGUID,
+                                                               null,
+                                                               null,
+                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
+            }
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()); // always remove
+
+
+            if (notificationTypeGUID != null)
+            {
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                               governanceActionProcessGUID,
+                                                               notificationTypeGUID,
+                                                               null,
+                                                               null,
+                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()));
+            }
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()); // always remove
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           productManagerGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           governanceDefinitions.get(productSubscriptionDefinition.getServiceLevelObjective().getQualifiedName()),
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName());
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceActionTypeGUID(),
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName());
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                           governanceActionProcessGUID,
+                                                           GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
+            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName());
+
+            /*
+             * Remove the specification properties for the action targets that have already been supplied.  This means
+             * that the remaining specification properties cover the ones that the caller needs to supply.
+             */
+            GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
+
+            OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, governanceDefinitionClient.getGetOptions());
+
+            if (governanceActionProcess.getSpecificationProperties() != null)
+            {
+                for (RelatedMetadataElementSummary specificationProperties : governanceActionProcess.getSpecificationProperties())
                 {
-                    if (SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
+                    if ((specificationProperties != null) && (specificationProperties.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
                     {
-                        if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
+                        if (SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
                         {
-                            if (actionTargetNames.contains(specificationPropertyValueProperties.getPreferredValue()))
+                            if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
                             {
-                                openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                                if (actionTargetNames.contains(specificationPropertyValueProperties.getPreferredValue()))
+                                {
+                                    openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                                }
                             }
                         }
-                    }
-                    else if (SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
-                    {
-                        if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
+                        else if (SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
                         {
-                            if (additionalRequestParameters.containsKey(specificationPropertyValueProperties.getPreferredValue()))
+                            if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
                             {
-                                openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                                if (additionalRequestParameters.containsKey(specificationPropertyValueProperties.getPreferredValue()))
+                                {
+                                    openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        /*
-         * Link the new governance action process to the product.
-         */
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+            /*
+             * Link the new governance action process to the product.
+             */
+            ResourceListProperties resourceListProperties = new ResourceListProperties();
 
-        ResourceListProperties resourceListProperties = new ResourceListProperties();
+            resourceListProperties.setResourceUse(ResourceUse.CREATE_SUBSCRIPTION.getResourceUse());
+            resourceListProperties.setDescription(ResourceUse.CREATE_SUBSCRIPTION.getDescription());
 
-        resourceListProperties.setResourceUse(ResourceUse.CREATE_SUBSCRIPTION.getResourceUse());
-        resourceListProperties.setDescription(ResourceUse.CREATE_SUBSCRIPTION.getDescription());
+            classificationManagerClient.addResourceListToElement(productGUID,
+                                                                 governanceActionProcessGUID,
+                                                                 classificationManagerClient.getMakeAnchorOptions(false),
+                                                                 resourceListProperties);
 
-        classificationManagerClient.addResourceListToElement(productGUID,
-                                                             governanceActionProcessGUID,
-                                                             classificationManagerClient.getMakeAnchorOptions(false),
-                                                             resourceListProperties);
-
-        /*
-         * Link the new governance action process to the glossary term for more explanation.
-         */
-        if (productSubscriptionDefinition.getGlossaryTerm() != null)
-        {
-            String glossaryTermGUID = glossaryTerms.get(productSubscriptionDefinition.getGlossaryTerm().getQualifiedName());
-            if (glossaryTermGUID != null)
+            /*
+             * Link the new governance action process to the glossary term for more explanation.
+             */
+            if (productSubscriptionDefinition.getGlossaryTerm() != null)
             {
-                classificationManagerClient.setupSemanticAssignment(governanceActionProcessGUID,
-                                                                    glossaryTermGUID,
-                                                                    null,
-                                                                    classificationManagerClient.getMakeAnchorOptions(false));
+                String glossaryTermGUID = glossaryTerms.get(productSubscriptionDefinition.getGlossaryTerm().getQualifiedName());
+                if (glossaryTermGUID != null)
+                {
+                    classificationManagerClient.setupSemanticAssignment(governanceActionProcessGUID,
+                                                                        glossaryTermGUID,
+                                                                        null,
+                                                                        classificationManagerClient.getMakeAnchorOptions(false));
+                }
             }
         }
     }
@@ -1220,266 +1250,279 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         final String methodName = "addProductAsset";
 
-        AssetClient assetClient = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
-
-        String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
-
-        TabularDataSetProperties dataSetProperties = new TabularDataSetProperties();
-
-        if (productDefinition.getAssetTypeName() != null)
+        if (productDefinition.getConnectorProvider() != null)
         {
-            dataSetProperties.setTypeName(productDefinition.getAssetTypeName());
-        }
+            // todo support updates to the asset
+            AssetClient                 assetClient                 = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
+            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
 
-        dataSetProperties.setQualifiedName(qualifiedName);
-        dataSetProperties.setDisplayName(productDefinition.getAssetIdentifier() + " for " + productDefinition.getDisplayName());
-        dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
-        dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
 
-        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+            OpenMetadataRootElement assetElement = classificationManagerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
 
-        newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setAnchorGUID(productGUID);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentGUID(productGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-
-        CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
-        collectionMembershipProperties.setMembershipType("product data set");
-
-       String assetGUID = assetClient.createAsset(newElementOptions,
-                                                   null,
-                                                   dataSetProperties,
-                                                   collectionMembershipProperties);
-
-        /*
-         * Add the "productized" keyword on the asset to identify assets that have been elevated to products.
-         */
-        SearchKeywordClient searchKeywordClient = integrationContext.getSearchKeywordClient();
-
-        SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
-        searchKeywordProperties.setDisplayName("productized");
-        searchKeywordProperties.setDescription("Asset " + assetGUID + "is a part of product " + productGUID + ".");
-
-        searchKeywordClient.addSearchKeywordToElement(assetGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);
-
-        /*
-         * Log new product
-         */
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 dataSetProperties.getTypeName(),
-                                                                                                 dataSetProperties.getDisplayName(),
-                                                                                                 assetGUID));
-
-        String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProvider());
-
-        if (connectorTypeGUID != null)
-        {
-            ConnectionClient connectionClient = integrationContext.getConnectionClient();
-            EndpointClient   endpointClient = integrationContext.getEndpointClient();
-
-            /*
-             * Set up the connection for the asset.
-             */
-            VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
-
-            connectionProperties.setQualifiedName(qualifiedName + "_connection");
-            connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
-            connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
-            connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-            connectionProperties.setUserId(integrationContext.getMyUserId());
-
-            Map<String, Object> connectionConfigurationProperties = new HashMap<>();
-            if (productDefinition.getConfigurationProperties() != null)
+            if (assetElement == null)
             {
-                connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
-            }
-            connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
-            connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
-            connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
+                TabularDataSetProperties dataSetProperties = new TabularDataSetProperties();
 
-            newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(assetGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+                if (productDefinition.getAssetTypeName() != null)
+                {
+                    dataSetProperties.setTypeName(productDefinition.getAssetTypeName());
+                }
 
-            String connectionGUID = connectionClient.createConnection(newElementOptions,
-                                                                      null,
-                                                                      connectionProperties,
-                                                                      null);
+                dataSetProperties.setQualifiedName(qualifiedName);
+                dataSetProperties.setDisplayName(productDefinition.getAssetIdentifier() + " for " + productDefinition.getDisplayName());
+                dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
+                dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
 
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                     connectionProperties.getTypeName(),
-                                                                                                     connectionProperties.getDisplayName(), connectionGUID));
+                NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
-            /*
-             * Pass on all the secrets stores to the product asset.  These secret stores are set up
-             * initially in the content pack for this connector.
-             */
-            for (String purpose : secretsStoreConnectorMap.keySet())
-            {
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorGUID(productGUID);
                 newElementOptions.setParentAtEnd1(true);
-                newElementOptions.setParentGUID(connectionGUID);
-                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
+                newElementOptions.setParentGUID(productGUID);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+                CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
+                collectionMembershipProperties.setMembershipType("product data set");
+
+                String assetGUID = assetClient.createAsset(newElementOptions,
+                                                           null,
+                                                           dataSetProperties,
+                                                           collectionMembershipProperties);
 
                 /*
-                 * Get secrets store connection used by this connector
+                 * Add the "productized" keyword on the asset to identify assets that have been elevated to products.
                  */
-                Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
-                String     secretsStoreConnectionGUID = secretsConnectorConnection.getGUID();
+                SearchKeywordClient searchKeywordClient = integrationContext.getSearchKeywordClient();
 
-                if (secretsStoreConnectionGUID == null)
+                SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
+                searchKeywordProperties.setDisplayName("productized");
+                searchKeywordProperties.setDescription("Asset " + assetGUID + "is a part of product " + productGUID + ".");
+
+                searchKeywordClient.addSearchKeywordToElement(assetGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);
+
+                /*
+                 * Log new product
+                 */
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                         dataSetProperties.getTypeName(),
+                                                                                                         dataSetProperties.getDisplayName(),
+                                                                                                         assetGUID));
+
+                String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProvider());
+
+                if (connectorTypeGUID != null)
                 {
-                    /*
-                     * Create the secret store connection from this connector's secrets store connection.
-                     */
-                    ConnectionProperties secretsStoreConnection = new ConnectionProperties();
-                    secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
-                    secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
-                    secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
-                    secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
+                    ConnectionClient connectionClient = integrationContext.getConnectionClient();
+                    EndpointClient   endpointClient   = integrationContext.getEndpointClient();
 
-                    if (secretsConnectorConnection.getConfigurationProperties() != null)
+                    /*
+                     * Set up the connection for the asset.
+                     */
+                    VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
+
+                    connectionProperties.setQualifiedName(qualifiedName + "_connection");
+                    connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
+                    connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
+                    connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+                    connectionProperties.setUserId(integrationContext.getMyUserId());
+
+                    Map<String, Object> connectionConfigurationProperties = new HashMap<>();
+                    if (productDefinition.getConfigurationProperties() != null)
                     {
-                        Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
-                        secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                        connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
                     }
+                    connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
+                    connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
+                    connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
 
-                    /*
-                     * Embed secrets store connection in product connection.
-                     */
-                    EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
-                    embeddedConnectionProperties.setDisplayName(purpose);
+                    newElementOptions.setParentAtEnd1(true);
+                    newElementOptions.setParentGUID(assetGUID);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
 
-                    secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
+                    String connectionGUID = connectionClient.createConnection(newElementOptions,
+                                                                              null,
+                                                                              connectionProperties,
+                                                                              null);
 
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                             secretsStoreConnection.getTypeName(),
-                                                                                                             secretsStoreConnection.getDisplayName(),
-                                                                                                             secretsStoreConnectionGUID));
+                                                                                                             connectionProperties.getTypeName(),
+                                                                                                             connectionProperties.getDisplayName(), connectionGUID));
 
                     /*
-                     * Link connector type to connection.
+                     * Pass on all the secrets stores to the product asset.  These secret stores are set up
+                     * initially in the content pack for this connector.
                      */
-                    connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
-                                                                 secretsConnectorConnection.getConnectorType().getGUID(),
+                    for (String purpose : secretsStoreConnectorMap.keySet())
+                    {
+                        newElementOptions.setParentAtEnd1(true);
+                        newElementOptions.setParentGUID(connectionGUID);
+                        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
+
+                        /*
+                         * Get secrets store connection used by this connector
+                         */
+                        Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
+                        String     secretsStoreConnectionGUID = secretsConnectorConnection.getGUID();
+
+                        if (secretsStoreConnectionGUID == null)
+                        {
+                            /*
+                             * Create the secret store connection from this connector's secrets store connection.
+                             */
+                            ConnectionProperties secretsStoreConnection = new ConnectionProperties();
+                            secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
+                            secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
+                            secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
+                            secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+                            if (secretsConnectorConnection.getConfigurationProperties() != null)
+                            {
+                                Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
+                                secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                            }
+
+                            /*
+                             * Embed secrets store connection in product connection.
+                             */
+                            EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                            embeddedConnectionProperties.setDisplayName(purpose);
+
+                            secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
+
+                            auditLog.logMessage(methodName,
+                                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                     secretsStoreConnection.getTypeName(),
+                                                                                                                     secretsStoreConnection.getDisplayName(),
+                                                                                                                     secretsStoreConnectionGUID));
+
+                            /*
+                             * Link connector type to connection.
+                             */
+                            connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
+                                                                         secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                                         null);
+
+                            auditLog.logMessage(methodName,
+                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                        secretsStoreConnection.getTypeName(),
+                                                                                                        secretsStoreConnectionGUID,
+                                                                                                        OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                                        secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                                        OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+
+                            /*
+                             * Add secrets store location as an endpoint.
+                             */
+                            EndpointProperties secretsStoreEndpoint = new EndpointProperties();
+                            secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
+                            secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
+                            secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
+
+                            newElementOptions.setParentAtEnd1(true);
+                            newElementOptions.setParentGUID(secretsStoreConnectionGUID);
+                            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+                            String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
+
+                            auditLog.logMessage(methodName,
+                                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                     secretsStoreEndpoint.getTypeName(),
+                                                                                                                     secretsStoreEndpoint.getDisplayName(),
+                                                                                                                     secretsStoreEndpointGUID));
+
+                            auditLog.logMessage(methodName,
+                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                        secretsStoreConnection.getTypeName(),
+                                                                                                        secretsStoreConnectionGUID,
+                                                                                                        secretsStoreEndpoint.getTypeName(),
+                                                                                                        secretsStoreEndpointGUID,
+                                                                                                        OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+                        }
+                        else
+                        {
+                            /*
+                             * Embed this connector's secrets store connection in product asset connection.
+                             */
+                            EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                            embeddedConnectionProperties.setDisplayName(purpose);
+
+                            connectionClient.linkEmbeddedConnection(connectionGUID,
+                                                                    secretsStoreConnectionGUID,
+                                                                    new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                                    embeddedConnectionProperties);
+
+                            auditLog.logMessage(methodName,
+                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                        connectionProperties.getTypeName(),
+                                                                                                        connectionGUID,
+                                                                                                        OpenMetadataType.CONNECTION.typeName,
+                                                                                                        secretsStoreConnectionGUID,
+                                                                                                        OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
+                        }
+                    }
+
+
+                    /*
+                     * Connect the connection to the connectorType
+                     */
+                    connectionClient.linkConnectionConnectorType(connectionGUID,
+                                                                 connectorTypeGUID,
                                                                  new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                                  null);
 
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                secretsStoreConnection.getTypeName(),
-                                                                                                secretsStoreConnectionGUID,
+                                                                                                connectionProperties.getTypeName(),
+                                                                                                connectionGUID,
                                                                                                 OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                                secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                                connectorTypeGUID,
                                                                                                 OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
 
                     /*
-                     * Add secrets store location as an endpoint.
+                     * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
                      */
-                    EndpointProperties secretsStoreEndpoint = new EndpointProperties();
-                    secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
-                    secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
-                    secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
+                    EndpointProperties endpointProperties = new EndpointProperties();
+
+                    endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
+                    endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+                    endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
+                    endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+                    endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
 
                     newElementOptions.setParentAtEnd1(true);
-                    newElementOptions.setParentGUID(secretsStoreConnectionGUID);
+                    newElementOptions.setParentGUID(connectionGUID);
                     newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
 
-                    String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
+                    endpointClient = integrationContext.getEndpointClient();
+
+                    String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
 
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                             secretsStoreEndpoint.getTypeName(),
-                                                                                                             secretsStoreEndpoint.getDisplayName(),
-                                                                                                             secretsStoreEndpointGUID));
-
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                secretsStoreConnection.getTypeName(),
-                                                                                                secretsStoreConnectionGUID,
-                                                                                                secretsStoreEndpoint.getTypeName(),
-                                                                                                secretsStoreEndpointGUID,
-                                                                                                OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-                }
-                else
-                {
-                    /*
-                     * Embed this connector's secrets store connection in product asset connection.
-                     */
-                    EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
-                    embeddedConnectionProperties.setDisplayName(purpose);
-
-                    connectionClient.linkEmbeddedConnection(connectionGUID,
-                                                            secretsStoreConnectionGUID,
-                                                            new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                            embeddedConnectionProperties);
+                                                                                                             endpointProperties.getTypeName(),
+                                                                                                             endpointProperties.getDisplayName(),
+                                                                                                             endpointGUID));
 
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
                                                                                                 connectionProperties.getTypeName(),
                                                                                                 connectionGUID,
-                                                                                                OpenMetadataType.CONNECTION.typeName,
-                                                                                                secretsStoreConnectionGUID,
-                                                                                                OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
+                                                                                                endpointProperties.getTypeName(),
+                                                                                                endpointGUID,
+                                                                                                OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
                 }
+
+                return assetGUID;
             }
 
-
-            /*
-             * Connect the connection to the connectorType
-             */
-            connectionClient.linkConnectionConnectorType(connectionGUID,
-                                                         connectorTypeGUID,
-                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                         null);
-
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                        connectionProperties.getTypeName(),
-                                                                                        connectionGUID,
-                                                                                        OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                        connectorTypeGUID,
-                                                                                        OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
-
-            /*
-             * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
-             */
-            EndpointProperties endpointProperties = new EndpointProperties();
-
-            endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
-            endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
-            endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
-            endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-            endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
-
-            newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(connectionGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-            endpointClient = integrationContext.getEndpointClient();
-
-            String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
-
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                     endpointProperties.getTypeName(),
-                                                                                                     endpointProperties.getDisplayName(),
-                                                                                                     endpointGUID));
-
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                        connectionProperties.getTypeName(),
-                                                                                        connectionGUID,
-                                                                                        endpointProperties.getTypeName(),
-                                                                                        endpointGUID,
-                                                                                        OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+            return assetElement.getElementHeader().getGUID();
         }
 
-
-        return assetGUID;
+        return null;
     }
 
 
@@ -1494,8 +1537,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private String getConnectorTypeGUID(ConnectorProvider connectorProvider) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         String connectorTypeGUID = null;
 
@@ -1660,7 +1703,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                    null);
 
         /*
-         * This root collection gathers all of the product catalogs together.  It is defined in the core content pack.
+         * This root collection gathers all the product catalogs together.  It is defined in the core content pack.
          */
         final String rootCollectionGUID = "dcec6ddb-317e-4c64-907e-be508ceba6d9";
         CollectionClient collectionClient = integrationContext.getCollectionClient();
@@ -1678,7 +1721,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                 null);
 
         /*
-         * Now set up all of the other folders.
+         * Now set up all the other folders.
          */
         for (ProductFolderDefinition productFolderDefinition : ProductFolderDefinition.values())
         {
@@ -1751,13 +1794,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         Map<String, ClassificationProperties> initialClassifications = null;
 
-        if (productFolderDefinition.getClassificationName() != null)
-        {
-            initialClassifications = new HashMap<>();
-
-            initialClassifications.put(productFolderDefinition.getClassificationName(), null);
-        }
-
         NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
 
@@ -1774,6 +1810,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         else
         {
             newElementOptions.setIsOwnAnchor(true);
+            initialClassifications = getInitialClassificationProperties(null);
+        }
+
+        if (productFolderDefinition.getClassificationName() != null)
+        {
+            if (initialClassifications == null)
+            {
+                initialClassifications = new HashMap<>();
+            }
+
+            initialClassifications.put(productFolderDefinition.getClassificationName(), null);
         }
 
         String collectionGUID = collectionClient.createCollection(newElementOptions,
@@ -1791,7 +1838,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Add all of the defined terms to the glossary at the requested folder.
+     * Add all defined terms to the glossary at the requested folder.
      *
      * @return map of glossary term qualified names to GUIDs
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -1871,6 +1918,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         NewElementOptions newElementOptions = new NewElementOptions(glossaryTermClient.getMetadataSourceOptions());
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
 
+        Map<String, ClassificationProperties> initialClassifications = null;
+
         if (glossaryTermDefinition.getFolder() != null)
         {
             String parentGUID = productFolders.get(glossaryTermDefinition.getFolder().getQualifiedName());
@@ -1884,10 +1933,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         else
         {
             newElementOptions.setIsOwnAnchor(true);
+            initialClassifications = getInitialClassificationProperties(null);
         }
 
         String glossaryTermGUID = glossaryTermClient.createGlossaryTerm(newElementOptions,
-                                                                        null,
+                                                                        initialClassifications,
                                                                         glossaryTermProperties,
                                                                         null);
 
@@ -1902,7 +1952,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Add all of the defined communities.
+     * Add all the defined communities.
      *
      * @return map of qualified names to GUIDs
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -1994,7 +2044,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
 
         String communityGUID = communityClient.createCommunity(newElementOptions,
-                                                               null,
+                                                               this.getInitialClassificationProperties(productCommunityDefinition.zoneMembership()),
                                                                communityProperties,
                                                                assignmentScopeProperties);
 
@@ -2134,7 +2184,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
     /**
      * Return the unique identifier of the data field either by retrieving it from the metadata
-     * repository or, if that fails, creating a new one.
+     * repository or, if that fails, creating a new one.  Note, all data fields are visible,
+     * even if the products using them are restricted to prevent duplicates being created due to lack of visibility.
      *
      * @param dataFieldDefinition description of the data field
      * @return unique identifier (guid)
@@ -2182,6 +2233,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         dataFieldProperties.setDisplayName(dataFieldDefinition.getDisplayName());
         dataFieldProperties.setDescription(dataFieldDefinition.getDescription());
         dataFieldProperties.setDataType(dataFieldDefinition.getDataType().getDisplayName());
+        dataFieldProperties.setUnits(dataFieldDefinition.getUnits());
+        dataFieldProperties.setIsNullable(dataFieldDefinition.isNullable());
         dataFieldProperties.setDefaultValue(dataFieldDefinition.getDefaultValue());
         dataFieldProperties.setNamePatterns(List.of(dataFieldDefinition.getNamePattern()));
 
@@ -2235,7 +2288,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Add all of the defined terms to the glossary at the requested folder.
+     * Add all the defined governance definitions.
      *
      * @return map of governance definition qualified names to GUIDs
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -2356,7 +2409,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         newElementOptions.setIsOwnAnchor(true);
 
         String governanceDefinitionGUID = governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
-                                                                                                null,
+                                                                                                this.getInitialClassificationProperties(null),
                                                                                                 governanceDefinitionProperties,
                                                                                                 null);
 
@@ -2643,7 +2696,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         SolutionBlueprintProperties solutionBlueprintProperties = this.getSolutionBlueprintProperties(productSolutionBlueprint);
 
         String blueprintGUID = solutionBlueprintClient.createCollection(newElementOptions,
-                                                                        null,
+                                                                        this.getInitialClassificationProperties(null),
                                                                         solutionBlueprintProperties,
                                                                         null);
 
@@ -2767,7 +2820,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             actorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
 
             roleGUID = actorRoleClient.createActorRole(newElementOptions,
-                                                       null,
+                                                       this.getInitialClassificationProperties(null),
                                                        actorRoleProperties,
                                                        null);
 
@@ -2789,6 +2842,34 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         return roleGUID;
     }
 
+
+    /**
+     * Return the initial classification properties for an element.  It includes the
+     * zone membership classification.  If the zoneNames is null, the default "digital-products" zone is used.
+     *
+     * @param zoneNames list of zone names or null
+     * @return initial classification properties
+     */
+    private Map<String, ClassificationProperties> getInitialClassificationProperties(List<String> zoneNames)
+    {
+        Map<String, ClassificationProperties> classificationPropertiesMap = new HashMap<>();
+
+        ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
+
+        if (zoneNames != null)
+        {
+            zoneMembershipProperties.setZoneMembership(zoneNames);
+        }
+        else
+        {
+            zoneMembershipProperties.setZoneMembership(List.of(GovernanceZoneName.DIGITAL_PRODUCTS.getZoneName()));
+        }
+
+        classificationPropertiesMap.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                        zoneMembershipProperties);
+
+        return classificationPropertiesMap;
+    }
 
     /**
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).

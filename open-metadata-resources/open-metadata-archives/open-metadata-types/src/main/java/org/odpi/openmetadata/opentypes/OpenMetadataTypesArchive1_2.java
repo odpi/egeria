@@ -4,7 +4,6 @@ package org.odpi.openmetadata.opentypes;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -7786,7 +7785,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSE_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSE_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COVERAGE_START));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COVERAGE_END));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONDITIONS));
@@ -7873,7 +7872,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CERTIFICATE_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CERTIFICATE_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COVERAGE_START));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COVERAGE_END));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONDITIONS));

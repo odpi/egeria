@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
@@ -65,6 +66,9 @@ import java.util.*;
         )
 public class OMAGServerPlatform
 {
+    @Autowired( required = false )
+    public BuildProperties buildProperties;
+
     @Value("${strict.ssl:true}") // Default value is true
     Boolean strictSSL;
 
@@ -139,6 +143,13 @@ public class OMAGServerPlatform
         {
             log.info("Platform release: version 6.1-SNAPSHOT");
             log.info("Working directory is: " + System.getProperty("user.dir"));
+
+            if (buildProperties != null)
+            {
+                log.info("Build time: " + buildProperties.getTime());
+
+
+            }
 
             if (!strictSSL)
             {

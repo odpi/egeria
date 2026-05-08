@@ -6971,7 +6971,7 @@ public class OpenMetadataPropertyConverterBase
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.CERTIFICATE_GUID.name,
+                                                       OpenMetadataProperty.CERTIFICATE_ID.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7256,7 +7256,7 @@ public class OpenMetadataPropertyConverterBase
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.LICENSE_GUID.name,
+                                                       OpenMetadataProperty.LICENSE_ID.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -13219,7 +13219,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new CertificationProperties();
 
-                ((CertificationProperties)relationshipBeanProperties).setCertificateGUID(this.removeCertificateGUID(elementProperties));
+                ((CertificationProperties)relationshipBeanProperties).setCertificateId(this.removeCertificateGUID(elementProperties));
                 ((CertificationProperties)relationshipBeanProperties).setCoverageStart(this.removeCoverageStart(elementProperties));
                 ((CertificationProperties)relationshipBeanProperties).setCoverageEnd(this.removeCoverageEnd(elementProperties));
                 ((CertificationProperties)relationshipBeanProperties).setConditions(this.removeConditions(elementProperties));
@@ -13709,7 +13709,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new LicenseProperties();
 
-                ((LicenseProperties)relationshipBeanProperties).setLicenseGUID(this.removeLicenseGUID(elementProperties));
+                ((LicenseProperties)relationshipBeanProperties).setLicenseId(this.removeLicenseGUID(elementProperties));
                 ((LicenseProperties)relationshipBeanProperties).setCoverageStart(this.removeCoverageStart(elementProperties));
                 ((LicenseProperties)relationshipBeanProperties).setCoverageEnd(this.removeCoverageEnd(elementProperties));
                 ((LicenseProperties)relationshipBeanProperties).setConditions(this.removeConditions(elementProperties));

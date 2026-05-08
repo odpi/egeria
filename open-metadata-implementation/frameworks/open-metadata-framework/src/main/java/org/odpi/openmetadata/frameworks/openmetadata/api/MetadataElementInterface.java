@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * MetadataElementInterface provides an interface to the open metadata store.  This is part of the Open Survey Framework (OGF)
  * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
- * The interface supports search, maintenance of metadata elements, classifications and relationships.
+ * This interface supports search, maintenance of metadata elements, classifications, and relationships.
  */
 public interface MetadataElementInterface
 {
@@ -143,7 +143,7 @@ public interface MetadataElementInterface
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
      *
      * @param userId caller's userId
@@ -166,7 +166,7 @@ public interface MetadataElementInterface
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
      *
      * @param userId caller's userId

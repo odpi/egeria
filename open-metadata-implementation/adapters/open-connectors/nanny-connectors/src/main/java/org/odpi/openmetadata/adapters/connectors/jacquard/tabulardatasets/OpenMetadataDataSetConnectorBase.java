@@ -20,15 +20,22 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
@@ -427,12 +434,37 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                                                   List<String>  recordValues)
     {
         if ((ProductDataFieldDefinition.GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.LOCATION_GUID.getDisplayName().equals(columnName)))
+                (ProductDataFieldDefinition.ACTION_REQUEST_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ACTION_TARGET_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ANNOTATION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ASSET_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.CERTIFICATION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.ENGINE_ACTION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.EXCEPTION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.EXCEPTION_TYPE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.LICENSE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.LICENSE_TYPE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.LOCATION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.PROFILE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.PROJECT_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.SECRETS_COLLECTION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.SECRETS_STORE_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.SEMANTIC_TERM_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.SURVEY_REPORT_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.SURVEY_SUBJECT_GUID.getDisplayName().equals(columnName)))
         {
             recordValues.add(elementHeader.getGUID());
             return true;
         }
-        else if (ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME.getDisplayName().equals(columnName))
+        else if ((ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.ACTION_TARGET_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.ANNOTATION_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.ASSET_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.PROFILE_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME.getDisplayName().equals(columnName)))
         {
             recordValues.add(elementHeader.getType().getTypeName());
             return true;
@@ -454,18 +486,181 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
             recordValues.add(Long.toString(updateTime.getTime()));
             return true;
         }
-        else if (ProductDataFieldDefinition.LOCATION_KIND.getDisplayName().equals(columnName))
+        else  if (elementHeader.getLocationKinds() != null)
         {
-            if (elementHeader.getLocationKinds() != null)
+            for (ElementClassification locationKind : elementHeader.getLocationKinds())
             {
-                for (ElementClassification locationKind : elementHeader.getLocationKinds())
+                if (ProductDataFieldDefinition.LOCATION_KIND.getDisplayName().equals(columnName))
                 {
                     recordValues.add(locationKind.getClassificationName());
                     return true;
                 }
+                else if (locationKind.getClassificationProperties() instanceof FixedLocationProperties fixedLocationProperties)
+                {
+                    if (ProductDataFieldDefinition.LOCATION_COORDINATES.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(fixedLocationProperties.getCoordinates());
+                        return true;
+                    }
+                    else if (ProductDataFieldDefinition.LOCATION_MAP_PROJECTION.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(fixedLocationProperties.getMapProjection());
+                        return true;
+                    }
+                    else if (ProductDataFieldDefinition.LOCATION_POSTAL_ADDRESS.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(fixedLocationProperties.getPostalAddress());
+                        return true;
+                    }
+                }
+                else if (locationKind.getClassificationProperties() instanceof CyberLocationProperties cyberLocationProperties)
+                {
+                    if (ProductDataFieldDefinition.NETWORK_ADDRESS.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(cyberLocationProperties.getNetworkAddress());
+                        return true;
+                    }
+                }
             }
         }
-
+        else if (ProductDataFieldDefinition.OWNER_GUID.getDisplayName().equals(columnName))
+        {
+            if ((elementHeader.getOwnership() != null) && (elementHeader.getOwnership().getClassificationProperties() instanceof OwnershipProperties ownershipProperties))
+            {
+                recordValues.add(ownershipProperties.getOwner());
+                return true;
+            }
+        }
+        else if (ProductDataFieldDefinition.ORIGIN_ORGANIZATION_GUID.getDisplayName().equals(columnName))
+        {
+            if ((elementHeader.getDigitalResourceOrigin() != null) && (elementHeader.getDigitalResourceOrigin().getClassificationProperties() instanceof DigitalResourceOriginProperties digitalResourceOriginProperties))
+            {
+                recordValues.add(digitalResourceOriginProperties.getOrganization());
+                return true;
+            }
+        }
+        else if (ProductDataFieldDefinition.ORIGIN_BUSINESS_CAPABILITY_GUID.getDisplayName().equals(columnName))
+        {
+            if ((elementHeader.getDigitalResourceOrigin() != null) && (elementHeader.getDigitalResourceOrigin().getClassificationProperties() instanceof DigitalResourceOriginProperties digitalResourceOriginProperties))
+            {
+                recordValues.add(digitalResourceOriginProperties.getBusinessCapability());
+                return true;
+            }
+        }
+        else if ((elementHeader.getSecurityListMembership() != null) && (elementHeader.getSecurityListMembership().getClassificationProperties() instanceof SecurityListMembershipProperties securityListMembershipProperties))
+        {
+            if (ProductDataFieldDefinition.SECURITY_ROLES.getDisplayName().equals(columnName))
+            {
+                if (securityListMembershipProperties.getSecurityRoles() != null)
+                {
+                    recordValues.add(securityListMembershipProperties.getSecurityRoles().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.SECURITY_GROUPS.getDisplayName().equals(columnName))
+            {
+                if (securityListMembershipProperties.getSecurityGroups() != null)
+                {
+                    recordValues.add(securityListMembershipProperties.getSecurityGroups().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+            }
+        }
+        else if ((elementHeader.getUserAccountProfile() != null) && (elementHeader.getUserAccountProfile().getClassificationProperties() instanceof UserAccountProfileProperties userAccountProfileProperties))
+        {
+            if (ProductDataFieldDefinition.USER_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getUserAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.EMPLOYEE_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getEmployeeAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CONTRACTOR_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getContractorAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.EXTERNAL_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getExternalAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.DIGITAL_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getDigitalAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.ACTIVE_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getActiveAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.EXPIRED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getExpiredAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LOCKED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getLockedAccountCount()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.DISABLED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(userAccountProfileProperties.getDisabledAccountCount()));
+                return true;
+            }
+        }
+        else if ((elementHeader.getZoneMembershipProfile() != null) && (elementHeader.getZoneMembershipProfile().getClassificationProperties() instanceof ZoneMembershipProfileProperties zoneMembershipProfileProperties))
+        {
+            if (ProductDataFieldDefinition.TOTAL_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(zoneMembershipProfileProperties.getTotalMembership()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.ANCHORED_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(zoneMembershipProfileProperties.getAnchoredTotalMembership()));
+                return true;
+            }
+            else if (ProductDataFieldDefinition.ALL_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
+            {
+                recordValues.add(Long.toString(zoneMembershipProfileProperties.getAllTotalMembership()));
+                return true;
+            }
+        }
+        else if ((elementHeader.getZoneMembership() != null) && (elementHeader.getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties))
+        {
+            if (zoneMembershipProperties.getZoneMembership() != null)
+            {
+                recordValues.add(zoneMembershipProperties.getZoneMembership().toString());
+            }
+            else
+            {
+                recordValues.add(null);
+            }
+        }
+        else if ((elementHeader.getAnchor() != null) && (elementHeader.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
+        {
+            if (anchorsProperties.getZoneMembership() != null)
+            {
+                recordValues.add(anchorsProperties.getZoneMembership().toString());
+            }
+            else
+            {
+                recordValues.add(null);
+            }
+        }
 
         return false;
     }
@@ -485,12 +680,25 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
     {
         if (openMetadataRootProperties instanceof ReferenceableProperties referenceableProperties)
         {
-            if (ProductDataFieldDefinition.QUALIFIED_NAME.getDisplayName().equals(columnName))
+            if (ProductDataFieldDefinition.ADDITIONAL_PROPERTIES.getDisplayName().equals(columnName))
+            {
+                if (referenceableProperties.getAdditionalProperties() != null)
+                {
+                    recordValues.add(referenceableProperties.getAdditionalProperties().toString());
+                }
+                else
+                {
+                    recordValues.add("");
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.QUALIFIED_NAME.getDisplayName().equals(columnName))
             {
                 recordValues.add(referenceableProperties.getQualifiedName());
                 return true;
             }
-            else if (ProductDataFieldDefinition.DISPLAY_NAME.getDisplayName().equals(columnName))
+            else if ((ProductDataFieldDefinition.DISPLAY_NAME.getDisplayName().equals(columnName)) ||
+                     (ProductDataFieldDefinition.PROFILE_NAME.getDisplayName().equals(columnName)))
             {
                 recordValues.add(referenceableProperties.getDisplayName());
                 return true;
@@ -509,6 +717,30 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
             {
                 recordValues.add(referenceableProperties.getIdentifier());
                 return true;
+            }
+            else if (ProductDataFieldDefinition.VERSION_IDENTIFIER.getDisplayName().equals(columnName))
+            {
+                recordValues.add(referenceableProperties.getVersionIdentifier());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.URL.getDisplayName().equals(columnName))
+            {
+                recordValues.add(referenceableProperties.getURL());
+                return true;
+            }
+            else if (referenceableProperties instanceof ActorProperties actorProperties)
+            {
+                if (actorProperties instanceof UserIdentityProperties userIdentityProperties)
+                {
+                    if (ProductDataFieldDefinition.USER_ID.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(userIdentityProperties.getUserId());
+                    }
+                    else if (ProductDataFieldDefinition.DISTINGUISHED_NAME.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(userIdentityProperties.getDistinguishedName());
+                    }
+                }
             }
             else if (referenceableProperties instanceof AuthoredReferenceableProperties authoredReferenceableProperties)
             {
@@ -539,6 +771,43 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                         recordValues.add(null);
                     }
                     return true;
+                }
+                else if (referenceableProperties instanceof GovernanceDefinitionProperties governanceDefinitionProperties)
+                {
+                    if (ProductDataFieldDefinition.DOMAIN_IDENTIFIER.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(Integer.toString(governanceDefinitionProperties.getDomainIdentifier()));
+                        return true;
+                    }
+                    else if (ProductDataFieldDefinition.SUMMARY.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(governanceDefinitionProperties.getSummary());
+                        return true;
+                    }
+                    else if (ProductDataFieldDefinition.SCOPE.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(governanceDefinitionProperties.getScope());
+                        return true;
+                    }
+                    else if (ProductDataFieldDefinition.USAGE.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(governanceDefinitionProperties.getUsage());
+                        return true;
+                    }
+                    else if (governanceDefinitionProperties instanceof GovernanceControlProperties governanceControlProperties)
+                    {
+                        if (governanceControlProperties instanceof SecurityAccessControlProperties securityAccessControlProperties)
+                        {
+                            if (securityAccessControlProperties instanceof GovernanceZoneProperties governanceZoneProperties)
+                            {
+                                if (ProductDataFieldDefinition.CRITERIA.getDisplayName().equals(columnName))
+                                {
+                                    recordValues.add(governanceZoneProperties.getCriteria());
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
                 else if (authoredReferenceableProperties instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {
@@ -583,12 +852,18 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
             }
             else if (referenceableProperties instanceof AssetProperties assetProperties)
             {
-                if (ProductDataFieldDefinition.NAMESPACE_PATH.getDisplayName().equals(columnName))
+                if (ProductDataFieldDefinition.DEPLOYED_IMPLEMENTATION_TYPE.getDisplayName().equals(columnName))
+                {
+                    recordValues.add(assetProperties.getDeployedImplementationType());
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.NAMESPACE_PATH.getDisplayName().equals(columnName))
                 {
                     recordValues.add(assetProperties.getNamespacePath());
                     return true;
                 }
-                else if (ProductDataFieldDefinition.RESOURCE_NAME.getDisplayName().equals(columnName))
+                else if ((ProductDataFieldDefinition.RESOURCE_NAME.getDisplayName().equals(columnName)) ||
+                        (ProductDataFieldDefinition.SECRETS_COLLECTION_NAME.getDisplayName().equals(columnName)))
                 {
                     recordValues.add(assetProperties.getResourceName());
                     return true;
@@ -623,9 +898,276 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                         }
                         return true;
                     }
+                    else if (dataAssetProperties instanceof DataSetProperties dataSetProperties)
+                    {
+                        if (dataSetProperties instanceof ReportProperties reportProperties)
+                        {
+                            if (ProductDataFieldDefinition.PURPOSE.getDisplayName().equals(columnName))
+                            {
+                                recordValues.add(reportProperties.getPurpose());
+                            }
+                        }
+                        else if (dataSetProperties instanceof SecretsCollectionProperties secretsCollectionProperties)
+                        {
+                            if (ProductDataFieldDefinition.REFRESH_TIME_INTERVAL.getDisplayName().equals(columnName))
+                            {
+                                recordValues.add(Long.toString(secretsCollectionProperties.getRefreshTimeInterval()));
+                            }
+                        }
+                    }
+                }
+                else if (assetProperties instanceof ProcessProperties processProperties)
+                {
+                    if (ProductDataFieldDefinition.EXPECTED_BEHAVIOUR.getDisplayName().equals(columnName))
+                    {
+                        recordValues.add(processProperties.getExpectedBehaviour());
+                    }
+                }
+
+            }
+
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extracts the record values from the element properties based on the specified column name.
+     *
+     * @param relationshipBeanProperties properties object
+     * @param columnName name of column to extract
+     * @param recordValues array of values to append to
+     * @return true if the value was successfully extracted, false otherwise
+     */
+    protected boolean getElementRecordValue(RelationshipBeanProperties relationshipBeanProperties,
+                                            String                     columnName,
+                                            List<String>               recordValues)
+    {
+        if (relationshipBeanProperties instanceof ActionTargetProperties actionTargetProperties)
+        {
+            if (ProductDataFieldDefinition.ACTION_TARGET_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(actionTargetProperties.getActionTargetName());
+                return true;
+            }
+        }
+        else if (relationshipBeanProperties instanceof CertificationProperties certificationProperties)
+        {
+            if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
+            {
+                if (certificationProperties.getCoverageStart() != null)
+                {
+                    recordValues.add(certificationProperties.getCoverageStart().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.COVERAGE_END.getDisplayName().equals(columnName))
+            {
+                if (certificationProperties.getCoverageEnd() != null)
+                {
+                    recordValues.add(certificationProperties.getCoverageEnd().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CERTIFIED_BY.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCertifiedBy());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CERTIFIED_BY_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCertifiedByTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CERTIFIED_BY_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCertifiedByPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCustodian());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCustodianTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getCustodianPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.RECIPIENT.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getRecipient());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.RECIPIENT_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getRecipientTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.RECIPIENT_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getRecipientPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.NOTES.getDisplayName().equals(columnName))
+            {
+                recordValues.add(certificationProperties.getNotes());
+                return true;
+            }
+        }
+        else if (relationshipBeanProperties instanceof LabeledRelationshipProperties labeledRelationshipProperties)
+        {
+            if (ProductDataFieldDefinition.LABEL.getDisplayName().equals(columnName))
+            {
+                recordValues.add(labeledRelationshipProperties.getLabel());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.DESCRIPTION.getDisplayName().equals(columnName))
+            {
+                recordValues.add(labeledRelationshipProperties.getDescription());
+                return true;
+            }
+
+            if (labeledRelationshipProperties instanceof ExceptionProperties exceptionProperties)
+            {
+                if (ProductDataFieldDefinition.LAST_REVIEW_TIME.getDisplayName().equals(columnName))
+                {
+                    if (exceptionProperties.getLastReviewTime() != null)
+                    {
+                        recordValues.add(exceptionProperties.getLastReviewTime().toString());
+                    }
+                    else
+                    {
+                        recordValues.add(null);
+                    }
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.REVIEW_DATE.getDisplayName().equals(columnName))
+                {
+                    if (exceptionProperties.getReviewDate() != null)
+                    {
+                        recordValues.add(exceptionProperties.getReviewDate().toString());
+                    }
+                    else
+                    {
+                        recordValues.add(null);
+                    }
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.NOTES.getDisplayName().equals(columnName))
+                {
+                    recordValues.add(exceptionProperties.getNotes());
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.STEWARD.getDisplayName().equals(columnName))
+                {
+                    recordValues.add(exceptionProperties.getSteward());
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.STEWARD_TYPE_NAME.getDisplayName().equals(columnName))
+                {
+                    recordValues.add(exceptionProperties.getStewardTypeName());
+                    return true;
+                }
+                else if (ProductDataFieldDefinition.STEWARD_PROPERTY_NAME.getDisplayName().equals(columnName))
+                {
+                    recordValues.add(exceptionProperties.getStewardPropertyName());
+                    return true;
                 }
             }
         }
+        else if (relationshipBeanProperties instanceof LicenseProperties licenseProperties)
+        {
+            if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
+            {
+                if (licenseProperties.getCoverageStart() != null)
+                {
+                    recordValues.add(licenseProperties.getCoverageStart().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.COVERAGE_END.getDisplayName().equals(columnName))
+            {
+                if (licenseProperties.getCoverageEnd() != null)
+                {
+                    recordValues.add(licenseProperties.getCoverageEnd().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSED_BY.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicensedBy());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSED_BY_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicensedByTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSED_BY_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicensedByPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getCustodian());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getCustodianTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CUSTODIAN_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getCustodianPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSEE.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicensee());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSEE_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicenseeTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSEE_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getLicenseePropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.NOTES.getDisplayName().equals(columnName))
+            {
+                recordValues.add(licenseProperties.getNotes());
+                return true;
+            }
+        }
+
 
         return false;
     }
@@ -689,6 +1231,67 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                                                 error);
         }
     }
+
+
+    /**
+     * Convert the root element to a list of column values based on the data spec.
+     *
+     * @param relationshipSummary valid value that is a member of the valid value set.
+     * @return list of column value
+     * @throws ConnectorCheckedException an unexpected exception has occurred
+     */
+    protected List<String> getRecordValues(MetadataRelationshipSummary relationshipSummary) throws ConnectorCheckedException
+    {
+        final String methodName = "getRecordValues";
+
+        try
+        {
+            List<TabularColumnDescription> tabularColumnDescriptions = this.getColumnDescriptions();
+            List<String> recordValues = new ArrayList<>();
+
+            for (TabularColumnDescription tabularColumnDescription : tabularColumnDescriptions)
+            {
+                /*
+                 * If the property is not in the header, look in the properties.  If neither place throw and exception.
+                 */
+                if (! getElementHeaderRecordValue(relationshipSummary.getRelationshipHeader(), tabularColumnDescription.columnName(), recordValues))
+                {
+                    if (! getElementRecordValue(relationshipSummary.getRelationshipProperties(), tabularColumnDescription.columnName(), recordValues))
+                    {
+                        throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
+                                                                                                                      tabularColumnDescription.columnName()),
+                                                            this.getClass().getName(),
+                                                            methodName);
+                    }
+                }
+            }
+
+            return recordValues;
+        }
+        catch (ConnectorCheckedException error)
+        {
+            throw error;
+        }
+        catch (Exception error)
+        {
+            /*
+             * Probably a null pointer exception - no other exception is expected.
+             */
+            super.logRecord(methodName, TabularDataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()));
+
+            throw new ConnectorCheckedException(TabularDataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
+    }
+
 
 
     /**

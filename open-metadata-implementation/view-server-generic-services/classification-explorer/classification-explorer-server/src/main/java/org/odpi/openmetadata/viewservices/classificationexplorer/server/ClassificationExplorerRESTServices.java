@@ -4219,12 +4219,12 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException a problem accessing the metadata store
      */
-    public OpenMetadataRootElementResponse getMetadataElementByGUID(String         serverName,
-                                                                    String         urlMarker,
-                                                                    String         elementGUID,
-                                                                    GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getRootElementByGUID(String         serverName,
+                                                                String         urlMarker,
+                                                                String         elementGUID,
+                                                                GetRequestBody requestBody)
     {
-        final String methodName = "getMetadataElementByGUID";
+        final String methodName = "getRootElementByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -4240,7 +4240,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, requestBody));
+            response.setElement(handler.getRootElementByGUID(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -4264,9 +4264,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException a problem accessing the metadata store
      */
-    public OpenMetadataRootElementResponse getMetadataElementByUniqueName(String                     serverName,
-                                                                          String                     urlMarker,
-                                                                          FindPropertyNameProperties requestBody)
+    public OpenMetadataRootElementResponse getRootElementByUniqueName(String                     serverName,
+                                                                      String                     urlMarker,
+                                                                      FindPropertyNameProperties requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
 
@@ -4325,11 +4325,11 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element or
      *  PropertyServerException a problem accessing the metadata store
      */
-    public GUIDResponse getMetadataElementGUIDByUniqueName(String                     serverName,
-                                                           String                     urlMarker,
-                                                           FindPropertyNameProperties requestBody)
+    public GUIDResponse getRootElementGUIDByUniqueName(String                     serverName,
+                                                       String                     urlMarker,
+                                                       FindPropertyNameProperties requestBody)
     {
-        final String methodName = "getMetadataElementGUIDByUniqueName";
+        final String methodName = "getRootElementGUIDByUniqueName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -4351,17 +4351,17 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else if (requestBody.getPropertyName() == null)
             {
-                response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
-                                                                            requestBody.getPropertyValue(),
-                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            requestBody));
+                response.setGUID(handler.getRootElementGUIDByUniqueName(userId,
+                                                                        requestBody.getPropertyValue(),
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        requestBody));
             }
             else
             {
-                response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
-                                                                            requestBody.getPropertyValue(),
-                                                                            requestBody.getPropertyName(),
-                                                                            requestBody));
+                response.setGUID(handler.getRootElementGUIDByUniqueName(userId,
+                                                                        requestBody.getPropertyValue(),
+                                                                        requestBody.getPropertyName(),
+                                                                        requestBody));
             }
         }
         catch (Throwable error)
@@ -4387,11 +4387,11 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementsResponse getElements(String             serverName,
-                                                        String             urlMarker,
-                                                        ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getRootElementsByType(String             serverName,
+                                                                  String             urlMarker,
+                                                                  ResultsRequestBody requestBody)
     {
-        final String methodName = "getElements";
+        final String methodName = "getRootElementsByType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -4409,11 +4409,11 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElements(handler.getElements(userId, null));
+                response.setElements(handler.getRootElementsByType(userId, null));
             }
             else
             {
-                response.setElements(handler.getElements(userId, requestBody));
+                response.setElements(handler.getRootElementsByType(userId, requestBody));
             }
         }
         catch (Throwable error)
@@ -4490,9 +4490,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementsResponse getElementsByPropertyValue(String                      serverName,
-                                                                       String                      urlMarker,
-                                                                       FindPropertyNamesProperties requestBody)
+    public OpenMetadataRootElementsResponse getRootElementsByPropertyValue(String                      serverName,
+                                                                           String                      urlMarker,
+                                                                           FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getElementsByPropertyValue";
 
@@ -4902,13 +4902,13 @@ public class ClassificationExplorerRESTServices extends TokenController
             if (requestBody == null)
             {
                 List<OpenMetadataRootElement> summaryList = handler.getRelatedElements(userId,
-                                                                                           elementGUID,
-                                                                                           relationshipTypeName,
-                                                                                           startingAtEnd,
-                                                                                           null,
-                                                                                           null,
-                                                                                           null,
-                                                                                           methodName);
+                                                                                       elementGUID,
+                                                                                       relationshipTypeName,
+                                                                                       startingAtEnd,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       methodName);
                 if (summaryList != null)
                 {
                     response.setElements(summaryList);

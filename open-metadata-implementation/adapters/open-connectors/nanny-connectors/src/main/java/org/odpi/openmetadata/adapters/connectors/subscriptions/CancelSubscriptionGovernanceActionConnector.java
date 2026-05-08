@@ -85,7 +85,7 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
                             if (licence != null)
                             {
                                 String licenseGUID = propertyHelper.getStringProperty(governanceServiceName,
-                                                                                      OpenMetadataProperty.LICENSE_GUID.name,
+                                                                                      OpenMetadataProperty.LICENSE_ID.name,
                                                                                       licence.getRelationshipProperties(),
                                                                                       methodName);
                                 if (subscription.getActionTargetGUID().equals(licenseGUID))
