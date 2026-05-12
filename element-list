@@ -82,8 +82,11 @@ org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc
+org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance
+org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata
+org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues
 org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
