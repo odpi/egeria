@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.DynamicOpenMetadataDataSetConnectorBase;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -43,6 +44,30 @@ public class ValidMetadataValueDataSetConnector extends DynamicOpenMetadataDataS
                            Connection                             connectionDetails) throws ConnectorCheckedException
     {
         super.initialize(connectorInstanceId, connectionDetails);
+
+        final String methodName = "initialize";
+
+        if (identifierPropertyValue == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.getName(),
+                                                    methodName);
+        }
+        if (canonicalName == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    TabularDataSetConfigurationProperty.CANONICAL_NAME.getName(),
+                                                    methodName);
+        }
+        if (description == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.getName(),
+                                                    methodName);
+        }
 
         super.productDefinition = new ValidMetadataValueDataSetProvider().getProductDefinition(identifierPropertyValue, canonicalName, description);
     }

@@ -410,6 +410,16 @@ public enum OpenMetadataProperty
     DISABLED_ACCOUNT_COUNT("disabledAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the disabled user accounts in the secrets store.", "25", "dc692ffb-8973-4583-8f2e-9437b4a1d4af"),
 
     /**
+     * Map showing the number of accounts for each account type.
+     */
+    USER_ACCOUNT_TYPES("userAccountTypes", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "Map showing the number of accounts for each account type.", null, "8db24e82-7ce9-44aa-8629-ef2dd3c590ad"),
+
+    /**
+     * Map showing the number of accounts for each account status.
+     */
+    USER_ACCOUNT_STATUSES("userAccountStatuses", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "Map showing the number of accounts for each account status.", null, "65a987d4-2270-4a1e-bbe1-5cf8d85f790c"),
+
+    /**
      * Count of elements in the sample.
      */
     SAMPLE_SIZE("sampleSize", DataType.LONG, DataType.LONG.getDisplayName(), "Count of elements in the sample.", null, "25f87465-5777-48b7-bd21-f94fe370af3d"),

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
@@ -2091,6 +2092,10 @@ public class MermaidGraphBuilderBase
         {
             label = assignmentScopeProperties.getAssignmentType();
         }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof AssociatedSecurityListProperties associatedSecurityListProperties)
+        {
+            label = associatedSecurityListProperties.getOperationName();
+        }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
         {
             label = catalogTargetProperties.getCatalogTargetName();
@@ -2125,7 +2130,7 @@ public class MermaidGraphBuilderBase
 
 
     /**
-     * Take the position, minCardinality and maxCardinality attributes and turn them into a label.
+     * Take the position, minCardinality, and maxCardinality attributes and turn them into a label.
      *
      * @param position position attribute
      * @param minCardinality minCardinality attribute

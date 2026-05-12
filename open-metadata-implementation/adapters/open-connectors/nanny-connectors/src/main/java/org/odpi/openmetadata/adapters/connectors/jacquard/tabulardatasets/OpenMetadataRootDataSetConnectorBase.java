@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets;
 
-
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
@@ -245,9 +244,9 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
 
         if (records.containsKey(rowNumber))
         {
-            OpenMetadataRootElement validValue = records.get(rowNumber);
+            OpenMetadataRootElement rootElement = records.get(rowNumber);
 
-            return getRecordValues(validValue);
+            return getRecordValues(rootElement);
         }
 
         throw new ConnectorCheckedException(TabularDataErrorCode.NULL_RECORD.getMessageDefinition(connectorName,

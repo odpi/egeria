@@ -783,6 +783,12 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                    OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.name,
                                                                    userAccountProfileProperties.getDisabledAccountCount());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.USER_ACCOUNT_TYPES.name,
+                                                                        userAccountProfileProperties.getUserAccountTypes());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.USER_ACCOUNT_STATUSES.name,
+                                                                      userAccountProfileProperties.getUserAccountStatuses());
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                    userAccountProfileProperties.getAdditionalProperties());

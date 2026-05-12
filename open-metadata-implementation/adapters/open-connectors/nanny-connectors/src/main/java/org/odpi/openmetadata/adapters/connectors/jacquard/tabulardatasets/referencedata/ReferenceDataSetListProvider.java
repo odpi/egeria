@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 
 import java.util.List;
@@ -30,9 +30,9 @@ public class ReferenceDataSetListProvider extends OpenConnectorProviderBase
     {
         super(EgeriaOpenConnectorDefinition.REFERENCE_DATA_LIST_TABULAR_DATA_SET,
               connectorClassName,
-              List.of(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
-                      ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name,
-                      ReferenceDataConfigurationProperty.CANONICAL_NAME.name,
-                      ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.name));
+              List.of(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
+                      TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name,
+                      TabularDataSetConfigurationProperty.CANONICAL_NAME.name,
+                      TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name));
     }
 }

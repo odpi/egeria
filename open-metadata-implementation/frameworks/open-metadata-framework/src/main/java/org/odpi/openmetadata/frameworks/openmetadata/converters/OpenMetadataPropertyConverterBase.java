@@ -3409,6 +3409,50 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Remove the property from the classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected Map<String, Long> removeUserAccountTypes(ElementProperties elementProperties)
+    {
+        final String methodName = "removeUserAccountTypes";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.USER_ACCOUNT_TYPES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Remove the property from the classification.
+     *
+     * @param elementProperties properties from the classification
+     * @return map
+     */
+    protected Map<String, Long> removeUserAccountStatuses(ElementProperties elementProperties)
+    {
+        final String methodName = "removeUserAccountStatuses";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.USER_ACCOUNT_STATUSES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve the type membership analysis from the properties of the zone membership profile classification.
      *
      * @param elementProperties properties from the classification
@@ -12888,6 +12932,8 @@ public class OpenMetadataPropertyConverterBase
                 ((UserAccountProfileProperties)beanProperties).setExpiredAccountCount(this.removeExpiredAccountCount(elementProperties));
                 ((UserAccountProfileProperties)beanProperties).setLockedAccountCount(this.removeLockedAccountCount(elementProperties));
                 ((UserAccountProfileProperties)beanProperties).setDisabledAccountCount(this.removeDisabledAccountCount(elementProperties));
+                ((UserAccountProfileProperties)beanProperties).setUserAccountTypes(this.removeUserAccountTypes(elementProperties));
+                ((UserAccountProfileProperties)beanProperties).setUserAccountStatuses(this.removeUserAccountStatuses(elementProperties));
                 ((UserAccountProfileProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))

@@ -5216,6 +5216,8 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LOCKED_ACCOUNT_COUNT));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISABLED_ACCOUNT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ACCOUNT_TYPES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ACCOUNT_STATUSES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         classificationDef.setPropertiesDefinition(properties);

@@ -13,7 +13,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.refere
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListConnector;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -1333,8 +1333,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                     {
                         connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
                     }
-                    connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
-                    connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
+                    connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
+                    connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
                     connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
 
                     newElementOptions.setParentAtEnd1(true);
