@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.refer
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.*;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.DynamicOpenMetadataDataSetProviderBase;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -35,10 +35,7 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
     {
         super(EgeriaOpenConnectorDefinition.REFERENCE_DATA_TABULAR_DATA_SET,
               connectorClassName,
-              List.of(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
-                      ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name,
-                      ReferenceDataConfigurationProperty.CANONICAL_NAME.name,
-                      ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.name));
+              List.of(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name));
     }
 
     /**
@@ -60,10 +57,10 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
          */
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put(ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
-        configurationProperties.put(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
-        configurationProperties.put(ReferenceDataConfigurationProperty.CANONICAL_NAME.name, canonicalName);
-        configurationProperties.put(ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
+        configurationProperties.put(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
+        configurationProperties.put(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
+        configurationProperties.put(TabularDataSetConfigurationProperty.CANONICAL_NAME.name, canonicalName);
+        configurationProperties.put(TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
 
         return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                                          new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},

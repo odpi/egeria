@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.DynamicOpenMetadataDataSetConnectorBase;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -49,12 +49,12 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
 
         final String methodName = "initialize";
 
-        startingElementGUID = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.getName(), connectionBean.getConfigurationProperties());
+        startingElementGUID = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.getName(), connectionBean.getConfigurationProperties());
         if (startingElementGUID == null)
         {
             super.throwMissingConfigurationProperty(connectorName,
                                                     this.getClass().getName(),
-                                                    ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.getName(),
+                                                    TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.getName(),
                                                     methodName);
         }
 

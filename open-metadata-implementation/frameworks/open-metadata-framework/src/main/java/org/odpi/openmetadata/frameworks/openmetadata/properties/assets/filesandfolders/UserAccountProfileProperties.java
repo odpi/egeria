@@ -29,6 +29,8 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
     private long                expiredAccountCount    = 0;
     private long                lockedAccountCount     = 0;
     private long                disabledAccountCount   = 0;
+    private Map<String,Long>    userAccountTypes       = null;
+    private Map<String,Long>    userAccountStatuses    = null;
     private Map<String, String> additionalProperties   = null;
 
 
@@ -61,6 +63,8 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
             expiredAccountCount    = template.getExpiredAccountCount();
             lockedAccountCount     = template.getLockedAccountCount();
             disabledAccountCount   = template.getDisabledAccountCount();
+            userAccountTypes       = template.getUserAccountTypes();
+            userAccountStatuses    = template.getUserAccountStatuses();
             additionalProperties   = template.getAdditionalProperties();
         }
     }
@@ -254,6 +258,50 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
 
 
     /**
+     * Returns the map of user account types.
+     *
+     * @return map of user account types
+     */
+    public Map<String, Long> getUserAccountTypes()
+    {
+        return userAccountTypes;
+    }
+
+
+    /**
+     * Sets up the map of user account types.
+     *
+     * @param userAccountTypes map of user account types
+     */
+    public void setUserAccountTypes(Map<String, Long> userAccountTypes)
+    {
+        this.userAccountTypes = userAccountTypes;
+    }
+
+
+    /**
+     * Returns the map of user account statuses.
+     *
+     * @return map of user account statuses
+     */
+    public Map<String, Long> getUserAccountStatuses()
+    {
+        return userAccountStatuses;
+    }
+
+
+    /**
+     * Sets up the map of user account statuses.
+     *
+     * @param userAccountStatuses map of user account statuses
+     */
+    public void setUserAccountStatuses(Map<String, Long> userAccountStatuses)
+    {
+        this.userAccountStatuses = userAccountStatuses;
+    }
+
+
+    /**
      * Sets the total count of disabled accounts.
      *
      * @param disabledAccountCount long
@@ -304,6 +352,8 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
                 ", expiredAccountCount=" + expiredAccountCount +
                 ", lockedAccountCount=" + lockedAccountCount +
                 ", disabledAccountCount=" + disabledAccountCount +
+                ", userAccountTypes=" + userAccountTypes +
+                ", userAccountStatuses=" + userAccountStatuses +
                 ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
     }
@@ -330,6 +380,8 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
                 expiredAccountCount == that.expiredAccountCount &&
                 lockedAccountCount == that.lockedAccountCount &&
                 disabledAccountCount == that.disabledAccountCount &&
+                Objects.equals(userAccountTypes, that.userAccountTypes) &&
+                Objects.equals(userAccountStatuses, that.userAccountStatuses) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -344,6 +396,6 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
     {
         return Objects.hash(super.hashCode(), userAccountCount, employeeAccountCount, contractorAccountCount,
                             digitalAccountCount, activeAccountCount, expiredAccountCount, lockedAccountCount,
-                            disabledAccountCount, additionalProperties);
+                            disabledAccountCount, userAccountTypes, userAccountStatuses, additionalProperties);
     }
 }

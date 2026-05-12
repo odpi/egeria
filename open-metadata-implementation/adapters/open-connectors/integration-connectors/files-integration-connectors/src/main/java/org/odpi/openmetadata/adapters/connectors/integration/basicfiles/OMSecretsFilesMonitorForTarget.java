@@ -723,6 +723,24 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
             userAccountProfileProperties.setDigitalAccountCount(digitalAccountCount);
             userAccountProfileProperties.setExternalAccountCount(externalAccountCount);
 
+            Map<String, Long> userAccountStatusCounts = new HashMap<>();
+
+            userAccountStatusCounts.put(UserAccountType.EMPLOYEE.getName(), employeeAccountCount);
+            userAccountStatusCounts.put(UserAccountType.CONTRACTOR.getName(), contractorAccountCount);
+            userAccountStatusCounts.put(UserAccountType.DIGITAL.getName(), digitalAccountCount);
+            userAccountStatusCounts.put(UserAccountType.EXTERNAL.getName(), externalAccountCount);
+
+            userAccountProfileProperties.setUserAccountTypes(userAccountStatusCounts);
+
+            userAccountStatusCounts = new HashMap<>();
+
+            userAccountStatusCounts.put(UserAccountStatus.AVAILABLE.getName(), activeAccountCount);
+            userAccountStatusCounts.put(UserAccountStatus.CREDENTIALS_EXPIRED.getName(), expiredAccountCount);
+            userAccountStatusCounts.put(UserAccountStatus.LOCKED.getName(), lockedAccountCount);
+            userAccountStatusCounts.put(UserAccountStatus.DISABLED.getName(), disabledAccountCount);
+
+            userAccountProfileProperties.setUserAccountStatuses(userAccountStatusCounts);
+
             return userAccountProfileProperties;
         }
 

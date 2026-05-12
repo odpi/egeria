@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -177,7 +177,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                                                 methodName);
         }
 
-        String serverName = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), connectionBean.getConfigurationProperties());
+        String serverName = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.SERVER_NAME.getName(), connectionBean.getConfigurationProperties());
 
         if (serverName == null)
         {
@@ -186,7 +186,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                                                 methodName);
         }
 
-        int maxPageSize = super.getIntConfigurationProperty(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), connectionBean.getConfigurationProperties());
+        int maxPageSize = super.getIntConfigurationProperty(TabularDataSetConfigurationProperty.MAX_PAGE_SIZE.getName(), connectionBean.getConfigurationProperties());
 
         /*
          * Set up the extractor client.
@@ -287,7 +287,6 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
 
         return columnDescriptions;
     }
-
 
 
     /**

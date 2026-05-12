@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance.GovernanceControlsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.DigitalProductsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.LocationsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.OrganizationsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.PeopleTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
@@ -370,9 +375,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductDataFieldDefinition.DESCRIPTION,
                           ProductDataFieldDefinition.CREATE_TIME,
                           ProductDataFieldDefinition.UPDATE_TIME},
-                  OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                  OpenMetadataType.TABULAR_DATA_SET.typeName,
                   "Data set",
-                  null,
+                  new OrganizationsTabularDataSetProvider(),
                   "Organizations"),
 
     /**
@@ -403,9 +408,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    ProductDataFieldDefinition.DESCRIPTION,
                    ProductDataFieldDefinition.CREATE_TIME,
                    ProductDataFieldDefinition.UPDATE_TIME},
-           OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+           OpenMetadataType.TABULAR_DATA_SET.typeName,
            "Data set",
-           null,
+           new PeopleTabularDataSetProvider(),
            "People"),
 
     /**
@@ -437,9 +442,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductDataFieldDefinition.ELEMENT_STATUS,
                              ProductDataFieldDefinition.CREATE_TIME,
                              ProductDataFieldDefinition.UPDATE_TIME},
-                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                      "Data set",
-                     null,
+                     new DigitalProductsTabularDataSetProvider(),
                      "Digital Product List"),
 
     /*
@@ -481,9 +486,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.NETWORK_ADDRESS,
                       ProductDataFieldDefinition.CREATE_TIME,
                       ProductDataFieldDefinition.UPDATE_TIME},
-              OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+              OpenMetadataType.TABULAR_DATA_SET.typeName,
               "Data set",
-              null,
+              new LocationsTabularDataSetProvider(),
               "Locations"),
 
 
@@ -560,7 +565,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.ENGINE_HOST_USER_ID,
                                ProductDataFieldDefinition.CREATE_TIME,
                                ProductDataFieldDefinition.UPDATE_TIME},
-                       OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                       OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
                        null,
                        "Survey Report List"),
@@ -610,7 +615,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         ProductDataFieldDefinition.ENGINE_HOST_USER_ID,
                         ProductDataFieldDefinition.CREATE_TIME,
                         ProductDataFieldDefinition.UPDATE_TIME},
-                OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                OpenMetadataType.TABULAR_DATA_SET.typeName,
                 "Data set",
                 null,
                 "Annotation List"),
@@ -643,7 +648,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.ACTION_REQUEST_NAME,
                                ProductDataFieldDefinition.CREATE_TIME,
                                ProductDataFieldDefinition.UPDATE_TIME},
-                       OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                       OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
                        null,
                        "Request For Action Annotation List"),
@@ -680,7 +685,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductDataFieldDefinition.ACTION_TARGET_TYPE_NAME,
                                       ProductDataFieldDefinition.CREATE_TIME,
                                       ProductDataFieldDefinition.UPDATE_TIME},
-                              OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                              OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
                               null,
                               "Request For Action Target List"),
@@ -727,7 +732,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                                  ProductDataFieldDefinition.ACTIVE_TIME,
                                                  ProductDataFieldDefinition.CREATE_TIME,
                                                  ProductDataFieldDefinition.UPDATE_TIME},
-                                         OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                                          "Data set",
                                          null,
                                          "Relational Data Manager Measurements"),
@@ -768,7 +773,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                            ProductDataFieldDefinition.DATA_SIZE,
                                            ProductDataFieldDefinition.CREATE_TIME,
                                            ProductDataFieldDefinition.UPDATE_TIME},
-                                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
                                    null,
                                    "Relational Schema Measurements"),
@@ -810,7 +815,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                           ProductDataFieldDefinition.DATA_SIZE,
                                           ProductDataFieldDefinition.CREATE_TIME,
                                           ProductDataFieldDefinition.UPDATE_TIME},
-                                  OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                  OpenMetadataType.TABULAR_DATA_SET.typeName,
                                   "Data set",
                                   null,
                                   "Relational Table Measurements"),
@@ -853,7 +858,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                            ProductDataFieldDefinition.MOST_COMMON_VALUES_FREQUENCY,
                                            ProductDataFieldDefinition.CREATE_TIME,
                                            ProductDataFieldDefinition.UPDATE_TIME},
-                                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
                                    null,
                                    "Relational Column Measurements"),
@@ -904,7 +909,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductDataFieldDefinition.RECORD_COUNT,
                               ProductDataFieldDefinition.CREATE_TIME,
                               ProductDataFieldDefinition.UPDATE_TIME},
-                      OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                      OpenMetadataType.TABULAR_DATA_SET.typeName,
                       "Data set",
                       null,
                       "File Measurements"),
@@ -957,7 +962,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductDataFieldDefinition.LAST_FILE_ACCESSED_TIME,
                                 ProductDataFieldDefinition.CREATE_TIME,
                                 ProductDataFieldDefinition.UPDATE_TIME},
-                        OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
                         "File Directory Measurements"),
@@ -1002,7 +1007,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   ProductDataFieldDefinition.ENCODING,
                                   ProductDataFieldDefinition.CREATE_TIME,
                                   ProductDataFieldDefinition.UPDATE_TIME},
-                          OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                          OpenMetadataType.TABULAR_DATA_SET.typeName,
                           "Data set",
                           null,
                           "Resource Measurements"),
@@ -1041,7 +1046,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                  ProductDataFieldDefinition.MEASUREMENT_NUMERIC_VALUE,
                                  ProductDataFieldDefinition.CREATE_TIME,
                                  ProductDataFieldDefinition.UPDATE_TIME},
-                         OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                          "Data set",
                          null,
                          "Profile Measurements"),
@@ -1080,7 +1085,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                      ProductDataFieldDefinition.ASSET_TYPE_NAME,
                                      ProductDataFieldDefinition.CREATE_TIME,
                                      ProductDataFieldDefinition.UPDATE_TIME},
-                             OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                             OpenMetadataType.TABULAR_DATA_SET.typeName,
                              "Data set",
                              null,
                              "Missing File Classifiers"),
@@ -1183,7 +1188,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductDataFieldDefinition.UPDATE_TIME},
                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                    "Data set",
-                   null,
+                        new GovernanceControlsTabularDataSetProvider(),
                    "Governance Controls"),
 
     /**
@@ -1652,7 +1657,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            null,
                            null,
                            null,
-                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           OpenMetadataType.TABULAR_DATA_SET.typeName,
                            "Data sets",
                            null,
                            null,

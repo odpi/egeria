@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -59,14 +58,7 @@ public class UserAccountStatusProfileMermaidPieChartBuilder extends PieChartBuil
                 (element.getElementHeader().getUserAccountProfile().getClassificationProperties() instanceof UserAccountProfileProperties profileProperties) &&
                 (profileProperties.getUserAccountCount() > 0))
         {
-            Map<String, Long> profile = new HashMap<>();
-
-            profile.put("Active",   profileProperties.getActiveAccountCount());
-            profile.put("Expired",  profileProperties.getExpiredAccountCount());
-            profile.put("Locked",   profileProperties.getLockedAccountCount());
-            profile.put("Disabled", profileProperties.getDisabledAccountCount());
-
-            return profile;
+            return profileProperties.getUserAccountStatuses();
         }
 
         return null;

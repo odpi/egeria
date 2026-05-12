@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets;
 
 
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.TabularDataSetConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
@@ -40,34 +40,10 @@ public abstract class DynamicOpenMetadataDataSetConnectorBase extends OpenMetada
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-        final String methodName = "initialize";
 
-        identifierPropertyValue = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.getName(), connectionBean.getConfigurationProperties());
+        identifierPropertyValue = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.getName(), connectionBean.getConfigurationProperties());
+        canonicalName = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.CANONICAL_NAME.getName(), connectionBean.getConfigurationProperties());
+        description = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.getName(), connectionBean.getConfigurationProperties());
 
-        if (identifierPropertyValue == null)
-        {
-            super.throwMissingConfigurationProperty(connectorName,
-                                                    this.getClass().getName(),
-                                                    ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.getName(),
-                                                    methodName);
-        }
-
-        canonicalName = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.CANONICAL_NAME.getName(), connectionBean.getConfigurationProperties());
-        if (canonicalName == null)
-        {
-            super.throwMissingConfigurationProperty(connectorName,
-                                                    this.getClass().getName(),
-                                                    ReferenceDataConfigurationProperty.CANONICAL_NAME.getName(),
-                                                    methodName);
-        }
-
-        description = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.getName(), connectionBean.getConfigurationProperties());
-        if (description == null)
-        {
-            super.throwMissingConfigurationProperty(connectorName,
-                                                    this.getClass().getName(),
-                                                    ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.getName(),
-                                                    methodName);
-        }
     }
 }
