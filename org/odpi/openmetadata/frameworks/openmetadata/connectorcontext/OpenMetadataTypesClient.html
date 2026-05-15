@@ -130,19 +130,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypeDefsByCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(<a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypeDefsByCategory(boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">findTypesByExternalID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypesByExternalId(boolean,boolean,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">findTypesByExternalId</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes()" class="member-name-link">getAllTypes</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes(boolean,boolean)" class="member-name-link">getAllTypes</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of different types of metadata organized into two groups.</div>
 </div>
@@ -162,17 +167,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns all the AttributeTypeDefs for an optional specific category.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(boolean,boolean,java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific subtype.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(boolean,boolean,java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the GUID.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(boolean,boolean,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the unique name.</div>
 </div>
@@ -220,7 +231,7 @@ loadScripts(document, 'script');</script>
 <dd><code>externalSourceName</code> - unique name of the software server capability for the source of metadata</dd>
 <dd><code>openMetadataClient</code> - client to access the open metadata store</dd>
 <dd><code>auditLog</code> - logging destination</dd>
-<dd><code>maxPageSize</code> - max number of elements that can be returned on a query</dd>
+<dd><code>maxPageSize</code> - max elements that can be returned on a query</dd>
 </dl>
 </section>
 </li>
@@ -233,17 +244,21 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getAllTypes()">
+<section class="detail" id="getAllTypes(boolean,boolean)">
 <h3>getAllTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></span>&nbsp;<span class="element-name">getAllTypes</span>()
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></span>&nbsp;<span class="element-name">getAllTypes</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</span>
                                        throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns the list of different types of metadata organized into two groups.  The first are the
  attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
- type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+ type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships,
  and classifications.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefGallery  List of different categories of type definitions.</dd>
 <dt>Throws:</dt>
@@ -254,15 +269,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findTypeDefsByCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">
+<section class="detail" id="findTypeDefsByCategory(boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">
 <h3>findTypeDefsByCategory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypeDefsByCategory</span><wbr><span class="parameters">(<a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypeDefsByCategory</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</span>
                                    throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>category</code> - enum value for the category of TypeDef to return.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefs list.</dd>
@@ -295,9 +314,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)">
-<h3>findTypesByExternalID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypesByExternalID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
+<section class="detail" id="findTypesByExternalId(boolean,boolean,java.lang.String,java.lang.String,java.lang.String)">
+<h3>findTypesByExternalId</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypesByExternalId</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span>
                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -306,6 +327,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>standard</code> - name of the standard null means any.</dd>
 <dd><code>organization</code> - name of the organization null means any.</dd>
 <dd><code>identifier</code> - identifier of the element in the standard null means any.</dd>
@@ -320,9 +343,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSubTypes(java.lang.String)">
+<section class="detail" id="getSubTypes(boolean,boolean,java.lang.String)">
 <h3>getSubTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">getSubTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">getSubTypes</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span>
                         throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
@@ -330,6 +355,8 @@ loadScripts(document, 'script');</script>
  type has no subtypes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>typeName</code> - name of the standard null means any.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
@@ -343,15 +370,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefByGUID(java.lang.String)">
+<section class="detail" id="getTypeDefByGUID(boolean,boolean,java.lang.String)">
 <h3>getTypeDefByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByGUID</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
                                      throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return the TypeDef identified by the GUID.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>guid</code> - String unique id of the TypeDef</dd>
 <dt>Returns:</dt>
 <dd>TypeDef structure describing its category and properties.</dd>
@@ -385,15 +416,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefByName(java.lang.String)">
+<section class="detail" id="getTypeDefByName(boolean,boolean,java.lang.String)">
 <h3>getTypeDefByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByName</span><wbr><span class="parameters">(boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span>
                                      throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return the TypeDef identified by the unique name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>name</code> - String name of the TypeDef.</dd>
 <dt>Returns:</dt>
 <dd>TypeDef structure describing its category and properties.</dd>

@@ -301,13 +301,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of relationships that match the requested conditions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypeDefsByCategory(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypesByExternalId(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">findTypesByExternalId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypesByExternalId(java.lang.String,boolean,boolean,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">findTypesByExternalId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</code></div>
@@ -315,7 +319,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes(java.lang.String)" class="member-name-link">getAllTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes(java.lang.String,boolean,boolean)" class="member-name-link">getAllTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of different types of metadata organized into two groups.</div>
 </div>
@@ -420,7 +426,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the reference data for this element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String,java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String,boolean,boolean,java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific subtype.</div>
@@ -442,13 +450,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all translations associated with a metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(java.lang.String,boolean,boolean,java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the GUID.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String,boolean,boolean,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the unique name.</div>
@@ -548,7 +560,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.client.<a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></h3>
-<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">createMetadataElementInStore</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">createMetadataElementInStore</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">findMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByPropertyValue(java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getDeletedElementByUniqueName(java.lang.String,java.lang.String,java.lang.String)">getDeletedElementByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">getMetadataElementByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">getMetadataElementGUIDByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassification</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByPropertyValue(java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getServerName()">getServerName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getServerPlatformURLRoot()">getServerPlatformURLRoot</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#toString()">toString</a></code></div>
+<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">createMetadataElementInStore</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">createMetadataElementInStore</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">findMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findMetadataElementsByPropertyValue(java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">findMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getDeletedElementByUniqueName(java.lang.String,java.lang.String,java.lang.String)">getDeletedElementByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getEntityTypeNames(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef)">getEntityTypeNames</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">getMetadataElementByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">getMetadataElementGUIDByUniqueName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassification</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByClassificationPropertyValue(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByClassificationPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getMetadataElementsByPropertyValue(java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getMetadataElementsByPropertyValue</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getServerName()">getServerName</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getServerPlatformURLRoot()">getServerPlatformURLRoot</a>, <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -674,9 +686,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAllTypes(java.lang.String)">
+<section class="detail" id="getAllTypes(java.lang.String,boolean,boolean)">
 <h3>getAllTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></span>&nbsp;<span class="element-name">getAllTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a></span>&nbsp;<span class="element-name">getAllTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</span>
                                        throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
@@ -686,11 +700,13 @@ loadScripts(document, 'script');</script>
  and classifications.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getAllTypes(java.lang.String)">getAllTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getAllTypes(java.lang.String,boolean,boolean)">getAllTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getAllTypes(java.lang.String)">getAllTypes</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getAllTypes(java.lang.String,boolean,boolean)">getAllTypes</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefGallery  List of different categories of type definitions.</dd>
 <dt>Throws:</dt>
@@ -701,9 +717,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">
+<section class="detail" id="findTypeDefsByCategory(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">
 <h3>findTypeDefsByCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypeDefsByCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</span>
                                    throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -711,11 +729,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#findTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#findTypeDefsByCategory(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findTypeDefsByCategory(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>category</code> - enum value for the category of TypeDef to return.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefs list.</dd>
@@ -754,9 +774,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findTypesByExternalId(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="findTypesByExternalId(java.lang.String,boolean,boolean,java.lang.String,java.lang.String,java.lang.String)">
 <h3>findTypesByExternalId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypesByExternalId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span>
@@ -766,11 +788,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#findTypesByExternalId(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#findTypesByExternalId(java.lang.String,boolean,boolean,java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findTypesByExternalId(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalId</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#findTypesByExternalId(java.lang.String,boolean,boolean,java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalId</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>standard</code> - name of the standard null means any.</dd>
 <dd><code>organization</code> - name of the organization null means any.</dd>
 <dd><code>identifier</code> - identifier of the element in the standard null means any.</dd>
@@ -785,9 +809,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSubTypes(java.lang.String,java.lang.String)">
+<section class="detail" id="getSubTypes(java.lang.String,boolean,boolean,java.lang.String)">
 <h3>getSubTypes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">getSubTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -796,11 +822,13 @@ loadScripts(document, 'script');</script>
  type has no subtypes.     *</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getSubTypes(java.lang.String,java.lang.String)">getSubTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getSubTypes(java.lang.String,boolean,boolean,java.lang.String)">getSubTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getSubTypes(java.lang.String,java.lang.String)">getSubTypes</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getSubTypes(java.lang.String,boolean,boolean,java.lang.String)">getSubTypes</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>typeName</code> - name of the standard null means any.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
@@ -814,9 +842,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefByGUID(java.lang.String,java.lang.String)">
+<section class="detail" id="getTypeDefByGUID(java.lang.String,boolean,boolean,java.lang.String)">
 <h3>getTypeDefByGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -824,11 +854,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the TypeDef identified by the GUID.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getTypeDefByGUID(java.lang.String,java.lang.String)">getTypeDefByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getTypeDefByGUID(java.lang.String,boolean,boolean,java.lang.String)">getTypeDefByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getTypeDefByGUID(java.lang.String,java.lang.String)">getTypeDefByGUID</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getTypeDefByGUID(java.lang.String,boolean,boolean,java.lang.String)">getTypeDefByGUID</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>guid</code> - String unique id of the TypeDef</dd>
 <dt>Returns:</dt>
 <dd>TypeDef structure describing its category and properties.</dd>
@@ -868,9 +900,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefByName(java.lang.String,java.lang.String)">
+<section class="detail" id="getTypeDefByName(java.lang.String,boolean,boolean,java.lang.String)">
 <h3>getTypeDefByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">getTypeDefByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -878,11 +912,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the TypeDef identified by the unique name.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getTypeDefByName(java.lang.String,java.lang.String)">getTypeDefByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html#getTypeDefByName(java.lang.String,boolean,boolean,java.lang.String)">getTypeDefByName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getTypeDefByName(java.lang.String,java.lang.String)">getTypeDefByName</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#getTypeDefByName(java.lang.String,boolean,boolean,java.lang.String)">getTypeDefByName</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>name</code> - String name of the TypeDef.</dd>
 <dt>Returns:</dt>
 <dd>TypeDef structure describing its category and properties.</dd>

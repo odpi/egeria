@@ -158,8 +158,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of specification properties containing the supplied string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefGalleryResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefGalleryResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes(java.lang.String,java.lang.String)" class="member-name-link">getAllTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes(java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">getAllTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of different types of metadata organized into two groups.</div>
 </div>
@@ -171,8 +173,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns all the AttributeTypeDefs for an optional specific category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationDefs(java.lang.String,java.lang.String)" class="member-name-link">getClassificationDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationDefs(java.lang.String,java.lang.String,boolean)" class="member-name-link">getClassificationDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;getInheritedAttributes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the classification type definitions.</div>
 </div>
@@ -189,14 +192,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all the consistent valid values for the requested property.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityDefs(java.lang.String,java.lang.String)" class="member-name-link">getEntityDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityDefs(java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">getEntityDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the entity type definitions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipDefs(java.lang.String,java.lang.String)" class="member-name-link">getRelationshipDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipDefs(java.lang.String,java.lang.String,boolean)" class="member-name-link">getRelationshipDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;getInheritedAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the relationship type definitions.</div>
 </div>
@@ -230,23 +236,28 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of specification property types.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific subtype.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ boolean&nbsp;getInheritedAttributes,
+ boolean&nbsp;getRelationshipAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the unique name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidClassificationTypes(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getValidClassificationTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidClassificationTypes(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">getValidClassificationTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ boolean&nbsp;getInheritedAttributes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for classifications that can be attached to the requested entity type.</div>
 </div>
@@ -289,9 +300,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all the valid values for the requested property.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidRelationshipTypes(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getValidRelationshipTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidRelationshipTypes(java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">getValidRelationshipTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ boolean&nbsp;getInheritedAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for relationships that can be attached to the requested entity type.</div>
 </div>
@@ -918,13 +930,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAllTypes(java.lang.String,java.lang.String)">
+<section class="detail" id="getAllTypes(java.lang.String,java.lang.String,boolean,boolean)">
 <h3>getAllTypes</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefGalleryResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefGalleryResponse</a></span>&nbsp;<span class="element-name">getAllTypes</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getRelationshipAttributes)</span></div>
 <div class="block">Returns the list of different types of metadata organized into two groups.  The first are the
  attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
  type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
@@ -933,6 +949,8 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefGalleryResponse:
  List of different categories of type definitions or
@@ -942,18 +960,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getEntityDefs(java.lang.String,java.lang.String)">
+<section class="detail" id="getEntityDefs(java.lang.String,java.lang.String,boolean,boolean)">
 <h3>getEntityDefs</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/entity-defs")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getEntityDefs</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getRelationshipAttributes)</span></div>
 <div class="block">Returns all the entity type definitions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefListResponse:
  TypeDefs list or
@@ -964,18 +988,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelationshipDefs(java.lang.String,java.lang.String)">
+<section class="detail" id="getRelationshipDefs(java.lang.String,java.lang.String,boolean)">
 <h3>getRelationshipDefs</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/relationship-defs")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getRelationshipDefs</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes)</span></div>
 <div class="block">Returns all the relationship type definitions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefListResponse:
  TypeDefs list or
@@ -986,24 +1013,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getClassificationDefs(java.lang.String,java.lang.String)">
+<section class="detail" id="getClassificationDefs(java.lang.String,java.lang.String,boolean)">
 <h3>getClassificationDefs</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/classification-defs")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getClassificationDefs</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes)</span></div>
 <div class="block">Returns all the classification type definitions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
-<dt>Returns:</dt>
-<dd>TypeDefListResponse:
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs
  TypeDefs list or
  InvalidParameterException the TypeDefCategory is null or
  RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
+<dt>Returns:</dt>
+<dd>TypeDefListResponse:</dd>
 </dl>
 </section>
 </li>
@@ -1033,7 +1063,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSubTypes(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getSubTypes(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)">
 <h3>getSubTypes</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/sub-types/{typeName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getSubTypes</span><wbr><span class="parameters">(@PathVariable
@@ -1041,13 +1071,19 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getRelationshipAttributes)</span></div>
 <div class="block">Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
  type has no subtypes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dd><code>typeName</code> - name of type to retrieve against.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefsGalleryResponse:
@@ -1059,7 +1095,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getValidRelationshipTypes(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getValidRelationshipTypes(java.lang.String,java.lang.String,java.lang.String,boolean)">
 <h3>getValidRelationshipTypes</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/{typeName}/attached-relationships")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getValidRelationshipTypes</span><wbr><span class="parameters">(@PathVariable
@@ -1067,12 +1103,15 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes)</span></div>
 <div class="block">Returns all the TypeDefs for relationships that can be attached to the requested entity type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
 <dd><code>typeName</code> - name of entity type to retrieve against.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefsGalleryResponse:
@@ -1084,7 +1123,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getValidClassificationTypes(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getValidClassificationTypes(java.lang.String,java.lang.String,java.lang.String,boolean)">
 <h3>getValidClassificationTypes</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/{typeName}/attached-classifications")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefListResponse</a></span>&nbsp;<span class="element-name">getValidClassificationTypes</span><wbr><span class="parameters">(@PathVariable
@@ -1092,12 +1131,15 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes)</span></div>
 <div class="block">Returns all the TypeDefs for classifications that can be attached to the requested entity type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
 <dd><code>typeName</code> - name of type to retrieve against.</dd>
 <dt>Returns:</dt>
 <dd>TypeDefsGalleryResponse:
@@ -1109,7 +1151,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefByName(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getTypeDefByName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)">
 <h3>getTypeDefByName</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/name/{name}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/TypeDefResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">TypeDefResponse</a></span>&nbsp;<span class="element-name">getTypeDefByName</span><wbr><span class="parameters">(@PathVariable
@@ -1117,13 +1159,19 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getInheritedAttributes,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getRelationshipAttributes)</span></div>
 <div class="block">Return the TypeDef identified by the unique name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>name</code> - String name of the TypeDef.</dd>
+<dd><code>getInheritedAttributes</code> - whether to include inherited attributes in the returned TypeDefs</dd>
+<dd><code>getRelationshipAttributes</code> - whether to include relationship attributes in the returned TypeDefs</dd>
 <dt>Returns:</dt>
 <dd>TypeDefResponse:
  TypeDef structure describing its category and properties or
