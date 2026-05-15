@@ -11,8 +11,8 @@ import java.util.List;
 
 
 /**
- * ValidValueSetListProvider is the connector provider for the ValidValueSetList connector that manages the list
- * of valid value sets as a tabular data source.
+ * ReferenceDataSetListProvider is the connector provider for the ReferenceDataSetList connector that manages the list
+ * of reference data sets as a tabular data source.
  */
 public class ReferenceDataSetListProvider extends OpenConnectorProviderBase
 {
@@ -30,9 +30,6 @@ public class ReferenceDataSetListProvider extends OpenConnectorProviderBase
     {
         super(EgeriaOpenConnectorDefinition.REFERENCE_DATA_LIST_TABULAR_DATA_SET,
               connectorClassName,
-              List.of(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
-                      TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name,
-                      TabularDataSetConfigurationProperty.CANONICAL_NAME.name,
-                      TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name));
+              null);
     }
 }

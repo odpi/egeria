@@ -737,8 +737,8 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementsResponse findContributionRecords(String                  serverName, 
-                                                                    String                  urlMarker, 
+    public OpenMetadataRootElementsResponse findContributionRecords(String                  serverName,
+                                                                    String                  urlMarker,
                                                                     SearchStringRequestBody requestBody)
     {
         final String methodName = "findContributionRecords";
@@ -791,8 +791,8 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementsResponse getContributionRecordsByName(String            serverName, 
-                                                                         String            urlMarker, 
+    public OpenMetadataRootElementsResponse getContributionRecordsByName(String            serverName,
+                                                                         String            urlMarker,
                                                                          FilterRequestBody requestBody)
     {
         final String methodName = "getContributionRecordsByName";
@@ -830,7 +830,7 @@ public class ActorManagerRESTServices extends TokenController
 
         return response;
     }
-    
+
 
     /**
      * Retrieve the contribution record metadata element with the supplied unique identifier.
@@ -845,9 +845,9 @@ public class ActorManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public OpenMetadataRootElementResponse getContributionRecordByGUID(String         serverName, 
-                                                                       String         urlMarker, 
-                                                                       String         contributionRecordGUID, 
+    public OpenMetadataRootElementResponse getContributionRecordByGUID(String         serverName,
+                                                                       String         urlMarker,
+                                                                       String         contributionRecordGUID,
                                                                        GetRequestBody requestBody)
     {
         final String methodName = "getContributionRecordByGUID";
@@ -2642,18 +2642,18 @@ public class ActorManagerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof ContactThroughProperties contactThroughProperties)
                 {
                     handler.linkContactDetails(userId,
-                                                elementGUID,
-                                                contactDetailsGUID,
-                                                requestBody,
-                                                contactThroughProperties);
+                                               elementGUID,
+                                               contactDetailsGUID,
+                                               requestBody,
+                                               contactThroughProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkContactDetails(userId,
-                                                elementGUID,
-                                                contactDetailsGUID,
-                                                requestBody,
-                                                null);
+                                               elementGUID,
+                                               contactDetailsGUID,
+                                               requestBody,
+                                               null);
                 }
                 else
                 {
@@ -2663,10 +2663,10 @@ public class ActorManagerRESTServices extends TokenController
             else
             {
                 handler.linkContactDetails(userId,
-                                            elementGUID,
-                                            contactDetailsGUID,
-                                            null,
-                                            null);
+                                           elementGUID,
+                                           contactDetailsGUID,
+                                           null,
+                                           null);
             }
         }
         catch (Throwable error)
@@ -2693,10 +2693,10 @@ public class ActorManagerRESTServices extends TokenController
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachContactDetails(String                        serverName,
-                                              String                        urlMarker,
-                                              String                        elementGUID,
-                                              String                        contactDetailsGUID,
-                                              DeleteRelationshipRequestBody requestBody)
+                                             String                        urlMarker,
+                                             String                        elementGUID,
+                                             String                        contactDetailsGUID,
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachContactDetails";
 
@@ -2913,6 +2913,790 @@ public class ActorManagerRESTServices extends TokenController
                 response.setElements(handler.findContactDetails(userId,
                                                                 null,
                                                                 null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /**
+     * Create a perspective.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the perspective.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createPerspective(String                serverName,
+                                          String                urlMarker,
+                                          NewElementRequestBody requestBody)
+    {
+        final String methodName = "createPerspective";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof PerspectiveProperties perspectiveProperties)
+                {
+                    response.setGUID(handler.createPerspective(userId,
+                                                               requestBody,
+                                                               requestBody.getInitialClassifications(),
+                                                               perspectiveProperties,
+                                                               requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(PerspectiveProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a perspective using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createPerspectiveFromTemplate(String              serverName,
+                                                      String              urlMarker,
+                                                      TemplateRequestBody requestBody)
+    {
+        final String methodName = "createPerspectiveFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+                response.setGUID(handler.createPerspectiveFromTemplate(userId,
+                                                                       requestBody,
+                                                                       requestBody.getTemplateGUID(),
+                                                                       requestBody.getReplacementProperties(),
+                                                                       requestBody.getReplacementClassifications(),
+                                                                       requestBody.getPlaceholderPropertyValues(),
+                                                                       requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a perspective.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID unique identifier of the perspective (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public BooleanResponse updatePerspective(String                   serverName,
+                                             String                   urlMarker,
+                                             String                   perspectiveGUID,
+                                             UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updatePerspective";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof PerspectiveProperties perspectiveProperties)
+                {
+                    response.setFlag(handler.updatePerspective(userId,
+                                                               perspectiveGUID,
+                                                               requestBody,
+                                                               perspectiveProperties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setFlag(handler.updatePerspective(userId,
+                                                               perspectiveGUID,
+                                                               requestBody,
+                                                               null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(PerspectiveProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a perspective.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deletePerspective(String                   serverName,
+                                          String                   urlMarker,
+                                          String                   perspectiveGUID,
+                                          DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deletePerspective";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deletePerspective(userId, perspectiveGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of perspective metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getPerspectivesByName(String            serverName,
+                                                                  String            urlMarker,
+                                                                  FilterRequestBody requestBody)
+    {
+        final String methodName = "getPerspectivesByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getPerspectivesByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of perspective metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getPerspectiveByGUID(String         serverName,
+                                                                String         urlMarker,
+                                                                String         perspectiveGUID,
+                                                                GetRequestBody requestBody)
+    {
+        final String methodName = "getPerspectiveByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getPerspectiveByGUID(userId, perspectiveGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of perspective metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findPerspectives(String                  serverName,
+                                                             String                  urlMarker,
+                                                             SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findPerspectives";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            PerspectiveHandler handler = instanceHandler.getPerspectiveHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findPerspectives(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findPerspectives(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /**
+     * Create a skill.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the skill.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createSkill(String                serverName,
+                                    String                urlMarker,
+                                    NewElementRequestBody requestBody)
+    {
+        final String methodName = "createSkill";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SkillProperties skillProperties)
+                {
+                    response.setGUID(handler.createSkill(userId,
+                                                         requestBody,
+                                                         requestBody.getInitialClassifications(),
+                                                         skillProperties,
+                                                         requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SkillProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a skill using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createSkillFromTemplate(String              serverName,
+                                                String              urlMarker,
+                                                TemplateRequestBody requestBody)
+    {
+        final String methodName = "createSkillFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+                response.setGUID(handler.createSkillFromTemplate(userId,
+                                                                 requestBody,
+                                                                 requestBody.getTemplateGUID(),
+                                                                 requestBody.getReplacementProperties(),
+                                                                 requestBody.getReplacementClassifications(),
+                                                                 requestBody.getPlaceholderPropertyValues(),
+                                                                 requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a skill.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param skillGUID unique identifier of the skill (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public BooleanResponse updateSkill(String                   serverName,
+                                       String                   urlMarker,
+                                       String                   skillGUID,
+                                       UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateSkill";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SkillProperties skillProperties)
+                {
+                    response.setFlag(handler.updateSkill(userId,
+                                                         skillGUID,
+                                                         requestBody,
+                                                         skillProperties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setFlag(handler.updateSkill(userId,
+                                                         skillGUID,
+                                                         requestBody,
+                                                         null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SkillProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a skill.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param skillGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteSkill(String                   serverName,
+                                    String                   urlMarker,
+                                    String                   skillGUID,
+                                    DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteSkill";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteSkill(userId, skillGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of skill metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSkillsByName(String            serverName,
+                                                            String            urlMarker,
+                                                            FilterRequestBody requestBody)
+    {
+        final String methodName = "getSkillsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSkillsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of skill metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param skillGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getSkillByGUID(String         serverName,
+                                                          String         urlMarker,
+                                                          String         skillGUID,
+                                                          GetRequestBody requestBody)
+    {
+        final String methodName = "getSkillByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getSkillByGUID(userId, skillGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of skill metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSkills(String                  serverName,
+                                                       String                  urlMarker,
+                                                       SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSkills";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SkillHandler handler = instanceHandler.getSkillHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSkills(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSkills(userId, null, null));
             }
         }
         catch (Throwable error)

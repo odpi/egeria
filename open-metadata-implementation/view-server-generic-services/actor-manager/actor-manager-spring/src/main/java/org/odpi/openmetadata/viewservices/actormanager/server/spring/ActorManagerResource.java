@@ -1705,4 +1705,440 @@ public class ActorManagerResource
     {
         return restAPI.detachAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
     }
+
+
+
+
+    /**
+     * Create a perspective.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the perspective.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/perspectives")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createPerspective",
+            description="Create a perspective.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public GUIDResponse createPerspective(@PathVariable String                               serverName,
+                                       @PathVariable String             urlMarker,
+                                       @RequestBody (required = false)
+                                       NewElementRequestBody requestBody)
+    {
+        return restAPI.createPerspective(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a perspective using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/perspectives/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createPerspectiveFromTemplate",
+            description="Create a new metadata element to represent a perspective using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public GUIDResponse createPerspectiveFromTemplate(@PathVariable
+                                                   String              serverName,
+                                                   @PathVariable String             urlMarker,
+                                                   @RequestBody (required = false)
+                                                   TemplateRequestBody requestBody)
+    {
+        return restAPI.createPerspectiveFromTemplate(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a perspective.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID unique identifier of the perspective (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/perspectives/{perspectiveGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updatePerspective",
+            description="Update the properties of a perspective.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public BooleanResponse updatePerspective(@PathVariable String                                  serverName,
+                                          @PathVariable String             urlMarker,
+                                          @PathVariable String                                  perspectiveGUID,
+                                          @RequestBody (required = false)
+                                          UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updatePerspective(serverName, urlMarker, perspectiveGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a perspective.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/perspectives/{perspectiveGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deletePerspective",
+            description="Delete a perspective.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public VoidResponse deletePerspective(@PathVariable
+                                       String                    serverName,
+                                       @PathVariable String             urlMarker,
+                                       @PathVariable
+                                       String                    perspectiveGUID,
+                                       @RequestBody (required = false)
+                                       DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deletePerspective(serverName, urlMarker, perspectiveGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of perspectives with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/perspectives/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getPerspectivesByName",
+            description="Returns the list of perspectives with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public OpenMetadataRootElementsResponse getPerspectivesByName(@PathVariable
+                                                               String            serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @RequestBody (required = false)
+                                                               FilterRequestBody requestBody)
+    {
+        return restAPI.getPerspectivesByName(serverName, urlMarker, requestBody);
+    }
+    
+
+    /**
+     * Retrieve the list of perspective metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/perspectives/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findPerspectives",
+            description="Retrieve the list of perspective metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public OpenMetadataRootElementsResponse findPerspectives(@PathVariable
+                                                          String                  serverName,
+                                                          @PathVariable String             urlMarker,
+                                                          @RequestBody (required = false)
+                                                          SearchStringRequestBody requestBody)
+    {
+        return restAPI.findPerspectives(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific perspective.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param perspectiveGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/perspectives/{perspectiveGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getPerspectiveByGUID",
+            description="Return the properties of a specific perspective.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/perspective"))
+
+    public OpenMetadataRootElementResponse getPerspectiveByGUID(@PathVariable
+                                                             String             serverName,
+                                                             @PathVariable String             urlMarker,
+                                                             @PathVariable
+                                                             String             perspectiveGUID,
+                                                             @RequestBody (required = false)
+                                                             GetRequestBody requestBody)
+    {
+        return restAPI.getPerspectiveByGUID(serverName, urlMarker, perspectiveGUID, requestBody);
+    }
+
+
+    /**
+     * Create a skill.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the skill.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/skills")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSkill",
+            description="Create a skill.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public GUIDResponse createSkill(@PathVariable String                               serverName,
+                                       @PathVariable String             urlMarker,
+                                       @RequestBody (required = false)
+                                       NewElementRequestBody requestBody)
+    {
+        return restAPI.createSkill(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a skill using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/skills/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSkillFromTemplate",
+            description="Create a new metadata element to represent a skill using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public GUIDResponse createSkillFromTemplate(@PathVariable
+                                                   String              serverName,
+                                                   @PathVariable String             urlMarker,
+                                                   @RequestBody (required = false)
+                                                   TemplateRequestBody requestBody)
+    {
+        return restAPI.createSkillFromTemplate(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a skill.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param skillGUID unique identifier of the skill (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/skills/{skillGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateSkill",
+            description="Update the properties of a skill.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public BooleanResponse updateSkill(@PathVariable String                                  serverName,
+                                          @PathVariable String             urlMarker,
+                                          @PathVariable String                                  skillGUID,
+                                          @RequestBody (required = false)
+                                          UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateSkill(serverName, urlMarker, skillGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a skill.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param skillGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/skills/{skillGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSkill",
+            description="Delete a skill.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public VoidResponse deleteSkill(@PathVariable
+                                       String                    serverName,
+                                       @PathVariable String             urlMarker,
+                                       @PathVariable
+                                       String                    skillGUID,
+                                       @RequestBody (required = false)
+                                       DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteSkill(serverName, urlMarker, skillGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of skills with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/skills/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSkillsByName",
+            description="Returns the list of skills with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public OpenMetadataRootElementsResponse getSkillsByName(@PathVariable
+                                                               String            serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @RequestBody (required = false)
+                                                               FilterRequestBody requestBody)
+    {
+        return restAPI.getSkillsByName(serverName, urlMarker, requestBody);
+    }
+    
+
+    /**
+     * Retrieve the list of skill metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/skills/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findSkills",
+            description="Retrieve the list of skill metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public OpenMetadataRootElementsResponse findSkills(@PathVariable
+                                                          String                  serverName,
+                                                          @PathVariable String             urlMarker,
+                                                          @RequestBody (required = false)
+                                                          SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSkills(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific skill.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param skillGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/skills/{skillGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSkillByGUID",
+            description="Return the properties of a specific skill.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/skill"))
+
+    public OpenMetadataRootElementResponse getSkillByGUID(@PathVariable
+                                                             String             serverName,
+                                                             @PathVariable String             urlMarker,
+                                                             @PathVariable
+                                                             String             skillGUID,
+                                                             @RequestBody (required = false)
+                                                             GetRequestBody requestBody)
+    {
+        return restAPI.getSkillByGUID(serverName, urlMarker, skillGUID, requestBody);
+    }
 }

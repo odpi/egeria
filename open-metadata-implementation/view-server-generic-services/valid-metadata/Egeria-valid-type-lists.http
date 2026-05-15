@@ -30,28 +30,31 @@ Content-Type: application/json
 # type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
 # and classifications.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types?
+    getInheritedAttributes=true&
+    getRelationshipAttributes=true
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ####
 # @name getEntityDefs
 # Returns all the entity type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/entity-defs
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/entity-defs?
+    getInheritedAttributes=true&
+    getRelationshipAttributes=true
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ####
 # @name getRelationshipDefs
 # Returns all the relationship type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/relationship-defs
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/relationship-defs?
+    getInheritedAttributes=true
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ####
 # @name getClassificationDefs
 # Returns all the classification type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/classification-defs
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/classification-defs?
+    getInheritedAttributes=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -65,7 +68,9 @@ Content-Type: application/json
 # Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
 # type has no subtypes.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{superType}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{superType}}?
+    getInheritedAttributes=false&
+    getRelationshipAttributes=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

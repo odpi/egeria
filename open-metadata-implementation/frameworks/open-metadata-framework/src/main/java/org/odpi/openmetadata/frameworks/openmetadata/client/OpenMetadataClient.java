@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * OpenMetadataClient provides access to metadata elements stored in the metadata repositories.  It is implemented by a
@@ -75,10 +74,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
     /**
      * Returns the list of different types of metadata organized into two groups.  The first are the
      * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
-     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships,
      * and classifications.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      *
      * @return TypeDefGallery  List of different categories of type definitions.
      *
@@ -87,14 +88,18 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract OpenMetadataTypeDefGallery getAllTypes(String userId) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException;
+    public abstract OpenMetadataTypeDefGallery getAllTypes(String  userId,
+                                                           boolean getInheritedAttributes,
+                                                           boolean getRelationshipAttributes) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException;
 
     /**
      * Returns all the TypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param category enum value for the category of TypeDef to return.
      *
      * @return TypeDefs list.
@@ -105,9 +110,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      */
     @Override
     public abstract TypeDefList findTypeDefsByCategory(String                      userId,
+                                                       boolean                     getInheritedAttributes,
+                                                       boolean                     getRelationshipAttributes,
                                                        OpenMetadataTypeDefCategory category) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException;
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException;
 
 
     /**
@@ -134,6 +141,8 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * Return the types that are linked to the elements from the specified standard.
      *
      * @param userId       unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
@@ -146,18 +155,22 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract TypeDefList findTypesByExternalId(String userId,
-                                                      String standard,
-                                                      String organization,
-                                                      String identifier) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException;
+    public abstract TypeDefList findTypesByExternalId(String  userId,
+                                                      boolean getInheritedAttributes,
+                                                      boolean getRelationshipAttributes,
+                                                      String  standard,
+                                                      String  organization,
+                                                      String  identifier) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException;
 
 
     /**
      * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
      * type has no subtypes.     *
      * @param userId       unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName     name of the standard null means any.
      *
      * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
@@ -169,16 +182,57 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract TypeDefList getSubTypes(String userId,
-                                            String typeName) throws InvalidParameterException,
+    public abstract TypeDefList getSubTypes(String  userId,
+                                            boolean getInheritedAttributes,
+                                            boolean getRelationshipAttributes,
+                                            String  typeName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException;
+
+
+    /**
+     * Return the list of entity type names starting from the requested entity, walking its suerType hierarchy.
+     *
+     * @param userId calling user
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
+     * @param entityDef retrieved entity
+     * @return list of type names
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    public List<String> getEntityTypeNames(String              userId,
+                                           boolean             getInheritedAttributes,
+                                           boolean             getRelationshipAttributes,
+                                           OpenMetadataTypeDef entityDef) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        List<String> entityTypeNames = new ArrayList<>();
+
+        OpenMetadataTypeDef currentEntityDef = entityDef;
+        entityTypeNames.add(currentEntityDef.getName());
+
+        while (currentEntityDef.getSuperType() != null)
+        {
+            currentEntityDef = this.getTypeDefByName(userId,
+                                                     getInheritedAttributes,
+                                                     getRelationshipAttributes,
+                                                     currentEntityDef.getSuperType().getName());
+            entityTypeNames.add(currentEntityDef.getName());
+        }
+
+        return entityTypeNames;
+    }
 
 
     /**
      * Return the TypeDef identified by the GUID.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param guid   String unique id of the TypeDef
      *
      * @return TypeDef structure describing its category and properties.
@@ -189,10 +243,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract OpenMetadataTypeDef getTypeDefByGUID(String userId,
-                                                         String guid) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    public abstract OpenMetadataTypeDef getTypeDefByGUID(String  userId,
+                                                         boolean getInheritedAttributes,
+                                                         boolean getRelationshipAttributes,
+                                                         String  guid) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException;
 
 
     /**
@@ -219,6 +275,8 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * Return the TypeDef identified by the unique name.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name   String name of the TypeDef.
      *
      * @return TypeDef structure describing its category and properties.
@@ -229,10 +287,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract OpenMetadataTypeDef getTypeDefByName(String userId,
-                                                         String name) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    public abstract OpenMetadataTypeDef getTypeDefByName(String  userId,
+                                                         boolean getInheritedAttributes,
+                                                         boolean getRelationshipAttributes,
+                                                         String  name) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException;
 
 
     /**
@@ -677,7 +737,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException
     {
-        SearchClassifications searchClassifications =  new SearchClassifications();
+        SearchClassifications searchClassifications = new SearchClassifications();
 
         List<ClassificationCondition> classificationConditions = new ArrayList<>();
         ClassificationCondition       classificationCondition  = new ClassificationCondition();
@@ -758,7 +818,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                          searchClassifications,
                                          queryOptions);
     }
-
 
 
     /**
@@ -1379,7 +1438,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentRelationshipProperties properties to include in parent relationship
-      *
+     *
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
@@ -1669,7 +1728,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                    ElementProperties properties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
-
 
 
     /**

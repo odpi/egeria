@@ -134,6 +134,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * and classifications.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      *
      * @return TypeDefGallery  List of different categories of type definitions.
      *
@@ -142,19 +144,23 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public OpenMetadataTypeDefGallery getAllTypes(String userId) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public OpenMetadataTypeDefGallery getAllTypes(String  userId,
+                                                  boolean getInheritedAttributes,
+                                                  boolean getRelationshipAttributes) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types?getInheritedAttributes={2}&getRelationshipAttributes={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         TypeDefGalleryResponse restResult = restClient.callTypeDefGalleryGetRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      serverName,
-                                                                                     userId);
+                                                                                     userId,
+                                                                                     getInheritedAttributes,
+                                                                                     getRelationshipAttributes);
 
         if (restResult != null)
         {
@@ -174,6 +180,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Returns all the TypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param category enum value for the category of TypeDef to return.
      *
      * @return TypeDefs list.
@@ -184,15 +192,17 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      */
     @Override
     public TypeDefList findTypeDefsByCategory(String                      userId,
+                                              boolean                     getInheritedAttributes,
+                                              boolean                     getRelationshipAttributes,
                                               OpenMetadataTypeDefCategory category) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByCategory";
         final String categoryParameterName  = "category";
-        final String entityURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/entity-defs";
-        final String relationshipURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/relationship-defs";
-        final String classificationURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/classification-defs";
+        final String entityURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/entity-defs?getInheritedAttributes={2}&getRelationshipAttributes={3}";
+        final String relationshipURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/relationship-defs?getInheritedAttributes={2}&getRelationshipAttributes={3}";
+        final String classificationURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/classification-defs?getInheritedAttributes={2}&getRelationshipAttributes={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateEnum(category, categoryParameterName, methodName);
@@ -211,7 +221,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         TypeDefListResponse restResult = restClient.callTypeDefListGetRESTCall(methodName,
                                                                                urlTemplate,
                                                                                serverName,
-                                                                               userId);
+                                                                               userId,
+                                                                               getInheritedAttributes,
+                                                                               getRelationshipAttributes);
 
         return restResult.getTypeDefList();
     }
@@ -268,6 +280,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Return the types that are linked to the elements from the specified standard.
      *
      * @param userId       unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
@@ -280,15 +294,17 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public TypeDefList findTypesByExternalId(String userId,
-                                                           String standard,
-                                                           String organization,
-                                                           String identifier) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public TypeDefList findTypesByExternalId(String  userId,
+                                             boolean getInheritedAttributes,
+                                             boolean getRelationshipAttributes,
+                                             String  standard,
+                                             String  organization,
+                                             String  identifier) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String methodName  = "findTypesByExternalId";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/external-id?standard={2}&organization={3}&identifier={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/external-id?getInheritedAttributes={2}&getRelationshipAttributes={3}&standard={4}&organization={5}&identifier={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -296,6 +312,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                urlTemplate,
                                                                                serverName,
                                                                                userId,
+                                                                               getInheritedAttributes,
+                                                                               getRelationshipAttributes,
                                                                                standard,
                                                                                organization,
                                                                                identifier);
@@ -308,6 +326,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
      * type has no subtypes.     *
      * @param userId       unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName     name of the standard null means any.
      *
      * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
@@ -319,14 +339,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public TypeDefList getSubTypes(String userId,
-                                   String typeName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public TypeDefList getSubTypes(String  userId,
+                                   boolean getInheritedAttributes,
+                                   boolean getRelationshipAttributes,
+                                   String  typeName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
         final String methodName  = "getSubTypes";
         final String parameterName = "typeName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/sub-types?typeName={2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/sub-types?getInheritedAttributes={2}&getRelationshipAttributes={3}&typeName={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(typeName, parameterName, methodName);
@@ -335,6 +357,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                urlTemplate,
                                                                                serverName,
                                                                                userId,
+                                                                               getInheritedAttributes,
+                                                                               getRelationshipAttributes,
                                                                                typeName);
 
 
@@ -346,6 +370,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Return the TypeDef identified by the GUID.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param guid   String unique id of the TypeDef
      *
      * @return TypeDef structure describing its category and properties.
@@ -356,14 +382,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public OpenMetadataTypeDef getTypeDefByGUID(String userId,
-                                                String guid) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public OpenMetadataTypeDef getTypeDefByGUID(String  userId,
+                                                boolean getInheritedAttributes,
+                                                boolean getRelationshipAttributes,
+                                                String  guid) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByGUID";
         final String guidParameterName  = "guid";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/guid/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/guid/{2}?getInheritedAttributes={3}&getRelationshipAttributes={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
@@ -372,7 +400,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                        urlTemplate,
                                                                        serverName,
                                                                        userId,
-                                                                       guid);
+                                                                       guid,
+                                                                       getInheritedAttributes,
+                                                                       getRelationshipAttributes);
 
 
         return restResult.getTypeDef();
@@ -420,6 +450,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Return the TypeDef identified by the unique name.
      *
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name   String name of the TypeDef.
      *
      * @return TypeDef structure describing its category and properties.
@@ -430,14 +462,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public OpenMetadataTypeDef getTypeDefByName(String userId,
-                                                String name) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public OpenMetadataTypeDef getTypeDefByName(String  userId,
+                                                boolean getInheritedAttributes,
+                                                boolean getRelationshipAttributes,
+                                                String  name) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByName";
         final String nameParameterName  = "name";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/name/{2}?getInheritedAttributes={3}&getRelationshipAttributes={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -446,7 +480,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                        urlTemplate,
                                                                        serverName,
                                                                        userId,
-                                                                       name);
+                                                                       name,
+                                                                       getInheritedAttributes,
+                                                                       getRelationshipAttributes);
 
 
         return restResult.getTypeDef();

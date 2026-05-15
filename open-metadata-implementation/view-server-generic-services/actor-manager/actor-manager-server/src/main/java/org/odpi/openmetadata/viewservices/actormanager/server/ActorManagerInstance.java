@@ -27,6 +27,8 @@ public class ActorManagerInstance extends OMVSServiceInstance
     private final ViewServiceClientMap<ActorRoleHandler>            actorRoleHandlerMap;
     private final ViewServiceClientMap<UserIdentityHandler>         userIdentityHandlerMap;
     private final ViewServiceClientMap<ContactDetailsHandler>       contactDetailsHandlerMap;
+    private final ViewServiceClientMap<PerspectiveHandler>          perspectiveHandlerMap;
+    private final ViewServiceClientMap<SkillHandler>                skillHandlerMap;
     private final ViewServiceClientMap<GovernanceDefinitionHandler> governanceDefinitionClientMap;
 
 
@@ -92,6 +94,20 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                                  myDescription.getViewServiceFullName(),
                                                                  myDescription.getViewServiceURLMarker(),
                                                                  maxPageSize);
+        this.perspectiveHandlerMap = new ViewServiceClientMap<>(PerspectiveHandler.class,
+                                                                serverName,
+                                                                auditLog,
+                                                                activeViewServices,
+                                                                myDescription.getViewServiceFullName(),
+                                                                myDescription.getViewServiceURLMarker(),
+                                                                maxPageSize);
+        this.skillHandlerMap = new ViewServiceClientMap<>(SkillHandler.class,
+                                                          serverName,
+                                                          auditLog,
+                                                          activeViewServices,
+                                                          myDescription.getViewServiceFullName(),
+                                                          myDescription.getViewServiceURLMarker(),
+                                                          maxPageSize);
         this.governanceDefinitionClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
                                                                         serverName,
                                                                         auditLog,
@@ -171,6 +187,42 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                                                     PropertyServerException
     {
         return contactDetailsHandlerMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * perspective artifacts.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public PerspectiveHandler getPerspectiveHandler(String urlMarker,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                PropertyServerException
+    {
+        return perspectiveHandlerMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * skill artifacts.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public SkillHandler getSkillHandler(String urlMarker,
+                                        String methodName) throws InvalidParameterException,
+                                                                  PropertyServerException
+    {
+        return skillHandlerMap.getClient(urlMarker, methodName);
     }
 
 

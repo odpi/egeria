@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 /**
- * ValidValueSetListConnector maintains a tabular data set that lists the valid value sets in open metadata.
- * Valid value sets are valid value definitions with no valid value parent and one or more members.
+ * ReferenceDataSetListConnector maintains a tabular data set that lists the reference data sets in open metadata.
+ * Reference data sets are valid value definitions with no valid value parent and one or more members.
  */
 public class ReferenceDataSetListConnector extends OpenMetadataRootDataSetConnectorBase
 {

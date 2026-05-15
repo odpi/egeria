@@ -31,7 +31,7 @@ public class DataValueMeaningProperties extends ClassificationBeanProperties
 
 
     /**
-     * Copy/clone constructor for an editing glossary classification.
+     * Copy/clone constructor for a data value meaning classification.
      *
      * @param template template object to copy.
      */

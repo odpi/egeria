@@ -140,7 +140,7 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
                             }
 
                             /*
-                             * Process the valid value set members.
+                             * Process the reference data set members.
                              */
                             processNestedValues(rootElement, knownGUIDs);
                         }

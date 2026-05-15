@@ -160,7 +160,9 @@ public class OpenMetadataTypesArchive
         update0019MoreInformation();
         update0112Person();
         update0118ActorRoles();
-        update01135ActionsForPeople();
+        update0135ActionsForPeople();
+        add0145Perspectives();
+        update0340Dictionary();
         update0405GovernanceDrivers();
         update0423SecurityDefinitions();
         update0424GovernanceZones();
@@ -526,6 +528,106 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0145Perspectives()
+    {
+        this.archiveBuilder.addEntityDef(getPerspectiveEntity());
+        this.archiveBuilder.addEntityDef(getSkillSetEntity());
+        this.archiveBuilder.addEntityDef(getSkillEntity());
+
+        this.archiveBuilder.addRelationshipDef(getAssociatedSkillSetRelationship());
+    }
+
+    private EntityDef getPerspectiveEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PERSPECTIVE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
+    }
+
+    private EntityDef getSkillSetEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SKILL_SET,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
+    private EntityDef getSkillEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SKILL,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
+    }
+
+    private RelationshipDef getAssociatedSkillSetRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ASSOCIATED_SKILL_SET_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "actorWithSkills";
+        final String                     end1AttributeDescription     = "The actor possessing the skills.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "skillSets";
+        final String                     end2AttributeDescription     = "The skills of the actor.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SKILL_SET.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0340Dictionary()
+    {
+        this.archiveBuilder.addClassificationDef(getQuestionClassification());
+    }
+
+    private ClassificationDef getQuestionClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.QUESTION_CLASSIFICATION,
+                                                  null,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
+                                                  false);
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -590,7 +692,7 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update01135ActionsForPeople()
+    private void update0135ActionsForPeople()
     {
         this.archiveBuilder.addEntityDef(getActivityEntryEntity());
         this.archiveBuilder.addEntityDef(getBlogEntryEntity());

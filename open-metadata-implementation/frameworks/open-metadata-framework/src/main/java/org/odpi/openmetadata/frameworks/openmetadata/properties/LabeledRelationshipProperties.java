@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
@@ -62,6 +63,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AnnotationMatchProperties.class, name = "AnnotationMatchProperties"),
                 @JsonSubTypes.Type(value = ApprovedPurposeProperties.class, name = "ApprovedPurposeProperties"),
                 @JsonSubTypes.Type(value = AssociatedAnnotationProperties.class, name = "AssociatedAnnotationProperties"),
+                @JsonSubTypes.Type(value = AssociatedSkillSetProperties.class, name = "AssociatedSkillSetProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityDependencyProperties.class, name = "BusinessCapabilityDependencyProperties"),
                 @JsonSubTypes.Type(value = CatalogTemplateProperties.class, name = "CatalogTemplateProperties"),
                 @JsonSubTypes.Type(value = ConceptDesignProperties.class, name = "ConceptDesignProperties"),

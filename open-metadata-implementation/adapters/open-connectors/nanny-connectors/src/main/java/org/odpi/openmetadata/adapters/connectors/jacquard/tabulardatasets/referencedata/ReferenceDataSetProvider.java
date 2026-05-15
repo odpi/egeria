@@ -58,9 +58,7 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
         Map<String, Object> configurationProperties = new HashMap<>();
 
         configurationProperties.put(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
-        configurationProperties.put(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
-        configurationProperties.put(TabularDataSetConfigurationProperty.CANONICAL_NAME.name, canonicalName);
-        configurationProperties.put(TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
+
 
         return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                                          new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},
@@ -97,7 +95,7 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
                                                  ProductDataFieldDefinition.USAGE},
                                          OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                                          "Data set",
-                                         new ValidMetadataValueDataSetProvider(),
+                                         new ReferenceDataSetProvider(),
                                          configurationProperties,
                                          "Reference Data Set: " + identifier); // Used in Jacquard's harvestReferenceDataSets method() - change in both places
 

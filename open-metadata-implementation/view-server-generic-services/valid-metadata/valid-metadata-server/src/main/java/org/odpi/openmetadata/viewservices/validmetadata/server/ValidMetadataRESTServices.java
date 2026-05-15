@@ -9,9 +9,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SpecificationPropertyHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -921,13 +918,17 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGalleryResponse getAllTypes(String serverName,
-                                              String urlMarker)
+    public TypeDefGalleryResponse getAllTypes(String  serverName,
+                                              String  urlMarker,
+                                              boolean getInheritedAttributes,
+                                              boolean getRelationshipAttributes)
     {
         final String methodName = "getAllTypes";
 
@@ -946,7 +947,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            OpenMetadataTypeDefGallery typeDefGallery = client.getAllTypes(userId);
+            OpenMetadataTypeDefGallery typeDefGallery = client.getAllTypes(userId, getInheritedAttributes, getRelationshipAttributes);
 
             if (typeDefGallery != null)
             {
@@ -969,6 +970,8 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -977,7 +980,9 @@ public class ValidMetadataRESTServices extends TokenController
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getTypeDefsByCategory(String                      serverName,
-                                                     String                     urlMarker,
+                                                     String                      urlMarker,
+                                                     boolean                     getInheritedAttributes,
+                                                     boolean                     getRelationshipAttributes,
                                                      OpenMetadataTypeDefCategory category)
     {
         final String methodName = "getTypeDefsByCategory";
@@ -997,7 +1002,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            response.setTypeDefList(client.findTypeDefsByCategory(userId, category));
+            response.setTypeDefList(client.findTypeDefsByCategory(userId, getInheritedAttributes, getRelationshipAttributes, category));
         }
         catch (Throwable error)
         {
@@ -1061,6 +1066,8 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -1068,9 +1075,11 @@ public class ValidMetadataRESTServices extends TokenController
      * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse getSubTypes(String serverName,
-                                           String urlMarker,
-                                           String typeName)
+    public TypeDefListResponse getSubTypes(String  serverName,
+                                           String  urlMarker,
+                                           boolean getInheritedAttributes,
+                                           boolean getRelationshipAttributes,
+                                           String  typeName)
     {
         final String methodName = "getSubTypes";
 
@@ -1089,7 +1098,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            response.setTypeDefList(client.getSubTypes(userId, typeName));
+            response.setTypeDefList(client.getSubTypes(userId, getInheritedAttributes, getRelationshipAttributes, typeName));
         }
         catch (Throwable error)
         {
@@ -1106,6 +1115,7 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @param typeName name of entity type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -1115,6 +1125,7 @@ public class ValidMetadataRESTServices extends TokenController
      */
     public TypeDefListResponse getValidRelationshipTypes(String serverName,
                                                          String urlMarker,
+                                                         boolean getInheritedAttributes,
                                                          String typeName)
     {
         final String methodName = "getValidRelationshipTypes";
@@ -1134,13 +1145,13 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
+            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, false, false, typeName);
 
             if (entityDef != null)
             {
-                List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
+                List<String> entityTypeNames = client.getEntityTypeNames(userId, false, false, entityDef);
 
-                TypeDefList relationshipDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+                TypeDefList relationshipDefs = client.findTypeDefsByCategory(userId, getInheritedAttributes, false, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
 
                 if ((relationshipDefs != null) && (relationshipDefs.getTypeDefs() != null))
                 {
@@ -1184,42 +1195,11 @@ public class ValidMetadataRESTServices extends TokenController
 
 
     /**
-     * Return the list of entity type names starting from the requested entity, walking its suerType hierarchy.
-     *
-     * @param userId calling user
-     * @param entityDef retrieved entity
-     * @param client  client to retrieve more types
-     * @return list of type names
-     * @throws InvalidParameterException bad parameter
-     * @throws PropertyServerException repository error
-     * @throws UserNotAuthorizedException security error
-     */
-    List<String> getEntityTypeNames(String              userId,
-                                    OpenMetadataTypeDef entityDef,
-                                    OpenMetadataClient  client) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
-        List<String>        entityTypeNames = new ArrayList<>();
-
-        OpenMetadataTypeDef currentEntityDef = entityDef;
-        entityTypeNames.add(currentEntityDef.getName());
-
-        while (currentEntityDef.getSuperType() != null)
-        {
-            currentEntityDef = client.getTypeDefByName(userId, currentEntityDef.getSuperType().getName());
-            entityTypeNames.add(currentEntityDef.getName());
-        }
-
-        return entityTypeNames;
-    }
-
-
-    /**
      * Returns all the TypeDefs for classifications that can be attached to the requested entity type.
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -1229,6 +1209,7 @@ public class ValidMetadataRESTServices extends TokenController
      */
     public TypeDefListResponse getValidClassificationTypes(String serverName,
                                                            String urlMarker,
+                                                           boolean getInheritedAttributes,
                                                            String typeName)
     {
         final String methodName = "getValidClassificationTypes";
@@ -1248,13 +1229,13 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
+            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, getInheritedAttributes, false, typeName);
 
             if (entityDef != null)
             {
-                List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
+                List<String> entityTypeNames = client.getEntityTypeNames(userId, false, false, entityDef);
 
-                TypeDefList classificationDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+                TypeDefList classificationDefs = client.findTypeDefsByCategory(userId, getInheritedAttributes, false, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
 
                 if ((classificationDefs != null) && (classificationDefs.getTypeDefs() != null))
                 {
@@ -1303,6 +1284,8 @@ public class ValidMetadataRESTServices extends TokenController
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -1312,9 +1295,11 @@ public class ValidMetadataRESTServices extends TokenController
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse getTypeDefByName(String    serverName,
-                                            String    urlMarker,
-                                            String    name)
+    public TypeDefResponse getTypeDefByName(String  serverName,
+                                            String  urlMarker,
+                                            boolean getInheritedAttributes,
+                                            boolean getRelationshipAttributes,
+                                            String  name)
     {
         final String methodName = "getTypeDefByName";
 
@@ -1333,7 +1318,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            response.setTypeDef(client.getTypeDefByName(userId, name));
+            response.setTypeDef(client.getTypeDefByName(userId, getInheritedAttributes, getRelationshipAttributes, name));
         }
         catch (Throwable error)
         {

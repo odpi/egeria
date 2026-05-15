@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
@@ -263,6 +264,47 @@ public class CollectionClient extends ConnectorContextClientBase
         collectionHandler.detachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, deleteOptions);
     }
 
+
+    /**
+     * Connect an actor to a skill set collection.
+     *
+     * @param skillSetGUID    unique identifier of the collection
+     * @param actorGUID        unique identifier of referenceable object that the collection should be attached to
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the collection will be used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachAssociatedSkillSet(String                       actorGUID,
+                                         String                       skillSetGUID,
+                                         MakeAnchorOptions            makeAnchorOptions,
+                                         AssociatedSkillSetProperties properties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        collectionHandler.attachAssociatedSkillSet(connectorUserId, actorGUID, skillSetGUID, makeAnchorOptions, properties);
+    }
+
+
+    /**
+     * Detach an actor from a skill set collection.
+     *
+     * @param skillSetGUID unique identifier of the skill set collection.
+     * @param actorGUID     unique identifier of an actor object that the collection should be attached to.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssociatedSkillSet(String        actorGUID,
+                                         String        skillSetGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        collectionHandler.detachAssociatedSkillSet(connectorUserId, actorGUID, skillSetGUID, deleteOptions);
+    }
 
 
     /**

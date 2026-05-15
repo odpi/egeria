@@ -140,13 +140,13 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     {
         List<Type> results = new ArrayList<>();
 
-        OpenMetadataTypeDef openMetadataTypeDef = openMetadataClient.getTypeDefByName(userId, typeName);
+        OpenMetadataTypeDef openMetadataTypeDef = openMetadataClient.getTypeDefByName(userId, true, true, typeName);
 
         if (openMetadataTypeDef != null)
         {
             results.add(this.convertOpenMetadataType(openMetadataTypeDef));
 
-            TypeDefList subTypes = openMetadataClient.getSubTypes(userId, typeName);
+            TypeDefList subTypes = openMetadataClient.getSubTypes(userId, true, true, typeName);
 
             if ((subTypes != null) && (subTypes.getTypeDefs() != null))
             {

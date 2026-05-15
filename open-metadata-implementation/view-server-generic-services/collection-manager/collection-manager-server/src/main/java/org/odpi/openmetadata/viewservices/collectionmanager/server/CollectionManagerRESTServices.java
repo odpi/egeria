@@ -715,7 +715,6 @@ public class CollectionManagerRESTServices extends TokenController
     }
 
 
-
     /**
      * Connect an existing collection to an element using the ResourceList relationship (0019).
      *
@@ -842,6 +841,136 @@ public class CollectionManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+
+    /**
+     * Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param skillSetGUID unique identifier of the collection
+     * @param actorGUID     unique identifier of the actor object that the collection should be attached to
+     * @param requestBody  description of how the collection will be used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse attachAssociatedSkillSet(String                     serverName,
+                                                 String                     urlMarker,
+                                                 String                     actorGUID,
+                                                 String                     skillSetGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "attachDataDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataDescriptionProperties properties)
+                {
+                    handler.attachDataDescription(userId,
+                                                  actorGUID,
+                                                  skillSetGUID,
+                                                  requestBody,
+                                                  properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.attachDataDescription(userId,
+                                                  actorGUID,
+                                                  skillSetGUID,
+                                                  requestBody,
+                                                  null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.attachDataDescription(userId,
+                                              actorGUID,
+                                              skillSetGUID,
+                                              new MakeAnchorOptions(),
+                                              null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param actorGUID     unique identifier of the actor object that the collection should be attached to
+     * @param skillSetGUID unique identifier of the skill set collection.
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachAssociatedSkillSet(String                        serverName,
+                                                 String                        urlMarker,
+                                                 String                        actorGUID,
+                                                 String                        skillSetGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAssociatedSkillSet";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssociatedSkillSet(userId, actorGUID, skillSetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
 
 
     /**

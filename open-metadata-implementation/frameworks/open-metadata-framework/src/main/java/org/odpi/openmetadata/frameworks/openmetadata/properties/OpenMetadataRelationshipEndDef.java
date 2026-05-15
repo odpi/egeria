@@ -19,9 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationshipEndDef extends OpenMetadataTypeDefElementHeader
 {
-    private OpenMetadataTypeDefLink entityType    = null;
-    private String                  attributeName = null;
-    private String                     attributeDescription     = null;
+    private OpenMetadataTypeDefLink                entityType               = null;
+    private String                                 attributeName            = null;
+    private String                                 attributeDescription     = null;
     private String                                 attributeDescriptionGUID = null;
     private OpenMetadataRelationshipEndCardinality attributeCardinality     = OpenMetadataRelationshipEndCardinality.UNKNOWN;
 

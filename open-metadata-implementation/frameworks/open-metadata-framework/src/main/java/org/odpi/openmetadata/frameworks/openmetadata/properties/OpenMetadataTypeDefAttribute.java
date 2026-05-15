@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OpenMetadataTypeDefAttribute stores the properties used to describe a attribute within a Classification,
- * Entity or Relationship.  The attribute may itself be of types Enum, Collection or Primitive Types.
+ * Entity, or Relationship.  The attribute may itself be of types Enum, Collection, or Primitive Types.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

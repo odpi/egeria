@@ -40,7 +40,6 @@ public abstract class DynamicOpenMetadataDataSetConnectorBase extends OpenMetada
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-
         identifierPropertyValue = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.getName(), connectionBean.getConfigurationProperties());
         canonicalName = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.CANONICAL_NAME.getName(), connectionBean.getConfigurationProperties());
         description = super.getStringConfigurationProperty(TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.getName(), connectionBean.getConfigurationProperties());

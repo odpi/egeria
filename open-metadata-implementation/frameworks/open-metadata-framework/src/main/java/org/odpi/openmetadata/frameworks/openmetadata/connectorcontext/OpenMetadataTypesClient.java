@@ -30,7 +30,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @param externalSourceName unique name of the software server capability for the source of metadata
      * @param openMetadataClient client to access the open metadata store
      * @param auditLog logging destination
-     * @param maxPageSize max number of elements that can be returned on a query
+     * @param maxPageSize max elements that can be returned on a query
      */
     public OpenMetadataTypesClient(ConnectorContextBase parentContext,
                                    String               localServerName,
@@ -52,27 +52,31 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
     /**
      * Returns the list of different types of metadata organized into two groups.  The first are the
      * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
-     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships,
      * and classifications.
      *
-     *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefGallery  List of different categories of type definitions.
      *
      * @throws InvalidParameterException  the userId is null
      * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public OpenMetadataTypeDefGallery getAllTypes() throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public OpenMetadataTypeDefGallery getAllTypes(boolean getInheritedAttributes,
+                                                  boolean getRelationshipAttributes) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
-        return openMetadataClient.getAllTypes(connectorUserId);
+        return openMetadataClient.getAllTypes(connectorUserId, getInheritedAttributes, getRelationshipAttributes);
     }
 
 
     /**
      * Returns all the TypeDefs for a specific category.
      *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param category enum value for the category of TypeDef to return.
      *
      * @return TypeDefs list.
@@ -81,11 +85,13 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefList findTypeDefsByCategory(OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+    public TypeDefList findTypeDefsByCategory(boolean                     getInheritedAttributes,
+                                              boolean                     getRelationshipAttributes,
+                                              OpenMetadataTypeDefCategory category) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        return openMetadataClient.findTypeDefsByCategory(connectorUserId, category);
+        return openMetadataClient.findTypeDefsByCategory(connectorUserId, getInheritedAttributes, getRelationshipAttributes, category);
     }
 
 
@@ -112,6 +118,8 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
     /**
      * Return the types that are linked to the elements from the specified standard.
      *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
@@ -123,13 +131,15 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefList findTypesByExternalID(String standard,
-                                                           String organization,
-                                                           String identifier) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public TypeDefList findTypesByExternalId(boolean getInheritedAttributes,
+                                             boolean getRelationshipAttributes,
+                                             String  standard,
+                                             String  organization,
+                                             String  identifier) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
-        return openMetadataClient.findTypesByExternalId(connectorUserId, standard, organization, identifier);
+        return openMetadataClient.findTypesByExternalId(connectorUserId, getInheritedAttributes, getRelationshipAttributes, standard, organization, identifier);
     }
 
 
@@ -137,6 +147,8 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
      * type has no subtypes.
      *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName     name of the standard null means any.
      *
      * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
@@ -147,16 +159,20 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefList getSubTypes(String typeName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public TypeDefList getSubTypes(boolean getInheritedAttributes,
+                                   boolean getRelationshipAttributes,
+                                   String  typeName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
-        return openMetadataClient.getSubTypes(connectorUserId, typeName);
+        return openMetadataClient.getSubTypes(connectorUserId, getInheritedAttributes, getRelationshipAttributes, typeName);
     }
 
     /**
      * Return the TypeDef identified by the GUID.
      *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param guid   String unique id of the TypeDef
      *
      * @return TypeDef structure describing its category and properties.
@@ -166,11 +182,13 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public OpenMetadataTypeDef getTypeDefByGUID(String guid) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public OpenMetadataTypeDef getTypeDefByGUID(boolean getInheritedAttributes,
+                                                boolean getRelationshipAttributes,
+                                                String  guid) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        return openMetadataClient.getTypeDefByGUID(connectorUserId, guid);
+        return openMetadataClient.getTypeDefByGUID(connectorUserId, getInheritedAttributes, getRelationshipAttributes, guid);
     }
 
 
@@ -197,6 +215,8 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
     /**
      * Return the TypeDef identified by the unique name.
      *
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name   String name of the TypeDef.
      *
      * @return TypeDef structure describing its category and properties.
@@ -206,11 +226,13 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public OpenMetadataTypeDef getTypeDefByName(String name) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public OpenMetadataTypeDef getTypeDefByName(boolean getInheritedAttributes,
+                                                boolean getRelationshipAttributes,
+                                                String  name) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        return openMetadataClient.getTypeDefByName(connectorUserId, name);
+        return openMetadataClient.getTypeDefByName(connectorUserId, getInheritedAttributes, getRelationshipAttributes, name);
     }
 
 
