@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
@@ -456,10 +457,10 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void attachCollection(String userId,
-                                 String collectionGUID,
-                                 String parentGUID,
-                                 MakeAnchorOptions makeAnchorOptions,
+    public void attachCollection(String                 userId,
+                                 String                 collectionGUID,
+                                 String                 parentGUID,
+                                 MakeAnchorOptions      makeAnchorOptions,
                                  ResourceListProperties properties) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -589,6 +590,76 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     }
 
 
+    /**
+     * Connect an actor to a skill set collection.
+     *
+     * @param userId            userId of the user making the request
+     * @param skillSetGUID    unique identifier of the collection
+     * @param actorGUID        unique identifier of referenceable object that the collection should be attached to
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the collection will be used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachAssociatedSkillSet(String                       userId,
+                                         String                       actorGUID,
+                                         String                       skillSetGUID,
+                                         MakeAnchorOptions            makeAnchorOptions,
+                                         AssociatedSkillSetProperties properties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName                  = "attachAssociatedSkillSet";
+        final String collectionGUIDParameterName = "skillSetGUID";
+        final String parentGUIDParameterName     = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(skillSetGUID, collectionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSOCIATED_SKILL_SET_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        skillSetGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Detach an actor from a skill set collection.
+     *
+     * @param userId         userId of the user making the request.
+     * @param skillSetGUID unique identifier of the skill set collection.
+     * @param actorGUID     unique identifier of an actor object that the collection should be attached to.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssociatedSkillSet(String        userId,
+                                         String        actorGUID,
+                                         String        skillSetGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "detachAssociatedSkillSet";
+
+        final String collectionGUIDParameterName = "skillSetGUID";
+        final String parentGUIDParameterName     = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(skillSetGUID, collectionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSOCIATED_SKILL_SET_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        skillSetGUID,
+                                                        deleteOptions);
+    }
 
 
     /**

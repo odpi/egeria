@@ -1,14 +1,27 @@
 # Egeria-open-metadata-types - for woking with open metadata types
 
 @serverName=active-metadata-store
-@serviceURLMarker=asset-owner
 @userId=erinoverview
-@typeDefCategory=ENTITY_DEF
-@attributeTypeDefCateogry=ENUM_DEF
+@attributeTypeDefCategory=ENUM
 @typeName=Asset
-@typeGUID=2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3
-@attributeTypeName=OperationalStatus
-@attributeTypeGUID=a6e698b0-a4f7-4a39-8c80-db0bb0f972ec
+@typeGUID=2dc524d2-e29f-4186-9081-72ea956c75de
+@attributeTypeName=DeploymentStatus
+@attributeTypeGUID=2c0ac237-e02e-431a-89fd-3107d94d4007
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{userId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 ###
 # @name getAllTypes
@@ -16,19 +29,40 @@
 # attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
 # type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
 # and classifications.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types?
+    getInheritedAttributes=false&
+    getRelationshipAttributes=false
+Authorization: Bearer {{token}}
+
+###
+# @name getEntityDefs
+# Returns the list of entity type definitions.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/entity-defs?
+    getInheritedAttributes=false&
+    getRelationshipAttributes=false
+Authorization: Bearer {{token}}
+
+###
+# @name getRelationshipDefs
+# Returns all the relationship type definitions.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/relationship-defs?
+    getInheritedAttributes=false
+Authorization: Bearer {{token}}
+
+###
+# @name getClassificationDefs
+# Returns all the classification type definitions.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/classification-defs?
+    getInheritedAttributes=false
+Authorization: Bearer {{token}}
 
 
 ###
-# @name findTypeDefsByCategory
-# Returns all the TypeDefs for a specific category: CLASSIFICATION_DEF, ENTITY_DEF, or RELATIONSHIP_DEF.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/category/{{typeDefCategory}}
-
-
-###
-# @name findAttributeTypeDefsByCategory
+# @name getAttributeTypeDefsByCategory
 # Returns all the AttributeTypeDefs for a specific category: PRIMITIVE, COLLECTION, ENUM_DEF.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/category/{{attributeTypeDefCateogry}}
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/attribute-defs?
+    category={{attributeTypeDefCategory}}
+Authorization: Bearer {{token}}
 
 
 ###
@@ -42,38 +76,51 @@ GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceUR
 # Return the types that are linked to the elements from the specified standard.  The type of external standard is 
 # expressed using one to three of the following parameters: standardName (eg DCAT), standardOriganizationName (eg w3c) 
 # and identifier (eg resource)
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/external-id?
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/external-id?
+    getInheritedAttributes=false&
+    getRelationshipAttributes=false&
     standard={{standardName}}&
     organization={{standardOrganizationName}}&
     identifier={{standardIdentifier}}
+Authorization: Bearer {{token}}
 
 
 ###
 # @name getSubTypes
 # Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the type has no subtypes.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/sub-types?{{typeName}}
-
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/sub-types?
+    typeName={{typeName}}&
+    getInheritedAttributes=false&
+    getRelationshipAttributes=false
+Authorization: Bearer {{token}}
 
 ###
 # @name getTypeDefByGUID
 # Return the TypeDef identified by the GUID.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/guid/{{typeGUID}}
-
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/guid/{{typeGUID}}?
+    getInheritedAttributes=false&
+    getRelationshipAttributes=false
+Authorization: Bearer {{token}}
 
 ###
 # @name getAttributeTypeDefByGUID
 #  Return the AttributeTypeDef identified by the GUID.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/guid/{{attributeTypeGUID}}
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/guid/{{attributeTypeGUID}}
+Authorization: Bearer {{token}}
 
 
 ###
 # @name getTypeDefByName
 # Return the TypeDef identified by the unique name.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/name/{{typeName}}
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-types/name/{{typeName}}?
+    getInheritedAttributes=true&
+    getRelationshipAttributes=true
+Authorization: Bearer {{token}}
 
 
 ###
 # @name getAttributeTypeDefByName
 # Return the AttributeTypeDef identified by the unique name.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/name/{{attributeTypeName}}
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/name/{{attributeTypeName}}
+Authorization: Bearer {{token}}
 

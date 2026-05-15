@@ -165,13 +165,17 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGalleryResponse getAllTypes(String   serverName,
-                                              String   userId)
+    public TypeDefGalleryResponse getAllTypes(String  serverName,
+                                              String  userId,
+                                              boolean getInheritedAttributes,
+                                              boolean getRelationshipAttributes)
     {
         final String methodName = "getAllTypes";
 
@@ -185,7 +189,7 @@ public class OpenMetadataStoreRESTServices
             auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
-            response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs(), repositoryHelper));
+            response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs(), getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
             response.setAttributeTypeDefs(this.getAttributeTypeDefs(repositoryHelper.getKnownAttributeTypeDefs()));
         }
         catch (Throwable error)
@@ -203,6 +207,8 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -212,6 +218,8 @@ public class OpenMetadataStoreRESTServices
      */
     public TypeDefListResponse findTypeDefsByCategory(String                      serverName,
                                                       String                      userId,
+                                                      boolean                     getInheritedAttributes,
+                                                      boolean                     getRelationshipAttributes,
                                                       OpenMetadataTypeDefCategory category)
     {
         final String methodName = "findTypeDefsByCategory";
@@ -237,7 +245,7 @@ public class OpenMetadataStoreRESTServices
                                 ((category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF) && (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)) ||
                                 ((category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF) && (typeDef.getCategory() == TypeDefCategory.CLASSIFICATION_DEF)))
                     {
-                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
+                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
                     }
                 }
 
@@ -261,7 +269,7 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Returns all the AttributeTypeDefs for an optional specific category.  If the category is null then
+     * Returns all the AttributeTypeDefs for an optional specific category.  If the category is null, then
      * all attribute type defs are returned.
      *
      * @param serverName unique identifier for requested server.
@@ -326,6 +334,8 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param standard name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier identifier of the element in the standard null means any.
@@ -337,6 +347,8 @@ public class OpenMetadataStoreRESTServices
      */
     public TypeDefListResponse findTypesByExternalId(String    serverName,
                                                      String    userId,
+                                                     boolean   getInheritedAttributes,
+                                                     boolean   getRelationshipAttributes,
                                                      String    standard,
                                                      String    organization,
                                                      String    identifier)
@@ -368,7 +380,7 @@ public class OpenMetadataStoreRESTServices
                                         ((organization == null) || (organization.equals(externalStandardMapping.getStandardOrganization()))) &&
                                         ((identifier == null) || (identifier.equals(externalStandardMapping.getStandardTypeName()))))
                             {
-                                openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
+                                openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
                             }
                         }
                     }
@@ -399,6 +411,8 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefListResponse:
      * TypeDefs list or
@@ -406,9 +420,11 @@ public class OpenMetadataStoreRESTServices
      * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse getSubTypes(String serverName,
-                                           String userId,
-                                           String typeName)
+    public TypeDefListResponse getSubTypes(String  serverName,
+                                           String  userId,
+                                           boolean getInheritedAttributes,
+                                           boolean getRelationshipAttributes,
+                                           String  typeName)
     {
         final String methodName = "getSubTypes";
         final String parameterName = "typeName";
@@ -428,7 +444,7 @@ public class OpenMetadataStoreRESTServices
             TypeDef       typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(),
                                                                       typeName);
 
-            OpenMetadataTypeDef superTypeDef = this.getOpenMetadataTypeDef(typeDef, repositoryHelper);
+            OpenMetadataTypeDef superTypeDef = this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper);
 
             List<String>  subTypeNames = repositoryHelper.getSubTypesOf(instanceHandler.getServiceName(),
                                                                         typeName);
@@ -444,7 +460,7 @@ public class OpenMetadataStoreRESTServices
                         TypeDef subType = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(),
                                                                             subTypeName);
 
-                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(subType, repositoryHelper));
+                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(subType, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
                     }
                 }
 
@@ -478,6 +494,8 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param guid String unique id of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -489,6 +507,8 @@ public class OpenMetadataStoreRESTServices
      */
     public TypeDefResponse getTypeDefByGUID(String    serverName,
                                             String    userId,
+                                            boolean   getInheritedAttributes,
+                                            boolean   getRelationshipAttributes,
                                             String    guid)
     {
         final String methodName = "getTypeDefByGUID";
@@ -508,7 +528,7 @@ public class OpenMetadataStoreRESTServices
                                                           guidParameterName,
                                                           guid,
                                                           methodName);
-            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
+            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
         }
         catch (Throwable error)
         {
@@ -570,6 +590,8 @@ public class OpenMetadataStoreRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -581,6 +603,8 @@ public class OpenMetadataStoreRESTServices
      */
     public TypeDefResponse getTypeDefByName(String    serverName,
                                             String    userId,
+                                            boolean   getInheritedAttributes,
+                                            boolean   getRelationshipAttributes,
                                             String    name)
     {
         final String methodName = "getTypeDefByName";
@@ -596,7 +620,7 @@ public class OpenMetadataStoreRESTServices
             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
             TypeDef typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(), name);
-            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
+            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
         }
         catch (Throwable error)
         {
@@ -3640,10 +3664,14 @@ public class OpenMetadataStoreRESTServices
      * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
      *
      * @param typeDef omrs type
+     * @param getInheritedAttributes flag to control whether inherited attributes are included
+     * @param getRelationshipAttributes flag to control whether relationship attributes are included
      * @param repositoryHelper repository helper
      * @return open metadata type
      */
     private OpenMetadataTypeDef getOpenMetadataTypeDef(TypeDef              typeDef,
+                                                       boolean              getInheritedAttributes,
+                                                       boolean              getRelationshipAttributes,
                                                        OMRSRepositoryHelper repositoryHelper)
     {
         final String methodName = "getOpenMetadataTypeDef";
@@ -3652,9 +3680,16 @@ public class OpenMetadataStoreRESTServices
         {
             OpenMetadataTypeDef openMetadataTypeDef;
 
-            if (typeDef instanceof EntityDef)
+            if (typeDef instanceof EntityDef entityDef)
             {
-                openMetadataTypeDef = new OpenMetadataEntityDef();;
+                OpenMetadataEntityDef openMetadataEntityDef = new OpenMetadataEntityDef();;
+
+                if (getRelationshipAttributes)
+                {
+                    openMetadataEntityDef.setRelationshipAttributes(this.getRelationshipAttributes(entityDef, repositoryHelper));
+                }
+
+                openMetadataTypeDef = openMetadataEntityDef;
                 openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
             }
             else if (typeDef instanceof RelationshipDef relationshipDef)
@@ -3715,9 +3750,17 @@ public class OpenMetadataStoreRESTServices
             openMetadataTypeDef.setOptions(typeDef.getOptions());
             openMetadataTypeDef.setExternalStandardTypeMappings(this.getExternalStandardMappings(typeDef.getExternalStandardMappings()));
             openMetadataTypeDef.setValidElementStatusList(this.getElementStatuses(typeDef.getValidInstanceStatusList()));
-            openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(repositoryHelper.getAllPropertiesForTypeDef(instanceHandler.getServiceName(),
-                                                                                                                              typeDef,
-                                                                                                                              methodName)));
+            if (getInheritedAttributes)
+            {
+                openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(repositoryHelper.getAllPropertiesForTypeDef(instanceHandler.getServiceName(),
+                                                                                                                                  typeDef,
+                                                                                                                                  methodName)));
+            }
+            else
+            {
+                openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(typeDef.getPropertiesDefinition()));
+            }
+
             openMetadataTypeDef.setInitialStatus(this.getElementStatus(typeDef.getInitialStatus()));
 
             return openMetadataTypeDef;
@@ -3727,7 +3770,135 @@ public class OpenMetadataStoreRESTServices
     }
 
 
+    /**
+     * Retrieve the relationship attributes for a given entity definition.
+     *
+     * @param entityDef entity definition
+     * @param repositoryHelper repository helper
+     * @return list of relationship attributes
+     */
+    private List<OpenMetadataRelationshipLink> getRelationshipAttributes(EntityDef            entityDef,
+                                                                         OMRSRepositoryHelper repositoryHelper)
+    {
+        List<TypeDef> typeDefs = repositoryHelper.getActiveTypeDefs();
 
+        if (typeDefs != null)
+        {
+            List<String> entityTypeNames = this.getTypeHierarchy(entityDef, repositoryHelper);
+
+            Map<String, RelationshipDef> results = new HashMap<>();
+
+            for (TypeDef typeDef : typeDefs)
+            {
+                if (typeDef != null)
+                {
+                    if (typeDef instanceof RelationshipDef relationshipDef)
+                    {
+                        for (String entityTypeName : entityTypeNames)
+                        {
+                            if (entityTypeName.equals(relationshipDef.getEndDef1().getEntityType().getName()))
+                            {
+                                results.put(relationshipDef.getName(), relationshipDef);
+                            }
+
+                            if (entityTypeName.equals(relationshipDef.getEndDef2().getEntityType().getName()))
+                            {
+                                results.put(relationshipDef.getName(), relationshipDef);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                List<OpenMetadataRelationshipLink> relationshipAttributes = new ArrayList<>();
+
+                for (String relationshipTypeName : results.keySet())
+                {
+                    RelationshipDef relationshipDef = results.get(relationshipTypeName);
+
+                    if (entityTypeNames.contains(relationshipDef.getEndDef1().getEntityType().getName()))
+                    {
+                        relationshipAttributes.add(getOpenMetadataRelationshipLink(relationshipDef, true));
+                    }
+
+                    if (entityTypeNames.contains(relationshipDef.getEndDef2().getEntityType().getName()))
+                    {
+                        relationshipAttributes.add(getOpenMetadataRelationshipLink(relationshipDef, false));
+                    }
+                }
+
+                return relationshipAttributes;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Creates and returns an instance of OpenMetadataRelationshipLink based on the given relationship definition
+     * and the specified end of the relationship element.
+     *
+     * @param relationshipDef the definition of the relationship from which the metadata link is created
+     * @param isElementAtEnd1 a boolean flag indicating whether the element is at the first end of the relationship
+     *                        (true for end1, false for end2)
+     * @return an OpenMetadataRelationshipLink populated with the appropriate metadata based on the input parameters
+     */
+    private OpenMetadataRelationshipLink getOpenMetadataRelationshipLink(RelationshipDef relationshipDef,
+                                                                         boolean         isElementAtEnd1)
+    {
+        OpenMetadataRelationshipLink openMetadataRelationshipLink = new OpenMetadataRelationshipLink();
+
+        openMetadataRelationshipLink.setRelationshipType(this.getTypeDefLink(relationshipDef));
+        openMetadataRelationshipLink.setElementAtEnd1(isElementAtEnd1);
+
+        RelationshipEndDef endDef = isElementAtEnd1 ? relationshipDef.getEndDef1() : relationshipDef.getEndDef2();
+
+        openMetadataRelationshipLink.setAttributeName(endDef.getAttributeName());
+
+        if (endDef.getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+        {
+            openMetadataRelationshipLink.setAttributeCardinality(OpenMetadataRelationshipEndCardinality.AT_MOST_ONE);
+        }
+        else
+        {
+            openMetadataRelationshipLink.setAttributeCardinality(OpenMetadataRelationshipEndCardinality.ANY_NUMBER);
+        }
+        openMetadataRelationshipLink.setAttributeDescription(endDef.getAttributeDescription());
+        openMetadataRelationshipLink.setAttributeDescriptionGUID(endDef.getAttributeDescriptionGUID());
+
+        return openMetadataRelationshipLink;
+    }
+
+
+    /**
+     * Retrieves the type hierarchy for a given entity definition, including the entity name and its super types.
+     *
+     * @param entityDef the entity definition for which the type hierarchy is to be retrieved
+     * @param repositoryHelper the repository helper used to access metadata repository services
+     * @return a list of type names representing the hierarchy of the given entity, starting with the entity's own name
+     */
+    private List<String> getTypeHierarchy(EntityDef            entityDef,
+                                          OMRSRepositoryHelper repositoryHelper)
+    {
+        List<String> typeHierarchy = new ArrayList<>();
+
+        typeHierarchy.add(entityDef.getName());
+
+        List<TypeDefLink> entityTypeLinks = repositoryHelper.getSuperTypes(instanceHandler.getServiceName(), entityDef.getName());
+
+        if (entityTypeLinks != null)
+        {
+            for (TypeDefLink typeDefLink : entityTypeLinks)
+            {
+                typeHierarchy.add(typeDefLink.getName());
+            }
+        }
+
+        return typeHierarchy;
+    }
 
 
     /**
@@ -3988,11 +4159,15 @@ public class OpenMetadataStoreRESTServices
     /**
      * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
      *
-     * @param typeDefs list of OMRS types
-     * @param repositoryHelper OMRS version of the property helper
+     * @param typeDefs                  list of OMRS types
+     * @param getInheritedAttributes    whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
+     * @param repositoryHelper          OMRS version of the property helper
      * @return list of open metadata types
      */
     private List<OpenMetadataTypeDef> getTypeDefs(List<TypeDef>        typeDefs,
+                                                  boolean              getInheritedAttributes,
+                                                  boolean              getRelationshipAttributes,
                                                   OMRSRepositoryHelper repositoryHelper)
     {
         if (typeDefs != null)
@@ -4000,10 +4175,10 @@ public class OpenMetadataStoreRESTServices
             List<OpenMetadataTypeDef> openMetadataTypeDefs = new ArrayList<>();
             for (TypeDef typeDef : typeDefs)
             {
-                openMetadataTypeDefs.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
+                openMetadataTypeDefs.add(this.getOpenMetadataTypeDef(typeDef, getInheritedAttributes, getRelationshipAttributes, repositoryHelper));
             }
 
-            if (! openMetadataTypeDefs.isEmpty())
+            if (!openMetadataTypeDefs.isEmpty())
             {
                 return openMetadataTypeDefs;
             }

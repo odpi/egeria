@@ -781,7 +781,7 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
             exclusionList = new ArrayList<>();
         }
 
-        OpenMetadataTypeDefGallery openMetadataTypeDefGallery = integrationContext.getOpenMetadataTypesClient().getAllTypes();
+        OpenMetadataTypeDefGallery openMetadataTypeDefGallery = integrationContext.getOpenMetadataTypesClient().getAllTypes(false, false);
 
         if (openMetadataTypeDefGallery != null)
         {

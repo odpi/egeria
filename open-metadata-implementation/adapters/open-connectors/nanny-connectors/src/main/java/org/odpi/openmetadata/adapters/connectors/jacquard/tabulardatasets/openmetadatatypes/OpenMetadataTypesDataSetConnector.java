@@ -161,7 +161,7 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
              */
             OpenMetadataTypesClient openMetadataTypesClient = connectorContext.getOpenMetadataTypesClient();
 
-            OpenMetadataTypeDefGallery openMetadataTypeDefGallery = openMetadataTypesClient.getAllTypes();
+            OpenMetadataTypeDefGallery openMetadataTypeDefGallery = openMetadataTypesClient.getAllTypes(true, true);
 
             if (openMetadataTypeDefGallery != null)
             {
@@ -175,7 +175,7 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
                      */
                     if ((member != null) && (!knownTypeNames.contains(member.getGUID())))
                     {
-                        OpenMetadataTypeDetails openMetadataTypeDetails = new OpenMetadataTypeDetails(member, openMetadataTypesClient.getSubTypes(member.getName()));
+                        OpenMetadataTypeDetails openMetadataTypeDetails = new OpenMetadataTypeDetails(member, openMetadataTypesClient.getSubTypes(true, true, member.getName()));
 
                         typeMap.put(member.getName(), openMetadataTypeDetails);
                     }

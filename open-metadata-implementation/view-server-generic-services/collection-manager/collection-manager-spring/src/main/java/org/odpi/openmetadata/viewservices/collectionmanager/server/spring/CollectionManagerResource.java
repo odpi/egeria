@@ -474,6 +474,73 @@ public class CollectionManagerResource
     }
 
 
+    /**
+     * Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param skillSetGUID unique identifier of the collection
+     * @param actorGUID     unique identifier of referenceable object that the collection should be attached to
+     * @param requestBody  description of how the collection will be used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actors/{actorGUID}/associated-skill-sets/{skillSetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="attachAssociatedSkillSet",
+            description="Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse attachAssociatedSkillSet(@PathVariable String                  serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable String                  actorGUID,
+                                              @PathVariable String                  skillSetGUID,
+                                              @RequestBody(required = false)
+                                              NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.attachAssociatedSkillSet(serverName, urlMarker, actorGUID, skillSetGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an existing skill set collection from an actor.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param skillSetGUID unique identifier of the collection.
+     * @param actorGUID     unique identifier of an actor object that the collection should be attached to.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actors/{actorGUID}/associated-skill-sets/{skillSetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAssociatedSkillSet",
+            description="Detach an existing skill set collection from an actor connected via the AssociatedSkillSet relationship (0145).  If the collection is anchored to the element, it is deleted.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse detachAssociatedSkillSet(@PathVariable String                    serverName,
+                                              @PathVariable String                    urlMarker,
+                                              @PathVariable String actorGUID,
+                                              @PathVariable String skillSetGUID,
+                                              @RequestBody(required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAssociatedSkillSet(serverName, urlMarker, actorGUID, skillSetGUID, requestBody);
+    }
+
+
+
+
 
     /**
      * Attach a subscriber to a subscription.

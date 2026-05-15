@@ -410,8 +410,6 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
     }
 
 
-
-
     /**
      * Return the list of valid statuses for an instance of this OpenMetadataTypeDef.
      *

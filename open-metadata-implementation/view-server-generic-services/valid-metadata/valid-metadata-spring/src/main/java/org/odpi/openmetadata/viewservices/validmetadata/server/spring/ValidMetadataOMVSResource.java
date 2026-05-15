@@ -626,6 +626,8 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException a problem communicating with the metadata repository or
@@ -640,9 +642,11 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
-                                              @PathVariable String   urlMarker)
+                                              @PathVariable String   urlMarker,
+                                              @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                              @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getAllTypes(serverName, urlMarker);
+        return restAPI.getAllTypes(serverName, urlMarker, getInheritedAttributes, getRelationshipAttributes);
     }
 
 
@@ -651,6 +655,8 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -666,9 +672,11 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getEntityDefs(@PathVariable String serverName,
-                                             @PathVariable String   urlMarker)
+                                             @PathVariable String urlMarker,
+                                             @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                             @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.ENTITY_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, getInheritedAttributes, getRelationshipAttributes, OpenMetadataTypeDefCategory.ENTITY_DEF);
     }
 
 
@@ -677,6 +685,7 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -692,9 +701,10 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getRelationshipDefs(@PathVariable String serverName,
-                                                   @PathVariable String   urlMarker)
+                                                   @PathVariable String   urlMarker,
+                                                   @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, getInheritedAttributes, false, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
     }
 
 
@@ -704,6 +714,7 @@ public class ValidMetadataOMVSResource
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
      * @return TypeDefListResponse:
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException a problem communicating with the metadata repository or
@@ -718,9 +729,10 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getClassificationDefs(@PathVariable String serverName,
-                                                     @PathVariable String urlMarker)
+                                                     @PathVariable String urlMarker,
+                                                     @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, getInheritedAttributes, false, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
     }
 
 
@@ -758,6 +770,8 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -775,9 +789,11 @@ public class ValidMetadataOMVSResource
 
     public TypeDefListResponse getSubTypes(@PathVariable String serverName,
                                            @PathVariable String urlMarker,
-                                           @PathVariable String typeName)
+                                           @PathVariable String typeName,
+                                           @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                           @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getSubTypes(serverName, urlMarker, typeName);
+        return restAPI.getSubTypes(serverName, urlMarker, getInheritedAttributes, getRelationshipAttributes, typeName);
     }
 
 
@@ -786,6 +802,7 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @param typeName name of entity type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -803,9 +820,10 @@ public class ValidMetadataOMVSResource
 
     public TypeDefListResponse getValidRelationshipTypes(@PathVariable String serverName,
                                                          @PathVariable String urlMarker,
-                                                         @PathVariable String typeName)
+                                                         @PathVariable String typeName,
+                                                         @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.getValidRelationshipTypes(serverName, urlMarker, typeName);
+        return restAPI.getValidRelationshipTypes(serverName, urlMarker, getInheritedAttributes, typeName);
     }
 
 
@@ -814,6 +832,7 @@ public class ValidMetadataOMVSResource
      *
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -831,9 +850,10 @@ public class ValidMetadataOMVSResource
 
     public TypeDefListResponse getValidClassificationTypes(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
-                                                           @PathVariable String typeName)
+                                                           @PathVariable String typeName,
+                                                           @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.getValidClassificationTypes(serverName, urlMarker, typeName);
+        return restAPI.getValidClassificationTypes(serverName, urlMarker, getInheritedAttributes, typeName);
     }
 
 
@@ -843,6 +863,8 @@ public class ValidMetadataOMVSResource
      * @param serverName unique identifier for requested server.
      * @param urlMarker  view service URL marker
      * @param name String name of the TypeDef.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
@@ -861,9 +883,11 @@ public class ValidMetadataOMVSResource
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    urlMarker,
-                                            @PathVariable String    name)
+                                            @PathVariable String    name,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getTypeDefByName(serverName, urlMarker, name);
+        return restAPI.getTypeDefByName(serverName, urlMarker, getInheritedAttributes, getRelationshipAttributes, name);
     }
 
 

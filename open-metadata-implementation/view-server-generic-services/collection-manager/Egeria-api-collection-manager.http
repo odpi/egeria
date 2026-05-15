@@ -1180,6 +1180,48 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+
+@skillSetGUID=add guid here
+
+
+###
+# @name attachAssociatedSkillSet
+# Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/actors/{{actorGUID}}/asociated-skill-sets/{{skillSetGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AssociatedSkillSetProperties",
+    "label": "Add label here",
+    "description": "Add description here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAssociatedSkillSet
+# Detach an existing skill set collection from an actor.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/actors/{{actorGUID}}/associated-skill-sets/{{skillSetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name deleteCollection

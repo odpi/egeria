@@ -1749,10 +1749,10 @@ public enum OpenMetadataType
      * Details of an activity performed by an actor.
      */
     ACTIVITY_ENTRY("37a7ab1b-b27d-4266-9cc2-63943611edd6",
-                 "ActivityEntry",
-                 OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
-                 "e459f3ba-2a7d-4bf3-9073-7c7088d417ad",
-                 "Details of an activity performed by an actor.",
+                   "ActivityEntry",
+                   OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+                   "e459f3ba-2a7d-4bf3-9073-7c7088d417ad",
+                   "Details of an activity performed by an actor.",
                    ActivityEntryProperties.class),
 
 
@@ -1760,22 +1760,22 @@ public enum OpenMetadataType
      * Entry in a blog published by an actor.
      */
     BLOG_ENTRY("1b138a3b-5c47-4986-ad2e-55864424ae41",
-                 "BlogEntry",
-                 OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
-                 "2ced5011-0c8c-40ca-ad6d-1779367b1b91",
-                 "Entry in a blog published by an actor.",
-                 BlogEntryProperties.class),
+               "BlogEntry",
+               OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+               "2ced5011-0c8c-40ca-ad6d-1779367b1b91",
+               "Entry in a blog published by an actor.",
+               BlogEntryProperties.class),
 
 
     /**
      * Private journal entry by an actor.
      */
     JOURNAL_ENTRY("7a1ff0f4-500c-4801-b8eb-e8432ff755d2",
-                 "JournalEntry",
-                 OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
-                 "4c691c54-46d5-4b21-adc5-8b4afab0696f",
-                 "Private journal entry by an actor.",
-                 JournalEntryProperties.class),
+                  "JournalEntry",
+                  OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+                  "4c691c54-46d5-4b21-adc5-8b4afab0696f",
+                  "Private journal entry by an actor.",
+                  JournalEntryProperties.class),
 
 
     /**
@@ -1796,6 +1796,46 @@ public enum OpenMetadataType
                      OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
                      "38833f01-dbad-4cf7-b825-54a9a97d6d78",
                      "A person who has joined a community."),
+
+    /**
+     * A context for an actor and how they are likely to process information based on their skills, current context, and background.
+     */
+    PERSPECTIVE("79cb9e7a-80f3-4bf6-9973-84517f951bd4",
+                "Perspective",
+                OpenMetadataWikiPages.MODEL_0145_PERSPECTIVES,
+                "d049b8f2-bd37-4cec-b0e8-b03694303ae4",
+                "A context for an actor and how they are likely to process information based on their skills, current context, and background.",
+                PerspectiveProperties.class),
+
+    /**
+     * A skill description.
+     */
+    SKILL("798725f4-d9be-4651-9d96-c32ce2478283",
+          "Skill",
+          OpenMetadataWikiPages.MODEL_0145_PERSPECTIVES,
+          "1dd46f75-e248-488c-90c0-0546ea04739d",
+          "A skill description.",
+          SkillProperties.class),
+
+    /**
+     * A collection of skills.
+     */
+    SKILL_SET("13d2ceb1-706f-4d7b-a0a3-987cc452a163",
+              "SkillSet",
+              OpenMetadataWikiPages.MODEL_0145_PERSPECTIVES,
+              "6f2e14ff-81cc-49de-ad7e-8efed057a065",
+              "A collection of skills.",
+              SkillSetProperties.class),
+
+    /**
+     * A link between an actor and its skill set.
+     */
+    ASSOCIATED_SKILL_SET_RELATIONSHIP("7b9b4c2d-9174-415c-a08d-d3347cd2907c",
+                                      "AssociatedSkillSet",
+                                      OpenMetadataWikiPages.MODEL_0145_PERSPECTIVES,
+                                      "7a1d7fe4-db29-42fb-9149-c6ce6a76792b",
+                                      "A link between an actor and its skill set.",
+                                      AssociatedSkillSetProperties.class),
 
 
     /**
@@ -2909,6 +2949,16 @@ public enum OpenMetadataType
                                       DataValueMeaningProperties.class),
 
     /**
+     * Identifies that this glossary term describes a question that a particular actor might ask.
+     */
+    QUESTION_CLASSIFICATION("eaa4f8ea-0cd5-4b55-8684-dd918f4e33e5",
+                            "Question",
+                            OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
+                            "feab548d-1328-42b5-ad31-8ba4f901ceee",
+                            "Identifies that this glossary term describes a question that a particular actor might ask.",
+                            QuestionProperties.class),
+
+    /**
      * Link between similar glossary terms.
      */
     RELATED_TERM_RELATIONSHIP("b1161696-e563-4cf9-9fd9-c0c76e47d063",
@@ -3148,11 +3198,11 @@ public enum OpenMetadataType
      * Links a regulator organization to the regulation it enforces.
      */
     REGULATOR_RELATIONSHIP("a2ecbfdf-595c-4342-8de4-04cf5dd28a17",
-               "Regulator",
-               OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
-               "9d969156-b330-4773-a239-5cbf888fd934",
-               "Links a regulator organization to the regulation it enforces.",
-               RegulatorProperties.class),
+                           "Regulator",
+                           OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
+                           "9d969156-b330-4773-a239-5cbf888fd934",
+                           "Links a regulator organization to the regulation it enforces.",
+                           RegulatorProperties.class),
 
     /**
      * An specific requirement in a regulation.
@@ -3975,11 +4025,11 @@ public enum OpenMetadataType
      * An asset holding related security log records.
      */
     SECURITY_LOG_CLASSIFICATION("99a12819-f2e8-42e8-8996-ff6dc393c3e5",
-                             "SecurityLog",
-                             OpenMetadataWikiPages.MODEL_0455_EXCEPTION_MANAGEMENT,
-                             "277736d4-c2a7-44cf-ad42-d08b284be111",
-                             "An asset holding related security log records.",
-                             SecurityLogProperties.class),
+                                "SecurityLog",
+                                OpenMetadataWikiPages.MODEL_0455_EXCEPTION_MANAGEMENT,
+                                "277736d4-c2a7-44cf-ad42-d08b284be111",
+                                "An asset holding related security log records.",
+                                SecurityLogProperties.class),
 
     /**
      * Details of the metadata changes made by the execution of the refresh() method by an integration connector or governance service.

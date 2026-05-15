@@ -96,6 +96,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PrimeWordProperties.class, name = "PrimeWordProperties"),
                 @JsonSubTypes.Type(value = ProjectClassificationProperties.class, name = "ProjectClassificationProperties"),
                 @JsonSubTypes.Type(value = PublisherInterfaceProperties.class, name = "PublisherInterfaceProperties"),
+                @JsonSubTypes.Type(value = QuestionProperties.class, name = "QuestionProperties"),
                 @JsonSubTypes.Type(value = ReferenceDataProperties.class, name = "ReferenceDataProperties"),
                 @JsonSubTypes.Type(value = ReferenceListProperties.class, name = "ReferenceListProperties"),
                 @JsonSubTypes.Type(value = RequestResponseInterfaceProperties.class, name = "RequestResponseInterfaceProperties"),

@@ -638,26 +638,29 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if ((elementHeader.getZoneMembership() != null) && (elementHeader.getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties))
+        else if (ProductDataFieldDefinition.ZONE_MEMBERSHIP.getDisplayName().equals(columnName))
         {
-            if (zoneMembershipProperties.getZoneMembership() != null)
+            if ((elementHeader.getZoneMembership() != null) && (elementHeader.getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties))
             {
-                recordValues.add(zoneMembershipProperties.getZoneMembership().toString());
+                if (zoneMembershipProperties.getZoneMembership() != null)
+                {
+                    recordValues.add(zoneMembershipProperties.getZoneMembership().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
             }
-            else
+            else if ((elementHeader.getAnchor() != null) && (elementHeader.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
             {
-                recordValues.add(null);
-            }
-        }
-        else if ((elementHeader.getAnchor() != null) && (elementHeader.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
-        {
-            if (anchorsProperties.getZoneMembership() != null)
-            {
-                recordValues.add(anchorsProperties.getZoneMembership().toString());
-            }
-            else
-            {
-                recordValues.add(null);
+                if (anchorsProperties.getZoneMembership() != null)
+                {
+                    recordValues.add(anchorsProperties.getZoneMembership().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
             }
         }
 

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,6 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataEntityDef extends OpenMetadataTypeDef
 {
+    private List<OpenMetadataRelationshipLink> relationshipAttributes = null;
+
+
     /**
      * Minimal constructor initializes the superclass as an Entity
      */
@@ -69,6 +75,28 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
 
 
     /**
+     * Return the list of relationship attributes for this entity.
+     *
+     * @return list of relationship attributes
+     */
+    public List<OpenMetadataRelationshipLink> getRelationshipAttributes()
+    {
+        return relationshipAttributes;
+    }
+
+
+    /**
+     * Set up the list of relationship attributes for this entity.
+     *
+     * @param relationshipAttributes list of relationship attributes
+     */
+    public void setRelationshipAttributes(List<OpenMetadataRelationshipLink> relationshipAttributes)
+    {
+        this.relationshipAttributes = relationshipAttributes;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -78,5 +106,33 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
     {
         return "OpenMetadataEntityDef{" +
                 "} " + super.toString();
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        OpenMetadataEntityDef that = (OpenMetadataEntityDef) objectToCompare;
+        return Objects.equals(relationshipAttributes, that.relationshipAttributes);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), relationshipAttributes);
     }
 }

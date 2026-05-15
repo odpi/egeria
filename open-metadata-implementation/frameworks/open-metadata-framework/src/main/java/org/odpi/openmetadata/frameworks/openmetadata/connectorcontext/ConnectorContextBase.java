@@ -103,6 +103,7 @@ public class ConnectorContextBase
     private final   MetadataRepositoryCohortClient metadataRepositoryCohortClient;
     private final   MultiLanguageClient            multiLanguageClient;
     private final   NoteLogClient                  noteLogClient;
+    private final   PerspectiveClient              perspectiveClient;
     private final   ProjectClient                  projectClient;
     private final   PropertyFacetClient            propertyFacetClient;
     private final   RatingClient                   ratingClient;
@@ -112,6 +113,7 @@ public class ConnectorContextBase
     private final   SoftwareCapabilityClient       softwareCapabilityClient;
     private final   SolutionComponentClient        solutionComponentClient;
     private final   SpecificationPropertyClient    specificationPropertyClient;
+    private final   SkillClient                    skillClient;
     private final   TemplateClient                 templateClient;
     private final   UserIdentityClient             userIdentityClient;
     private final   ValidMetadataValuesClient      validMetadataValuesClient;
@@ -512,6 +514,17 @@ public class ConnectorContextBase
                                                auditLog,
                                                maxPageSize);
 
+        this.perspectiveClient = new PerspectiveClient(this,
+                                                       localServerName,
+                                                       localServiceName,
+                                                       connectorUserId,
+                                                       connectorGUID,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       openMetadataClient,
+                                                       auditLog,
+                                                       maxPageSize);
+
         this.propertyFacetClient = new PropertyFacetClient(this,
                                                            localServerName,
                                                            localServiceName,
@@ -566,6 +579,17 @@ public class ConnectorContextBase
                                                            openMetadataClient,
                                                            auditLog,
                                                            maxPageSize);
+
+        this.skillClient = new SkillClient(this,
+                                           localServerName,
+                                           localServiceName,
+                                           connectorUserId,
+                                           connectorGUID,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           openMetadataClient,
+                                           auditLog,
+                                           maxPageSize);
 
         this.softwareCapabilityClient = new SoftwareCapabilityClient(this,
                                                                      localServerName,
@@ -764,7 +788,7 @@ public class ConnectorContextBase
      * Return the client for managing all types of metadata.
      *
      * @return connector context client
-     * @throws UserNotAuthorizedException connector is disconnected
+     * @throws UserNotAuthorizedException this connector is disconnected
      */
     public OpenMetadataStore getOpenMetadataStore() throws UserNotAuthorizedException
     {
@@ -1179,6 +1203,16 @@ public class ConnectorContextBase
 
 
     /**
+     * Return the client for managing perspectives
+     *
+     * @return connector context client
+     */
+    public PerspectiveClient getPerspectiveClient()
+    {
+        return perspectiveClient;
+    }
+
+    /**
      * Return the client for managing property facets.
      *
      * @return connector context client
@@ -1254,6 +1288,17 @@ public class ConnectorContextBase
     public SearchKeywordClient getSearchKeywordClient()
     {
         return searchKeywordClient;
+    }
+
+
+    /**
+     * Return the client for managing skills
+     *
+     * @return connector context client
+     */
+    public SkillClient getSkillClient()
+    {
+        return skillClient;
     }
 
 

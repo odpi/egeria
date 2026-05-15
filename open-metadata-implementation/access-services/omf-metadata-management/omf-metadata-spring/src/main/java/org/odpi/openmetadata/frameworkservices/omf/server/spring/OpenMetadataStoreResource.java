@@ -71,11 +71,13 @@ public class OpenMetadataStoreResource
     /**
      * Returns the list of different types of metadata organized into two groups.  The first are the
      * attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
-     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships,
      * and classifications.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException a problem communicating with the metadata repository or
@@ -90,9 +92,11 @@ public class OpenMetadataStoreResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
-                                              @PathVariable String   userId)
+                                              @PathVariable String   userId,
+                                              @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                              @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getAllTypes(serverName, userId);
+        return restAPI.getAllTypes(serverName, userId, getInheritedAttributes, getRelationshipAttributes);
     }
 
 
@@ -101,6 +105,8 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -116,9 +122,11 @@ public class OpenMetadataStoreResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getEntityDefs(@PathVariable String serverName,
-                                             @PathVariable String userId)
+                                             @PathVariable String userId,
+                                             @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                             @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.findTypeDefsByCategory(serverName, userId, OpenMetadataTypeDefCategory.ENTITY_DEF);
+        return restAPI.findTypeDefsByCategory(serverName, userId, getInheritedAttributes, getRelationshipAttributes, OpenMetadataTypeDefCategory.ENTITY_DEF);
     }
 
 
@@ -155,6 +163,7 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -170,9 +179,10 @@ public class OpenMetadataStoreResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getRelationshipDefs(@PathVariable String serverName,
-                                                   @PathVariable String userId)
+                                                   @PathVariable String userId,
+                                                   @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.findTypeDefsByCategory(serverName, userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+        return restAPI.findTypeDefsByCategory(serverName, userId, getInheritedAttributes, false, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
     }
 
 
@@ -181,6 +191,7 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -196,9 +207,10 @@ public class OpenMetadataStoreResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getClassificationDefs(@PathVariable String serverName,
-                                             @PathVariable String userId)
+                                                     @PathVariable String userId,
+                                                     @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes)
     {
-        return restAPI.findTypeDefsByCategory(serverName, userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+        return restAPI.findTypeDefsByCategory(serverName, userId, getInheritedAttributes, false, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
     }
 
 
@@ -207,6 +219,8 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param standard name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier identifier of the element in the standard null means any.
@@ -226,11 +240,13 @@ public class OpenMetadataStoreResource
 
     public TypeDefListResponse findTypesByExternalId(@PathVariable                   String    serverName,
                                                      @PathVariable                   String    userId,
+                                                     @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                                     @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes,
                                                      @RequestParam(required = false) String    standard,
                                                      @RequestParam(required = false) String    organization,
                                                      @RequestParam(required = false) String    identifier)
     {
-        return restAPI.findTypesByExternalId(serverName, userId, standard, organization, identifier);
+        return restAPI.findTypesByExternalId(serverName, userId, getInheritedAttributes, getRelationshipAttributes, standard, organization, identifier);
     }
 
 
@@ -240,6 +256,8 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -257,9 +275,11 @@ public class OpenMetadataStoreResource
 
     public TypeDefListResponse getSubTypes(@PathVariable String serverName,
                                            @PathVariable String userId,
+                                           @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                           @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes,
                                            @RequestParam String typeName)
     {
-        return restAPI.getSubTypes(serverName, userId, typeName);
+        return restAPI.getSubTypes(serverName, userId, getInheritedAttributes, getRelationshipAttributes, typeName);
     }
 
 
@@ -268,6 +288,8 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param guid String unique id of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -287,9 +309,11 @@ public class OpenMetadataStoreResource
 
     public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
                                             @PathVariable String    userId,
-                                            @PathVariable String    guid)
+                                            @PathVariable String    guid,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getTypeDefByGUID(serverName, userId, guid);
+        return restAPI.getTypeDefByGUID(serverName, userId, getInheritedAttributes, getRelationshipAttributes, guid);
     }
 
 
@@ -328,6 +352,8 @@ public class OpenMetadataStoreResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
+     * @param getInheritedAttributes whether to include inherited attributes in the returned TypeDefs
+     * @param getRelationshipAttributes whether to include relationship attributes in the returned TypeDefs
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -347,9 +373,11 @@ public class OpenMetadataStoreResource
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    userId,
-                                            @PathVariable String    name)
+                                            @PathVariable String    name,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getInheritedAttributes,
+                                            @RequestParam(required = false, defaultValue = "false") boolean getRelationshipAttributes)
     {
-        return restAPI.getTypeDefByName(serverName, userId, name);
+        return restAPI.getTypeDefByName(serverName, userId, getInheritedAttributes, getRelationshipAttributes, name);
     }
 
 
