@@ -62,7 +62,7 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
 
         /*
          * Retrieve the source file and destination folder from either the request parameters or the action targets.  If both
-         * are specified then the action target elements take priority.
+         * are specified, then the action target elements take priority.
          */
         if (governanceContext.getRequestParameters() != null)
         {

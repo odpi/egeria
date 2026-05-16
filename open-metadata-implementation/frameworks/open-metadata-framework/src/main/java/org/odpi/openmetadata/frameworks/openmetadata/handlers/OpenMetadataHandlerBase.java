@@ -1475,7 +1475,7 @@ public class OpenMetadataHandlerBase
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        if (rootElement != null)
+        if ((rootElement != null) && (queryOptions.getMaxMermaidNodeCount() > 0))
         {
             OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(rootElement, queryOptions.getMaxMermaidNodeCount());
 
@@ -1572,7 +1572,7 @@ public class OpenMetadataHandlerBase
                                   List<OpenMetadataRootElement> elements,
                                   int                           maxMermaidNodeCount)
     {
-        if (elements != null)
+        if ((elements != null) && (maxMermaidNodeCount > 0))
         {
             OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(searchString, elements, maxMermaidNodeCount);
 

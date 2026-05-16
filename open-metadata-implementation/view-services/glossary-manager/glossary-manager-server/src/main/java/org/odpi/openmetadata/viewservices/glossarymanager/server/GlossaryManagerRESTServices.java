@@ -1139,6 +1139,117 @@ public class GlossaryManagerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Classify the glossary term to indicate that it describes a question.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setTermAsQuestion(String                       serverName,
+                                          String                       glossaryTermGUID,
+                                          NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setTermAsQuestion";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof QuestionProperties properties)
+                {
+                    handler.setTermAsQuestion(userId, glossaryTermGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setTermAsQuestion(userId, glossaryTermGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(QuestionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setTermAsDataValue(userId, glossaryTermGUID, null, null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Remove the question designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearTermAsQuestion(String                          serverName,
+                                            String                          glossaryTermGUID,
+                                            DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearTermAsQuestion";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            handler.clearTermAsQuestion(userId, glossaryTermGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
     /**
      * Classify the glossary term to indicate that it describes a data value.
      *

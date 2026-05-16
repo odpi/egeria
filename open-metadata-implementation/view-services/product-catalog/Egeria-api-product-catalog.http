@@ -58,7 +58,7 @@ Content-Type: application/json
 
 
 ###
-# @name find the valid value list digital product
+# @name find the valid metadata value list digital product
 # Returns the list of collections matching the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-catalog/collections/by-search-string
 Authorization: Bearer {{token}}
@@ -66,7 +66,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Valid Value Set List",
+  "searchString" : "Valid Metadata Value Set List",
   "metadataElementTypeName" : "DigitalProduct"
 }
 
@@ -83,7 +83,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Open Metadata Digital Product Solution Blueprint",
+  "filter" : "Open Metadata Digital Product Catalog Solution",
   "relationshipsPageSize": 500
 }
 
@@ -101,7 +101,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "PostgreSQL Relational Database"
+  "filter" : "PostgreSQL Relational Database",
+  "maxMermaidNodeCount": 0
 }
 
 
@@ -147,7 +148,7 @@ Content-Type: application/json
 
 ###
 
-@csvFileGUID=adce092b-3f63-4b8e-bb94-1fadbf22f374
+@csvFileGUID=CSVFile-ee4c1811-8cc9-4077-9ea2-5fdf1d1320ed
 
 
 ###
@@ -163,8 +164,8 @@ Content-Type: application/json
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "serverName" : "LocalPostgreSQL1",
-    "secretsStorePathName" : "secrets/integration.omsecrets",
-    "secretsCollectionName" : "PostgreSQL Server:LocalPostgreSQL1",
+    "secretsStorePathName" : "secrets/egeria-servers.omsecrets",
+    "secretsCollectionName" : "PostgreSQLRepository",
     "hostIdentifier" : "localhost",
     "portNumber" : "5432",
     "databaseName" : "egeria",
@@ -176,20 +177,20 @@ Content-Type: application/json
 
 ###
 
-@postgresSchemaGUID=add guid here
+@postgresSchemaGUID=DeployedDatabaseSchema-f3730cc4-4e5d-4900-9230-b87a6aeecaa1
 
 ###
 
-@callieQuartileGUID=55f71ffc-d114-4dd0-8e34-db2d0f8df4fc
+@callieQuartileGUID=fce76f01-3746-4e58-a6ac-cdb7cb362d8c
 
 ###
 
-@createSubscriptionQualifiedName=GovernanceActionProcess::Valid Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION
+@createSubscriptionQualifiedName=GovernanceActionProcess::Valid Metadata Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION
 
 ###
 # @name getGovernanceActionProcessesByName
 # Retrieve the list of governance action process metadata elements with a matching qualified or display name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-catalog/governance-definitions/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -202,7 +203,7 @@ Content-Type: application/json
 
 ###
 
-@createSubscriptionGUID=17502cea-3506-4b6c-9509-f6d9f394e027
+@createSubscriptionGUID=GovernanceActionProcess-7a1bbaca-d149-443c-8a17-e368e59e17ad
 
 ###
 # @name getGovernanceActionProcessGraph
@@ -213,7 +214,7 @@ Authorization: Bearer {{token}}
 
 
 ###
-# @name initiateGovernanceActionProcess (Create Subscription)
+# @name initiateGovernanceActionProcess (Create Subscription to CSVFile)
 # Using the named governance action process as a template, initiate a chain of engine actions.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
@@ -226,6 +227,29 @@ Content-Type: application/json
               "class" : "NewActionTarget",
               "actionTargetName": "destinationDataSet",
               "actionTargetGUID": "{{csvFileGUID}}"
+            },
+            {
+              "class" : "NewActionTarget",
+              "actionTargetGUID": "{{callieQuartileGUID}}",
+              "actionTargetName": "digitalSubscriptionRequester"
+            }]
+}
+
+
+###
+# @name initiateGovernanceActionProcess (Create Subscription to PostgreSQL Schema)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "{{createSubscriptionQualifiedName}}",
+  "actionTargets": [{
+              "class" : "NewActionTarget",
+              "actionTargetName": "destinationDataSet",
+              "actionTargetGUID": "{{postgresSchemaGUID}}"
             },
             {
               "class" : "NewActionTarget",
@@ -275,7 +299,25 @@ Content-Type: application/json
   "metadataElementTypeName" : "DigitalSubscription"
 }
 
+###
+# @name Get My Profile
+# Return the profile for this user.
+#
+# @param serverName name of the server instances for this request
+# @param requestBody optional properties to restrict search by and control how the results are formatted
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "GetRequestBody",
+  "includeOnlyRelationships": ["AgreementActor"]
+}
 
 ###
 

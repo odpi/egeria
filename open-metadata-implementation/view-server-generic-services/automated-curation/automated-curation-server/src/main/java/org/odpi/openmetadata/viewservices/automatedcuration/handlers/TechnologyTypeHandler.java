@@ -66,7 +66,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
     /**
      * Locate valid values that match the search string.  It considers the names, description, scope,
-     * usage and preferred value.
+     * usage, and preferred value.
      *
      * @param userId calling user
      * @param searchString string value to look for
@@ -97,7 +97,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
     /**
      * Locate valid values that match the search string.  It considers the names, description, scope,
-     * usage and preferred value.
+     * usage, and preferred value.
      *
      * @param userId calling user
      * @param typeName type name value to look for
@@ -155,13 +155,13 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve detailed information about a specific technology type.  This includes
-     * templates, connectors and external references.
+     * templates, connectors, and external references.
      *
      * @param userId calling user
      * @param technologyTypeName string value to look for
      * @param queryOptions multiple options to control the query
      *
-     * @return detailed report for technology type
+     * @return detailed report for the technology type
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -294,9 +294,12 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                             report.setExternalReferences(externalReferences);
                         }
 
-                        TechnologyTypeReportMermaidGraphBuilder graphBuilder = new TechnologyTypeReportMermaidGraphBuilder(report);
+                        if (workingQueryOptions.getMaxMermaidNodeCount() > 0)
+                        {
+                            TechnologyTypeReportMermaidGraphBuilder graphBuilder = new TechnologyTypeReportMermaidGraphBuilder(report);
 
-                        report.setMermaidGraph(graphBuilder.getMermaidGraph());
+                            report.setMermaidGraph(graphBuilder.getMermaidGraph());
+                        }
                     }
                 }
             }
@@ -347,7 +350,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
      * @param technologyTypeName string value to look for
      * @param queryOptions multiple options to control the query
      *
-     * @return detailed report for technology type
+     * @return detailed report for the technology type
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -572,13 +575,13 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve detailed information about a specific technology type.  This includes
-     * templates, connectors and external references.
+     * templates, connectors, and external references.
      *
      * @param userId calling user
      * @param technologyTypeName string value to look for
      * @param queryOptions multiple options to control the query
      *
-     * @return detailed report for technology type
+     * @return detailed report for the technology type
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -651,7 +654,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Convert open metadata object from the OpenMetadataClient to local bean.
+     * Convert the open metadata object from the OpenMetadataClient to local bean.
      *
      * @param openMetadataElement retrieved element
      *

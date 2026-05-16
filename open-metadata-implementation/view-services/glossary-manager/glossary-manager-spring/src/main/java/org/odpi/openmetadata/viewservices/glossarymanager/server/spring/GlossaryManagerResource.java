@@ -558,6 +558,55 @@ public class GlossaryManagerResource
     }
 
 
+
+    /**
+     * Classify the glossary term to indicate that it describes a question.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-question")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse setTermAsQuestion(@PathVariable String                       serverName,
+                                           @PathVariable String                       glossaryTermGUID,
+                                           @RequestBody(required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setTermAsQuestion(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the question designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-question/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse clearTermAsQuestion(@PathVariable String                    serverName,
+                                            @PathVariable String                    glossaryTermGUID,
+                                            @RequestBody(required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsQuestion(serverName, glossaryTermGUID, requestBody);
+    }
+
+
     /**
      * Classify the glossary term to indicate that it describes a data value.
      *

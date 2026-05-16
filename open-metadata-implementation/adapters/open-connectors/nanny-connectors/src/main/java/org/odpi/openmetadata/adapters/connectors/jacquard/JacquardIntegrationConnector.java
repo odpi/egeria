@@ -891,6 +891,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                       productManagerGUID);
 
                     addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
+                                                           productDefinition.getIdentifier(),
                                                            productHeader.getGUID(),
                                                            productAssetGUID,
                                                            licenseTypeGUID,
@@ -1041,6 +1042,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * actor.
      *
      * @param productName name of product
+     * @param productIdentifier identifier of the product
      * @param productGUID unique identifier of the product
      * @param productAssetGUID unique identifier of the product's asset
      * @param licenseTypeGUID unique identifier of the license type supported to this product
@@ -1054,6 +1056,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private void addSubscriptionGovernanceActionProcess(String                        productName,
+                                                        String                        productIdentifier,
                                                         String                        productGUID,
                                                         String                        productAssetGUID,
                                                         String                        licenseTypeGUID,
@@ -1075,14 +1078,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * The subscription notification watchdog manager is running.  Now build the governance action process
              * used to add a new subscription of this type.
              */
+            String subscriptionName = productSubscriptionDefinition.getDisplayName() + " for " + productName;
             Map<String, String> additionalRequestParameters = new HashMap<>();
 
-            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), productSubscriptionDefinition.getDisplayName());
-            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier());
+            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), subscriptionName);
+            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier() + "-" + productIdentifier);
             additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
 
             String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(processQualifiedName,
-                                                                                                          "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productName,
+                                                                                                          "Create " + subscriptionName,
                                                                                                           productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
                                                                                                           GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                                                                                                           additionalRequestParameters,

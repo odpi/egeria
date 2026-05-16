@@ -388,6 +388,44 @@ public class GlossaryTermClient extends ConnectorContextClientBase
 
 
     /**
+     * Classify the glossary term to indicate that it describes a question.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsQuestion(String                glossaryTermGUID,
+                                  QuestionProperties    properties,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        glossaryTermHandler.setTermAsQuestion(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the question designation from the glossary term.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsQuestion(String                glossaryTermGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        glossaryTermHandler.clearTermAsQuestion(connectorUserId, glossaryTermGUID, metadataSourceOptions);
+    }
+
+
+    /**
      * Classify the glossary term to indicate that it describes an activity.
      *
      * @param glossaryTermGUID    unique identifier of the term.

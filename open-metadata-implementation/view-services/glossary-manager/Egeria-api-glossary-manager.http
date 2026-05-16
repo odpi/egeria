@@ -662,6 +662,63 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+
+###
+# @name setTermAsQuestion
+# Classify the glossary term to indicate that it describes a question.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-question
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "QuestionProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name clearTermAsQuestion
+# Remove the question designation from the glossary term.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-question/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 ###
 # @name setTermAsActivity
 # Classify the glossary term to indicate that it describes a data value.
