@@ -471,6 +471,69 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Classify the glossary term to indicate that it describes a question.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsQuestion(String                userId,
+                                  String                glossaryTermGUID,
+                                  QuestionProperties    properties,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "setTermAsQuestion";
+        final String guidParameterName = "glossaryTermGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          glossaryTermGUID,
+                                                          OpenMetadataType.QUESTION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the question designation from the glossary term.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsQuestion(String                userId,
+                                    String                glossaryTermGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "clearTermAsQuestion";
+        final String guidParameterName = "glossaryTermGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            glossaryTermGUID,
+                                                            OpenMetadataType.QUESTION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
      * Classify the glossary term to indicate that it describes an activity.
      *
      * @param userId                 userId of the user making the request.

@@ -1194,16 +1194,23 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
             for (TabularColumnDescription tabularColumnDescription : tabularColumnDescriptions)
             {
                 /*
-                 * If the property is not in the header, look in the properties.  If neither place throw and exception.
+                 * If the property is not in the header, look into the properties.  If neither place throw and exception.
                  */
                 if (! getElementHeaderRecordValue(rootElement.getElementHeader(), tabularColumnDescription.columnName(), recordValues))
                 {
                     if (! getElementRecordValue(rootElement.getProperties(), tabularColumnDescription.columnName(), recordValues))
                     {
-                        throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
-                                                                                                                      tabularColumnDescription.columnName()),
-                                                            this.getClass().getName(),
-                                                            methodName);
+                        if (tabularColumnDescription.isNullable())
+                        {
+                            recordValues.add(null);
+                        }
+                        else
+                        {
+                            throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
+                                                                                                                          tabularColumnDescription.columnName()),
+                                                                this.getClass().getName(),
+                                                                methodName);
+                        }
                     }
                 }
             }

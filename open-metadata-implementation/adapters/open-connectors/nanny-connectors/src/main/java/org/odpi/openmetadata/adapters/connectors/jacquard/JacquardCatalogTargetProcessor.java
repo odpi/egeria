@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * Calculates the last time an update was made to the tabular data set that is the target and if it has changes since
+ * Calculates the last time an update was made to the tabular data set that is the target and if it has changed since
  * the last refresh (or this is the first refresh), the DataScope classification is updated with the latest update time.
  * This will be detected as a change to the catalog target by any monitoring process.
  */

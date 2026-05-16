@@ -171,6 +171,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                     subscriptionRequester.getTargetElement().getElementProperties(),
                                                                                     methodName);
 
+                String targetAssetDisplayName = propertyHelper.getStringProperty(governanceServiceName, OpenMetadataProperty.DISPLAY_NAME.name, targetAsset.getTargetElement().getElementProperties(), methodName);
                 /*
                  * Create the subscription
                  */
@@ -182,6 +183,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                  notificationType.getActionTargetGUID(),
                                                                  subscriptionRequesterGUID,
                                                                  targetAsset.getActionTargetGUID(),
+                                                                 targetAssetDisplayName,
                                                                  provisioningActionType.getActionTargetGUID(),
                                                                  cancellingActionType.getActionTargetGUID(),
                                                                  productOwners,
@@ -242,6 +244,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * @param notificationTypeGUID unique identifier of the notification type that will drive the product provisioning
      * @param subscriptionRequesterGUID unique identifier of the actor requesting the subscription
      * @param targetAssetGUID the destination for the product data
+     * @param targetAssetDisplayName the display name for the target asset
      * @param provisioningActionTypeGUID the governance action used to provision to the target data source
      * @param cancellingActionTypeGUID the governance action used to cancel the subscription
      * @param productOwners list of product owners (typically this is one product manager role)
@@ -259,6 +262,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                      String                    notificationTypeGUID,
                                      String                    subscriptionRequesterGUID,
                                      String                    targetAssetGUID,
+                                     String                    targetAssetDisplayName,
                                      String                    provisioningActionTypeGUID,
                                      String                    cancellingActionTypeGUID,
                                      List<ActionTargetElement> productOwners,
@@ -281,7 +285,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
              * but only the product with at least one asset as aa member has a pipeline set up.
              * A nested subscription is set up for each product nested in the product families.
              */
-            String subscriptionGUID = this.createSubscription(subscriptionName,
+            String subscriptionGUID = this.createSubscription(subscriptionName + " to " + targetAssetDisplayName,
                                                               subscriptionIdentifier,
                                                               subscriptionDescription,
                                                               productGUID,
@@ -318,6 +322,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                   notificationTypeGUID,
                                                                                   subscriptionRequesterGUID,
                                                                                   targetAssetGUID,
+                                                                                  targetAssetDisplayName,
                                                                                   provisioningActionTypeGUID,
                                                                                   cancellingActionTypeGUID,
                                                                                   productOwners,
@@ -360,6 +365,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                     }
                 }
             }
+
+            return subscriptionGUID;
         }
 
         return null;
