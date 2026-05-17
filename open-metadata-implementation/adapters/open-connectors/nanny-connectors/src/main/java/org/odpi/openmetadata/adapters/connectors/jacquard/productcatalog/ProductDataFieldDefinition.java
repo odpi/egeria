@@ -645,15 +645,15 @@ public enum ProductDataFieldDefinition
     /**
      * The unique identifier of a location.
      */
-    LOCATION_GUID("Location Unique Identifier (GUID)",
-                  "Location GUID",
-                  "The unique identifier of a location.",
-                  DataType.STRING,
-                  null,
-                  null,
-                  true,
-                  false,
-                  ProductGlossaryTermDefinition.GUID),
+    ASSET_LOCATION_GUID("Asset Location Unique Identifier (GUID)",
+                        "Asset Location GUID",
+                        "The unique identifier of a location for an asset.",
+                        DataType.STRING,
+                        null,
+                        null,
+                        true,
+                        false,
+                        ProductGlossaryTermDefinition.GUID),
 
 
     /**

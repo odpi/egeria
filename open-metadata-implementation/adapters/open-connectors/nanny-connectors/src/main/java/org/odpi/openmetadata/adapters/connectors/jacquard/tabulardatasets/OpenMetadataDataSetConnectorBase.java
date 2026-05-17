@@ -446,7 +446,6 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 (ProductDataFieldDefinition.EXCEPTION_TYPE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.LICENSE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.LICENSE_TYPE_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.LOCATION_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.PROFILE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.PROJECT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.SECRETS_COLLECTION_GUID.getDisplayName().equals(columnName)) ||

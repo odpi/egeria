@@ -462,7 +462,7 @@ public enum ViewServiceDescription
      * @return String default name
      */
     public String getViewServiceFullName() {
-        return viewServiceName + " OMVS";
+        return viewServiceName + " API";
     }
 
     /**

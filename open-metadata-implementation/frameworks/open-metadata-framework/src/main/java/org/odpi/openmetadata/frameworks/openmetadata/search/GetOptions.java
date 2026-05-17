@@ -189,7 +189,8 @@ public class GetOptions extends BasicOptions
 
 
     /**
-     * Return the maximum number of relationships of a particular kind that can be returned with this element.
+     * Return the maximum relationships of a particular kind that can be returned with this element.
+     * Zero (0) means that all relationships are returned up to the maximum page size allowed by the server.
      *
      * @return int
      */
@@ -201,6 +202,7 @@ public class GetOptions extends BasicOptions
 
     /**
      * Set up the maximum relationships of a particular kind that can be returned with this element.
+     * Zero (0) means that all relationships are returned up to the maximum page size allowed by the server.
      *
      * @param relationshipsPageSize int
      */
@@ -235,6 +237,7 @@ public class GetOptions extends BasicOptions
 
     /**
      * Return the maximum nodes linked by a particular relationship to an element to include in the graph.
+     * If this value is 0, then no mermaid graph is generated.
      *
      * @return int (default is 5)
      */
@@ -245,6 +248,7 @@ public class GetOptions extends BasicOptions
 
     /**
      * Set up the maximum nodes linked by a particular relationship to an element to include in the graph.
+     * If this value is 0, then no mermaid graph is generated.
      *
      * @param maxMermaidNodeCount int (default is 5)
      */
