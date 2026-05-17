@@ -471,7 +471,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductSubscriptionDefinition.ONGOING_UPDATE},
               "Locations",
               new ProductDataFieldDefinition[]{
-                      ProductDataFieldDefinition.LOCATION_GUID},
+                      ProductDataFieldDefinition.GUID},
               new ProductDataFieldDefinition[]{
                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                       ProductDataFieldDefinition.LOCATION_KIND,
@@ -544,7 +544,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductSubscriptionDefinition.ONGOING_UPDATE},
                        "Survey Report List",
                        new ProductDataFieldDefinition[]{
-                               ProductDataFieldDefinition.SURVEY_REPORT_GUID},
+                               ProductDataFieldDefinition.GUID},
                        new ProductDataFieldDefinition[]{
                                ProductDataFieldDefinition.QUALIFIED_NAME,
                                ProductDataFieldDefinition.DISPLAY_NAME,
@@ -1358,11 +1358,11 @@ public enum ProductDefinitionEnum implements ProductDefinition
      */
     SERVERS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                         new ProductDefinition[]{ProductDefinitionEnum.IT_OBSERVABILITY},
-                        "Servers",
-                        "SERVERS",
+                        "Software Servers",
+                        "SOFTWARE-SERVERS",
                         null,
-                        "Servers",
-                        "A tabular data set where each record describes a server catalogued in open metadata.",
+                        "Softwate Servers",
+                        "A tabular data set where each record describes a software server catalogued in open metadata.",
                         ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                         ProductGovernanceDefinition.CC_BY_40,
                         ProductCommunityDefinition.OBSERVABILITY_SIG,
@@ -1371,7 +1371,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
-                        "Governance Controls",
+                        "Software Server",
                         new ProductDataFieldDefinition[]{
                                 ProductDataFieldDefinition.GUID},
                         new ProductDataFieldDefinition[]{
@@ -1382,12 +1382,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductDataFieldDefinition.DESCRIPTION,
                                 ProductDataFieldDefinition.DISPLAY_NAME,
                                 ProductDataFieldDefinition.SCOPE,
+                                ProductDataFieldDefinition.ASSET_LOCATION_GUID,
                                 ProductDataFieldDefinition.CREATE_TIME,
                                 ProductDataFieldDefinition.UPDATE_TIME},
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
-                        "Governance Controls"),
+                        "Servers"),
 
     /*
      * =============================================================================================
@@ -1743,7 +1744,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            "SERVICE-OBSERVABILITY-FAMILY",
                            null,
                            "Security Observability",
-                           "Each product in this group publishes insights about the servers, services and operations supporting the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
+                           "Each product in this group publishes insights about the servers, services and operations supporting the open metadata ecosystem from a security perspective.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                            ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,

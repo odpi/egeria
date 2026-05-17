@@ -40,6 +40,7 @@ Content-Type: application/json
   "startsWith" : false,
   "endsWith": false,
   "pageSize" : 0,
+  "relationshipsPageSize": 0,
   "skipClassifiedElements": ["Template"]
 }
 

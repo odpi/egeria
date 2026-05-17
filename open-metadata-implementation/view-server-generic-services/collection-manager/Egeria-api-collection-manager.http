@@ -1067,17 +1067,18 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "DigitalSubscriberProperties",
     "subscriberId": "add id here",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "makeAnchor" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -1101,7 +1102,7 @@ Content-Type: application/json
 ###
 # @name attachCollection
 # Connect an existing collection to an element using the ResourceList relationship (0019).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/attach?makeAnchor=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1117,6 +1118,7 @@ Content-Type: application/json
       "property2Name": "property2Value"
     }
   },
+  "makeAnchor" : false,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1146,7 +1148,7 @@ Content-Type: application/json
 ###
 # @name attachDataDescription
 # Connect an existing data describing collection to an element using the DataDescription relationship (0580).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/attach?makeAnchor=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1188,7 +1190,7 @@ Content-Type: application/json
 ###
 # @name attachAssociatedSkillSet
 # Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/actors/{{actorGUID}}/asociated-skill-sets/{{skillSetGUID}}/attach?makeAnchor=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/actors/{{actorGUID}}/associated-skill-sets/{{skillSetGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

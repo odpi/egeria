@@ -666,7 +666,6 @@ public class OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Return the generic element extracted from the open metadata element plus linked elements.
      *

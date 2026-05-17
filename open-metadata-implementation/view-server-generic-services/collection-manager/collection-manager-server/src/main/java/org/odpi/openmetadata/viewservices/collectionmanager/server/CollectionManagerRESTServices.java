@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
@@ -864,7 +865,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                  String                     skillSetGUID,
                                                  NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "attachDataDescription";
+        final String methodName = "attachAssociatedSkillSet";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -883,34 +884,34 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DataDescriptionProperties properties)
+                if (requestBody.getProperties() instanceof AssociatedSkillSetProperties properties)
                 {
-                    handler.attachDataDescription(userId,
-                                                  actorGUID,
-                                                  skillSetGUID,
-                                                  requestBody,
-                                                  properties);
+                    handler.attachAssociatedSkillSet(userId,
+                                                     actorGUID,
+                                                     skillSetGUID,
+                                                     requestBody,
+                                                     properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.attachDataDescription(userId,
-                                                  actorGUID,
-                                                  skillSetGUID,
-                                                  requestBody,
-                                                  null);
+                    handler.attachAssociatedSkillSet(userId,
+                                                     actorGUID,
+                                                     skillSetGUID,
+                                                     requestBody,
+                                                     null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssociatedSkillSetProperties.class.getName(), methodName);
                 }
             }
             else
             {
-                handler.attachDataDescription(userId,
-                                              actorGUID,
-                                              skillSetGUID,
-                                              new MakeAnchorOptions(),
-                                              null);
+                handler.attachAssociatedSkillSet(userId,
+                                                 actorGUID,
+                                                 skillSetGUID,
+                                                 new MakeAnchorOptions(),
+                                                 null);
             }
         }
         catch (Throwable error)
