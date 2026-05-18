@@ -90,6 +90,8 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
         {
             if (tabularDataSource != null)
             {
+                auditLog.logMessage(methodName, JacquardAuditCode.REFRESH_CATALOG_TARGET.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
+
                 /*
                  * Make sure the data source has the latest information.
                  */
@@ -138,6 +140,8 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                     if ((dataScopeCreateTime == null) || (dataScopeLastUpdateTime == null) ||
                             ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(dataScopeLastUpdateTime))))
                     {
+                        auditLog.logMessage(methodName, JacquardAuditCode.MAINTAINED_DATA_SCOPE.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
+
                         /*
                          * The data set has changed (or this is the first time it has been monitored).  Details of
                          * the creation and last update times are saved in the data set's DataScope

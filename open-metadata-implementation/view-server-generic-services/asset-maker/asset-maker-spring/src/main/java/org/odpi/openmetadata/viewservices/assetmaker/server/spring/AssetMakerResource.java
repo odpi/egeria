@@ -1413,4 +1413,390 @@ public class AssetMakerResource
     }
 
 
+    /**
+     * Create a software capability.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the software capability.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/software-capabilities")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSoftwareCapability",
+            description="Create a software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public GUIDResponse createSoftwareCapability(@PathVariable String                               serverName,
+                                                 @PathVariable String             urlMarker,
+                                                 @RequestBody (required = false)
+                                                 NewElementRequestBody requestBody)
+    {
+        return restAPI.createSoftwareCapability(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a software capability using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="createSoftwareCapabilityFromTemplate",
+            description="Create a new metadata element to represent a software capability using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public GUIDResponse createSoftwareCapabilityFromTemplate(@PathVariable String              serverName,
+                                                             @PathVariable String             urlMarker,
+                                                             @RequestBody (required = false)
+                                                             TemplateRequestBody requestBody)
+    {
+        return restAPI.createSoftwareCapabilityFromTemplate(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a software capability.
+     *
+     * @param serverName             name of called server
+     * @param urlMarker  view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody         properties for the updated element
+     *
+     * @return boolean response
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="updateSoftwareCapability",
+            description="Update the properties of a software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public BooleanResponse updateSoftwareCapability(@PathVariable String                   serverName,
+                                                    @PathVariable String                  urlMarker,
+                                                    @PathVariable String                   softwareCapabilityGUID,
+                                                    @RequestBody (required = false)
+                                                    UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateSoftwareCapability(serverName, urlMarker, softwareCapabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve a specific software capability.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker  view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the required element
+     * @param requestBody options to control the query
+     *
+     * @return retrieved software capability
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getSoftwareCapabilityByGUID",
+            description="Retrieve a specific software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementResponse getSoftwareCapabilityByGUID(@PathVariable String serverName,
+                                                                       @PathVariable String urlMarker,
+                                                                       @PathVariable String softwareCapabilityGUID,
+                                                                       @RequestBody (required = false)
+                                                                       GetRequestBody requestBody)
+    {
+        return restAPI.getSoftwareCapabilityByGUID(serverName, urlMarker, softwareCapabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of software capability metadata elements that contain the search string.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/search")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="findSoftwareCapabilities",
+            description="Retrieve the list of software capability metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementsResponse findSoftwareCapabilities(@PathVariable String                   serverName,
+                                                                     @PathVariable String                  urlMarker,
+                                                                     @RequestBody (required = false)
+                                                                     SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSoftwareCapabilities(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities with a particular name.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getSoftwareCapabilitiesByName",
+            description="Retrieve the list of software capabilities with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesByName(@PathVariable String            serverName,
+                                                                          @PathVariable String            urlMarker,
+                                                                          @RequestBody (required = false)
+                                                                          FilterRequestBody requestBody)
+    {
+        return restAPI.getSoftwareCapabilitiesByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities with a particular deployed implementation type.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/by-deployed-implementation-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getSoftwareCapabilitiesByDeployedImplementationType",
+            description="Retrieve the list of software capabilities with a particular deployed implementation type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesByDeployedImplementationType(@PathVariable String            serverName,
+                                                                                                @PathVariable String            urlMarker,
+                                                                                                @RequestBody (required = false)
+                                                                                                FilterRequestBody requestBody)
+    {
+        return restAPI.getSoftwareCapabilitiesByDeployedImplementationType(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities attached to a specific infrastructure element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param infrastructureGUID unique identifier of the infrastructure element
+     * @param requestBody        options to control the query
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/infrastructure/{infrastructureGUID}/software-capabilities")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getSoftwareCapabilitiesForInfrastructure",
+            description="Retrieve the list of software capabilities attached to a specific infrastructure element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesForInfrastructure(@PathVariable String             serverName,
+                                                                                     @PathVariable String             urlMarker,
+                                                                                     @PathVariable String             infrastructureGUID,
+                                                                                     @RequestBody (required = false)
+                                                                                     ResultsRequestBody requestBody)
+    {
+        return restAPI.getSoftwareCapabilitiesForInfrastructure(serverName, urlMarker, infrastructureGUID, requestBody);
+    }
+
+
+    /**
+     * Create a relationship that represents the use of an asset by a software capability.
+     *
+     * @param serverName             name of the server to route the request to
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param assetGUID              unique identifier of the asset
+     * @param requestBody            optional effective time and relationship properties
+     *
+     * @return void response
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/assets/{assetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="addAssetUse",
+            description="Create a relationship that represents the use of an asset by a software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public VoidResponse addAssetUse(@PathVariable String                     serverName,
+                                    @PathVariable String                     urlMarker,
+                                    @PathVariable String                     softwareCapabilityGUID,
+                                    @PathVariable String                     assetGUID,
+                                    @RequestBody (required = false)
+                                    NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.addAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship that represents the use of an asset by a software capability.
+     *
+     * @param serverName             name of the server to route the request to
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param assetGUID              unique identifier of the asset
+     * @param requestBody            optional effective time
+     *
+     * @return void response
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/assets/{assetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="removeAssetUse",
+            description="Remove the relationship that represents the use of an asset by a software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public VoidResponse removeAssetUse(@PathVariable String                        serverName,
+                                       @PathVariable String                        urlMarker,
+                                       @PathVariable String                        softwareCapabilityGUID,
+                                       @PathVariable String                        assetGUID,
+                                       @RequestBody (required = false)
+                                       DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.removeAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the software capabilities using a particular asset.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker  view service URL marker
+     * @param assetGUID   unique identifier of the asset
+     * @param requestBody options to control the query
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/capability-use")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getCapabilityUse",
+            description="Retrieve the software capabilities using a particular asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-capability"))
+
+    public OpenMetadataRootElementsResponse getCapabilityUse(@PathVariable String             serverName,
+                                                             @PathVariable String             urlMarker,
+                                                             @PathVariable String             assetGUID,
+                                                             @RequestBody (required = false)
+                                                             ResultsRequestBody requestBody)
+    {
+        return restAPI.getCapabilityUse(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the governance engines connected to a particular governance service.
+     *
+     * @param serverName            name of called server
+     * @param urlMarker             view service URL marker
+     * @param governanceServiceGUID unique identifier of the governance service
+     * @param requestBody           options to control the query
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-services/{governanceServiceGUID}/governance-engines")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getGovernanceEngines",
+            description="Retrieve the governance engines connected to a particular governance service.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine"))
+
+    public OpenMetadataRootElementsResponse getGovernanceEngines(@PathVariable String             serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @PathVariable String             governanceServiceGUID,
+                                                                 @RequestBody (required = false)
+                                                                 ResultsRequestBody requestBody)
+    {
+        return restAPI.getGovernanceEngines(serverName, urlMarker, governanceServiceGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the integration groups connected to a particular integration connector.
+     *
+     * @param serverName               name of called server
+     * @param urlMarker                view service URL marker
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody              options to control the query
+     *
+     * @return list of matching metadata elements
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/integration-groups")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="getIntegrationGroups",
+            description="Retrieve the integration groups connected to a particular integration connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-group"))
+
+    public OpenMetadataRootElementsResponse getIntegrationGroups(@PathVariable String             serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @PathVariable String             integrationConnectorGUID,
+                                                                 @RequestBody (required = false)
+                                                                 ResultsRequestBody requestBody)
+    {
+        return restAPI.getIntegrationGroups(serverName, urlMarker, integrationConnectorGUID, requestBody);
+    }
+
+
 }

@@ -140,7 +140,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Return the version name, which is a more of a human readable form of the version number.
+     * Return the version name, a more human-readable form of the version number.
      * It can be used to show whether the change is a minor or major update.
      *
      * @return String version name
@@ -152,7 +152,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Set up the version name, which is a more of a human readable form of the version number.
+     * Set up the version name, a more human-readable form of the version number.
      * It can be used to show whether the change is a minor or major update.
      *
      * @param versionName String version name
@@ -180,7 +180,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Return the unique identifier for this OpenMetadataTypeDef.
+     * Return the unique identifier for this AttributeTypeDef.
      *
      * @return String guid
      */
@@ -188,7 +188,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Set up the unique identifier for this OpenMetadataTypeDef.
+     * Set up the unique identifier for this AttributeTypeDef.
      *
      * @param guid String guid
      */
@@ -196,9 +196,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Return the type name for this OpenMetadataTypeDef.  In simple environments, the type name is unique but where metadata
-     * repositories from different vendors are in operation it is possible that 2 types may have a name clash.  The
-     * GUID is the reliable unique identifier.
+     * Return the type name for this AttributeTypeDef.
      *
      * @return String name
      */
@@ -206,9 +204,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Set up the type name for this OpenMetadataTypeDef.  In simple environments, the type name is unique but where metadata
-     * repositories from different vendors are in operation it is possible that 2 types may have a name clash.  The
-     * GUID is the reliable unique identifier.
+     * Set up the type name for this AttributeTypeDef.
      *
      * @param name String name
      */
@@ -216,7 +212,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Return the short description of this OpenMetadataAttributeTypeDef.
+     * Return the short description of this AttributeTypeDef.
      *
      * @return String description
      */
@@ -227,7 +223,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Set up the short description of this OpenMetadataAttributeTypeDef.
+     * Set up the short description of this AttributeTypeDef.
      *
      * @param description String description
      */
@@ -238,8 +234,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Return the unique identifier of the glossary term that describes this OpenMetadataAttributeTypeDef.  Null means there
-     * is no known glossary term.
+     * Return the unique identifier of the valid value that describes this OpenMetadataAttributeTypeDef.
      *
      * @return String guid
      */
@@ -250,8 +245,7 @@ public abstract class OpenMetadataAttributeTypeDef extends OpenMetadataTypeDefEl
 
 
     /**
-     * Set up the unique identifier of the glossary term that describes this OpenMetadataAttributeTypeDef.  Null means there
-     * is no known glossary term.
+     * Set up the unique identifier of the valid value that describes this OpenMetadataAttributeTypeDef.
      *
      * @param descriptionGUID String guid
      */

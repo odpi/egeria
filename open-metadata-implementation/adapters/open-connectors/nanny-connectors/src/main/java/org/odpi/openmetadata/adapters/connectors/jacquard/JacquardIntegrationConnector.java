@@ -233,7 +233,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Call each of the insight harvesters to check they have their catalog targets set up.
          */
+        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_VALID_VALUES.getMessageDefinition(integrationContext.getConnectorName()));
         harvestValidMetadataValues(existingDataSources);
+        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS.getMessageDefinition(integrationContext.getConnectorName()));
         harvestReferenceDataSets(existingDataSources);
 
         /*
@@ -420,7 +422,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         ProductDefinition productDefinition = provider.getProductDefinition(referenceDataSetGUID,
                                                                             identifier,
-                                                                            super.fromCamelToCanonicalCase(identifier) + " Valid Values",
+                                                                            super.fromCamelToCanonicalCase(identifier) + " Reference Data Set",
                                                                             description);
 
         this.getProduct(productDefinition);
