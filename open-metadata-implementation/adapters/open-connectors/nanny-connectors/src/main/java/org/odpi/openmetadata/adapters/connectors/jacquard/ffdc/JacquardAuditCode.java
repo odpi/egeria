@@ -186,7 +186,7 @@ public enum JacquardAuditCode implements AuditLogMessageSet
      */
     HARVESTING_VALID_VALUES("JACQUARD-HARVESTER-0021",
                           AuditLogRecordSeverityLevel.INFO,
-                          "The {0} integration connector is harvesting valid metadata values - may take some time ...",
+                          "The {0} integration connector is harvesting valid metadata values - this may take some time ...",
                           "The connector is reviewing the valid metadata sets in the open metadata ecosystem to discover if any new ones have been created.  If there are, it creates a new digital product for this set.",
                           "No action is required beyond patience as this process can take 10+ minutes depending on how many valid metadata sets you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work."),
 
@@ -195,9 +195,18 @@ public enum JacquardAuditCode implements AuditLogMessageSet
      */
     HARVESTING_REFERENCE_DATA_SETS("JACQUARD-HARVESTER-0022",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector is harvesting reference data sets - may take some time ...",
+                            "The {0} integration connector is harvesting reference data sets - this may take some time ...",
                             "The connector is reviewing the reference data sets in the open metadata ecosystem to discover if any new ones have been created.  If there are, it creates a new digital product for this set.",
                             "No action is required beyond patience as this process can take 10+ minutes depending on how many reference data sets you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work."),
+
+    /**
+     * JACQUARD-HARVESTER-0023 - The {0} integration connector is creating connectors to existing products
+     */
+    HARVESTING_CATALOG_TARGETS("JACQUARD-HARVESTER-0023",
+                                   AuditLogRecordSeverityLevel.INFO,
+                                   "The {0} integration connector is creating connectors to access the data in existing products - this may take some time ...",
+                                   "The connector is creating connectors to each of the existing digital products in the open metadata ecosystem so they can be processed.",
+                                   "No action is required beyond patience as this process can take 10+ minutes depending on how many digital products you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work."),
 
 
     /**

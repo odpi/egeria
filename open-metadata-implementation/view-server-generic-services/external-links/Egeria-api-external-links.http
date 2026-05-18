@@ -69,6 +69,8 @@ Content-Type: application/json
   "properties": {
     "class" : "ExternalReferenceProperties",
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "description": "add description here",
     "additionalProperties": {

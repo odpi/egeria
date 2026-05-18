@@ -377,6 +377,28 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the description property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    public String removeLegal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLegal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.LEGAL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -16541,6 +16563,7 @@ public class OpenMetadataPropertyConverterBase
                 beanProperties = new OpenMetadataRootProperties();
             }
 
+            beanProperties.setLegal(this.removeLegal(elementProperties));
 
             /*
              * Any remaining properties are returned in the extended properties.  They are

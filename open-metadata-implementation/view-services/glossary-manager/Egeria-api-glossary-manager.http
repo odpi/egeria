@@ -220,6 +220,7 @@ Content-Type: application/json
     "class" : "GlossaryTermProperties",
     "qualifiedName": "Must provide a unique name here",
     "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName" : "Add display name here",
     "versionIdentifier" : "Add value here",
     "description" : "Add description of the collection here",
