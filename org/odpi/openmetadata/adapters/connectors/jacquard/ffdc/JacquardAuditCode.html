@@ -135,21 +135,37 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0004 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#HARVESTING_REFERENCE_DATA_SETS" class="member-name-link">HARVESTING_REFERENCE_DATA_SETS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">JACQUARD-HARVESTER-0022 - The {0} integration connector is harvesting reference data sets</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HARVESTING_VALID_VALUES" class="member-name-link">HARVESTING_VALID_VALUES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0021 - The {0} integration connector is harvesting valid values</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LINKING_ELEMENTS" class="member-name-link">LINKING_ELEMENTS</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_OPEN_METADATA_PRODUCT" class="member-name-link">NEW_OPEN_METADATA_PRODUCT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MAINTAINED_DATA_SCOPE" class="member-name-link">MAINTAINED_DATA_SCOPE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0020 - The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NEW_OPEN_METADATA_PRODUCT" class="member-name-link">NEW_OPEN_METADATA_PRODUCT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0012 - The {0} integration connector has created a new digital product {1} called {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_CREATION_DATE" class="member-name-link">NO_CREATION_DATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_CREATION_DATE" class="member-name-link">NO_CREATION_DATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0003 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no createTime column</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_LAST_UPDATE_DATE" class="member-name-link">NO_LAST_UPDATE_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_LAST_UPDATE_DATE" class="member-name-link">NO_LAST_UPDATE_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#REFRESH_CATALOG_TARGET" class="member-name-link">REFRESH_CATALOG_TARGET</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0019 - The {0} integration connector is refreshing the {1} data set for digital product {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#RETRIEVED_VALID_VALUE_PRODUCT" class="member-name-link">RETRIEVED_VALID_VALUE_PRODUCT</a></code></div>
 <div class="col-last odd-row-color">
@@ -342,6 +358,34 @@ the order they are declared.</div>
 <h3>UPDATED_OPEN_METADATA_PRODUCT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">UPDATED_OPEN_METADATA_PRODUCT</span></div>
 <div class="block">JACQUARD-HARVESTER-0018 - The {0} integration connector has updated an existing digital product {1} called {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REFRESH_CATALOG_TARGET">
+<h3>REFRESH_CATALOG_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_CATALOG_TARGET</span></div>
+<div class="block">JACQUARD-HARVESTER-0019 - The {0} integration connector is refreshing the {1} data set for digital product {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MAINTAINED_DATA_SCOPE">
+<h3>MAINTAINED_DATA_SCOPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">MAINTAINED_DATA_SCOPE</span></div>
+<div class="block">JACQUARD-HARVESTER-0020 - The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HARVESTING_VALID_VALUES">
+<h3>HARVESTING_VALID_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">HARVESTING_VALID_VALUES</span></div>
+<div class="block">JACQUARD-HARVESTER-0021 - The {0} integration connector is harvesting valid values</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HARVESTING_REFERENCE_DATA_SETS">
+<h3>HARVESTING_REFERENCE_DATA_SETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">HARVESTING_REFERENCE_DATA_SETS</span></div>
+<div class="block">JACQUARD-HARVESTER-0022 - The {0} integration connector is harvesting reference data sets</div>
 </section>
 </li>
 <li>

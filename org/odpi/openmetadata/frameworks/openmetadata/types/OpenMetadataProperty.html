@@ -2527,9 +2527,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Name</div>
 </div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#type" class="member-name-link">type</a></code></div>
+<div class="col-first odd-row-color"><code>final <a href="PropertyCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">PropertyCategory</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyCategory" class="member-name-link">propertyCategory</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Where is this property used.</div>
+</div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#type" class="member-name-link">type</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Type</div>
 </div>
 </div>
@@ -2665,7 +2670,7 @@ the order they are declared.</div>
 <section class="detail" id="VERSION">
 <h3>VERSION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">VERSION</span></div>
-<div class="block">Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.</div>
+<div class="block">Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.</div>
 </section>
 </li>
 <li>
@@ -6798,6 +6803,13 @@ the order they are declared.</div>
 <h3>descriptionGUID</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">descriptionGUID</span></div>
 <div class="block">Unique identifier of description valid value.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="propertyCategory">
+<h3>propertyCategory</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="PropertyCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">PropertyCategory</a></span>&nbsp;<span class="element-name">propertyCategory</span></div>
+<div class="block">Where is this property used.</div>
 </section>
 </li>
 </ul>
