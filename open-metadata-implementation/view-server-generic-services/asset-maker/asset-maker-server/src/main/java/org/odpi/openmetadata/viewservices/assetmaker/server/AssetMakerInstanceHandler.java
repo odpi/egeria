@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
 
 
 /**
@@ -72,18 +73,18 @@ public class AssetMakerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public SchemaAttributeHandler getSchemaAttributeHandler(String userId,
-                                                            String serverName,
-                                                            String urlMarker,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+    public SoftwareCapabilityHandler getSoftwareCapabilityHandler(String userId,
+                                                                  String serverName,
+                                                                  String urlMarker,
+                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
     {
         AssetMakerInstance instance = (AssetMakerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getSchemaAttributeHandler(urlMarker, serviceOperationName);
+            return instance.getSoftwareCapabilityHandler(urlMarker, serviceOperationName);
         }
 
         return null;

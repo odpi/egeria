@@ -7,6 +7,8 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.master
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.LocationsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.OrganizationsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.PeopleTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataAttributesForTypesDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataPropertiesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
@@ -205,23 +207,25 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductDataFieldDefinition.GUID,
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
+                            ProductDataFieldDefinition.VERSION_IDENTIFIER,
+                            ProductDataFieldDefinition.VERSION,
                             ProductDataFieldDefinition.CREATE_TIME,
                             ProductDataFieldDefinition.UPDATE_TIME},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
-                    null,
+                    new OpenMetadataTypesDataSetProvider(),
                     "Open Metadata Data Types"),
 
     /**
-     * Attribute List
+     * Properties List
      */
-    ATTRIBUTES_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+    PROPERTIES_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                     new ProductDefinition[]{ProductDefinitionEnum.OPEN_METADATA_TYPES},
-                    "Open Metadata Attributes List",
-                    "OPEN-METADATA-ATTRIBUTES-LIST",
+                    "Open Metadata Properties List",
+                    "OPEN-METADATA-PROPERTIES-LIST",
                     null,
-                    "Open Metadata Attributes List",
-                    "A tabular data set where each record describes a type of attribute defined in the open metadata types.",
+                    "Open Metadata Properties List",
+                    "A tabular data set where each record describes a type of property defined in the open metadata types.",
                     ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
@@ -230,20 +234,17 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                             ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
-                    "Open Metadata Attributes",
+                    "Open Metadata Properties",
                     new ProductDataFieldDefinition[]{
-                            ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
-                            ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_NAME},
+                            ProductDataFieldDefinition.OPEN_METADATA_PROPERTY_NAME},
                     new ProductDataFieldDefinition[]{
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
-                            ProductDataFieldDefinition.DATA_TYPE,
-                            ProductDataFieldDefinition.CREATE_TIME,
-                            ProductDataFieldDefinition.UPDATE_TIME},
+                            ProductDataFieldDefinition.DATA_TYPE},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
-                    null,
-                    "Open Metadata Attributes"),
+                    new OpenMetadataPropertiesDataSetProvider(),
+                    "Open Metadata Properties"),
 
     /**
      * Open Metadata Types List
@@ -271,6 +272,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductDataFieldDefinition.DESCRIPTION,
                        ProductDataFieldDefinition.CATEGORY,
                        ProductDataFieldDefinition.URL,
+                       ProductDataFieldDefinition.VERSION_IDENTIFIER,
+                       ProductDataFieldDefinition.VERSION,
                        ProductDataFieldDefinition.BEAN_CLASS_NAME,
                        ProductDataFieldDefinition.OPEN_METADATA_SUBTYPES,
                        ProductDataFieldDefinition.OPEN_METADATA_SUPER_TYPES,
@@ -303,7 +306,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Open Metadata Attributes For Types",
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
-                                      ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_NAME},
+                                      ProductDataFieldDefinition.OPEN_METADATA_PROPERTY_NAME},
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.IS_NULLABLE,
                                       ProductDataFieldDefinition.DATA_TYPE,
@@ -313,7 +316,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductDataFieldDefinition.UPDATE_TIME},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
-                              null,
+                              new OpenMetadataAttributesForTypesDataSetProvider(),
                               "Open Metadata Attributes for Types"),
 
     /*

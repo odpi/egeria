@@ -40,12 +40,22 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
 
     private final ProductDefinitionEnum productDefinition = ProductDefinitionEnum.TYPES_LIST;
 
+    /**
+     * Details of an open metadata type, including its subtypes and super types.
+     * Acts as a cache for the open metadata type.
+     */
     static class OpenMetadataTypeDetails
     {
         private final OpenMetadataTypeDef openMetadataTypeDef;
         private final List<String>        subtypes   = new ArrayList<>();
         private       List<String>        superTypes = null;
 
+        /**
+         * Constructor
+         *
+         * @param openMetadataTypeDef open metadata type definition
+         * @param subtypes list of subtypes for the open metadata type
+         */
         public OpenMetadataTypeDetails(OpenMetadataTypeDef openMetadataTypeDef,
                                        TypeDefList         subtypes)
         {
@@ -60,26 +70,56 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
             }
         }
 
+
+        /**
+         * Set the super types for the open metadata type.
+         *
+         * @param superTypes list of super types for the open metadata type
+         */
         public void setSuperTypes(List<String> superTypes)
         {
             this.superTypes = superTypes;
         }
 
+
+        /**
+         * Return the super types for the open metadata type.  Null means no super types.
+         *
+         * @return list of super types or null
+         */
         public List<String> getSuperTypes()
         {
             return superTypes;
         }
 
+
+        /**
+         * Return the open metadata type definition.
+         *
+         * @return open metadata type definition
+         */
         public OpenMetadataTypeDef getOpenMetadataTypeDef()
         {
             return openMetadataTypeDef;
         }
 
+
+        /**
+         * Return the list of subtypes for the open metadata type.
+         *
+         * @return list of subtypes or null
+         */
         public List<String> getSubtypes()
         {
             return subtypes;
         }
 
+
+        /**
+         * Return the GUID for the open metadata type.
+         *
+         * @return unique identifier of type
+         */
         public String getGUID()
         {
             return openMetadataTypeDef.getGUID();
@@ -173,7 +213,7 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
                     /*
                      * The record is added if it is not already in the record map.
                      */
-                    if ((member != null) && (!knownTypeNames.contains(member.getGUID())))
+                    if ((member != null) && (!knownTypeNames.contains(member.getName())))
                     {
                         OpenMetadataTypeDetails openMetadataTypeDetails = new OpenMetadataTypeDetails(member, openMetadataTypesClient.getSubTypes(true, true, member.getName()));
 
@@ -356,6 +396,14 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
                 {
                     recordValues.add(openMetadataTypeDef.getName());
                 }
+                else if (ProductDataFieldDefinition.VERSION_IDENTIFIER.getDisplayName().equals(tabularColumnDescription.columnName()))
+                {
+                    recordValues.add(openMetadataTypeDef.getVersionName());
+                }
+                else if (ProductDataFieldDefinition.VERSION.getDisplayName().equals(tabularColumnDescription.columnName()))
+                {
+                    recordValues.add(Long.toString(openMetadataTypeDef.getVersion()));
+                }
                 else if (ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
                     recordValues.add(Long.toString(openMetadataTypeDef.getCreateTime().getTime()));
@@ -464,6 +512,6 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }
 
-        log.debug("Closing Valid Value Store");
+        log.debug("Closing Tabular Data Set");
     }
 }

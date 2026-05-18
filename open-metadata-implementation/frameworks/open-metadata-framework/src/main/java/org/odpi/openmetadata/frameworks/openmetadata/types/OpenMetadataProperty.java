@@ -22,77 +22,77 @@ public enum OpenMetadataProperty
     /**
      * Unique identifier of an open metadata entity or relationship.
      */
-    GUID("guid", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55"),
+    GUID("guid", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", PropertyCategory.HEADER),
 
     /**
      * Unique identifier of the last requestId to update the element.
      */
-    LAST_REQUEST_ID("lastRequestId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the last requestId to update the element.", "3ca9fa1f-7eaf-4a6d-a49d-ecb320296559", "c08bf63a-001a-4e03-b6cb-73b7dd11a9ba"),
+    LAST_REQUEST_ID("lastRequestId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the last requestId to update the element.", "3ca9fa1f-7eaf-4a6d-a49d-ecb320296559", "c08bf63a-001a-4e03-b6cb-73b7dd11a9ba", PropertyCategory.HEADER),
 
     /**
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
-    METADATA_COLLECTION_ID("metadataCollectionId", DataType.STRING, DataType.STRING.getDisplayName(), "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e"),
+    METADATA_COLLECTION_ID("metadataCollectionId", DataType.STRING, DataType.STRING.getDisplayName(), "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e", PropertyCategory.HEADER),
 
     /**
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
-    METADATA_COLLECTION_NAME("metadataCollectionName", DataType.STRING, DataType.STRING.getDisplayName(), "The unique name for the metadata collection that is the home for a metadata element.", "MyDataManagerForDatabase1", "25b43665-87e9-4637-9e6d-d0658ba26261"),
+    METADATA_COLLECTION_NAME("metadataCollectionName", DataType.STRING, DataType.STRING.getDisplayName(), "The unique name for the metadata collection that is the home for a metadata element.", "MyDataManagerForDatabase1", "25b43665-87e9-4637-9e6d-d0658ba26261", PropertyCategory.HEADER),
 
     /**
      * Category of the home metadata collection.
      */
-    INSTANCE_PROVENANCE_TYPE("instanceProvenanceType", DataType.STRING, DataType.STRING.getDisplayName(), "Category of the home metadata collection.", "Local Cohort", "f12562a3-52b2-42d2-9126-011207d4af55"),
+    INSTANCE_PROVENANCE_TYPE("instanceProvenanceType", DataType.STRING, DataType.STRING.getDisplayName(), "Category of the home metadata collection.", "Local Cohort", "f12562a3-52b2-42d2-9126-011207d4af55", PropertyCategory.HEADER),
 
     /**
      * UserId that created this instance.
      */
-    CREATED_BY("createdBy", DataType.STRING, DataType.STRING.getDisplayName(), "UserId that created this instance.", "peterprofile", "5c9c9c94-b738-4203-b592-527801877f07"),
+    CREATED_BY("createdBy", DataType.STRING, DataType.STRING.getDisplayName(), "UserId that created this instance.", "peterprofile", "5c9c9c94-b738-4203-b592-527801877f07", PropertyCategory.HEADER),
 
     /**
      * Time when this instance was created.
      */
-    CREATE_TIME("createTime", DataType.DATE, DataType.DATE.getDisplayName(), "Time when this instance was created.", null, "5376d9a4-ad82-43cc-8d37-9247643418d8"),
+    CREATE_TIME("createTime", DataType.DATE, DataType.DATE.getDisplayName(), "Time when this instance was created.", null, "5376d9a4-ad82-43cc-8d37-9247643418d8", PropertyCategory.HEADER),
 
     /**
      * UserId that updated this instance.
      */
-    UPDATED_BY("updatedBy", DataType.STRING, DataType.STRING.getDisplayName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b"),
+    UPDATED_BY("updatedBy", DataType.STRING, DataType.STRING.getDisplayName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b", PropertyCategory.HEADER),
 
     /**
      * UserId that updated this instance.
      */
-    MAINTAINED_BY("maintainedBy", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "UserIds for users that have updated this instance since creation.", "[peterprofile, erinoverview]", "569786c1-378f-4692-a5cd-ffc12f65826c"),
+    MAINTAINED_BY("maintainedBy", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "UserIds for users that have updated this instance since creation.", "[peterprofile, erinoverview]", "569786c1-378f-4692-a5cd-ffc12f65826c", PropertyCategory.HEADER),
 
     /**
      * Time when this instance was last updated.
      */
-    UPDATE_TIME("updateTime", DataType.DATE, DataType.DATE.getDisplayName(), "Time when this instance was last updated.", null, "3cefe85f-4904-411f-9afd-546c0a9ba016"),
+    UPDATE_TIME("updateTime", DataType.DATE, DataType.DATE.getDisplayName(), "Time when this instance was last updated.", null, "3cefe85f-4904-411f-9afd-546c0a9ba016", PropertyCategory.HEADER),
 
     /**
      * The date/time that this instance should start to be used (null means it can be used from creationTime).
      */
-    EFFECTIVE_FROM_TIME("effectiveFromTime", DataType.DATE, DataType.DATE.getDisplayName(), "The date/time that this instance should start to be used (null means it can be used from creationTime).", null, "dfffede5-d593-4f53-a7a1-bf7ddf095ee3"),
+    EFFECTIVE_FROM_TIME("effectiveFromTime", DataType.DATE, DataType.DATE.getDisplayName(), "The date/time that this instance should start to be used (null means it can be used from creationTime).", null, "dfffede5-d593-4f53-a7a1-bf7ddf095ee3", PropertyCategory.HEADER),
 
     /**
      * The date/time that this instance should no longer be used.
      */
-    EFFECTIVE_TO_TIME("effectiveToTime", DataType.DATE, DataType.DATE.getDisplayName(), "The date/time that this instance should no longer be used.", null, "c1de164e-b9bf-4d13-bac5-573a5078ef10"),
+    EFFECTIVE_TO_TIME("effectiveToTime", DataType.DATE, DataType.DATE.getDisplayName(), "The date/time that this instance should no longer be used.", null, "c1de164e-b9bf-4d13-bac5-573a5078ef10", PropertyCategory.HEADER),
 
     /**
-     * Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.
+     * Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.
      */
-    VERSION("version", DataType.LONG, DataType.LONG.getDisplayName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414"),
+    VERSION("version", DataType.LONG, DataType.LONG.getDisplayName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414", PropertyCategory.HEADER),
 
     /**
      * Status of this instance. Values from the Instance Status enum. (use only for ordering results),
      */
-    STATUS("status", DataType.STRING, DataType.STRING.getDisplayName(), "Status of this instance. Values from the Instance Status enum.", ElementStatus.ACTIVE.name(), "de25c3fb-5061-4f3e-bd7d-29c1cd2c112f"),
+    STATUS("status", DataType.STRING, DataType.STRING.getDisplayName(), "Status of this instance. Values from the Instance Status enum.", ElementStatus.ACTIVE.name(), "de25c3fb-5061-4f3e-bd7d-29c1cd2c112f", PropertyCategory.HEADER),
 
     /**
      * Name of an open metadata type. (Use only for ordering results).
      */
-    OPEN_METADATA_TYPE_NAME("typeName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712"),
+    OPEN_METADATA_TYPE_NAME("typeName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712", PropertyCategory.HEADER),
 
 
     /* ======================================================
@@ -102,32 +102,32 @@ public enum OpenMetadataProperty
     /**
      * The order that the results should be sequenced.
      */
-    SEQUENCING_ORDER("sequencingOrder", DataType.STRING, DataType.STRING.getDisplayName(), "The order that the results should be sequenced.", SequencingOrder.ANY.name(), "4a74e40e-5677-4406-a2b8-d6a0cf4fefa9"),
+    SEQUENCING_ORDER("sequencingOrder", DataType.STRING, DataType.STRING.getDisplayName(), "The order that the results should be sequenced.", SequencingOrder.ANY.name(), "4a74e40e-5677-4406-a2b8-d6a0cf4fefa9", PropertyCategory.API),
 
     /**
      * Defines how the properties should be compared to find a matching result.
      */
-    PROPERTY_COMPARISON_OPERATOR("operator", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the properties should be compared to find a matching result.", PropertyComparisonOperator.CASE_INSENSITIVE_NOT_LIKE.name(), "808c5014-0f09-4f0e-80e7-d5b21f37a515"),
+    PROPERTY_COMPARISON_OPERATOR("operator", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the properties should be compared to find a matching result.", PropertyComparisonOperator.CASE_INSENSITIVE_NOT_LIKE.name(), "808c5014-0f09-4f0e-80e7-d5b21f37a515", PropertyCategory.API),
 
     /**
      * Defines how the results of the search should be combined.
      */
-    MATCH_CRITERIA("matchCriteria", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the results of the search should be combined.", MatchCriteria.ALL.name(), "75bb801c-aa5a-4859-9b62-774c0c36a9cc"),
+    MATCH_CRITERIA("matchCriteria", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the results of the search should be combined.", MatchCriteria.ALL.name(), "75bb801c-aa5a-4859-9b62-774c0c36a9cc", PropertyCategory.API),
 
     /**
      * Defines how the results of the relationship end search should be combined.
      */
-    END_MATCH_CRITERIA("endMatchCriteria", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the results of the relationship end search should be combined.", EndMatchCriteria.BOTH.name(), "486714aa-9f6d-404c-acdb-e9ca9d7a05d0"),
+    END_MATCH_CRITERIA("endMatchCriteria", DataType.STRING, DataType.STRING.getDisplayName(), "Defines how the results of the relationship end search should be combined.", EndMatchCriteria.BOTH.name(), "486714aa-9f6d-404c-acdb-e9ca9d7a05d0", PropertyCategory.API),
 
     /**
      * The type of origin for this element.
      */
-    ORIGIN_CATEGORY("originCategory", DataType.STRING, DataType.STRING.getDisplayName(), "The type of origin for this element.", ElementOriginCategory.CONTENT_PACK.name(), "e596aeb5-c2d8-4a1b-91c0-0815b12ed5aa"),
+    ORIGIN_CATEGORY("originCategory", DataType.STRING, DataType.STRING.getDisplayName(), "The type of origin for this element.", ElementOriginCategory.CONTENT_PACK.name(), "e596aeb5-c2d8-4a1b-91c0-0815b12ed5aa", PropertyCategory.API),
 
     /**
      * The category of a primitive type.
      */
-    PRIMITIVE_TYPE_CATEGORY("primitiveTypeCategory", DataType.STRING, DataType.STRING.getDisplayName(), "The category of a primitive type.", PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.name(), "87618696-b6f7-4f91-84d7-a7cab55d00e2"),
+    PRIMITIVE_TYPE_CATEGORY("primitiveTypeCategory", DataType.STRING, DataType.STRING.getDisplayName(), "The category of a primitive type.", PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.name(), "87618696-b6f7-4f91-84d7-a7cab55d00e2", PropertyCategory.API),
 
     /* ======================================================
      * These values are attributes defined in the type system.
@@ -3141,6 +3141,11 @@ public enum OpenMetadataProperty
      */
     public final String descriptionGUID;
 
+    /**
+     * Where is this property used.
+     */
+    public final PropertyCategory propertyCategory;
+
 
     /**
      * Constructor.
@@ -3152,18 +3157,48 @@ public enum OpenMetadataProperty
      * @param example         an example of a value for this property
      * @param descriptionGUID unique identifier of the valid value describing this property
      */
-    OpenMetadataProperty(String name,
+    OpenMetadataProperty(String   name,
                          DataType dataType,
-                         String type,
-                         String description,
-                         String example,
-                         String descriptionGUID)
+                         String   type,
+                         String   description,
+                         String   example,
+                         String   descriptionGUID)
     {
-        this.name            = name;
-        this.dataType        = dataType;
-        this.type            = type;
-        this.description     = description;
-        this.example         = example;
-        this.descriptionGUID = descriptionGUID;
+        this.name             = name;
+        this.dataType         = dataType;
+        this.type             = type;
+        this.description      = description;
+        this.example          = example;
+        this.descriptionGUID  = descriptionGUID;
+        this.propertyCategory = PropertyCategory.ATTRIBUTE;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param name            property name
+     * @param dataType        data type enum
+     * @param type            property type
+     * @param description     property description
+     * @param example         an example of a value for this property
+     * @param descriptionGUID unique identifier of the valid value describing this property
+     * @param propertyCategory where is this property used
+     */
+    OpenMetadataProperty(String           name,
+                         DataType         dataType,
+                         String           type,
+                         String           description,
+                         String           example,
+                         String           descriptionGUID,
+                         PropertyCategory propertyCategory)
+    {
+        this.name             = name;
+        this.dataType         = dataType;
+        this.type             = type;
+        this.description      = description;
+        this.example          = example;
+        this.descriptionGUID  = descriptionGUID;
+        this.propertyCategory = propertyCategory;
     }
 }

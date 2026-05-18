@@ -163,6 +163,42 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                                   "The connector is maintaining the fixed open metadata digital products.",
                                   "No action is required.  This message is for monitoring the updates to the fixed digital products."),
 
+    /**
+     * JACQUARD-HARVESTER-0019 - The {0} integration connector is refreshing the {1} data set for digital product {2}
+     */
+    REFRESH_CATALOG_TARGET("JACQUARD-HARVESTER-0019",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector is refreshing the {1} data set for digital product {2}",
+                                  "The connector is reviewing whether a particular digital product has changed since it was last refreshed. Details of its review are attached to the data asset for the product using the DataScope classification.",
+                                  "No action is required.  This message is for monitoring the refresh progress of the digital products."),
+
+    /**
+     * JACQUARD-HARVESTER-0020 - The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}
+     */
+    MAINTAINED_DATA_SCOPE("JACQUARD-HARVESTER-0020",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} integration connector is refreshing the {1} is maintaining the DataScope classification for the {1} data set for digital product {2}",
+                           "The connector is maintaining the change record for a particular digital product. Details of its review are attached to the data asset for the product using the DataScope classification.",
+                           "No action is required.  This message is for monitoring the refresh activity of the digital products."),
+
+    /**
+     * JACQUARD-HARVESTER-0021 - The {0} integration connector is harvesting valid values
+     */
+    HARVESTING_VALID_VALUES("JACQUARD-HARVESTER-0021",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} integration connector is harvesting valid metadata values - may take some time ...",
+                          "The connector is reviewing the valid metadata sets in the open metadata ecosystem to discover if any new ones have been created.  If there are, it creates a new digital product for this set.",
+                          "No action is required beyond patience as this process can take 10+ minutes depending on how many valid metadata sets you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work."),
+
+    /**
+     * JACQUARD-HARVESTER-0022 - The {0} integration connector is harvesting reference data sets
+     */
+    HARVESTING_REFERENCE_DATA_SETS("JACQUARD-HARVESTER-0022",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} integration connector is harvesting reference data sets - may take some time ...",
+                            "The connector is reviewing the reference data sets in the open metadata ecosystem to discover if any new ones have been created.  If there are, it creates a new digital product for this set.",
+                            "No action is required beyond patience as this process can take 10+ minutes depending on how many reference data sets you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work."),
+
 
     /**
      * JACQUARD-HARVESTER-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}

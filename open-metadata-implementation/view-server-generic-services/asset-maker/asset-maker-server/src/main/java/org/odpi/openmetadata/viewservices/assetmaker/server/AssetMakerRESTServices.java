@@ -9,15 +9,18 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataRelationshipResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -1006,6 +1009,11 @@ public class AssetMakerRESTServices extends TokenController
     }
 
 
+    /* =====================================================================================================================
+     * Working with infrastructure
+     */
+
+
     /*
      * IT Assets and Software capabilities
      */
@@ -1570,10 +1578,10 @@ public class AssetMakerRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof  ActionTargetProperties actionTargetProperties)
                 {
                     response.setGUID(handler.addActionTarget(userId,
-                                                              actionGUID,
-                                                              metadataElementGUID,
-                                                              requestBody,
-                                                              actionTargetProperties));
+                                                             actionGUID,
+                                                             metadataElementGUID,
+                                                             requestBody,
+                                                             actionTargetProperties));
                 }
                 else
                 {
@@ -2489,4 +2497,657 @@ public class AssetMakerRESTServices extends TokenController
 
 
 
+
+    /* =====================================================================================================================
+     * Working with software capabilities
+     */
+
+
+    /**
+     * Create a software capability.
+     *
+     * @param serverName  name of called server.
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties for the software capability.
+     * @return unique identifier of the newly created element
+     */
+    public GUIDResponse createSoftwareCapability(String serverName,
+                                                 String urlMarker,
+                                                 NewElementRequestBody requestBody)
+    {
+        final String methodName = "createSoftwareCapability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SoftwareCapabilityProperties softwareCapabilityProperties)
+                {
+                    response.setGUID(handler.createSoftwareCapability(userId,
+                                                                      requestBody,
+                                                                      requestBody.getInitialClassifications(),
+                                                                      softwareCapabilityProperties,
+                                                                      requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SoftwareCapabilityProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a software capability using an existing metadata element as a template.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties that override the template
+     * @return unique identifier of the new metadata element
+     */
+    public GUIDResponse createSoftwareCapabilityFromTemplate(String serverName,
+                                                             String urlMarker,
+                                                             TemplateRequestBody requestBody)
+    {
+        final String methodName = "createSoftwareCapabilityFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+                response.setGUID(handler.createSoftwareCapabilityFromTemplate(userId,
+                                                                              requestBody,
+                                                                              requestBody.getTemplateGUID(),
+                                                                              requestBody.getReplacementProperties(),
+                                                                              requestBody.getReplacementClassifications(),
+                                                                              requestBody.getPlaceholderPropertyValues(),
+                                                                              requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a software capability.
+     *
+     * @param serverName             name of called server
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody            properties for the updated element
+     * @return boolean response
+     */
+    public BooleanResponse updateSoftwareCapability(String serverName,
+                                                    String urlMarker,
+                                                    String softwareCapabilityGUID,
+                                                    UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateSoftwareCapability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SoftwareCapabilityProperties softwareCapabilityProperties)
+                {
+                    response.setFlag(handler.updateSoftwareCapability(userId,
+                                                                      softwareCapabilityGUID,
+                                                                      requestBody,
+                                                                      softwareCapabilityProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SoftwareCapabilityProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve a specific software capability.
+     *
+     * @param serverName             name of called server
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the required element
+     * @param requestBody            options to control the query
+     * @return retrieved software capability
+     */
+    public OpenMetadataRootElementResponse getSoftwareCapabilityByGUID(String serverName,
+                                                                       String urlMarker,
+                                                                       String softwareCapabilityGUID,
+                                                                       GetRequestBody requestBody)
+    {
+        final String methodName = "getSoftwareCapabilityByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getSoftwareCapabilityByGUID(userId, softwareCapabilityGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of software capability metadata elements that contain the search string.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker   view service URL marker
+     * @param requestBody string to find in the properties
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse findSoftwareCapabilities(String serverName,
+                                                                     String urlMarker,
+                                                                     SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSoftwareCapabilities";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSoftwareCapabilities(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSoftwareCapabilities(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities with a particular name.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker   view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesByName(String            serverName,
+                                                                          String            urlMarker,
+                                                                          FilterRequestBody requestBody)
+    {
+        final String methodName = "getSoftwareCapabilitiesByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSoftwareCapabilitiesByName(userId,
+                                                                           requestBody.getFilter(),
+                                                                           requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities with a particular deployed implementation type.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker   view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesByDeployedImplementationType(String            serverName,
+                                                                                                String            urlMarker,
+                                                                                                FilterRequestBody requestBody)
+    {
+        final String methodName = "getSoftwareCapabilitiesByDeployedImplementationType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSoftwareCapabilitiesByDeployedImplementationType(userId,
+                                                                                                 requestBody.getFilter(),
+                                                                                                 requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of software capabilities attached to a specific infrastructure element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker          view service URL marker
+     * @param infrastructureGUID unique identifier of the infrastructure element
+     * @param requestBody        options to control the query
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getSoftwareCapabilitiesForInfrastructure(String             serverName,
+                                                                                     String             urlMarker,
+                                                                                     String             infrastructureGUID,
+                                                                                     ResultsRequestBody requestBody)
+    {
+        final String methodName = "getSoftwareCapabilitiesForInfrastructure";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElements(handler.getSoftwareCapabilitiesForInfrastructure(userId, infrastructureGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a relationship that represents the use of an asset by a software capability.
+     *
+     * @param serverName             name of the server to route the request to
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param assetGUID              unique identifier of the asset
+     * @param requestBody            optional effective time and relationship properties
+     *
+     * @return void response
+     */
+    public VoidResponse addAssetUse(String                     serverName,
+                                    String                     urlMarker,
+                                    String                     softwareCapabilityGUID,
+                                    String                     assetGUID,
+                                    NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "addAssetUse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CapabilityAssetUseProperties capabilityAssetUseProperties)
+            {
+                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, capabilityAssetUseProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CapabilityAssetUseProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the relationship that represents the use of an asset by a software capability.
+     *
+     * @param serverName             name of the server to route the request to
+     * @param urlMarker              view service URL marker
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param assetGUID              unique identifier of the asset
+     * @param requestBody            optional effective time
+     *
+     * @return void response
+     */
+    public VoidResponse removeAssetUse(String                        serverName,
+                                       String                        urlMarker,
+                                       String                        softwareCapabilityGUID,
+                                       String                        assetGUID,
+                                       DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "removeAssetUse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the software capabilities using a particular asset.
+     *
+     * @param serverName  name of called server
+     * @param urlMarker   view service URL marker
+     * @param assetGUID   unique identifier of the asset
+     * @param requestBody options to control the query
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getCapabilityUse(String             serverName,
+                                                             String             urlMarker,
+                                                             String             assetGUID,
+                                                             ResultsRequestBody requestBody)
+    {
+        final String methodName = "getCapabilityUse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElements(handler.getCapabilityUse(userId, assetGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance engines connected to a particular governance service.
+     *
+     * @param serverName            name of called server
+     * @param urlMarker             view service URL marker
+     * @param governanceServiceGUID unique identifier of the governance service
+     * @param requestBody           options to control the query
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getGovernanceEngines(String             serverName,
+                                                                 String             urlMarker,
+                                                                 String             governanceServiceGUID,
+                                                                 ResultsRequestBody requestBody)
+    {
+        final String methodName = "getGovernanceEngines";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElements(handler.getGovernanceEngines(userId, governanceServiceGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the integration groups connected to a particular integration connector.
+     *
+     * @param serverName               name of called server
+     * @param urlMarker                view service URL marker
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody              options to control the query
+     *
+     * @return list of matching metadata elements
+     */
+    public OpenMetadataRootElementsResponse getIntegrationGroups(String             serverName,
+                                                                 String             urlMarker,
+                                                                 String             integrationConnectorGUID,
+                                                                 ResultsRequestBody requestBody)
+    {
+        final String methodName = "getIntegrationGroups";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElements(handler.getIntegrationGroups(userId, integrationConnectorGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

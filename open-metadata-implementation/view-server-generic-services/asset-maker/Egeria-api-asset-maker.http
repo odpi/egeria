@@ -26,6 +26,9 @@ Content-Type: application/json
 # https://egeria-project.org/concepts/asset
 
 @assetGUID=add guid here
+@softwareCapabilityGUID=add guid here
+@infrastructureGUID=add guid here
+@governanceServiceGUID=add guid here
 
 
 ###
@@ -1740,4 +1743,210 @@ Content-Type: application/json
 
 {
   "class" : "DeleteRelationshipRequestBody"
+}
+
+
+###
+# =====================================================================================================================
+# Work with Software Capabilities
+# https://egeria-project.org/concepts/software-capability
+
+###
+# @name createSoftwareCapability
+# Create a software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties" : {
+    "class": "SoftwareCapabilityProperties",
+    "qualifiedName": "SoftwareCapability:{{$random.uuid}}",
+    "displayName": "New Software Capability",
+    "description": "Description of the new software capability.",
+    "deployedImplementationType": "Software Server"
+  }
+}
+
+
+###
+# @name createSoftwareCapabilityFromTemplate
+# Create a new metadata element to represent a software capability using an existing metadata element as a template.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID" : "add guid here",
+  "replacementProperties" : {
+    "class": "SoftwareCapabilityProperties",
+    "qualifiedName": "SoftwareCapability:{{$random.uuid}}",
+    "displayName": "New Software Capability from Template"
+  }
+}
+
+
+###
+# @name updateSoftwareCapability
+# Update the properties of a software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties" : {
+    "class": "SoftwareCapabilityProperties",
+    "description": "Updated description of the software capability."
+  }
+}
+
+
+###
+# @name getSoftwareCapabilityByGUID
+# Retrieve a specific software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody"
+}
+
+
+###
+# @name findSoftwareCapabilities
+# Retrieve the list of software capability metadata elements that contain the search string.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "add search string here"
+}
+
+
+###
+# @name getSoftwareCapabilitiesByName
+# Retrieve the list of software capabilities with a particular name.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "SoftwareCapabilityName"
+}
+
+
+###
+# @name getSoftwareCapabilitiesByDeployedImplementationType
+# Retrieve the list of software capabilities with a particular deployed implementation type.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/by-deployed-implementation-type
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Software Server"
+}
+
+
+###
+# @name getSoftwareCapabilitiesForInfrastructure
+# Retrieve the list of software capabilities attached to a specific infrastructure element.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/infrastructure/{{infrastructureGUID}}/software-capabilities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+
+###
+# @name addAssetUse
+# Create a relationship that represents the use of an asset by a software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}/assets/{{assetGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "CapabilityAssetUseProperties",
+    "useType": "Main resource"
+  }
+}
+
+
+###
+# @name removeAssetUse
+# Remove the relationship that represents the use of an asset by a software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}/assets/{{assetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody"
+}
+
+
+###
+# @name getCapabilityUse
+# Retrieve the software capabilities using a particular asset.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/capability-use
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getGovernanceEngines
+# Retrieve the governance engines connected to a particular governance service.
+# Further Information: https://egeria-project.org/concepts/governance-engine
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/governance-services/{{governanceServiceGUID}}/governance-engines
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getIntegrationGroups
+# Retrieve the integration groups connected to a particular integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-group
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-connectors/{{integrationConnectorGUID}}/integration-groups
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom": 0,
+  "pageSize": 10
 }

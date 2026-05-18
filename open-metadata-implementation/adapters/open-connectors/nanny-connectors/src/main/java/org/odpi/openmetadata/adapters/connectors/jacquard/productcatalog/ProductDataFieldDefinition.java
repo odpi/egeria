@@ -1117,6 +1117,19 @@ public enum ProductDataFieldDefinition
                        false,
                        true),
 
+
+    /**
+     * Version number
+     */
+    VERSION("Version",
+            "Version",
+            OpenMetadataProperty.VERSION.description,
+            OpenMetadataProperty.VERSION.dataType,
+            null,
+            null,
+            false,
+            true),
+
     /**
      * Description
      */
@@ -1784,16 +1797,16 @@ public enum ProductDataFieldDefinition
                                       true),
 
     /**
-     * Open Metadata Attribute Name
+     * Open Metadata Property Name
      */
-    OPEN_METADATA_ATTRIBUTE_NAME("Open Metadata Attribute Name",
-                                 "Open Metadata Attribute Name",
-                                 "The property name of an open metadata attribute within a type.",
-                                 DataType.STRING,
-                                 null,
-                                 null,
-                                 false,
-                                 true),
+    OPEN_METADATA_PROPERTY_NAME("Open Metadata Property Name",
+                                "Open Metadata Property Name",
+                                "The name of an open metadata property within a type.",
+                                DataType.STRING,
+                                null,
+                                null,
+                                false,
+                                true),
 
     /**
      * Open Metadata Attribute Status

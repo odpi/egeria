@@ -22,6 +22,7 @@ Content-Type: application/json
 ###
 # @name find TabularDataSets
 # Retrieve the list of asset metadata elements that are of type tabular data set.
+# The graphQueryDepth is set to zero (0) so no relationships are returned.
 #
 # Request body provides string to find in the properties
 #
@@ -41,8 +42,10 @@ Content-Type: application/json
   "endsWith": false,
   "pageSize" : 0,
   "relationshipsPageSize": 0,
+  "graphQueryDepth": 0,
   "skipClassifiedElements": ["Template"]
 }
+
 
 ###
 # ========================================================================================
@@ -122,7 +125,59 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{deployedImplementationTypesGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}
 
+###
+# ========================================================================================
+# Work with Reference Data Set List
+#
 
+###
+# @name get Reference Data Set List
+# Retrieve the element, extract the guid and then request the data set report.  This report
+# requires the creation of the data set and can take about a minute to run on the in membory repository
+# (45 s 400 ms on last run) so do not be surprised.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Data set for Reference Data Set List",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("referenceDataSetListGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{referenceDataSetListGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+
+###
+# @name get Values for facilityType
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Data set for facilityType Reference Data Set",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("facilityTypeGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{facilityTypeGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
 
 ###
 # ========================================================================================
