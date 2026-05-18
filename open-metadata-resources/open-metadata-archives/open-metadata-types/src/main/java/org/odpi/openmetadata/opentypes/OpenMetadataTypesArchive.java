@@ -157,6 +157,7 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        update0010BaseModel();
         update0019MoreInformation();
         update0112Person();
         update0118ActorRoles();
@@ -169,6 +170,36 @@ public class OpenMetadataTypesArchive
         update0455ExceptionManagement();
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(getOpenMetadataRootPatch());
+    }
+
+    private TypeDefPatch getOpenMetadataRootPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LEGAL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -202,7 +233,6 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
-
     }
 
     /*

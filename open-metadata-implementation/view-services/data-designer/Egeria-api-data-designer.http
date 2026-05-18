@@ -55,6 +55,8 @@ Content-Type: application/json
   "properties": {
     "class" : "DataStructureProperties",
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "description": "add description here",
     "namespacePath": "add namespace for this structure",

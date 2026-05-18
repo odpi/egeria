@@ -2109,6 +2109,10 @@ public class OpenMetadataElementBuilder
                                                                             translationDetailProperties.getAdditionalTranslations());
                 }
 
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.LEGAL.name,
+                                                                     openMetadataRootProperties.getLegal());
+
                 elementProperties = propertyHelper.addPropertyMap(elementProperties,
                                                                   openMetadataRootProperties.getExtendedProperties());
             }

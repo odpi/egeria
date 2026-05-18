@@ -72,6 +72,8 @@ Content-Type: application/json
     "contentStatus" : "DRAFT",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "summary": "add summary here",
     "description": "add description here",

@@ -35,8 +35,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class OpenMetadataRootProperties extends EntityProperties
 {
-    protected String               typeName             = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
-    private   Map<String, Object>  extendedProperties   = null;
+    protected String              typeName           = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+    private   String              legal              = null;
+    private   Map<String, Object> extendedProperties = null;
 
     /**
      * Default constructor
@@ -59,6 +60,7 @@ public class OpenMetadataRootProperties extends EntityProperties
         if (template != null)
         {
             typeName             = template.getTypeName();
+            legal                = template.getLegal();
             extendedProperties   = template.getExtendedProperties();
         }
     }
@@ -83,6 +85,28 @@ public class OpenMetadataRootProperties extends EntityProperties
     public void setTypeName(String typeName)
     {
         this.typeName = typeName;
+    }
+
+
+    /**
+     * Return the legal information associated with this metadata element.
+     *
+     * @return string legal information
+     */
+    public String getLegal()
+    {
+        return legal;
+    }
+
+
+    /**
+     * Set up the legal information associated with this metadata element.
+     *
+     * @param legal string legal information
+     */
+    public void setLegal(String legal)
+    {
+        this.legal = legal;
     }
 
 
@@ -120,6 +144,7 @@ public class OpenMetadataRootProperties extends EntityProperties
     {
         return "OpenMetadataRootProperties{" +
                 "typeName='" + typeName + '\'' +
+                ", legal='" + legal + '\'' +
                 ", extendedProperties=" + extendedProperties +
                 "} " + super.toString();
     }
@@ -138,7 +163,9 @@ public class OpenMetadataRootProperties extends EntityProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         OpenMetadataRootProperties that = (OpenMetadataRootProperties) objectToCompare;
-        return Objects.equals(typeName, that.typeName) && Objects.equals(extendedProperties, that.extendedProperties);
+        return Objects.equals(typeName, that.typeName) &&
+                Objects.equals(legal, that.legal) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
     /**
@@ -149,6 +176,6 @@ public class OpenMetadataRootProperties extends EntityProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, extendedProperties);
+        return Objects.hash(super.hashCode(), typeName, legal, extendedProperties);
     }
 }

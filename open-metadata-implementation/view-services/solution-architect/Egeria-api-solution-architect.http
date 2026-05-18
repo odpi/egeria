@@ -54,6 +54,8 @@ Content-Type: application/json
   "properties": {
     "class" : "InformationSupplyChainProperties",
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "description": "add description here",
     "scope": "add scope of this information supply chain's applicability.",
@@ -382,6 +384,8 @@ Content-Type: application/json
   "properties": {
     "class" : "SolutionBlueprintProperties",
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "description": "add description here",
     "versionIdentifier": "add version for this blueprint",
@@ -941,6 +945,8 @@ Content-Type: application/json
   "properties": {
     "class" : "SolutionComponentProperties",
     "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
     "displayName": "add short name here",
     "description": "add description here",
     "solutionComponentType": "add optional type for this component",

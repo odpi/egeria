@@ -217,6 +217,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Determine the existing catalog targets - these are tabular data sources that are set up.
          */
+        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_CATALOG_TARGETS.getMessageDefinition(integrationContext.getConnectorName()));
         List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.retrieveKnownCatalogTargets(integrationContext,
                                                                                                                  this);
 

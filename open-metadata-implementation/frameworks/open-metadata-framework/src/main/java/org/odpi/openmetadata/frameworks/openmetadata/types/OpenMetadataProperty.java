@@ -214,6 +214,11 @@ public enum OpenMetadataProperty
     DESCRIPTION("description", DataType.STRING, DataType.STRING.getDisplayName(), "Description of the element or associated resource in free-text.", null, "ee09b6f9-e15b-40fb-9799-ef3b98c1de2c"),
 
     /**
+     * Description of the element or associated resource in free-text.
+     */
+    LEGAL("legal", DataType.STRING, DataType.STRING.getDisplayName(), "Copyright and/or license information for the element or associated resource.", null, "84b86099-45b6-4313-b339-cebe8954b233"),
+
+    /**
      * Version identifier to allow different versions of the same resource to appear in the catalog as separate assets.
      */
     VERSION_IDENTIFIER("versionIdentifier", DataType.STRING, DataType.STRING.getDisplayName(), "Version identifier to allow different versions of the same resource to appear in the catalog as separate assets.", "V1.0", "6e765a3f-04c2-4eca-bd2d-519cae777c03"),
