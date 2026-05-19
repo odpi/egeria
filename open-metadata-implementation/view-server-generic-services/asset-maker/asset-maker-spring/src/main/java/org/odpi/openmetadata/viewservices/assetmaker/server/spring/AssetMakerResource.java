@@ -1661,19 +1661,18 @@ public class AssetMakerResource
      */
     @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/assets/{assetGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
-    @Operation(summary="addAssetUse",
+    @Operation(summary="addCapabilityAssetUse",
             description="Create a relationship that represents the use of an asset by a software capability.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/software-capability"))
 
-    public VoidResponse addAssetUse(@PathVariable String                     serverName,
-                                    @PathVariable String                     urlMarker,
-                                    @PathVariable String                     softwareCapabilityGUID,
-                                    @PathVariable String                     assetGUID,
-                                    @RequestBody (required = false)
-                                    NewRelationshipRequestBody requestBody)
+    public VoidResponse addCapabilityAssetUse(@PathVariable String                     serverName,
+                                              @PathVariable String                     urlMarker,
+                                              @PathVariable String                     softwareCapabilityGUID,
+                                              @PathVariable String                     assetGUID,
+                                              @RequestBody (required = false) NewRelationshipRequestBody requestBody)
     {
-        return restAPI.addAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
+        return restAPI.addCapabilityAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
     }
 
 
@@ -1693,19 +1692,18 @@ public class AssetMakerResource
      */
     @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/assets/{assetGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
-    @Operation(summary="removeAssetUse",
+    @Operation(summary="removeCapabilityAssetUse",
             description="Remove the relationship that represents the use of an asset by a software capability.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/software-capability"))
 
-    public VoidResponse removeAssetUse(@PathVariable String                        serverName,
-                                       @PathVariable String                        urlMarker,
-                                       @PathVariable String                        softwareCapabilityGUID,
-                                       @PathVariable String                        assetGUID,
-                                       @RequestBody (required = false)
-                                       DeleteRelationshipRequestBody requestBody)
+    public VoidResponse removeCapabilityAssetUse(@PathVariable String                        serverName,
+                                                 @PathVariable String                        urlMarker,
+                                                 @PathVariable String                        softwareCapabilityGUID,
+                                                 @PathVariable String                        assetGUID,
+                                                 @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.removeAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
+        return restAPI.removeCapabilityAssetUse(serverName, urlMarker, softwareCapabilityGUID, assetGUID, requestBody);
     }
 
 

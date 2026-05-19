@@ -170,7 +170,7 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
 
     /**
      * Create a relationship that represents the use of an asset (typically a data or process asset) by
-     * a softwareCapability.
+     * a softwareCapability (CapabilityAssetUse).
      *
      * @param softwareCapabilityGUID       unique identifier of the softwareCapability
      * @param assetGUID           unique identifier of the destination softwareCapability
@@ -180,14 +180,14 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addAssetUse(String                       softwareCapabilityGUID,
-                            String                       assetGUID,
-                            MakeAnchorOptions            makeAnchorOptions,
-                            CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public void addCapabilityAssetUse(String                       softwareCapabilityGUID,
+                                      String                       assetGUID,
+                                      MakeAnchorOptions            makeAnchorOptions,
+                                      CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
-        softwareCapabilityHandler.addAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, makeAnchorOptions, relationshipProperties);
+        softwareCapabilityHandler.addCapabilityAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -201,13 +201,13 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetUse(String        softwareCapabilityGUID,
-                               String        assetGUID,
-                               DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void removeCapabilityAssetUse(String        softwareCapabilityGUID,
+                                         String        assetGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
-        softwareCapabilityHandler.detachAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, deleteOptions);
+        softwareCapabilityHandler.removeCapabilityAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, deleteOptions);
     }
 
 

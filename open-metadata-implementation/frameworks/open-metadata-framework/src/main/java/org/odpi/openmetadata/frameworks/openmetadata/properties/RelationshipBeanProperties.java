@@ -8,10 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetCo
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SampleDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SourcedFromProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedFileProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
@@ -22,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
@@ -85,9 +83,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = APIOperationsProperties.class, name = "APIOperationsProperties"),
                 @JsonSubTypes.Type(value = APIRequestProperties.class, name = "APIRequestProperties"),
                 @JsonSubTypes.Type(value = APIResponseProperties.class, name = "APIResponseProperties"),
+                @JsonSubTypes.Type(value = ArchiveContentsProperties.class, name = "ArchiveContentsProperties"),
                 @JsonSubTypes.Type(value = AssetConnectionProperties.class, name = "AssetConnectionProperties"),
                 @JsonSubTypes.Type(value = SchemaProperties.class, name = "AssetSchemaTypeProperties"),
                 @JsonSubTypes.Type(value = AssignmentScopeProperties.class, name = "AssignmentScopeProperties"),
+                @JsonSubTypes.Type(value = AssociatedLogProperties.class, name = "AssociatedLogProperties"),
                 @JsonSubTypes.Type(value = AssociatedSecurityListProperties.class, name = "AssociatedSecurityGroupProperties"),
                 @JsonSubTypes.Type(value = AttachedCommentProperties.class, name = "AttachedCommentProperties"),
                 @JsonSubTypes.Type(value = AttachedLikeProperties.class, name = "AttachedLikeProperties"),
@@ -161,7 +161,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SourcedFromProperties.class, name = "SourcedFromProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyAssignmentProperties.class, name = "SpecificationPropertyAssignmentProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
-                @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
                 @JsonSubTypes.Type(value = SupportedSoftwareCapabilityProperties.class, name = "SupportedSoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),

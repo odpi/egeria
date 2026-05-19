@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = APIOperationProperties.class, name = "APIOperationProperties"),
         @JsonSubTypes.Type(value = ComplexSchemaTypeProperties.class, name = "ComplexSchemaTypeProperties"),
         @JsonSubTypes.Type(value = ExternalSchemaTypeProperties.class, name = "ExternalSchemaTypeProperties"),
         @JsonSubTypes.Type(value = LiteralSchemaTypeProperties.class, name = "LiteralSchemaTypeProperties"),

@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataValueAssignmentProperties extends LabeledRelationshipProperties
 {
     private String                    method              = null;
-    private DataValueAssignmentStatus assignmentStatus    = DataValueAssignmentStatus.PROPOSED;
+    private DataValueAssignmentStatus assignmentStatus    = null;
     private int                       confidence          = 0;
     private int                       threshold           = 0;
     private String                    steward             = null;

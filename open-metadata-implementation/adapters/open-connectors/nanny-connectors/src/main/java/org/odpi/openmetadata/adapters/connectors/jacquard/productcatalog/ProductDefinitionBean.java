@@ -22,6 +22,7 @@ public class ProductDefinitionBean implements ProductDefinition
     private final String                          displayName;
     private final String                          description;
     private final String                          category;
+    private final ProductQuestionDefinition[]     questions;
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
@@ -46,6 +47,7 @@ public class ProductDefinitionBean implements ProductDefinition
      * @param displayName display name
      * @param description description
      * @param category category of product
+     * @param questions lists oof questions can can be answered with this product
      * @param license license
      * @param community community
      * @param subscriptionTypes list of subscription types offered
@@ -66,6 +68,7 @@ public class ProductDefinitionBean implements ProductDefinition
                                  String                          displayName,
                                  String                          description,
                                  String                          category,
+                                 ProductQuestionDefinition[]     questions,
                                  ProductGovernanceDefinition     license,
                                  ProductCommunityDefinition      community,
                                  ProductSubscriptionDefinition[] subscriptionTypes,
@@ -86,6 +89,7 @@ public class ProductDefinitionBean implements ProductDefinition
         this.displayName             = displayName;
         this.description             = description;
         this.category                = category;
+        this.questions               = questions;
         this.license                 = license;
         this.community               = community;
         this.subscriptionTypes       = subscriptionTypes;
@@ -210,6 +214,23 @@ public class ProductDefinitionBean implements ProductDefinition
     public String getCategory()
     {
         return category;
+    }
+
+
+    /**
+     * Returns a list of questions that can be answered with the product.
+     *
+     * @return list of question definitions
+     */
+    @Override
+    public List<ProductQuestionDefinition> getQuestions()
+    {
+        if (questions != null)
+        {
+            return new ArrayList<>(Arrays.asList(questions));
+        }
+
+        return null;
     }
 
 

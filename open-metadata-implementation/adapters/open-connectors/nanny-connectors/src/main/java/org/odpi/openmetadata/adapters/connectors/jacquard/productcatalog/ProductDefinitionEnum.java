@@ -42,6 +42,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Valid Metadata Value Sets",
                               "Each product in this folder is an extract of the valid metadata values.  The valid metadata values are organized into a tabular data set, where each row is a specific valid value.  These products can be used as standard reference values when building other digital products to help consumers join data from multiple products together.",
                               ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                              null,
                               ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                               ProductCommunityDefinition.REFERENCE_DATA_SIG,
                               new ProductSubscriptionDefinition[]{
@@ -49,12 +50,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                       ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                       ProductSubscriptionDefinition.ONGOING_UPDATE},
-                              null,
-                              null,
-                              null,
                               OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                               "Data sets",
-                              null,
                               null),
 
     /**
@@ -68,6 +65,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   "Valid Metadata Value Set List",
                                   "A tabular data set where each record describes an open metadata property that has a valid metadata value set defined.  There is a digital product for each open metadata property in this list.",
                                   ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                  null,
                                   ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                   ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                   new ProductSubscriptionDefinition[]{
@@ -86,7 +84,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                                   "Open Metadata Property List",
                                   new ValidMetadataValueSetListProvider(),
-                                  "ValidMetadataValueSetList"),
+                                  "ValidMetadataValueSetList",
+                                  null),
 
     /*
      * =============================================================================================
@@ -104,6 +103,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Reference Data Sets",
                         "Each product in this folder is an extract of the reference data values managed by open metadata.  The reference data values are organized into a tabular data set, where each row is a specific valid value.  These products can be used as standard reference values when building other digital products to help consumers join data from multiple products together.",
                         ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                        null,
                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -111,12 +111,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
-                        null,
-                        null,
-                        null,
                         OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                         "Data sets",
-                        null,
                         null),
 
     /**
@@ -130,6 +126,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             "Reference Data Set List",
                             "A tabular data set where each record describes a reference data set stored in open metadata.  There is a digital product for each reference data set in this list.",
                             ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                            null,
                             ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                             ProductCommunityDefinition.REFERENCE_DATA_SIG,
                             new ProductSubscriptionDefinition[]{
@@ -149,7 +146,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                             "Data set",
                             new ReferenceDataSetListProvider(),
-                            "ReferenceDataSetList"),
+                            "ReferenceDataSetList",
+                            null),
 
     /*
      * =============================================================================================
@@ -167,6 +165,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Open Metadata Types",
                         "Each product in this folder provides a perspective on the open metadata types.",
                         ProductCategoryDefinition.OPEN_METADATA_TYPES.getPreferredValue(),
+                        null,
                         ProductGovernanceDefinition.CC_BY_40,
                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -174,12 +173,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
-                        null,
-                        null,
-                        null,
                         OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                         "Data sets",
-                        null,
                         null),
 
     /**
@@ -193,6 +188,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata Data Types List",
                     "A tabular data set where each record describes a type of property defined in the open metadata types.  These types map easily to standard programming languages and are also useful when cataloguing various technologies.",
                     ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                    null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -214,7 +210,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
                     new OpenMetadataTypesDataSetProvider(),
-                    "Open Metadata Data Types"),
+                    "Open Metadata Data Types",
+                    null),
 
     /**
      * Properties List
@@ -227,6 +224,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata Properties List",
                     "A tabular data set where each record describes a type of property defined in the open metadata types.",
                     ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                    null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -244,7 +242,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
                     new OpenMetadataPropertiesDataSetProvider(),
-                    "Open Metadata Properties"),
+                    "Open Metadata Properties",
+                    null),
 
     /**
      * Open Metadata Types List
@@ -257,6 +256,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                "Open Metadata Types List",
                "A tabular data set where each record describes an open metadata type.",
                ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+               null,
                ProductGovernanceDefinition.CC_BY_40,
                ProductCommunityDefinition.REFERENCE_DATA_SIG,
                new ProductSubscriptionDefinition[]{
@@ -283,7 +283,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                "Data set",
                new OpenMetadataTypesDataSetProvider(),
-               "Open Metadata Types"),
+               "Open Metadata Types",
+               null),
 
     /**
      * Open Metadata Attributes For Types List
@@ -296,6 +297,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Open Metadata Attributes For Types List",
                               "A tabular data set where each record describes an attribute for an open metadata type. There is one row for each defined attribute for each type. This includes attributes inherited from its super type(s).",
                               ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                              null,
                               ProductGovernanceDefinition.CC_BY_40,
                               ProductCommunityDefinition.REFERENCE_DATA_SIG,
                               new ProductSubscriptionDefinition[]{
@@ -317,7 +319,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
                               new OpenMetadataAttributesForTypesDataSetProvider(),
-                              "Open Metadata Attributes for Types"),
+                              "Open Metadata Attributes for Types",
+                              null),
 
     /*
      * =============================================================================================
@@ -335,18 +338,15 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           "Each product in this folder lists information held in the open metadata about people, organizations, users, teams, locations and digital products.  This type of data is called master data because it describes the key entities that the organization operates around.  As such, some form of this data appears in most data sets.  Each product in this folder is organized into a tabular data set, where each row is a specific (master data) entity.   These are designed to be used as standard values that can be used for validation or to ensure that data in digital products is consistent making it easier to join data from multiple products.",
                           ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                           null,
+                          null,
                           ProductCommunityDefinition.MASTER_DATA_SIG,
                           new ProductSubscriptionDefinition[]{
                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                   ProductSubscriptionDefinition.ONGOING_UPDATE},
-                          null,
-                          null,
-                          null,
                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                           "Data sets",
-                          null,
                           null),
 
     /**
@@ -360,6 +360,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                   "Organization List",
                   "A tabular data set where each record describes an organization interacting with open metadata.",
                   ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                  null,
                   ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                   ProductCommunityDefinition.MASTER_DATA_SIG,
                   new ProductSubscriptionDefinition[]{
@@ -381,7 +382,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                   "Data set",
                   new OrganizationsTabularDataSetProvider(),
-                  "Organizations"),
+                  "Organizations",
+                  null),
 
     /**
      * List of People
@@ -394,6 +396,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
            "People List",
            "A tabular data set where each record describes a person interacting with open metadata.",
            ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+           null,
            ProductGovernanceDefinition.PERSONAL_DATA,
            ProductCommunityDefinition.MASTER_DATA_SIG,
            new ProductSubscriptionDefinition[]{
@@ -414,7 +417,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
            OpenMetadataType.TABULAR_DATA_SET.typeName,
            "Data set",
            new PeopleTabularDataSetProvider(),
-           "People"),
+           "People",
+           null),
 
     /**
      * List of Digital Products
@@ -427,6 +431,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      "Digital Product List",
                      "A tabular data set where each record describes a digital product.",
                      ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                     null,
                      ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                      ProductCommunityDefinition.MASTER_DATA_SIG,
                      new ProductSubscriptionDefinition[]{
@@ -448,7 +453,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      OpenMetadataType.TABULAR_DATA_SET.typeName,
                      "Data set",
                      new DigitalProductsTabularDataSetProvider(),
-                     "Digital Product List"),
+                     "Digital Product List",
+                     null),
 
     /*
      * =============================================================================================
@@ -465,6 +471,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
               "List of Locations",
               "A tabular data set where each record describes a location.  This could be a site, or a facility within a site.",
               ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+              null,
               ProductGovernanceDefinition.INTERNAL_USE_ONLY,
               ProductCommunityDefinition.MASTER_DATA_SIG,
               new ProductSubscriptionDefinition[]{
@@ -492,7 +499,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
               OpenMetadataType.TABULAR_DATA_SET.typeName,
               "Data set",
               new LocationsTabularDataSetProvider(),
-              "Locations"),
+              "Locations",
+              null),
 
 
 
@@ -511,6 +519,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    "Survey Reports",
                    "Each product in this folder publishes insights from the surveys published through the open survey framework.  These surveys may be run as engine actions in the Engine Host, or run in an external surveying process that published results through the Data Discovery API.",
                    ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                   null,
                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                    ProductCommunityDefinition.OBSERVABILITY_SIG,
                    new ProductSubscriptionDefinition[]{
@@ -519,12 +528,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                            ProductSubscriptionDefinition.ONGOING_UPDATE
                    },
-                   null,
-                   null,
-                   null,
                    OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                    "Data sets",
-                   null,
                    null),
 
     /**
@@ -538,6 +543,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        "List of Survey Reports",
                        "A tabular data set where each record describes a survey report.  These surveys may be run as engine actions in the Engine Host, or run in an external surveying process that published results through the Data Discovery API.",
                        ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                       null,
                        ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                        ProductCommunityDefinition.OBSERVABILITY_SIG,
                        new ProductSubscriptionDefinition[]{
@@ -558,20 +564,20 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.PURPOSE,
                                ProductDataFieldDefinition.START_TIMESTAMP,
                                ProductDataFieldDefinition.END_TIMESTAMP,
-                               ProductDataFieldDefinition.ASSET_GUID,
-                               ProductDataFieldDefinition.ASSET_TYPE_NAME,
-                               ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                               ProductDataFieldDefinition.ENGINE_ACTION_GUID,
+                               ProductDataFieldDefinition.REPORT_SUBJECT_GUID,
+                               ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
+                               ProductDataFieldDefinition.REPORT_ORIGINATOR_GUID,
                                ProductDataFieldDefinition.INITIATOR_USER_ID,
                                ProductDataFieldDefinition.REQUEST_TYPE,
                                ProductDataFieldDefinition.GOVERNANCE_ENGINE_NAME,
-                               ProductDataFieldDefinition.ENGINE_HOST_USER_ID,
+                               ProductDataFieldDefinition.CREATED_BY,
                                ProductDataFieldDefinition.CREATE_TIME,
                                ProductDataFieldDefinition.UPDATE_TIME},
                        OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
                        null,
-                       "Survey Report List"),
+                       "Survey Report List",
+                       null),
 
     /**
      * List of Annotations
@@ -584,6 +590,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                 "List of Annotations from all Survey Reports",
                 "A tabular data set where each record describes an annotation from a survey report.",
                 ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                null,
                 ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                 ProductCommunityDefinition.OBSERVABILITY_SIG,
                 new ProductSubscriptionDefinition[]{
@@ -594,8 +601,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                 "Annotation List",
                 new ProductDataFieldDefinition[]{
                         ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                        ProductDataFieldDefinition.ANNOTATION_GUID,
-                        ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                        ProductDataFieldDefinition.GUID
                 },
                 new ProductDataFieldDefinition[]{
                         ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
@@ -608,20 +614,21 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         ProductDataFieldDefinition.PURPOSE,
                         ProductDataFieldDefinition.START_TIMESTAMP,
                         ProductDataFieldDefinition.END_TIMESTAMP,
-                        ProductDataFieldDefinition.ASSET_GUID,
-                        ProductDataFieldDefinition.ASSET_TYPE_NAME,
+                        ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
+                        ProductDataFieldDefinition.ANNOTATION_SUBJECT_TYPE_NAME,
                         ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                        ProductDataFieldDefinition.ENGINE_ACTION_GUID,
+                        ProductDataFieldDefinition.REPORT_ORIGINATOR_GUID,
                         ProductDataFieldDefinition.INITIATOR_USER_ID,
                         ProductDataFieldDefinition.REQUEST_TYPE,
                         ProductDataFieldDefinition.GOVERNANCE_ENGINE_NAME,
-                        ProductDataFieldDefinition.ENGINE_HOST_USER_ID,
+                        ProductDataFieldDefinition.CREATED_BY,
                         ProductDataFieldDefinition.CREATE_TIME,
                         ProductDataFieldDefinition.UPDATE_TIME},
                 OpenMetadataType.TABULAR_DATA_SET.typeName,
                 "Data set",
                 null,
-                "Annotation List"),
+                "Annotation List",
+                null),
 
     /**
      * Request For Action Annotation List
@@ -634,6 +641,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        "List of Request For Action Annotations from all Survey Reports",
                        "A tabular data set where each record describes a request for action annotation from a survey report.  This digital product supplements the main annotation list product (Annotation List).",
                        ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                       null,
                        ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                        ProductCommunityDefinition.OBSERVABILITY_SIG,
                        new ProductSubscriptionDefinition[]{
@@ -644,17 +652,18 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        "Request For Action Annotation List",
                        new ProductDataFieldDefinition[]{
                                ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                               ProductDataFieldDefinition.ANNOTATION_GUID,
-                               ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                               ProductDataFieldDefinition.GUID
                        },
                        new ProductDataFieldDefinition[]{
                                ProductDataFieldDefinition.ACTION_REQUEST_NAME,
+                               ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
                                ProductDataFieldDefinition.CREATE_TIME,
                                ProductDataFieldDefinition.UPDATE_TIME},
                        OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
                        null,
-                       "Request For Action Annotation List"),
+                       "Request For Action Annotation List",
+                       null),
 
     /**
      * Request For Action Annotation List
@@ -667,6 +676,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "List of Request For Action Annotations from all Survey Reports",
                               "A tabular data set where each record describes a request for action annotation from a survey report.  This digital product supplements the main annotation list product (Annotation List).",
                               ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                              null,
                               ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                               ProductCommunityDefinition.OBSERVABILITY_SIG,
                               new ProductSubscriptionDefinition[]{
@@ -677,21 +687,22 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Request For Action Target List",
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                      ProductDataFieldDefinition.ANNOTATION_GUID,
-                                      ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID,
-                                      ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                                      ProductDataFieldDefinition.GUID
                               },
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.ACTION_REQUEST_NAME,
                                       ProductDataFieldDefinition.ACTION_TARGET_GUID,
                                       ProductDataFieldDefinition.ACTION_TARGET_NAME,
                                       ProductDataFieldDefinition.ACTION_TARGET_TYPE_NAME,
+                                      ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID,
+                                      ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
                                       ProductDataFieldDefinition.CREATE_TIME,
                                       ProductDataFieldDefinition.UPDATE_TIME},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
                               null,
-                              "Request For Action Target List"),
+                              "Request For Action Target List",
+                              null),
 
 
     /**
@@ -705,6 +716,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                          "Resource measurement annotations for surveyed Relational Data Managers",
                                          "Details of the measurements collected by a survey of a relational data manager.  This digital product supplements the main annotation list product (Annotation List).",
                                          ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                                         null,
                                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                          ProductCommunityDefinition.OBSERVABILITY_SIG,
                                          new ProductSubscriptionDefinition[]{
@@ -715,13 +727,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                          "Relational Data Manager Measurements",
                                          new ProductDataFieldDefinition[]{
                                                  ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                                 ProductDataFieldDefinition.ANNOTATION_GUID,
+                                                 ProductDataFieldDefinition.GUID,
                                                  ProductDataFieldDefinition.RESOURCE_NAME,
-                                                 ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                                                 ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID
                                          },
                                          new ProductDataFieldDefinition[]{
                                                  ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                                 ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                                 ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                                  ProductDataFieldDefinition.SCHEMA_COUNT,
                                                  ProductDataFieldDefinition.TABLE_COUNT,
                                                  ProductDataFieldDefinition.VIEW_COUNT,
@@ -738,7 +750,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                          OpenMetadataType.TABULAR_DATA_SET.typeName,
                                          "Data set",
                                          null,
-                                         "Relational Data Manager Measurements"),
+                                         "Relational Data Manager Measurements",
+                                         null),
 
     /**
      * Relational Schema Measurements
@@ -751,6 +764,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    "Resource measurement annotations for surveyed Relational Schemas",
                                    "Details of the measurements collected by a survey of relational schemas from multiple databases.  This digital product supplements the main annotation list product (Annotation List).",
                                    ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                                   null,
                                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                    ProductCommunityDefinition.OBSERVABILITY_SIG,
                                    new ProductSubscriptionDefinition[]{
@@ -761,13 +775,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    "Relational Schema Measurements",
                                    new ProductDataFieldDefinition[]{
                                            ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                           ProductDataFieldDefinition.ANNOTATION_GUID,
+                                           ProductDataFieldDefinition.GUID,
                                            ProductDataFieldDefinition.RESOURCE_NAME,
-                                           ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                                           ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID
                                    },
                                    new ProductDataFieldDefinition[]{
                                            ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                           ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                           ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                            ProductDataFieldDefinition.DISPLAY_NAME,
                                            ProductDataFieldDefinition.TABLE_COUNT,
                                            ProductDataFieldDefinition.VIEW_COUNT,
@@ -779,7 +793,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
                                    null,
-                                   "Relational Schema Measurements"),
+                                   "Relational Schema Measurements",
+                                   null),
 
 
     /**
@@ -793,6 +808,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   "Resource measurement annotations for surveyed Relational Tables",
                                   "Details of the measurements collected by a survey of relational tables from multiple databases.  This digital product supplements the main annotation list product (Annotation List).",
                                   ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                                  null,
                                   ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                   ProductCommunityDefinition.OBSERVABILITY_SIG,
                                   new ProductSubscriptionDefinition[]{
@@ -803,13 +819,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   "Relational Table Measurements",
                                   new ProductDataFieldDefinition[]{
                                           ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                          ProductDataFieldDefinition.ANNOTATION_GUID,
+                                          ProductDataFieldDefinition.GUID,
                                           ProductDataFieldDefinition.RESOURCE_NAME,
-                                          ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                                          ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID
                                   },
                                   new ProductDataFieldDefinition[]{
                                           ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                          ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                          ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                           ProductDataFieldDefinition.DISPLAY_NAME,
                                           ProductDataFieldDefinition.TABLE_COUNT,
                                           ProductDataFieldDefinition.VIEW_COUNT,
@@ -821,7 +837,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                                   "Data set",
                                   null,
-                                  "Relational Table Measurements"),
+                                  "Relational Table Measurements",
+                                  null),
 
     /**
      * Relational Column Measurements
@@ -834,6 +851,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    "Resource measurement annotations for surveyed Relational Columns",
                                    "Details of the measurements collected by a survey of relational columns from multiple databases.  This digital product supplements the main annotation list product (Annotation List).",
                                    ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                                   null,
                                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                    ProductCommunityDefinition.OBSERVABILITY_SIG,
                                    new ProductSubscriptionDefinition[]{
@@ -844,13 +862,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    "Relational Column Measurements",
                                    new ProductDataFieldDefinition[]{
                                            ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                           ProductDataFieldDefinition.ANNOTATION_GUID,
+                                           ProductDataFieldDefinition.GUID,
                                            ProductDataFieldDefinition.RESOURCE_NAME,
-                                           ProductDataFieldDefinition.SURVEY_SUBJECT_GUID
+                                           ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID
                                    },
                                    new ProductDataFieldDefinition[]{
                                            ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                           ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                           ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                            ProductDataFieldDefinition.DISPLAY_NAME,
                                            ProductDataFieldDefinition.DATA_TYPE,
                                            ProductDataFieldDefinition.DATA_SIZE,
@@ -864,7 +882,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
                                    null,
-                                   "Relational Column Measurements"),
+                                   "Relational Column Measurements",
+                                   null),
 
     /**
      * File Measurements
@@ -877,6 +896,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       "Resource measurement annotations for surveyed Files",
                       "Details of the measurements collected by a survey of files from multiple directories (folders).  This digital product supplements the main annotation list product (Annotation List).",
                       ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                      null,
                       ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                       ProductCommunityDefinition.OBSERVABILITY_SIG,
                       new ProductSubscriptionDefinition[]{
@@ -886,20 +906,20 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductSubscriptionDefinition.ONGOING_UPDATE},
                       "File Measurements",
                       new ProductDataFieldDefinition[]{
-                              ProductDataFieldDefinition.ANNOTATION_GUID,
+                              ProductDataFieldDefinition.GUID,
                               ProductDataFieldDefinition.PATHNAME
                       },
                       new ProductDataFieldDefinition[]{
                               ProductDataFieldDefinition.METADATA_COLLECTION_ID,
                               ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                              ProductDataFieldDefinition.SURVEY_SUBJECT_GUID,
-                              ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                              ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
+                              ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                               ProductDataFieldDefinition.FILE_NAME,
                               ProductDataFieldDefinition.FILE_EXTENSION,
                               ProductDataFieldDefinition.FILE_TYPE,
                               ProductDataFieldDefinition.DEPLOYED_IMPLEMENTATION_TYPE,
                               ProductDataFieldDefinition.ENCODING,
-                              ProductDataFieldDefinition.ASSET_TYPE_NAME,
+                              ProductDataFieldDefinition.ANNOTATION_SUBJECT_TYPE_NAME,
                               ProductDataFieldDefinition.CAN_READ,
                               ProductDataFieldDefinition.CAN_WRITE,
                               ProductDataFieldDefinition.CAN_EXECUTE,
@@ -915,7 +935,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       OpenMetadataType.TABULAR_DATA_SET.typeName,
                       "Data set",
                       null,
-                      "File Measurements"),
+                      "File Measurements",
+                      null),
 
     /**
      * File Directory (Folder) Measurements
@@ -928,6 +949,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Resource measurement annotations for surveyed directories (folders)",
                         "Details of files found in a directory (and subdirectories).  This digital product supplements the main annotation list product (Annotation List).",
                         ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                        null,
                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                         ProductCommunityDefinition.OBSERVABILITY_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -937,14 +959,14 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
                         "File Directory Measurements",
                         new ProductDataFieldDefinition[]{
-                                ProductDataFieldDefinition.ANNOTATION_GUID,
+                                ProductDataFieldDefinition.GUID,
                                 ProductDataFieldDefinition.PATHNAME
                         },
                         new ProductDataFieldDefinition[]{
                                 ProductDataFieldDefinition.METADATA_COLLECTION_ID,
                                 ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                ProductDataFieldDefinition.SURVEY_SUBJECT_GUID,
-                                ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
+                                ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                 ProductDataFieldDefinition.FILE_COUNT,
                                 ProductDataFieldDefinition.TOTAL_FILE_SIZE,
                                 ProductDataFieldDefinition.SUB_DIRECTORY_COUNT,
@@ -968,7 +990,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
-                        "File Directory Measurements"),
+                        "File Directory Measurements",
+                        null),
 
 
     /**
@@ -982,6 +1005,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           "Resource measurement annotations for surveyed resources",
                           "Details of individual resources surveyed.  This digital product supplements the main annotation list product (Annotation List).",
                           ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                          null,
                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                           ProductCommunityDefinition.OBSERVABILITY_SIG,
                           new ProductSubscriptionDefinition[]{
@@ -992,13 +1016,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           "Resource Measurements",
                           new ProductDataFieldDefinition[]{
                                   ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                  ProductDataFieldDefinition.ANNOTATION_GUID,
-                                  ProductDataFieldDefinition.SURVEY_SUBJECT_GUID,
+                                  ProductDataFieldDefinition.GUID,
+                                  ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
                                   ProductDataFieldDefinition.MEASUREMENT_CATEGORY
                           },
                           new ProductDataFieldDefinition[]{
                                   ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                  ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                  ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                   ProductDataFieldDefinition.MEASUREMENT_NAME,
                                   ProductDataFieldDefinition.MEASUREMENT_VALUE,
                                   ProductDataFieldDefinition.MEASUREMENT_DISPLAY_NAME,
@@ -1013,7 +1037,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           OpenMetadataType.TABULAR_DATA_SET.typeName,
                           "Data set",
                           null,
-                          "Resource Measurements"),
+                          "Resource Measurements",
+                          null),
 
 
     /**
@@ -1027,6 +1052,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                          "Profile measurement annotations for surveyed resources",
                          "Details of individual profile measurements.  This digital product supplements the main annotation list product (Annotation List).",
                          ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                         null,
                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                          ProductCommunityDefinition.OBSERVABILITY_SIG,
                          new ProductSubscriptionDefinition[]{
@@ -1037,13 +1063,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                          "Profile Measurements",
                          new ProductDataFieldDefinition[]{
                                  ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                 ProductDataFieldDefinition.ANNOTATION_GUID,
-                                 ProductDataFieldDefinition.SURVEY_SUBJECT_GUID,
+                                 ProductDataFieldDefinition.GUID,
+                                 ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
                                  ProductDataFieldDefinition.MEASUREMENT_CATEGORY
                          },
                          new ProductDataFieldDefinition[]{
                                  ProductDataFieldDefinition.METADATA_COLLECTION_ID,
-                                 ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME,
+                                 ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                  ProductDataFieldDefinition.MEASUREMENT_NAME,
                                  ProductDataFieldDefinition.MEASUREMENT_VALUE,
                                  ProductDataFieldDefinition.MEASUREMENT_NUMERIC_VALUE,
@@ -1052,7 +1078,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                          OpenMetadataType.TABULAR_DATA_SET.typeName,
                          "Data set",
                          null,
-                         "Profile Measurements"),
+                         "Profile Measurements",
+                         null),
 
 
     /**
@@ -1066,6 +1093,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              "Missing File Classifiers",
                              "List of files that could not be classified using the file reference data supplied by Core Content Pack.",
                              ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
+                             null,
                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                              ProductCommunityDefinition.OBSERVABILITY_SIG,
                              new ProductSubscriptionDefinition[]{
@@ -1085,13 +1113,14 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                      ProductDataFieldDefinition.FILE_TYPE,
                                      ProductDataFieldDefinition.DEPLOYED_IMPLEMENTATION_TYPE,
                                      ProductDataFieldDefinition.ENCODING,
-                                     ProductDataFieldDefinition.ASSET_TYPE_NAME,
+                                     ProductDataFieldDefinition.ANNOTATION_SUBJECT_TYPE_NAME,
                                      ProductDataFieldDefinition.CREATE_TIME,
                                      ProductDataFieldDefinition.UPDATE_TIME},
                              OpenMetadataType.TABULAR_DATA_SET.typeName,
                              "Data set",
                              null,
-                             "Missing File Classifiers"),
+                             "Missing File Classifiers",
+                             null),
 
 
 
@@ -1110,6 +1139,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                "Organization Observability",
                                "Each product in this folder publishes insights about the activity of the organization observed through the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each one as a trigger to perform specific processing.",
                                ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                               null,
                                ProductGovernanceDefinition.PERSONAL_DATA,
                                ProductCommunityDefinition.OBSERVABILITY_SIG,
                                new ProductSubscriptionDefinition[]{
@@ -1118,12 +1148,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                        ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                        ProductSubscriptionDefinition.ONGOING_UPDATE
                                },
-                               null,
-                               null,
-                               null,
                                OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                                "Data sets",
-                               null,
                                null),
 
     /*
@@ -1141,6 +1167,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              "Governance Observability",
                              "Each product in this folder publishes insights about the governance activity observed through the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                              ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                             null,
                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                              ProductCommunityDefinition.OBSERVABILITY_SIG,
                              new ProductSubscriptionDefinition[]{
@@ -1149,12 +1176,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                      ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                      ProductSubscriptionDefinition.ONGOING_UPDATE
                              },
-                             null,
-                             null,
-                             null,
                              OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                              "Data sets",
-                             null,
                              null),
 
     /**
@@ -1168,6 +1191,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    "Governance Controls",
                    "A tabular data set where each record describes a governance control from open metadata.",
                    ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                        null,
                    ProductGovernanceDefinition.CC_BY_40,
                    ProductCommunityDefinition.GOVERNANCE_SIG,
                    new ProductSubscriptionDefinition[]{
@@ -1192,7 +1216,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                    "Data set",
                         new GovernanceControlsTabularDataSetProvider(),
-                   "Governance Controls"),
+                   "Governance Controls",
+                        null),
 
     /**
      * Details of the exceptions known by open metadata.
@@ -1205,6 +1230,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Exceptions",
                         "A tabular data set where each record describes an exception from open metadata.",
                         ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+               null,
                         ProductGovernanceDefinition.CC_BY_40,
                         ProductCommunityDefinition.GOVERNANCE_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -1233,7 +1259,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
-                        "Exceptions"),
+                        "Exceptions",
+               null),
 
     /**
      * Details of the certifications known by open metadata.
@@ -1246,6 +1273,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                "Certifications",
                "A tabular data set where each record describes a certification known by open metadata.",
                ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                   null,
                ProductGovernanceDefinition.CC_BY_40,
                ProductCommunityDefinition.GOVERNANCE_SIG,
                new ProductSubscriptionDefinition[]{
@@ -1278,7 +1306,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                OpenMetadataType.TABULAR_DATA_SET.typeName,
                "Data set",
                null,
-               "Certifications"),
+               "Certifications",
+                   null),
 
     /**
      * Details of the licenses known by open metadata.
@@ -1291,6 +1320,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                "Licenses",
                "A tabular data set where each record describes a license known by the open metadata.",
                ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+             null,
                ProductGovernanceDefinition.CC_BY_40,
                ProductCommunityDefinition.GOVERNANCE_SIG,
                new ProductSubscriptionDefinition[]{
@@ -1323,7 +1353,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                OpenMetadataType.TABULAR_DATA_SET.typeName,
                "Data set",
                null,
-               "Licenses"),
+               "Licenses",
+             null),
 
     /*
      * =============================================================================================
@@ -1340,6 +1371,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      "IT Operations Observability",
                      "Each product in this group publishes insights about the operational health of the IT infrastructure supporting the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                      ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                     null,
                      ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                      ProductCommunityDefinition.OBSERVABILITY_SIG,
                      new ProductSubscriptionDefinition[]{
@@ -1348,12 +1380,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                              ProductSubscriptionDefinition.ONGOING_UPDATE
                      },
-                     null,
-                     null,
-                     null,
                      OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                      "Data sets",
-                     null,
                      null),
 
     /**
@@ -1364,9 +1392,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Software Servers",
                         "SOFTWARE-SERVERS",
                         null,
-                        "Softwate Servers",
+                        "Software Servers",
                         "A tabular data set where each record describes a software server catalogued in open metadata.",
                         ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+            null,
                         ProductGovernanceDefinition.CC_BY_40,
                         ProductCommunityDefinition.OBSERVABILITY_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -1391,7 +1420,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
-                        "Servers"),
+                        "Servers",
+            null),
 
     /*
      * =============================================================================================
@@ -1408,6 +1438,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            "Security Observability",
                            "Each product in this group publishes insights about the security settings supporting the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                           null,
                            ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,
                            new ProductSubscriptionDefinition[]{
@@ -1416,13 +1447,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                    ProductSubscriptionDefinition.ONGOING_UPDATE
                            },
-                           null,
-                           null,
-                           null,
                            OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                            "Data sets",
-                           null,
-                           null,
                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
@@ -1436,6 +1462,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        "Secrets Observability",
                        "Each product in this group publishes insights about the secrets stores and collections known to the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                        ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                          null,
                        ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                        ProductCommunityDefinition.SECURITY_SIG,
                        new ProductSubscriptionDefinition[]{
@@ -1444,13 +1471,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                ProductSubscriptionDefinition.ONGOING_UPDATE
                        },
-                       null,
-                       null,
-                       null,
                        OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                        "Data sets",
-                       null,
-                       null,
                        new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
@@ -1464,6 +1486,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata Secrets Stores",
                     "A tabular data set where each record describes a secrets store known to open metadata.",
                     ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                   null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.SECURITY_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -1473,7 +1496,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
                     "Open Metadata Secrets Stores",
                     new ProductDataFieldDefinition[]{
-                            ProductDataFieldDefinition.ASSET_GUID},
+                            ProductDataFieldDefinition.GUID},
                     new ProductDataFieldDefinition[]{
                             ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                             ProductDataFieldDefinition.RESOURCE_NAME,
@@ -1487,7 +1510,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                     "Data set",
                     null,
-                    "Open Metadata Secrets Stores"),
+                    "Open Metadata Secrets Stores",
+                   new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
      * Details of the secrets collections known by open metadata.
@@ -1500,6 +1524,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata Secrets Collections",
                     "A tabular data set where each record describes a user identity and its associated actor profile.",
                     ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                        null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.SECURITY_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -1531,7 +1556,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                     "Data set",
                     null,
-                    "Open Metadata Secrets Collections"),
+                    "Open Metadata Secrets Collections",
+                        new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
 
     /**
@@ -1545,6 +1571,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            "User Observability",
                            "Each product in this group publishes insights about the security settings of the users of the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                       null,
                            ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,
                            new ProductSubscriptionDefinition[]{
@@ -1553,13 +1580,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                    ProductSubscriptionDefinition.ONGOING_UPDATE
                            },
-                           null,
-                           null,
-                           null,
                            OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                            "Data sets",
-                           null,
-                           null,
                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
@@ -1573,6 +1595,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata User Identities",
                     "A tabular data set where each record describes a user identity and its associated actor profile.",
                     ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                    null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.SECURITY_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -1598,7 +1621,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                     "Data set",
                     null,
-                    "Open Metadata User Identities"),
+                    "Open Metadata User Identities",
+                    new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
      * Details of the user accounts defined in a secrets collection.
@@ -1611,6 +1635,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     "Open Metadata User Accounts",
                     "A tabular data set where each record describes a user account defined in a secrets store.",
                     ProductCategoryDefinition.SECURITY.getPreferredValue(),
+                  null,
                     ProductGovernanceDefinition.CC_BY_40,
                     ProductCommunityDefinition.SECURITY_SIG,
                     new ProductSubscriptionDefinition[]{
@@ -1637,7 +1662,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                     "Data set",
                     null,
-                    "Open Metadata User Accounts"),
+                    "Open Metadata User Accounts",
+                  new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
      * Governance Zone Observability
@@ -1650,6 +1676,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            "Governance Zone Observability",
                            "Each product in this group publishes insights about the governance zones controlling visibility in the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                       null,
                            ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,
                            new ProductSubscriptionDefinition[]{
@@ -1658,13 +1685,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                    ProductSubscriptionDefinition.ONGOING_UPDATE
                            },
-                           null,
-                           null,
-                           null,
+
                            OpenMetadataType.TABULAR_DATA_SET.typeName,
                            "Data sets",
-                           null,
-                           null,
                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
@@ -1678,6 +1701,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "Zone Membership Totals",
                         "A tabular data set where each record describes a governance zone and the total count of members and related elements.",
                         ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                           null,
                         ProductGovernanceDefinition.CC_BY_40,
                         ProductCommunityDefinition.GOVERNANCE_SIG,
                         new ProductSubscriptionDefinition[]{
@@ -1700,7 +1724,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
                         null,
-                        "Zone Membership Totals"),
+                        "Zone Membership Totals",
+                           new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
      * Details of the total count of members and related elements of a specific type in the governance zone.
@@ -1713,6 +1738,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             "Zone Membership Profile",
                             "A tabular data set where each record describes the total count of members and related elements of a specific type in the governance zone.",
                             ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
+                            null,
                             ProductGovernanceDefinition.CC_BY_40,
                             ProductCommunityDefinition.GOVERNANCE_SIG,
                             new ProductSubscriptionDefinition[]{
@@ -1736,7 +1762,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             OpenMetadataType.TABULAR_DATA_SET.typeName,
                             "Data set",
                             null,
-                            "Zone Membership Profile"),
+                            "Zone Membership Profile",
+                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
     /**
      * Service Observability
@@ -1749,6 +1776,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            "Security Observability",
                            "Each product in this group publishes insights about the servers, services and operations supporting the open metadata ecosystem from a security perspective.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
+                          null,
                            ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,
                            new ProductSubscriptionDefinition[]{
@@ -1757,13 +1785,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                    ProductSubscriptionDefinition.ONGOING_UPDATE
                            },
-                           null,
-                           null,
-                           null,
                            OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                            "Data sets",
-                           null,
-                           null,
                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
 
@@ -1778,6 +1801,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final String                          displayName;
     private final String                          description;
     private final String                          category;
+    private final ProductQuestionDefinition[]     questions;
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
@@ -1791,7 +1815,25 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final String[]                        zoneMembership;
 
 
-
+    /**
+     * Constructor for a digital product family.
+     *
+     * @param typeName name of the type to use - eg DigitalProduct or DigitalProductFamily
+     * @param productFamilies list of groups that this product belongs to (can be null)
+     * @param productName name of the product
+     * @param identifier product identifier
+     * @param parentFolder folder/product group
+     * @param displayName display name
+     * @param description description
+     * @param category category of product
+     * @param questions lists oof questions can can be answered with this product
+     * @param license license
+     * @param community community
+     * @param subscriptionTypes list of subscription types offered
+     * @param assetTypeName type name for the associated product asset
+     * @param assetIdentifier identifier for the appropriate asset
+     * @param zoneMembership which zones should the product be included in?
+     */
     ProductDefinitionEnum(String                          typeName,
                           ProductDefinition[]             productFamilies,
                           String                          productName,
@@ -1800,6 +1842,70 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           String                          displayName,
                           String                          description,
                           String                          category,
+                          ProductQuestionDefinition[]     questions,
+                          ProductGovernanceDefinition     license,
+                          ProductCommunityDefinition      community,
+                          ProductSubscriptionDefinition[] subscriptionTypes,
+                          String                          assetTypeName,
+                          String                          assetIdentifier,
+                          String[]                        zoneMembership)
+    {
+        this.typeName            = typeName;
+        this.productFamilies     = productFamilies;
+        this.productName         = productName;
+        this.identifier          = identifier;
+        this.parentFolder        = parentFolder;
+        this.displayName         = displayName;
+        this.description         = description;
+        this.category            = category;
+        this.questions           = questions;
+        this.license             = license;
+        this.community           = community;
+        this.subscriptionTypes   = subscriptionTypes;
+        this.dataSpecTableName   = null;
+        this.dataSpecIdentifiers = null;
+        this.dataSpecFields      = null;
+        this.assetTypeName       = assetTypeName;
+        this.assetIdentifier     = assetIdentifier;
+        this.connectorProvider   = null;
+        this.catalogTargetName   = null;
+        this.zoneMembership      = zoneMembership;
+    }
+
+
+    /**
+     * Constructor for a product definition with data specification.
+     *
+     * @param typeName name of the type to use - eg DigitalProduct or DigitalProductFamily
+     * @param productFamilies list of groups that this product belongs to (can be null)
+     * @param productName name of the product
+     * @param identifier product identifier
+     * @param parentFolder folder/product group
+     * @param displayName display name
+     * @param description description
+     * @param category category of product
+     * @param questions lists oof questions can can be answered with this product
+     * @param license license
+     * @param community community
+     * @param subscriptionTypes list of subscription types offered
+     * @param dataSpecTableName logical name of the tabular data set
+     * @param dataSpecIdentifiers list of data fields that form the unique identifier
+     * @param dataSpecFields list of other data fields
+     * @param assetTypeName type name for the associated product asset
+     * @param assetIdentifier identifier for the appropriate asset
+     * @param connectorProvider connector provider class (or null)
+     * @param catalogTargetName catalog target name for the refresh process
+     * @param zoneMembership which zones should the product be included in?
+     */
+    ProductDefinitionEnum(String                          typeName,
+                          ProductDefinition[]             productFamilies,
+                          String                          productName,
+                          String                          identifier,
+                          ProductFolderDefinition         parentFolder,
+                          String                          displayName,
+                          String                          description,
+                          String                          category,
+                          ProductQuestionDefinition[]     questions,
                           ProductGovernanceDefinition     license,
                           ProductCommunityDefinition      community,
                           ProductSubscriptionDefinition[] subscriptionTypes,
@@ -1820,6 +1926,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.displayName         = displayName;
         this.description         = description;
         this.category            = category;
+        this.questions           = questions;
         this.license             = license;
         this.community           = community;
         this.subscriptionTypes   = subscriptionTypes;
@@ -1831,47 +1938,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.connectorProvider   = connectorProvider;
         this.catalogTargetName   = catalogTargetName;
         this.zoneMembership      = zoneMembership;
-    }
-
-
-    ProductDefinitionEnum(String                          typeName,
-                          ProductDefinition[]             productFamilies,
-                          String                          productName,
-                          String                          identifier,
-                          ProductFolderDefinition parentFolder,
-                          String                          displayName,
-                          String                          description,
-                          String                          category,
-                          ProductGovernanceDefinition     license,
-                          ProductCommunityDefinition      community,
-                          ProductSubscriptionDefinition[] subscriptionTypes,
-                          String                          dataSpecTableName,
-                          ProductDataFieldDefinition[]    dataSpecIdentifiers,
-                          ProductDataFieldDefinition[]    dataSpecFields,
-                          String                          assetTypeName,
-                          String                          assetIdentifier,
-                          ConnectorProvider               connectorProvider,
-                          String                          catalogTargetName)
-    {
-        this.typeName            = typeName;
-        this.productFamilies     = productFamilies;
-        this.productName         = productName;
-        this.identifier          = identifier;
-        this.parentFolder        = parentFolder;
-        this.displayName         = displayName;
-        this.description         = description;
-        this.category            = category;
-        this.license             = license;
-        this.community           = community;
-        this.subscriptionTypes   = subscriptionTypes;
-        this.dataSpecTableName   = dataSpecTableName;
-        this.dataSpecIdentifiers = dataSpecIdentifiers;
-        this.dataSpecFields      = dataSpecFields;
-        this.assetTypeName       = assetTypeName;
-        this.assetIdentifier     = assetIdentifier;
-        this.connectorProvider   = connectorProvider;
-        this.catalogTargetName   = catalogTargetName;
-        this.zoneMembership      = null;
     }
 
 
@@ -1986,6 +2052,23 @@ public enum ProductDefinitionEnum implements ProductDefinition
     public String getCategory()
     {
         return category;
+    }
+
+
+    /**
+     * Returns a list of questions that can be answered with the product.
+     *
+     * @return list of question definitions
+     */
+    @Override
+    public List<ProductQuestionDefinition> getQuestions()
+    {
+        if (questions != null)
+        {
+            return new ArrayList<>(Arrays.asList(questions));
+        }
+
+        return null;
     }
 
 

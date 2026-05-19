@@ -981,6 +981,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
 
             NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
+            notificationSubscriberProperties.setActivityStatus(ActivityStatus.IN_PROGRESS);
 
             /*
              * Only link note log to leaf products.

@@ -88,7 +88,15 @@ public interface ProductDefinition
 
 
     /**
-     * Return the license that wil lbe granted to data provided through a subscription mechanism.
+     * Returns a list of questions that can be answered with the product.
+     *
+     * @return list of question definitions
+     */
+    List<ProductQuestionDefinition> getQuestions();
+
+
+    /**
+     * Return the license that will be granted to data provided through a subscription mechanism.
      *
      * @return license definition
      */

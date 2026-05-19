@@ -14336,6 +14336,9 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new SupplementaryPropertiesProperties();
+
+                ((SupplementaryPropertiesProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((SupplementaryPropertiesProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SYNONYM_RELATIONSHIP.typeName))
             {

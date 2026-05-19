@@ -437,11 +437,11 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 (ProductDataFieldDefinition.ACTION_TARGET_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.ANNOTATION_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.ASSET_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.REPORT_SUBJECT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.CERTIFICATION_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.ENGINE_ACTION_GUID.getDisplayName().equals(columnName)) ||
+                (ProductDataFieldDefinition.REPORT_ORIGINATOR_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.EXCEPTION_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.EXCEPTION_TYPE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.LICENSE_GUID.getDisplayName().equals(columnName)) ||
@@ -452,7 +452,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 (ProductDataFieldDefinition.SECRETS_STORE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.SEMANTIC_TERM_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.SURVEY_REPORT_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.SURVEY_SUBJECT_GUID.getDisplayName().equals(columnName)))
+                (ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID.getDisplayName().equals(columnName)))
         {
             recordValues.add(elementHeader.getGUID());
             return true;
@@ -460,9 +460,9 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         else if ((ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME.getDisplayName().equals(columnName)) ||
                  (ProductDataFieldDefinition.ACTION_TARGET_TYPE_NAME.getDisplayName().equals(columnName)) ||
                  (ProductDataFieldDefinition.ANNOTATION_TYPE_NAME.getDisplayName().equals(columnName)) ||
-                 (ProductDataFieldDefinition.ASSET_TYPE_NAME.getDisplayName().equals(columnName)) ||
+                 (ProductDataFieldDefinition.ANNOTATION_SUBJECT_TYPE_NAME.getDisplayName().equals(columnName)) ||
                  (ProductDataFieldDefinition.PROFILE_TYPE_NAME.getDisplayName().equals(columnName)) ||
-                 (ProductDataFieldDefinition.SURVEY_SUBJECT_TYPE_NAME.getDisplayName().equals(columnName)))
+                 (ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME.getDisplayName().equals(columnName)))
         {
             recordValues.add(elementHeader.getType().getTypeName());
             return true;
@@ -1175,9 +1175,64 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
 
 
     /**
+     * Extracts the record values from the element properties based on the specified column name.
+     *
+     * @param rootElement element to convert.
+     * @param columnName name of column to extract
+     * @param recordValues array of values to append to
+     * @return true if the value was successfully extracted, false otherwise
+     */
+    protected boolean getRelatedElementRecordValue(OpenMetadataRootElement rootElement,
+                                                   String                     columnName,
+                                                   List<String>               recordValues)
+    {
+        if (ProductDataFieldDefinition.REPORT_SUBJECT_GUID.getDisplayName().equals(columnName))
+        {
+            if (rootElement.getReportSubjects() != null)
+            {
+                return this.getRelatedElementGUIDRecordValue(rootElement.getReportSubjects(), recordValues);
+            }
+            else
+            {
+                recordValues.add(null);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extracts the related element GUID from the first, non-null related element.
+     *
+     * @param relatedElements list of returned related elements
+     * @param recordValues    array of values to append to
+     * @return was a property added?
+     */
+    protected boolean getRelatedElementGUIDRecordValue(List<RelatedMetadataElementSummary> relatedElements,
+                                                       List<String>                        recordValues)
+    {
+        if (relatedElements != null)
+        {
+            for (RelatedMetadataElementSummary relatedElement : relatedElements)
+            {
+                if (relatedElement != null)
+                {
+                    recordValues.add(relatedElement.getRelatedElement().getElementHeader().getGUID());
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Convert the root element to a list of column values based on the data spec.
      *
-     * @param rootElement valid value that is a member of the valid value set.
+     * @param rootElement element to convert.
      * @return list of column value
      * @throws ConnectorCheckedException an unexpected exception has occurred
      */
@@ -1199,16 +1254,19 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 {
                     if (! getElementRecordValue(rootElement.getProperties(), tabularColumnDescription.columnName(), recordValues))
                     {
-                        if (tabularColumnDescription.isNullable())
+                        if (! getRelatedElementRecordValue(rootElement, tabularColumnDescription.columnName(), recordValues))
                         {
-                            recordValues.add(null);
-                        }
-                        else
-                        {
-                            throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
-                                                                                                                          tabularColumnDescription.columnName()),
-                                                                this.getClass().getName(),
-                                                                methodName);
+                            if (tabularColumnDescription.isNullable())
+                            {
+                                recordValues.add(null);
+                            }
+                            else
+                            {
+                                throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
+                                                                                                                              tabularColumnDescription.columnName()),
+                                                                    this.getClass().getName(),
+                                                                    methodName);
+                            }
                         }
                     }
                 }

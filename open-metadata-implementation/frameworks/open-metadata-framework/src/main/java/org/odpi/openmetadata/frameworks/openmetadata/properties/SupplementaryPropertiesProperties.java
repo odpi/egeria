@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
          })
-public class SupplementaryPropertiesProperties extends RelationshipBeanProperties
+public class SupplementaryPropertiesProperties extends LabeledRelationshipProperties
 {
     /**
      * Default constructor

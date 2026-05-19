@@ -114,6 +114,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
+                @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = UserAccountProperties.class, name = "UserAccountProperties"),
         })
 public class LabeledRelationshipProperties extends RelationshipBeanProperties

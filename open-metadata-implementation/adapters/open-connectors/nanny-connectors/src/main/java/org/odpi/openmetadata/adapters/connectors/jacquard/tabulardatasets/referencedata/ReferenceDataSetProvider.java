@@ -59,7 +59,6 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
 
         configurationProperties.put(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
 
-
         return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                                          new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},
                                          "Reference Data Set: " + identifier,
@@ -68,6 +67,7 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
                                          canonicalName,
                                          description,
                                          ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                         null,
                                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                          new ProductSubscriptionDefinition[]{

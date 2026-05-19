@@ -25,7 +25,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
 {
     private String               expression           = null;
     private String               description          = null;
-    private TermAssignmentStatus termAssignmentStatus = TermAssignmentStatus.VALIDATED;
+    private TermAssignmentStatus termAssignmentStatus = null;
     private int                  confidence           = 0;
     private String               createdBy            = null;
     private String               steward              = null;

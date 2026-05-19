@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = GovernanceServiceProperties.class, name = "GovernanceServiceProperties"),
         @JsonSubTypes.Type(value = IntegrationConnectorProperties.class, name = "IntegrationConnectorProperties"),
 })
 public class DeployedConnectorProperties extends DeployedSoftwareComponentProperties

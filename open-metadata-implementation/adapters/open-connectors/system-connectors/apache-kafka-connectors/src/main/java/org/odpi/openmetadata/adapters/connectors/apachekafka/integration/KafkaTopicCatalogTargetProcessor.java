@@ -235,9 +235,9 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                                     /*
                                      * The topic no longer exists so unlink it from the broker.
                                      */
-                                    softwareCapabilityClient.detachAssetUse(eventBrokerGUID,
-                                                                            consumedAsset.getRelatedElement().getElementHeader().getGUID(),
-                                                                            softwareCapabilityClient.getDeleteOptions(true));
+                                    softwareCapabilityClient.removeCapabilityAssetUse(eventBrokerGUID,
+                                                                                      consumedAsset.getRelatedElement().getElementHeader().getGUID(),
+                                                                                      softwareCapabilityClient.getDeleteOptions(true));
 
                                     auditLog.logMessage(methodName,
                                                         KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,

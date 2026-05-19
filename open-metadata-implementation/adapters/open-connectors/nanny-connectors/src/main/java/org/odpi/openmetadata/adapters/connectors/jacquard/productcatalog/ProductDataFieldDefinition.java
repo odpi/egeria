@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
 public enum ProductDataFieldDefinition
 {
     /**
-     * Globally Unique Identifier
+     * Globally Unique Identifier for the principle element.
      */
     GUID("Globally Unique Identifier (GUID)",
          "GUID",
@@ -31,15 +31,15 @@ public enum ProductDataFieldDefinition
     /**
      * Unique identifier of the asset.
      */
-    ASSET_GUID("Asset Unique Identifier (GUID)",
-               "Asset GUID",
-               "Unique identifier of the asset",
-               DataType.STRING,
-               null,
-               null,
-               true,
-               false,
-               ProductGlossaryTermDefinition.GUID),
+    REPORT_SUBJECT_GUID("Report Subject Unique Identifier (GUID)",
+                        "Report Subject GUID",
+                        "Unique identifier of the element described in the associated report.",
+                        DataType.STRING,
+                        null,
+                        null,
+                        true,
+                        false,
+                        ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
      * Unique identifier of the glossary term linked to the element using semantic assignment.
@@ -52,20 +52,20 @@ public enum ProductDataFieldDefinition
                        null,
                        true,
                        false,
-                       ProductGlossaryTermDefinition.GUID),
+                       ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
-     * Unique identifier of a certification type.
+     * Unique identifier of a linked certification type.
      */
     CERTIFICATION_TYPE_GUID("Certification Type Unique Identifier (GUID)",
                             "Certification Type GUID",
-                            "Unique identifier of a certification type.",
+                            "Unique identifier of a linked certification type.",
                             DataType.STRING,
                             null,
                             null,
                             true,
                             false,
-                            ProductGlossaryTermDefinition.GUID),
+                            ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
      * Unique identifier of an open metadata element.
@@ -531,65 +531,65 @@ public enum ProductDataFieldDefinition
      */
     SURVEY_REPORT_GUID("Survey Report Unique Identifier (GUID)",
                        "Survey Report GUID",
-                       "Unique identifier of a survey report for an asset.",
+                       "Unique identifier of a survey report for an element.",
                        DataType.STRING,
                        null,
                        null,
                        true,
                        false,
-                       ProductGlossaryTermDefinition.GUID),
+                       ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
-     * Unique identifier of a survey subject (typically an asset).
+     * Unique identifier of an annotation subject.
      */
-    SURVEY_SUBJECT_GUID("Survey Subject Unique Identifier (GUID)",
-                        "Survey Subject GUID",
-                        "Unique identifier of a survey subject (typically an asset).",
-                        DataType.STRING,
-                        null,
-                        null,
-                        true,
-                        false,
-                        ProductGlossaryTermDefinition.GUID),
+    ANNOTATION_SUBJECT_GUID("Annotation Subject Unique Identifier (GUID)",
+                            "Annotation Subject GUID",
+                            "Unique identifier of an annotation subject.",
+                            DataType.STRING,
+                            null,
+                            null,
+                            true,
+                            false,
+                            ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
      * Unique identifier of a survey annotation.
      */
-    ANNOTATION_GUID("Survey Annotation Unique Identifier (GUID)",
+    ANNOTATION_GUID("Annotation Unique Identifier (GUID)",
                     "Annotation GUID",
-                    "Unique identifier of a survey annotation.",
+                    "Unique identifier of an associated annotation.",
                     DataType.STRING,
                     null,
                     null,
                     true,
                     false,
-                    ProductGlossaryTermDefinition.GUID),
+                    ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
      * Unique identifier of an engine action.
      */
-    ENGINE_ACTION_GUID("Engine Action Unique Identifier (GUID)",
-                       "Engine Action GUID",
-                       "Unique identifier of an engine action.",
-                       DataType.STRING,
-                       null,
-                       null,
-                       true,
-                       false,
-                       ProductGlossaryTermDefinition.GUID),
+    REPORT_ORIGINATOR_GUID("Engine Action Unique Identifier (GUID)",
+                           "Engine Action GUID",
+                           "Unique identifier of an engine action.",
+                           DataType.STRING,
+                           null,
+                           null,
+                           true,
+                           false,
+                           ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
-     * Unique identifier of a request for action target relationship.
+     * Unique identifier of a request for action target.
      */
     ACTION_REQUEST_GUID("Action Request Unique Identifier (GUID)",
                         "Action Request GUID",
-                        "Unique identifier of a request for action target relationship.",
+                        "Unique identifier of a request for action target.",
                         DataType.STRING,
                         null,
                         null,
                         true,
                         false,
-                        ProductGlossaryTermDefinition.GUID),
+                        ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
      * The type of action requested.
@@ -627,7 +627,7 @@ public enum ProductDataFieldDefinition
                        null,
                        true,
                        false,
-                       ProductGlossaryTermDefinition.GUID),
+                       ProductGlossaryTermDefinition.RELATED_GUID),
 
 
     /**
@@ -653,7 +653,7 @@ public enum ProductDataFieldDefinition
                         null,
                         true,
                         false,
-                        ProductGlossaryTermDefinition.GUID),
+                        ProductGlossaryTermDefinition.RELATED_GUID),
 
 
     /**
@@ -1359,7 +1359,8 @@ public enum ProductDataFieldDefinition
             null,
             null,
             false,
-            true),
+            true,
+            ProductGlossaryTermDefinition.USER_ID),
 
 
     /**
@@ -1391,14 +1392,15 @@ public enum ProductDataFieldDefinition
     /**
      * Created By User Id
      */
-    CREATION_BY("Created By User Identifier (userId)",
-                "Created By User Id",
-                OpenMetadataProperty.CREATED_BY.description,
-                OpenMetadataProperty.CREATED_BY.dataType,
-                null,
-                null,
-                false,
-                true),
+    CREATED_BY("Created By User Identifier (userId)",
+               "Created By User Id",
+               OpenMetadataProperty.CREATED_BY.description,
+               OpenMetadataProperty.CREATED_BY.dataType,
+               null,
+               null,
+               false,
+               true,
+               ProductGlossaryTermDefinition.USER_ID),
 
 
     /**
@@ -1411,7 +1413,8 @@ public enum ProductDataFieldDefinition
                     null,
                     null,
                     false,
-                    true),
+                    true,
+                    ProductGlossaryTermDefinition.USER_ID),
 
 
     /**
@@ -1424,20 +1427,8 @@ public enum ProductDataFieldDefinition
                   null,
                   null,
                   false,
-                  true),
-
-
-    /**
-     * Engine Host User Id
-     */
-    ENGINE_HOST_USER_ID("Engine Host User Identifier (userId)",
-                        "Engine Host User Id",
-                        "User that ran the survey",
-                        DataType.STRING,
-                        null,
-                        null,
-                        false,
-                        true),
+                  true,
+                  ProductGlossaryTermDefinition.USER_ID),
 
 
     /**
@@ -1450,7 +1441,8 @@ public enum ProductDataFieldDefinition
                       null,
                       null,
                       false,
-                      true),
+                      true,
+                      ProductGlossaryTermDefinition.USER_ID),
 
     /**
      * Archive Date
@@ -1678,15 +1670,15 @@ public enum ProductDataFieldDefinition
     /**
      * Asset Type Name
      */
-    ASSET_TYPE_NAME("Asset Type Name",
-                    "Asset Type Name",
-                    "The unique type name of an asset.",
-                    DataType.STRING,
-                    null,
-                    null,
-                    false,
-                    true,
-                    ProductGlossaryTermDefinition.OPEN_METADATA_TYPE_NAME),
+    ANNOTATION_SUBJECT_TYPE_NAME("Asset Type Name",
+                                 "Asset Type Name",
+                                 "The unique type name of an asset.",
+                                 DataType.STRING,
+                                 null,
+                                 null,
+                                 false,
+                                 true,
+                                 ProductGlossaryTermDefinition.OPEN_METADATA_TYPE_NAME),
 
 
     /**
@@ -1719,7 +1711,7 @@ public enum ProductDataFieldDefinition
     /**
      * Survey Subject Type Name
      */
-    SURVEY_SUBJECT_TYPE_NAME("Survey Subject Type Name",
+    REPORT_SUBJECT_TYPE_NAME("Survey Subject Type Name",
                              "Survey Subject Type Name",
                              "The unique type name of the subject of a survey report (typically an asset).",
                              DataType.STRING,

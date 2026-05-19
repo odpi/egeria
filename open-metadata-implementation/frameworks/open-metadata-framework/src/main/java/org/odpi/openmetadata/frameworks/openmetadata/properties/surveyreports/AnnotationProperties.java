@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = SchemaAnalysisAnnotationProperties.class, name = "SchemaAnalysisAnnotationProperties"),
-                @JsonSubTypes.Type(value = ResourceMeasureAnnotationProperties.class, name = "DataSourceMeasurementAnnotation"),
+                @JsonSubTypes.Type(value = ResourceMeasureAnnotationProperties.class, name = "ResourceMeasureAnnotationProperties"),
                 @JsonSubTypes.Type(value = DataFieldAnnotationProperties.class, name = "DataFieldAnnotationProperties"),
         })
 public class AnnotationProperties extends AuthoredReferenceableProperties
