@@ -95,7 +95,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition%5B%5D,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition%5B%5D,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition%5B%5D,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.util.Map,java.lang.String)" class="member-name-link">ProductDefinitionBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition%5B%5D,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductQuestionDefinition%5B%5D,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition%5B%5D,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition%5B%5D,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.util.Map,java.lang.String)" class="member-name-link">ProductDefinitionBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>[]&nbsp;productGroups,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;productName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
@@ -103,6 +103,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
+ <a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a>[]&nbsp;questions,
  <a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a>&nbsp;license,
  <a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a>&nbsp;community,
  <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>[]&nbsp;subscriptionTypes,
@@ -221,24 +222,29 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the product entity.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQuestions()" class="member-name-link">getQuestions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a list of questions that can be answered with the product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of subscription types supported by this product.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the collection type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the version identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">String containing the definition values</div>
 </div>
 </div>
@@ -262,7 +268,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition[],java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition[],java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition[],java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.util.Map,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition[],java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductQuestionDefinition[],org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition[],java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition[],java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.util.Map,java.lang.String)">
 <h3>ProductDefinitionBean</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProductDefinitionBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>[]&nbsp;productGroups,
@@ -272,6 +278,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
+ <a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a>[]&nbsp;questions,
  <a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a>&nbsp;license,
  <a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a>&nbsp;community,
  <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a>[]&nbsp;subscriptionTypes,
@@ -294,6 +301,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <dd><code>displayName</code> - display name</dd>
 <dd><code>description</code> - description</dd>
 <dd><code>category</code> - category of product</dd>
+<dd><code>questions</code> - lists oof questions can can be answered with this product</dd>
 <dd><code>license</code> - license</dd>
 <dd><code>community</code> - community</dd>
 <dd><code>subscriptionTypes</code> - list of subscription types offered</dd>
@@ -430,6 +438,19 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <dd><code><a href="ProductDefinition.html#getCategory()">getCategory</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getQuestions()">
+<h3>getQuestions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a>&gt;</span>&nbsp;<span class="element-name">getQuestions</span>()</div>
+<div class="block">Returns a list of questions that can be answered with the product.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#getQuestions()">getQuestions</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>list of question definitions</dd>
 </dl>
 </section>
 </li>
