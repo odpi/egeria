@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.openlineage.*;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
@@ -124,6 +125,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                         if ((existingProcesses == null) || (existingProcesses.isEmpty()))
                         {
                             ProcessProperties processProperties = new ProcessProperties();
+                            processProperties.setActivityStatus(ActivityStatus.REQUESTED);
 
                             if (job.getFacets() != null)
                             {

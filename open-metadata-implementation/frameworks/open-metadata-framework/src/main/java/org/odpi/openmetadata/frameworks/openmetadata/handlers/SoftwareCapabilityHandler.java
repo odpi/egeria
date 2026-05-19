@@ -199,15 +199,15 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addAssetUse(String                       userId,
-                            String                       softwareCapabilityGUID,
-                            String                       assetGUID,
-                            MakeAnchorOptions            makeAnchorOptions,
-                            CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
+    public void addCapabilityAssetUse(String                       userId,
+                                      String                       softwareCapabilityGUID,
+                                      String                       assetGUID,
+                                      MakeAnchorOptions            makeAnchorOptions,
+                                      CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        final String methodName            = "addAssetUse";
+        final String methodName            = "addCapabilityAssetUse";
         final String end1GUIDParameterName = "softwareCapabilityGUID";
         final String end2GUIDParameterName = "assetGUID";
 
@@ -235,14 +235,14 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetUse(String        userId,
-                               String        softwareCapabilityGUID,
-                               String        assetGUID,
-                               DeleteOptions deleteOptions) throws InvalidParameterException,
+    public void removeCapabilityAssetUse(String        userId,
+                                         String        softwareCapabilityGUID,
+                                         String        assetGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        final String methodName = "detachAssetUse";
+        final String methodName = "removeCapabilityAssetUse";
 
         final String end1GUIDParameterName = "softwareCapabilityGUID";
         final String end2GUIDParameterName = "assetGUID";

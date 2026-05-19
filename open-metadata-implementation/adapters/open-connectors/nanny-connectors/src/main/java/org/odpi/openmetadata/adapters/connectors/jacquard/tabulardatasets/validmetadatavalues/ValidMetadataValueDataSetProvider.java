@@ -71,6 +71,7 @@ public class ValidMetadataValueDataSetProvider extends DynamicOpenMetadataDataSe
                                          canonicalName,
                                          description,
                                          ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                         null,
                                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                                          new ProductSubscriptionDefinition[]{

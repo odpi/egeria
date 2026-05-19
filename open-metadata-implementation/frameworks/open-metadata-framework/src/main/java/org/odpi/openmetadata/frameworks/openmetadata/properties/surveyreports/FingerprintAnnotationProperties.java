@@ -185,7 +185,7 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
             return false;
         }
         FingerprintAnnotationProperties that = (FingerprintAnnotationProperties) objectToCompare;
-        return getHashAlgorithm() == that.getHashAlgorithm() &&
+        return Objects.equals(getHashAlgorithm(), that.getHashAlgorithm()) &&
                        Objects.equals(getFingerprint(), that.getFingerprint()) &&
                        Objects.equals(getFingerprintAlgorithm(), that.getFingerprintAlgorithm()) &&
                        Objects.equals(getHash(), that.getHash());
@@ -200,6 +200,6 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFingerprint(), getFingerprintAlgorithm(), getHashAlgorithm());
+        return Objects.hash(super.hashCode(), fingerprint, fingerprintAlgorithm, hash, hashAlgorithm);
     }
 }

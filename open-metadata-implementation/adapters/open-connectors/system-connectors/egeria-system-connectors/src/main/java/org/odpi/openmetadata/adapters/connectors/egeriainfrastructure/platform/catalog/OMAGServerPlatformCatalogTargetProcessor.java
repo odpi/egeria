@@ -918,15 +918,15 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         {
             CapabilityAssetUseProperties properties = new CapabilityAssetUseProperties();
             properties.setUseType(CapabilityAssetUseType.USES);
-            softwareCapabilityClient.addAssetUse(userAuthenticationManagerGUID,
-                                                 secretsCollectionGUID,
-                                                 softwareCapabilityClient.getMakeAnchorOptions(false),
-                                                 properties);
+            softwareCapabilityClient.addCapabilityAssetUse(userAuthenticationManagerGUID,
+                                                           secretsCollectionGUID,
+                                                           softwareCapabilityClient.getMakeAnchorOptions(false),
+                                                           properties);
 
-            softwareCapabilityClient.addAssetUse(userAuthorizationManagerGUID,
-                                                 secretsCollectionGUID,
-                                                 softwareCapabilityClient.getMakeAnchorOptions(false),
-                                                 properties);
+            softwareCapabilityClient.addCapabilityAssetUse(userAuthorizationManagerGUID,
+                                                           secretsCollectionGUID,
+                                                           softwareCapabilityClient.getMakeAnchorOptions(false),
+                                                           properties);
         }
     }
 

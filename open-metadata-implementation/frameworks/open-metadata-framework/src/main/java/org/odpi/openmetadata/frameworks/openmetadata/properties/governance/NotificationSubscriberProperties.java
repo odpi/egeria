@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationSubscriberProperties extends LabeledRelationshipProperties
 {
-    private ActivityStatus activityStatus   = ActivityStatus.IN_PROGRESS;
+    private ActivityStatus activityStatus   = null;
     private List<String>   zoneMembership   = null;
     private Date           lastNotification = null;
 

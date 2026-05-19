@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataAssetProperties extends AssetProperties
 {
     private List<String>  authors       = null;
-    private ContentStatus contentStatus = ContentStatus.ACTIVE;
+    private ContentStatus contentStatus = null;
     private String        userDefinedContentStatus = null;
 
 

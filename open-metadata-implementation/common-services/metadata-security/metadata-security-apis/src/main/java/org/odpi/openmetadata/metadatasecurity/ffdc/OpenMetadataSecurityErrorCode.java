@@ -242,7 +242,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
      * OMAG-SERVER-SECURITY-500-002 - Element {1} is not visible to user {0}; it has been filtered from the search results
      */
     FILTERED_ELEMENT(500, "OMAG-SERVER-SECURITY-500-002",
-                     "Element {1} is not visible to user {0}; it has been filtered from the search results",
+                     "Element {0} is not visible to user {1}; it has been filtered from the search results",
                      "The system has filtered an element from the results because the user does not have the necessary permissions to access it.",
                      "The element is filtered from the results."),
 

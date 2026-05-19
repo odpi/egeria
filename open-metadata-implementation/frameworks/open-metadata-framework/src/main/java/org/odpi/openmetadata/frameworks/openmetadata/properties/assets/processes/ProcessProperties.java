@@ -43,7 +43,7 @@ public class ProcessProperties extends AssetProperties
     private int            priority                  = 0;
     private String         formula                   = null;
     private String         formulaType               = null;
-    private ActivityStatus activityStatus            = ActivityStatus.REQUESTED;
+    private ActivityStatus activityStatus            = null;
     private String         userDefinedActivityStatus = null;
 
 

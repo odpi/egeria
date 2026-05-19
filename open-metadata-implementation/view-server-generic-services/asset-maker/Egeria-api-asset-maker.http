@@ -1880,8 +1880,9 @@ Content-Type: application/json
 
 
 ###
-# @name addAssetUse
+# @name addCapabilityAssetUse
 # Create a relationship that represents the use of an asset by a software capability.
+# The useType attribute may be "OWNS", "GOVERNS", "MAINTAINS", "USES", or "OTHER".
 # Further Information: https://egeria-project.org/concepts/software-capability
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}/assets/{{assetGUID}}/attach
 Authorization: Bearer {{token}}
@@ -1891,13 +1892,13 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties" : {
     "class": "CapabilityAssetUseProperties",
-    "useType": "Main resource"
+    "useType": "OWNS"
   }
 }
 
 
 ###
-# @name removeAssetUse
+# @name removeCapabilityAssetUse
 # Remove the relationship that represents the use of an asset by a software capability.
 # Further Information: https://egeria-project.org/concepts/software-capability
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}/assets/{{assetGUID}}/detach

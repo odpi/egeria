@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ResourcePhysicalStatusAnnotationProperties.class, name = "DataSourcePhysicalStatusAnnotation")
+                @JsonSubTypes.Type(value = ResourcePhysicalStatusAnnotationProperties.class, name = "ResourcePhysicalStatusAnnotationProperties")
         })
 public class ResourceMeasureAnnotationProperties extends AnnotationProperties
 {

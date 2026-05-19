@@ -178,13 +178,9 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
      */
     public Map<String, String> getTemplates()
     {
-        if (templates == null)
-        {
-            return new HashMap<>();
-        }
-
         return templates;
     }
+
 
     /**
      * Return the name of the connection to access the resource.  If it is null, the connection for

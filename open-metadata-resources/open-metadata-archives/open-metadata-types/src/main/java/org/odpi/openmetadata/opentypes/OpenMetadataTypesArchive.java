@@ -164,6 +164,7 @@ public class OpenMetadataTypesArchive
         update0135ActionsForPeople();
         add0145Perspectives();
         update0340Dictionary();
+        update0395SupplementaryProperties();
         update0405GovernanceDrivers();
         update0423SecurityDefinitions();
         update0424GovernanceZones();
@@ -657,6 +658,39 @@ public class OpenMetadataTypesArchive
                                                   false);
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0395SupplementaryProperties()
+    {
+        this.archiveBuilder.addTypeDefPatch(getSupplementaryPropertiesPatch());
+    }
+
+    private TypeDefPatch getSupplementaryPropertiesPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

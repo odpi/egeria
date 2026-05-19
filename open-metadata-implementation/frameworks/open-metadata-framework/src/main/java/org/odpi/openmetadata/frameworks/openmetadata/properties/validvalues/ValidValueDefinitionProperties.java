@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ReferenceDataValueProperties.class, name = "ReferenceDataValueProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyValueProperties.class, name = "SpecificationPropertyValueProperties"),
-                @JsonSubTypes.Type(value = ValidMetadataValueProperties.class, name = "ValidMetadataValue"),
+                @JsonSubTypes.Type(value = ValidMetadataValueProperties.class, name = "ValidMetadataValueProperties"),
         })
 public class ValidValueDefinitionProperties extends AuthoredReferenceableProperties
 {

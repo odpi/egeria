@@ -22,6 +22,20 @@ public enum ResourceUse
                         null),
 
     /**
+     * Run a report to retrieve data from the open metadata ecosystem.
+     */
+    RUN_REPORT("Run Report",
+               "Run a report to retrieve data from the open metadata ecosystem.",
+               null),
+
+    /**
+     * A digital product that could supply helpful data and/or function.
+     */
+    SUPPORTING_PRODUCT("Supporting Product",
+               "A digital product that could supply helpful data and/or function.",
+               null),
+
+    /**
      * Create a survey report that details whether the content of the real-world resource that is attached to an asset is withing the bounds required by its data specification.
      */
     DATA_SPECIFICATION("Data Specification",

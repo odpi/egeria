@@ -2924,13 +2924,13 @@ public class AssetMakerRESTServices extends TokenController
      *
      * @return void response
      */
-    public VoidResponse addAssetUse(String                     serverName,
-                                    String                     urlMarker,
-                                    String                     softwareCapabilityGUID,
-                                    String                     assetGUID,
-                                    NewRelationshipRequestBody requestBody)
+    public VoidResponse addCapabilityAssetUse(String                     serverName,
+                                              String                     urlMarker,
+                                              String                     softwareCapabilityGUID,
+                                              String                     assetGUID,
+                                              NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "addAssetUse";
+        final String methodName = "addCapabilityAssetUse";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -2949,15 +2949,15 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, null, null);
+                handler.addCapabilityAssetUse(userId, softwareCapabilityGUID, assetGUID, null, null);
             }
             else if (requestBody.getProperties() instanceof CapabilityAssetUseProperties capabilityAssetUseProperties)
             {
-                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, capabilityAssetUseProperties);
+                handler.addCapabilityAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, capabilityAssetUseProperties);
             }
             else if (requestBody.getProperties() == null)
             {
-                handler.addAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, null);
+                handler.addCapabilityAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody, null);
             }
             else
             {
@@ -2985,13 +2985,13 @@ public class AssetMakerRESTServices extends TokenController
      *
      * @return void response
      */
-    public VoidResponse removeAssetUse(String                        serverName,
-                                       String                        urlMarker,
-                                       String                        softwareCapabilityGUID,
-                                       String                        assetGUID,
-                                       DeleteRelationshipRequestBody requestBody)
+    public VoidResponse removeCapabilityAssetUse(String                        serverName,
+                                                 String                        urlMarker,
+                                                 String                        softwareCapabilityGUID,
+                                                 String                        assetGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
     {
-        final String methodName = "removeAssetUse";
+        final String methodName = "removeCapabilityAssetUse";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -3008,7 +3008,7 @@ public class AssetMakerRESTServices extends TokenController
 
             SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody);
+            handler.removeCapabilityAssetUse(userId, softwareCapabilityGUID, assetGUID, requestBody);
         }
         catch (Throwable error)
         {

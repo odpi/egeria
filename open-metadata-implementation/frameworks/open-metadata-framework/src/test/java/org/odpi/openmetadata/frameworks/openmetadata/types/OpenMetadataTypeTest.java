@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
@@ -221,6 +222,16 @@ public class OpenMetadataTypeTest
                                 openMetadataElement.setElementProperties(returnedElementProperties);
                                 assertEquals(newBeanProperties, propertyConverter.getBeanProperties(openMetadataElement));
                             }
+
+                            OpenMetadataRootProperties mappedBeanProperties = this.testJackson(newBeanProperties);
+
+                            returnedElementProperties = elementBuilder.getElementProperties(mappedBeanProperties);
+
+                            if (returnedElementProperties == null)
+                            {
+                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
+                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
+                            }
                         }
                     }
                     else if (beanInstance instanceof RelationshipBeanProperties relationshipBeanProperties)
@@ -248,6 +259,20 @@ public class OpenMetadataTypeTest
                             {
                                 System.out.println("Null returned element properties for " + openMetadataType.typeName);
                                 assertNull(returnedElementProperties, "Null returned element properties for " + openMetadataType.typeName);
+                            }
+                            else if (elementProperties != null)
+                            {
+                                assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties));
+                            }
+
+                            RelationshipBeanProperties mappedBeanProperties = this.testJackson(newBeanProperties);
+
+                            returnedElementProperties = relationshipBuilder.getElementProperties(mappedBeanProperties);
+
+                            if (returnedElementProperties == null)
+                            {
+                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
+                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
                             }
                             else if (elementProperties != null)
                             {
@@ -287,6 +312,16 @@ public class OpenMetadataTypeTest
                             {
                                 attachedClassification.setClassificationProperties(returnedElementProperties);
                                 assertEquals(newBeanProperties, propertyConverter.getClassificationProperties(attachedClassification));
+                            }
+
+                            ClassificationBeanProperties mappedBeanProperties = this.testJackson(newBeanProperties);
+
+                            returnedElementProperties = classificationBuilder.getElementProperties(mappedBeanProperties);
+
+                            if (returnedElementProperties == null)
+                            {
+                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
+                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
                             }
                         }
                     }
@@ -398,5 +433,129 @@ public class OpenMetadataTypeTest
                                                new Date());
             }
         }
+    }
+
+
+    /**
+     * Validate that an object generated from a JSON String has the same content as the object used to
+     * create the JSON String.
+     */
+    private OpenMetadataRootProperties testJackson(OpenMetadataRootProperties openMetadataRootProperties)
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String       jsonString   = null;
+
+        /*
+         * This class
+         */
+        try
+        {
+            jsonString = objectMapper.writeValueAsString(openMetadataRootProperties);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        OpenMetadataRootProperties mappedBeanProperties = null;
+
+        try
+        {
+            mappedBeanProperties = objectMapper.readValue(jsonString, OpenMetadataRootProperties.class);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        if (mappedBeanProperties != null)
+        {
+            assertEquals(openMetadataRootProperties, mappedBeanProperties, "Bean properties must match after passing through Jackson");
+        }
+
+        return mappedBeanProperties;
+    }
+
+
+
+    /**
+     * Validate that an object generated from a JSON String has the same content as the object used to
+     * create the JSON String.
+     */
+    private RelationshipBeanProperties testJackson(RelationshipBeanProperties relationshipBeanProperties)
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String       jsonString   = null;
+
+        /*
+         * This class
+         */
+        try
+        {
+            jsonString = objectMapper.writeValueAsString(relationshipBeanProperties);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        RelationshipBeanProperties mappedBeanProperties = null;
+
+        try
+        {
+            mappedBeanProperties = objectMapper.readValue(jsonString, RelationshipBeanProperties.class);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        if (mappedBeanProperties != null)
+        {
+            assertEquals(relationshipBeanProperties, mappedBeanProperties, "Bean properties must match after passing through Jackson");
+        }
+
+        return mappedBeanProperties;
+    }
+
+
+    /**
+     * Validate that an object generated from a JSON String has the same content as the object used to
+     * create the JSON String.
+     */
+    private ClassificationBeanProperties testJackson(ClassificationBeanProperties classificationBeanProperties)
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String       jsonString   = null;
+
+        /*
+         * This class
+         */
+        try
+        {
+            jsonString = objectMapper.writeValueAsString(classificationBeanProperties);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        ClassificationBeanProperties mappedBeanProperties = null;
+
+        try
+        {
+            mappedBeanProperties = objectMapper.readValue(jsonString, ClassificationBeanProperties.class);
+        }
+        catch (Throwable exc)
+        {
+            assertTrue(false, "Exception: " + exc.getMessage());
+        }
+
+        if (mappedBeanProperties != null)
+        {
+            assertEquals(classificationBeanProperties, mappedBeanProperties, "Bean properties must match after passing through Jackson");
+        }
+
+        return mappedBeanProperties;
     }
 }

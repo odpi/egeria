@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AnnotationReviewProperties extends ReviewProperties
 {
-    private AnnotationStatus annotationStatus = AnnotationStatus.NEW_ANNOTATION;
+    private AnnotationStatus annotationStatus = null;
 
 
     /**

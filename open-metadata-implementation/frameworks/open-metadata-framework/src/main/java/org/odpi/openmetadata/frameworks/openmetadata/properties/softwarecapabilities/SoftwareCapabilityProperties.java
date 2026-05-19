@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DataVirtualizationEngineProperties.class, name = "DataVirtualizationEngineProperties"),
         @JsonSubTypes.Type(value = EngineProperties.class, name = "EngineProperties"),
         @JsonSubTypes.Type(value = EventBrokerProperties.class, name = "EventBrokerProperties"),
+        @JsonSubTypes.Type(value = EventManagerProperties.class, name = "EventManagerProperties"),
         @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
         @JsonSubTypes.Type(value = IntegrationGroupProperties.class, name = "IntegrationGroupProperties"),
         @JsonSubTypes.Type(value = InventoryCatalogProperties.class, name = "InventoryCatalogProperties"),
@@ -47,7 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SoftwareCapabilityProperties extends ReferenceableProperties
 {
     private String           deployedImplementationType  = null;
-    private DeploymentStatus deploymentStatus            = DeploymentStatus.ACTIVE;
+    private DeploymentStatus deploymentStatus            = null;
     private String           userDefinedDeploymentStatus = null;
     private String           patchLevel                  = null;
     private String           source                      = null;

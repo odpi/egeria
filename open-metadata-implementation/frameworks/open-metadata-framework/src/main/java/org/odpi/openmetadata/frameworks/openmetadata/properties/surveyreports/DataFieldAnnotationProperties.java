@@ -26,10 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataGrainAnnotationProperties.class, name = "DataGrainAnnotationProperties"),
                 @JsonSubTypes.Type(value = FingerprintAnnotationProperties.class, name = "FingerprintAnnotationProperties"),
                 @JsonSubTypes.Type(value = QualityAnnotationProperties.class, name = "QualityAnnotationProperties"),
-                @JsonSubTypes.Type(value = ResourceProfileAnnotationProperties.class, name = "DataProfileAnnotation"),
-                @JsonSubTypes.Type(value = ResourceProfileLogAnnotationProperties.class, name = "DataProfileLogAnnotation"),
+                @JsonSubTypes.Type(value = ResourceProfileAnnotationProperties.class, name = "ResourceProfileAnnotationProperties"),
+                @JsonSubTypes.Type(value = ResourceProfileLogAnnotationProperties.class, name = "ResourceProfileLogAnnotationProperties"),
                 @JsonSubTypes.Type(value = RelationshipAdviceAnnotationProperties.class, name = "RelationshipAdviceAnnotationProperties"),
-                @JsonSubTypes.Type(value = RequestForActionProperties.class, name = "RequestForActionAnnotationProperties"),
+                @JsonSubTypes.Type(value = RequestForActionProperties.class, name = "RequestForActionProperties"),
                 @JsonSubTypes.Type(value = SemanticAnnotationProperties.class, name = "SemanticAnnotationProperties"),
         })
 public class DataFieldAnnotationProperties extends AnnotationProperties
