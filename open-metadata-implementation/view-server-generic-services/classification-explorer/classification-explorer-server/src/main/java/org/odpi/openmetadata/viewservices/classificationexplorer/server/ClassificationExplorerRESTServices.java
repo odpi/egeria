@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
@@ -1801,6 +1802,137 @@ public class ClassificationExplorerRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Link a glossary term to an element using the SupplementaryProperties relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException a full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSupplementaryPropertiesToElement(String                     serverName,
+                                                            String                     urlMarker,
+                                                            String                     elementGUID,
+                                                            String                     glossaryTermGUID,
+                                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "addSupplementaryPropertiesToElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SupplementaryPropertiesProperties supplementaryProperties)
+                {
+                    handler.addSupplementaryPropertiesToElement(userId,
+                                                                elementGUID,
+                                                                glossaryTermGUID,
+                                                                requestBody,
+                                                                supplementaryProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addSupplementaryPropertiesToElement(userId,
+                                                                elementGUID,
+                                                                glossaryTermGUID,
+                                                                requestBody,
+                                                                null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SupplementaryPropertiesProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.addSupplementaryPropertiesToElement(userId,
+                                                            elementGUID,
+                                                            glossaryTermGUID,
+                                                            null,
+                                                            null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Remove the SupplementaryProperties relationship between a glossary term and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException a full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse removeSupplementaryPropertiesFromElement(String                        serverName,
+                                                                 String                        urlMarker,
+                                                                 String                        elementGUID,
+                                                                 String                        glossaryTermGUID,
+                                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "removeSupplementaryPropertiesFromElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.removeSupplementaryPropertiesFromElement(userId,
+                                                             elementGUID,
+                                                             glossaryTermGUID,
+                                                             requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
         return response;
     }
 

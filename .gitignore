@@ -41,6 +41,9 @@ pom.xml.releaseBackup
 .idea
 venv
 
+# Junie
+.output.txt
+
 # Eclipse
 .cache
 .classpath

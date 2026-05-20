@@ -1046,6 +1046,72 @@ public class ClassificationExplorerResource
 
 
     /**
+     * Link a glossary term to an element using the SupplementaryProperties relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/supplementary-properties/{glossaryTermGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addSupplementaryPropertiesToElement",
+            description="Link a glossary term to an element using the SupplementaryProperties relationship.",
+            externalDocs=@ExternalDocumentation(description="Supplementary Properties",
+                    url="https://egeria-project.org/types/0/0011-Managing-Reference-Values/"))
+
+    public VoidResponse addSupplementaryPropertiesToElement(@PathVariable String                  serverName,
+                                                            @PathVariable String                    urlMarker,
+                                                            @PathVariable String                  elementGUID,
+                                                            @PathVariable String glossaryTermGUID,
+                                                            @RequestBody  (required = false)
+                                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.addSupplementaryPropertiesToElement(serverName, urlMarker, elementGUID, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the SupplementaryProperties relationship between a glossary term and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/supplementary-properties/{glossaryTermGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removeSupplementaryPropertiesFromElement",
+            description="Remove the SupplementaryProperties relationship between a glossary term and an element.",
+            externalDocs=@ExternalDocumentation(description="Supplementary Properties",
+                    url="https://egeria-project.org/types/0/0011-Managing-Reference-Values/"))
+
+    public VoidResponse removeSupplementaryPropertiesFromElement(@PathVariable String                        serverName,
+                                                                 @PathVariable String                    urlMarker,
+                                                                 @PathVariable String                        elementGUID,
+                                                                 @PathVariable String                        glossaryTermGUID,
+                                                                 @RequestBody  (required = false)
+                                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.removeSupplementaryPropertiesFromElement(serverName, urlMarker, elementGUID, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
      * Attach an actor to an element.
      *
      * @param serverName  name of the server instance to connect to

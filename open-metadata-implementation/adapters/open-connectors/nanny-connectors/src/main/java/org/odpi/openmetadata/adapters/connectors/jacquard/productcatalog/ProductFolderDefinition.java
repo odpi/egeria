@@ -71,6 +71,16 @@ public enum ProductFolderDefinition
                        null),
 
     /**
+     * Open Metadata Digital Product Perspectives
+     */
+    PERSPECTIVES(OpenMetadataType.COLLECTION_FOLDER.typeName,
+                 null,
+                 TOP_LEVEL,
+                 "Open Metadata Digital Product Perspectives",
+                 "Details of the perspectives supported by the open metadata digital products.",
+                 null),
+
+    /**
      * Open Metadata Digital Product Data Dictionary
      */
     DATA_DICTIONARY(OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,

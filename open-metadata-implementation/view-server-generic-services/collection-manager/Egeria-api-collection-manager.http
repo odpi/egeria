@@ -286,7 +286,7 @@ Content-Type: application/json
 
 ###
 # @name getCollectionMembers
-# Return a list of elements that are a member of a collection.  Prequest body is optional.
+# Return a list of elements that are a member of a collection.  Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members
 Authorization: Bearer {{token}}
 Content-Type: application/json

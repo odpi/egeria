@@ -24,7 +24,7 @@ public enum ProductGlossaryTermDefinition
                             
                             Digital products are designed to be shared and may be advertised in a marketplace. They are typically owned and consumed by teams responsible for business capabilities. There is typical a person, or team responsible for development of a digital product.
                             """,
-                    "",
+                    null,
                     "https://egeria-project.org/types/7/0710-Digital-Products/",
                     ProductFolderDefinition.GLOSSARY_BASICS),
 
@@ -42,14 +42,14 @@ public enum ProductGlossaryTermDefinition
                                 "https://egeria-project.org/concepts/digital-subscription/",
                                 ProductFolderDefinition.GLOSSARY_SUBSCRIPTIONS),
 
-    DAILY_REFRESH_SUBSCRIPTION("Evaluation Subscription",
+    DAILY_REFRESH_SUBSCRIPTION("Daily Refresh Subscription",
                                "A subscription to a digital product that delivers the data to the target destination once a day.",
                                "A subscription to a digital product that delivers the data to the target destination once a day.",
                                null,
                                "https://egeria-project.org/concepts/digital-subscription/",
                                ProductFolderDefinition.GLOSSARY_SUBSCRIPTIONS),
 
-    WEEKLY_REFRESH_SUBSCRIPTION("Evaluation Subscription",
+    WEEKLY_REFRESH_SUBSCRIPTION("Weekly Refresh Subscription",
                                 "A subscription to a digital product that delivers the data to the target destination once a week.",
                                 "A subscription to a digital product that delivers the data to the target destination once a week.",
                                 null,

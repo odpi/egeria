@@ -44,7 +44,7 @@ public enum ProductPerspectiveDefinition
 
 
     /**
-     * Return the qualified name to use for the glossary term.
+     * Return the qualified name to use for the perspective.
      *
      * @return string
      */
@@ -105,7 +105,7 @@ public enum ProductPerspectiveDefinition
      */
     public ProductFolderDefinition getFolder()
     {
-        return ProductFolderDefinition.GLOSSARY_QUESTIONS;
+        return ProductFolderDefinition.PERSPECTIVES;
     }
 
 
@@ -117,6 +117,6 @@ public enum ProductPerspectiveDefinition
     @Override
     public String toString()
     {
-        return "ProductQuestionDefinition{" + identifier + '}';
+        return "ProductPerspectiveDefinition{" + identifier + '}';
     }
 }

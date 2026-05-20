@@ -1561,6 +1561,55 @@ Content-Type: application/json
 
 ###
 #==================================================
+# SupplementaryProperties
+#==================================================
+
+###
+# @name addSupplementaryPropertiesToElement
+# Link a glossary term to an element using the SupplementaryProperties relationship.
+#
+# Supplementary Properties: https://egeria-project.org/types/0/0011-Managing-Reference-Values/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/supplementary-properties/{{glossaryTermGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties": {
+      "class" : "SupplementaryPropertiesProperties",
+      "label" : "Guiding question",
+      "description" : "Add description here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name removeSupplementaryPropertiesFromElement
+# Remove the SupplementaryProperties relationship between a glossary term and an element.
+#
+# Supplementary Properties: https://egeria-project.org/types/0/0011-Managing-Reference-Values/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/supplementary-properties/{{glossaryTermGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+#==================================================
 # ScopedBy
 #==================================================
 
