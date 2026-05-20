@@ -325,6 +325,26 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
 
 
     /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param relationshipGUID unique identifier for the relationship
+     * @param getOptions multiple options to control the query
+     *
+     * @return relationship properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public  MetadataRelationshipSummary getRelationshipSummaryByGUID(String     relationshipGUID,
+                                                                     GetOptions getOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return stewardshipManagementHandler.getRelationshipSummaryByGUID(connectorUserId, relationshipGUID, getOptions);
+    }
+
+
+    /**
      * Retrieve elements with the requested classification name and with the requested a value found in
      * one of the classification's properties specified.  The value must be contained in the
      * properties rather than needing to be an exact match.

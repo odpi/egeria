@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 /**
- * LocationsTabularDataSetConnector enables interaction with the list of locations stored in open metadata
+ * GovernanceControlsTabularDataSetConnector enables interaction with the list of governance controls stored in open metadata
  * as if it is a tabular data set.
  */
 public class GovernanceControlsTabularDataSetConnector extends OpenMetadataRootDataSetConnectorBase

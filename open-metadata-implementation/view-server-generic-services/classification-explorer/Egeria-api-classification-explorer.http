@@ -2700,6 +2700,20 @@ Content-Type: application/json
 ###
 
 @guid=Add guid here
+@relationshipGUID=Add guid here
+
+
+###
+# @name getRelationshipByGUID
+# Retrieve the relationship using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationship-summaries/by-guid/{{relationshipGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "GetRequestBody"
+}
+
 
 ###
 # @name retrieveInstanceForGUID

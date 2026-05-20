@@ -439,13 +439,9 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 (ProductDataFieldDefinition.ANNOTATION_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.REPORT_SUBJECT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.CERTIFICATION_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.REPORT_ORIGINATOR_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.EXCEPTION_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.EXCEPTION_TYPE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.LICENSE_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.LICENSE_TYPE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.PROFILE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.PROJECT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.SECRETS_COLLECTION_GUID.getDisplayName().equals(columnName)) ||
@@ -936,15 +932,17 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
     /**
      * Extracts the record values from the element properties based on the specified column name.
      *
-     * @param relationshipBeanProperties properties object
+     * @param relationshipSummary relationship object
      * @param columnName name of column to extract
      * @param recordValues array of values to append to
      * @return true if the value was successfully extracted, false otherwise
      */
-    protected boolean getElementRecordValue(RelationshipBeanProperties relationshipBeanProperties,
+    protected boolean getElementRecordValue(MetadataRelationshipSummary relationshipSummary,
                                             String                     columnName,
                                             List<String>               recordValues)
     {
+        RelationshipBeanProperties relationshipBeanProperties = relationshipSummary.getRelationshipProperties();
+
         if (relationshipBeanProperties instanceof ActionTargetProperties actionTargetProperties)
         {
             if (ProductDataFieldDefinition.ACTION_TARGET_NAME.getDisplayName().equals(columnName))
@@ -955,7 +953,17 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         }
         else if (relationshipBeanProperties instanceof CertificationProperties certificationProperties)
         {
-            if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
+            if (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd1().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd2().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
             {
                 if (certificationProperties.getCoverageStart() != null)
                 {
@@ -1030,6 +1038,73 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
+        else if (relationshipBeanProperties instanceof ExceptionProperties exceptionProperties)
+        {
+            if (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd1().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.EXCEPTION_TYPE_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd2().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LABEL.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getLabel());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.DESCRIPTION.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getDescription());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LAST_REVIEW_TIME.getDisplayName().equals(columnName))
+            {
+                if (exceptionProperties.getLastReviewTime() != null)
+                {
+                    recordValues.add(exceptionProperties.getLastReviewTime().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.REVIEW_DATE.getDisplayName().equals(columnName))
+            {
+                if (exceptionProperties.getReviewDate() != null)
+                {
+                    recordValues.add(exceptionProperties.getReviewDate().toString());
+                }
+                else
+                {
+                    recordValues.add(null);
+                }
+                return true;
+            }
+            else if (ProductDataFieldDefinition.STEWARD.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getSteward());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.STEWARD_TYPE_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getStewardTypeName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.STEWARD_PROPERTY_NAME.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getStewardPropertyName());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.NOTES.getDisplayName().equals(columnName))
+            {
+                recordValues.add(exceptionProperties.getNotes());
+                return true;
+            }
+        }
         else if (relationshipBeanProperties instanceof LabeledRelationshipProperties labeledRelationshipProperties)
         {
             if (ProductDataFieldDefinition.LABEL.getDisplayName().equals(columnName))
@@ -1093,7 +1168,17 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         }
         else if (relationshipBeanProperties instanceof LicenseProperties licenseProperties)
         {
-            if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
+            if (ProductDataFieldDefinition.ELEMENT_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd1().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.LICENSE_TYPE_GUID.getDisplayName().equals(columnName))
+            {
+                recordValues.add(relationshipSummary.getEnd2().getGUID());
+                return true;
+            }
+            else if (ProductDataFieldDefinition.COVERAGE_START.getDisplayName().equals(columnName))
             {
                 if (licenseProperties.getCoverageStart() != null)
                 {
@@ -1322,7 +1407,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                  */
                 if (! getElementHeaderRecordValue(relationshipSummary.getRelationshipHeader(), tabularColumnDescription.columnName(), recordValues))
                 {
-                    if (! getElementRecordValue(relationshipSummary.getRelationshipProperties(), tabularColumnDescription.columnName(), recordValues))
+                    if (! getElementRecordValue(relationshipSummary, tabularColumnDescription.columnName(), recordValues))
                     {
                         throw new ConnectorCheckedException(TabularDataErrorCode.UNMAPPED_COLUMN.getMessageDefinition(connectorName,
                                                                                                                       tabularColumnDescription.columnName()),

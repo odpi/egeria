@@ -126,11 +126,11 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
         {
             results = new ArrayList<>();
 
-            for (OpenMetadataRelationship openMetadataElement : openMetadataRelationships)
+            for (OpenMetadataRelationship openMetadataRelationship : openMetadataRelationships)
             {
-                if (openMetadataElement != null)
+                if (openMetadataRelationship != null)
                 {
-                    results.add(this.getNewRelatedMetadataElementsBean(beanClass, openMetadataElement, methodName));
+                    results.add(this.getNewRelatedMetadataElementsBean(beanClass, openMetadataRelationship, methodName));
                 }
             }
         }

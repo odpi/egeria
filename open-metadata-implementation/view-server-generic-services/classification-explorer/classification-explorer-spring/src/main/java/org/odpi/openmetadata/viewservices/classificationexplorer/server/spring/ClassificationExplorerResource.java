@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataRelationshipSummaryResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SemanticAssignmentQueryProperties;
@@ -2971,6 +2972,36 @@ public class ClassificationExplorerResource
                                                                                     FindPropertyNamesProperties requestBody)
     {
         return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, relationshipTypeName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier for the relationship
+     * @param requestBody options to control the query
+     *
+     * @return relationship summary or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    @PostMapping(path = "/relationship-summaries/by-guid/{relationshipGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getRelationshipSummaryByGUID",
+            description="Retrieve the relationship using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Relationships", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummaryResponse getRelationshipSummaryByGUID(@PathVariable String         serverName,
+                                                                            @PathVariable String         urlMarker,
+                                                                            @PathVariable String         relationshipGUID,
+                                                                            @RequestBody (required = false)
+                                                                     GetRequestBody requestBody)
+    {
+        return restAPI.getRelationshipSummaryByGUID(serverName, urlMarker, relationshipGUID, requestBody);
     }
 
 
