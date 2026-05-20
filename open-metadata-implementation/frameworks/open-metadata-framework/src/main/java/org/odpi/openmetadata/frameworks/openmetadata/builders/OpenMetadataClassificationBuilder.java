@@ -64,12 +64,17 @@ public class OpenMetadataClassificationBuilder
 
             for (String classificationName : classificationPropertiesMap.keySet())
             {
-                if ((classificationName != null) && (classificationPropertiesMap.get(classificationName) != null))
+                if (classificationName != null)
                 {
-                    NewElementProperties newElementProperties = new NewElementProperties(this.getElementProperties(classificationPropertiesMap.get(classificationName)));
+                    NewElementProperties newElementProperties = null;
 
-                    newElementProperties.setEffectiveFrom(classificationPropertiesMap.get(classificationName).getEffectiveFrom());
-                    newElementProperties.setEffectiveTo(classificationPropertiesMap.get(classificationName).getEffectiveTo());
+                    if (classificationPropertiesMap.get(classificationName) != null)
+                    {
+                        newElementProperties = new NewElementProperties(this.getElementProperties(classificationPropertiesMap.get(classificationName)));
+
+                        newElementProperties.setEffectiveFrom(classificationPropertiesMap.get(classificationName).getEffectiveFrom());
+                        newElementProperties.setEffectiveTo(classificationPropertiesMap.get(classificationName).getEffectiveTo());
+                    }
 
                     initialClassifications.put(classificationName, newElementProperties);
                 }

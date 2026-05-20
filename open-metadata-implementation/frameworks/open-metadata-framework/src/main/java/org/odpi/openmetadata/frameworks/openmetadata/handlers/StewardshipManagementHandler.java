@@ -2029,6 +2029,79 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
+
+    /**
+     * Link a glossary term to an element using the SupplementaryProperties relationship.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param makeAnchorOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void addSupplementaryPropertiesToElement(String                            userId,
+                                                    String                            elementGUID,
+                                                    String                            glossaryTermGUID,
+                                                    MakeAnchorOptions                 makeAnchorOptions,
+                                                    SupplementaryPropertiesProperties properties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        final String methodName            = "addSupplementaryPropertiesToElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "glossaryTermGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        glossaryTermGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the SupplementaryProperties relationship between a glossary term and an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void removeSupplementaryPropertiesFromElement(String        userId,
+                                                         String        elementGUID,
+                                                         String        glossaryTermGUID,
+                                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName            = "removeSupplementaryPropertiesFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "glossaryTermGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        glossaryTermGUID,
+                                                        deleteOptions);
+    }
+
+
     /**
      * Attach an actor to an element.
      *

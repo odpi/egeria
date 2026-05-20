@@ -34,9 +34,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PerspectiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
@@ -92,6 +94,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private Map<String, String> productRoles          = null;
     private Map<String, String> governanceDefinitions = null;
     private Map<String, String> glossaryTerms         = null;
+    private Map<String, String> questions             = null;
     private Map<String, String> communities           = null;
     private Map<String, String> communityNoteLogs     = null;
     private Map<String, String> dataFields            = null;
@@ -178,6 +181,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
 
             glossaryTerms         = this.getGlossaryTerms();
+            questions             = this.getQuestions();
             communities           = this.getCommunities();
             communityNoteLogs     = this.getCommunityNoteLogs();
             dataFields            = this.getDataFields();
@@ -631,6 +635,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         this.addDataSpec(productDefinition, productElement);
 
         /*
+         * The questions are used to guide people to the appropriate product.
+         */
+        this.addQuestions(productDefinition, productElement);
+
+        /*
          * This asset has a connector to a connector that is able to mine open metadata to create a particular product.
          * Product families do not have an asset.
          */
@@ -809,6 +818,46 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                 memberDataFieldProperties);
                     }
                 }
+            }
+        }
+    }
+
+
+    /**
+     * Set up a product's questions.
+     *
+     * @param productDefinition description of product
+     * @param productElement details of what is currently stored
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addQuestions(ProductDefinition       productDefinition,
+                              OpenMetadataRootElement productElement) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        List<ProductQuestionDefinition> productQuestionDefinitions = productDefinition.getQuestions();
+
+        if (productQuestionDefinitions != null)
+        {
+            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+            for (ProductQuestionDefinition productQuestionDefinition : productQuestionDefinitions)
+            {
+                String questionGUID = questions.get(productQuestionDefinition.getQualifiedName());
+
+                SupplementaryPropertiesProperties supplementaryPropertiesProperties = new SupplementaryPropertiesProperties();
+
+                supplementaryPropertiesProperties.setLabel("Guiding question");
+                supplementaryPropertiesProperties.setDescription("This is the type of question that " + productDefinition.getProductName() + " is designed to answer.");
+
+                classificationManagerClient.addSupplementaryPropertiesToElement(productElement.getElementHeader().getGUID(),
+                                                                                questionGUID,
+                                                                                classificationManagerClient.getMakeAnchorOptions(false),
+                                                                                supplementaryPropertiesProperties);
             }
         }
     }
@@ -1891,6 +1940,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
 
         /*
+         * Create glossary term properties from definition
+         */
+        GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
+
+        glossaryTermProperties.setQualifiedName(glossaryTermDefinition.getQualifiedName());
+        glossaryTermProperties.setDisplayName(glossaryTermDefinition.getDisplayName());
+        glossaryTermProperties.setDescription(glossaryTermDefinition.getDescription());
+        glossaryTermProperties.setSummary(glossaryTermDefinition.getSummary());
+        glossaryTermProperties.setURL(glossaryTermDefinition.getURL());
+        glossaryTermProperties.setAbbreviation(glossaryTermDefinition.getAbbreviation());
+
+        /*
          * If the glossary term is already present then return its GUID
          */
         List<OpenMetadataRootElement> terms = glossaryTermClient.getGlossaryTermsByName(glossaryTermDefinition.getQualifiedName(), null);
@@ -1907,6 +1968,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 glossaryTermDefinition.getDisplayName(),
                                                                                                                 term.getElementHeader().getGUID()));
 
+                    glossaryTermClient.updateGlossaryTerm(term.getElementHeader().getGUID(), glossaryTermClient.getUpdateOptions(true), glossaryTermProperties);
                     return term.getElementHeader().getGUID();
                 }
             }
@@ -1915,14 +1977,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * This is the first time...
          */
-        GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
-
-        glossaryTermProperties.setQualifiedName(glossaryTermDefinition.getQualifiedName());
-        glossaryTermProperties.setDisplayName(glossaryTermDefinition.getDisplayName());
-        glossaryTermProperties.setDescription(glossaryTermDefinition.getDescription());
-        glossaryTermProperties.setSummary(glossaryTermDefinition.getSummary());
-        glossaryTermProperties.setAbbreviation(glossaryTermDefinition.getAbbreviation());
-
         NewElementOptions newElementOptions = new NewElementOptions(glossaryTermClient.getMetadataSourceOptions());
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
 
@@ -1956,6 +2010,259 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                  glossaryTermGUID));
 
         return glossaryTermGUID;
+    }
+
+
+    /**
+     * Add all defined perspectives.  They are linked and anchored to the perspectives collection.
+     *
+     * @return map of perspectives qualified names to GUIDs
+     * @throws InvalidParameterException  invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException    repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     *                                    been disconnected.
+     */
+    private Map<String, String> getPerspectives() throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
+    {
+        Map<String, String> perspectivesMap = new HashMap<>();
+
+        for (ProductPerspectiveDefinition perspectiveDefinition : ProductPerspectiveDefinition.values())
+        {
+            String glossaryTermGUID = this.getPerspective(perspectiveDefinition);
+
+            perspectivesMap.put(perspectiveDefinition.getQualifiedName(), glossaryTermGUID);
+        }
+
+        return perspectivesMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the perspective either by retrieving an existing perspective or,
+     * when that fails, creating a new one.
+     *
+     * @param perspectiveDefinition description of the perspective
+     * @return unique identifier of the perspective
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getPerspective(ProductPerspectiveDefinition perspectiveDefinition) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "getPerspective";
+
+        PerspectiveClient perspectiveClient = integrationContext.getPerspectiveClient();
+
+        /*
+         * Create perspective properties from the definition
+         */
+        PerspectiveProperties perspectiveProperties = new PerspectiveProperties();
+
+        perspectiveProperties.setQualifiedName(perspectiveDefinition.getQualifiedName());
+        perspectiveProperties.setDisplayName(perspectiveDefinition.getDisplayName());
+        perspectiveProperties.setDescription(perspectiveDefinition.getDescription());
+        perspectiveProperties.setIdentifier(perspectiveDefinition.getIdentifier());
+        perspectiveProperties.setURL(perspectiveDefinition.getURL());
+
+        /*
+         * If the perspective is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> perspectives = perspectiveClient.getPerspectivesByName(perspectiveDefinition.getQualifiedName(), null);
+
+        if (perspectives != null)
+        {
+            for (OpenMetadataRootElement perspective : perspectives)
+            {
+                if (perspective != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                OpenMetadataType.PERSPECTIVE.typeName,
+                                                                                                                perspectiveDefinition.getDisplayName(),
+                                                                                                                perspective.getElementHeader().getGUID()));
+
+                    perspectiveClient.updatePerspective(perspective.getElementHeader().getGUID(), perspectiveClient.getUpdateOptions(true), perspectiveProperties);
+                    return perspective.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        NewElementOptions newElementOptions = new NewElementOptions(perspectiveClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+
+        Map<String, ClassificationProperties> initialClassifications = null;
+
+        if (perspectiveDefinition.getFolder() != null)
+        {
+            String parentGUID = productFolders.get(perspectiveDefinition.getFolder().getQualifiedName());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(parentGUID);
+            newElementOptions.setParentGUID(parentGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            newElementOptions.setParentAtEnd1(true);
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+            initialClassifications = getInitialClassificationProperties(null);
+        }
+
+        String perspective = perspectiveClient.createPerspective(newElementOptions,
+                                                                 initialClassifications,
+                                                                 perspectiveProperties,
+                                                                 null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 OpenMetadataType.PERSPECTIVE.typeName,
+                                                                                                 perspectiveDefinition.getDisplayName(),
+                                                                                                 perspective));
+
+        return perspective;
+    }
+
+
+
+    /**
+     * Add all defined questions to the glossary at the requested folder.
+     *
+     * @return map of glossary term qualified names to GUIDs
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getQuestions() throws InvalidParameterException,
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException
+    {
+        Map<String, String> perspectiveMap = getPerspectives();
+        Map<String, String> questionMap = new HashMap<>();
+
+        for (ProductQuestionDefinition productQuestionDefinition : ProductQuestionDefinition.values())
+        {
+            String questionGUID = this.getQuestion(productQuestionDefinition, perspectiveMap);
+
+            questionMap.put(productQuestionDefinition.getQualifiedName(), questionGUID);
+        }
+
+        return questionMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the glossary term either by retrieving an existing glossary term or,
+     * when that fails, creating a new one.
+     *
+     * @param productQuestionDefinition description of the question glossary term
+     * @param perspectiveMap map of perspectives to their unique identifiers
+     * @return unique identifier of the glossary term
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getQuestion(ProductQuestionDefinition productQuestionDefinition,
+                               Map<String, String>       perspectiveMap) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "getQuestion";
+
+        GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
+
+        /*
+         * Create a new glossary term properties object for the question.
+         */
+        GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
+
+        glossaryTermProperties.setQualifiedName(productQuestionDefinition.getQualifiedName());
+        glossaryTermProperties.setDisplayName(productQuestionDefinition.getDisplayName());
+        glossaryTermProperties.setDescription(productQuestionDefinition.getDescription());
+        glossaryTermProperties.setSummary(productQuestionDefinition.getSummary());
+        glossaryTermProperties.setAbbreviation(productQuestionDefinition.getURL());
+
+        /*
+         * If the glossary term is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> questions = glossaryTermClient.getGlossaryTermsByName(productQuestionDefinition.getQualifiedName(), null);
+
+        if (questions != null)
+        {
+            for (OpenMetadataRootElement question : questions)
+            {
+                if (question != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                                productQuestionDefinition.getDisplayName(),
+                                                                                                                question.getElementHeader().getGUID()));
+
+                    glossaryTermClient.updateGlossaryTerm(question.getElementHeader().getGUID(), glossaryTermClient.getUpdateOptions(true), glossaryTermProperties);
+                    return question.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        NewElementOptions newElementOptions = new NewElementOptions(glossaryTermClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+
+        Map<String, ClassificationProperties> initialClassifications;
+
+        if (productQuestionDefinition.getPerspective() != null)
+        {
+            String perspectiveGUID = perspectiveMap.get(productQuestionDefinition.getPerspective().getQualifiedName());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(perspectiveGUID);
+            newElementOptions.setParentGUID(perspectiveGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName);
+            newElementOptions.setParentAtEnd1(false);
+
+            initialClassifications = new HashMap<>();
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+            initialClassifications = getInitialClassificationProperties(null);
+        }
+
+        initialClassifications.put(OpenMetadataType.QUESTION_CLASSIFICATION.typeName, null);
+
+        String questionGUID = glossaryTermClient.createGlossaryTerm(newElementOptions,
+                                                                    initialClassifications,
+                                                                    glossaryTermProperties,
+                                                                    null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                 productQuestionDefinition.getDisplayName(),
+                                                                                                 questionGUID));
+
+        if (productQuestionDefinition.getFolder() != null)
+        {
+            String folderGUID = productFolders.get(productQuestionDefinition.getFolder().getQualifiedName());
+
+            CollectionClient collectionClient = integrationContext.getCollectionClient();
+
+            collectionClient.addToCollection(folderGUID, questionGUID, collectionClient.getMakeAnchorOptions(false), null);
+        }
+
+        return questionGUID;
     }
 
 
@@ -2005,6 +2312,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         CommunityClient communityClient = integrationContext.getCommunityClient();
 
         /*
+         * Create community properties from definition
+         */
+        CommunityProperties communityProperties = new CommunityProperties();
+
+        communityProperties.setQualifiedName(productCommunityDefinition.getQualifiedName());
+        communityProperties.setDisplayName(productCommunityDefinition.getDisplayName());
+        communityProperties.setDescription(productCommunityDefinition.getDescription());
+
+        /*
          * If the community exists, then return its GUID
          */
         List<OpenMetadataRootElement> existingCommunities = communityClient.getCommunitiesByName(productCommunityDefinition.getQualifiedName(), null);
@@ -2021,6 +2337,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 productCommunityDefinition.getDisplayName(),
                                                                                                                 existingCommunity.getElementHeader().getGUID()));
 
+                    communityClient.updateCommunity(existingCommunity.getElementHeader().getGUID(), communityClient.getUpdateOptions(true), communityProperties);
                     return existingCommunity.getElementHeader().getGUID();
                 }
             }
@@ -2029,12 +2346,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * This is the first time...
          */
-        CommunityProperties communityProperties = new CommunityProperties();
-
-        communityProperties.setQualifiedName(productCommunityDefinition.getQualifiedName());
-        communityProperties.setDisplayName(productCommunityDefinition.getDisplayName());
-        communityProperties.setDescription(productCommunityDefinition.getDescription());
-
         NewElementOptions newElementOptions = new NewElementOptions(communityClient.getMetadataSourceOptions());
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
         newElementOptions.setIsOwnAnchor(true);
@@ -2093,11 +2404,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Return the unique identifier of the community either by retrieving an existing community or,
+     * Return the unique identifier of the community note log either by retrieving an existing note log or,
      * when that fails, creating a new one.
      *
      * @param productCommunityDefinition description of the community
-     * @return unique identifier of the community
+     * @return unique identifier of the note log
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
@@ -2110,7 +2421,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         final String methodName = "getCommunityNoteLog";
 
         CommunityClient communityClient = integrationContext.getCommunityClient();
+        NoteLogClient   noteLogClient   = integrationContext.getNoteLogClient();
         String          communityGUID   = communities.get(productCommunityDefinition.getQualifiedName());
+
+        /*
+         * Create community note log properties from definition
+         */
+        NoteLogProperties noteLogProperties = new NoteLogProperties();
+
+        noteLogProperties.setQualifiedName(productCommunityDefinition.getQualifiedName() + "_noteLog");
+        noteLogProperties.setDisplayName("Notifications for " + productCommunityDefinition.getDisplayName());
+        noteLogProperties.setDescription("Notifications received for products associated with this community.");
 
         /*
          * If the community is already present then return its GUID
@@ -2129,22 +2450,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 "Notifications for " + productCommunityDefinition.getDisplayName(),
                                                                                                                 relatedNoteLog.getRelatedElement().getElementHeader().getGUID()));
 
+                    noteLogClient.updateNoteLog(relatedNoteLog.getRelatedElement().getElementHeader().getGUID(), noteLogClient.getUpdateOptions(true), noteLogProperties);
                     return relatedNoteLog.getRelatedElement().getElementHeader().getGUID();
                 }
             }
         }
 
-        NoteLogClient noteLogClient = integrationContext.getNoteLogClient();
-
         /*
          * This is the first time...
          */
-        NoteLogProperties noteLogProperties = new NoteLogProperties();
-
-        noteLogProperties.setQualifiedName(productCommunityDefinition.getQualifiedName() + "_noteLog");
-        noteLogProperties.setDisplayName("Notifications for " + productCommunityDefinition.getDisplayName());
-        noteLogProperties.setDescription("Notifications received for products associated with this community.");
-
         NewElementOptions newElementOptions = new NewElementOptions(noteLogClient.getMetadataSourceOptions());
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
         newElementOptions.setIsOwnAnchor(false);
@@ -2211,6 +2525,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         DataFieldClient dataFieldClient = integrationContext.getDataFieldClient();
 
         /*
+         * Create data field properties from definition
+         */
+        DataFieldProperties dataFieldProperties = new DataFieldProperties();
+
+        dataFieldProperties.setQualifiedName(dataFieldDefinition.getQualifiedName());
+        dataFieldProperties.setDisplayName(dataFieldDefinition.getDisplayName());
+        dataFieldProperties.setDescription(dataFieldDefinition.getDescription());
+        dataFieldProperties.setDataType(dataFieldDefinition.getDataType().getDisplayName());
+        dataFieldProperties.setUnits(dataFieldDefinition.getUnits());
+        dataFieldProperties.setIsNullable(dataFieldDefinition.isNullable());
+        dataFieldProperties.setDefaultValue(dataFieldDefinition.getDefaultValue());
+        dataFieldProperties.setNamePatterns(List.of(dataFieldDefinition.getNamePattern()));
+
+        /*
          * If the data field is already present then return its GUID
          */
         List<OpenMetadataRootElement> existingDataFields = dataFieldClient.getDataFieldsByName(dataFieldDefinition.getQualifiedName(), null);
@@ -2227,6 +2555,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 dataFieldDefinition.getDisplayName(),
                                                                                                                 dataField.getElementHeader().getGUID()));
 
+                    dataFieldClient.updateDataField(dataField.getElementHeader().getGUID(), dataFieldClient.getUpdateOptions(true), dataFieldProperties);
                     return dataField.getElementHeader().getGUID();
                 }
             }
@@ -2235,17 +2564,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * This is the first time...
          */
-        DataFieldProperties dataFieldProperties = new DataFieldProperties();
-
-        dataFieldProperties.setQualifiedName(dataFieldDefinition.getQualifiedName());
-        dataFieldProperties.setDisplayName(dataFieldDefinition.getDisplayName());
-        dataFieldProperties.setDescription(dataFieldDefinition.getDescription());
-        dataFieldProperties.setDataType(dataFieldDefinition.getDataType().getDisplayName());
-        dataFieldProperties.setUnits(dataFieldDefinition.getUnits());
-        dataFieldProperties.setIsNullable(dataFieldDefinition.isNullable());
-        dataFieldProperties.setDefaultValue(dataFieldDefinition.getDefaultValue());
-        dataFieldProperties.setNamePatterns(List.of(dataFieldDefinition.getNamePattern()));
-
         NewElementOptions newElementOptions = new NewElementOptions(dataFieldClient.getMetadataSourceOptions());
 
         String parentGUID = productFolders.get(ProductFolderDefinition.DATA_DICTIONARY.getQualifiedName());
@@ -2256,7 +2574,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         newElementOptions.setParentGUID(parentGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
         newElementOptions.setParentAtEnd1(true);
-
 
         Map<String, ClassificationProperties> initialClassifications = null;
 
@@ -2380,6 +2697,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
+        /*
+         * Create governance definition properties from definition
+         */
         GovernanceDefinitionProperties governanceDefinitionProperties = getGovernanceDefinitionProperties(governanceDefinition);
 
         /*
@@ -2521,6 +2841,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 String componentQualifiedName = solutionComponentDefinition.getQualifiedName();
                 String componentGUID          = null;
 
+                /*
+                 * Create solution component properties from definition
+                 */
+                SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
+
+                solutionComponentProperties.setQualifiedName(componentQualifiedName);
+                solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
+                solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
+                solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
+                solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
+                solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
+
                 List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, null);
 
                 if (solutionComponents != null)
@@ -2533,6 +2865,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                              * Component already exists
                              */
                             componentGUID = solutionComponent.getElementHeader().getGUID();
+                            solutionComponentClient.updateSolutionComponent(componentGUID, solutionComponentClient.getUpdateOptions(true), solutionComponentProperties);
                             break;
                         }
                     }
@@ -2540,15 +2873,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 if (componentGUID == null)
                 {
-                    SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
-
-                    solutionComponentProperties.setQualifiedName(componentQualifiedName);
-                    solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
-                    solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
-                    solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
-                    solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
-                    solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
-
                     componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
                                                                                     null,
                                                                                     solutionComponentProperties,
@@ -2678,6 +3002,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
 
         /*
+         * Create solution blueprint properties from definition
+         */
+        SolutionBlueprintProperties solutionBlueprintProperties = this.getSolutionBlueprintProperties(productSolutionBlueprint);
+
+        /*
          * If the solution blueprint is already present then return its GUID,
          */
         List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(productSolutionBlueprint.getQualifiedName(), null);
@@ -2693,6 +3022,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
                                                                                                                 productSolutionBlueprint.getDisplayName(),
                                                                                                                 solutionBlueprint.getElementHeader().getGUID()));
+
+                    solutionBlueprintClient.updateCollection(solutionBlueprint.getElementHeader().getGUID(), solutionBlueprintClient.getUpdateOptions(true), solutionBlueprintProperties);
                     return solutionBlueprint.getElementHeader().getGUID();
                 }
             }
@@ -2701,8 +3032,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Create the blueprint as this is the first time through
          */
-        SolutionBlueprintProperties solutionBlueprintProperties = this.getSolutionBlueprintProperties(productSolutionBlueprint);
-
         String blueprintGUID = solutionBlueprintClient.createCollection(newElementOptions,
                                                                         this.getInitialClassificationProperties(null),
                                                                         solutionBlueprintProperties,
@@ -2802,6 +3131,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         String roleQualifiedName = productRoleDefinition.getQualifiedName();
         String roleGUID          = null;
 
+        /*
+         * Create actor role properties from definition
+         */
+        ActorRoleProperties actorRoleProperties = new ActorRoleProperties();
+
+        actorRoleProperties.setTypeName(productRoleDefinition.getTypeName());
+        actorRoleProperties.setActorRoleGroups(productRoleDefinition.getActorRoleGroups());
+        actorRoleProperties.setQualifiedName(roleQualifiedName);
+        actorRoleProperties.setDisplayName(productRoleDefinition.getDisplayName());
+        actorRoleProperties.setDescription(productRoleDefinition.getDescription());
+        actorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
+
         List<OpenMetadataRootElement> solutionRoles = actorRoleClient.getActorRolesByName(roleQualifiedName, null);
 
         if (solutionRoles != null)
@@ -2811,6 +3152,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 if (solutionRole != null)
                 {
                     roleGUID = solutionRole.getElementHeader().getGUID();
+                    actorRoleClient.updateActorRole(roleGUID, actorRoleClient.getUpdateOptions(true), actorRoleProperties);
                     break;
                 }
             }
@@ -2818,15 +3160,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (roleGUID == null)
         {
-            ActorRoleProperties actorRoleProperties = new ActorRoleProperties();
-
-            actorRoleProperties.setTypeName(productRoleDefinition.getTypeName());
-            actorRoleProperties.setActorRoleGroups(productRoleDefinition.getActorRoleGroups());
-            actorRoleProperties.setQualifiedName(roleQualifiedName);
-            actorRoleProperties.setDisplayName(productRoleDefinition.getDisplayName());
-            actorRoleProperties.setDescription(productRoleDefinition.getDescription());
-            actorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
-
             roleGUID = actorRoleClient.createActorRole(newElementOptions,
                                                        this.getInitialClassificationProperties(null),
                                                        actorRoleProperties,

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -1475,7 +1476,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * Link a scope to an element using the ScopedBy relationship.
      *
      * @param elementGUID unique identifier of the metadata element to link
-     * @param scopeGUID identifier of the governance definition to link
+     * @param scopeGUID identifier of the scoping deginiton to link
      * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1494,10 +1495,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
 
 
     /**
-     * Remove the ScopedBy relationship between a governance definition and an element.
+     * Remove the ScopedBy relationship between two elements.
      *
      * @param elementGUID unique identifier of the metadata element to update
-     * @param scopeGUID identifier of the governance definition to link
+     * @param scopeGUID identifier of the scoping definition to unlink
      * @param deleteOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1511,6 +1512,49 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                            PropertyServerException
     {
         stewardshipManagementHandler.removeScopeFromElement(connectorUserId, elementGUID, scopeGUID, deleteOptions);
+    }
+
+
+    /**
+     * Link a glossary term to an element using the SupplementaryProperties relationship.
+     *
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param makeAnchorOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void addSupplementaryPropertiesToElement(String                            elementGUID,
+                                                    String                            glossaryTermGUID,
+                                                    MakeAnchorOptions                 makeAnchorOptions,
+                                                    SupplementaryPropertiesProperties properties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        stewardshipManagementHandler.addSupplementaryPropertiesToElement(connectorUserId, elementGUID, glossaryTermGUID, makeAnchorOptions, properties);
+    }
+
+
+    /**
+     * Remove the SupplementaryProperties relationship between a glossary term and an element.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUID identifier of the glossary term to link
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void removeSupplementaryPropertiesFromElement(String        elementGUID,
+                                                         String        glossaryTermGUID,
+                                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        stewardshipManagementHandler.removeSupplementaryPropertiesFromElement(connectorUserId, elementGUID, glossaryTermGUID, deleteOptions);
     }
 
 

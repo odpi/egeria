@@ -86,7 +86,7 @@ public class GlossaryManagerResource
                     " Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy" +
                     " are linked to the assets etc. and as such they are logically categorized by the linked folder.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/glossary"))
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse setGlossaryAsTaxonomy(@PathVariable String                    serverName,
                                               @PathVariable String                    glossaryGUID,
@@ -114,7 +114,7 @@ public class GlossaryManagerResource
     @Operation(summary="clearGlossaryAsTaxonomy",
             description="Remove the taxonomy designation from the glossary.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/glossary"))
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
     public VoidResponse clearGlossaryAsTaxonomy(@PathVariable String                    serverName,
                                                 @PathVariable String                    glossaryGUID,
                                                 @RequestBody(required = false)
@@ -148,7 +148,7 @@ public class GlossaryManagerResource
                     " level of granularity and are limited to a specific scope of use." +
                     " Canonical vocabularies are used to semantically classify assets in an unambiguous way.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/glossary"))
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse setGlossaryAsCanonical(@PathVariable String                    serverName,
                                                @PathVariable String                    glossaryGUID,
@@ -176,7 +176,7 @@ public class GlossaryManagerResource
     @Operation(summary="clearGlossaryAsCanonical",
             description="Remove the canonical vocabulary designation from the glossary.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/glossary"))
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse clearGlossaryAsCanonical(@PathVariable String                    serverName,
                                                  @PathVariable String                    glossaryGUID,
@@ -205,7 +205,7 @@ public class GlossaryManagerResource
             description="Return the list of glossary term status enum values.  " +
                     "These are of type ContentStatus and are added to the 'contentStatus' attribute of GlossaryTerm.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/glossary-term"))
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName)
     {
@@ -222,6 +222,11 @@ public class GlossaryManagerResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="getGlossaryTermRelationshipStatuses",
+            description="Return the list of glossary term relationship status enum values.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName)
     {
         return restAPI.getGlossaryTermRelationshipStatuses(serverName);
@@ -236,6 +241,11 @@ public class GlossaryManagerResource
      */
     @GetMapping(path = "/glossaries/terms/activity-types")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getGlossaryTermActivityTypes",
+            description="Return the list of glossary term activity types enum values.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName)
     {
@@ -256,6 +266,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createGlossaryTerm",
+            description="Create a new metadata element to represent a glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public GUIDResponse createGlossaryTerm(@PathVariable String                  serverName,
                                            @RequestBody  NewElementRequestBody requestBody)
@@ -280,6 +295,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/from-template/{templateGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="createGlossaryTermFromTemplate",
+            description="Create a new metadata element to represent a glossary term using an existing metadata element as a template.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String              serverName,
                                                        @PathVariable String              templateGUID,
                                                        @RequestBody  TemplateRequestBody requestBody)
@@ -302,6 +322,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateGlossaryTerm",
+            description="Update the metadata element representing a glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public BooleanResponse updateGlossaryTerm(@PathVariable String                   serverName,
                                               @PathVariable String                   glossaryTermGUID,
@@ -326,6 +351,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update/from-template/{templateGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateGlossaryTermFromTemplate",
+            description="Update the glossary term using the properties and classifications from the parentGUID stored in the request body.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse updateGlossaryTermFromTemplate(@PathVariable String                        serverName,
                                                        @PathVariable String                        glossaryTermGUID,
@@ -352,6 +382,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/move-to/{glossaryGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="moveGlossaryTerm",
+            description="Move the glossary term from one glossary to another.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse moveGlossaryTerm(@PathVariable String                   serverName,
                                          @PathVariable String                   glossaryTermGUID,
                                          @PathVariable String                   glossaryGUID,
@@ -372,6 +407,11 @@ public class GlossaryManagerResource
      */
     @GetMapping(path = "/glossaries/terms/relationships/type-names")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getTermRelationshipTypeNames",
+            description="Return the list of term-to-term relationship names.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public NameListResponse getTermRelationshipTypeNames(@PathVariable String serverName)
     {
@@ -395,6 +435,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setupTermRelationship",
+            description="Link two terms together using a specialist relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse setupTermRelationship(@PathVariable String                  serverName,
                                               @PathVariable String                  glossaryTermOneGUID,
@@ -423,6 +468,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="updateTermRelationship",
+            description="Update the relationship properties for the two terms.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse updateTermRelationship(@PathVariable String                  serverName,
                                                @PathVariable String                  glossaryTermOneGUID,
                                                @PathVariable String                  relationshipTypeName,
@@ -450,6 +500,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/remove")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="clearTermRelationship",
+            description="Remove the relationship between two terms.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse clearTermRelationship(@PathVariable String                        serverName,
                                               @PathVariable String                        glossaryTermOneGUID,
                                               @PathVariable String                        relationshipTypeName,
@@ -476,6 +531,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="setTermAsAbstractConcept",
+            description="Classify the glossary term to indicate that it describes an abstract concept.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse setTermAsAbstractConcept(@PathVariable String                       serverName,
                                                  @PathVariable String                       glossaryTermGUID,
                                                  @RequestBody(required = false)
@@ -500,6 +560,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept/delete")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="clearTermAsAbstractConcept",
+            description="Remove the abstract concept designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse clearTermAsAbstractConcept(@PathVariable String                    serverName,
                                                    @PathVariable String                    glossaryTermGUID,
                                                    @RequestBody(required = false)
@@ -523,6 +588,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setTermAsDataValue",
+            description="Classify the glossary term to indicate that it describes a data value.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse setTermAsDataValue(@PathVariable String                       serverName,
                                            @PathVariable String                       glossaryTermGUID,
@@ -549,6 +619,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value/remove")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="clearTermAsDataValue",
+            description="Remove the data value designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse clearTermAsDataValue(@PathVariable String                    serverName,
                                              @PathVariable String                    glossaryTermGUID,
                                              @RequestBody(required = false)
@@ -574,6 +649,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-question")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="setTermAsQuestion",
+            description="Classify the glossary term to indicate that it describes a question.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse setTermAsQuestion(@PathVariable String                       serverName,
                                            @PathVariable String                       glossaryTermGUID,
                                            @RequestBody(required = false)
@@ -597,6 +677,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-question/remove")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsQuestion",
+            description="Remove the question designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse clearTermAsQuestion(@PathVariable String                    serverName,
                                             @PathVariable String                    glossaryTermGUID,
@@ -622,6 +707,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="setTermAsActivity",
+            description="Classify the glossary term to indicate that it describes a data value.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse setTermAsActivity(@PathVariable String                    serverName,
                                           @PathVariable String                    glossaryTermGUID,
                                           @RequestBody NewClassificationRequestBody requestBody)
@@ -644,6 +734,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity/remove")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsActivity",
+            description="Remove the activity designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse clearTermAsActivity(@PathVariable String                    serverName,
                                             @PathVariable String                    glossaryTermGUID,
@@ -669,6 +764,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="setTermAsContext",
+            description="Classify the glossary term to indicate that it describes a context.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public VoidResponse setTermAsContext(@PathVariable String                    serverName,
                                          @PathVariable String                    glossaryTermGUID,
                                          @RequestBody NewClassificationRequestBody requestBody)
@@ -691,6 +791,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition/delete")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsContext",
+            description="Remove the context definition designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse clearTermAsContext(@PathVariable String                   serverName,
                                            @PathVariable String                   glossaryTermGUID,
@@ -715,6 +820,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteGlossaryTerm",
+            description="Remove the metadata element representing a glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public VoidResponse deleteGlossaryTerm(@PathVariable String                         serverName,
                                            @PathVariable String                         glossaryTermGUID,
@@ -743,8 +853,8 @@ public class GlossaryManagerResource
 
     @Operation(summary="findGlossaryTerms",
             description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-            externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
-                    url="https://egeria-project.org/types/3/0330-Terms/"))
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public OpenMetadataRootElementsResponse findGlossaryTerms(@PathVariable String                  serverName,
                                                               @RequestBody(required = false)  SearchStringRequestBody requestBody)
@@ -768,6 +878,11 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="getGlossaryTermsByName",
+            description="Retrieve the list of glossary term metadata elements with a matching qualified or display name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
     public OpenMetadataRootElementsResponse   getGlossaryTermsByName(@PathVariable String             serverName,
                                                                      @RequestBody(required = false)  FilterRequestBody requestBody)
     {
@@ -789,6 +904,11 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getGlossaryTermByGUID",
+            description="Retrieve the glossary term metadata element with the supplied unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
     public OpenMetadataRootElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                                  @PathVariable String                             glossaryTermGUID,
