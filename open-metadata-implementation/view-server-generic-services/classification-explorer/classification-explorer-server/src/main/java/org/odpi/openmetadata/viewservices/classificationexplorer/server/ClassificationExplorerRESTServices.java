@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataRelationshipSummaryResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
@@ -5389,6 +5390,59 @@ public class ClassificationExplorerRESTServices extends TokenController
                     response.setRelationships(summaryList.getElementList());
                     response.setMermaidGraph(summaryList.getMermaidGraph());
                 }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier for the relationship
+     * @param requestBody options to control the query
+     *
+     * @return relationship summary or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    public MetadataRelationshipSummaryResponse getRelationshipSummaryByGUID(String         serverName,
+                                                                            String         urlMarker,
+                                                                            String         relationshipGUID,
+                                                                            GetRequestBody requestBody)
+    {
+        final String methodName = "getRelationshipSummaryByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        MetadataRelationshipSummaryResponse response = new MetadataRelationshipSummaryResponse();
+        AuditLog                            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                response.setRelationship(handler.getRelationshipSummaryByGUID(userId, relationshipGUID, null));
+            }
+            else
+            {
+                response.setRelationship(handler.getRelationshipSummaryByGUID(userId, relationshipGUID, requestBody));
             }
         }
         catch (Throwable error)

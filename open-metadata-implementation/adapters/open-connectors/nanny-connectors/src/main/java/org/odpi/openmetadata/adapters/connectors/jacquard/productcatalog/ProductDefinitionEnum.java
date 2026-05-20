@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance.CertificationsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance.ExceptionsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance.GovernanceControlsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.governance.LicensesTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.DigitalProductsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.LocationsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.OrganizationsTabularDataSetProvider;
@@ -1258,7 +1261,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductDataFieldDefinition.UPDATE_TIME},
                OpenMetadataType.TABULAR_DATA_SET.typeName,
                "Data set",
-               null,
+               new ExceptionsTabularDataSetProvider(),
                "Exceptions",
                null),
 
@@ -1305,7 +1308,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductDataFieldDefinition.UPDATE_TIME},
                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                    "Data set",
-                   null,
+                   new CertificationsTabularDataSetProvider(),
                    "Certifications",
                    null),
 
@@ -1352,7 +1355,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      ProductDataFieldDefinition.UPDATE_TIME},
              OpenMetadataType.TABULAR_DATA_SET.typeName,
              "Data set",
-             null,
+             new LicensesTabularDataSetProvider(),
              "Licenses",
              null),
 

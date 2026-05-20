@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
 public enum ProductDataFieldDefinition
 {
     /**
-     * Globally Unique Identifier for the principle element.
+     * Globally Unique Identifier for the principle element.  This is extracted from an entity element header.
      */
     GUID("Globally Unique Identifier (GUID)",
          "GUID",
@@ -68,11 +68,11 @@ public enum ProductDataFieldDefinition
                             ProductGlossaryTermDefinition.RELATED_GUID),
 
     /**
-     * Unique identifier of an open metadata element.
+     * Unique identifier of an open metadata element that is linked via a Certification, License or Exception relationship
      */
     ELEMENT_GUID("Element Unique Identifier (GUID)",
                             "Element GUID",
-                            "Unique identifier of an open metadata element.",
+                            "Unique identifier of an open metadata element that is linked via a Certification, License or Exception relationship.",
                             DataType.STRING,
                             null,
                             null,

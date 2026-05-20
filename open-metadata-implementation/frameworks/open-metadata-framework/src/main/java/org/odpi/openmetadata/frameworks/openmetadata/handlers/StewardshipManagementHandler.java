@@ -3111,6 +3111,40 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the relationship
+     * @param getOptions multiple options to control the query
+     *
+     * @return relationship properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public  MetadataRelationshipSummary getRelationshipSummaryByGUID(String     userId,
+                                                                     String     relationshipGUID,
+                                                                     GetOptions getOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String methodName = "getRelationshipSummaryByGUID";
+
+        OpenMetadataRelationship relationship = openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, getOptions);
+
+        if (relationship != null)
+        {
+            return metadataRelationshipSummaryConverter.getNewRelatedMetadataElementsBean(MetadataRelationshipSummary.class,
+                                                                                          relationship,
+                                                                                          methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Classify the element with the ConsolidatedDuplicate classification
      *
      * @param userId calling user
