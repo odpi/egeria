@@ -1286,10 +1286,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductSubscriptionDefinition.ONGOING_UPDATE},
                    "Certifications",
                    new ProductDataFieldDefinition[]{
-                           ProductDataFieldDefinition.EXCEPTION_GUID},
+                           ProductDataFieldDefinition.CERTIFICATION_GUID},
                    new ProductDataFieldDefinition[]{
                            ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
-                           ProductDataFieldDefinition.EXCEPTION_TYPE_GUID,
+                           ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID,
                            ProductDataFieldDefinition.ELEMENT_GUID,
                            ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                            ProductDataFieldDefinition.COVERAGE_START,

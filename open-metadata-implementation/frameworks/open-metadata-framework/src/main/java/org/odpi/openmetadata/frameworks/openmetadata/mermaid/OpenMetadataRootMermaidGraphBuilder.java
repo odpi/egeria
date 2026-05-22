@@ -482,6 +482,12 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedElementSummary(openMetadataRootElement.getDerivedFromDataField(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
             super.addRelatedElementSummary(openMetadataRootElement.getEquivalentSchemaAttribute(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
+            super.addRelatedElementSummaries(openMetadataRootElement.getRelatedDesignPatterns(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(openMetadataRootElement.getConsumedDesignPatterns(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(openMetadataRootElement.getConsumingDesignPatterns(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(openMetadataRootElement.getSpecializedDesignPattern(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(openMetadataRootElement.getGeneralizedDesignPattern(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+
             /*
              * Area 6
              */

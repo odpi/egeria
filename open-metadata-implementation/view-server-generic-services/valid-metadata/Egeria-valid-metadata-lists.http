@@ -2,7 +2,7 @@
 # Further Information: https://egeria-project.org/services/omvs/valid-metadata/overview/
 
 @baseURL=https://localhost:9443
-@viewServer=view-server
+@viewServer=qs-view-server
 
 ###
 # =====================================================================================================================

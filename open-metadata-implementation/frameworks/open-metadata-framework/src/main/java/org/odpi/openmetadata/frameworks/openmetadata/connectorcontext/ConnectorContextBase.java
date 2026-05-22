@@ -91,6 +91,7 @@ public class ConnectorContextBase
     private final   DataValueSpecificationClient   dataValueSpecificationClient;
     private final   DataFieldClient                dataFieldClient;
     private final   DataStructureClient            dataStructureClient;
+    private final   DesignPatternClient            designPatternClient;
     private final   EndpointClient                 endpointClient;
     private final   ExternalIdClient               externalIdClient;
     private final   ExternalReferenceClient        externalReferenceClient;
@@ -361,6 +362,17 @@ public class ConnectorContextBase
                                                    maxPageSize);
 
         this.dataStructureClient = new DataStructureClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
+        this.designPatternClient = new DesignPatternClient(this,
                                                            localServerName,
                                                            localServiceName,
                                                            connectorUserId,
@@ -1041,6 +1053,17 @@ public class ConnectorContextBase
     public DataStructureClient getDataStructureClient()
     {
         return dataStructureClient;
+    }
+
+
+    /**
+     * Return the client for managing design patterns.
+     *
+     * @return connector context client
+     */
+    public DesignPatternClient getDesignPatternClient()
+    {
+        return designPatternClient;
     }
 
 
@@ -2155,5 +2178,4 @@ public class ConnectorContextBase
                                                  connectorUserId);
         }
     }
-
 }

@@ -9,8 +9,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DesignPatternHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
@@ -1845,6 +1848,666 @@ public class SolutionArchitectRESTServices extends TokenController
             response.setElements(handler.getSolutionComponentImplementations(userId,
                                                                              solutionComponentGUID,
                                                                              requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody details of the design pattern
+     *
+     * @return unique identifier of the design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createDesignPattern(String                serverName,
+                                            NewElementRequestBody requestBody)
+    {
+        final String methodName = "createDesignPattern";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            DesignPatternProperties properties = null;
+
+            if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+            {
+                properties = designPatternProperties;
+            }
+
+            response.setGUID(handler.createDesignPattern(userId,
+                                                         requestBody,
+                                                         requestBody.getInitialClassifications(),
+                                                         properties,
+                                                         requestBody.getParentRelationshipProperties()));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new design pattern using a template.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody details of the template and overrides
+     *
+     * @return unique identifier of the design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createDesignPatternFromTemplate(String              serverName,
+                                                        TemplateRequestBody requestBody)
+    {
+        final String methodName = "createDesignPatternFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            response.setGUID(handler.createDesignPatternFromTemplate(userId,
+                                                                     requestBody,
+                                                                     requestBody.getTemplateGUID(),
+                                                                     requestBody.getReplacementProperties(),
+                                                                     requestBody.getReplacementClassifications(),
+                                                                     requestBody.getPlaceholderPropertyValues(),
+                                                                     requestBody.getParentRelationshipProperties()));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update an existing design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to update
+     * @param requestBody details of the design pattern
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public BooleanResponse updateDesignPattern(String                   serverName,
+                                               String                   designPatternGUID,
+                                               UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateDesignPattern";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            DesignPatternProperties properties = null;
+
+            if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+            {
+                properties = designPatternProperties;
+            }
+
+            response.setFlag(handler.updateDesignPattern(userId, designPatternGUID, requestBody, properties));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Link two design patterns together as parent and child.
+     *
+     * @param serverName name of the service to route the request to
+     * @param parentDesignPatternGUID unique identifier of the parent design pattern
+     * @param nestedDesignPatternGUID unique identifier of the child design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkNestedDesignPatterns(String                   serverName,
+                                                 String                   parentDesignPatternGUID,
+                                                 String                   nestedDesignPatternGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkNestedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            NestedDesignPatternProperties properties = null;
+
+            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            {
+                properties = relationshipProperties;
+            }
+
+            handler.linkNestedDesignPatterns(userId,
+                                             parentDesignPatternGUID,
+                                             nestedDesignPatternGUID,
+                                             requestBody,
+                                             properties);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param parentDesignPatternGUID unique identifier of the parent design pattern
+     * @param nestedDesignPatternGUID unique identifier of the child design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachNestedDesignPatterns(String                      serverName,
+                                                   String                      parentDesignPatternGUID,
+                                                   String                      nestedDesignPatternGUID,
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachNestedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            handler.detachNestedDesignPatterns(userId, parentDesignPatternGUID, nestedDesignPatternGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Link two design patterns together as general and specialized.
+     *
+     * @param serverName name of the service to route the request to
+     * @param generalizedDesignPatternGUID unique identifier of the generalized design pattern
+     * @param specializedDesignPatternGUID unique identifier of the specialized design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSpecializedDesignPatterns(String                   serverName,
+                                                      String                   generalizedDesignPatternGUID,
+                                                      String                   specializedDesignPatternGUID,
+                                                      NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSpecializedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            NestedDesignPatternProperties properties = null;
+
+            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            {
+                properties = relationshipProperties;
+            }
+
+            handler.linkSpecializedDesignPatterns(userId,
+                                                  generalizedDesignPatternGUID,
+                                                  specializedDesignPatternGUID,
+                                                  requestBody,
+                                                  properties);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param generalizedDesignPatternGUID unique identifier of the generalized design pattern
+     * @param specializedDesignPatternGUID unique identifier of the specialized design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSpecializedDesignPatterns(String                      serverName,
+                                                        String                      generalizedDesignPatternGUID,
+                                                        String                      specializedDesignPatternGUID,
+                                                        DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSpecializedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            handler.detachSpecializedDesignPatterns(userId, generalizedDesignPatternGUID, specializedDesignPatternGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Link two design patterns together as related.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternOneGUID unique identifier of the first design pattern
+     * @param designPatternTwoGUID unique identifier of the second design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkRelatedDesignPatterns(String                   serverName,
+                                                  String                   designPatternOneGUID,
+                                                  String                   designPatternTwoGUID,
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkRelatedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            NestedDesignPatternProperties properties = null;
+
+            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            {
+                properties = relationshipProperties;
+            }
+
+            handler.linkRelatedDesignPatterns(userId,
+                                              designPatternOneGUID,
+                                              designPatternTwoGUID,
+                                              requestBody,
+                                              properties);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternOneGUID unique identifier of the first design pattern
+     * @param designPatternTwoGUID unique identifier of the second design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachRelatedDesignPatterns(String                      serverName,
+                                                    String                      designPatternOneGUID,
+                                                    String                      designPatternTwoGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachRelatedDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            handler.detachRelatedDesignPatterns(userId, designPatternOneGUID, designPatternTwoGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete an existing design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to delete
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse deleteDesignPattern(String                  serverName,
+                                            String                  designPatternGUID,
+                                            DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteDesignPattern";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            handler.deleteDesignPattern(userId, designPatternGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of design patterns with a matching name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody search string and paging options
+     *
+     * @return list of design patterns or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getDesignPatternsByName(String            serverName,
+                                                                    FilterRequestBody requestBody)
+    {
+        final String methodName = "getDesignPatternsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getDesignPatternsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getDesignPatternsByName(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the design pattern with the matching unique identifier.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to retrieve
+     * @param requestBody options for the get
+     *
+     * @return design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getDesignPatternByGUID(String         serverName,
+                                                                  String         designPatternGUID,
+                                                                  GetRequestBody requestBody)
+    {
+        final String methodName = "getDesignPatternByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getDesignPatternByGUID(userId, designPatternGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of design patterns that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody search string and paging options
+     *
+     * @return list of design patterns or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findDesignPatterns(String                  serverName,
+                                                               SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findDesignPatterns";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findDesignPatterns(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findDesignPatterns(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

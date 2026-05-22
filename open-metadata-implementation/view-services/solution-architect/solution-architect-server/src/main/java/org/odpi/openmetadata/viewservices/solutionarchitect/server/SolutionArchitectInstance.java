@@ -21,10 +21,10 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SOLUTION_ARCHITECT;
 
+    private final DesignPatternHandler          designPatternHandler;
     private final InformationSupplyChainHandler informationSupplyChainHandler;
     private final CollectionHandler             solutionBlueprintHandler;
     private final SolutionComponentHandler      solutionComponentHandler;
-    private final ActorRoleHandler         actorRoleHandler;
 
 
     /**
@@ -83,16 +83,15 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
                                                                 myDescription.getViewServiceFullName(),
                                                                 openMetadataClient);
 
-        actorRoleHandler = new ActorRoleHandler(serverName,
-                                                auditLog,
-                                                myDescription.getViewServiceFullName(),
-                                                openMetadataClient);
+        designPatternHandler = new DesignPatternHandler(serverName,
+                                                       auditLog,
+                                                       myDescription.getViewServiceFullName(),
+                                                       openMetadataClient);
     }
 
 
     /**
-     * Return the solution manager client.  This client is from the OMF services and is for maintaining
-     * solution components.
+     * Return the solution component handler.
      *
      * @return client
      */
@@ -104,8 +103,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the solution manager client.  This client is from the OMF services and is for maintaining
-     * solution blueprints.
+     * Return the solution blueprint handler.
      *
      * @return client
      */
@@ -115,11 +113,8 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     }
 
 
-
-
     /**
-     * Return the solution manager client.  This client is from the OMF services and is for maintaining
-     * information supply chains.
+     * Return the information supply chain handler.
      *
      * @return client
      */
@@ -130,13 +125,12 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the solution manager client.  This client is from the Digital Architecture OMAS and is for maintaining
-     * information supply chains and solutions.
+     * Return the design pattern handler.
      *
      * @return client
      */
-    public ActorRoleHandler getSolutionRoleHandler()
+    public DesignPatternHandler getDesignPatternHandler()
     {
-        return actorRoleHandler;
+        return designPatternHandler;
     }
 }

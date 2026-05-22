@@ -14,6 +14,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.R
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptDesignProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.RelatedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.SpecializedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
@@ -90,6 +93,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = LinkedMediaProperties.class, name = "LinkedMediaProperties"),
                 @JsonSubTypes.Type(value = MonitoredResourceProperties.class, name = "MonitoredResourceProperties"),
                 @JsonSubTypes.Type(value = MoreInformationProperties.class, name = "MoreInformationProperties"),
+                @JsonSubTypes.Type(value = NestedDesignPatternProperties.class, name = "NestedDesignPatternProperties"),
                 @JsonSubTypes.Type(value = NestedLocationProperties.class, name = "NestedLocationProperties"),
                 @JsonSubTypes.Type(value = NetworkGatewayLinkProperties.class, name = "NetworkGatewayLinkProperties"),
                 @JsonSubTypes.Type(value = NotificationSubscriberProperties.class, name = "NotificationSubscriberProperties"),
@@ -107,6 +111,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ReportSubjectProperties.class, name = "ReportSubjectProperties"),
                 @JsonSubTypes.Type(value = ResourcePermissionsProperties.class, name = "ResourcePermissionsProperties"),
                 @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
+                @JsonSubTypes.Type(value = RelatedDesignPatternProperties.class, name = "RelatedDesignPatternProperties"),
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = SchemaAttributeDefinitionProperties.class, name = "SchemaAttributeDefinitionProperties"),
                 @JsonSubTypes.Type(value = SchemaTypeDefinitionProperties.class, name = "SchemaTypeDefinitionProperties"),
@@ -114,6 +119,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
+                @JsonSubTypes.Type(value = SpecializedDesignPatternProperties.class, name = "SpecializedDesignPatternProperties"),
                 @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = UserAccountProperties.class, name = "UserAccountProperties"),
         })

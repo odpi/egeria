@@ -21,6 +21,348 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
+# Work with Design Patterns
+# https://egeria-project.org/concepts/design-pattern
+
+@designPatternGUID=add guid here
+@parentDesignPatternGUID=add guid here
+@nestedDesignPatternGUID=add guid here
+@generalizedDesignPatternGUID=add guid here
+@specializedDesignPatternGUID=add guid here
+@designPatternOneGUID=add guid here
+@designPatternTwoGUID=add guid here
+
+###
+# @name createDesignPattern
+# Create a design pattern.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DesignPatternProperties",
+    "qualifiedName": "add unique name here",
+    "identifier" : "Add value here",
+    "legal" : "Add copyright or license statement here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "context": "add context here",
+    "problemStatement": "add problem statement here",
+    "problemExample": "add problem example here",
+    "solutionDescription": "add solution description here",
+    "solutionExample": "add solution example here",
+    "usage": "add usage here",
+    "forces": ["add forces here"],
+    "benefits": ["add benefits here"],
+    "liabilities": ["add liabilities here"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createDesignPatternFromTemplate
+# Create a new metadata element to represent a design pattern using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateDesignPattern
+# Update the properties of a design pattern.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{designPatternGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DesignPatternProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "context": "add context here",
+    "problemStatement": "add problem statement here",
+    "problemExample": "add problem example here",
+    "solutionDescription": "add solution description here",
+    "solutionExample": "add solution example here",
+    "usage": "add usage here",
+    "forces": ["add forces here"],
+    "benefits": ["add benefits here"],
+    "liabilities": ["add liabilities here"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkNestedDesignPatterns
+# Connect two design patterns together as parent and child.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{parentDesignPatternGUID}}/nested-design-patterns/{{nestedDesignPatternGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "NestedDesignPatternProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachNestedDesignPatterns
+# Remove the link between two design patterns.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{parentDesignPatternGUID}}/nested-design-patterns/{{nestedDesignPatternGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkSpecializedDesignPatterns
+# Connect two design patterns together as general and specialized.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{generalizedDesignPatternGUID}}/specialized-design-patterns/{{specializedDesignPatternGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SpecializedDesignPatternProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachSpecializedDesignPatterns
+# Remove the link between two design patterns.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{generalizedDesignPatternGUID}}/specialized-design-patterns/{{specializedDesignPatternGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkRelatedDesignPatterns
+# Connect two design patterns together as related.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{designPatternOneGUID}}/related-design-patterns/{{designPatternTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RelatedDesignPatternProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachRelatedDesignPatterns
+# Remove the link between two design patterns.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{designPatternOneGUID}}/related-design-patterns/{{designPatternTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteDesignPattern
+# Delete a design pattern. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{designPatternGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findDesignPatterns
+# Retrieve the list of design pattern metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getDesignPatternsByName
+# Returns the list of design patterns with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getDesignPatternByGUID
+# Return the properties of a specific design pattern.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/design-patterns/{{designPatternGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
 # Work with Information Supply Chains
 # https://egeria-project.org/concepts/information-supply-chain
 

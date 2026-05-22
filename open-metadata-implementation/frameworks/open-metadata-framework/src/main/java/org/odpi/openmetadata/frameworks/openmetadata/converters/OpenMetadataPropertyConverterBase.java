@@ -40,6 +40,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.D
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.RelatedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.SpecializedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
@@ -6628,8 +6632,121 @@ public class OpenMetadataPropertyConverterBase
     }
 
 
+
     /**
-     * Extract and delete the usage property from the supplied element properties.
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeContext(ElementProperties elementProperties)
+    {
+        final String methodName = "removeContext";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.CONTEXT.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeProblemStatement(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProblemStatement";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PROBLEM_STATEMENT.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeProblemExample(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProblemExample";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PROBLEM_EXAMPLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeSolutionDescription(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSolutionDescription";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.SOLUTION_DESCRIPTION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeSolutionExample(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSolutionExample";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.SOLUTION_EXAMPLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -6994,6 +7111,71 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeStringArrayProperty(localServiceName,
                                                             OpenMetadataProperty.BUSINESS_IMPERATIVES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string list or null
+     */
+    protected List<String> removeForces(ElementProperties elementProperties)
+    {
+        final String methodName = "removeForces";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.FORCES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string list or null
+     */
+    protected List<String> removeBenefits(ElementProperties elementProperties)
+    {
+        final String methodName = "removeBenefits";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.BENEFITS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string list or null
+     */
+    protected List<String> removeLiabilities(ElementProperties elementProperties)
+    {
+        final String methodName = "removeLiabilities";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.LIABILITIES.name,
                                                             elementProperties,
                                                             methodName);
         }
@@ -13899,6 +14081,13 @@ public class OpenMetadataPropertyConverterBase
                 ((NestedDataFieldProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
                 ((NestedDataFieldProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.NESTED_DESIGN_PATTERN_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new NestedDesignPatternProperties();
+
+                ((NestedDesignPatternProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((NestedDesignPatternProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new NestedFileProperties();
@@ -14095,6 +14284,13 @@ public class OpenMetadataPropertyConverterBase
                 ((RelatedContextEventProperties)relationshipBeanProperties).setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
                 ((RelatedContextEventProperties)relationshipBeanProperties).setSource(this.removeSource(elementProperties));
                 ((RelatedContextEventProperties)relationshipBeanProperties).setNotes(this.removeNotes(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RELATED_DESIGN_PATTERN_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new RelatedDesignPatternProperties();
+
+                ((RelatedDesignPatternProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((RelatedDesignPatternProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName))
             {
@@ -14303,6 +14499,13 @@ public class OpenMetadataPropertyConverterBase
                 relationshipBeanProperties = new SourcedFromProperties();
 
                 ((SourcedFromProperties)relationshipBeanProperties).setSourceVersionNumber(this.removeSourceVersionNumber(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SPECIALIZED_DESIGN_PATTERN_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new SpecializedDesignPatternProperties();
+
+                ((SpecializedDesignPatternProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((SpecializedDesignPatternProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName))
             {
@@ -15028,6 +15231,20 @@ public class OpenMetadataPropertyConverterBase
                         ((DesignModelElementProperties)beanProperties).setCanonicalName(this.removeCanonicalName(elementProperties));
                         ((DesignModelElementProperties)beanProperties).setAuthors(this.removeAuthors(elementProperties));
 
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_PATTERN.typeName))
+                    {
+                        beanProperties = new DesignPatternProperties();
+
+                        ((DesignPatternProperties)beanProperties).setContext(this.removeContext(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setForces(this.removeForces(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setProblemStatement(this.removeProblemStatement(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setProblemExample(this.removeProblemExample(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setSolutionDescription(this.removeSolutionDescription(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setSolutionExample(this.removeSolutionExample(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setBenefits(this.removeBenefits(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setLiabilities(this.removeLiabilities(elementProperties));
+                        ((DesignPatternProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE.typeName))
                     {

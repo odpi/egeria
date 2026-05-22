@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
@@ -49,6 +50,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DataStructureProperties.class, name = "DataStructureProperties"),
         @JsonSubTypes.Type(value = DataValueSpecificationProperties.class, name = "DataValueSpecificationProperties"),
         @JsonSubTypes.Type(value = DesignModelElementProperties.class, name = "DesignModelElementProperties"),
+        @JsonSubTypes.Type(value = DesignPatternProperties.class, name = "DesignPatternProperties"),
         @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
         @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
         @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),

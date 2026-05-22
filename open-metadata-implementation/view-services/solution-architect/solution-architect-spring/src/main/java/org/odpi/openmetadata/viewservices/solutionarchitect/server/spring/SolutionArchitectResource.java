@@ -1035,4 +1035,413 @@ public class SolutionArchitectResource
     {
         return restAPI.getSolutionComponentImplementations(serverName, solutionComponentGUID, requestBody);
     }
+
+
+    /**
+     * Create a new design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody details of the design pattern
+     *
+     * @return unique identifier of the design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createDesignPattern",
+            description="Create a new design pattern.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public GUIDResponse createDesignPattern(@PathVariable
+                                            String                serverName,
+                                            @RequestBody (required = false)
+                                            NewElementRequestBody requestBody)
+    {
+        return restAPI.createDesignPattern(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new design pattern using a template.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody details of the template and overrides
+     *
+     * @return unique identifier of the design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createDesignPatternFromTemplate",
+            description="Create a new design pattern using a template.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public GUIDResponse createDesignPatternFromTemplate(@PathVariable
+                                                        String              serverName,
+                                                        @RequestBody (required = false)
+                                                        TemplateRequestBody requestBody)
+    {
+        return restAPI.createDesignPatternFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update an existing design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to update
+     * @param requestBody details of the design pattern
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{designPatternGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateDesignPattern",
+            description="Update an existing design pattern.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public BooleanResponse updateDesignPattern(@PathVariable
+                                               String                   serverName,
+                                               @PathVariable
+                                               String                   designPatternGUID,
+                                               @RequestBody (required = false)
+                                               UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateDesignPattern(serverName, designPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Link two design patterns together as parent and child.
+     *
+     * @param serverName name of the service to route the request to
+     * @param parentDesignPatternGUID unique identifier of the parent design pattern
+     * @param nestedDesignPatternGUID unique identifier of the child design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{parentDesignPatternGUID}/nested-design-patterns/{nestedDesignPatternGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkNestedDesignPatterns",
+            description="Link two design patterns together as parent and child.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse linkNestedDesignPatterns(@PathVariable
+                                                 String                   serverName,
+                                                 @PathVariable
+                                                 String                   parentDesignPatternGUID,
+                                                 @PathVariable
+                                                 String                   nestedDesignPatternGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkNestedDesignPatterns(serverName, parentDesignPatternGUID, nestedDesignPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param parentDesignPatternGUID unique identifier of the parent design pattern
+     * @param nestedDesignPatternGUID unique identifier of the child design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{parentDesignPatternGUID}/nested-design-patterns/{nestedDesignPatternGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachNestedDesignPatterns",
+            description="Remove the link between two design patterns.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse detachNestedDesignPatterns(@PathVariable
+                                                   String                      serverName,
+                                                   @PathVariable
+                                                   String                      parentDesignPatternGUID,
+                                                   @PathVariable
+                                                   String                      nestedDesignPatternGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachNestedDesignPatterns(serverName, parentDesignPatternGUID, nestedDesignPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Link two design patterns together as general and specialized.
+     *
+     * @param serverName name of the service to route the request to
+     * @param generalizedDesignPatternGUID unique identifier of the generalized design pattern
+     * @param specializedDesignPatternGUID unique identifier of the specialized design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{generalizedDesignPatternGUID}/specialized-design-patterns/{specializedDesignPatternGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSpecializedDesignPatterns",
+            description="Link two design patterns together as general and specialized.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse linkSpecializedDesignPatterns(@PathVariable
+                                                      String                   serverName,
+                                                      @PathVariable
+                                                      String                   generalizedDesignPatternGUID,
+                                                      @PathVariable
+                                                      String                   specializedDesignPatternGUID,
+                                                      @RequestBody (required = false)
+                                                      NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSpecializedDesignPatterns(serverName, generalizedDesignPatternGUID, specializedDesignPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param generalizedDesignPatternGUID unique identifier of the generalized design pattern
+     * @param specializedDesignPatternGUID unique identifier of the specialized design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{generalizedDesignPatternGUID}/specialized-design-patterns/{specializedDesignPatternGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSpecializedDesignPatterns",
+            description="Remove the link between two design patterns.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse detachSpecializedDesignPatterns(@PathVariable
+                                                        String                      serverName,
+                                                        @PathVariable
+                                                        String                      generalizedDesignPatternGUID,
+                                                        @PathVariable
+                                                        String                      specializedDesignPatternGUID,
+                                                        @RequestBody (required = false)
+                                                        DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSpecializedDesignPatterns(serverName, generalizedDesignPatternGUID, specializedDesignPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Link two design patterns together as related.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternOneGUID unique identifier of the first design pattern
+     * @param designPatternTwoGUID unique identifier of the second design pattern
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{designPatternOneGUID}/related-design-patterns/{designPatternTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkRelatedDesignPatterns",
+            description="Link two design patterns together as related.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse linkRelatedDesignPatterns(@PathVariable
+                                                  String                   serverName,
+                                                  @PathVariable
+                                                  String                   designPatternOneGUID,
+                                                  @PathVariable
+                                                  String                   designPatternTwoGUID,
+                                                  @RequestBody (required = false)
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkRelatedDesignPatterns(serverName, designPatternOneGUID, designPatternTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the link between two design patterns.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternOneGUID unique identifier of the first design pattern
+     * @param designPatternTwoGUID unique identifier of the second design pattern
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{designPatternOneGUID}/related-design-patterns/{designPatternTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachRelatedDesignPatterns",
+            description="Remove the link between two design patterns.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse detachRelatedDesignPatterns(@PathVariable
+                                                    String                      serverName,
+                                                    @PathVariable
+                                                    String                      designPatternOneGUID,
+                                                    @PathVariable
+                                                    String                      designPatternTwoGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachRelatedDesignPatterns(serverName, designPatternOneGUID, designPatternTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Delete an existing design pattern.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to delete
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{designPatternGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteDesignPattern",
+            description="Delete an existing design pattern.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public VoidResponse deleteDesignPattern(@PathVariable
+                                            String                  serverName,
+                                            @PathVariable
+                                            String                  designPatternGUID,
+                                            @RequestBody (required = false)
+                                            DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteDesignPattern(serverName, designPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of design patterns with a matching name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody search string and paging options
+     *
+     * @return list of design patterns or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDesignPatternsByName",
+            description="Retrieve the list of design patterns with a matching name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public OpenMetadataRootElementsResponse getDesignPatternsByName(@PathVariable
+                                                                    String            serverName,
+                                                                    @RequestBody (required = false)
+                                                                    FilterRequestBody requestBody)
+    {
+        return restAPI.getDesignPatternsByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the design pattern with the matching unique identifier.
+     *
+     * @param serverName name of the service to route the request to
+     * @param designPatternGUID unique identifier of the design pattern to retrieve
+     * @param requestBody options for the get
+     *
+     * @return design pattern or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/{designPatternGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDesignPatternByGUID",
+            description="Retrieve the design pattern with the matching unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public OpenMetadataRootElementResponse getDesignPatternByGUID(@PathVariable
+                                                                  String         serverName,
+                                                                  @PathVariable
+                                                                  String         designPatternGUID,
+                                                                  @RequestBody (required = false)
+                                                                  GetRequestBody requestBody)
+    {
+        return restAPI.getDesignPatternByGUID(serverName, designPatternGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of design patterns that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody search string and paging options
+     *
+     * @return list of design patterns or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/design-patterns/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findDesignPatterns",
+            description="Retrieve the list of design patterns that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/design-pattern"))
+
+    public OpenMetadataRootElementsResponse findDesignPatterns(@PathVariable
+                                                               String                  serverName,
+                                                               @RequestBody (required = false)
+                                                               SearchStringRequestBody requestBody)
+    {
+        return restAPI.findDesignPatterns(serverName, requestBody);
+    }
 }

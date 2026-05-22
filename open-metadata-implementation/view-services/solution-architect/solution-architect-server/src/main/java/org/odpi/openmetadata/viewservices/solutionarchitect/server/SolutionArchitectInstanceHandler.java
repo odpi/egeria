@@ -124,17 +124,17 @@ public class SolutionArchitectInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public ActorRoleHandler getSolutionRoleHandler(String userId,
-                                                   String serverName,
-                                                   String serviceOperationName) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public DesignPatternHandler getDesignPatternHandler(String userId,
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         SolutionArchitectInstance instance = (SolutionArchitectInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getSolutionRoleHandler();
+            return instance.getDesignPatternHandler();
         }
 
         return null;
