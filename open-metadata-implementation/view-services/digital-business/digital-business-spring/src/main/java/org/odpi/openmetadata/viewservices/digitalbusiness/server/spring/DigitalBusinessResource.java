@@ -153,7 +153,7 @@ public class DigitalBusinessResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachDigitalSupport",
-            description="Detach a nested business capability from a broader business capability definition.",
+            description="Detach a business capability definition from an element that provides digital support.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/business-capability"))
 
@@ -189,7 +189,7 @@ public class DigitalBusinessResource
 
     @Operation(summary="setBusinessSignificant",
             description="Classify an element to indicate that it is significant to a particular business capability.",
-            externalDocs=@ExternalDocumentation(description="Subject Areas",
+            externalDocs=@ExternalDocumentation(description="Business Capabilities",
                     url="https://egeria-project.org/concepts/business-capability/"))
 
     public VoidResponse setBusinessSignificant(@PathVariable String                    serverName,
@@ -218,7 +218,7 @@ public class DigitalBusinessResource
 
     @Operation(summary="clearBusinessSignificance",
             description="Remove the business significant classification from the element.",
-            externalDocs=@ExternalDocumentation(description="Subject Areas",
+            externalDocs=@ExternalDocumentation(description="Business Capabilities",
                     url="https://egeria-project.org/concepts/business-capability/"))
 
     public VoidResponse clearBusinessSignificance(@PathVariable String                    serverName,

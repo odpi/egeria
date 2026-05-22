@@ -5,9 +5,26 @@
 
 # Asset Catalog OMVS
 
-The Asset Catalog OMVS enables the caller to retrieve assets and the elements linked to them.
+The Asset Catalog Open Metadata View Service (OMVS) provides a REST API to search for digital resources 
+(assets) that are catalogued in open metadata. It also enables the caller to retrieve asset 
+properties, schema, lineage and other related information.
 
-Link to documentation: [https://egeria-project.org/services/omvs/asset-catalog/overview/](https://egeria-project.org/services/omvs/asset-catalog/overview/)
+The Asset Catalog OMVS supports the following key features:
+
+* **Asset Search**: Locate assets using a search string or regular expression across the asset domain.
+* **Asset Graphs**: Retrieve all elements anchored to an asset, including their relationships, to 
+  visualize the asset's structure and context.
+* **Lineage Graphs**: Explore the lineage of an asset to understand how data flows in and out of it, 
+  including relationships from the asset itself and its anchored schema elements.
+* **Supported Types**: Query the subtypes of assets supported by the ecosystem.
+
+## Further information
+
+* [Asset Catalog OMVS Overview](https://egeria-project.org/services/omvs/asset-catalog/overview/)
+* [Asset Concept](https://egeria-project.org/concepts/asset/)
+* [Lineage Management](https://egeria-project.org/features/lineage-management/overview/)
+
+Sample requests for the REST API can be found in `Egeria-api-asset-catalog.http`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -1,14 +1,24 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Product Manager OMVS 
 
-The Product Manager OMVS enables the caller to define and manage context events.
-[Context events](https://egeria-project.org/concepts/context-event/) are used to record significant events that affect the performance of systems, people and organizations - and hence impact data values.
+The Product Manager Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
+relating to the definition and maintenance of digital products and digital product families.
 
-Link to documentation: [https://egeria-project.org/services/omvs/product-manager/overview/](https://egeria-project.org/services/omvs/product-manager/overview/)
+The Product Manager OMVS supports the following key features:
+
+* **Digital Product Dependency Management**: Link and unlink dependent digital products to represent product hierarchies and usage.
+* **Product Manager Assignment**: Assign and detach product managers to digital products to define responsibility and ownership.
+
+## Further information
+
+* [Product Manager OMVS Overview](https://egeria-project.org/services/omvs/product-manager/overview/)
+* [Digital Product Concept](https://egeria-project.org/concepts/digital-product/)
+
+Sample requests for the REST API can be found in `Egeria-api-product-manager.http`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

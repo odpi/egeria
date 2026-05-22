@@ -5,9 +5,25 @@
 
 # Classification Explorer OMVS
 
-The Classification Explorer OMVS enables the caller retrieve and view metadata elements based on their types or the classifications/relationships attached to them.
+The Classification Explorer OMVS enables the caller to retrieve and view metadata elements based on their types or the classifications/relationships attached to them.
+It provides a flexible way to explore the metadata ecosystem, focusing on how elements are categorized and interconnected.
 
-Link to documentation: [https://egeria-project.org/services/omvs/classification-explorer/overview/](https://egeria-project.org/services/omvs/classification-explorer/overview/)
+## Key features
+
+- **Classification Management**: Support for managing various governance classifications such as impact, confidence, criticality, confidentiality, and retention.
+- **Relationship Management**: Capabilities for linking elements through semantic assignments, scopes, resource lists, and more.
+- **Metadata Exploration**: Tools for finding elements by type, unique name, property values, or specific classifications.
+- **Governance and Security**: Managing security tags, ownership, and governance expectations/measurements.
+- **Duplicate Management**: Identifying and linking peer or consolidated duplicates.
+- **Search and Keywords**: Attaching and managing search keywords for enhanced discoverability.
+
+Further information:
+
+* [Classification Explorer OMVS Overview](https://egeria-project.org/services/omvs/classification-explorer/overview/)
+* [Governance Classification Concept](https://egeria-project.org/concepts/governance-classification/)
+* [Semantic Assignment Concept](https://egeria-project.org/concepts/semantic-assignment/)
+
+Sample REST API requests: [Egeria-api-classification-explorer.http](Egeria-api-classification-explorer.http)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
