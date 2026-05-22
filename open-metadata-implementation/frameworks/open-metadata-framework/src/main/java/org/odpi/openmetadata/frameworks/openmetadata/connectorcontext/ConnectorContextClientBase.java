@@ -27,10 +27,9 @@ public class ConnectorContextClientBase
     protected final String               localServiceName;
     protected final String               connectorUserId;
     protected final String               connectorGUID;
-
-    protected       String   externalSourceGUID;
-    protected       String   externalSourceName;
-    protected final AuditLog auditLog;
+    protected       String               externalSourceGUID;
+    protected       String               externalSourceName;
+    protected final AuditLog             auditLog;
     protected final int                  maxPageSize;
 
     /*

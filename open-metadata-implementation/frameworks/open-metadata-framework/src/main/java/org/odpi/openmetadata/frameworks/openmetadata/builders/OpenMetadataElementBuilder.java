@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
@@ -1282,9 +1283,6 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.CANONICAL_NAME.name,
                                                                                  designModelElementProperties.getCanonicalName());
-                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                                      OpenMetadataProperty.AUTHORS.name,
-                                                                                      designModelElementProperties.getAuthors());
 
                             if (properties instanceof SolutionComponentProperties solutionComponentProperties)
                             {
@@ -1306,6 +1304,37 @@ public class OpenMetadataElementBuilder
                                                                                        solutionPortProperties.getDirection().name());
                                 }
                             }
+                        }
+                        else if (properties instanceof DesignPatternProperties designPatternProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.CONTEXT.name,
+                                                                                 designPatternProperties.getContext());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.PROBLEM_STATEMENT.name,
+                                                                                 designPatternProperties.getProblemStatement());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.PROBLEM_EXAMPLE.name,
+                                                                                 designPatternProperties.getProblemExample());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SOLUTION_DESCRIPTION.name,
+                                                                                 designPatternProperties.getSolutionDescription());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SOLUTION_EXAMPLE.name,
+                                                                                 designPatternProperties.getSolutionExample());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.USAGE.name,
+                                                                                 designPatternProperties.getUsage());
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.FORCES.name,
+                                                                                      designPatternProperties.getForces());
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.BENEFITS.name,
+                                                                                      designPatternProperties.getBenefits());
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.LIABILITIES.name,
+                                                                                      designPatternProperties.getLiabilities());
+
                         }
                         else if (properties instanceof ExternalReferenceProperties externalReferenceProperties)
                         {

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassi
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataPropertyConverterBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -40,8 +42,10 @@ public class OpenMetadataTypeTest
     private final Map<String, List<TypeDefAttribute>> typePropertyMap  = new HashMap<>();
     private final Map<String, String>                 usedGUIDMap      = new HashMap<>();
 
-    private void setUpTypeMaps()
+    private void setUpTypeMaps() throws InvalidParameterException
     {
+        final String methodName = "setUpTypeMaps";
+
         OpenMetadataTypesArchive archive = new OpenMetadataTypesArchive();
         //load the archive
         OpenMetadataArchive          archiveProperties = archive.getOpenMetadataArchive();
@@ -52,19 +56,41 @@ public class OpenMetadataTypeTest
 
         for (TypeDef newTypeDef : typeStore.getNewTypeDefs())
         {
-            typeMap.put(newTypeDef.getName(), newTypeDef);
+            setUpType(newTypeDef);
+        }
 
-            if (newTypeDef.getSuperType() != null)
+        if (typeStore.getTypeDefPatches() != null)
+        {
+            for (TypeDefPatch typeDefPatch : typeStore.getTypeDefPatches())
             {
-                typeSuperTypeMap.put(newTypeDef.getName(), newTypeDef.getSuperType().getName());
+                if (typeDefPatch.getSuperType() != null)
+                {
+                    OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+                    TypeDef newTypeDef = utilities.applyPatch("OpenMetadataTypeTest",
+                                                              typeMap.get(typeDefPatch.getTypeDefName()),
+                                                                          typeDefPatch,
+                                                                          methodName);
+                    setUpType(newTypeDef);
+                }
             }
+        }
+    }
 
-            List<TypeDefAttribute> typeDefAttributes = getSuperTypeProperties(newTypeDef.getName());
 
-            if (typeDefAttributes != null)
-            {
-                typePropertyMap.put(newTypeDef.getName(), typeDefAttributes);
-            }
+    private void setUpType(TypeDef newTypeDef)
+    {
+        typeMap.put(newTypeDef.getName(), newTypeDef);
+
+        if (newTypeDef.getSuperType() != null)
+        {
+            typeSuperTypeMap.put(newTypeDef.getName(), newTypeDef.getSuperType().getName());
+        }
+
+        List<TypeDefAttribute> typeDefAttributes = getSuperTypeProperties(newTypeDef.getName());
+
+        if (typeDefAttributes != null)
+        {
+            typePropertyMap.put(newTypeDef.getName(), typeDefAttributes);
         }
     }
 
@@ -152,7 +178,7 @@ public class OpenMetadataTypeTest
     /**
      * Validated the values of the enum.
      */
-    @Test public void testAllTypes()
+    @Test public void testAllTypes() throws InvalidParameterException
     {
         setUpTypeMaps();
 

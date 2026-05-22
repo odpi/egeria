@@ -34,6 +34,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.D
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.RelatedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.SpecializedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
@@ -5654,7 +5658,8 @@ public enum OpenMetadataType
                    "DesignPattern",
                    OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
                    "8ad69576-a9a5-41e9-a09a-9e49f65aaad8",
-                   "A description of a common solution with details of the problems it solves and its pros and cons."),
+                   "A description of a common solution with details of the problems it solves and its pros and cons.",
+                   DesignPatternProperties.class),
 
     /**
      * Links design patterns together.
@@ -5663,7 +5668,28 @@ public enum OpenMetadataType
                                         "RelatedDesignPattern",
                                         OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
                                         "89c2f489-dfd5-4313-995e-95bfc81b8dcd",
-                                        "Links design patterns together."),
+                                        "Links design patterns together.",
+                                        RelatedDesignPatternProperties.class),
+
+    /**
+     * Links a design pattern to elements in its solution that are also design patterns.
+     */
+    NESTED_DESIGN_PATTERN_RELATIONSHIP("884dcc48-be3d-46fb-b48d-f946db07e434",
+                                        "NestedDesignPattern",
+                                        OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
+                                        "ce25cf15-f172-4308-90da-27c2bc0cfe5a",
+                                        "Links a design pattern to elements in its solution that are also design patterns.",
+                                        NestedDesignPatternProperties.class),
+
+    /**
+     * Links a design pattern to a specialized version of the pattern.
+     */
+    SPECIALIZED_DESIGN_PATTERN_RELATIONSHIP("c756e395-d3dc-463b-8a0d-e10384133c8d",
+                                        "SpecializedDesignPattern",
+                                        OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
+                                        "a4847caf-73fb-4df0-8042-74e774da431d",
+                                        "Links a design pattern to a specialized version of the pattern..",
+                                        SpecializedDesignPatternProperties.class),
 
 
     /* ============================================================================================================================*/

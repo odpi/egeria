@@ -578,6 +578,13 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setDerivedFromDataField(super.getRelatedElement(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setRelatedDesignPatterns(super.getRelatedElements(OpenMetadataType.RELATED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements));
+            attributedMetadataElement.setConsumedDesignPatterns(super.getRelatedElements(OpenMetadataType.NESTED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setConsumingDesignPatterns(super.getRelatedElements(OpenMetadataType.NESTED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setSpecializedDesignPattern(super.getRelatedElements(OpenMetadataType.SPECIALIZED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setGeneralizedDesignPattern(super.getRelatedElements(OpenMetadataType.SPECIALIZED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements, true));
+
+
             /*
              * Area 6
              */

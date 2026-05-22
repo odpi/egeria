@@ -10109,7 +10109,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "relatedDesignPattern";
+        final String                     end1AttributeName            = "relatedDesignPatterns";
         final String                     end1AttributeDescription     = "Another design pattern that operates in similar contexts.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -10124,7 +10124,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "relatedDesignPattern";
+        final String                     end2AttributeName            = "relatedDesignPatterns";
         final String                     end2AttributeDescription     = "Another design pattern that operates in similar contexts.";
         final String                     end2AttributeDescriptionGUID = null;
 
