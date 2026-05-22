@@ -1,14 +1,28 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Digital Business OMVS 
 
-The Digital Business OMVS enables the caller to define and manage context events.
-[Context events](https://egeria-project.org/concepts/context-event/) are used to record significant events that affect the performance of systems, people and organizations - and hence impact data values.
+The Digital Business Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
+relating to the definition and maintenance of the business context description used to identify where 
+business value is being derived from.
 
-Link to documentation: [https://egeria-project.org/services/omvs/digital-business/overview/](https://egeria-project.org/services/omvs/digital-business/overview/)
+The Digital Business OMVS supports the following key features:
+
+* **Business Capabilities**: Define the capabilities that an organization has or needs. These can be 
+  organized into hierarchies to show how broad capabilities are supported by more specific ones.
+* **Digital Support**: Link business capabilities to the digital services and elements that support them.
+* **Business Significance**: Classify metadata elements to indicate their significance to specific 
+  business capabilities, providing business context to technical metadata.
+
+## Further information
+
+* [Digital Business OMVS Overview](https://egeria-project.org/services/omvs/digital-business/overview/)
+* [Business Capability Concept](https://egeria-project.org/concepts/business-capability/)
+
+Sample requests for the REST API can be found in `Egeria-api-digital-business.http`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The ProductManagerRESTServices provides the server-side implementation of the Product Manager Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).  This interface provides access to digital products and digital product families.
  */
 public class ProductManagerRESTServices extends TokenController
 {

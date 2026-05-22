@@ -14,7 +14,7 @@ public enum ViewServiceDescription
      * Create new assets, software capabilities and link them to other elements.
      */
     ASSET_MAKER(201,
-                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     ComponentDevelopmentStatus.STABLE,
                      "Asset Maker",
                      "asset-maker",
                      "Create new assets, software capabilities and link them to other elements."),
@@ -381,13 +381,13 @@ public enum ViewServiceDescription
                    "Manages the definition and maintenance of the business context description used to identify where business value is being derived from."),
 
     /**
-     * Manages the creation and maintenance of data pipelines, open metadata templates and reference data.
+     * Manages the creation and maintenance of data pipelines and tabular data sets.
      */
     DATA_ENGINEER(242,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Data Engineer",
                    "data-engineer",
-                   "Manages the creation and maintenance of data pipelines, open metadata templates and reference data."),
+                   "Manages the creation and maintenance of data pipelines and tabular data sets.."),
 
     ;
 

@@ -21,8 +21,8 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Notification Types
-# https://egeria-project.org/concepts/notification-type
+# Work with Business Capabilities
+# https://egeria-project.org/concepts/business-capability
 
 @businessCapabilityGUID=add guid here
 @supportingBusinessCapabilityGUID=add guid here
