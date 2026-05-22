@@ -318,6 +318,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents
 org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing
 org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels
+org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns
 org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness
 org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers
 org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
