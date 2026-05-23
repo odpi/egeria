@@ -384,7 +384,7 @@ public enum ViewServiceDescription
      * Manages the creation and maintenance of data pipelines and tabular data sets.
      */
     DATA_ENGINEER(242,
-                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   ComponentDevelopmentStatus.STABLE,
                    "Data Engineer",
                    "data-engineer",
                    "Manages the creation and maintenance of data pipelines and tabular data sets.."),

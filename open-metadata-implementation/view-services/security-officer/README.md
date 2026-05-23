@@ -7,7 +7,9 @@
 
 The Security Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.
 
-Its features include:
+## Key Features
+
+The Security officer API features include:
 
 * **User Account Management**: Setting up and maintaining user accounts within the platform's security connectors.
 * **Security Access Control**: Configuring and retrieving security access control rules that protect open metadata.
@@ -15,7 +17,7 @@ Its features include:
 
 ## Further information
 
-* [Security Officer OMVS Overview](https://egeria-project.org/services/omvs/security-officer/overview/)
+* [Security Officer API Overview](https://egeria-project.org/services/omvs/security-officer/overview/)
 * [Governance Zone Concept](https://egeria-project.org/concepts/governance-zone/)
 * [Metadata Security Concept](https://egeria-project.org/features/metadata-security/overview/)
 

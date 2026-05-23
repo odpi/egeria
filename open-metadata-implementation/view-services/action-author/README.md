@@ -17,7 +17,7 @@ action determines which action(s) run next. The choreographed sequence of action
 
 ## Further information
 
-* [Action Author OMVS Overview](https://egeria-project.org/services/omvs/action-author/overview/)
+* [Action Author API Overview](https://egeria-project.org/services/omvs/action-author/overview/)
 * [Governance Action Concept](https://egeria-project.org/concepts/governance-action)
 * [Governance Action Type Concept](https://egeria-project.org/concepts/governance-action-type)
 * [Governance Action Process Concept](https://egeria-project.org/concepts/governance-action-process)

@@ -16,9 +16,8 @@ The Schema Maker OMVS provides user interfaces supporting the creation and editi
 
 ### Further information
 
-*   [Schema Maker OMVS Overview](https://egeria-project.org/services/omvs/schema-maker/overview/)
-*   [Schema Type Concept](https://egeria-project.org/concepts/schema-type)
-*   [Schema Attribute Concept](https://egeria-project.org/concepts/schema-attribute)
+*   [Schema Maker API Overview](https://egeria-project.org/services/omvs/schema-maker/overview/)
+*   [Schema Concept](https://egeria-project.org/concepts/schema)
 
 ----
 Sample REST API requests: [Egeria-api-schema-maker.http](Egeria-api-schema-maker.http)

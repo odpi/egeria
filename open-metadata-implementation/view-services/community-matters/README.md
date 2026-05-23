@@ -11,14 +11,16 @@ relating to the management of communities and their membership.
 Communities bring people together from across the organization around a common theme, activity or skill. 
 They are particularly useful for governance programs and cross-organization initiatives.
 
-The Community Matters OMVS supports the following key features:
+## Key Features
+
+The Community Matters API supports the following key features:
 
 * **Community Management**: Create, update, and delete communities.
 * **Membership Management**: Manage the members of a community and their roles.
 
 ## Further information
 
-* [Community Matters OMVS Overview](https://egeria-project.org/services/omvs/community-matters/overview/)
+* [Community Matters API Overview](https://egeria-project.org/services/omvs/community-matters/overview/)
 * [Community Concept](https://egeria-project.org/concepts/community/)
 
 Sample requests for the REST API can be found in `Egeria-api-community-matters.http`.

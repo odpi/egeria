@@ -11,7 +11,7 @@ that affect the performance of systems, people and organizations - and hence imp
 
 ## Key Features
 
-The Time Keeper OMVS provides the following capabilities:
+The Time Keeper API provides the following capabilities:
 
 - **Context Event Management**: Support for creating, updating, and deleting context events, 
   including creation from templates to ensure consistency across the ecosystem.
@@ -27,7 +27,7 @@ The Time Keeper OMVS provides the following capabilities:
 
 ## Further information
 
-- [Time Keeper OMVS Overview](https://egeria-project.org/services/omvs/time-keeper/overview/)
+- [Time Keeper API Overview](https://egeria-project.org/services/omvs/time-keeper/overview/)
 - [Context Event Concept](https://egeria-project.org/concepts/context-event/)
 
 Sample REST API requests can be found in 

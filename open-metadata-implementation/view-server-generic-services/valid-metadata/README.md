@@ -11,7 +11,7 @@ is consistent and follows established standards, such as code tables or allowed 
 
 ## Key Features
 
-The Valid Metadata OMVS provides the following capabilities:
+The Valid Metadata API provides the following capabilities:
 
 - **Valid Metadata Value Management**: Support for setting up, clearing, and retrieving valid metadata values.
   This includes mapping values for different contexts and providing consistent values across different types.
@@ -23,8 +23,8 @@ The Valid Metadata OMVS provides the following capabilities:
 
 ## Further information
 
-- [Valid Metadata OMVS Overview](https://egeria-project.org/services/omvs/valid-metadata/overview/)
-- [Valid Value Concept](https://egeria-project.org/concepts/valid-value/)
+- [Valid Metadata API Overview](https://egeria-project.org/services/omvs/valid-metadata/overview/)
+- [Managing Valid Metadata Values](https://egeria-project.org/guides/planning/valid-values/overview/)
 
 Sample REST API requests can be found in:
 - [Egeria-api-valid-metadata.http](Egeria-api-valid-metadata.http)

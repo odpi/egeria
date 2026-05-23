@@ -9,6 +9,8 @@ The Solution Architect Open Metadata View Service (OMVS) provides a REST API to 
 relating to the definition and display of solution blueprints and their supporting solution components, 
 information supply chains and design patterns.
 
+## Key Features
+
 During the planning phase of a project, architects typically use drawing tools to sketch out the new 
 components that are to be developed and how they relate to existing components. 
 
@@ -23,11 +25,11 @@ components that are to be developed and how they relate to existing components.
 * **Solution components** represent the individual parts of a solution.
 * **Design patterns** provide reusable solutions to commonly occurring problems in solution design.
 
-The Solution Architect OMVS supports the definition and display of these elements and their relationships.
+The Solution Architect API supports the definition and display of these elements and their relationships.
 
 ## Further information
 
-* [Solution Architect OMVS Overview](https://egeria-project.org/services/omvs/solution-architect/overview/)
+* [Solution Architect API Overview](https://egeria-project.org/services/omvs/solution-architect/overview/)
 * [Solution Blueprint Concept](https://egeria-project.org/concepts/solution-blueprint)
 * [Information Supply Chain Concept](https://egeria-project.org/concepts/information-supply-chain)
 * [Design Pattern Concept](https://egeria-project.org/concepts/design-pattern)

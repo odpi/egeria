@@ -8,7 +8,9 @@
 The Reference Data Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the capture and maintenance of reference data such as code tables and valid metadata values.
 
-The Reference Data OMVS supports the following key features:
+## Key Features
+
+The Reference Data API supports the following key features:
 
 * **Valid Value Definition Management**: Creation, retrieval, update and deletion of valid value definitions.
 * **Valid Value Set Management**: Organizing valid values into sets and hierarchies to represent code tables and taxonomies.
@@ -18,8 +20,9 @@ The Reference Data OMVS supports the following key features:
 
 ## Further information
 
-* [Reference Data OMVS Overview](https://egeria-project.org/services/omvs/reference-data/overview/)
+* [Reference Data API Overview](https://egeria-project.org/services/omvs/reference-data/overview/)
 * [Valid Value Concept](https://egeria-project.org/concepts/valid-value-definition/)
+* [Reference Data Management](https://egeria-project.org/features/reference-data-management/overview)
 
 Sample requests for the REST API can be found in `Egeria-api-reference-data.http`.
 

@@ -8,7 +8,9 @@
 The Location Arena Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the definition and maintenance of locations.
 
-The Location Arena OMVS supports the following key features:
+## Key Features
+
+The Location Arena API supports the following key features:
 
 * **Location Management**: Create, update, and delete locations.
 * **Relationship Management**: Define various relationships between locations to show how they are 
@@ -17,7 +19,7 @@ The Location Arena OMVS supports the following key features:
 
 ## Further information
 
-* [Location Arena OMVS Overview](https://egeria-project.org/services/omvs/location-arena/overview/)
+* [Location Arena API Overview](https://egeria-project.org/services/omvs/location-arena/overview/)
 * [Location Concept](https://egeria-project.org/concepts/location/)
 
 Sample requests for the REST API can be found in `Egeria-api-location-arena.http`.

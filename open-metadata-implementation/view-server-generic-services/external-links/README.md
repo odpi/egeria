@@ -5,7 +5,7 @@
 
 # External Links OMVS
 
-The External Links OMVS enables the caller to manage the definitions of external references and external identifiers.
+The External Links API enables the caller to manage the definitions of external references and external identifiers.
 
 ### Key Features
 
@@ -19,9 +19,9 @@ The External Links OMVS enables the caller to manage the definitions of external
 
 ### Further information
 
-* [External Links OMVS Overview](https://egeria-project.org/services/omvs/external-links/overview/)
+* [External Links API Overview](https://egeria-project.org/services/omvs/external-links/overview/)
 * [External Reference Concept](https://egeria-project.org/concepts/external-reference/)
-* [External Identifier Concept](https://egeria-project.org/concepts/external-identifier/)
+* [External Identifier Concept](https://egeria-project.org/features/external-identifiers/overview/)
 
 ----
 Sample REST API requests can be found in [Egeria-api-external-links.http](Egeria-api-external-links.http).

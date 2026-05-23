@@ -13,7 +13,9 @@ This expertise will not be there indefinitely as individuals move on to new role
 Subject areas define the topic areas where the gathering of subject matter expertise is needed to enhance 
 the organization's capability. 
 
-The Subject Area OMVS provides APIs for defining the subject areas you need to focus on and organizing 
+## Key Features
+
+The Subject Area API provides operations for defining the subject areas you need to focus on and organizing 
 the resulting knowledge:
 
 * **Subject Area Management**: Tools for creating, updating, and deleting subject area definitions. 
@@ -23,7 +25,7 @@ the resulting knowledge:
 
 ## Further information
 
-* [Subject Area OMVS Overview](https://egeria-project.org/services/omvs/subject-area/overview/)
+* [Subject Area API Overview](https://egeria-project.org/services/omvs/subject-area/overview/)
 * [Subject Area Concept](https://egeria-project.org/concepts/subject-area/)
 
 Sample requests for the REST API can be found in `Egeria-api-subject-area.http`.

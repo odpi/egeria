@@ -9,7 +9,9 @@ The Data Designer Open Metadata View Service (OMVS) provides a REST API to suppo
 relating to the definition of data structures, data fields and data value specifications.
 These can be assembled into data specifications to describe the data requirements for a project or digital product.
 
-The Data Designer OMVS supports the following key concepts:
+## Key Concepts
+
+The Data Designer API supports the following key concepts:
 
 * **Data Structures**: Reusable definitions of the structure of data (e.g., a record or a message).
 * **Data Fields**: Individual fields within a data structure.
@@ -21,7 +23,7 @@ These definitions can also be linked to certification types to guide automated d
 
 ## Further information
 
-* [Data Designer OMVS Overview](https://egeria-project.org/services/omvs/data-designer/overview/)
+* [Data Designer API Overview](https://egeria-project.org/services/omvs/data-designer/overview/)
 * [Data Structure Concept](https://egeria-project.org/concepts/data-structure)
 * [Data Field Concept](https://egeria-project.org/concepts/data-field)
 * [Data Value Specification Concept](https://egeria-project.org/concepts/data-value-specification)
