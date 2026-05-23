@@ -10,7 +10,9 @@ relating to the discovery and analysis of digital resources (assets) and their d
 It enables external survey and analysis engines (such as data quality analysers) to load their findings 
 into open metadata.
 
-The Data Discovery OMVS supports the following key concepts:
+## Key Concepts
+
+The Data Discovery API supports the following key concepts:
 
 * **Survey Reports**: Capture the analysis of IT resources and data from a specific run of a survey engine.
 * **Annotations**: Individual findings within a survey report. These can be linked to the elements they describe, 
@@ -18,9 +20,8 @@ The Data Discovery OMVS supports the following key concepts:
 
 ## Further information
 
-* [Data Discovery OMVS Overview](https://egeria-project.org/services/omvs/data-discovery/overview/)
-* [Survey Report Concept](https://egeria-project.org/concepts/survey-report/)
-* [Annotation Concept](https://egeria-project.org/concepts/annotation/)
+* [Data Discovery API Overview](https://egeria-project.org/services/omvs/data-discovery/overview/)
+* [Survey Reports and Annotation Concepts](https://egeria-project.org/concepts/survey-report/)
 
 Sample requests for the REST API can be found in `Egeria-api-data-discovery.http`.
 

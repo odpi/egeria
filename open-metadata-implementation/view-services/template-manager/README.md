@@ -8,6 +8,8 @@
 The Template Manager OMVS enables the caller to retrieve and refine the templates for use during cataloguing.
 It supports the management of template definitions and their application to other metadata elements.
 
+## Key Features
+
 Key features of the service include:
 
 * **Template Management**: Classifying metadata elements as templates or template substitutes, which allows them to be used as blueprints for creating new elements.
@@ -18,7 +20,7 @@ These capabilities help ensure consistency and quality in the metadata catalog b
 
 ## Further information
 
-* [Template Manager OMVS Overview](https://egeria-project.org/services/omvs/template-manager/overview/)
+* [Template Manager API Overview](https://egeria-project.org/services/omvs/template-manager/overview/)
 * [Templated Cataloguing](https://egeria-project.org/features/templated-cataloguing/overview/)
 
 ----

@@ -20,7 +20,7 @@ The Lineage Linker OMVS provides support for user interfaces that need to create
 
 ## Further information
 
-- [Lineage Linker OMVS Overview](https://egeria-project.org/services/omvs/lineage-linker/overview/)
+- [Lineage Linker API Overview](https://egeria-project.org/services/omvs/lineage-linker/overview/)
 - [Lineage Management Concept](https://egeria-project.org/features/lineage-management/overview/)
 - [Sample REST API requests](Egeria-api-lineage-linker.http)
 

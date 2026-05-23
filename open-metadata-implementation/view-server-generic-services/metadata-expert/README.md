@@ -29,7 +29,6 @@ The service supports a wide range of operations across the metadata lifecycle:
 
 - [Metadata Expert OMVS Overview](https://egeria-project.org/services/omvs/metadata-expert/overview/)
 - [Open Metadata Types](https://egeria-project.org/types/)
-- [Metadata Management Concepts](https://egeria-project.org/concepts/metadata-management/)
 
 ----
 Sample REST API requests can be found in [Egeria-api-metadata-expert.http](Egeria-api-metadata-expert.http).

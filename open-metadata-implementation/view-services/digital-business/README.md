@@ -9,7 +9,9 @@ The Digital Business Open Metadata View Service (OMVS) provides a REST API to su
 relating to the definition and maintenance of the business context description used to identify where 
 business value is being derived from.
 
-The Digital Business OMVS supports the following key features:
+## Key Features 
+
+The Digital Business API supports the following key features:
 
 * **Business Capabilities**: Define the capabilities that an organization has or needs. These can be 
   organized into hierarchies to show how broad capabilities are supported by more specific ones.
@@ -19,7 +21,7 @@ The Digital Business OMVS supports the following key features:
 
 ## Further information
 
-* [Digital Business OMVS Overview](https://egeria-project.org/services/omvs/digital-business/overview/)
+* [Digital Business API Overview](https://egeria-project.org/services/omvs/digital-business/overview/)
 * [Business Capability Concept](https://egeria-project.org/concepts/business-capability/)
 
 Sample requests for the REST API can be found in `Egeria-api-digital-business.http`.

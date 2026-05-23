@@ -8,14 +8,16 @@
 The Product Manager Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the definition and maintenance of digital products and digital product families.
 
-The Product Manager OMVS supports the following key features:
+## Key Features
+
+The Product Manager API supports the following key features:
 
 * **Digital Product Dependency Management**: Link and unlink dependent digital products to represent product hierarchies and usage.
 * **Product Manager Assignment**: Assign and detach product managers to digital products to define responsibility and ownership.
 
 ## Further information
 
-* [Product Manager OMVS Overview](https://egeria-project.org/services/omvs/product-manager/overview/)
+* [Product Manager API Overview](https://egeria-project.org/services/omvs/product-manager/overview/)
 * [Digital Product Concept](https://egeria-project.org/concepts/digital-product/)
 
 Sample requests for the REST API can be found in `Egeria-api-product-manager.http`.

@@ -21,7 +21,7 @@ It also supports note logs.
 
 ## Further information
 
-* [Feedback Manager OMVS Overview](https://egeria-project.org/services/omvs/feedback-manager/overview/)
+* [Feedback Manager API Overview](https://egeria-project.org/services/omvs/feedback-manager/overview/)
 * [Informal Tag Concept](https://egeria-project.org/concepts/informal-tag/)
 * [Comment Concept](https://egeria-project.org/concepts/comment/)
 * [Rating Concept](https://egeria-project.org/concepts/rating/)

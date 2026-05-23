@@ -28,8 +28,10 @@ properties, such as roles, identities, and skills.
 
 ## Further information
 
-- [Actor Manager OMVS Overview](https://egeria-project.org/services/omvs/actor-manager/overview/)
+- [Actor Manager API Overview](https://egeria-project.org/services/omvs/actor-manager/overview/)
 - [Actor Profile Concept](https://egeria-project.org/concepts/actor-profile/)
+- [Actor Role Concept](https://egeria-project.org/concepts/actor-role/)
+- [Perspective Concept](https://egeria-project.org/concepts/perspective/)
 - [User Identity Concept](https://egeria-project.org/concepts/user-identity/)
 
 ----

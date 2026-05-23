@@ -21,7 +21,7 @@ properties, such as software capabilities, deployment relationships, and governa
 
 ## Further information
 
-- [Asset Maker OMVS Overview](https://egeria-project.org/services/omvs/asset-maker/overview/)
+- [Asset Maker API Overview](https://egeria-project.org/services/omvs/asset-maker/overview/)
 - [Asset Concept](https://egeria-project.org/concepts/asset/)
 - [Software Capability Concept](https://egeria-project.org/concepts/software-capability/)
 - [Governance Action Concept](https://egeria-project.org/concepts/governance-action/)

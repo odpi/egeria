@@ -8,7 +8,9 @@
 The People Organizer Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the definition of teams, roles and organizational structures.
 
-The People Organizer OMVS supports the following key features:
+## Key Features
+
+The People Organizer API supports the following key features:
 
 * **Person Peer Management**: Define and maintain peer relationships between people profiles to represent
   professional networks and collaborations.
@@ -17,7 +19,7 @@ The People Organizer OMVS supports the following key features:
 
 ## Further information
 
-* [People Organizer OMVS Overview](https://egeria-project.org/services/omvs/people-organizer/overview/)
+* [People Organizer API Overview](https://egeria-project.org/services/omvs/people-organizer/overview/)
 * [Personal Profile Concept](https://egeria-project.org/concepts/personal-profile/)
 * [Team Concept](https://egeria-project.org/concepts/team/)
 

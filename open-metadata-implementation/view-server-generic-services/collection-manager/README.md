@@ -21,7 +21,7 @@ The Collection Manager OMVS enables the caller to manage collections of assets a
 
 ### Further information
 
-* [Collection Manager OMVS Overview](https://egeria-project.org/services/omvs/collection-manager/overview/)
+* [Collection Manager API Overview](https://egeria-project.org/services/omvs/collection-manager/overview/)
 * [Collection Concept](https://egeria-project.org/concepts/collection/)
 * [Digital Product Concept](https://egeria-project.org/concepts/digital-product/)
 

@@ -19,9 +19,8 @@ It provides a flexible way to explore the metadata ecosystem, focusing on how el
 
 Further information:
 
-* [Classification Explorer OMVS Overview](https://egeria-project.org/services/omvs/classification-explorer/overview/)
-* [Governance Classification Concept](https://egeria-project.org/concepts/governance-classification/)
-* [Semantic Assignment Concept](https://egeria-project.org/concepts/semantic-assignment/)
+* [Classification Explorer API Overview](https://egeria-project.org/services/omvs/classification-explorer/overview/)
+* [Setting up your governance program](https://egeria-project.org/guides/planning/governance-program/overview/)
 
 Sample REST API requests: [Egeria-api-classification-explorer.http](Egeria-api-classification-explorer.http)
 

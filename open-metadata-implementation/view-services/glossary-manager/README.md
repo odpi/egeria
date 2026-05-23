@@ -8,7 +8,9 @@
 The Glossary Manager Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the definition and maintenance of glossaries and their terms.
 
-The Glossary Manager OMVS supports the following key features:
+## Key Features
+
+The Glossary Manager API supports the following key features:
 
 * **Glossary Management**: Create and maintain glossaries. A glossary can be classified as a 
   **taxonomy** (organized into a strict hierarchy) or a **canonical vocabulary** (where each term has a unique name).
@@ -21,7 +23,7 @@ The Glossary Manager OMVS supports the following key features:
 
 ## Further information
 
-* [Glossary Manager OMVS Overview](https://egeria-project.org/services/omvs/glossary-manager/overview/)
+* [Glossary Manager API Overview](https://egeria-project.org/services/omvs/glossary-manager/overview/)
 * [Glossary Concept](https://egeria-project.org/concepts/glossary/)
 * [Glossary Term Concept](https://egeria-project.org/concepts/glossary-term/)
 

@@ -9,7 +9,9 @@ The My Profile Open Metadata View Service (OMVS) provides a REST API to support 
 relating to the maintenance of a user's personal profile as well as tracking their actions, 
 responsibilities and activities.
 
-The My Profile OMVS supports the following key features:
+## Key Features
+
+The My Profile API supports the following key features:
 
 * **Personal Profile Management**: Retrieve and maintain the personal profile of the logged-on user.
 * **Action Tracking**: Track actions that have been assigned to, sponsored by, or requested by the user.
@@ -19,7 +21,7 @@ The My Profile OMVS supports the following key features:
 
 ## Further information
 
-* [My Profile OMVS Overview](https://egeria-project.org/services/omvs/my-profile/overview/)
+* [My Profile API Overview](https://egeria-project.org/services/omvs/my-profile/overview/)
 * [Personal Profile Concept](https://egeria-project.org/concepts/personal-profile/)
 * [Action Concept](https://egeria-project.org/concepts/action/)
 

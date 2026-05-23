@@ -17,7 +17,7 @@ Key features of this service include:
 
 ## Further information
 
-* [Automated Curation OMVS Overview](https://egeria-project.org/services/omvs/automated-curation/overview/)
+* [Automated Curation API Overview](https://egeria-project.org/services/omvs/automated-curation/overview/)
 * [Integration Connector Concept](https://egeria-project.org/concepts/integration-connector/)
 * [Governance Action Concept](https://egeria-project.org/concepts/governance-action/)
 * [Integration Daemon Concept](https://egeria-project.org/concepts/integration-daemon/)

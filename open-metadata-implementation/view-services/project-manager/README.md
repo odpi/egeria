@@ -8,7 +8,9 @@
 The Project Manager Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
 relating to the setup and management of projects and their related elements.
 
-The Project Manager OMVS supports the following key features:
+## Key Features
+
+The Project Manager API supports the following key features:
 
 * **Project Management**: Creation, retrieval, update and deletion of project definitions.
 * **Project Exploration**: Retrieve projects by name, classification, or search string. Explore project hierarchies and relationship graphs.
@@ -19,7 +21,7 @@ The Project Manager OMVS supports the following key features:
 
 ## Further information
 
-* [Project Manager OMVS Overview](https://egeria-project.org/services/omvs/project-manager/overview/)
+* [Project Manager API Overview](https://egeria-project.org/services/omvs/project-manager/overview/)
 * [Project Concept](https://egeria-project.org/concepts/project/)
 
 Sample requests for the REST API can be found in `Egeria-api-project-manager.http`.

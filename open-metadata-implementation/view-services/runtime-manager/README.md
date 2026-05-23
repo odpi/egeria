@@ -9,7 +9,9 @@ The Runtime Manager OMVS enables the caller to retrieve configuration and status
 It is also used to manage the lifecycle of servers, their registration in cohorts and the loading
 of open metadata archives.
 
-Key features of the service include:
+## Key Features
+
+Key features of the API include:
 
 * **Platform Management**: Retrieving configuration and status (reports) from OMAG Server Platforms.
 * **Server Management**: Retrieving configuration and status (reports) from OMAG Servers.
@@ -22,12 +24,12 @@ Key features of the service include:
 Sample REST API requests can be found in the
 [Egeria-api-runtime-manager.http](Egeria-api-runtime-manager.http) file.
 
-## Further information
+## Further Information
 
-* [Runtime Manager OMVS Overview](https://egeria-project.org/services/omvs/runtime-manager/overview/)
+* [Runtime Manager API Overview](https://egeria-project.org/services/omvs/runtime-manager/overview/)
 * [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/)
 * [OMAG Server](https://egeria-project.org/concepts/omag-server/)
-* [Cohort](https://egeria-project.org/concepts/cohort/)
+* [Cohort](https://egeria-project.org/concepts/cohort-member/)
 * [Open Metadata Archive](https://egeria-project.org/concepts/open-metadata-archive/)
 * [Governance Engine](https://egeria-project.org/concepts/governance-engine/)
 * [Integration Connector](https://egeria-project.org/concepts/integration-connector/)

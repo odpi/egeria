@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![In Development](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Data Engineer OMVS
 
@@ -11,7 +11,7 @@ It enables the creation and maintenance of data pipelines, reference data, and t
 
 ## Key Features
 
-The Data Engineer OMVS provides the following capabilities:
+The Data Engineer API provides the following capabilities:
 
 - **Data Pipelines**: Support for defining and maintaining data pipelines, which are 
   choreographed sequences of data processing steps that move and transform data.
@@ -24,13 +24,14 @@ The Data Engineer OMVS provides the following capabilities:
 
 ## Further information
 
-- [Data Engineer OMVS Overview](https://egeria-project.org/services/omvs/data-engineer/overview/)
-- [Data Pipeline Concept](https://egeria-project.org/concepts/data-pipeline/)
-- [Reference Data Concept](https://egeria-project.org/concepts/reference-data/)
+- [Data Engineer API Overview](https://egeria-project.org/services/omvs/data-engineer/overview/)
+- [Reference Data Concept](https://egeria-project.org/features/reference-data-management/overview/)
 - [Tabular Data Set Concept](https://egeria-project.org/concepts/tabular-data-set/)
 
 Sample REST API requests can be found in:
+
 - [Egeria-api-data-engineer.http](Egeria-api-data-engineer.http)
+- [Egeria-jacquard-data-sets.http](Egeria-jacquard-data-sets.http)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

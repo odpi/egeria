@@ -21,7 +21,7 @@ The Connection Maker OMVS enables the caller to manage the definitions of connec
 
 ### Further information
 
-* [Connection Maker OMVS Overview](https://egeria-project.org/services/omvs/connection-maker/overview/)
+* [Connection Maker API Overview](https://egeria-project.org/services/omvs/connection-maker/overview/)
 * [Connection Concept](https://egeria-project.org/concepts/connection/)
 * [Connector Type Concept](https://egeria-project.org/concepts/connector-type/)
 * [Endpoint Concept](https://egeria-project.org/concepts/endpoint/)

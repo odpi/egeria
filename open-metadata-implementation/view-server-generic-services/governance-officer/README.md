@@ -22,11 +22,9 @@ governance action processes.
 
 ## Further information
 
-* [Governance Officer OMVS Overview](https://egeria-project.org/services/omvs/governance-officer/overview/)
+* [Governance Officer API Overview](https://egeria-project.org/services/omvs/governance-officer/overview/)
 * [Governance Definition Concept](https://egeria-project.org/concepts/governance-definition/)
 * [Governance Action Concept](https://egeria-project.org/concepts/governance-action/)
-* [Certification Concept](https://egeria-project.org/concepts/certification/)
-* [License Concept](https://egeria-project.org/concepts/license/)
 
 ----
 Sample REST API requests can be found in [Egeria-api-governance-officer.http](Egeria-api-governance-officer.http).
