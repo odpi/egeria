@@ -6,7 +6,7 @@
 # Action Author OMVS
 
 The Action Author Open Metadata View Service (OMVS) provides a REST API to support user interfaces (UIs)
-relating to the set up and maintenance of the definition of the governance actions needed by your organization.
+relating to the set up and maintenance of the governance actions needed by your organization.
 
 Governance actions can be a single operation, such as automatically classifying newly catalogued data.
 These single operations are called **governance action types**.

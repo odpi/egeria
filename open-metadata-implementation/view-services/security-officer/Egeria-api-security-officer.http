@@ -236,4 +236,33 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Retrieve the defined security roles and groups.
+# These elements are catalogued by the Secrets Store Cataloguer integration connector and are only visible to the security team.
+###
+# @name find Security Roles
+# Returns the list of collections matching the search string.  Graph query depth is zero so linked elements are not returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "SecurityRole",
+  "graphQueryDepth": 0
+}
+
+
+###
+# @name find Security Groups
+# Returns the list of collections matching the search string.  Graph query depth is zero so linked elements are not returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "SecurityGroup",
+  "graphQueryDepth": 0
+}
