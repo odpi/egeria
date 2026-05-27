@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 
 
@@ -41,9 +42,9 @@ public class PrivacyOfficerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String userId,
-                                                                      String serverName,
-                                                                      String serviceOperationName) throws InvalidParameterException,
+    public CollectionHandler getCollectionHandler(String userId,
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
     {
@@ -51,7 +52,7 @@ public class PrivacyOfficerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGovernanceDefinitionHandler();
+            return instance.getCollectionHandler();
         }
 
         return null;

@@ -30,9 +30,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.Crow
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;

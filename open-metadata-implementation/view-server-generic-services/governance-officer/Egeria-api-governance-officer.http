@@ -1343,6 +1343,50 @@ Content-Type: application/json
 
 @governanceMetricGUID=add guid here
 @dataAssetGUID=add guid here
+@dataProcessingPurposeGUID=add guid here
+
+###
+# @name linkApprovedPurpose
+# Attach an approved purpose to an element. Request body is optional.
+# https://egeria-project.org/concepts/governance-definition/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/approved-purposes/{{dataProcessingPurposeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ApprovedPurposeProperties",
+    "label": "",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachApprovedPurpose
+# Detach an approved purpose from an element. Request body is optional.
+# https://egeria-project.org/concepts/governance-definition/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/approved-purposes/{{dataProcessingPurposeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
 
 ###
 # @name linkGovernanceResults

@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.Assignmen
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
@@ -682,6 +684,88 @@ public class CollectionClient extends ConnectorContextClientBase
                                                                          UserNotAuthorizedException
     {
         collectionHandler.detachDigitalSupport(connectorUserId, businessCapabilityGUID, elementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Connect a data processing purpose to a data processing description to show the permitted processing for the purpose.
+     *
+     * @param dataProcessingPurposeGUID    unique identifier of the parent data processing purpose
+     * @param dataProcessingDescriptionGUID    unique identifier of the data processing description
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkPermittedProcessing(String                        dataProcessingPurposeGUID,
+                                        String                        dataProcessingDescriptionGUID,
+                                        MakeAnchorOptions             makeAnchorOptions,
+                                        PermittedProcessingProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        collectionHandler.linkPermittedProcessing(connectorUserId, dataProcessingPurposeGUID, dataProcessingDescriptionGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data processing purpose from a data processing description.
+     *
+     * @param dataProcessingPurposeGUID    unique identifier of the parent data processing purpose.
+     * @param dataProcessingDescriptionGUID    unique identifier of the data processing description.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachPermittedProcessing(String        dataProcessingPurposeGUID,
+                                          String        dataProcessingDescriptionGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        collectionHandler.detachPermittedProcessing(connectorUserId, dataProcessingPurposeGUID, dataProcessingDescriptionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Connect a data processing action to its target element (Referenceable).
+     *
+     * @param dataProcessingActionGUID    unique identifier of the data processing action
+     * @param targetGUID    unique identifier of the target
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDataProcessingTarget(String                         dataProcessingActionGUID,
+                                         String                         targetGUID,
+                                         MakeAnchorOptions              makeAnchorOptions,
+                                         DataProcessingTargetProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        collectionHandler.linkDataProcessingTarget(connectorUserId, dataProcessingActionGUID, targetGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data processing action from its target element.
+     *
+     * @param dataProcessingActionGUID    unique identifier of the parent data processing description.
+     * @param targetGUID    unique identifier of the child data processing description.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataProcessingTarget(String        dataProcessingActionGUID,
+                                           String        targetGUID,
+                                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        collectionHandler.detachDataProcessingTarget(connectorUserId, dataProcessingActionGUID, targetGUID, deleteOptions);
     }
 
 

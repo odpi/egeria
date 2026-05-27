@@ -218,17 +218,17 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "metadataElementTypeName": "ReferenceCodeTable",
-  "filter" : "Data set for Open Metadata Attributes List",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Open Metadata Properties List",
   "startFrom" : 0,
   "pageSize": 10
 }
 
-> {% client.global.set("openMetadataAttributesGUID", response.body.elements[0].elementHeader.guid); %}
+> {% client.global.set("openMetadataPropertiesGUID", response.body.elements[0].elementHeader.guid); %}
 
 ###
 
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataAttributesGUID}}/report?startFromRow=0&maxRowCount=5000
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataPropertiesGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}
 
 
@@ -253,4 +253,105 @@ Content-Type: application/json
 ###
 
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataAttributesForTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+
+###
+# ========================================================================================
+# Work with Digital products for Governance Observability
+#
+
+###
+# @name get Governance Controls
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Governance Controls",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("governanceControlsDataSetGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{governanceControlsDataSetGUID}}/report?startFromRow=0&maxRowCount=50
+Authorization: Bearer {{token}}
+
+
+###
+# @name get Exceptions
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Exceptions",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("exceptionsDataSetGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{exceptionsDataSetGUID}}/report?startFromRow=0&maxRowCount=10
+Authorization: Bearer {{token}}
+
+
+###
+# @name get Licenses
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Licenses",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("licensesDataSetGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{licensesDataSetGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+
+###
+# @name get Certifications
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Certifications",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("certificationsDataSetGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{certificationsDataSetGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}

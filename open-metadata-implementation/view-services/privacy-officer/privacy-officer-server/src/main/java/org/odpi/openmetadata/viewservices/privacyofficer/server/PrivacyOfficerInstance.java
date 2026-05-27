@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
@@ -19,7 +20,7 @@ public class PrivacyOfficerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.PRIVACY_OFFICER;
 
-    private final GovernanceDefinitionHandler governanceDefinitionHandler;
+    private final CollectionHandler collectionHandler;
 
 
     /**
@@ -62,20 +63,20 @@ public class PrivacyOfficerInstance extends OMVSServiceInstance
                                                                                   maxPageSize,
                                                                                   auditLog);
 
-        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
-                                                                      auditLog,
-                                                                      myDescription.getViewServiceFullName(),
-                                                                      openMetadataClient);
+        collectionHandler = new CollectionHandler(serverName,
+                                                  auditLog,
+                                                  myDescription.getViewServiceFullName(),
+                                                  openMetadataClient);
     }
 
 
     /**
-     * Return the governance definition client.
+     * Return the collection handler.
      *
      * @return client
      */
-    public GovernanceDefinitionHandler getGovernanceDefinitionHandler()
+    public CollectionHandler getCollectionHandler()
     {
-        return governanceDefinitionHandler;
+        return collectionHandler;
     }
 }

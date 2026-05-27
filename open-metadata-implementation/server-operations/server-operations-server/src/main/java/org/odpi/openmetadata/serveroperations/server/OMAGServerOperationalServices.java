@@ -1589,7 +1589,11 @@ public class OMAGServerOperationalServices extends TokenController
     {
         if (serverNames != null)
         {
-            for (String serverName : serverNames)
+            List<String> shutdownServerList = new ArrayList<>(serverNames);
+
+            Collections.reverse(shutdownServerList);
+
+            for (String serverName : shutdownServerList)
             {
                 if (serverName != null)
                 {

@@ -1956,11 +1956,22 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionName, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        if (infrastructureGUID != null)
+        {
+            classifications.add(this.getAnchorClassification(infrastructureGUID, OpenMetadataType.IT_INFRASTRUCTURE.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        }
+        else
+        {
+            classifications.add(this.getAnchorClassification(null, OpenMetadataType.IT_PROFILE.typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
+        }
+
         EntityDetail profile = archiveHelper.getEntityDetail(OpenMetadataType.IT_PROFILE.typeName,
                                                              idToGUIDMap.getGUID(qualifiedName),
                                                              properties,
                                                              InstanceStatus.ACTIVE,
-                                                             null);
+                                                             classifications);
 
         archiveBuilder.addEntity(profile);
 
@@ -1985,11 +1996,14 @@ public class SimpleCatalogArchiveHelper
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USER_ID.name, userId, methodName);
 
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(null, OpenMetadataType.USER_IDENTITY.typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
             EntityDetail userIdentity = archiveHelper.getEntityDetail(OpenMetadataType.USER_IDENTITY.typeName,
                                                                       idToGUIDMap.getGUID(qualifiedName + ":UserIdentity"),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                      classifications);
 
             archiveBuilder.addEntity(userIdentity);
 

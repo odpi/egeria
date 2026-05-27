@@ -1245,7 +1245,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
                new ProductDataFieldDefinition[]{
                        ProductDataFieldDefinition.EXCEPTION_GUID},
                new ProductDataFieldDefinition[]{
-                       ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                        ProductDataFieldDefinition.EXCEPTION_TYPE_GUID,
                        ProductDataFieldDefinition.ELEMENT_GUID,
                        ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
@@ -1288,7 +1287,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    new ProductDataFieldDefinition[]{
                            ProductDataFieldDefinition.CERTIFICATION_GUID},
                    new ProductDataFieldDefinition[]{
-                           ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                            ProductDataFieldDefinition.CERTIFICATION_TYPE_GUID,
                            ProductDataFieldDefinition.ELEMENT_GUID,
                            ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
@@ -1335,7 +1333,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
              new ProductDataFieldDefinition[]{
                      ProductDataFieldDefinition.LICENSE_GUID},
              new ProductDataFieldDefinition[]{
-                     ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                      ProductDataFieldDefinition.LICENSE_TYPE_GUID,
                      ProductDataFieldDefinition.ELEMENT_GUID,
                      ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,

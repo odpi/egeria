@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataProcessingDescriptionProperties extends AuthoredReferenceableProperties
+public class DataProcessingDescriptionProperties extends CollectionProperties
 {
 
     /**
@@ -47,17 +47,6 @@ public class DataProcessingDescriptionProperties extends AuthoredReferenceablePr
         super(template);
     }
 
-
-    /**
-     * Copy/clone constructor.  Note, this is a deep copy
-     *
-     * @param template object to copy
-     */
-    public DataProcessingDescriptionProperties(AuthoredReferenceableProperties template)
-    {
-        super(template);
-        super.typeName = OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName;
-    }
 
 
     /**

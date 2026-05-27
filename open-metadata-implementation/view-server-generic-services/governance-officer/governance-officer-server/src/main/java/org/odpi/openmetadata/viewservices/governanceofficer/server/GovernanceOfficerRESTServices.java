@@ -1779,4 +1779,131 @@ public class GovernanceOfficerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /**
+     * Attach an approved purpose to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to link
+     * @param dataProcessingPurposeGUID identifier of the purpose to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkApprovedPurpose(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     elementGUID,
+                                            String                     dataProcessingPurposeGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkApprovedPurpose";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkApprovedPurpose(userId,
+                                            elementGUID,
+                                            dataProcessingPurposeGUID,
+                                            null,
+                                            null);
+            }
+            else
+            {
+                if (requestBody.getProperties() instanceof ApprovedPurposeProperties relationshipProperties)
+                {
+                    handler.linkApprovedPurpose(userId,
+                                                elementGUID,
+                                                dataProcessingPurposeGUID,
+                                                requestBody,
+                                                relationshipProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkApprovedPurpose(userId,
+                                                elementGUID,
+                                                dataProcessingPurposeGUID,
+                                                requestBody,
+                                                null);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach an approved purpose from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param dataProcessingPurposeGUID identifier of the purpose to unlink
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse detachApprovedPurpose(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        elementGUID,
+                                              String                        dataProcessingPurposeGUID,
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachApprovedPurpose";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachApprovedPurpose(userId,
+                                          elementGUID,
+                                          dataProcessingPurposeGUID,
+                                          requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
 }

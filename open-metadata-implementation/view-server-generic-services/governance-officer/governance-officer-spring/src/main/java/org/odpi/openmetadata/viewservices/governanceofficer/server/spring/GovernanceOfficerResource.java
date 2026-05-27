@@ -961,4 +961,76 @@ public class GovernanceOfficerResource
     {
         return restAPI.detachImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }
+
+
+    /**
+     * Attach an approved purpose to an element. Request body is optional.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to link
+     * @param dataProcessingPurposeGUID identifier of the purpose to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/approved-purposes/{dataProcessingPurposeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkApprovedPurpose",
+            description="Attach an approved purpose to an element. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition/"))
+
+    public VoidResponse linkApprovedPurpose(@PathVariable
+                                            String                     serverName,
+                                            @PathVariable String             urlMarker,
+                                            @PathVariable
+                                            String                     elementGUID,
+                                            @PathVariable
+                                            String                     dataProcessingPurposeGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkApprovedPurpose(serverName, urlMarker, elementGUID, dataProcessingPurposeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an approved purpose from an element. Request body is optional.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param dataProcessingPurposeGUID identifier of the purpose to unlink
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/approved-purposes/{dataProcessingPurposeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachApprovedPurpose",
+            description="Detach an approved purpose from an element. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition/"))
+
+    public VoidResponse detachApprovedPurpose(@PathVariable
+                                              String                        serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable
+                                              String                        elementGUID,
+                                              @PathVariable
+                                              String                        dataProcessingPurposeGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachApprovedPurpose(serverName, urlMarker, elementGUID, dataProcessingPurposeGUID, requestBody);
+    }
 }
