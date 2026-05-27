@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.Assignmen
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
@@ -1301,6 +1303,146 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName,
                                                         businessCapabilityGUID,
                                                         elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Connect a data processing purpose to a data processing description to show the permitted processing for the purpose.
+     *
+     * @param userId                 userId of the user making the request
+     * @param dataProcessingPurposeGUID    unique identifier of the parent data processing purpose
+     * @param dataProcessingDescriptionGUID    unique identifier of the data processing description
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkPermittedProcessing(String                        userId,
+                                        String                        dataProcessingPurposeGUID,
+                                        String                        dataProcessingDescriptionGUID,
+                                        MakeAnchorOptions             makeAnchorOptions,
+                                        PermittedProcessingProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "linkPermittedProcessing";
+        final String end1GUIDParameterName = "dataProcessingPurposeGUID";
+        final String end2GUIDParameterName = "dataProcessingDescriptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataProcessingPurposeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingDescriptionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeName,
+                                                        dataProcessingPurposeGUID,
+                                                        dataProcessingDescriptionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data processing purpose from a data processing description.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataProcessingPurposeGUID    unique identifier of the parent data processing purpose.
+     * @param dataProcessingDescriptionGUID    unique identifier of the data processing description.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachPermittedProcessing(String        userId,
+                                          String        dataProcessingPurposeGUID,
+                                          String        dataProcessingDescriptionGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "detachPermittedProcessing";
+        final String end1GUIDParameterName = "dataProcessingPurposeGUID";
+        final String end2GUIDParameterName = "dataProcessingDescriptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataProcessingPurposeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingDescriptionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeName,
+                                                        dataProcessingPurposeGUID,
+                                                        dataProcessingDescriptionGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Connect a data processing action to its target element (Referenceable).
+     *
+     * @param userId                 userId of the user making the request
+     * @param dataProcessingActionGUID    unique identifier of the data processing action
+     * @param targetGUID    unique identifier of the target
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDataProcessingTarget(String                         userId,
+                                         String                         dataProcessingActionGUID,
+                                         String                         targetGUID,
+                                         MakeAnchorOptions              makeAnchorOptions,
+                                         DataProcessingTargetProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "linkDataProcessingTarget";
+        final String end1GUIDParameterName = "dataProcessingActionGUID";
+        final String end2GUIDParameterName = "targetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataProcessingActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(targetGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.typeName,
+                                                        dataProcessingActionGUID,
+                                                        targetGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data processing action from its target element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataProcessingActionGUID    unique identifier of the parent data processing description.
+     * @param targetGUID    unique identifier of the child data processing description.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataProcessingTarget(String        userId,
+                                           String        dataProcessingActionGUID,
+                                           String        targetGUID,
+                                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "detachDataProcessingTarget";
+        final String end1GUIDParameterName = "dataProcessingActionGUID";
+        final String end2GUIDParameterName = "specializedDataProcessingDescriptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataProcessingActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(targetGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.typeName,
+                                                        dataProcessingActionGUID,
+                                                        targetGUID,
                                                         deleteOptions);
     }
 

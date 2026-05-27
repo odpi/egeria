@@ -11,6 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -218,6 +220,81 @@ public class SecurityOfficerRESTServices extends TokenController
                 omagServerPlatformConnector.setDelegatingUserId(userId);
                 omagServerPlatformConnector.start();
                 omagServerPlatformConnector.deleteUserAccount(accountUserId);
+                omagServerPlatformConnector.disconnect();
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return the list of users registered with the platform security connector.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param userAccountStatus status of the user - or null for any status
+     * @param userAccountType   type of user - or null for any type
+     * @return list of matching userIds in the user directory or exceptions that occur when trying to create the connector:
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public NameListResponse getUserList(String            serverName,
+                                        String            platformGUID,
+                                        UserAccountStatus userAccountStatus,
+                                        UserAccountType   userAccountType)
+    {
+        final String methodName = "getUserList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        NameListResponse response = new NameListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient connectedAssetClient = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+            AssetHandler         platformHandler      = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
+
+            OpenMetadataRootElement asset = platformHandler.getAssetByGUID(userId, platformGUID, null);
+
+            Connector     connector = connectedAssetClient.getConnectorForAsset(userId, platformGUID, auditLog);
+
+            if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
+            {
+                if ((asset != null) && (asset.getProperties() instanceof AssetProperties assetProperties))
+                {
+                    omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
+                }
+
+                /*
+                UserAccountStatus userAccountStatus = null;
+                if (status != null)
+                {
+                    userAccountStatus = UserAccountStatus.valueOf(status);
+                }
+
+                UserAccountType userAccountType = null;
+                if (type != null)
+                {
+                    userAccountType = UserAccountType.valueOf(type);
+                }*/
+
+                omagServerPlatformConnector.setDelegatingUserId(userId);
+                omagServerPlatformConnector.start();
+                response.setNames(omagServerPlatformConnector.getUserList(userAccountStatus, userAccountType));
                 omagServerPlatformConnector.disconnect();
             }
         }

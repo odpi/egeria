@@ -169,6 +169,7 @@ public class OpenMetadataTypesArchive
         update0423SecurityDefinitions();
         update0424GovernanceZones();
         update0455ExceptionManagement();
+        update0485DataProcessingPurposes();
         update0595DesignPatterns();
     }
 
@@ -950,6 +951,79 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0485DataProcessingPurposes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataProcessingDescriptionEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDataProcessingActionEntity());
+        this.archiveBuilder.addTypeDefPatch(deprecateDetailedProcessingActionRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateDataProcessingSpecificationRelationship());
+
+    }
+
+    private TypeDefPatch updateDataProcessingDescriptionEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        typeDefPatch.setSuperType(archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateDataProcessingActionEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_PROCESSING_ACTION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        typeDefPatch.setSuperType(archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateDetailedProcessingActionRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateDataProcessingSpecificationRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0595DesignPatterns()
     {
         this.archiveBuilder.addTypeDefPatch(updateDesignPatternEntity());
@@ -988,8 +1062,6 @@ public class OpenMetadataTypesArchive
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NESTED_DESIGN_PATTERN_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
-
-        relationshipDef.setMultiLink(true);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -1040,8 +1112,6 @@ public class OpenMetadataTypesArchive
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SPECIALIZED_DESIGN_PATTERN_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
-
-        relationshipDef.setMultiLink(true);
 
         RelationshipEndDef relationshipEndDef;
 

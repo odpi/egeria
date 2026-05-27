@@ -12,7 +12,7 @@ POST {{baseURL}}/api/token
 Content-Type: application/json
 
 {
-  "userId" : "peterprofile",
+  "userId" : "ivorpadlock",
   "password" : "secret"
 }
 
@@ -94,6 +94,20 @@ Authorization: Bearer {{token}}
 # @return void response
 #
 DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/user-accounts/{{accountUserId}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name: getUserList
+# Return the list of users registered with the platform security connector.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param status status of the user - or null for any status
+# @param type   type of user - or null for any type
+# @return list of matching userIds in the user directory
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{platformGUID}}/user-accounts?status=AVAILABLE&type=EMPLOYEE
 Authorization: Bearer {{token}}
 
 

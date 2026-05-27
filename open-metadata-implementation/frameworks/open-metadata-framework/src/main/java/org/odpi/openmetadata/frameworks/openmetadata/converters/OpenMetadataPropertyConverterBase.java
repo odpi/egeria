@@ -36,9 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.Crow
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
@@ -14980,6 +14978,14 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new DataDictionaryProperties();
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_ACTION.typeName))
+                        {
+                            beanProperties = new DataProcessingActionProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName))
+                        {
+                            beanProperties = new DataProcessingDescriptionProperties();
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_MODEL.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONCEPT_MODEL.typeName))
@@ -15156,14 +15162,6 @@ public class OpenMetadataPropertyConverterBase
                         ((DataValueSpecificationProperties) beanProperties).setUnits(this.removeUnits(elementProperties));
                         ((DataValueSpecificationProperties) beanProperties).setAbsoluteUncertainty(this.removeAbsoluteUncertainty(elementProperties));
                         ((DataValueSpecificationProperties) beanProperties).setRelativeUncertainty(this.removeRelativeUncertainty(elementProperties));
-                    }
-                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_ACTION.typeName))
-                    {
-                        beanProperties = new DataProcessingActionProperties();
-                    }
-                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName))
-                    {
-                        beanProperties = new DataProcessingDescriptionProperties();
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_STRUCTURE.typeName))
                     {

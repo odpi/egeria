@@ -828,8 +828,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * Link subject area definitions in a hierarchy.
      *
      * @param userId                  userId of the user making the request
-     * @param subjectAreaGUID        unique identifier of the parent
-     * @param nestedSubjectAreaGUID             unique identifier of the actor profile
+     * @param subjectAreaGUID        unique identifier of the parent subject area
+     * @param nestedSubjectAreaGUID             unique identifier of the nested subject area
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -865,8 +865,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * Detach subject area definitions from their hierarchical relationship.
      *
      * @param userId                 userId of the user making the request.
-     * @param subjectAreaGUID       unique identifier of the parent actor profile
-     * @param nestedSubjectAreaGUID            unique identifier of the nested actor profile
+     * @param subjectAreaGUID       unique identifier of the parent subject area
+     * @param nestedSubjectAreaGUID            unique identifier of the nested subject area
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
@@ -892,6 +892,78 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
                                                         subjectAreaGUID,
                                                         nestedSubjectAreaGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Link an approved purpose to an element.
+     *
+     * @param userId                  userId of the user making the request
+     * @param elementGUID        unique identifier of the element
+     * @param dataProcessingPurposeGUID             unique identifier of the data processing purpose
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkApprovedPurpose(String                    userId,
+                                    String                    elementGUID,
+                                    String                    dataProcessingPurposeGUID,
+                                    MakeAnchorOptions         makeAnchorOptions,
+                                    ApprovedPurposeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "linkApprovedPurpose";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "dataProcessingPurposeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingPurposeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        dataProcessingPurposeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an approved purpose from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID       unique identifier of the element
+     * @param dataProcessingPurposeGUID            unique identifier of the nested actor profile
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachApprovedPurpose(String        userId,
+                                      String        elementGUID,
+                                      String        dataProcessingPurposeGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachApprovedPurpose";
+
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "dataProcessingPurposeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingPurposeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        dataProcessingPurposeGUID,
                                                         deleteOptions);
     }
 

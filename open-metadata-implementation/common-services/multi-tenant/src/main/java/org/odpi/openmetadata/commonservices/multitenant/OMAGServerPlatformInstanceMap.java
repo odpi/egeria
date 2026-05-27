@@ -865,6 +865,72 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return the list of OMAG Servers running in this OMAG Server Platform.= in the order needed for a clean shutdown
+     *
+     * @param userId calling user
+     * @param delegatingUserId external userId making request
+     * @return list of OMAG server names
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
+     */
+    private static synchronized List<String> getShutdownServerListForPlatform(String userId,
+                                                                              String delegatingUserId) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
+    {
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
+
+        Set<String>  activeServerSet = activeServerInstanceMap.keySet();
+
+        if (activeServerSet.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<String>  shutdownServerList = new ArrayList<>();
+
+            for (String activeServerName : activeServerSet)
+            {
+                if (activeServerInstanceMap.get(activeServerName).getServerType().equals(ServerTypeClassification.VIEW_SERVER.getServerTypeName()))
+                {
+                    shutdownServerList.add(activeServerName);
+                }
+            }
+
+            for (String activeServerName : activeServerSet)
+            {
+                if (activeServerInstanceMap.get(activeServerName).getServerType().equals(ServerTypeClassification.ENGINE_HOST.getServerTypeName()))
+                {
+                    shutdownServerList.add(activeServerName);
+                }
+            }
+
+            for (String activeServerName : activeServerSet)
+            {
+                if (activeServerInstanceMap.get(activeServerName).getServerType().equals(ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName()))
+                {
+                    shutdownServerList.add(activeServerName);
+                }
+            }
+
+            for (String activeServerName : activeServerSet)
+            {
+                if (! shutdownServerList.contains(activeServerName))
+                {
+                    shutdownServerList.add(activeServerName);
+                }
+            }
+
+            return new ArrayList<>(shutdownServerList);
+        }
+    }
+
+
+    /**
      * Return the list of OMAG Servers running in this OMAG Server Platform.
      *
      * @param userId calling user
@@ -1564,6 +1630,23 @@ public class OMAGServerPlatformInstanceMap
                                               String delegatingUserId) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
     {
         return OMAGServerPlatformInstanceMap.getActiveServerListForPlatform(userId, delegatingUserId);
+    }
+
+
+    /**
+     * Return the list of OMAG Servers running in this OMAG Server Platform.
+     *
+     * @param userId calling user
+     * @param delegatingUserId external userId making request
+     * @return list of OMAG server names
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
+     */
+    public List<String>   getShutdownServerList(String userId,
+                                                String delegatingUserId) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
+    {
+        return OMAGServerPlatformInstanceMap.getShutdownServerListForPlatform(userId, delegatingUserId);
     }
 
 

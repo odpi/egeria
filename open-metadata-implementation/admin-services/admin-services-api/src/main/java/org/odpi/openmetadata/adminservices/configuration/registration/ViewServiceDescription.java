@@ -178,7 +178,7 @@ public enum ViewServiceDescription
      * Set up and review rules and security tags to protect data and systems.
      */
     SECURITY_OFFICER (220,
-                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      ComponentDevelopmentStatus.STABLE,
                       "Security Officer",
                       "security-officer",
                       "Set up and review rules and security tags to protect data and systems."),
@@ -188,7 +188,7 @@ public enum ViewServiceDescription
      * Manage governance of privacy.
      */
     PRIVACY_OFFICER (221,
-                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     ComponentDevelopmentStatus.STABLE,
                      "Privacy Officer",
                      "privacy-officer",
                      "Manage the governance of privacy."),

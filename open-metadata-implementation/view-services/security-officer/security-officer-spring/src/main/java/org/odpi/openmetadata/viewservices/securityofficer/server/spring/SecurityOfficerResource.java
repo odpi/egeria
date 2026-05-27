@@ -10,12 +10,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.viewservices.securityofficer.server.SecurityOfficerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -195,6 +198,32 @@ public class SecurityOfficerResource
                                                      @PathVariable String controlName)
     {
         return restAPI.deleteSecurityAccessControl(serverName, platformGUID, controlName);
+    }
+
+
+    /**
+     * Return the list of users registered with the platform security connector.
+     *
+     * @param serverName  name of called server
+     * @param platformGUID unique identifier of the platform
+     * @param status status of the user - or null for any status
+     * @param type   type of user - or null for any type
+     * @return list of matching userIds in the user directory
+     */
+    @GetMapping(path = "/platforms/{platformGUID}/user-accounts")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getUserList",
+            description="Return the list of users registered with the platform security connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/platform-services/overview/"))
+
+    public NameListResponse getUserList(@PathVariable String serverName,
+                                        @PathVariable String platformGUID,
+                                        @RequestParam(required = false) UserAccountStatus status,
+                                        @RequestParam(required = false) UserAccountType type)
+    {
+        return restAPI.getUserList(serverName, platformGUID, status, type);
     }
 
 

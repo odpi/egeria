@@ -64,7 +64,7 @@ public class OMAGServerPlatformOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            List<String> activeServers = platformInstanceMap.getActiveServerList(userId, delegatingUserId);
+            List<String> activeServers = platformInstanceMap.getShutdownServerList(userId, delegatingUserId);
 
             OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
             if (delegatingUserId != null)
@@ -119,7 +119,7 @@ public class OMAGServerPlatformOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            List<String> activeServers = platformInstanceMap.getActiveServerList(userId, delegatingUserId);
+            List<String> activeServers = platformInstanceMap.getShutdownServerList(userId, delegatingUserId);
 
             OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
             if (delegatingUserId != null)

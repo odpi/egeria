@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -11,20 +13,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Links a data processing purpose with a data processing description.
+ * Links an element to a data processing description.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PermittedProcessingProperties extends LabeledRelationshipProperties
+public class DataProcessingSpecificationProperties extends LabeledRelationshipProperties
 {
     /**
      * Default constructor
      */
-    public PermittedProcessingProperties()
+    public DataProcessingSpecificationProperties()
     {
         super();
-        super.typeName = OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeName;
+        super.typeName = OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName;
     }
 
 
@@ -33,7 +35,7 @@ public class PermittedProcessingProperties extends LabeledRelationshipProperties
      *
      * @param template object to copy
      */
-    public PermittedProcessingProperties(PermittedProcessingProperties template)
+    public DataProcessingSpecificationProperties(DataProcessingSpecificationProperties template)
     {
         super(template);
     }
@@ -47,7 +49,7 @@ public class PermittedProcessingProperties extends LabeledRelationshipProperties
     @Override
     public String toString()
     {
-        return "PermittedProcessingProperties{" +
+        return "DataProcessingSpecificationProperties{" +
                 "} " + super.toString();
     }
 }
