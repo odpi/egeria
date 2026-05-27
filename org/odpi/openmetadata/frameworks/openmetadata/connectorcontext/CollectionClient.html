@@ -274,18 +274,32 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an existing data describing collection from an element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDataProcessingTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachDataProcessingTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingActionGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unlink dependent products.</div>
+<div class="block">Detach a data processing action from its target element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalSupport(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachDigitalSupport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessCapabilityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Unlink dependent products.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalSupport(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachDigitalSupport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessCapabilityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach a business capability from an element that provides digital support.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachPermittedProcessing(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachPermittedProcessing</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingPurposeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingDescriptionGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a data processing purpose from a data processing description.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachProductManager(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
@@ -384,20 +398,36 @@ loadScripts(document, 'script');</script>
 <div class="block">Attach an agreement to an external reference element that describes the location of the contract documents.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties)" class="member-name-link">linkDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDataProcessingTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingTargetProperties)" class="member-name-link">linkDataProcessingTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingActionGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/dataprocessing/DataProcessingTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingTargetProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Connect a data processing action to its target element (Referenceable).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties)" class="member-name-link">linkDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/digitalbusiness/DigitalProductDependencyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductDependencyProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two dependent products.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalSupport(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties)" class="member-name-link">linkDigitalSupport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessCapabilityGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalSupport(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties)" class="member-name-link">linkDigitalSupport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessCapabilityGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/digitalbusiness/DigitalSupportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalSupportProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a business capability to an element that provides digital support.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkPermittedProcessing(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties)" class="member-name-link">linkPermittedProcessing</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingPurposeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingDescriptionGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/dataprocessing/PermittedProcessingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">PermittedProcessingProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Connect a data processing purpose to a data processing description to show the permitted processing for the purpose.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkProductManager(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties)" class="member-name-link">linkProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
@@ -1185,6 +1215,96 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>businessCapabilityGUID</code> - unique identifier of the business capability</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkPermittedProcessing(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties)">
+<h3>linkPermittedProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkPermittedProcessing</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingPurposeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingDescriptionGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/dataprocessing/PermittedProcessingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">PermittedProcessingProperties</a>&nbsp;relationshipProperties)</span>
+                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Connect a data processing purpose to a data processing description to show the permitted processing for the purpose.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProcessingPurposeGUID</code> - unique identifier of the parent data processing purpose</dd>
+<dd><code>dataProcessingDescriptionGUID</code> - unique identifier of the data processing description</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachPermittedProcessing(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachPermittedProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachPermittedProcessing</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingPurposeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingDescriptionGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                               throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a data processing purpose from a data processing description.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProcessingPurposeGUID</code> - unique identifier of the parent data processing purpose.</dd>
+<dd><code>dataProcessingDescriptionGUID</code> - unique identifier of the data processing description.</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkDataProcessingTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingTargetProperties)">
+<h3>linkDataProcessingTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkDataProcessingTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingActionGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/dataprocessing/DataProcessingTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingTargetProperties</a>&nbsp;relationshipProperties)</span>
+                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Connect a data processing action to its target element (Referenceable).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProcessingActionGUID</code> - unique identifier of the data processing action</dd>
+<dd><code>targetGUID</code> - unique identifier of the target</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachDataProcessingTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachDataProcessingTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachDataProcessingTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataProcessingActionGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                                throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a data processing action from its target element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProcessingActionGUID</code> - unique identifier of the parent data processing description.</dd>
+<dd><code>targetGUID</code> - unique identifier of the child data processing description.</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
