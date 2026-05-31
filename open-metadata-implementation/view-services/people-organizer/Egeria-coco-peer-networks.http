@@ -1,7 +1,7 @@
 # Egeria-coco-peer-networks
 # Sets up peer networks for different Coco Pharmaceuticals persona - it assumes CocoComboArchive is loaded.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 # @name Token (RequestBody)

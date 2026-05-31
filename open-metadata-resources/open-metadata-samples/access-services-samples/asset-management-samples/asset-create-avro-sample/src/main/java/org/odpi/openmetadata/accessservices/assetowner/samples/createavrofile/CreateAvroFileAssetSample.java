@@ -80,7 +80,7 @@ public class CreateAvroFileAssetSample
 
         String  fileName = args[0];
         String  serverName = "active-metadata-store";
-        String  serverURLRoot = "https://localhost:9443";
+        String  serverURLRoot = "https://localhost:7443";
         String  clientUserId = "peterprofile";
 
 

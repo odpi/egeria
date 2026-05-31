@@ -30,7 +30,7 @@ These instructions should work whether you built your own image, or used the ima
 ### Launch a container running the latest version of egeria in the background (version 2.0 and above)
 
 ```
-$ docker run  -p 9443:9443  odpi/egeria-platform:latest
+$ docker run  -p 7443:7443  odpi/egeria-platform:latest
 Picked up JAVA_TOOL_OPTIONS:
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
@@ -45,13 +45,13 @@ Picked up JAVA_TOOL_OPTIONS:
 Mon Jun 10 09:12:09 BST 2024 No OMAG servers listed in startup configuration
 Mon Jun 10 09:12:09 BST 2024 OMAG server platform ready for more configuration
 
-All requests to egeria should be via https on port 9443
+All requests to egeria should be via https on port 7443
 
 ### Launch a container running the latest version of egeria in the background
 
 Use
 ```
-$ docker run  -p 9443:9443  odpi/egeria-platform:latest
+$ docker run  -p 7443:7443  odpi/egeria-platform:latest
 ```
 
 ### Run an interactive shell
@@ -104,7 +104,7 @@ $ docker volume inspect egeria-data
 
 With that in place we can now run our docker image, this time making use of the volume above to persist data ie:
 ```
-$ docker run -p 9443:9443 -v source=egeria-data,target=/deployments/platform/data odpi/egeria-platform:latest 
+$ docker run -p 7443:7443 -v source=egeria-data,target=/deployments/platform/data odpi/egeria-platform:latest 
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
 INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/platform/omag-server-platform-6.1-SNAPSHOT.jar
@@ -167,7 +167,7 @@ $ docker cp ~/src/egeria-database-connectors/postgres-connector/build/libs/postg
 $ docker exec copyutil chown -R 185 /mnt                                                                                                                          [14:50:25]
 $ docker stop copyutil                                                                                                                                            [14:50:44]
 copyutil
-$ docker run --env LOADER_PATH=/deployments/extralibs:/deployments/platform/lib:/deployments/platform/extra -v extralibs:/deployments/extralibs -p 9443:9443 egeria:latest
+$ docker run --env LOADER_PATH=/deployments/extralibs:/deployments/platform/lib:/deployments/platform/extra -v extralibs:/deployments/extralibs -p 7443:7443 egeria:latest
 ```
 
 There are many ways of achieving the same result. If working locally you may wish to use a docker 'bind-mount', whilst in kubernetes

@@ -3,7 +3,7 @@
 # Updates to the actors associate with a user are made using the Actor Manager API.
 # https://egeria-project.org/concepts/personal-profile
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

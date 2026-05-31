@@ -906,7 +906,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
-     * The default value is "localhost:9443".
+     * The default value is "localhost:7443".
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
      *
@@ -962,7 +962,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
-     * The default value is "localhost:9443".
+     * The default value is "localhost:7443".
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
      *

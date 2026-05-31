@@ -1,7 +1,7 @@
 # Egeria-api-people-organizer
 # Define links between people and teams to show how an organization is linked together.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

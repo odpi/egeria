@@ -1,7 +1,7 @@
 # Egeria-valid-metadata-lists
 # Further Information: https://egeria-project.org/services/omvs/valid-metadata/overview/
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:9444
 @viewServer=view-server
 
 ###
@@ -144,7 +144,7 @@ Content-Type: application/json
 ###
 # @name getTypeDefByName (Anchors)
 # Return the TypeDef identified by the unique name.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/Anchors
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/GovernanceDefinition
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

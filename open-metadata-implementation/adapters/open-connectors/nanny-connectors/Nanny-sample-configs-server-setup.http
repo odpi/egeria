@@ -4,7 +4,7 @@
 @user=garygeeke
 @kafkaep=localhost:9092
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @nannyAuditLogTopic=logging
 
 

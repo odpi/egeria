@@ -1,6 +1,6 @@
 # Egeria-admin-services-platform-configuration
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 
 

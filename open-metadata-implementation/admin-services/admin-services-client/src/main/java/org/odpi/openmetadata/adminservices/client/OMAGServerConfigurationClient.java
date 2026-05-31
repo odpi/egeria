@@ -178,7 +178,7 @@ public class OMAGServerConfigurationClient
      * this server's REST interfaces.  Typically, this is the URL root of the OMAG Server Platform
      * Where the server is deployed to.  However, it may be a DNS name - particularly if the server is
      * deployed to multiple platforms for high availability (HA).
-     * The default value is "<a href="https://localhost:9443">"https://localhost:9443"</a>".
+     * The default value is "<a href="https://localhost:7443">"https://localhost:7443"</a>".
      *
      * @param serverURLRoot  String url.
      * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.

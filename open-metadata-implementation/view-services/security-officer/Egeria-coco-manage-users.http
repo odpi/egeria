@@ -1,7 +1,7 @@
 # Egeria-coco-manage-users
 # A demonstration on maintaining user accounts used when creating bearer tokens.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

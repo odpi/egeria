@@ -6024,15 +6024,8 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(termEntity);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(termEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(qualifiedName + "_term_anchor_relationship"),
-                                                                     null,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
+        EntityProxy end2 = archiveHelper.getEntityProxy(termEntity);
 
         if (categoryIds != null)
         {
@@ -6057,7 +6050,7 @@ public class SimpleCatalogArchiveHelper
                         categoryGUID = idToGUIDMap.getGUID(categoryId);
                     }
 
-                    end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
+                    EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
 
                     /*
                      * Note properties set to ACTIVE - if you need different properties use addTermToCategory
@@ -6070,6 +6063,20 @@ public class SimpleCatalogArchiveHelper
                                                                                  end2));
                 }
             }
+        }
+        else if (glossaryGUID != null)
+        {
+            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
+
+            /*
+             * only link to glossary if there are no categories
+             */
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                         idToGUIDMap.getGUID(qualifiedName + "_term_anchor_relationship"),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
         }
 
         return termEntity.getGUID();

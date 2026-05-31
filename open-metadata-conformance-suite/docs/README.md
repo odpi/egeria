@@ -38,7 +38,7 @@ etc](https://egeria-project.org/guides/admin/servers).  Before starting the CTS 
 configure the repository workbench within it by POSTing to:
 
 ```
-POST https://localhost:9443/open-metadata/admin-services/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+POST https://localhost:7443/open-metadata/admin-services/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
 ```
 
 with a repository workbench configuration like the following:
@@ -92,7 +92,7 @@ $ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report
 =======================================
-Contacting conformance suite server: cts (https://localhost:9443)
+Contacting conformance suite server: cts (https://localhost:7443)
 
 Saving full profile details into 'profile-details' directory...
 Summary of profile results:
@@ -130,7 +130,7 @@ $ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report
 =======================================
-Contacting conformance suite server: cts (https://localhost:9443)
+Contacting conformance suite server: cts (https://localhost:7443)
 
 Saving full profile details into 'profile-details' directory...
 Summary of profile results:

@@ -70,7 +70,7 @@ public class CreateCSVFileAssetSample
     {
         String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
         String  serverName = "active-metadata-store";
-        String  serverURLRoot = "https://localhost:9443";
+        String  serverURLRoot = "https://localhost:7443";
         String  clientUserId = "peterprofile";
 
         if (args.length > 0)

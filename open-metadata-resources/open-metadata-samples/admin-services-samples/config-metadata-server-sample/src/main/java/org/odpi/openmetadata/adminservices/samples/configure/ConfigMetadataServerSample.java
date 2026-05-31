@@ -23,10 +23,10 @@ public class ConfigMetadataServerSample
     /*
      * These are the values used to configure the metadata server
      */
-    private static final String defaultAdminPlatformURLRoot = "https://localhost:9443";
+    private static final String defaultAdminPlatformURLRoot = "https://localhost:7443";
     private static final String eventBusURLRoot             = "localhost:9092";
     private static final String metadataServerName          = "cocoMDS10";
-    private static final String metadataServerPlatform      = "https://localhost:9444";
+    private static final String metadataServerPlatform      = "https://localhost:7444";
     private static final String metadataServerUserId        = "cocoMDS1npa";
     private static final String metadataCollectionName      = "Data Lake Catalog";
     private static final String organizationName            = "Coco Pharmaceuticals";

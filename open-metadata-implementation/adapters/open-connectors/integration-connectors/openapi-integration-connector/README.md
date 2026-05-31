@@ -42,7 +42,7 @@ This is its connection definition to use on the [administration commands that co
 }
 ```
 
-- Replace `{{serverURL}}` with the network address of the process where the API is hosted (for example, `localhost:9443`).
+- Replace `{{serverURL}}` with the network address of the process where the API is hosted (for example, `localhost:7443`).
 
 
 ----

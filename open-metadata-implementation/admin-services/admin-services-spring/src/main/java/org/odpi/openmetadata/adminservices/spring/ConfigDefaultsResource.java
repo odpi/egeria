@@ -48,7 +48,7 @@ public class ConfigDefaultsResource
      * Set up the default root URL for this server's platform that is used to construct full URL paths to calls for
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
-     * The default value is "https://localhost:9443".
+     * The default value is "https://localhost:7443".
      * ServerRootURL is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
      *
@@ -66,7 +66,7 @@ public class ConfigDefaultsResource
                description="Set up the default root URL for this server that is used to construct full URL paths to calls for" +
                                    " this server's REST interfaces.  It is a value that is sent to other servers to allow" +
                                    " them to call this server." +
-                                   " The default value is \"https://localhost:9443\"." +
+                                   " The default value is \"https://localhost:7443\"." +
                                    " ServerURLRoot is used as a default value during the configuration of the server's subsystems." +
                                    " If it is updated after a subsystem is configured then the new value is ignored.",
                externalDocs=@ExternalDocumentation(description="Further Information",

@@ -1,6 +1,6 @@
 # Egeria-integration-daemon-services
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @server=integration-daemon
 @user=garygeeke
 

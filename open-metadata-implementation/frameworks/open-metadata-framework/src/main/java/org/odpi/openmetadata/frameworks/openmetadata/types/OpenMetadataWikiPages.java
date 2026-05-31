@@ -733,6 +733,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0690_REQUEST_FOR_ACTION           = "https://egeria-project.org/types/6/0690-Request-for-Action/";
 
     /**
+     * <a href="https://egeria-project.org/types/7/0705-Data-Sharing/">...</a>
+     */
+    public static final String MODEL_0705_DATA_SHARING               = "https://egeria-project.org/types/7/0705-Data-Sharing/";
+
+    /**
      * <a href="https://egeria-project.org/types/7/0710-Digital-Products/">...</a>
      */
     public static final String MODEL_0710_DIGITAL_PRODUCT               = "https://egeria-project.org/types/7/0710-Digital-Products/";

@@ -888,6 +888,14 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.FOLIO_COLLECTION;
         }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_HUB.typeName))
+        {
+            return VisualStyle.DATA_HUB;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
+        {
+            return VisualStyle.DATA_SHARING_REQUEST;
+        }
         else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RESULTS_SET_COLLECTION.typeName))
         {
             return VisualStyle.RESULTS_SET;

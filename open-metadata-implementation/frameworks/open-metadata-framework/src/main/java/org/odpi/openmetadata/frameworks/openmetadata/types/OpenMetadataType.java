@@ -5928,8 +5928,28 @@ public enum OpenMetadataType
 
 
     /* ============================================================================================================================*/
-    /* Area 7 - Lineage and Data Products                                                                                          */
+    /* Area 7 - Lineage and Usage                                                                                                  */
     /* ============================================================================================================================*/
+
+    /**
+     * The DataHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.
+     */
+    DATA_HUB("563b3b2c-74f8-428e-8f0c-d0ea1d229294",
+                    "DataHub",
+                    OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
+                    "3f24933c-94b1-40de-b908-2328a0e28b2f",
+                    "The DataHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.",
+                    DataHubProperties.class),
+
+    /**
+     * The DataSharingRequest entity describes a request for data sharing.  It is used to track the status of the request and gather the details of the request (such as the requested data specification) and the data sharing agreement and related resources.
+     */
+    DATA_SHARING_REQUEST("36c2fe16-9e55-44d2-9951-90f34571bd3a",
+             "DataSharingRequest",
+             OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
+             "e1134630-341a-4c82-9136-01fbe5d90b9c",
+             "The DataSharingRequest entity describes a request for data sharing.  It is used to track the status of the request and gather the details of the request (such as the requested data specification) and the data sharing agreement and related resources.",
+             DataSharingRequestProperties.class),
 
     /**
      * Relationship identifying dependencies between digital products.

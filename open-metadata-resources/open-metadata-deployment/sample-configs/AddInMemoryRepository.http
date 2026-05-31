@@ -1,7 +1,7 @@
 #
 # This command updates the sample configuration document for active-metadata-server.  It uses IntelliJ's HTTP Client.
 #
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 
 ###

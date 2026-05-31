@@ -397,7 +397,7 @@ public class AssetSetUp
      */
     public static void main(String[] args)
     {
-        String  platformURLRoot = "https://localhost:9443";
+        String  platformURLRoot = "https://localhost:7443";
         String  clientUserId = "erinoverview";
         String  serverName = "active-metadata-store";
 

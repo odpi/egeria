@@ -304,7 +304,7 @@ public class AssetDeploy
         final String interactiveMode = "interactive";
         final String endInteractiveMode = "exit";
 
-        String platformURLRoot = "https://localhost:9443";
+        String platformURLRoot = "https://localhost:7443";
         String clientUserId = "erinoverview";
         String serverName = "active-metadata-store";
         String mode = interactiveMode;

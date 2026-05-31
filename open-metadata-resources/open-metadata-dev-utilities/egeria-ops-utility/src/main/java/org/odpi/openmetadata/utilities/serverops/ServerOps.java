@@ -329,7 +329,7 @@ public class ServerOps
         final String interactiveMode = "interactive";
         final String endInteractiveMode = "exit";
 
-        String platformURLRoot = "https://localhost:9443";
+        String platformURLRoot = "https://localhost:7443";
         String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
         String secretsStoreLocation = "secrets/default.omsecrets";
         String secretsStoreCollection = "garygeeke";

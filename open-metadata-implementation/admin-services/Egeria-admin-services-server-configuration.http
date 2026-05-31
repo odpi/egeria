@@ -1,6 +1,6 @@
 # Egeria-admin-services-server-configuration
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 @server=active-metadata-store
 
@@ -51,7 +51,7 @@ Content-Type: application/json
         "localServerId": "1083dba3-bbf8-44f0-a16f-ff842a9a03f0",
         "localServerName": "{{server}}",
         "localServerType": "Open Metadata and Governance Server",
-        "localServerURL": "https://localhost:9443",
+        "localServerURL": "https://localhost:7443",
         "localServerUserId": "OMAGServer",
         "maxPageSize": 1000
     }

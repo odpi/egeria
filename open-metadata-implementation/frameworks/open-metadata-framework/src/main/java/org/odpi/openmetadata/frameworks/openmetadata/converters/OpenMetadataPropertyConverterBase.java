@@ -14959,6 +14959,14 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new ContextEventCollectionProperties();
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_HUB.typeName))
+                        {
+                            beanProperties = new DataHubProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
+                        {
+                            beanProperties = new DataSharingRequestProperties();
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SPEC_COLLECTION.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPORT_TYPE.typeName))

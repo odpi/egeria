@@ -664,7 +664,7 @@ public class ServerConfig
 
         String       secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
         String       secretsStoreLocation = "secrets/integration.omsecrets";
-        String       platformURLRoot = "https://localhost:9443";
+        String       platformURLRoot = "https://localhost:7443";
         String       secretsStoreCollection = "garygeeke";
         String       mode = interactiveMode;
 

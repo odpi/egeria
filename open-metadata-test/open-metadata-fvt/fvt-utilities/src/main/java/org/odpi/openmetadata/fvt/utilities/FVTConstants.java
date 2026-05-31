@@ -13,9 +13,9 @@ public class FVTConstants
     public static final String USERID              = "erinoverview";
 
     /**
-     * "<a href="https://localhost:9443">"https://localhost:9443"</a>"
+     * "<a href="https://localhost:7443">"https://localhost:7443"</a>"
      */
-    public static final String DEFAULT_URL         = "https://localhost:9443";
+    public static final String DEFAULT_URL         = "https://localhost:7443";
 
     /**
      * fvtMDS

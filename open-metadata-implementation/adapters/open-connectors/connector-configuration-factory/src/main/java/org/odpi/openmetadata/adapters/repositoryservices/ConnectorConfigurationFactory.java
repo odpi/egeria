@@ -424,8 +424,8 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the Connection for this server's OMRS Repository REST API.  If the localServerURL is
-     * something like https://localhost:9443/west-domain then the REST API URL would be
-     * https://localhost:9443/west-domain/servers/{localServerName}/open-metadata/repository-services/...
+     * something like https://localhost:7443/west-domain then the REST API URL would be
+     * https://localhost:7443/west-domain/servers/{localServerName}/open-metadata/repository-services/...
      *
      * @param localServerName   name of the local server
      * @param localServerURL   root of the local server's URL

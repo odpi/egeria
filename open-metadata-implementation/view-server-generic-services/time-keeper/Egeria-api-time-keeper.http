@@ -1,7 +1,7 @@
 # Egeria-time-keeper-api
 # https://egeria-project.org/concepts/context-event
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

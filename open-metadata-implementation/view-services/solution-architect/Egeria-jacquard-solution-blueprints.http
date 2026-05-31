@@ -3,7 +3,7 @@
 # Open Metadata Digital Product Catalog.
 # https://egeria-project.org/concepts/solution-blueprint
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

@@ -2,7 +2,7 @@
 # These commands connect simple-metadata-store and active-metadata-store together in a cohort called "sinpleCohort".
 # They use IntelliJ's HTTP Client.
 #
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 @cohort=sampleCohort
 

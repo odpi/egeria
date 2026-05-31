@@ -9,10 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductCatalogProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
@@ -40,8 +37,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
                 @JsonSubTypes.Type(value = ContextEventCollectionProperties.class, name = "ContextEventCollectionProperties"),
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
+                @JsonSubTypes.Type(value = DataHubProperties.class, name = "DataHubProperties"),
                 @JsonSubTypes.Type(value = DataProcessingActionProperties.class, name = "DataProcessingActionProperties"),
                 @JsonSubTypes.Type(value = DataProcessingDescriptionProperties.class, name = "DataProcessingDescriptionProperties"),
+                @JsonSubTypes.Type(value = DataSharingRequestProperties.class, name = "DataSharingRequestProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
                 @JsonSubTypes.Type(value = DesignModelProperties.class, name = "DesignModelProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),

@@ -17,7 +17,7 @@ $ FVTSuite serverURLRoot serverName userId
 
 Where: 
 * `serverURLRoot` is the hostname and port name for the OMAG Server Platform where the
-metadata server is running.  If no `serverURLRoot` is supplied, it defaults to `https://localhost:9443`.
+metadata server is running.  If no `serverURLRoot` is supplied, it defaults to `https://localhost:7443`.
 
 * `serverName` is the name for the Metadata Server that is called during the tests.
 If no `serverName` is supplied, it defaults to `fvtMDS`.

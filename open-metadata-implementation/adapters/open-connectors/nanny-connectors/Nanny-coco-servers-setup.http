@@ -1,7 +1,7 @@
 # A Nanny Demo
 
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @nannyAuditLogTopic=logging
 @nannyDB=
 

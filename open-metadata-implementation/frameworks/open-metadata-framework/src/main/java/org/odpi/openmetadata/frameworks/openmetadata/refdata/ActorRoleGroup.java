@@ -56,6 +56,13 @@ public enum ActorRoleGroup
     /**
      * Role responsible for managing a digital product.
      */
+    DATA_HUB_MANAGER("data-hub-manager",
+                            "Role responsible for managing a data hub.",
+                            "0d0f28f3-3ea5-4748-b05a-9cc7cfc4c5a5"),
+
+    /**
+     * Role responsible for managing a digital product.
+     */
     DIGITAL_PRODUCT_MANAGER("digital-product-manager",
                             "Role responsible for managing a digital product.",
                             "7784711c-e06e-4f5a-b272-0843063f3a19"),

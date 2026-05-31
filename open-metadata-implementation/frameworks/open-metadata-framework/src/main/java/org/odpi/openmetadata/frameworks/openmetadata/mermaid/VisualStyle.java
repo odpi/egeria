@@ -105,6 +105,8 @@ public enum VisualStyle
     PROJECT_ROLE(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 
     AGREEMENT(Colour.BLACK.getColourNumber(), Colour.YELLOW_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DATA_HUB(Colour.BLACK.getColourNumber(), Colour.BEIGE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DATA_SHARING_REQUEST(Colour.BLACK.getColourNumber(), Colour.GREEN_YELLOW.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     DATA_SHARING_AGREEMENT(Colour.WHITE.getColourNumber(), Colour.OLIVE_DRAB.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     DIGITAL_SUBSCRIPTION(Colour.BLACK.getColourNumber(), Colour.DARK_OLIVE_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 

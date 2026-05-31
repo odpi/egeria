@@ -171,6 +171,7 @@ public class OpenMetadataTypesArchive
         update0455ExceptionManagement();
         update0485DataProcessingPurposes();
         update0595DesignPatterns();
+        add0705DataSharing();
     }
 
     /*
@@ -1156,6 +1157,29 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0705DataSharing()
+    {
+        this.archiveBuilder.addEntityDef(getDataHubCollection());
+        this.archiveBuilder.addEntityDef(getDataSharingRequestCollection());
+    }
+
+    private EntityDef getDataHubCollection()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_HUB,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
+    private EntityDef getDataSharingRequestCollection()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SHARING_REQUEST,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 @ucURL=http://localhost:8087
 #@ucURL=http://egeria.pdr-associates.com:8070
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

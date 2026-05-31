@@ -1,7 +1,7 @@
 # Egeria-metadata-collections
 # A metadata collection is an asset that describes a logical collection of metadata.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

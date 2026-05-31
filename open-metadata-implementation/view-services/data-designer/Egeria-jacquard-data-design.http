@@ -1,7 +1,7 @@
 # Egeria-jacquard-data-design
 ## Understand the data dictionaru and data specs created by Jacquard.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###
