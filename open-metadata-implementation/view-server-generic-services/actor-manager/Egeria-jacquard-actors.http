@@ -3,7 +3,7 @@
 # Note: this assumes that the CocoComboArchive.omarchive content pack is loaded since it has the actor
 # information for the Coco Pharmaceuticals actors.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

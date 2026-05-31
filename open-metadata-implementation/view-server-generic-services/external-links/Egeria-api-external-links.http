@@ -2,7 +2,7 @@
 # The External Links OMVS provides APIs for supporting the creation and editing of external references,
 #schema attributes and user identities.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

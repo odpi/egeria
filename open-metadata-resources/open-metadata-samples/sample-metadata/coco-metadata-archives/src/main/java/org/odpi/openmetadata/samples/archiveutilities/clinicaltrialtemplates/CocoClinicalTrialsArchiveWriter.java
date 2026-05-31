@@ -82,25 +82,29 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                         null,
                                                         ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
-        Map<String, String> categoryLookup = new HashMap<>();
         for (GlossaryCategoryDefinition glossaryCategoryDefinition : GlossaryCategoryDefinition.values())
         {
-            String glossaryCategoryGUID = archiveHelper.addGlossaryCategory(glossaryGUID,
-                                                                            true,
-                                                                            null,
-                                                                            glossaryCategoryDefinition.getQualifiedName(),
-                                                                            glossaryCategoryDefinition.getName(),
-                                                                            glossaryCategoryDefinition.getDescription(),
-                                                                            null);
-
-            categoryLookup.put(glossaryCategoryDefinition.getName(), glossaryCategoryGUID);
+            archiveHelper.addGlossaryCategory(glossaryGUID,
+                                              true,
+                                              null,
+                                              glossaryCategoryDefinition.getQualifiedName(),
+                                              glossaryCategoryDefinition.getName(),
+                                              glossaryCategoryDefinition.getDescription(),
+                                              null);
         }
 
         for (GlossaryTermDefinition glossaryTermDefinition : GlossaryTermDefinition.values())
         {
+            List<String> glossaryCategoryIds = null;
+
+            if (glossaryTermDefinition.getCategory() != null)
+            {
+                glossaryCategoryIds = List.of(glossaryTermDefinition.getCategory().getQualifiedName());
+            }
+
             String glossaryTermGUID = archiveHelper.addTerm(glossaryGUID,
-                                                            null,
-                                                            false,
+                                                            glossaryCategoryIds,
+                                                            true,
                                                             glossaryTermDefinition.getQualifiedName(),
                                                             glossaryTermDefinition.getName(),
                                                             glossaryTermDefinition.getSummary(),
@@ -119,9 +123,9 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
             classificationList.add(archiveHelper.getTemplateSubstituteClassification());
 
-            String substituteGlossaryTermGUID = archiveHelper.addTerm(glossaryGUID,
-                                                                      null,
-                                                                      false,
+            String substituteGlossaryTermGUID = archiveHelper.addTerm(null,
+                                                                      List.of(glossaryTermDefinition.getSubstituteCategory().getQualifiedName()),
+                                                                      true,
                                                                       glossaryTermDefinition.getTemplateSubstituteQualifiedName(),
                                                                       glossaryTermDefinition.getTemplateSubstituteName(),
                                                                       glossaryTermDefinition.getTemplateSubstituteSummary(),
@@ -141,15 +145,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                      1,
                                                      glossaryTermGUID,
                                                      methodName);
-
-            if (glossaryTermDefinition.getCategory() != null)
-            {
-                archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getCategory().getName()),
-                                                glossaryTermGUID);
-            }
-
-            archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getSubstituteCategory().getName()),
-                                            substituteGlossaryTermGUID);
         }
     }
 

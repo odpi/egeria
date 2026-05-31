@@ -2,7 +2,7 @@
 # This collection illustrates Metadata Expert API's query features.
 # It uses the metadata from the CocoComboArchive so make sure it is loaded befor running these requests.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

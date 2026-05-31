@@ -199,6 +199,14 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
         }
         catch (Exception error)
         {
+            /*
+             * Check that the error is not caused because the server/platform is shutting down.
+             */
+            integrationContext.validateIsActive(methodName);
+
+            /*
+             * OK so this is really unexpected.
+             */
             auditLog.logException(methodName,
                                   JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                               error.getClass().getName(),

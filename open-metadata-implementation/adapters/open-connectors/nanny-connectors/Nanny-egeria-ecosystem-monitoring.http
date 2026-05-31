@@ -1,12 +1,12 @@
 # A Nanny Demo
 
-@nannyURL=https://localhost:9446
+@nannyURL=https://localhost:7446
 @adminUserId=garygeeke
 @user=garygeeke
 @kafkaep=localhost:9092
 @max_page_size=100
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @ecosystemMonitor=ecosystem-monitor
 @nannyAuditLogTopic=egeria.omag.logging
 #@nannyDB=jdbc:postgresql://wolfsonnet.me:5432/observations_base

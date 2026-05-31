@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
-# Usage: docker run -d -p 9443:9443 odpi/egeria-platform
+# Usage: docker run -d -p 7443:7443 odpi/egeria-platform
 # 
 # All dynamic data is stored under /deployments/data, so map a volume or k8s pvc to this 
 # to persist egeria configuration, local graph repo etc ie
@@ -39,8 +39,8 @@ LABEL org.opencontainers.image.vendor="ODPi" \
       org.opencontainers.image.version="$version" \
       org.opencontainers.image.documentation="https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-deployment/docker/platform" \
       org.opencontainers.image.ext.vcs-date="$VCS_DATE" \
-      org.opencontainers.image.ext.docker.cmd="docker run -d -p 9443:9443 odpi/egeria-platform" \
-      org.opencontainers.image.ext.docker.cmd.devel="docker run -d -p 9443:9443 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria-platform" \
+      org.opencontainers.image.ext.docker.cmd="docker run -d -p 7443:7443 odpi/egeria-platform" \
+      org.opencontainers.image.ext.docker.cmd.devel="docker run -d -p 7443:7443 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria-platform" \
       org.opencontainers.image.ext.docker.debug="docker exec -it $CONTAINER /bin/sh" \
       org.opencontainers.image.ext.docker.params="JAVA_DEBUG=set to true to enable JVM debugging"
 
@@ -48,8 +48,8 @@ LABEL org.opencontainers.image.vendor="ODPi" \
 # libraries and the data directory.
 COPY --chmod=777 assembly/platform /deployments
 
-# Expose port 9443 (default) for client access, and allow for 5005 being used for remote java debug
-EXPOSE 9443 5005
+# Expose port 7443 (default) for client access, and allow for 5005 being used for remote java debug
+EXPOSE 7443 5005
 
 # By default, we run the OMAG Server Platform
 ENV JAVA_APP_JAR=omag-server-platform-${version}.jar

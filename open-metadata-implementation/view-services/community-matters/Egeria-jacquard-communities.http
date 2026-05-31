@@ -4,7 +4,7 @@
 # of changes to the Open Metadata Digital Products.
 # https://egeria-project.org/concepts/community
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

@@ -720,7 +720,7 @@ public class CreateSubjectAreasSample
     public static void main(String[] args)
     {
         String  serverName = "fvtMDS";
-        String  serverURLRoot = "https://localhost:9443";
+        String  serverURLRoot = "https://localhost:7443";
         String  clientUserId = "erinoverview";
 
 

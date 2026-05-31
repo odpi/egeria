@@ -2,7 +2,7 @@
 # The Lineage Linker OMVS provides APIs for supporting the creation and editing of schema types,
 #schema attributes and user identities.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

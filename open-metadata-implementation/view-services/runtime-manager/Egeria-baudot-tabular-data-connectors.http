@@ -1,7 +1,7 @@
 # Egeria-baudot-tabular-data-connectors
 ## Explore the implementation of the connectors that support tabular data sets.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

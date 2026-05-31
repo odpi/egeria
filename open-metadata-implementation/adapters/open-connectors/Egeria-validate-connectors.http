@@ -2,7 +2,7 @@
 # This collection lists the different calls for validating whether a connector is firstly loaded into the platform,
 # and secondly is supported by a specific service.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @integrationDaemon=integration-daemon
 @engineHost=engine-host
 @user=garygeeke

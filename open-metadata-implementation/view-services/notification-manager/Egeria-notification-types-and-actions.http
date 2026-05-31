@@ -3,7 +3,7 @@
 ## Egeria's Notification Manager API
 ## Sets up the definitions of the resources to monitor and the subscribers to receive notifications from.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

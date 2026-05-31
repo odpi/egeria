@@ -148,7 +148,7 @@ public class CreateGovernanceZoneSample
     public static void main(String[] args)
     {
         String  serverName = "simple-metadata-store";
-        String  serverURLRoot = "https://localhost:9443";
+        String  serverURLRoot = "https://localhost:7443";
         String  clientUserId = "erinoverview";
 
 

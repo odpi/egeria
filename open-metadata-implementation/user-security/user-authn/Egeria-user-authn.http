@@ -1,5 +1,5 @@
 # Egeria-user-authn
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 
 ###
 # @name Application info

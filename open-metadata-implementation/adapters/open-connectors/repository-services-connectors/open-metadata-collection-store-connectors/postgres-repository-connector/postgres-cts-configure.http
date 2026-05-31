@@ -2,7 +2,7 @@
 # These commands rebuild the sample configuration documents for postgres-metadata-server
 # They use IntelliJ's HTTP Client.
 #
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 @auditLogTopic=logging
 @localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
@@ -12,7 +12,7 @@
 @ctsPassword=secret
 
 @tutServer=postgres-metadata-store
-@tutPlatformURLroot=https://localhost:9443
+@tutPlatformURLroot=https://localhost:7443
 
 @cohort=ctsCohort
 

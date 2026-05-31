@@ -1,7 +1,7 @@
 # Egeria-coco-sales-territories
 # Create a referce data set for sales territories
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:443
 @viewServer=view-server
 
 ###

@@ -3,7 +3,7 @@
 #@openLineageBackend=http://localhost:5000
 #@openLineageBackend=http://localhost:6000
 #@openLineageBackend=http://egeria.pdr-associates.com:5050
-@openLineageBackend=https://localhost:9443/servers/integration-daemon/open-metadata/integration-daemon
+@openLineageBackend=https://localhost:7443/servers/integration-daemon/open-metadata/integration-daemon
 @openLineageNamespace=restTestNameSpace
 @openLineageRunId=001
 

@@ -171,6 +171,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 }
                 catch (Exception error)
                 {
+                    /*
+                     * Check that the error is not caused because the server/platform is shutting down.
+                     */
+                    integrationContext.validateIsActive(methodName);
+
+                    /*
+                     * OK so this is really unexpected.
+                     */
                     auditLog.logException(methodName,
                                           JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                       error.getClass().getName(),
@@ -189,6 +197,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
         catch (Exception error)
         {
+            /*
+             * Check that the error is not caused because the server/platform is shutting down.
+             */
+            integrationContext.validateIsActive(methodName);
+
+            /*
+             * OK so this is really unexpected.
+             */
             auditLog.logMessage(methodName,
                                 JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                             error.getClass().getName(),
@@ -256,8 +272,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      *
      * @param existingDataSources existing data source map
      * @throws ConnectorCheckedException problem access the valid value set list
+     * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
-    private void harvestValidMetadataValues(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException
+    private void harvestValidMetadataValues(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException,
+                                                                                                             UserNotAuthorizedException
     {
         final String methodName = "harvestValidValues";
 
@@ -290,6 +308,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                 }
                                 catch (Exception error)
                                 {
+                                    /*
+                                     * Check that the error is not caused because the server/platform is shutting down.
+                                     */
+                                    integrationContext.validateIsActive(methodName);
+
+                                    /*
+                                     * OK so this is really unexpected.
+                                     */
                                     auditLog.logException(methodName,
                                                           JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                       error.getClass().getName(),
@@ -354,8 +380,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      *
      * @param existingDataSources existing data source map
      * @throws ConnectorCheckedException problem access the valid value set list
+     * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
-    private void harvestReferenceDataSets(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException
+    private void harvestReferenceDataSets(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "harvestReferenceDataSets";
 
@@ -393,6 +420,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                 }
                                 catch (Exception error)
                                 {
+                                    /*
+                                     * Check that the error is not caused because the server/platform is shutting down.
+                                     */
+                                    integrationContext.validateIsActive(methodName);
+
+                                    /*
+                                     * OK so this is really unexpected.
+                                     */
                                     auditLog.logException(methodName,
                                                           JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                       error.getClass().getName(),

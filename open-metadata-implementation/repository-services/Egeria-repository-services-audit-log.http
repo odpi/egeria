@@ -1,5 +1,5 @@
 # Egeria-repository-services-audit-log
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 @server=active-metadata-store
 

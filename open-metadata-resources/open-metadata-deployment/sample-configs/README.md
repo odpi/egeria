@@ -54,7 +54,7 @@ These server configurations can be (re)created using the `BuildSampleconfigs.htt
 
 ## Starting the servers
 
-Ensure the OMAG Server Platform is running at `https://localhost:9443`.  The servers will automatically start when the platform starts.
+Ensure the OMAG Server Platform is running at `https://localhost:7443`.  The servers will automatically start when the platform starts.
 
 You can edit the `application.properties` file in the `platform` directory and change the `startup.server.list` property to list the servers that should be automatically started when the platform is started:
 ```properties

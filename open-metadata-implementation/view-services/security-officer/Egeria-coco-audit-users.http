@@ -1,7 +1,7 @@
 # Egeria-coco-audit-users
 # A demonstration on access user identities, user accounts, their definitions and any exceptions.
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

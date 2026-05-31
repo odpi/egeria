@@ -2,7 +2,7 @@
 # The Engine Host Services provide the core subsystem for the Engine Host OMAG Server.
 # Further Information: https://egeria-project.org/services/engine-host-services/
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @server=engine-host
 @user=peterprofile
 @governanceEngineName=AssetSurvey

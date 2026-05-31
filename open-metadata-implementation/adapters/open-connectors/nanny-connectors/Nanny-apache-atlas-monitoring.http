@@ -1,6 +1,6 @@
 # A Nanny Demo
 
-@nannyURL=https://localhost:9446
+@nannyURL=https://localhost:7446
 @adminUserId=garygeeke
 @user=garygeeke
 @kafkaep=localhost:9092

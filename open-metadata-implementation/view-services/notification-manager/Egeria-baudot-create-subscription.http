@@ -1,7 +1,7 @@
 # Egeria-baudot-subscription-requests
 ## Locate the types of subscriptions available for a digital product
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

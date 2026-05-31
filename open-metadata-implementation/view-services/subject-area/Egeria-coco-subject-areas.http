@@ -7,7 +7,7 @@
 # subject area hierarchy is retrieved.
 # Subject Areas: https://egeria-project.org/concepts/subject-area/
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 ###

@@ -2,7 +2,7 @@
 # These commands add the CocoComboArchive to active-metadata-store and a new governance engine for clinical trials
 # to engine-host.  They use IntelliJ's HTTP Client.
 #
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 
 ###

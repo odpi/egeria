@@ -1,5 +1,5 @@
 # Egeria-repository-services-metadata-highway
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @adminUserId=garygeeke
 @cohort=sampleCohort
 @server=active-metadata-store

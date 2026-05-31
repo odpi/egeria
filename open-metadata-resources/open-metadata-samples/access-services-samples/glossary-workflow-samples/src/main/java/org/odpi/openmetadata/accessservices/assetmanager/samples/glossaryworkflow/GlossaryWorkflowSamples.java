@@ -26,7 +26,7 @@ public class GlossaryWorkflowSamples
     public static void main(String[] args)
     {
         String  serverName = "simple-metadata-store";
-        String  platformURLRoot = "https://localhost:9443";
+        String  platformURLRoot = "https://localhost:7443";
         String  clientUserId = "peterprofile";
 
         if (args != null)

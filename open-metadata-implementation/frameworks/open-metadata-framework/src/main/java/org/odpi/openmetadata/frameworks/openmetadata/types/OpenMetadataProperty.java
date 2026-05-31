@@ -1698,7 +1698,7 @@ public enum OpenMetadataProperty
     /**
      * Network address used to connect to the endpoint.
      */
-    NETWORK_ADDRESS("networkAddress", DataType.STRING, DataType.STRING.getDisplayName(), "Network address used to connect to the endpoint.", "https://localhost:9443", "0f38d466-e288-4971-bda8-1c5fde81bc82"),
+    NETWORK_ADDRESS("networkAddress", DataType.STRING, DataType.STRING.getDisplayName(), "Network address used to connect to the endpoint.", "https://localhost:7443", "0f38d466-e288-4971-bda8-1c5fde81bc82"),
 
     /**
      * Name of the protocol used to connect to the endpoint.

@@ -23,10 +23,10 @@ You will see the platform logo plus other messages describing its startup config
 
 'date time'  INFO 46460 --- [           main] o.o.o.s.springboot.OMAGServerPlatform    : Starting OMAGServerPlatform using Java 17.0.6 with PID 46460 ('jar file name' started by 'user' in 'directory')
 'date time'  INFO 46460 --- [           main] o.o.o.s.springboot.OMAGServerPlatform    : No active profile set, falling back to 1 default profile: "default"
-'date time'  INFO 46460 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9443 (https)
+'date time'  INFO 46460 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7443 (https)
 'date time'  INFO 46460 --- [           main] o.o.o.s.springboot.OMAGServerPlatform    : Working directory is: 'directory name'
 'date time'  WARN 46460 --- [           main] o.o.o.s.springboot.OMAGServerPlatform    : Java trust store 'javax.net.ssl.trustStore' is null - this is needed by Tomcat - using 'server.ssl.trust-store'
-'date time'  INFO 46460 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9443 (https) with context path ''
+'date time'  INFO 46460 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7443 (https) with context path ''
 'date time'  INFO 46460 --- [           main] o.o.o.s.springboot.OMAGServerPlatform    : Started OMAGServerPlatform in 8.192 seconds (process running for 8.927)
 'date time' No OMAG servers listed in startup configuration
 'date time' OMAG server platform ready for more configuration

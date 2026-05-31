@@ -2,7 +2,7 @@
 # The Metadata Expert API supports advanced metadata management and search,for open metadata.
 # It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).
 
-@baseURL=https://localhost:9443
+@baseURL=https://localhost:7443
 @viewServer=view-server
 
 # Optional request options not show on the example requests below:

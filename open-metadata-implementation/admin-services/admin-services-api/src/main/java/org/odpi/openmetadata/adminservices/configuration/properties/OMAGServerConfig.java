@@ -42,7 +42,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         localServerURL - network address of the OMAG server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
- *         The default value is "<a href="https://localhost:9443">...</a>".
+ *         The default value is "<a href="https://localhost:7443">...</a>".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
@@ -110,6 +110,7 @@ public class OMAGServerConfig extends BasicServerProperties
         {
             versionId                       = template.getVersionId();
             localServerId                   = template.getLocalServerId();
+            localServerName                 = template.getLocalServerName();
 
             serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();

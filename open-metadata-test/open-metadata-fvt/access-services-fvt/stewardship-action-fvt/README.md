@@ -19,7 +19,7 @@ $ AssetOwnerOMASFVTSuite serverURLRoot
 Where `serverURLRoot` is the hostname and port name for the OMAG Server Platform where the
 metadata server is running.
 
-If no `serverURLRoot` is supplied, it defaults to `https://localhost:9443`.
+If no `serverURLRoot` is supplied, it defaults to `https://localhost:7443`.
 
 The tests aim to be self-contained.  This means they create any metadata
 they use and delete it at the end.  Metadata will only be left in the repository
