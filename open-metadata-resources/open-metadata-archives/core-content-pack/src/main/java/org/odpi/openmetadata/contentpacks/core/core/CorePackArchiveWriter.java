@@ -1412,6 +1412,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 null,
                                                                 null,
+                                                                List.of("Ivor Padlock"),
+                                                                null,
                                                                 null);
 
             assert (exceptionTypeDefinition.getGUID().equals(guid));

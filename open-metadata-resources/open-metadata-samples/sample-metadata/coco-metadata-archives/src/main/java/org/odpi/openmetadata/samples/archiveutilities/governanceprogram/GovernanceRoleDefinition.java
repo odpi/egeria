@@ -16,7 +16,7 @@ public enum GovernanceRoleDefinition
      */
     GOVERNANCE_LEADER("GovernanceOfficer",
                       GovernanceDomainDefinition.ALL,
-                      "GOVERNANCE_LEADER",
+                      "GOVERNANCE-LEADER",
                       "Chief Governance Officer (CGO)",
                       "Leader of all the governance officers",
                       "Coco Pharmaceuticals",

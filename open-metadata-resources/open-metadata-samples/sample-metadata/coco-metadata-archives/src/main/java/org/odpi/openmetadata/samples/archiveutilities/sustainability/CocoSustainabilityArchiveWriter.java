@@ -180,7 +180,9 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     }
 
 
-
+    /**
+     * Write the governance definitions to the archive.
+     */
     private void writeGovernanceDefinitions()
     {
         for (GovernanceDefinition governanceDefinition : GovernanceDefinition.values())
@@ -195,10 +197,12 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                                     governanceDefinition.getScope().getPreferredValue(),
                                                                                     null,
                                                                                     governanceDefinition.getDomain(),
+                                                                                    governanceDefinition.getExternalURL(),
                                                                                     governanceDefinition.getImportance(),
                                                                                     governanceDefinition.getImplications(),
                                                                                     governanceDefinition.getOutcomes(),
                                                                                     governanceDefinition.getResults(),
+                                                                                    List.of("Tom Tally", "Erin Overview", "Stew Faster"),
                                                                                     null,
                                                                                     null);
 
