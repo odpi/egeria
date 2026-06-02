@@ -197,6 +197,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                   null,
                                                   null,
                                                   null,
+                                                  List.of("Jules Keeper"),
+                                                  null,
                                                   null);
         }
     }
@@ -227,6 +229,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                                 null,
                                                                 null,
                                                                 null,
+                                                                List.of("Jules Keeper", "Erin Overview"),
+                                                                null,
                                                                 null);
 
             assert (certificationTypeDefinition.getGUID().equals(guid));
@@ -253,7 +257,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         {
             archiveHelper.addGovernanceDefinition(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
                                                   dataProcessingPurposeDefinition.getQualifiedName(),
-                                                  null,
+                                                  dataProcessingPurposeDefinition.getIdentifier(),
                                                   dataProcessingPurposeDefinition.getDisplayName(),
                                                   dataProcessingPurposeDefinition.getSummary(),
                                                   dataProcessingPurposeDefinition.getScope().getPreferredValue(),
@@ -264,6 +268,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                   null,
                                                   null,
                                                   null,
+                                                  null,
+                                                  List.of("Jules Keeper", "Erin Overview"),
                                                   null,
                                                   null);
         }

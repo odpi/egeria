@@ -2841,9 +2841,11 @@ public class SimpleCatalogArchiveHelper
      * @param usage how is the governance definition used
      * @param importance how important is the governance definition
      * @param domainIdentifier unique identifier of the governance domain
+     * @param url URL for the governance definition
      * @param implications expected impact of adopting this definition
      * @param outcomes expected outcomes from adopting this definition
      * @param results results from adopting this definition
+     * @param authors list of authors for the governance definition
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      *
@@ -2858,10 +2860,12 @@ public class SimpleCatalogArchiveHelper
                                           String               scope,
                                           String               usage,
                                           int                  domainIdentifier,
+                                          String               url,
                                           String               importance,
                                           List<String>         implications,
                                           List<String>         outcomes,
                                           List<String>         results,
+                                          List<String>         authors,
                                           Map<String, String>  additionalProperties,
                                           Map<String, Object>  extendedProperties)
     {
@@ -2881,11 +2885,13 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IMPORTANCE.name, importance, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IMPLICATIONS.name, implications, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OUTCOMES.name, outcomes, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESULTS.name, results, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 

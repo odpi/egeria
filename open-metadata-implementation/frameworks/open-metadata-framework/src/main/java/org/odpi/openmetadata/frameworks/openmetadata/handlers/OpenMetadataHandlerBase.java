@@ -1058,8 +1058,6 @@ public class OpenMetadataHandlerBase
     {
         if (rootElement != null)
         {
-            addGovernanceDefinitionFamily(userId, rootElement, queryOptions);
-
             addSpecification(rootElement);
 
             rootElement.setSubDataValueSpecifications(this.getElementHierarchies(userId,
@@ -1583,105 +1581,6 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
-     * they have a more fancy graph to display.
-     *
-     * @param userId calling user
-     * @param rootElement new root element
-     * @param queryOptions options from the caller
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    protected void addGovernanceDefinitionFamily(String                  userId,
-                                                 OpenMetadataRootElement rootElement,
-                                                 QueryOptions            queryOptions) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
-    {
-        if (rootElement != null)
-        {
-            List<RelatedMetadataElementSummary> parentElements1 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getSupportingGovernanceDefinitions(),
-                                                                                              0,
-                                                                                              OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
-                                                                                              queryOptions,
-                                                                                              1);
-
-            List<RelatedMetadataElementSummary> parentElements2 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getSupportingGovernanceDefinitions(),
-                                                                                              0,
-                                                                                              OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
-                                                                                              queryOptions,
-                                                                                              1);
-
-            if (parentElements1 != null)
-            {
-                if (parentElements2 != null)
-                {
-                    parentElements1.addAll(parentElements2);
-                }
-
-                rootElement.setSupportingGovernanceDefinitions(parentElements1);
-            }
-            else if (parentElements2 != null)
-            {
-                rootElement.setSupportingGovernanceDefinitions(parentElements2);
-            }
-
-            List<RelatedMetadataElementSummary> peerElements1 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getPeerGovernanceDefinitions(),
-                                                                                            0,
-                                                                                            OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
-                                                                                            queryOptions,
-                                                                                            1);
-
-            List<RelatedMetadataElementSummary> peerElements2 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getPeerGovernanceDefinitions(),
-                                                                                            0,
-                                                                                            OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
-                                                                                            queryOptions,
-                                                                                            1);
-
-            List<RelatedMetadataElementSummary> peerElements3 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getPeerGovernanceDefinitions(),
-                                                                                            0,
-                                                                                            OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName,
-                                                                                            queryOptions,
-                                                                                            1);
-
-            if (peerElements1 != null)
-            {
-                if (peerElements2 != null)
-                {
-                    if (peerElements3 != null)
-                    {
-                        peerElements2.addAll(peerElements3);
-                    }
-
-                    peerElements1.addAll(peerElements2);
-                }
-
-                rootElement.setPeerGovernanceDefinitions(peerElements1);
-            }
-            else if (parentElements2 != null)
-            {
-                if (peerElements3 != null)
-                {
-                    peerElements2.addAll(peerElements3);
-                }
-
-                rootElement.setPeerGovernanceDefinitions(peerElements2);
-            }
-            else if (peerElements3 != null)
-            {
-                rootElement.setPeerGovernanceDefinitions(peerElements3);
-            }
-        }
-    }
-
-
-    /**
      * Return the nested elements to the required depth.
      *
      * @param userId calling user
@@ -1743,12 +1642,13 @@ public class OpenMetadataHandlerBase
                 List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
                 List<String> prunedSideRelationshipNames = pruneRelationshipNames(sideRelationshipNames, queryOptions);
+                List<String> coveredRelationshipsGUIDs = new ArrayList<>();
 
                 for (RelatedMetadataElementSummary retrievedElement : retrievedElements)
                 {
                     if (retrievedElement != null)
                     {
-                        List<String> coveredRelationshipsGUIDs = new ArrayList<>();
+                        coveredRelationshipsGUIDs.add(retrievedElement.getRelationshipHeader().getGUID());
 
                         results.add(getElementHierarchy(userId,
                                                         retrievedElement,
@@ -1866,8 +1766,8 @@ public class OpenMetadataHandlerBase
                                                                 QueryOptions                  queryOptions,
                                                                 int                           currentDepth,
                                                                 List<String>                  coveredRelationshipsGUIDs) throws InvalidParameterException,
-                                                                                                                           PropertyServerException,
-                                                                                                                           UserNotAuthorizedException
+                                                                                                                                PropertyServerException,
+                                                                                                                                UserNotAuthorizedException
     {
         if (retrievedElement != null)
         {

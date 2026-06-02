@@ -304,6 +304,11 @@ public enum GovernanceDefinition
     }
 
 
+    /**
+     * Return the external URL for this governance definition
+     *
+     * @return external URL
+     */
     public String getExternalURL()
     {
         return externalURL;
