@@ -3168,6 +3168,7 @@ public enum OpenMetadataType
 
     /**
      * Defines how the governance program and the supporting capabilities are supporting the business strategy.
+     * DEPRECATED.
      */
     GOVERNANCE_STRATEGY("3c34f121-07a6-4e95-a07d-9b0ef17b7bbf",
                         "GovernanceStrategy",

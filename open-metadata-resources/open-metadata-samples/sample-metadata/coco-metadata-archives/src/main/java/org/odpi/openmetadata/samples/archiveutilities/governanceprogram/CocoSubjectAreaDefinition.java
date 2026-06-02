@@ -13,13 +13,13 @@ public enum CocoSubjectAreaDefinition
     /**
      * Organization - Information relating to an organization.
      */
-    ORGANIZATION(   "Organization",
-                    null,
-                    "Organization",
-                    "Information relating to an organization.",
-                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
-                    "Controlling data management relating to different types of organizational structures and catalogues.",
-                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
+    ORGANIZATION("Organization",
+                 null,
+                 "Organization",
+                 "Information relating to an organization.",
+                 ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
+                 "Controlling data management relating to different types of organizational structures and catalogues.",
+                 GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Organization:Hospital - Information relating to a hospital's organization.

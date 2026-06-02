@@ -702,6 +702,8 @@ public class OpenMetadataTypesArchive
     private void update0405GovernanceDrivers()
     {
         this.archiveBuilder.addRelationshipDef(getRegulatorRelationship());
+
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceStrategyEntity());
     }
 
     private RelationshipDef getRegulatorRelationship()
@@ -753,6 +755,21 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+    private TypeDefPatch deprecateGovernanceStrategyEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_STRATEGY.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+
+        return typeDefPatch;
     }
 
     /*

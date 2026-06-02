@@ -1980,9 +1980,11 @@ public class ConnectorContextBase
      * @param processQualifiedName new qualified name for the process
      * @param processName new name for the process
      * @param processDescription new description for the process
+     * @param domainIdentifier governance domain
      * @param governanceActionTypeGUID the unique identifier of the governance action type
      * @param additionalRequestParameters the additional, predefined request parameters to add to the
      *                                   GovernanceActionProcessFlow relationship
+     * @param anchorGUID unique identifier of the anchor
      * @param anchorScopeGUIDs unique identifier for the top level project - used as a search scope
      * @return unique identifier of new governance action process
      * @throws InvalidParameterException parameter error
@@ -1992,6 +1994,7 @@ public class ConnectorContextBase
     public String createProcessFromGovernanceActionType(String              processQualifiedName,
                                                         String              processName,
                                                         String              processDescription,
+                                                        int                 domainIdentifier,
                                                         String              governanceActionTypeGUID,
                                                         Map<String, String> additionalRequestParameters,
                                                         String              anchorGUID,
@@ -2017,6 +2020,10 @@ public class ConnectorContextBase
                 ElementProperties processStepProperties = propertyHelper.addStringProperty(governanceActionType.getElementProperties(),
                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                            processQualifiedName + ":processStep1");
+
+                processStepProperties = propertyHelper.addIntProperty(processStepProperties,
+                                                                      OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                                      domainIdentifier);
 
                 ElementProperties processFlowProperties = propertyHelper.addStringMapProperty(null,
                                                                                               OpenMetadataProperty.REQUEST_PARAMETERS.name,

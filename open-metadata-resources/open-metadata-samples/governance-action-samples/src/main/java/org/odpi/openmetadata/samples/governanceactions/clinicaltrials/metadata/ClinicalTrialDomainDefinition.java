@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
+package org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -11,15 +11,15 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  * The GovernanceDomainDefinition is used to feed the definition of the governance domains for
  * Coco Pharmaceuticals.
  */
-public enum ProductDomainDefinition
+public enum ClinicalTrialDomainDefinition
 {
+
     /**
-     * The rules and processes associated with managing digital products.
+     * Development of new treatments by Coco Pharmaceuticals. (Unique to Coco Pharmaceuticals)
      */
-    DIGITAL_PRODUCT_MANAGEMENT(10,
-                     "Digital Product Management",
-                     "The rules and processes associated with managing digital products.",
-                     "Digital Product Managers Community"),
+    DRUG_DEVELOPMENT(20,
+                     "Drug Development",
+                     "Development of new treatments by Coco Pharmaceuticals."),
 
     ;
 
@@ -27,7 +27,6 @@ public enum ProductDomainDefinition
     private final int              domainIdentifier;
     private final String           displayName;
     private final String           description;
-    private final String           communityName;
 
 
     /**
@@ -36,17 +35,14 @@ public enum ProductDomainDefinition
      * @param domainIdentifier   unique Id for the zone
      * @param displayName   text for the zone
      * @param description   description of the assets in the zone
-     * @param communityName name of community driving the
      */
-    ProductDomainDefinition(int              domainIdentifier,
-                            String           displayName,
-                            String           description,
-                            String           communityName)
+    ClinicalTrialDomainDefinition(int              domainIdentifier,
+                                  String           displayName,
+                                  String           description)
     {
         this.domainIdentifier = domainIdentifier;
         this.displayName = displayName;
         this.description = description;
-        this.communityName = communityName;
     }
 
 
@@ -96,15 +92,6 @@ public enum ProductDomainDefinition
     }
 
 
-    /**
-     * Return the name of the community that will coordinate the governance domain.
-     *
-     * @return string name
-     */
-    public String getCommunityName()
-    {
-        return communityName;
-    }
 
     /**
      * Output of this enum class and main value.

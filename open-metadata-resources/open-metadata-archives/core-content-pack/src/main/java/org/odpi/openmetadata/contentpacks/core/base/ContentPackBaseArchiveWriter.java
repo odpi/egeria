@@ -1858,6 +1858,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                     requestTypeDefinition.getActionTargets(),
                                     requestTypeDefinition.getGovernanceService().getGovernanceActionDescription(),
                                     requestTypeDefinition.getGovernanceActionTypeGUID(),
+                                    requestTypeDefinition.getGovernanceDomainIdentifier(),
                                     requestTypeDefinition.getSupportedElementQualifiedName(),
                                     requestTypeDefinition.getSolutionComponentGUID(),
                                     requestTypeDefinition.getSolutionComponentName(),
@@ -1882,6 +1883,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param actionTargets action targets
      * @param governanceActionDescription description of the governance action, if any
      * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param governanceDomainIdentifier domain identifier
      * @param supportedElementQualifiedName technology to link the governance action type to with ResourceList
      * @param solutionComponentGUID unique identifier for the solution component
      * @param solutionComponentName name of the solution component
@@ -1899,6 +1901,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                   List<NewActionTarget>                actionTargets,
                                   GovernanceActionDescription          governanceActionDescription,
                                   String                               governanceActionTypeGUID,
+                                  int                                  governanceDomainIdentifier,
                                   String                               supportedElementQualifiedName,
                                   String                               solutionComponentGUID,
                                   String                               solutionComponentName,
@@ -1922,6 +1925,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                      actionTargets,
                                      governanceActionDescription,
                                      governanceActionTypeGUID,
+                                     governanceDomainIdentifier,
                                      supportedElementQualifiedName);
 
 
@@ -2053,6 +2057,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param actionTargets action targets
      * @param governanceActionDescription description of the governance action if any
      * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param governanceDomainIdentifier domain identifier
      * @param supportedElementQualifiedName element to link the governance action type to
      */
     protected void addGovernanceActionType(String                      governanceEngineGUID,
@@ -2063,6 +2068,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                            List<NewActionTarget>       actionTargets,
                                            GovernanceActionDescription governanceActionDescription,
                                            String                      governanceActionTypeGUID,
+                                           int                         governanceDomainIdentifier,
                                            String                      supportedElementQualifiedName)
     {
         String governanceActionTypeQualifiedName = governanceEngineName + "::" + governanceRequestType;
@@ -2080,7 +2086,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                             qualifiedName,
                                                             displayName,
                                                             governanceActionDescription.governanceServiceDescription,
-                                                            0,
+                                                            governanceDomainIdentifier,
                                                             governanceActionDescription.supportedRequestParameters,
                                                             governanceActionDescription.supportedActionTargets,
                                                             governanceActionDescription.supportedAnalysisSteps,
