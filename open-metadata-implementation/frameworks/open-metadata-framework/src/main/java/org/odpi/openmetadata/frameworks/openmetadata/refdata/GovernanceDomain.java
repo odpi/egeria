@@ -35,7 +35,7 @@ public enum GovernanceDomain implements OpenMetadataRefData
     /**
      * The governance domain is not specified.
      */
-    UNCLASSIFIED         (0,"8aace3ca-1db4-4927-ad45-9766770a92c4", "Unclassified",         "The governance domain is not specified.", true),
+    UNCLASSIFIED         (0,"8aace3ca-1db4-4927-ad45-9766770a92c4", "Unclassified",         "The governance domain is not specified because the element is relevant to all domains.", true),
 
     /**
      * The data (information) governance domain.
@@ -73,7 +73,17 @@ public enum GovernanceDomain implements OpenMetadataRefData
     ASSET_MANAGEMENT     (7, "831e21d5-8e7c-448d-aa38-f977437f2a9e",    "Asset Management",     "The physical asset management governance domain.", false),
 
     /**
-     * The governance domain is locally defined.
+     * The development and management lifecycle for data sharing mechanisms including digital products.
+     */
+    DATA_SHARING(8, "d4eb2884-b369-4500-a6e1-36798c0cec7c", "Data Sharing", "The development and management lifecycle for data sharing mechanism including digital products.", false),
+
+    /**
+     * Initiatives to improve the operational sustainability of the organization.
+     */
+    SUSTAINABILITY       (9, "3bcfbce9-eaa5-4e30-9cdf-c426eb0db6b6", "Sustainability", "Initiatives to improve the operational sustainability of the organization.  This includes sustainability reports to employees and the regulators, along with education for employees and initiatives to reduce the emission of greenhouse gases.", false),
+
+    /**
+     * The governance domain is locally defined or unknown.
      */
     OTHER                (99, "c34e17d6-b924-4a7d-a5fd-13425a1de422",   "Other",                "The governance domain is locally defined.", false);
 

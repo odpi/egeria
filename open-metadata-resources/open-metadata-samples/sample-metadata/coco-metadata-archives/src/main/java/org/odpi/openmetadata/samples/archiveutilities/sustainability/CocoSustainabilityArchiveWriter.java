@@ -279,19 +279,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (SustainabilityDomainDefinition domainDefinition : SustainabilityDomainDefinition.values())
         {
-            super.addValidMetadataValue(null,
-                                        domainDefinition.getDisplayName(),
-                                        domainDefinition.getDescription(),
-                                        OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                        DataType.INT.getDisplayName(),
-                                        null,
-                                        null,
-                                        Integer.toString(domainDefinition.getDomainIdentifier()),
-                                        domainDefinition.getDomainIdentifier(),
-                                        (domainDefinition.getDomainIdentifier() == 0),
-                                        false,
-                                        null);
-
             String communityQName = "Community::" + domainDefinition.getQualifiedName();
 
             archiveHelper.addCommunity(null,

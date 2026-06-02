@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.NEW_FILES_WATCHDOG,
                         "69bead73-b5b7-4791-9293-c660990ec7bf",
+                        GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                         DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                         "6ba4d520-a3fd-4eb7-9fc1-b1beddfd721e",
                         "Watch for new Files in Directory (folder)",
@@ -58,6 +60,7 @@ public enum RequestTypeDefinition
               GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
               GovernanceServiceDefinition.FILE_PROVISIONER,
               "4f7c739b-69d3-4310-9bb2-507625dc2899",
+              GovernanceDomain.UNCLASSIFIED.getOrdinal(),
               DeployedImplementationType.FILE.getQualifiedName(),
               "a709e480-ad2e-479e-84fb-dbfb6b2a62dd",
               "Copy File",
@@ -77,6 +80,7 @@ public enum RequestTypeDefinition
               GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
               GovernanceServiceDefinition.FILE_PROVISIONER,
               "dc3ad63e-6663-4087-bcf3-6e48c68ed5b6",
+              GovernanceDomain.UNCLASSIFIED.getOrdinal(),
               DeployedImplementationType.FILE.getQualifiedName(),
               "76534d17-d674-4412-ab08-8f0069b9b053",
               "Move File",
@@ -96,6 +100,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                 GovernanceServiceDefinition.FILE_PROVISIONER,
                 "c658530b-5f99-4212-a321-92bad0cd9b60",
+                GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                 DeployedImplementationType.FILE.getQualifiedName(),
                 "039ffc59-e7b5-4a8f-9b3e-49a1b9d17ec2",
                 "Delete File",
@@ -115,7 +120,8 @@ public enum RequestTypeDefinition
                                 GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
                                 GovernanceServiceDefinition.BAUDOT_SUBSCRIPTION_MANAGER,
                                 GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                               null,
+                                GovernanceDomain.DATA_SHARING.getOrdinal(),
+                                null,
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getGUID(),
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDisplayName(),
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDescription(),
@@ -131,6 +137,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
                        GovernanceServiceDefinition.KARMA_POINT_AWARDS,
                        GovernanceActionTypeDefinition.AWARD_KARMA_POINTS.getGovernanceActionTypeGUID(),
+                       GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                        null,
                        "5ca5b9fb-2a38-43b6-9206-1465574129ce",
                        "Award Karma Points",
@@ -141,17 +148,18 @@ public enum RequestTypeDefinition
      * build-zone-membership-profile
      */
     BUILD_ZONE_MEMBERSHIP_PROFILE(GovernanceActionTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceRequestType(),
-                       null,
-                       null,
-                       null,
-                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                       GovernanceServiceDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE,
-                       GovernanceActionTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceActionTypeGUID(),
-                       null,
-                       "3e1d7e33-f871-4a4f-b50d-25e59516f7bd",
-                       "Build Zone Membership Profile",
-                       "Counts the elements of each type in each Governance Zone.",
-                       ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+                                  null,
+                                  null,
+                                  null,
+                                  GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                  GovernanceServiceDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE,
+                                  GovernanceActionTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceActionTypeGUID(),
+                                  GovernanceDomain.SECURITY.getOrdinal(),
+                                  null,
+                                  "3e1d7e33-f871-4a4f-b50d-25e59516f7bd",
+                                  "Build Zone Membership Profile",
+                                  "Counts the elements of each type in each Governance Zone.",
+                                  ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
 
     /**
@@ -164,6 +172,7 @@ public enum RequestTypeDefinition
                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                       GovernanceServiceDefinition.TABULAR_DATA_PROVISIONER,
                       GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceActionTypeGUID(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                       "15060bce-3034-4cd6-9288-15287c5a354e",
                       "Provision Tabular Data Set",
@@ -183,6 +192,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.SUBSCRIPTION_PROVISIONER,
                            GovernanceActionTypeDefinition.PROVISION_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                           GovernanceDomain.DATA_SHARING.getOrdinal(),
                            DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                            ProductSolutionComponent.PROVISIONING_PIPELINE.getGUID(),
                            ProductSolutionComponent.PROVISIONING_PIPELINE.getDisplayName(),
@@ -202,6 +212,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_SUBSCRIPTION,
                         GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                        GovernanceDomain.DATA_SHARING.getOrdinal(),
                         DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                         ProductSolutionComponent.NEW_PRODUCT_SUBSCRIPTION.getGUID(),
                         ProductSolutionComponent.NEW_PRODUCT_SUBSCRIPTION.getDisplayName(),
@@ -221,6 +232,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CANCEL_SUBSCRIPTION,
                         GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                        GovernanceDomain.DATA_SHARING.getOrdinal(),
                         DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                         ProductSolutionComponent.CANCEL_PRODUCT_SUBSCRIPTION.getGUID(),
                         ProductSolutionComponent.CANCEL_PRODUCT_SUBSCRIPTION.getDisplayName(),
@@ -241,6 +253,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                 GovernanceServiceDefinition.ORIGIN_SEEKER,
                 "98a63f4c-01fc-4c38-9897-d59fb7c888ee",
+                GovernanceDomain.DATA.getOrdinal(),
                 DeployedImplementationType.DATA_ASSET.getQualifiedName(),
                 "0e982f14-b5f9-4c0d-9bdf-647a2a637efa",
                 "Seek Origin of Data",
@@ -257,6 +270,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                 GovernanceServiceDefinition.ZONE_PUBLISHER,
                 "05df4044-bc0a-40cd-b729-66aef891e7f0",
+                GovernanceDomain.SECURITY.getOrdinal(),
                 DeployedImplementationType.ASSET.getQualifiedName(),
                 "a6db6967-0e78-4898-9602-0748932f3cfa",
                 "Set Zone Membership",
@@ -274,6 +288,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                      GovernanceServiceDefinition.RETENTION_CLASSIFIER,
                      "633cca67-7be8-49bf-9c38-f82e4ceea44c",
+                     GovernanceDomain.DATA.getOrdinal(),
                      DeployedImplementationType.DATA_ASSET.getQualifiedName(),
                      "edd1702a-c7b5-47ab-8cd2-3750849fe238",
                      "Set Retention Period",
@@ -290,6 +305,7 @@ public enum RequestTypeDefinition
                  GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                  GovernanceServiceDefinition.VERIFY_ASSET,
                  "a7983409-8eee-4239-a252-a3c5515def59",
+                 GovernanceDomain.DATA.getOrdinal(),
                  DeployedImplementationType.ASSET.getQualifiedName(),
                  "3f76aeab-bb47-4b5b-b77e-803cc73e7e13",
                  "Verify Asset",
@@ -306,6 +322,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                          GovernanceServiceDefinition.EVALUATE_ANNOTATIONS,
                          "be193d1c-1a60-4f03-8204-22817f2d40c4",
+                         GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                          DeployedImplementationType.ASSET.getQualifiedName(),
                          "255cb632-9bbc-4e1c-9e41-898673305341",
                          "Evaluate Annotations",
@@ -322,6 +339,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                          GovernanceServiceDefinition.PRINT_SURVEY_REPORT,
                          "8b81d9c1-3320-43b1-90a7-57772855460b",
+                        GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                         DeployedImplementationType.ASSET.getQualifiedName(),
                         "f01af176-3086-4533-956a-8d11bcd314c8",
                         "Print Survey Report",
@@ -341,6 +359,7 @@ public enum RequestTypeDefinition
                     GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                     GovernanceServiceDefinition.WRITE_AUDIT_LOG,
                     "faa9ef71-3f49-4ab8-8241-066ef7b517e8",
+                    GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                     null,
                     "8fa24644-43ce-4a3f-b31f-d1d52db323f7",
                     "Write to Audit Log",
@@ -360,6 +379,7 @@ public enum RequestTypeDefinition
                     GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                     GovernanceServiceDefinition.DAY_OF_WEEK,
                     "a3c16a82-a754-434f-930d-f412e62643a6",
+                    GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                     null,
                     "0f7e7dd9-eab2-4f4f-b5f9-51699b44ad69",
                     "Get Day of the Week",
@@ -379,6 +399,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                 GovernanceServiceDefinition.QUALIFIED_NAME_DEDUP,
                 "066e9a5f-b725-4047-abd8-ce5353803ba1",
+                GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                 null,
                 "2cfe0c4a-7f63-4081-a8d5-ab6cc0159936",
                 "Qualified Name Deduplication",
@@ -396,6 +417,7 @@ public enum RequestTypeDefinition
                     GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                     GovernanceServiceDefinition.CSV_FILE_SURVEY,
                     "fcd7ddce-b61e-49eb-b993-293907dadf72",
+                    GovernanceDomain.DATA.getOrdinal(),
                     DeployedImplementationType.CSV_FILE.getQualifiedName(),
                     "a4e69580-123d-43ce-a7d5-408fc0bc191e",
                     "Survey CSV File",
@@ -415,6 +437,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                      GovernanceServiceDefinition.DATA_FILE_SURVEY,
                      "3a15cfe4-e130-4b8c-b4fb-eedd39e1a2ae",
+                     GovernanceDomain.DATA.getOrdinal(),
                      DeployedImplementationType.DATA_FILE.getQualifiedName(),
                      "67c8554a-8353-4a0a-b98e-596104cde47b",
                      "Survey Data File",
@@ -434,6 +457,7 @@ public enum RequestTypeDefinition
                   GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                   GovernanceServiceDefinition.FOLDER_SURVEY,
                   "381c60e6-733b-42db-a025-8e6eb29294fc",
+                  GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                   DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                   "96a97dc7-10b0-4c7a-8e4f-1f4f2b0b1bf7",
                   "Survey File System Directory",
@@ -453,6 +477,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                             GovernanceServiceDefinition.FOLDER_SURVEY,
                             "633e7711-0c65-47b5-894f-c9dba5472412",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                             DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                             "7d8e6ed1-c2b8-49af-9e49-8e5c5290c064",
                             "Survey File System Directory and its Files",
@@ -472,6 +497,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                        GovernanceServiceDefinition.FOLDER_SURVEY,
                        "a6f2f6e8-d912-4101-982f-79c62190f1ba",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                        "b6c523a0-7318-4dd9-8b69-0e1e4aa08d1f",
                        "Survey Nested Files System Directories (Folders)",
@@ -491,6 +517,7 @@ public enum RequestTypeDefinition
                                  GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                                  GovernanceServiceDefinition.FOLDER_SURVEY,
                                  "cc642671-898a-4c83-9d29-b1a1758672d2",
+                                 GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                                  DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                                  "9c38a6ca-4e0c-4d53-b517-6cdb78e46b35",
                                  "Survey Nested Files System Directories (Folders) and Files",
@@ -510,6 +537,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE,
                         GovernanceServiceDefinition.APACHE_ATLAS_SURVEY,
                         "18d36065-3e39-43bc-be31-4b6c22354480",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         "892eb723-0bca-4f1e-b999-95604555f6f1",
                         "Survey an Apache Atlas Server",
@@ -529,6 +557,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
                         GovernanceServiceDefinition.KAFKA_SERVER_SURVEY,
                         "71c73133-6817-42a1-9cc6-b610cee34a8b",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         "4b8e9b5d-d095-43ac-a1d0-61155ea6f1b1",
                         "Survey Apache Kafka Server",
@@ -548,6 +577,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_SERVER_SURVEY,
                      "c9fca16e-854d-43bc-b97e-33691afafac3",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      "ca21df08-926e-4645-8c9f-dcd3d6db6cea",
                      "Survey Unity Catalog Server",
@@ -567,6 +597,7 @@ public enum RequestTypeDefinition
                       GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                       GovernanceServiceDefinition.UC_CATALOG_SURVEY,
                       "d00bc9af-0d2f-4640-a24b-35d77110883e",
+                      GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                       UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getQualifiedName(),
                       "2107c858-e067-457c-a8e6-0a198ea27d21",
                       "Survey Unity Catalog Catalog",
@@ -586,6 +617,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_SCHEMA_SURVEY,
                      "a53211fc-89e6-4405-9768-606d519649ee",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                      UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getQualifiedName(),
                      "a7469ade-dbc4-4958-b5cf-83350e1c719f",
                      "Survey Unity Catalog Schema",
@@ -605,6 +637,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_VOLUME_SURVEY,
                      "b62df48b-1390-4cb2-afff-2aa136d8467d",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                      UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName(),
                      "608c4836-c88a-4d4c-a774-2d5c37ac7cae",
                      "Survey Unity Catalog Volume",
@@ -624,6 +657,7 @@ public enum RequestTypeDefinition
                  GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                  GovernanceServiceDefinition.PROVISION_UC,
                  "b67bce2e-fc02-43b1-a45b-e3c7be02da66",
+                 GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                  UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName(),
                  "4aba9c28-95fe-4289-9dde-67a3836ab1bf",
                  "Provision Unity Catalog Resource",
@@ -643,6 +677,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
                            GovernanceServiceDefinition.POSTGRES_SERVER_SURVEY,
                            "fcad7603-bd05-4d07-b6e8-a4fb29fd57fc",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            "88346a5c-c376-431c-9833-e90f81113cb5",
                            "Survey a PostgreSQL Server",
@@ -662,6 +697,7 @@ public enum RequestTypeDefinition
                              GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
                              GovernanceServiceDefinition.POSTGRES_DATABASE_SURVEY,
                              "8a7e16eb-15e3-4e16-ba7e-1e8d6653677b",
+                             GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                              "0cc37077-e688-4572-b6d3-ed0a24375bc1",
                              "Survey PostgreSQL Database",
@@ -681,6 +717,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "52a82692-7e49-40a8-9b3d-469e87e0220b",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                        "44ff46f1-50f8-443c-836e-78458123340f",
                        "Create File Folder in Open Metadata",
@@ -697,6 +734,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "246a8a18-7b10-402a-95d8-acf7115046ff",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
                        "f1729715-1e31-471c-93d1-fc9b406a6cec",
                        "Create Data Folder in Open Metadata",
@@ -713,6 +751,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.DELETE_ASSET,
                        "ac62ef3c-674e-48d7-b9a2-636cbaee4c6b",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                        "a822725e-e721-4f78-88a0-115b48d9b787",
                        "Delete File Folder from Open Metadata",
@@ -729,6 +768,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.DELETE_ASSET,
                        "6710231c-bfd6-4701-8aed-52e2a818c3e0",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
                        "05e01ab6-e897-4c36-97b8-1c647ed4b85c",
                        "Delete Data Folder from Open Metadata",
@@ -745,6 +785,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                         "33fb5cd5-b84d-4c17-95b3-b1b2b99840e0",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getQualifiedName(),
                         "553a6cd6-282c-4358-9c5a-4ac4c2d10b99",
                         "Configure the File Folder Cataloguer",
@@ -764,6 +805,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                         "85424989-b821-49b6-8824-29b1b06536f5",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
                         "7ff8405b-a72d-40dd-8b68-e5e96e2fcf47",
                         "Configure the Data Folder Cataloguer",
@@ -783,6 +825,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                            GovernanceServiceDefinition.CREATE_ASSET,
                            "2be30523-5c6a-4c5d-a9ca-595ea491a047",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            null,
                            "d7c2b07f-f316-43d8-abda-ce53d9a7521f",
                            "Create a software server in Open Metadata",
@@ -799,6 +842,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "b45aa1ba-690e-4a6d-aaf7-1f6498ea0ea9",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                            "67bbc3e9-9237-4ef4-b15d-99127bf01704",
                            "Delete a software server from Open Metadata",
@@ -815,6 +859,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "134d6840-9f9d-42bb-bd84-a936b6401541",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                             DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                             "60a8d234-bb90-4065-986b-362a4d56dd9c",
                             "Configure a software server cataloguer",
@@ -831,7 +876,8 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "3e880bc6-729e-4666-8124-3c9d033f54fd",
-                        DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                       DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
                        "65ef6295-6ddf-4c88-9764-eff5a84f402b",
                        "Create Apache Kafka Topic in Open Metadata",
                        "Create a KafkaTopic asset in open metadata.",
@@ -847,6 +893,7 @@ public enum RequestTypeDefinition
                                GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                                "9b7e56ca-d145-48e1-8c69-2bc1327f008b",
+                               GovernanceDomain.DATA.getOrdinal(),
                                DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
                                "7fc9f128-2b7f-43fb-8e95-171415240aff",
                                "Set up Open Lineage Event capture",
@@ -866,6 +913,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "7a800598-6d62-460b-b7be-0c545535622c",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
                        "6546488f-d8a2-415d-9d03-6ab72ba14c40",
                        "Delete an Apache Kafka Topic from Open Metadata",
@@ -882,6 +930,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                      GovernanceServiceDefinition.CREATE_ASSET,
                      "78e47705-a159-4e3d-9199-3a2c9400dcee",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      "e9ca091e-f9e7-4e5b-bd45-6d4f0e2d55aa",
                      "Create an OSS Unity Catalog Server in Open Metadata",
@@ -898,6 +947,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                      GovernanceServiceDefinition.DELETE_ASSET,
                      "986d550a-c5d8-4c44-9f94-601a15fc25f1",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      "835b4fe4-03cf-4f4d-b0b5-e25d7dfe3299",
                      "Delete an OSS Unity Catalog Server from Open Metadata",
@@ -914,6 +964,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "323d8a5c-4f79-4bc0-a35a-0c39d1990a9e",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName(),
                         "8bba4467-0430-4a94-b8c5-b881fd3f9396",
                         "Create a Databricks Unity Catalog Server in Open Metadata",
@@ -930,6 +981,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "cfeafd56-a6dd-41e5-bf0e-33b65639085d",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName(),
                         "c0ac2017-d7f4-49c2-9e9e-e995ced94177",
                         "Delete a Databricks Unity Catalog Server from Open Metadata",
@@ -946,6 +998,7 @@ public enum RequestTypeDefinition
                       GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                       GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                       "1b2d71c8-b7f9-4b9b-a466-f20e529391ef",
+                      GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                       UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                       "5db21b73-bd6a-41ea-b4ff-235ede908bdf",
                       "Configure the Unity Catalog Server Cataloguer",
@@ -965,6 +1018,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "c4ea5182-1707-4e43-9151-ad3c42107b00",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         "cff46354-5b55-4b2f-bbb8-83db28507630",
                         "Create Apache Atlas Server in Open Metadata",
@@ -981,6 +1035,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "7bed9078-085f-40fd-9f72-168196d7b277",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         "521c46f9-b1a8-44a5-a5a8-ddae9bc21230",
                         "Delete Apache Atlas Server from Open Metadata",
@@ -997,6 +1052,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                          "95a89892-e66f-4ad7-913a-9b10ce7c64ac",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                          "d5eba93e-06d7-4f08-a082-5aeaa6c70b2b",
                          "Configure Apache Atlas Server Cataloguer",
@@ -1016,6 +1072,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "8f735dbc-7bc3-442f-8b16-699ef43a15f3",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         "36fa75fa-dd6e-4120-a6f4-2c1abf4e565d",
                         "Create Apache Kafka Server in Open Metadata",
@@ -1032,6 +1089,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "9eace0dd-bcd6-41df-86f7-4b5799774411",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                         KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         "ab494047-24c5-4643-909c-183140ff2763",
                         "Delete Apache Kafka Server from Open Metadata",
@@ -1048,6 +1106,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                          "81f0fad0-84eb-4926-865f-c518df876cab",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                          "10a883e3-e6f7-4fab-9ed4-7edf6a1837ad",
                          "Configure Apache Kafka Server Cataloguer",
@@ -1068,6 +1127,7 @@ public enum RequestTypeDefinition
                                 GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                 GovernanceServiceDefinition.CREATE_ASSET,
                                 "2cb0bfc6-7bd9-4144-b0ad-4cd3a7acb502",
+                                GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                                 EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                 "1bd75045-831c-4105-938f-19bca9bfc555",
                                 "Create OMAG Server Platform in Open Metadata",
@@ -1084,6 +1144,7 @@ public enum RequestTypeDefinition
                                 GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                 GovernanceServiceDefinition.DELETE_ASSET,
                                 "f24a52a9-553f-4eb2-b62e-faaf4a17c662",
+                                GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                                 EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                 "4ef6b15b-cd35-413b-b63f-c6b605edda92",
                                 "Delete OMAG Server Platform from Open Metadata",
@@ -1100,6 +1161,7 @@ public enum RequestTypeDefinition
                                  GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                  GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                                  "e22b0fbb-f63e-4aa2-9436-6b34dc0246c7",
+                                 GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                                  EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                  "ce653660-36bd-4f44-a9c3-b94075f41813",
                                  "Configure the OMAG Server Platform Cataloguer",
@@ -1120,6 +1182,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.CREATE_ASSET,
                            "3facbdba-43c6-44b8-a222-ad0ad2c3c3d5",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            "0e5f926f-19aa-4a4b-865b-ed80d63d9752",
                            "Create PostgreSQL Server asset in Open Metadata",
@@ -1136,6 +1199,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "5c49625e-8935-44fa-9076-5e099cf392ca",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            "e84da60e-cf37-4506-8594-aac93826185a",
                            "Delete PostgreSQL Server from Open Metadata",
@@ -1152,6 +1216,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "dab2303b-7bac-4985-b8eb-4a706e77d036",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                             PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                             "015d6b33-e6bc-4d77-822c-4a9d536ef542",
                             "Configure PostgreSQL Server Cataloguer",
@@ -1171,6 +1236,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "47353b59-b1cd-453a-841f-3873130703b7",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                        "1e13b511-e452-4fe4-a075-c0a5c021c051",
                        "Create PostgreSQL Database from Open Metadata",
@@ -1187,6 +1253,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.DELETE_ASSET,
                        "610d8562-7e48-4ba8-b596-d66b7888e268",
+                       GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                        PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                        "c743bbc6-6e69-485c-8082-aee444ccc88e",
                        "Delete PostgreSQL Database from Open Metadata",
@@ -1203,6 +1270,7 @@ public enum RequestTypeDefinition
                               GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                               GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                               "32ca425d-6aeb-40f0-bc7c-508a9689d24e",
+                              GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                               "493d7286-7423-4621-8e64-3bb714e8a45a",
                               "Configure PostgreSQL Database Cataloguer",
@@ -1216,17 +1284,18 @@ public enum RequestTypeDefinition
      * create-postgres-schema
      */
     CREATE_POSTGRES_SCHEMA("create-postgres-schema",
-                       null,
-                       getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID()),
-                       null,
-                       GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
-                       GovernanceServiceDefinition.CREATE_ASSET,
-                       "b0c07a56-2d4b-4665-93a3-e33cbb1aba61",
-                       PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
+                           null,
+                           getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID()),
+                           null,
+                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                           GovernanceServiceDefinition.CREATE_ASSET,
+                           "b0c07a56-2d4b-4665-93a3-e33cbb1aba61",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                            "c9779e50-9585-4e65-9cd7-4bc00757fe97",
                            "Create PostgreSQL Schema in Open Metadata",
                            "Create an open metadata element that represents a PostgreSQL schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
-                       ContentPackDefinition.POSTGRES_CONTENT_PACK),
+                           ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
      * delete-postgres-schema
@@ -1238,6 +1307,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "08fa65f0-8925-46bd-8c19-806d47ce2da1",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                            "f2dd4107-88c1-4759-b62b-6ca68f5b8d8b",
                            "Delete PostgreSQL Schema from Open Metadata",
@@ -1254,6 +1324,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "c4702cb9-9787-4756-889d-b7d8efd3d240",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                             "cd5c93c0-dc22-4be4-bd28-2a5b3ae11c36",
                             "Configure PostgreSQL Schema Cataloguer",
@@ -1273,6 +1344,7 @@ public enum RequestTypeDefinition
     private final GovernanceEngineDefinition           governanceEngine;
     private final GovernanceServiceDefinition          governanceService;
     private final String                               governanceActionTypeGUID;
+    private final int                                  governanceDomainIdentifier;
     private final String                               supportedElementQualifiedName;
     private final String                               solutionComponentGUID;
     private final String                               solutionComponentName;
@@ -1386,6 +1458,7 @@ public enum RequestTypeDefinition
      * @param governanceService governance service that implements this request type
      * @param supportedElementQualifiedName qualified name of the element that this should be listed as a resource
      * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param governanceDomainIdentifier identifier of the governance domain
      * @param solutionComponentGUID unique identifier of the solution component for the governance action type
      * @param solutionComponentName display name of the solution component for the governance action type
      * @param solutionComponentDescription description of the solution component for the governance action type
@@ -1398,6 +1471,7 @@ public enum RequestTypeDefinition
                           GovernanceEngineDefinition  governanceEngine,
                           GovernanceServiceDefinition governanceService,
                           String                      governanceActionTypeGUID,
+                          int                         governanceDomainIdentifier,
                           String                      supportedElementQualifiedName,
                           String                      solutionComponentGUID,
                           String                      solutionComponentName,
@@ -1411,6 +1485,7 @@ public enum RequestTypeDefinition
         this.governanceEngine                      = governanceEngine;
         this.governanceService                     = governanceService;
         this.governanceActionTypeGUID              = governanceActionTypeGUID;
+        this.governanceDomainIdentifier            = governanceDomainIdentifier;
         this.supportedElementQualifiedName         = supportedElementQualifiedName;
         this.solutionComponentGUID                 = solutionComponentGUID;
         this.solutionComponentName                 = solutionComponentName;
@@ -1433,6 +1508,7 @@ public enum RequestTypeDefinition
      * @param governanceService governance service that implements this request type
      * @param supportedElementQualifiedName qualified name of the element that this should be listed as a resource
      * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param governanceDomainIdentifier identifier of the governance domain
      * @param solutionComponentGUID unique identifier of the solution component for the governance action type
      * @param solutionComponentName display name of the solution component for the governance action type
      * @param solutionComponentDescription description of the solution component for the governance action type
@@ -1448,6 +1524,7 @@ public enum RequestTypeDefinition
                           GovernanceEngineDefinition           governanceEngine,
                           GovernanceServiceDefinition          governanceService,
                           String                               governanceActionTypeGUID,
+                          int                                  governanceDomainIdentifier,
                           String                               supportedElementQualifiedName,
                           String                               solutionComponentGUID,
                           String                               solutionComponentName,
@@ -1464,6 +1541,7 @@ public enum RequestTypeDefinition
         this.governanceEngine                      = governanceEngine;
         this.governanceService                     = governanceService;
         this.governanceActionTypeGUID              = governanceActionTypeGUID;
+        this.governanceDomainIdentifier            = governanceDomainIdentifier;
         this.supportedElementQualifiedName         = supportedElementQualifiedName;
         this.solutionComponentGUID                 = solutionComponentGUID;
         this.solutionComponentName                 = solutionComponentName;
@@ -1549,6 +1627,17 @@ public enum RequestTypeDefinition
     public String getGovernanceActionTypeGUID()
     {
         return governanceActionTypeGUID;
+    }
+
+
+    /**
+     * Return the governance domain identifier of the governance action type.
+     *
+     * @return integer
+     */
+    public int getGovernanceDomainIdentifier()
+    {
+        return governanceDomainIdentifier;
     }
 
 

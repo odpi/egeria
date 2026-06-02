@@ -1030,6 +1030,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
         notificationTypeProperties.setDisplayName("Notification type for " + productSubscriptionDefinition.getDisplayName() + " for product " + productName);
         notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
+        notificationTypeProperties.setDomainIdentifier(GovernanceDomain.DATA_SHARING.getOrdinal());
         notificationTypeProperties.setPlannedStartDate(new Date());
         notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
         notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
@@ -1176,6 +1177,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(processQualifiedName,
                                                                                                           "Create " + subscriptionName,
                                                                                                           productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
+                                                                                                          GovernanceDomain.DATA_SHARING.getOrdinal(),
                                                                                                           GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                                                                                                           additionalRequestParameters,
                                                                                                           productGUID,

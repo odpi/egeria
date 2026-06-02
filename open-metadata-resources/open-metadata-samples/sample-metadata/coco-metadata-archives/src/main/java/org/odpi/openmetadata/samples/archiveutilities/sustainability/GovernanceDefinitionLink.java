@@ -11,23 +11,23 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 public enum GovernanceDefinitionLink
 {
     HANDLE_THREAT(GovernanceDefinition.SUSTAINABILITY_TREAT,
-                  OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
-                  GovernanceDefinition.SUSTAINABILITY_STRATEGY),
+                  OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                  GovernanceDefinition.SUSTAINABILITY_PRINCIPLE),
 
     SUPPORT_REGULATION(GovernanceDefinition.CSRD_REGULATION,
-                       OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
-                       GovernanceDefinition.SUSTAINABILITY_STRATEGY),
+                       OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                       GovernanceDefinition.SUSTAINABILITY_PRINCIPLE),
 
-    STRATEGY_RESPONSE_1(GovernanceDefinition.SUSTAINABILITY_STRATEGY,
-                        OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+    STRATEGY_RESPONSE_1(GovernanceDefinition.SUSTAINABILITY_PRINCIPLE,
+                        OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
                         GovernanceDefinition.AVOID_HARMFUL_MATERIALS),
 
-    STRATEGY_RESPONSE_2(GovernanceDefinition.SUSTAINABILITY_STRATEGY,
-                        OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+    STRATEGY_RESPONSE_2(GovernanceDefinition.SUSTAINABILITY_PRINCIPLE,
+                        OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
                         GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN),
 
-    STRATEGY_RESPONSE_3(GovernanceDefinition.SUSTAINABILITY_STRATEGY,
-                        OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+    STRATEGY_RESPONSE_3(GovernanceDefinition.SUSTAINABILITY_PRINCIPLE,
+                        OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
                         GovernanceDefinition.GREENHOUSE_GASES_APPROACH),
 
     IMPL_1(GovernanceDefinition.AVOID_HARMFUL_MATERIALS,

@@ -34,7 +34,7 @@ public enum ProductGovernanceDefinition
                 null,
                 null,
                 null,
-                ProductDomainDefinition.DIGITAL_PRODUCT_MANAGEMENT.getDomainIdentifier(),
+                GovernanceDomain.DATA_SHARING.getOrdinal(),
                 ScopeDefinition.WITHIN_ORGANIZATION,
                 null),
 
@@ -51,7 +51,7 @@ public enum ProductGovernanceDefinition
                         null,
                         null,
                         null,
-                        ProductDomainDefinition.DIGITAL_PRODUCT_MANAGEMENT.getDomainIdentifier(),
+                        GovernanceDomain.DATA_SHARING.getOrdinal(),
                         ScopeDefinition.WITHIN_ORGANIZATION,
                         null),
 
@@ -71,7 +71,7 @@ public enum ProductGovernanceDefinition
                             null,
                             null,
                             null,
-                            ProductDomainDefinition.DIGITAL_PRODUCT_MANAGEMENT.getDomainIdentifier(),
+                            GovernanceDomain.DATA_SHARING.getOrdinal(),
                             ScopeDefinition.WITHIN_ORGANIZATION,
                             null),
 
@@ -92,7 +92,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The data must not be distributed to persons or systems outside of the organization."},
                       new String[]{"The data should be secured in a way that restricts access to employees and internal systems.",
                               "Ensure that the latest version of this data is used wherever possible."},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       null),
 
@@ -114,7 +114,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The data should be secured in a way that restricts access to employees and internal systems with a need to know.",
                                    "Ensure that the latest version of this data is used wherever possible.",
                                    "This type of data should not be retained if there are no permitted processing purposes."},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       null),
 
@@ -134,7 +134,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The material may be distributed, modified, remixed and adapted.", "The material may be used for commercial purposes."},
                       null,
                       new String[]{"Attribution: Credit must be given to the creator", "Modification: If you modify the material, you must indicate that changes were made"},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       "https://creativecommons.org/licenses/by/4.0/"),
 
@@ -154,7 +154,7 @@ public enum ProductGovernanceDefinition
              new String[]{"The subscriber is entitled to receive all updates to the product data."},
              null,
              new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
-             GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+             GovernanceDomain.DATA_SHARING.getOrdinal(),
              ScopeDefinition.WITHIN_ORGANIZATION,
              null),
 
@@ -173,7 +173,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The subscriber is entitled to receive all updates to the product data."},
                       null,
                       new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       null),
 
@@ -192,7 +192,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The subscriber is entitled to receive all updates to the product data."},
                       null,
                       new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       null),
 
@@ -211,7 +211,7 @@ public enum ProductGovernanceDefinition
                       new String[]{"The subscriber is entitled to receive all updates to the product data."},
                       null,
                       new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
-                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      GovernanceDomain.DATA_SHARING.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       null),
     ;

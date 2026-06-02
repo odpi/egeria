@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialDomainDefinition;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
@@ -17,82 +19,82 @@ public enum GovernanceDomainDefinition
     /**
      * All Governance Domains
      */
-    ALL(0,
-        "All Governance Domains",
-        "Relevant to all governance domains.",
+    ALL(GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+        GovernanceDomain.UNCLASSIFIED.getDisplayName(),
+        GovernanceDomain.UNCLASSIFIED.getDescription(),
         "Governance Leadership Community",
         PersonDefinition.JULES_KEEPER),
 
     /**
      * Data (Information) Governance
      */
-    DATA( 1,
-          "Data (Information) Governance",
-          "Management and use of data.",
+    DATA( GovernanceDomain.DATA.getOrdinal(),
+          GovernanceDomain.DATA.getDisplayName(),
+          GovernanceDomain.DATA.getDescription(),
           "Data Governance Community",
           PersonDefinition.ERIN_OVERVIEW),
 
     /**
      * Data Privacy
      */
-    PRIVACY( 2,
-                "Data Privacy",
-                "Ensuring individual privacy both in research and operations.",
+    PRIVACY( GovernanceDomain.PRIVACY.getOrdinal(),
+             GovernanceDomain.PRIVACY.getDisplayName(),
+             GovernanceDomain.PRIVACY.getDescription(),
              "Data Privacy Community",
              PersonDefinition.FAITH_BROKER),
 
     /**
      * Information Security
      */
-    SECURITY( 3,
-                "Information Security",
-                "Ensuring the security of Coco Pharmaceuticals' systems, data and processes.",
+    SECURITY( GovernanceDomain.SECURITY.getOrdinal(),
+              GovernanceDomain.SECURITY.getDisplayName(),
+              GovernanceDomain.SECURITY.getDescription(),
               "InfoSec Community",
               PersonDefinition.IVOR_PADLOCK),
 
     /**
      * IT Governance
      */
-    IT_GOVERNANCE(4,
-                  "IT Governance",
-                  "Management of IT infrastructure such as hosts, servers, applications, databases and network infrastructure descriptions.",
+    IT_GOVERNANCE(GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                  GovernanceDomain.IT_INFRASTRUCTURE.getDisplayName(),
+                  GovernanceDomain.IT_INFRASTRUCTURE.getDescription(),
                   "IT Governance Community",
                   PersonDefinition.GARY_GEEKE),
 
     /**
      * Software Development Assurance
      */
-    SOFTWARE_DEVELOPMENT( 5,
-                "Software Development Assurance",
-                "Managing the development of new software and systems.",
+    SOFTWARE_DEVELOPMENT( GovernanceDomain.SOFTWARE_DEVELOPMENT.getOrdinal(),
+                          GovernanceDomain.SOFTWARE_DEVELOPMENT.getDisplayName(),
+                          GovernanceDomain.SOFTWARE_DEVELOPMENT.getDescription(),
                           "Software Development Leadership Community",
                           PersonDefinition.POLLY_TASKER),
 
     /**
      * Corporate Governance
      */
-    CORPORATE( 6,
-                "Corporate Governance",
-                "Ensuring the legal operation of Coco Pharmaceuticals.",
+    CORPORATE( GovernanceDomain.CORPORATE.getOrdinal(),
+               GovernanceDomain.CORPORATE.getDisplayName(),
+               GovernanceDomain.CORPORATE.getDescription(),
                "Corporate Governance Community",
                PersonDefinition.REGGIE_MINT),
 
     /**
      * Physical Asset Management
      */
-    ASSET_MANAGEMENT(7,
-                "Physical Asset Management",
-                "Management of assets that describe the physical equipment of Coco Pharmaceuticals.",
+    ASSET_MANAGEMENT(GovernanceDomain.ASSET_MANAGEMENT.getOrdinal(),
+                     GovernanceDomain.ASSET_MANAGEMENT.getDisplayName(),
+                     GovernanceDomain.ASSET_MANAGEMENT.getDescription(),
                      "Asset Management Community",
                      PersonDefinition.SIDNEY_SEEKER),
 
 
     /**
-     * Development of new treatments by Coco Pharmaceuticals.
+     * Development of new treatments by Coco Pharmaceuticals. (Unique to Coco Pharmaceuticals)
      */
-    DRUG_DEVELOPMENT(8,
-                     "Drug Development",
-                     "Development of new treatments by Coco Pharmaceuticals.",
+    DRUG_DEVELOPMENT(ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
+                     ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDisplayName(),
+                     ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDescription(),
                      "Drug Development Community",
                      PersonDefinition.TESSA_TUBE),
 

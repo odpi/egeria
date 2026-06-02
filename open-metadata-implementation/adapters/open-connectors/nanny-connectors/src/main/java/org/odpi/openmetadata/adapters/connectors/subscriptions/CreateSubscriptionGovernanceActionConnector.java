@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Licen
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
@@ -482,6 +483,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         String cancelSubscriptionGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName(),
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.description,
+                                                                                                GovernanceDomain.DATA_SHARING.getOrdinal(),
                                                                                                 cancellingActionTypeGUID,
                                                                                                 null,
                                                                                                 subscriptionGUID,
@@ -611,6 +613,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         String provisioningProcessGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
                                                                                                  ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName(),
                                                                                                  ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.description,
+                                                                                                 GovernanceDomain.DATA_SHARING.getOrdinal(),
                                                                                                  provisioningActionTypeGUID,
                                                                                                  null,
                                                                                                  subscriptionGUID, // anchorGUID

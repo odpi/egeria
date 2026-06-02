@@ -3,13 +3,14 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
- * The GovernanceDomainDefinition is used to feed the definition of the governance domains for
+ * The SustainabilityDomainDefinition is used to augment the definition of the governance domains for
  * Coco Pharmaceuticals.
  */
 public enum SustainabilityDomainDefinition
@@ -17,11 +18,11 @@ public enum SustainabilityDomainDefinition
     /**
      * Initiatives to improve the operational sustainability of Coco Pharmaceuticals.
      */
-    SUSTAINABILITY_REPORTING(9,
-                     "Sustainability",
-                     "Initiatives to improve the operational sustainability of Coco Pharmaceuticals.  This includes sustainability reports to employees and the regulators, along with education for employees and initiatives to reduce the emission of greenhouse gases.",
-                     "Sustainability Community",
-                     PersonDefinition.TOM_TALLY),
+    SUSTAINABILITY_REPORTING(GovernanceDomain.SUSTAINABILITY.getOrdinal(),
+                             GovernanceDomain.SUSTAINABILITY.getDisplayName(),
+                             GovernanceDomain.SUSTAINABILITY.getDescription(),
+                             "Sustainability Community",
+                             PersonDefinition.TOM_TALLY),
 
     ;
 
