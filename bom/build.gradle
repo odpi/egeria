@@ -121,7 +121,7 @@ ext {
 //    TODO: jacksonjdk8Version = '2.18.2'monday - failed at runtime
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
-    snakeYamlVersion = '2.5'
+    snakeYamlVersion = '2.6'
 }
 
 dependencies {
