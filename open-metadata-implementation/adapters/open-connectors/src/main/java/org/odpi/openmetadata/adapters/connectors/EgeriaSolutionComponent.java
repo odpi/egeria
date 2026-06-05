@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors;
 
-import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
@@ -25,6 +25,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                  "Load Archive",
                  "A command to load an open metadata archive.",
                  null,
+                 null,
                  null),
 
     MY_EGERIA("57f6a0c7-fbbe-42b2-a30f-3298a8816096",
@@ -35,6 +36,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
               "my_egeria",
               "A user interface for working with Egeria and open metadata.",
               new SolutionComponentDefinition[]{DeployedImplementationType.PYEGERIA.getSolutionComponent()},
+              null,
               null),
 
     DR_EGERIA("1ddd9283-3dc9-4220-ac42-be0894b5a930",
@@ -45,6 +47,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
               "Dr.Egeria",
               "A markdown processor that can maintain and retrieve open metadata by processing and creating markdown documents.",
               new SolutionComponentDefinition[]{DeployedImplementationType.PYEGERIA.getSolutionComponent()},
+              null,
               null),
 
     HEY_EGERIA("b2278203-63a6-4a4f-b142-6f75cd592415",
@@ -57,6 +60,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                new SolutionComponentDefinition[]{
                        DeployedImplementationType.PYEGERIA.getSolutionComponent(),
                        LOAD_ARCHIVE},
+               null,
                null),
 
     EGERIA_BUILD("f763d7df-1d49-4ceb-a079-c7f40e15982b",
@@ -66,6 +70,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                  null,
                  "Egeria Gradle Build",
                  "Comprehensive build process that complies the software, runs tests and creates the assembly for Egeria's runtime.",
+                 null,
                  null,
                  null),
 
@@ -78,6 +83,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                 "JupyterHub",
                 "Supports browser based interaction with Jupyter Notebooks.",
                 new SolutionComponentDefinition[]{DeployedImplementationType.PYEGERIA.getSolutionComponent()},
+                null,
                 null),
 
     DEFAULT_UNITY_CATALOG("d22f1b91-61d9-4454-b4a3-be07a3336874",
@@ -87,6 +93,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                           "https://www.unitycatalog.io/",
                           "Default Unity Catalog",
                           "Open Source version of Unity Catalog with the default catalog.",
+                          null,
                           null,
                           null),
 
@@ -98,6 +105,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                         "Working Unity Catalog",
                         "Open Source version of Unity Catalog backed by a PostgreSQL database.  Initialized with no content.",
                         null,
+                        null,
                         null),
 
     OL_PROXY("19af8706-17b9-4367-865f-2181dcb51646",
@@ -107,6 +115,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
              "https://egeria-project.org/features/lineage-management/overview/#egerias-open-lineage-support",
              "Open Lineage Proxy",
              "Consolidates open lineage events from data engines and pipes them to Apache Kafka.",
+             null,
              null,
              null),
 
@@ -118,6 +127,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                    "Open Lineage Topic",
                    "Stores and distributes Open Lineage Events.",
                    null,
+                   null,
                    null),
 
     OPEN_METADATA_TOPIC("03310995-216c-49e7-a9fe-8e789b11d37d",
@@ -127,6 +137,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                         "https://egeria-project.org/concepts/open-metadata-topic-connector/",
                         "Open Metadata Topic",
                         "Provides notifications when open metadata changes in any of the connected repositories.",
+                        null,
                         null,
                         null),
 
@@ -138,7 +149,8 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                         "Open Governance Topic",
                         "Provides notifications when governance server configuration (Governance engines, governance services, integration groups, and integration connectors) changes.  It also transmits changes to engine actions to allow the engine host to initiate the actions.",
                         null,
-                        null),
+                          null,
+                          null),
 
     AUDIT_LOG_TOPIC("9caf4cb6-c43d-49d5-aa50-02b06fc66225",
                           "AUDIT-LOG-TOPIC",
@@ -148,7 +160,8 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                           "Audit Log Topic",
                           "Provides notifications when audit log events of severity Error, Exception, Activity, Action, Decision, Security or Cohort are written to the audit log by registered OMAG Servers.",
                           null,
-                          null),
+                    null,
+                    null),
 
     APACHE_KAFKA("d52a42e9-87a1-4382-aa0e-d0a3a63465f6",
                  "APACHE-KAFKA",
@@ -158,6 +171,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                  "Apache Kafka",
                  "Manages a reliable topic based service.",
                  new SolutionComponentDefinition[]{OL_KAFKA_TOPIC, OPEN_METADATA_TOPIC, OPEN_GOVERNANCE_TOPIC},
+                 null,
                  null),
 
     EGERIA_POSTGRESQL_DATABASE("ac2df71c-6041-42b9-b96b-ae036a32f5d8",
@@ -169,6 +183,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                                "This database supports the different repositories used by the Egeria runtime.",
                                new SolutionComponentDefinition[]{
                                        DeployedImplementationType.OPEN_METADATA_REPOSITORY.getSolutionComponent()},
+                               null,
                                null),
 
     UC_POSTGRESQL_DATABASE("0f732681-e40c-48dc-b5b3-c1e78c05da29",
@@ -178,6 +193,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                            "https://www.postgresql.org/",
                            "Unity Catalog PostgreSQL Database",
                            "This database supports the catalog storage for Unity Catalog.",
+                           null,
                            null,
                            null),
 
@@ -189,6 +205,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                                  "Superset PostgreSQL Database",
                                  "This database supports the catalog storage for Apache Superset.",
                                  null,
+                                 null,
                                  null),
 
     AIRFLOW_POSTGRESQL_DATABASE("5b2367e0-d03c-4bd4-bea0-363cf0efd1ee",
@@ -199,6 +216,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                                 "Apache Airflow PostgreSQL Database",
                                 "This database supports the catalog storage for Apache Airflow.",
                                 null,
+                                null,
                                 null),
 
     MARQUEZ_POSTGRESQL_DATABASE("3093e1c1-f4bf-4406-8c80-a252393f0071",
@@ -208,6 +226,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                                 "https://www.postgresql.org/",
                                 "Marquez PostgreSQL Database",
                                 "This database supports the catalog storage for Marquez.",
+                                null,
                                 null,
                                 null),
 
@@ -225,6 +244,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                                        AIRFLOW_POSTGRESQL_DATABASE,
                                        MARQUEZ_POSTGRESQL_DATABASE,
                                },
+                               null,
                                null),
 
     APACHE_WEB_SERVER("2b9976a6-1466-4b82-be8b-61e80d1adaef",
@@ -234,6 +254,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                       "https://httpd.apache.org/",
                       "Apache Web Server",
                       "Services HTML documents written to the file system.",
+                      null,
                       null,
                       null),
 
@@ -245,6 +266,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                  "Pyegeria-Web",
                  "REST-ful service for calling Dr.Egeria from local tools.",
                  new SolutionComponentDefinition[]{DeployedImplementationType.PYEGERIA.getSolutionComponent()},
+                 null,
                  null),
 
     USER_WORKSPACE("331875c2-0876-4211-bc52-b18f1e1bb478",
@@ -258,32 +280,37 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                            DeployedImplementationType.JUPYTER_NOTEBOOK.getSolutionComponent(),
                            DeployedImplementationType.MARKDOWN_DOCUMENT.getSolutionComponent(),
                            DeployedImplementationType.WEBPAGE.getSolutionComponent()},
+                   null,
                    null),
 
 
     ;
 
 
-    private final String                        guid;
-    private final String                        identifier;
-    private final String                        componentType;
-    private final String                        implementationType;
-    private final String                        url;
-    private final String                        displayName;
-    private final String                        description;
-    private final SolutionComponentDefinition[] subComponents;
-    private final String                        implementationResource;
+    private final String                             guid;
+    private final String                             identifier;
+    private final String                             componentType;
+    private final String                             implementationType;
+    private final String                             url;
+    private final String                             displayName;
+    private final String                             description;
+    private final SolutionComponentDefinition[]      subComponents;
+    private final InformationSupplyChainDefinition[] linkedFromSegment;
+    private final String                             implementationResource;
 
 
     /**
      * Construct an enum instance.
      *
-     * @param guid unique identifier
-     * @param componentType   type of solution component - ege automated process
-     * @param implementationType   type of software component - for example, is it a process, of file or database.
-     * @param displayName display name of solution component
-     * @param description description of solution component
-     * @param subComponents optional subcomponents of the solution
+     * @param guid                   unique identifier
+     * @param identifier             identifier
+     * @param componentType          type of solution component - ege automated process
+     * @param implementationType     type of software component - for example, is it a process, of file or database.
+     * @param url                    URL to more information
+     * @param displayName            display name of solution component
+     * @param description            description of solution component
+     * @param subComponents          optional subcomponents of the solution
+     * @param linkedFromSegment      links to information supply chain
      * @param implementationResource components useful when creating implementations
      */
     EgeriaSolutionComponent(String                        guid,
@@ -294,7 +321,8 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
                             String                        displayName,
                             String                        description,
                             SolutionComponentDefinition[] subComponents,
-                            String                        implementationResource)
+                            InformationSupplyChainDefinition[] linkedFromSegment,
+                            String                             implementationResource)
     {
         this.guid                   = guid;
         this.identifier             = identifier;
@@ -304,6 +332,7 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
         this.displayName            = displayName;
         this.description            = description;
         this.subComponents          = subComponents;
+        this.linkedFromSegment      = linkedFromSegment;
         this.implementationResource = implementationResource;
     }
 
@@ -407,6 +436,24 @@ public enum EgeriaSolutionComponent implements SolutionComponentDefinition
 
         return Arrays.asList(subComponents);
     }
+
+
+    /**
+     * Return the segments that preceded this segment.
+     *
+     * @return list of segments
+     */
+    @Override
+    public List<InformationSupplyChainDefinition> getLinkedFromSegment()
+    {
+        if (linkedFromSegment == null)
+        {
+            return null;
+        }
+
+        return Arrays.asList(linkedFromSegment);
+    }
+
 
 
     /**

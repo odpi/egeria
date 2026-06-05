@@ -78,28 +78,6 @@ public class OMAGServerPlatformActiveResource
 
 
     /**
-     * Retrieve the name of the organization running this platform.
-     *
-     * @param delegatingUserId external userId making request
-     * @return String description
-     */
-    @GetMapping(path = "/organization-name")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation( summary = "getServerPlatformOrganizationName",
-            description="Retrieve the name of the organization running this platform.",
-            responses = {
-                    @ApiResponse(responseCode = "200",description="OMAG Server Platform Owning Organization",
-                            content = @Content(mediaType ="application/json"))
-            })
-
-    public StringResponse getServerPlatformOrganizationName(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
-    {
-        return platformAPI.getServerPlatformOrganizationName(delegatingUserId);
-    }
-
-
-    /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a metadata server.
      *

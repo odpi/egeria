@@ -365,11 +365,6 @@ public class OMAGServerPlatform
 
             autoStartConfig();
 
-            /*
-             * The server organization name is optional.
-             */
-            serverInstanceMap.setServerPlatformOrganizationName(organizationName);
-
             if ((organizationName == null) || (organizationName.isBlank()))
             {
                 System.out.println(new Date() + " OMAG server platform has no owning organization");

@@ -498,11 +498,11 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                         "integration connector."),
 
     /**
-     * INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has being completed for integration group {0}
+     * INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has completed for integration group {0}
      */
     FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG("INTEGRATION-DAEMON-SERVICES-0056",
                                               AuditLogRecordSeverityLevel.INFO,
-                                              "Refresh of all integration connector configuration has being completed for integration group {0}",
+                                              "Refresh of all integration connector configuration has completed for integration group {0}",
                                               "The integration connectors for this integration group are running with the latest configuration.",
                                               "No action is required as long as all the expected integration connectors are started." +
                                                    "If there are any errors reported by the integration connectors then validate the configuration " +

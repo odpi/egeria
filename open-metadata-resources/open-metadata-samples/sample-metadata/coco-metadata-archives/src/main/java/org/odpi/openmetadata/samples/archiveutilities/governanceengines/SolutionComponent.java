@@ -5,9 +5,9 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.CollectionDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 
 import java.util.Arrays;
@@ -23,6 +23,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
              "External Organization Processes",
              "Hospital Processes",
              "Processes running in the hospital that negotiate data sharing agreements, recruit patients, train staff and deliver data.",
+             "Hospital-Processes",
              "V1.0",
              null,
              new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE, InformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING_TEMPLATE},
@@ -33,6 +34,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                  "File Directory",
                                  "Hospital Landing Area Folder",
                                  "Destination for incoming files from a particular hospital.",
+                                 "Hospital-Landing-Area-Folder",
                                  "V1.0",
                                  null,
                                  new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -43,6 +45,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                               "Integration Connector",
                               "Landing Folder Cataloguer",
                               "Integration connector that is cataloguing files arriving in the hospital landing area folders and invoking the onboarding pipeline.",
+                              "Landing-Folder-Cataloguer",
                               "V1.0",
                               null,
                               new InformationSupplyChain[]{
@@ -54,6 +57,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                            "Governance Action Process Step",
                            "Move File To Data Lake",
                            "Move landing area files to data lake, catalog files in data lake with lineage from the landing area and validate/certify that the data contains valid values.  The cataloguing includes lineage, retention, origin, governance zones.  The quality validation survey will add a certification to the file asset if the data contains valid values.",
+                           "Move-File-To-Data-Lake",
                            "V1.0",
                            null,
                            null,
@@ -64,6 +68,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                           "Governance Action Process Step",
                           "Check Quality of Data",
                           "Validate that the data contains valid values. The quality validation survey will add a certification to the file asset if the data contains valid values.",
+                          "Check-Quality-of-Data",
                           "V1.0",
                           null,
                           null,
@@ -74,6 +79,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                           "Governance Action Process Step",
                           "Report Quality Issues",
                           "Create alerts to interested parties if quality issues are detected.",
+                          "Report-Quality-Issues",
                           "V1.0",
                           null,
                           null,
@@ -84,6 +90,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                              "Governance Action Process Step",
                              "Determine Origin of Data",
                              "Add details of the originating hospital.",
+                             "Determine-Origin-of-Data",
                              "V1.0",
                              null,
                              null,
@@ -94,6 +101,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                          "Governance Action Process Step",
                          "Set Retention Period",
                          "Define when this file can be archived and then deleted.",
+                         "Set-Retention-Period",
                          "V1.0",
                          null,
                          null,
@@ -104,6 +112,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                   "Governance Action Process Step",
                   "Publish Asset",
                   "Make the new file visible in the data lake catalog.",
+                  "Publish-Asset",
                   "V1.0",
                   null,
                   null,
@@ -114,6 +123,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                             "Governance Action Process",
                                             "Weekly Measurements Onboarding Pipeline",
                                             "Move landing area files to data lake, catalog files in data lake with lineage from the landing area and validate/certify that the data contains valid values.  The cataloguing includes lineage, retention, origin, governance zones.  The quality validation survey will add a certification to the file asset if the data contains valid values.",
+                                            "Weekly-Measurements-Onboarding-Pipeline",
                                             "V1.0",
                                             new SolutionComponent[]{
                                                     MOVE_FILE_TO_DATA_LAKE,
@@ -130,6 +140,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                          "Unity Catalog Volume (File Directory)",
                                          "Weekly Measurements Data Lake Folder",
                                          "The directory where the files from the hospitals are assembled for sharing.",
+                                         "Weekly-Measurements-Data-Lake-Folder",
                                          "V1.0",
                                          null,
                                          new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -140,6 +151,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                      "Airflow DAG",
                      "Populate Sandbox",
                      "A process that copies certified files from the hospitals into the research team's sandbox for processing.",
+                     "Populate-Sandbox",
                      "V1.0",
                      null,
                      new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -150,6 +162,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                  "PostgreSQL Database",
                                  "Treatment Validation Sandbox",
                                  "A postgreSQL database schema for assembling data needed to validate the clinical trial.",
+                                 "Treatment-Validation-Sandbox",
                                  "V1.0",
                                  null,
                                  new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -160,6 +173,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                          "AI Workflow",
                          "Analyse Patient Data",
                          "ML Flow based analytics pipeline to run the variety of models over the patient data.",
+                         "Analyse-Patient-Data",
                          "V1.0",
                          null,
                          new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -170,6 +184,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                 "Content Manager",
                                 "Treatment Efficacy Evidence",
                                 "Assembly of the data required by the regulator.",
+                                "Treatment-Efficacy-Evidence",
                                 "V1.0",
                                 null,
                                 new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -180,6 +195,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                     "Manual Process",
                     "Assemble Treatment Assessment Report",
                     "A process of creating a filing report for the regulators detailing the findings from the clinical trial.",
+                    "Assemble-Treatment-Assessment-Report",
                     "V1.0",
                     null,
                     new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -190,6 +206,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                    "Manual Process",
                                    "Treatment Assessment Report Validation and Delivery",
                                    "An expert review, presentation, discussions relating to the results of the clinical trial.",
+                                   "Treatment-Assessment-Report-Validation-and-Delivery",
                                    "V1.0",
                                    null,
                                    new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -200,6 +217,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                       "Governance Action Process",
                       "Nominate Hospital",
                       "Add details of a hospital as a candidate for participation in the clinical trials.",
+                      "Nominate-Hospital",
                       "V1.0",
                       null,
                       null,
@@ -210,6 +228,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                      "Governance Action Process",
                      "Certify Hospital",
                      "Confirm that a hospital has met all of the criteria to participate in the clinical trial.",
+                     "Certify-Hospital",
                      "V1.0",
                      null,
                      null,
@@ -220,6 +239,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                      "Governance Action Process",
                      "Onboard Hospital",
                      "Set up the onboarding pipeline for a participating hospital.  This fails if the hospital is not certified.",
+                     "Onboard-Hospital",
                      "V1.0",
                      null,
                      null,
@@ -230,6 +250,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                      "Governance Action Process",
                      "Set up Data Lake",
                      "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
+                     "Set-up-Data-Lake",
                      "V1.0",
                      new SolutionComponent[]{
                                     WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER
@@ -243,6 +264,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                           "Set up clinical trial",
                           "Generates the project, and governance action processes needed to drive a clinical trial.",
                           "V2.0",
+                          "Set-up-clinical-trial",
                           null,
                           null,
                           CocoRequestTypeDefinition.SET_UP_CLINICAL_TRIAL.getGovernanceActionTypeGUID()),
@@ -252,6 +274,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                        "PostgreSQL Database",
                        "Sustainability Operational Data Store (ODS)",
                        "A store for both the raw data needed for the sustainability calculations and the results.",
+                       "Sustainability-ODS",
                        "V1.0",
                        null,
                        new InformationSupplyChain[]{
@@ -263,6 +286,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                "Analytics Application",
                                "Sustainability Calculators",
                                "Algorithms that calculate the impact of Coco Pharmaceuticals' operation and the changes that are making a difference.",
+                               "Sustainability-Calculators",
                                "V1.0",
                                null,
                                new InformationSupplyChain[]{
@@ -274,7 +298,8 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                "SuperSet Application",
                                "Sustainability Dashboards",
                                "Dashboards that illustrate Coco Pharmaceuticals' sustainability position.",
-                               "V1.0",
+                              "SuperSet-Application",
+                              "V1.0",
                                null,
                                new InformationSupplyChain[]{
                                        InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -285,6 +310,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                           "Cloud Application",
                           "Employee Expense Tool",
                           "Application for recording and categorizing employee expenses, and authorizing the repayment.",
+                          "Employee-Expense-Tool",
                           "V1.0",
                           null,
                           new InformationSupplyChain[]{
@@ -296,6 +322,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                      "COTS Application",
                      "Hazardous Materials (HazMat) Inventory",
                      "Application for recording and tracing hazardous materials.  This includes greenhouse gasses such as CO2 and Hydro-fluorocarbons.",
+                     "HazMat-Inventory",
                      "V1.0",
                      null,
                      new InformationSupplyChain[]{
@@ -307,6 +334,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                       "Cloud Application",
                       "Accounting ledgers",
                       "Application for recording and tracing the income and spending of Coco Pharmaceuticals.  This can help to identify how much the company is spending on particular materials and activities.",
+                      "Accounting-ledgers",
                       "V1.0",
                       null,
                       new InformationSupplyChain[]{
@@ -318,6 +346,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                     "COTS Application",
                     "Goods Inventory",
                     "Application for recording and tracing physical materials as they are acquired, stored, distributed and used.",
+                    "Goods-Inventory",
                     "V1.0",
                     null,
                     new InformationSupplyChain[]{
@@ -333,7 +362,8 @@ public enum SolutionComponent implements SolutionComponentDefinition
     private final String                          implementationType;
     private final String                          displayName;
     private final String                          description;
-    private final String                          versionIdentifier;
+    private final String                          identifier;
+    private final String                          versionIdentifier ;
     private final SolutionComponent[]             subComponents;
     private final InformationSupplyChain[]        linkedFromSegment;
     private final String                          implementationResource;
@@ -347,6 +377,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      * @param implementationType   type of software component - for example, is it a process, of file or database.
      * @param displayName the display name of the solution component
      * @param description the description of the solution component
+     * @param identifier unique identifier of the solution component
      * @param versionIdentifier version identifier of the solution component
      * @param subComponents optional subcomponents of the solution
      * @param linkedFromSegment array of segments that are implemented by this component
@@ -357,6 +388,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
                       String                   implementationType,
                       String                   displayName,
                       String                   description,
+                      String                   identifier,
                       String                   versionIdentifier,
                       SolutionComponent[]      subComponents,
                       InformationSupplyChain[] linkedFromSegment,
@@ -367,6 +399,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
         this.implementationType     = implementationType;
         this.displayName            = displayName;
         this.description            = description;
+        this.identifier             = identifier;
         this.versionIdentifier      = versionIdentifier;
         this.subComponents          = subComponents;
         this.linkedFromSegment      = linkedFromSegment;
@@ -433,6 +466,19 @@ public enum SolutionComponent implements SolutionComponentDefinition
         return description;
     }
 
+
+    /**
+     * Return the version identifier of the solution blueprint.
+     *
+     * @return string
+     */
+    @Override
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
     /**
      * Return the optional collection that this element is a part of.
      *
@@ -467,17 +513,6 @@ public enum SolutionComponent implements SolutionComponentDefinition
         return versionIdentifier;
     }
 
-    /**
-     * Return the version identifier of the solution blueprint.
-     *
-     * @return string
-     */
-    @Override
-    public String getIdentifier()
-    {
-        return null;
-    }
-
 
     /**
      * Return the optional list of subcomponents.
@@ -501,7 +536,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return list of segments
      */
-    public List<InformationSupplyChain> getLinkedFromSegment()
+    public List<InformationSupplyChainDefinition> getLinkedFromSegment()
     {
         if (linkedFromSegment == null)
         {

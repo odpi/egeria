@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.definitions;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -156,6 +155,17 @@ public interface DeployedImplementationTypeDefinition
             public List<SolutionComponentDefinition> getSubComponents()
             {
                 return DeployedImplementationTypeDefinition.this.getSubComponents();
+            }
+
+            /**
+             * Return the segments that preceded this segment.
+             *
+             * @return list of segments
+             */
+            @Override
+            public List<InformationSupplyChainDefinition> getLinkedFromSegment()
+            {
+                return List.of();
             }
 
             @Override

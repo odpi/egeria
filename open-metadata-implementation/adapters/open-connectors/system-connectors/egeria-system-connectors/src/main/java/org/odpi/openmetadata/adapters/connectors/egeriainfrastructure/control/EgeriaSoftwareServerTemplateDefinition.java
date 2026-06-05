@@ -250,6 +250,17 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
 
 
     /**
+     * Return the resource name to use in the template.
+     *
+     * @return string
+     */
+    public String getResourceName()
+    {
+        return PlaceholderProperty.RESOURCE_NAME.getPlaceholder();
+    }
+
+
+    /**
      * Return the name to go in the template classification.
      *
      * @return string
@@ -259,6 +270,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     {
         return deployedImplementationType.getDeployedImplementationType() + " template";
     }
+
 
     /**
      * Return the description to go in the template classification.
@@ -340,6 +352,11 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     }
 
 
+    /**
+     * Return the namespace for the server.
+     *
+     * @return string
+     */
     public String getNamespace()
     {
         return PlaceholderProperty.ORGANIZATION_NAME.getPlaceholder();

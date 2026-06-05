@@ -36,7 +36,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
     private String   connectorName = "OMAG Server Platform Connector";
 
     private String   targetRootURL = null;
-    private String   platformName = "OMAG Server Platform";
+    private String   platformName = "Local OMAG Server Platform";
     private String   delegatingUserId = null;
 
     private EgeriaExtractor extractor = null;
