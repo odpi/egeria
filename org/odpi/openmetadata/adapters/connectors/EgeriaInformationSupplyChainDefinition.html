@@ -46,7 +46,7 @@ loadScripts(document, 'script');</script>
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#enum-constant-summary">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code>, <code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">EgeriaInformationSupplyChainDefinition</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>&gt;
+implements <a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></span></div>
 <div class="block">A description of the predefined information supply chains.  There are two formats - one for templates and
  the other for normal information supply chains.</div>
 </section>
@@ -129,6 +130,15 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ReferenceableDefinition">Fields inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></h3>
+<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#EGERIA_VERSION_IDENTIFIER">EGERIA_VERSION_IDENTIFIER</a></code></div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -142,7 +152,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorScopeGUID()" class="member-name-link">getAnchorScopeGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the GUID of the anchor scope for this information supply chain.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataProcessingPurposes()" class="member-name-link">getDataProcessingPurposes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -164,24 +176,34 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the GUID for the element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwner()" class="member-name-link">getOwner</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the identifier of the element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwner()" class="member-name-link">getOwner</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the identifier of the owner.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerPropertyName()" class="member-name-link">getOwnerPropertyName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerPropertyName()" class="member-name-link">getOwnerPropertyName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the property name used to identify the owner.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerTypeName()" class="member-name-link">getOwnerTypeName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerTypeName()" class="member-name-link">getOwnerTypeName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type name of the element describing the owner.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwningSupplyChain()" class="member-name-link">getOwningSupplyChain</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwningSupplyChain()" class="member-name-link">getOwningSupplyChain</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the supply chain that this segment is a part of.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/openmetadata/definitions/CollectionDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">CollectionDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentCollection()" class="member-name-link">getParentCollection</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the optional collection that this element is a part of.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
@@ -203,29 +225,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the template name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isOwningInformationSupplyChainAnchor()" class="member-name-link">isOwningInformationSupplyChainAnchor</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Should this information supply chain be anchored to its parent?</div>
+<div class="block">Return the type of this element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTemplate()" class="member-name-link">isTemplate</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isOwningInformationSupplyChainAnchor()" class="member-name-link">isOwningInformationSupplyChainAnchor</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Should this information supply chain be anchored to its parent?</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTemplate()" class="member-name-link">isTemplate</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether this is a template or not.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaInformationSupplyChainDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaInformationSupplyChainDefinition</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -238,6 +265,9 @@ the order they are declared.</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ReferenceableDefinition">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></h3>
+<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getVersionIdentifier()">getVersionIdentifier</a></code></div>
 </section>
 </li>
 </ul>
@@ -329,6 +359,21 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGUID</span>()</div>
 <div class="block">Return the GUID for the element.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTypeName()">
+<h3>getTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<div class="block">Return the type of this element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getTypeName()">getTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -340,6 +385,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
 <div class="block">Return the display name of the information supply chain.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDisplayName()">getDisplayName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -351,8 +398,23 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the description of the solution information supply chain.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getParentCollection()">
+<h3>getParentCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/openmetadata/definitions/CollectionDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">CollectionDefinition</a></span>&nbsp;<span class="element-name">getParentCollection</span>()</div>
+<div class="block">Return the optional collection that this element is a part of.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getParentCollection()">getParentCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>collection definition</dd>
 </dl>
 </section>
 </li>
@@ -362,6 +424,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/openmetadata/refdata/ScopeDefinition.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ScopeDefinition</a></span>&nbsp;<span class="element-name">getScope</span>()</div>
 <div class="block">Return the scope of the information supply chain.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getScope()">getScope</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -373,6 +437,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDataProcessingPurposes</span>()</div>
 <div class="block">Return the purposes of the information supply chain.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getDataProcessingPurposes()">getDataProcessingPurposes</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of strings</dd>
 </dl>
@@ -384,6 +450,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwner</span>()</div>
 <div class="block">Return the identifier of the owner.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getOwner()">getOwner</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -395,6 +463,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwnerTypeName</span>()</div>
 <div class="block">Return the type name of the element describing the owner.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getOwnerTypeName()">getOwnerTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -406,6 +476,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwnerPropertyName</span>()</div>
 <div class="block">Return the property name used to identify the owner.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getOwnerPropertyName()">getOwnerPropertyName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -417,6 +489,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwningSupplyChain</span>()</div>
 <div class="block">Return the supply chain that this segment is a part of.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getOwningSupplyChain()">getOwningSupplyChain</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>information supply chain</dd>
 </dl>
@@ -428,6 +502,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isOwningInformationSupplyChainAnchor</span>()</div>
 <div class="block">Should this information supply chain be anchored to its parent?</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#isOwningInformationSupplyChainAnchor()">isOwningInformationSupplyChainAnchor</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>boolean</dd>
 </dl>
@@ -437,6 +513,14 @@ not permitted.)</div>
 <section class="detail" id="getAnchorScopeGUID()">
 <h3>getAnchorScopeGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorScopeGUID</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getAnchorScopeGUID()">InformationSupplyChainDefinition</a></code></span></div>
+<div class="block">Return the GUID of the anchor scope for this information supply chain.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getAnchorScopeGUID()">getAnchorScopeGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -445,6 +529,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isTemplate</span>()</div>
 <div class="block">Return whether this is a template or not.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#isTemplate()">isTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>boolean</dd>
 </dl>
@@ -456,6 +542,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateName</span>()</div>
 <div class="block">Return the template name.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getTemplateName()">getTemplateName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -467,6 +555,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateDescription</span>()</div>
 <div class="block">Return the template description.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html#getTemplateDescription()">getTemplateDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -478,6 +568,21 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
 <div class="block">Return the unique name of the information supply chain.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIdentifier()">
+<h3>getIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIdentifier</span>()</div>
+<div class="block">Return the identifier of the element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getIdentifier()">getIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>

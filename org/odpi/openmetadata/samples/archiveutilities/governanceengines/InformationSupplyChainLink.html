@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="InformationSupplyChainLink.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChainLink</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="InformationSupplyChainLink.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChainLink</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">InformationSupplyChainLink</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="InformationSupplyChainLink.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChainLink</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="InformationSupplyChainLink.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChainLink</a>&gt;
+implements <a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></span></div>
 <div class="block">Define the linkage between information supply chain segments.</div>
 </section>
 <section class="summary">
@@ -123,16 +124,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the description of the information supply chain link.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLabel()" class="member-name-link">getLabel</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChain</a></code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the label associated with the information supply chain link.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSegment1()" class="member-name-link">getSegment1</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChain</a></code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the first segment in the information supply chain linkage.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSegment2()" class="member-name-link">getSegment2</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the second segment in the information supply chain linkage.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InformationSupplyChainLink.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChainLink</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
@@ -212,25 +221,53 @@ not permitted.)</div>
 <li>
 <section class="detail" id="getSegment1()">
 <h3>getSegment1</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChain</a></span>&nbsp;<span class="element-name">getSegment1</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></span>&nbsp;<span class="element-name">getSegment1</span>()</div>
+<div class="block">Retrieves the first segment in the information supply chain linkage.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html#getSegment1()">getSegment1</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>the first information supply chain segment in the linkage</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSegment2()">
 <h3>getSegment2</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">InformationSupplyChain</a></span>&nbsp;<span class="element-name">getSegment2</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a></span>&nbsp;<span class="element-name">getSegment2</span>()</div>
+<div class="block">Retrieves the second segment in the information supply chain linkage.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html#getSegment2()">getSegment2</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>the definition of the second information supply chain segment</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getLabel()">
 <h3>getLabel</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLabel</span>()</div>
+<div class="block">Retrieves the label associated with the information supply chain link.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html#getLabel()">getLabel</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>the label describing the linkage between the supply chain segments</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<div class="block">Retrieves the description of the information supply chain link.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/InformationSupplyChainLinkDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainLinkDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>the description providing details about the linkage between the supply chain segments</dd>
+</dl>
 </section>
 </li>
 </ul>
