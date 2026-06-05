@@ -175,29 +175,6 @@ public class PlatformServicesClient
         return restClient.callStringGetRESTCall(methodName, urlTemplate);
     }
 
-
-    /**
-     * Retrieve the platform's owning organization
-     *
-     * @return name of organization
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    a problem reported in the open metadata server(s)
-     */
-    public String getPlatformOrganizationName() throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
-    {
-        final String methodName = "getPlatformOrganizationName";
-        
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/organization-name?delegatingUserId={0}";
-
-        StringResponse result = restClient.callStringResponseGetRESTCall(methodName, urlTemplate, delegatingUserId);
-
-        return result.getResultString();
-    }
-
     
     /**
      * Set up a platform security connector.  This connector provides additional authorization

@@ -10,7 +10,6 @@
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

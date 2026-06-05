@@ -34,7 +34,6 @@ public class OMAGServerPlatformInstanceMap
     private static final Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
 
     private static final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.1-SNAPSHOT)";
-    private static String   organizationName = null;
     private final static Date   platformStartTime = new Date();
 
 
@@ -60,37 +59,6 @@ public class OMAGServerPlatformInstanceMap
     public static String getPlatformOrigin()
     {
         return implementationOrigin;
-    }
-
-
-    /**
-     * Return the organization name
-     *
-     * @param userId calling user
-     * @param delegatingUserId external userId making request
-     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
-     */
-    public static String getOrganizationName(String userId,
-                                             String delegatingUserId) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
-    {
-        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        if (delegatingUserId != null)
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
-        }
-
-        return organizationName;
-    }
-
-
-    /**
-     * Set up the organization name
-     */
-    public static void setOrganizationName(String serverPlatformOrganizationName)
-    {
-        organizationName = serverPlatformOrganizationName;
     }
 
 
@@ -171,34 +139,6 @@ public class OMAGServerPlatformInstanceMap
     public String getServerPlatformOrigin() throws UserNotAuthorizedException
     {
         return getPlatformOrigin();
-    }
-
-
-    /**
-     * Return the name of the organization running this platform.
-     *
-     * @param userId name of the user making the request
-     * @param delegatingUserId external userId making request
-     * @return String description
-     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
-     */
-    public String getServerPlatformOrganizationName(String userId,
-                                                    String delegatingUserId) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException
-    {
-        return getOrganizationName(userId, delegatingUserId);
-    }
-
-
-    /**
-     * Set up the name of the organization running this platform.
-     *
-     * @param organizationName name of the owning organization
-     */
-    public void setServerPlatformOrganizationName(String organizationName)
-    {
-        setOrganizationName(organizationName);
     }
 
 

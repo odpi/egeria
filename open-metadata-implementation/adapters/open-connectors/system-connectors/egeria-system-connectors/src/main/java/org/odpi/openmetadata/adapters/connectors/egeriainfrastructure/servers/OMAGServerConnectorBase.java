@@ -30,7 +30,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 {
     private AuditLog auditLog      = null;
     private String   connectorName;
-    private String   platformName = "OMAG Server Platform";
+    private String   platformName = "Local OMAG Server Platform";
     private String   targetRootURL = null;
     private String   delegatingUserId = null;
 

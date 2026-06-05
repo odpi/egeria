@@ -476,6 +476,19 @@ public class SimpleCatalogArchiveHelper
                 }
             }
 
+            if (solutionComponent.getLinkedFromSegment() != null)
+            {
+                for (InformationSupplyChainDefinition linkedSegment : solutionComponent.getLinkedFromSegment())
+                {
+                    this.addImplementedByRelationship(linkedSegment.getGUID(),
+                                                      componentGUID,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null);
+                }
+            }
+
             if (solutionComponent.getImplementationResource() != null)
             {
                 this.addImplementationResourceRelationship(solutionComponent.getGUID(),
@@ -7254,6 +7267,7 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName qualified name
      * @param name display name
      * @param description description
+     * @param identifier identifier for the ISC
      * @param scope scope of responsibilities
      * @param dataProcessingPurposes why is it needed
      * @param owner owner for the Ownership classification
@@ -7272,6 +7286,7 @@ public class SimpleCatalogArchiveHelper
                                              String              qualifiedName,
                                              String              name,
                                              String              description,
+                                             String              identifier,
                                              String              scope,
                                              List<String>        dataProcessingPurposes,
                                              String              integrationStyle,
@@ -7295,6 +7310,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_PROCESSING_PURPOSES.name, dataProcessingPurposes, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.INTEGRATION_STYLE.name, integrationStyle, methodName);

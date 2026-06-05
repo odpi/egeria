@@ -68,39 +68,6 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
 
     /**
-     * Return the name of the organization running this platform.
-     *
-     * @param delegatingUserId external userId making request
-     * @return String description
-     * or UserNotAuthorizedException userId is not recognized
-     */
-    public StringResponse getServerPlatformOrganizationName(String delegatingUserId)
-    {
-        final String methodName = "getServerPlatformOrganizationName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        StringResponse response = new StringResponse();
-
-        try
-        {
-            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            response.setResultString(serverInstanceMap.getServerPlatformOrganizationName(userId, delegatingUserId));
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response);
-        return response;
-    }
-
-
-    /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured in a metadata access point or metadata server.
      *

@@ -56,7 +56,7 @@ public interface ReferenceableDefinition
 
 
     /**
-     * Return the version identifier of the solution blueprint.
+     * Return the identifier of the element.
      *
      * @return string
      */

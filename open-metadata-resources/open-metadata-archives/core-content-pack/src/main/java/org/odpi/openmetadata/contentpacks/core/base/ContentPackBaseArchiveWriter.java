@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplemen
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
@@ -168,6 +169,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                      informationSupplyChain.getQualifiedName(),
                                                                      informationSupplyChain.getDisplayName(),
                                                                      informationSupplyChain.getDescription(),
+                                                                     informationSupplyChain.getIdentifier(),
                                                                      informationSupplyChain.getScope().getPreferredValue(),
                                                                      informationSupplyChain.getDataProcessingPurposes(),
                                                                      null,
@@ -454,7 +456,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, serverName);
+        extendedProperties.put(OpenMetadataProperty.IDENTIFIER.name, serverName);
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.RESOURCE_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.NAMESPACE_PATH.name, namespacePath);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
@@ -1424,6 +1427,26 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                          subComponent.getGUID());
                     }
                 }
+            }
+
+            if (solutionComponentDefinition.getLinkedFromSegment() != null)
+            {
+                for (InformationSupplyChainDefinition linkedSegment : solutionComponentDefinition.getLinkedFromSegment())
+                {
+                    archiveHelper.addImplementedByRelationship(linkedSegment.getGUID(),
+                                                               solutionComponentDefinition.getGUID(),
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null);
+                }
+            }
+
+            if (solutionComponentDefinition.getImplementationResource() != null)
+            {
+                archiveHelper.addImplementationResourceRelationship(solutionComponentDefinition.getGUID(),
+                                                                    solutionComponentDefinition.getImplementationResource(),
+                                                                    "Standard implementation of the main process step");
             }
         }
 

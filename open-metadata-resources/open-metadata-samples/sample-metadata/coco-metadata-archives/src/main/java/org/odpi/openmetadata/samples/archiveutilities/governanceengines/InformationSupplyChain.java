@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
@@ -15,7 +16,7 @@ import java.util.List;
  * A description of the predefined information supply chains.  There are two formats - one for templates and
  * the other for normal information supply chains.
  */
-public enum InformationSupplyChain
+public enum InformationSupplyChain implements InformationSupplyChainDefinition
 {
     /**
      * Identifies the data flows related to all clinical trials.
@@ -23,6 +24,7 @@ public enum InformationSupplyChain
     CLINICAL_TRIALS("f221a078-026d-492c-8821-9c606738c1f2",
                     "Clinical Trials Information Supply Chain",
                     "Identifies the data flows related to all clinical trials.",
+                    "Clinical-Trials",
                     ScopeDefinition.WITHIN_SOLUTION,
                     new String[]{ "To conduct clinical trials efficiently and effectively." },
                     SolutionRoleDefinition.CLINICAL_TRIALS_EXECUTIVE.getGUID(),
@@ -34,8 +36,9 @@ public enum InformationSupplyChain
      * Delivering data relating to the XXX clinical trial.
      */
     CLINICAL_TRIAL_TEMPLATE("9fc2ba34-f39a-435c-96fc-4d6eb2811701",
-                            "Clinical Trial::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                            "Clinical Trial Information Supply Chain: " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                             "Delivering data relating to the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial.",
+                            "Clinical-Trial-" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                             ScopeDefinition.WITHIN_PROJECT,
                             new String[]
                                     {"To track the data flows for a single clinical trial."},
@@ -50,8 +53,9 @@ public enum InformationSupplyChain
      * Delivering data for the XXX clinical trial from the hospitals to the Coco Researchers.
      */
     CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE("1f71e403-1187-4f03-a1dd-ae7dc105f06f",
-                                                 "Clinical Trial Treatment Validation::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                                                 "Clinical Trial Treatment Validation Information Supply Chain: " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                                                  "Delivering data for the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
+                                                 "Clinical-Trial-Treatment-Validation-" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                                                  ScopeDefinition.WITHIN_PROJECT,
                                                  new String[]
                                                  {
@@ -74,8 +78,9 @@ public enum InformationSupplyChain
      * Delivering the data necessary to add a person as a subject to XXX clinical trial
      */
     CLINICAL_TRIAL_SUBJECT_ONBOARDING_TEMPLATE("39a035f0-3b2b-45fe-adb8-ee8a19581f6a",
-                                               "Clinical Trial Subject Onboarding::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                                               "Clinical Trial Subject Onboarding Information Supply Chain: " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                                                "Delivering the data necessary to add a person as a subject in the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial.",
+                                               "Clinical-Trial-Subject-Onboarding-" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                                                ScopeDefinition.WITHIN_PROJECT,
                                                new String[]
                                               {
@@ -97,8 +102,9 @@ public enum InformationSupplyChain
      * Adding information about a new employee to all appropriate systems and directories.
      */
     NEW_EMPLOYEE_ONBOARDING("022009d9-53cb-4469-afeb-16ee81d8f9bc",
-                            "New Employee Onboarding",
+                            "New Employee Onboarding Information Supply Chain",
                             "Adding information about a new employee to all appropriate systems and directories.",
+                            "New-Employee-Onboarding",
                             ScopeDefinition.WITHIN_ORGANIZATION,
                             new String[]
                                     {
@@ -111,8 +117,9 @@ public enum InformationSupplyChain
 
 
     NEW_DRUG_PRODUCT_INFO_DISTRIBUTION("b0491fd4-6324-4ed8-9a1c-7cbd9892e21b",
-                                       "New Drug Product Information Distribution",
+                                       "New Drug Product Details Information Supply Chain",
                                        "Managing the distribution of information about a new product.",
+                                       "New-Drug-Product-Details-Distribution",
                                        ScopeDefinition.WITHIN_ORGANIZATION,
                                        new String[]
                                                {
@@ -124,8 +131,9 @@ public enum InformationSupplyChain
                                        null),
 
     PERSONALIZED_TREATMENT_ORDER("adbae740-57a3-41b8-a722-266b895794e6",
-                                 "Personalized Treatment Ordering",
+                                 "Personalized Treatment Ordering Informaiton Supply Chain",
                                  "Delivering information about a new personalized medicine order so that it fulfilled and invoiced.",
+                                 "Personalized Treatment Ordering",
                                  ScopeDefinition.WITHIN_ORGANIZATION,
                                  new String[]
                                          {
@@ -138,8 +146,9 @@ public enum InformationSupplyChain
 
 
     SUSTAINABILITY_REPORTING("dd15b286-a38d-4f03-8625-aaded8596048",
-                             "Sustainability Reporting",
+                             "Sustainability Reporting Information Supply Chain",
                              "Delivering information to the sustainability reporting tools.",
+                             "Sustainability-Reporting",
                              ScopeDefinition.WITHIN_ORGANIZATION,
                              new String[]
                                      {
@@ -152,8 +161,9 @@ public enum InformationSupplyChain
 
 
     PHYSICAL_INVENTORY_TRACKING("7480a3b1-8d6c-4062-ae59-f3b81e146ed0",
-                                "Physical Inventory Tracking",
+                                "Physical Inventory Tracking Information Supply Chain",
                                 "Managing information take tracks physical goods from suppliers, to depot and manufacturing.",
+                                "Physical-Inventory-Tracking",
                                 ScopeDefinition.WITHIN_ORGANIZATION,
                                 new String[]
                                         {
@@ -167,8 +177,9 @@ public enum InformationSupplyChain
 
 
     EMPLOYEE_EXPENSE_PAYMENT("79d1d83f-6a37-4c32-bf3f-eb8b4358027c",
-                             "Employee Expense Payment",
+                             "Employee Expense Payment Information Supply Chain",
                              "Managing the collection of expense data, its approval and the subsequent payment authorization flows.",
+                             "Employee-Expense-Payment",
                              ScopeDefinition.WITHIN_ORGANIZATION,
                              new String[]
                                      {
@@ -186,6 +197,7 @@ public enum InformationSupplyChain
     private final String                 guid;
     private final String                 displayName;
     private final String                 description;
+    private final String                 identifier;
     private final ScopeDefinition        scope;
     private final String[]               dataProcessingPurposes;
     private final String                 ownerGUID;
@@ -199,14 +211,14 @@ public enum InformationSupplyChain
 
 
     /**
-     * Construct an enum instance (non-template).
+     * Construct enum instance (non-template).
      *
      * @param guid unique identifier
-     * @param displayName display name of information supply chain
-     * @param description description of information supply chain
-     * @param scope scope of information supply chain
-     * @param dataProcessingPurposes purposes of information supply chain
-     * @param ownerGUID identifier of owner
+     * @param displayName the display name of the information supply chain
+     * @param description the description of the information supply chain
+     * @param scope the scope of the information supply chain
+     * @param dataProcessingPurposes purposes of the information supply chain
+     * @param ownerGUID identifier of the owner
      * @param owningSupplyChain the parent information supply chain
      * @param isOwningInformationSupplyChainAnchor should the parent supply chain (if any) bee this information supply chain's anchor?
      * @param anchorScope anchor scope for this information supply chain
@@ -214,8 +226,9 @@ public enum InformationSupplyChain
     InformationSupplyChain(String                 guid,
                            String                 displayName,
                            String                 description,
+                           String                 identifier,
                            ScopeDefinition        scope,
-                           String[] dataProcessingPurposes,
+                           String[]               dataProcessingPurposes,
                            String                 ownerGUID,
                            InformationSupplyChain owningSupplyChain,
                            boolean                isOwningInformationSupplyChainAnchor,
@@ -224,9 +237,10 @@ public enum InformationSupplyChain
         this.guid                                 = guid;
         this.displayName                          = displayName;
         this.description                          = description;
-        this.scope                  = scope;
-        this.dataProcessingPurposes = dataProcessingPurposes;
-        this.ownerGUID              = ownerGUID;
+        this.identifier                           = identifier;
+        this.scope                                = scope;
+        this.dataProcessingPurposes               = dataProcessingPurposes;
+        this.ownerGUID                            = ownerGUID;
         this.owningSupplyChain                    = owningSupplyChain;
         this.isOwningInformationSupplyChainAnchor = isOwningInformationSupplyChainAnchor;
         this.anchorScope                          = anchorScope;
@@ -234,7 +248,7 @@ public enum InformationSupplyChain
 
 
     /**
-     * Construct an enum instance (template).
+     * Construct enum instance (template).
      *
      * @param guid unique identifier
      * @param displayName display name of information supply chain
@@ -251,8 +265,9 @@ public enum InformationSupplyChain
     InformationSupplyChain(String                 guid,
                            String                 displayName,
                            String                 description,
+                           String                 identifier,
                            ScopeDefinition        scope,
-                           String[] dataProcessingPurposes,
+                           String[]               dataProcessingPurposes,
                            String                 ownerGUID,
                            InformationSupplyChain owningSupplyChain,
                            boolean                isOwningInformationSupplyChainAnchor,
@@ -263,9 +278,10 @@ public enum InformationSupplyChain
         this.guid                                 = guid;
         this.displayName                          = displayName;
         this.description                          = description;
-        this.scope                  = scope;
-        this.dataProcessingPurposes = dataProcessingPurposes;
-        this.ownerGUID              = ownerGUID;
+        this.identifier                           = identifier;
+        this.scope                                = scope;
+        this.dataProcessingPurposes               = dataProcessingPurposes;
+        this.ownerGUID                            = ownerGUID;
         this.owningSupplyChain                    = owningSupplyChain;
         this.isOwningInformationSupplyChainAnchor = isOwningInformationSupplyChainAnchor;
         this.anchorScope                          = anchorScope;
@@ -309,6 +325,15 @@ public enum InformationSupplyChain
 
 
     /**
+     * Return the identifier of the solution blueprint.
+     *
+     * @return string
+     */
+    @Override
+    public String getIdentifier() { return identifier; }
+
+
+    /**
      * Return the scope of the information supply chain.
      *
      * @return string
@@ -336,7 +361,6 @@ public enum InformationSupplyChain
     }
 
 
-
     /**
      * Return the identifier of the owner.
      *
@@ -357,6 +381,7 @@ public enum InformationSupplyChain
     {
         return OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName;
     }
+
 
     /**
      * Return the property name used to identify the owner.
@@ -395,6 +420,12 @@ public enum InformationSupplyChain
         return isOwningInformationSupplyChainAnchor;
     }
 
+
+    /**
+     * Return the GUID of the anchor scope for this information supply chain.
+     *
+     * @return string
+     */
     public String getAnchorScopeGUID()
     {
         if (anchorScope != null)
@@ -406,6 +437,7 @@ public enum InformationSupplyChain
             return guid;
         }
     }
+
 
     /**
      * Return whether this is a template or not.
@@ -438,7 +470,6 @@ public enum InformationSupplyChain
     {
         return templateDescription;
     }
-
 
 
     /**

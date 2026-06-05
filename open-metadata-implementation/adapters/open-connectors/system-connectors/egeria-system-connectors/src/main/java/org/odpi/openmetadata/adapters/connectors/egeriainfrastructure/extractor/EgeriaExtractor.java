@@ -52,7 +52,7 @@ import java.util.*;
 public class EgeriaExtractor
 {
     private final String platformURLRoot;
-    private final String platformName;
+    private final String defaultPlatformName;
     private final String serverOfInterest;
     private final String delegatingUserId;
 
@@ -73,7 +73,7 @@ public class EgeriaExtractor
      * Constructor
      *
      * @param platformURLRoot platform URL root
-     * @param platformName name of the platform
+     * @param defaultPlatformName name of the platform
      * @param serverOfInterest optional server name
      * @param delegatingUserId user that is calling the connector
      * @param secretsStoreConnectorMap connectors to secrets stores
@@ -81,23 +81,23 @@ public class EgeriaExtractor
      * @throws InvalidParameterException invalid parameter
      */
     public EgeriaExtractor(String                             platformURLRoot,
-                           String                             platformName,
+                           String                             defaultPlatformName,
                            String                             serverOfInterest,
                            String                             delegatingUserId,
                            Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
                            AuditLog                           auditLog) throws InvalidParameterException
     {
         this.platformURLRoot          = platformURLRoot;
-        this.platformName             = platformName;
+        this.defaultPlatformName      = defaultPlatformName;
         this.serverOfInterest         = serverOfInterest;
         this.delegatingUserId         = delegatingUserId;
         this.secretsStoreConnectorMap = secretsStoreConnectorMap;
         this.auditLog                 = auditLog;
 
-        platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        platformServicesClient        = new PlatformServicesClient(defaultPlatformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
         platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
         configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
-        serverOperationsClient        = new ServerOperationsClient(platformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        serverOperationsClient        = new ServerOperationsClient(defaultPlatformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
 
         if (serverOfInterest != null)
         {
@@ -126,10 +126,9 @@ public class EgeriaExtractor
     {
         OMAGServerPlatformProperties platformReport = new OMAGServerPlatformProperties();
 
-        platformReport.setPlatformName(platformName);
+        platformReport.setDefaultPlatformName(defaultPlatformName);
         platformReport.setPlatformURLRoot(platformURLRoot);
         platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin());
-        platformReport.setPlatformOrganization(platformServicesClient.getPlatformOrganizationName());
         platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties());
         platformReport.setPlatformPublicProperties(platformServicesClient.getPublicProperties());
         platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime());

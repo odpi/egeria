@@ -40,7 +40,7 @@ public class IntegrationGroupHandler
     private final IntegrationContextManager        integrationContextManager;
     private List<IntegrationConnectorHandler>      connectorHandlers = new ArrayList<>();
 
-    private Date lastRefreshTime = null;
+    private LastRefreshTime lastRefreshTime = new LastRefreshTime();
 
     /**
      * Create a client-side object for managing an integration connector.
@@ -90,7 +90,7 @@ public class IntegrationGroupHandler
      *
      * @return integration group summary
      */
-    public synchronized IntegrationGroupSummary getSummary()
+    public IntegrationGroupSummary getSummary()
     {
         IntegrationGroupSummary mySummary = new IntegrationGroupSummary();
 
@@ -144,7 +144,7 @@ public class IntegrationGroupHandler
             mySummary.setIntegrationGroupStatus(IntegrationGroupStatus.RUNNING);
         }
 
-        mySummary.setLastRefreshTime(lastRefreshTime);
+        mySummary.setLastRefreshTime(lastRefreshTime.getLastRefreshTime());
 
         return mySummary;
     }
@@ -180,16 +180,16 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public synchronized void refreshConfig() throws InvalidParameterException,
+    public void refreshConfig() throws InvalidParameterException,
                                                     UserNotAuthorizedException,
                                                     PropertyServerException
     {
         final String methodName = "refreshConfig";
 
-        if (lastRefreshTime != null)
+        if (lastRefreshTime.getLastRefreshTime() != null)
         {
             Date now = new Date();
-            long diff = now.getTime() - lastRefreshTime.getTime();
+            long diff = now.getTime() - lastRefreshTime.getLastRefreshTime().getTime();
             long tenMinutes = 1000 * 60 * 10;
             if (diff < tenMinutes)
             {
@@ -197,7 +197,7 @@ public class IntegrationGroupHandler
             }
         }
 
-        lastRefreshTime = new Date();
+        lastRefreshTime.setLastRefreshTime(new Date());
 
         /*
          * Begin by extracting the properties for the integration group from the metadata server.
@@ -339,7 +339,7 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public synchronized void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
+    public void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
@@ -440,5 +440,25 @@ public class IntegrationGroupHandler
         }
 
         return null;
+    }
+
+    static class LastRefreshTime
+    {
+        private Date lastRefreshTime;
+
+        LastRefreshTime()
+        {
+            this.lastRefreshTime = null;
+        }
+
+        synchronized Date getLastRefreshTime()
+        {
+            return lastRefreshTime;
+        }
+
+        synchronized void setLastRefreshTime(Date lastRefreshTime)
+        {
+            this.lastRefreshTime = lastRefreshTime;
+        }
     }
 }

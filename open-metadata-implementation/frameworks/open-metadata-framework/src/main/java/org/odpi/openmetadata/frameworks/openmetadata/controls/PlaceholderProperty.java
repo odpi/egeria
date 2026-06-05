@@ -107,6 +107,23 @@ public enum PlaceholderProperty
                         "6.1-SNAPSHOT"),
 
     /**
+     * The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.
+     */
+    IDENTIFIER ("identifier",
+                "The string identifier for the element.  It is often an identifier from an external system.",
+                DataType.STRING.getDisplayName(),
+                "MY-ASSET"),
+
+
+    /**
+     * The technical identifier for the element.  It is often an identifier from the owning technology platform.
+     */
+    RESOURCE_NAME ("resourceName",
+                "The technical identifier for the element.  It is often an identifier from the owning technology platform.",
+                DataType.STRING.getDisplayName(),
+                "my_asset"),
+
+    /**
      * The unique identifier of the home metadata collection for associated elements.
      */
     MANAGED_METADATA_COLLECTION_ID("managedMetadataCollectionId",

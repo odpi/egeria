@@ -227,6 +227,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                                      informationSupplyChain.getQualifiedName(),
                                                                      informationSupplyChain.getDisplayName(),
                                                                      informationSupplyChain.getDescription(),
+                                                                     informationSupplyChain.getIdentifier(),
                                                                      informationSupplyChain.getScope().getPreferredValue(),
                                                                      informationSupplyChain.getDataProcessingPurposes(),
                                                                      null,

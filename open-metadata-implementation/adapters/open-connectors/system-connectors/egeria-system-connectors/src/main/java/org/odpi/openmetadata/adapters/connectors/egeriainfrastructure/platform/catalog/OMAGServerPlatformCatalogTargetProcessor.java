@@ -40,6 +40,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelati
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -252,7 +253,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
                                         OpenMetadataRootElement serverElement = serverClient.getAssetByGUID(deploymentElement.getRelatedElement().getElementHeader().getGUID(),
                                                                                                             serverClient.getGetOptions());
-                                        updateServer(omagServerProperties, platformProperties, deploymentElement.getRelatedElement().getElementHeader().getGUID(), serverElement.getEndpoint(), platformProperties.getPlatformURLRoot());
+                                        updateServer(omagServerProperties, platformProperties, deploymentElement.getRelatedElement().getElementHeader().getGUID(), serverElement.getEndpoint());
 
                                         /*
                                          * The server name to GUID is saved to aid the management of lineage relationships between the servers.
@@ -327,7 +328,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                          * The server has been catalogued before - but with a different platform.
                                          */
                                         matchingServerGUID = matchingServer.getElementHeader().getGUID();
-                                        updateServer(omagServerProperties, platformProperties, matchingServerGUID, matchingServer.getEndpoint(), platformProperties.getPlatformURLRoot());
+                                        updateServer(omagServerProperties, platformProperties, matchingServerGUID, matchingServer.getEndpoint());
                                     }
 
                                     knownServerNameToGUID.put(omagServerProperties.getServerName(), matchingServerGUID);
@@ -1097,26 +1098,49 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
+        /*
+         * Note: platformProperties.getPlatformOrganization() return null if the organizationName is null in application.properties whereas platformProperties.getPlatformPublicProperties().getOrganizationName() returns an empty string.
+         * platformProperties.getPlatformName() always returns "OMAG Server Platform" whereas platformProperties.getPlatformPublicProperties().getDisplayName() returns the platform.name in application.properties.
+         */
         SoftwareServerPlatformProperties softwareServerPlatformProperties = new SoftwareServerPlatformProperties();
 
-        if (platformProperties.getPlatformOrganization() != null)
+        String platformDisplayName = platformProperties.getPlatformPublicProperties().getDisplayName();
+        String platformOrganization = platformProperties.getPlatformPublicProperties().getOrganizationName();
+
+        if (platformOrganization.isBlank())
         {
-            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformProperties.getPlatformOrganization() + "::" + platformProperties.getPlatformURLRoot());
+            platformOrganization = null;
+        }
+
+
+        if ((platformDisplayName == null) || (platformDisplayName.isBlank()))
+        {
+            platformDisplayName = platformProperties.getDefaultPlatformName();
+        }
+
+        if (platformOrganization != null)
+        {
+            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformOrganization + "::" + platformDisplayName);
+            softwareServerPlatformProperties.setResourceName(platformOrganization + "." + platformDisplayName);
         }
         else
         {
-            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformProperties.getPlatformURLRoot());
+            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformDisplayName);
+            softwareServerPlatformProperties.setResourceName(platformDisplayName);
         }
 
-        softwareServerPlatformProperties.setDisplayName(platformProperties.getPlatformPublicProperties().getDisplayName());
+        softwareServerPlatformProperties.setDisplayName(platformDisplayName);
         softwareServerPlatformProperties.setDescription(platformProperties.getPlatformPublicProperties().getDescription());
         softwareServerPlatformProperties.setURL(this.getURL(null));
-        softwareServerPlatformProperties.setNamespacePath(platformProperties.getPlatformOrganization());
+        softwareServerPlatformProperties.setIdentifier(platformProperties.getDefaultPlatformName());
+        softwareServerPlatformProperties.setNamespacePath(platformOrganization);
         softwareServerPlatformProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
         softwareServerPlatformProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
+        softwareServerPlatformProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
 
         Map<String, String> additionalProperties = new HashMap<>();
 
+        additionalProperties.put("platformURLRoot", platformProperties.getPlatformURLRoot());
         additionalProperties.put("organizationName", platformProperties.getPlatformPublicProperties().getOrganizationName());
         additionalProperties.put("buildTime", platformProperties.getPlatformBuildProperties().getTime().toString());
 
@@ -1168,6 +1192,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
         placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getName(), platformProperties.getPlatformURLRoot());
         placeholderProperties.put(PlaceholderProperty.SERVER_NAME.getName(), omagServerProperties.getServerName());
+        placeholderProperties.put(PlaceholderProperty.IDENTIFIER.getName(), omagServerProperties.getServerName());
+        placeholderProperties.put(PlaceholderProperty.RESOURCE_NAME.getName(), getServerResourceName(omagServerProperties.getServerName(), omagServerProperties.getOrganizationName()));
         placeholderProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), this.getPlatformSecretsStorePathName(platformElement));
         placeholderProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), this.getPlatformSecretsStoreCollectionName(platformElement));
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), platformProperties.getPlatformOrigin());
@@ -1204,6 +1230,10 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                                         omagServerProperties.getOrganizationName()));
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.IDENTIFIER.name,
+                                                             omagServerProperties.getServerName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.CATEGORY.name,
                                                              EGERIA_DEPLOYMENT_CATEGORY);
 
@@ -1226,7 +1256,10 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                               null,
                                                                               false);
 
-
+        /*
+         * Allow this connector to override values from the template.
+         */
+        updateServer(omagServerProperties, platformProperties, serverGUID, null);
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
@@ -1320,7 +1353,6 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      * @param platformProperties   operational details of the platform
      * @param serverGUID           metadata details of the server
      * @param endpoint             endpoint details of the server
-     * @param platformURLRoot      platform root URL
      * @throws InvalidParameterException  invalid parameter
      * @throws PropertyServerException    no repo
      * @throws UserNotAuthorizedException security problem
@@ -1328,10 +1360,9 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
     private void updateServer(OMAGServerProperties          omagServerProperties,
                               OMAGServerPlatformProperties  platformProperties,
                               String                        serverGUID,
-                              RelatedMetadataElementSummary endpoint,
-                              String                        platformURLRoot) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                              RelatedMetadataElementSummary endpoint) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         SoftwareServerProperties softwareServerProperties = new SoftwareServerProperties();
 
@@ -1342,6 +1373,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         softwareServerProperties.setDisplayName(this.getServerDisplayName(platformProperties.getPlatformURLRoot(),
                                                                           omagServerProperties.getServerName(),
                                                                           omagServerProperties.getOrganizationName()));
+        softwareServerProperties.setIdentifier(omagServerProperties.getServerName());
         softwareServerProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
 
         softwareServerProperties.setNamespacePath(omagServerProperties.getOrganizationName());
@@ -1349,10 +1381,15 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         softwareServerProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
         softwareServerProperties.setURL(this.getURL(omagServerProperties.getServerType()));
 
+        softwareServerProperties.setIdentifier(omagServerProperties.getServerName());
+        softwareServerProperties.setResourceName(this.getServerResourceName(omagServerProperties.getServerName(),
+                                                                            omagServerProperties.getOrganizationName()));
+
         Map<String, String> additionalProperties = new HashMap<>();
         additionalProperties.put("organizationName", omagServerProperties.getOrganizationName());
         additionalProperties.put("serverId", omagServerProperties.getServerId());
         additionalProperties.put("serverName", omagServerProperties.getServerName());
+        additionalProperties.put("platformURLRoot", platformProperties.getPlatformURLRoot());
 
         softwareServerProperties.setAdditionalProperties(additionalProperties);
 
@@ -1362,7 +1399,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                 assetClient.getUpdateOptions(true),
                                 softwareServerProperties);
 
-        checkAndUpdateEndpoint(platformURLRoot, endpoint);
+        checkAndUpdateEndpoint(platformProperties.getPlatformURLRoot(), endpoint);
 
         checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
     }
