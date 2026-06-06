@@ -480,12 +480,7 @@ public class SimpleCatalogArchiveHelper
             {
                 for (InformationSupplyChainDefinition linkedSegment : solutionComponent.getLinkedFromSegment())
                 {
-                    this.addImplementedByRelationship(linkedSegment.getGUID(),
-                                                      componentGUID,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      null);
+                    this.addMemberToCollection(linkedSegment.getGUID(), componentGUID, null);
                 }
             }
 
@@ -7420,7 +7415,7 @@ public class SimpleCatalogArchiveHelper
     /**
      * Link an information supply chain to one of its segments
      *
-     * @param informationSupplyChainGUID guid of information supply chain
+     * @param informationSupplyChainGUID guid of the information supply chain
      * @param segmentGUID guid of the segment
 
      */

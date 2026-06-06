@@ -34,6 +34,7 @@ import java.util.*;
 public class MermaidGraphBuilderBase
 {
     protected StringBuilder                  mermaidGraph      = new StringBuilder();
+
     private final   Set<String>              usedNodeNames     = new HashSet<>();
     private final   Set<String>              usedLinkNames     = new HashSet<>();
     private final   Set<String>              animatedLinkNames = new HashSet<>();
@@ -1896,22 +1897,6 @@ public class MermaidGraphBuilderBase
      *
      * @param relatedMetadataElement related element (if null, nothing is added to the graph)
      * @param visualStyle visual style for new nodes
-     */
-    public void addRelatedNodeSummary(RelatedMetadataNodeSummary relatedMetadataElement,
-                                      VisualStyle                visualStyle)
-    {
-        if (relatedMetadataElement != null)
-        {
-            addRelatedElementSummary(relatedMetadataElement, visualStyle, relatedMetadataElement.getStartingElementGUID());
-        }
-    }
-
-
-    /**
-     * Link the related element into the graph.
-     *
-     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
-     * @param visualStyle visual style for new nodes
      * @param lineStyle visual style of lines
      */
     public void addRelatedNodeSummary(RelatedMetadataNodeSummary relatedMetadataElement,
@@ -1920,7 +1905,7 @@ public class MermaidGraphBuilderBase
     {
         if (relatedMetadataElement != null)
         {
-            addRelatedElementSummary(relatedMetadataElement, visualStyle, relatedMetadataElement.getStartingElementGUID(), lineStyle);
+            addRelatedElementSummary(relatedMetadataElement, null, visualStyle, relatedMetadataElement.getStartingElementGUID(), lineStyle);
         }
     }
 
@@ -1946,6 +1931,7 @@ public class MermaidGraphBuilderBase
      * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
      * @param visualStyle visual style for new nodes
      * @param startingEndId identity of the starting node
+     * @param lineStyle type of line - null is for no line
      */
     public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
                                            VisualStyle                         visualStyle,
@@ -1958,29 +1944,135 @@ public class MermaidGraphBuilderBase
 
             for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
             {
-                /*
-                 * If we have more than 5 related elements, create a "more" node to represent the rest.
-                 * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
-                 */
-                if (nodeCount > maxNodeCount)
+                if (relatedMetadataElement != null)
                 {
-                    String moreNodeId = UUID.randomUUID().toString();
-                    appendNewMermaidNode(moreNodeId,
-                                         " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
-                                         relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
-                                         VisualStyle.MORE_ELEMENTS);
-                    if (relatedMetadataElement.getRelatedElementAtEnd1())
+                    /*
+                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
+                     */
+                    if (nodeCount > maxNodeCount)
                     {
-                        appendMermaidDottedLine(null, moreNodeId, null, startingEndId);
+                        String moreNodeId = UUID.randomUUID().toString();
+                        appendNewMermaidNode(moreNodeId,
+                                             " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
+                                             relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
+                                             VisualStyle.MORE_ELEMENTS);
+                        if (relatedMetadataElement.getRelatedElementAtEnd1())
+                        {
+                            appendMermaidDottedLine(null, moreNodeId, null, startingEndId);
+                        }
+                        else
+                        {
+                            appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                        }
+                        break;
                     }
-                    else
-                    {
-                        appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
-                    }
-                    break;
+                    addRelatedElementSummary(relatedMetadataElement, null, visualStyle, startingEndId, lineStyle);
+                    nodeCount++;
                 }
-                addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, lineStyle);
-                nodeCount++;
+            }
+        }
+    }
+
+
+    /**
+     * Link the list of related elements into the graph.
+     *
+     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param relatedElementTypeName type nam of element to add the the graph
+     * @param visualStyle visual style for new nodes
+     * @param startingEndId identity of the starting node
+     * @param lineStyle type of line - null is for no line
+     */
+    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+                                           String                              relatedElementTypeName,
+                                           VisualStyle                         visualStyle,
+                                           String                              startingEndId,
+                                           LineStyle                           lineStyle)
+    {
+        if (relatedMetadataElements != null)
+        {
+            int nodeCount=0;
+
+            for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) && ((relatedElementTypeName == null) || (propertyHelper.isTypeOf(relatedMetadataElement.getRelatedElement().getElementHeader(), relatedElementTypeName))))
+                {
+                    /*
+                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
+                     */
+                    if (nodeCount > maxNodeCount)
+                    {
+                        String moreNodeId = UUID.randomUUID().toString();
+                        appendNewMermaidNode(moreNodeId,
+                                             " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
+                                             relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
+                                             VisualStyle.MORE_ELEMENTS);
+                        if (relatedMetadataElement.getRelatedElementAtEnd1())
+                        {
+                            appendMermaidDottedLine(null, moreNodeId, null, startingEndId);
+                        }
+                        else
+                        {
+                            appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                        }
+                        break;
+                    }
+                    addRelatedElementSummary(relatedMetadataElement, relatedElementTypeName, visualStyle, startingEndId, lineStyle);
+                    nodeCount++;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Link the list of related elements into the graph.
+     *
+     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param relatedElementTypeName type nam of element to add the the graph
+     * @param visualStyle visual style for new nodes
+     * @param startingEndId identity of the starting node
+     */
+    public void addUnlinkedRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+                                                   String                              relatedElementTypeName,
+                                                   VisualStyle                         visualStyle,
+                                                   String                              startingEndId)
+    {
+        if (relatedMetadataElements != null)
+        {
+            int nodeCount=0;
+
+            for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement.getRelatedElement().getElementHeader(), relatedElementTypeName)))
+                {
+                    /*
+                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
+                     */
+                    if (nodeCount > maxNodeCount)
+                    {
+                        String moreNodeId = UUID.randomUUID().toString();
+                        appendNewMermaidNode(moreNodeId,
+                                             " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
+                                             relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
+                                             VisualStyle.MORE_ELEMENTS);
+                        if (relatedMetadataElement.getRelatedElementAtEnd1())
+                        {
+                            appendMermaidDottedLine(null, moreNodeId, null, startingEndId);
+                        }
+                        else
+                        {
+                            appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                        }
+                        break;
+                    }
+
+                    appendNewMermaidNode(relatedMetadataElement.getRelatedElement(), visualStyle);
+                    nodeCount++;
+                }
             }
         }
     }
@@ -1990,30 +2082,20 @@ public class MermaidGraphBuilderBase
      * Link the related element into the graph.
      *
      * @param relatedMetadataElement related element (if null, nothing is added to the graph)
+     * @param relatedElementTypeName type nam of element to add the the graph
      * @param visualStyle visual style for new nodes
+     * @param startingEndId identity of the starting node
+     * @param lineStyle type of line
      */
     public void addRelatedElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
-                                         VisualStyle                   visualStyle,
-                                         String                        startingEndId)
-    {
-        addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, LineStyle.NORMAL);
-    }
-
-
-    /**
-     * Link the related element into the graph.
-     *
-     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
-     * @param visualStyle visual style for new nodes
-     */
-    public void addRelatedElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
+                                         String                        relatedElementTypeName,
                                          VisualStyle                   visualStyle,
                                          String                        startingEndId,
                                          LineStyle                     lineStyle)
     {
         if (relatedMetadataElement != null)
         {
-            appendNewMermaidNode(relatedMetadataElement.getRelatedElement(), visualStyle);
+            appendNewMermaidNode(relatedMetadataElement.getRelatedElement(), this.getVisualStyleForClassifications(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
 
             String label = this.getRelationshipLabel(relatedMetadataElement);
 
@@ -2046,11 +2128,13 @@ public class MermaidGraphBuilderBase
             if (relatedMetadataElement instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
             {
                 this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getNestedElements(),
+                                                relatedElementTypeName,
                                                 visualStyle,
                                                 relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
                                                 lineStyle);
 
                 this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getSideLinks(),
+                                                relatedElementTypeName,
                                                 visualStyle,
                                                 relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
                                                 lineStyle);
@@ -2448,6 +2532,14 @@ public class MermaidGraphBuilderBase
             return null;
         }
 
+        /*
+         * Do not output a single node
+         */
+        if (usedNodeNames.size() < 2)
+        {
+            return null;
+        }
+
         addAnchorLinks(allAnchors);
 
         return this.getMermaidGraph();
@@ -2462,6 +2554,11 @@ public class MermaidGraphBuilderBase
     public String getMermaidGraph()
     {
         if (mermaidGraph == null)
+        {
+            return null;
+        }
+
+        if (usedNodeNames.size() < 2)
         {
             return null;
         }

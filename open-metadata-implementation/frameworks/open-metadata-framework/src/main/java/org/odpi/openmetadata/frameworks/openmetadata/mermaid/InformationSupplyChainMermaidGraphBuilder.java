@@ -4,12 +4,11 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -26,6 +25,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
     {
         if (informationSupplyChainElement.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties)
         {
+            maxNodeCount = 1000;
+
             mermaidGraph.append("---\n");
             mermaidGraph.append("title: Information Supply Chain - ");
             mermaidGraph.append(informationSupplyChainProperties.getDisplayName());
@@ -33,7 +34,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             mermaidGraph.append(informationSupplyChainElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-            String iscAreaName            = "Information Supply Chain Context";
+            String iscAreaName            = "Context";
             String designAreaName         = "Design";
             String implementationAreaName = "Implementation";
 
@@ -45,29 +46,102 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                  informationSupplyChainElement.getProperties(),
                                  super.getVisualStyleForClassifications(informationSupplyChainElement.getElementHeader(), VisualStyle.PRINCIPLE_INFORMATION_SUPPLY_CHAIN));
 
-            super.addRelatedElementSummaries(informationSupplyChainElement.getMemberOfCollections(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.DOTTED);
-            super.addRelatedElementSummaries(informationSupplyChainElement.getSupplyTo(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.NORMAL);
-            super.addRelatedElementSummaries(informationSupplyChainElement.getSupplyFrom(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            /*
+             * Add the segments to the graph.
+             */
+            super.addRelatedElementSummaries(informationSupplyChainElement.getMemberOfCollections(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.DOTTED);
+            super.addRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.DOTTED);
 
-            this.addSegments(informationSupplyChainElement.getCollectionMembers(), informationSupplyChainElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(informationSupplyChainElement.getSupplyTo(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(informationSupplyChainElement.getSupplyFrom(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
             super.endSubgraph(); // ISC
 
-            if (informationSupplyChainElement.getImplementedBy() != null)
+            if (informationSupplyChainElement.getCollectionMembers() != null)
             {
-                super.startSubgraph(designAreaName, VisualStyle.SOLUTION_SUBGRAPH);
+                int solutionComponentCount = 0;
+                for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
+                {
+                    if ((collectionMember != null) &&
+                            (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                    {
+                        solutionComponentCount++;
+                    }
+                }
 
-                this.addInformationSupplyChainComponents(informationSupplyChainElement.getImplementedBy(), informationSupplyChainElement.getElementHeader().getGUID());
+                if (solutionComponentCount > 0)
+                {
+                    super.startSubgraph(designAreaName, VisualStyle.SOLUTION_SUBGRAPH);
 
-                super.endSubgraph(); // design
+                    super.addUnlinkedRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), OpenMetadataType.SOLUTION_COMPONENT.typeName, VisualStyle.DEFAULT_SOLUTION_COMPONENT, informationSupplyChainElement.getElementHeader().getGUID());
+
+                    for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
+                    {
+                        if ((collectionMember != null) &&
+                                (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                        {
+                            if (collectionMember instanceof RelatedMetadataHierarchySummary hierarchySummary)
+                            {
+                                if (hierarchySummary.getSideLinks() != null)
+                                {
+                                    for (RelatedMetadataElementSummary sideLink : hierarchySummary.getSideLinks())
+                                    {
+                                        if ((sideLink != null) && (sideLink.getRelationshipProperties() instanceof SolutionLinkingWireProperties relationshipProperties))
+                                        {
+                                            String label = null;
+
+                                            if (sideLink.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
+                                            {
+                                                label = labeledRelationshipProperties.getLabel();
+                                            }
+                                            else if (sideLink.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
+                                            {
+                                                label = roledRelationshipProperties.getRole();
+                                            }
+
+                                            if (label != null)
+                                            {
+                                                label = label + " [" + super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName()) + "]";
+                                            }
+                                            else
+                                            {
+                                                label = super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName());
+                                            }
+
+                                            if (sideLink.getRelatedElementAtEnd1())
+                                            {
+                                                appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID(),
+                                                                        sideLink.getRelatedElement().getElementHeader().getGUID(),
+                                                                        label,
+                                                                        collectionMember.getRelatedElement().getElementHeader().getGUID());
+                                            }
+                                            else
+                                            {
+                                                appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID(),
+                                                                        collectionMember.getRelatedElement().getElementHeader().getGUID(),
+                                                                        label,
+                                                                        sideLink.getRelatedElement().getElementHeader().getGUID());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    super.endSubgraph(); // design
+                }
+                else
+                {
+                    designAreaName = null;
+                }
             }
             else
             {
                 designAreaName = null;
             }
 
-            if ((informationSupplyChainElement.getImplementedBy() != null) &&
-                    (!informationSupplyChainElement.getImplementation().isEmpty()))
+            if ((informationSupplyChainElement.getImplementation() != null) && (! informationSupplyChainElement.getImplementation().isEmpty()))
             {
                 super.startSubgraph(implementationAreaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
 
@@ -108,16 +182,24 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                                  getVisualStyleForEntity(lineageRelationship.getEnd2(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
                         }
 
-                        String label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
+                        String label = null;
 
-                        if ((lineageRelationship.getRelationshipProperties() != null) && (lineageRelationship.getRelationshipProperties().getExtendedProperties() != null))
+                        if (lineageRelationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
                         {
-                            Object labelObj = lineageRelationship.getRelationshipProperties().getExtendedProperties().get(OpenMetadataProperty.LABEL.name);
+                            label = labeledRelationshipProperties.getLabel();
+                        }
+                        else if (lineageRelationship.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
+                        {
+                            label = roledRelationshipProperties.getRole();
+                        }
 
-                            if (labelObj != null)
-                            {
-                                label = labelObj + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
-                            }
+                        if (label != null)
+                        {
+                            label = label + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
+                        }
+                        else
+                        {
+                            label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
                         }
 
                         if (propertyHelper.isTypeOf(lineageRelationship.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
@@ -144,15 +226,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 implementationAreaName = null;
             }
 
-            String descriptionAreaName = this.addDescriptionArea(informationSupplyChainProperties);
-
             String currentAreaName = iscAreaName;
-
-            if (descriptionAreaName != null)
-            {
-                super.appendInvisibleMermaidLine(currentAreaName, descriptionAreaName);
-                currentAreaName = descriptionAreaName;
-            }
 
             if (designAreaName != null)
             {
@@ -165,119 +239,5 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 super.appendInvisibleMermaidLine(currentAreaName, implementationAreaName);
             }
         }
-    }
-
-
-    /**
-     * Add the segments to the mermaid graph.
-     *
-     * @param segments retrieved segments
-     * @param startingId related starting element id
-     */
-    private void addSegments(List<RelatedMetadataElementSummary> segments,
-                             String                              startingId)
-    {
-        if (segments != null)
-        {
-            for (RelatedMetadataElementSummary segment : segments)
-            {
-                if (segment != null)
-                {
-                    super.addRelatedElementSummary(segment, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, startingId, LineStyle.DOTTED);
-
-                    if (segment instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
-                    {
-                        super.addRelatedElementSummaries(relatedMetadataHierarchySummary.getSideLinks(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, segment.getRelatedElement().getElementHeader().getGUID(), LineStyle.NORMAL);
-                        this.addSegments(relatedMetadataHierarchySummary.getNestedElements(), segment.getRelatedElement().getElementHeader().getGUID());
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Add the implementation components to the mermaid graph.
-     *
-     * @param components retrieved components
-     * @param startingId related starting element id
-     */
-    private void addInformationSupplyChainComponents(List<RelatedMetadataElementSummary> components,
-                                                     String                              startingId)
-    {
-        if (components != null)
-        {
-            for (RelatedMetadataElementSummary component : components)
-            {
-                if (component != null)
-                {
-                    if (propertyHelper.isTypeOf(component.getRelationshipHeader(), OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName))
-                    {
-                        super.addRelatedElementSummary(component, VisualStyle.DEFAULT_SOLUTION_COMPONENT, startingId, LineStyle.NORMAL);
-                    }
-                    else if (propertyHelper.isTypeOf(component.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                    {
-                        /*
-                         * No need to display the ImplementedBy lines
-                         */
-                        super.appendNewMermaidNode(component.getRelatedElement(), VisualStyle.DEFAULT_SOLUTION_COMPONENT);
-                    }
-                    else
-                    {
-                        super.addRelatedElementSummary(component, VisualStyle.DEFAULT_SOLUTION_COMPONENT, startingId, LineStyle.DOTTED);
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Add a subgraph for the text boxes with the description and purposes (if any)
-     *
-     * @param informationSupplyChainProperties element with the potential description
-     * @return name of area for description
-     */
-    private String addDescriptionArea(InformationSupplyChainProperties informationSupplyChainProperties)
-    {
-
-        if (informationSupplyChainProperties != null)
-        {
-            String areaName = "Overview";
-
-            super.startSubgraph(areaName, VisualStyle.DESCRIPTION);
-
-            if (informationSupplyChainProperties.getDescription() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     informationSupplyChainProperties.getDescription(),
-                                     "Description",
-                                     VisualStyle.DESCRIPTION);
-            }
-
-            if (informationSupplyChainProperties.getDataProcessingPurposes() != null)
-            {
-                for (String purpose : informationSupplyChainProperties.getDataProcessingPurposes())
-                {
-                    if (purpose != null)
-                    {
-                        String purposeNodeName = UUID.randomUUID().toString();
-
-                        appendNewMermaidNode(purposeNodeName,
-                                             purpose,
-                                             "Purpose",
-                                             VisualStyle.DESCRIPTION);
-                    }
-                }
-            }
-
-            super.endSubgraph(); // Overview
-
-            return areaName;
-        }
-
-        return null;
     }
 }

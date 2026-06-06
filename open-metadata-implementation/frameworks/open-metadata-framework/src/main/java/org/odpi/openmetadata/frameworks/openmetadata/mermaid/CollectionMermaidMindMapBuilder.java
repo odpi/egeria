@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
@@ -15,8 +16,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
  */
 public class CollectionMermaidMindMapBuilder
 {
-    private StringBuilder mermaidMindMap = new StringBuilder();
-
+    private       StringBuilder  mermaidMindMap = new StringBuilder();
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Constructor for the mind map builder.
@@ -27,26 +28,45 @@ public class CollectionMermaidMindMapBuilder
     {
         if (collection.getCollectionMembers() != null)
         {
-            mermaidMindMap.append("mindmap\n");
-            mermaidMindMap.append("**");
-            mermaidMindMap.append(collection.getElementHeader().getType().getTypeName());
-            mermaidMindMap.append("** ");
-            if (collection.getProperties() instanceof CollectionProperties collectionProperties)
-            {
-                mermaidMindMap.append(collectionProperties.getDisplayName());
-            }
-            else
-            {
-                mermaidMindMap.append(collection.getElementHeader().getGUID());
-            }
-            mermaidMindMap.append("\n");
+            int nestedCollectionCount = 0;
 
             for (RelatedMetadataElementSummary nestedMember : collection.getCollectionMembers())
             {
-                if (nestedMember != null)
+                if ((nestedMember != null) &&
+                        (propertyHelper.isTypeOf(nestedMember.getRelatedElement().getElementHeader(), OpenMetadataType.COLLECTION.typeName)))
                 {
-                    getNestedBranches(nestedMember, "    ");
+                    nestedCollectionCount++;
                 }
+            }
+
+            if (nestedCollectionCount > 0)
+            {
+                mermaidMindMap.append("mindmap\n");
+                mermaidMindMap.append("**");
+                mermaidMindMap.append(collection.getElementHeader().getType().getTypeName());
+                mermaidMindMap.append("** ");
+
+                if (collection.getProperties() instanceof CollectionProperties collectionProperties)
+                {
+                    mermaidMindMap.append(removeTroublesomeCharacters(collectionProperties.getDisplayName()));
+                }
+                else
+                {
+                    mermaidMindMap.append(collection.getElementHeader().getGUID());
+                }
+                mermaidMindMap.append("\n");
+
+                for (RelatedMetadataElementSummary nestedMember : collection.getCollectionMembers())
+                {
+                    if (nestedMember != null)
+                    {
+                        getNestedBranches(nestedMember, "    ");
+                    }
+                }
+            }
+            else
+            {
+                mermaidMindMap = null;
             }
         }
         else
@@ -74,7 +94,7 @@ public class CollectionMermaidMindMapBuilder
 
             if (collectionProperties.getDisplayName() != null)
             {
-                mermaidMindMap.append(collectionProperties.getDisplayName());
+                mermaidMindMap.append(removeTroublesomeCharacters(collectionProperties.getDisplayName()));
             }
             else
             {
@@ -101,6 +121,28 @@ public class CollectionMermaidMindMapBuilder
         }
     }
 
+    /**
+     * If a display name has part of a URL in it (eg it is from a qualified name), Mermaid displays "unsupported link"
+     * rather than the display name.  This change puts a space between the two slashes to allow the display.
+     * In addition, some display names include messages that have double quotes in their content.  This removes them
+     * to avoid confusing mermaid.
+     * There also seems to be a problem wit the new placeholder properties
+     *
+     * @param displayName original display name
+     * @return doctored display name
+     */
+    private String removeTroublesomeCharacters(String displayName)
+    {
+        if (displayName != null)
+        {
+            String quotesGone = displayName.replaceAll("\"", "'");
+            String doubleSlashGone = quotesGone.replaceAll("//", "/ /");
+            String placeholderStartGone = doubleSlashGone.replaceAll("~\\{", " *");
+            return placeholderStartGone.replaceAll("}~", "* ");
+        }
+
+        return null;
+    }
 
     /**
      * Return the mermaid mind map.

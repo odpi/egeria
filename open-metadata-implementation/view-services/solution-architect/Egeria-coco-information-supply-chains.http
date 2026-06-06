@@ -1,0 +1,105 @@
+# Egeria-coco-information-supply-chains
+## An exploration of the make up of the example information supply chains
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+@metadataServer=active-metadata-store
+@user=garygeeke
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{user}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+##================================================================================
+# Sustainability reporting
+@sustainabilityReportingGUID=dd15b286-a38d-4f03-8625-aaded8596048
+
+###
+# @name get Sustainability Reporting InformationSupplyChainByGUID
+# Return the properties of a specific information supply chain and its relationships
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{sustainabilityReportingGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getAllRelatedMetadataElements
+# Retrieve the metadata elements connected to the information supply chain.
+# This typically shows the solution components that are part of the informaiton supply chain
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{sustainabilityReportingGUID}}/any-type?startingAtEnd=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name Get All Relationships For Entity
+# The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
+POST {{baseURL}}/servers/{{metadataServer}}/open-metadata/repository-services/users/{{user}}/instances/entity/{{sustainabilityReportingGUID}}/relationships
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TypeLimitedFindRequest",
+  "offset" : 0,
+  "pageSize" : 0
+}
+
+
+###
+
+@clinicalTrialsISCGUID=f221a078-026d-492c-8821-9c606738c1f2
+
+###
+# @name get Clinical Trials InformationSupplyChainByGUID
+# Return the properties of a specific information supply chain and its relationships
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{clinicalTrialsISCGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+
+@clinicalTrialTemplateISCGUID=9fc2ba34-f39a-435c-96fc-4d6eb2811701
+
+###
+# @name get Clincial Trial Template InformationSupplyChainByGUID
+# Return the properties of a specific information supply chain and its relationships
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{clinicalTrialTemplateISCGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@employeeExpensePaymentISCGUID=79d1d83f-6a37-4c32-bf3f-eb8b4358027c
+
+###
+# @name get Employee Expense Payment InformationSupplyChainByGUID
+# Return the properties of a specific information supply chain and its relationships
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{employeeExpensePaymentISCGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+

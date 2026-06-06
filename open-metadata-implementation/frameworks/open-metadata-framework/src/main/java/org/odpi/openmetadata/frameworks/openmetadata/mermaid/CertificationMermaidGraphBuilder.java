@@ -47,8 +47,10 @@ public class CertificationMermaidGraphBuilder extends MermaidGraphBuilderBase
                 if (certificationElement != null)
                 {
                     super.addRelatedElementSummary(certificationElement,
+                                                   null,
                                                    super.getVisualStyleForEntityType(certificationElement.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT),
-                                                   startingNodeId);
+                                                   startingNodeId,
+                                                   LineStyle.NORMAL);
 
                     if (certificationElement.getCertifiedBy() != null)
                     {
