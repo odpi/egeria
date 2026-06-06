@@ -475,17 +475,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Map the solution component type to an appropriate visual style.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
- <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTroublesomeCharacters(java.lang.String)" class="member-name-link">removeTroublesomeCharacters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Start a subgraph in the mermaid graph.</div>
+<div class="block">If a display name has part of a URL in it (eg it is from a qualified name), Mermaid displays "unsupported link"
+ rather than the display name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,java.lang.String)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Start a subgraph in the mermaid graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,java.lang.String)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
  <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;direction)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Start a subgraph in the mermaid graph.</div>
 </div>
 </div>
@@ -966,6 +972,23 @@ loadScripts(document, 'script');</script>
 <dd><code>visualStyle</code> - mermaid defined shape and colour value</dd>
 <dt>Returns:</dt>
 <dd>whether a new node was created or not.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="removeTroublesomeCharacters(java.lang.String)">
+<h3>removeTroublesomeCharacters</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">removeTroublesomeCharacters</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</span></div>
+<div class="block">If a display name has part of a URL in it (eg it is from a qualified name), Mermaid displays "unsupported link"
+ rather than the display name.  This change puts a space between the two slashes to allow the display.
+ In addition, some display names include messages that have double quotes in their content.  This removes them
+ to avoid confusing mermaid.
+ There also seems to be a problem wit the new placeholder properties</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>displayName</code> - original display name</dd>
+<dt>Returns:</dt>
+<dd>doctored display name</dd>
 </dl>
 </section>
 </li>
