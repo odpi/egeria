@@ -34,7 +34,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Lineage Analysis Graph for Asset - ");
-        mermaidGraph.append(currentDisplayName);
+        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

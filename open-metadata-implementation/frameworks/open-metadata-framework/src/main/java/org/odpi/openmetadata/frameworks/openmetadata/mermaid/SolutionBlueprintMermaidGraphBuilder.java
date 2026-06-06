@@ -23,7 +23,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
         {
             mermaidGraph.append("---\n");
             mermaidGraph.append("title: Components and Roles for Solution Blueprint - ");
-            mermaidGraph.append(solutionBlueprintProperties.getDisplayName());
+            mermaidGraph.append(super.removeTroublesomeCharacters(solutionBlueprintProperties.getDisplayName()));
             mermaidGraph.append(" [");
             mermaidGraph.append(solutionBlueprintElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

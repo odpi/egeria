@@ -1316,7 +1316,7 @@ public class MermaidGraphBuilderBase
      * @param displayName original display name
      * @return doctored display name
      */
-    private String removeTroublesomeCharacters(String displayName)
+    protected String removeTroublesomeCharacters(String displayName)
     {
         if (displayName != null)
         {

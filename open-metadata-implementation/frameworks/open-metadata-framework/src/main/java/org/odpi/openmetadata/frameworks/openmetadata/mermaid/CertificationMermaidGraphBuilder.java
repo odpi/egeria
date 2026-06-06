@@ -29,7 +29,7 @@ public class CertificationMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Certifications - ");
-        mermaidGraph.append(currentDisplayName);
+        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(startingNodeId);
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

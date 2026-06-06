@@ -23,7 +23,7 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Information Supply Chain Analysis Graph for Asset - ");
-        mermaidGraph.append(currentDisplayName);
+        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
