@@ -65,7 +65,7 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                 {
                     VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());
 
-                    super.addRelatedNodeSummary(line, getVisualStyleForEntity(line.getRelationshipHeader(), visualStyle));
+                    super.addRelatedNodeSummary(line, getVisualStyleForEntity(line.getRelationshipHeader(), visualStyle), LineStyle.NORMAL);
                 }
             }
         }
