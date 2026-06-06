@@ -360,7 +360,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             currentDisplayName = typeName;
         }
 
-        return currentDisplayName;
+        return super.removeTroublesomeCharacters(currentDisplayName);
     }
 
 }
