@@ -1,0 +1,60 @@
+# Egeria-automated-curation-api
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Run the File survey for the egeria's home directory (platform)
+#}
+
+###
+# @name initiate File Survey GovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "Egeria::DailyGovernanceActionProcess",
+  "requestParameters" : {
+    "fileSystemName" : "Egeria Deployment",
+    "directoryPathName" : ".",
+    "directoryName" : "platform",
+    "versionIdentifier" : "1.0",
+    "description" : "Files used to deploy Egeria."
+  }
+}
+
+@engineActionGUID=add guid here
+
+###
+# @name cancelEngineAction
+# Request that an engine action request is cancelled and any running governance service is stopped.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/cancel
+Authorization: Bearer {{token}}
+
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+

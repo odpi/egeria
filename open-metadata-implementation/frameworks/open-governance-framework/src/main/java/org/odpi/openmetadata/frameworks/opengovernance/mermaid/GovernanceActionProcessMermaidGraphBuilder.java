@@ -24,7 +24,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Process - ");
-        mermaidGraph.append(processGraph.getGovernanceActionProcess().getProperties().getDisplayName());
+        mermaidGraph.append(super.removeTroublesomeCharacters(processGraph.getGovernanceActionProcess().getProperties().getDisplayName()));
         mermaidGraph.append(" [");
         mermaidGraph.append(processGraph.getGovernanceActionProcess().getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
@@ -38,12 +38,10 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         }
 
         appendNewMermaidNode(currentNodeName,
-                             currentDisplayName,
+                             super.removeTroublesomeCharacters(currentDisplayName),
                              super.getTypeNameForEntity(processGraph.getGovernanceActionProcess().getElementHeader()),
                              processGraph.getGovernanceActionProcess().getProperties(),
                              getVisualStyleForEntity(processGraph.getGovernanceActionProcess().getElementHeader(), VisualStyle.GOVERNANCE_ACTION));
-
-        this.addDescription(processGraph.getGovernanceActionProcess());
 
         if (processGraph.getFirstProcessStep() != null)
         {
@@ -58,7 +56,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             if (processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getActionStatus() == ActivityStatus.FAILED)
             {
                 appendNewMermaidNode(currentNodeName,
-                                     currentDisplayName,
+                                     super.removeTroublesomeCharacters(currentDisplayName),
                                      super.getTypeNameForEntity(processGraph.getFirstProcessStep().getElement().getElementHeader()),
                                      this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
                                      VisualStyle.FAILED_GOVERNANCE_ACTION_PROCESS_STEP);
@@ -66,7 +64,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             else
             {
                 appendNewMermaidNode(currentNodeName,
-                                     currentDisplayName,
+                                     super.removeTroublesomeCharacters(currentDisplayName),
                                      super.getTypeNameForEntity(processGraph.getFirstProcessStep().getElement().getElementHeader()),
                                      this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
                                      VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
@@ -95,7 +93,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                     if (node.getProcessStepProperties().getActionStatus() == ActivityStatus.FAILED)
                     {
                         appendNewMermaidNode(currentNodeName,
-                                             currentDisplayName,
+                                             super.removeTroublesomeCharacters(currentDisplayName),
                                              node.getElementHeader().getType().getTypeName(),
                                              this.getAdditionalProcessStepProperties(node),
                                              VisualStyle.FAILED_GOVERNANCE_ACTION_PROCESS_STEP);
@@ -103,7 +101,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                     else
                     {
                         appendNewMermaidNode(currentNodeName,
-                                             currentDisplayName,
+                                             super.removeTroublesomeCharacters(currentDisplayName),
                                              node.getElementHeader().getType().getTypeName(),
                                              this.getAdditionalProcessStepProperties(node),
                                              VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
@@ -157,70 +155,5 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         }
 
         return null;
-    }
-
-    /**
-     * Add a text boxes with the description of the process (if any), followed by the request parameters (if any),
-     * followed by the process itself, followed by the acton targets (if any).
-     *
-     * @param governanceActionProcessElement element with the potential description
-     */
-    private void addDescription(GovernanceActionProcessElement governanceActionProcessElement)
-    {
-        if (governanceActionProcessElement.getPredefinedActionTargets() != null)
-        {
-            for (PredefinedActionTarget predefinedActionTarget : governanceActionProcessElement.getPredefinedActionTargets())
-            {
-                if (predefinedActionTarget != null)
-                {
-                    String actionTargetNodeName = UUID.randomUUID().toString();
-
-                    appendNewMermaidNode(actionTargetNodeName,
-                                         predefinedActionTarget.getActionTargetElementStub().getUniqueName(),
-                                         predefinedActionTarget.getActionTargetElementStub().getType().getTypeName(),
-                                         super.getVisualStyleForEntity(predefinedActionTarget.getActionTargetElementStub(), VisualStyle.ACTION_TARGET));
-
-                    String lineGUID = UUID.randomUUID().toString();
-
-                    super.appendMermaidThinLine(lineGUID,
-                                                actionTargetNodeName,
-                                                predefinedActionTarget.getActionTargetName(),
-                                                governanceActionProcessElement.getElementHeader().getGUID());
-                }
-            }
-        }
-
-        if (governanceActionProcessElement.getPredefinedRequestParameters() != null)
-        {
-            for (String parameterName : governanceActionProcessElement.getPredefinedRequestParameters().keySet())
-            {
-                String parametersNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(parametersNodeName,
-                                     governanceActionProcessElement.getPredefinedRequestParameters().get(parameterName),
-                                     "Request Parameter",
-                                     VisualStyle.REQUEST_PARAMETERS);
-
-                String lineGUID = UUID.randomUUID().toString();
-
-                super.appendMermaidThinLine(lineGUID,
-                                            parametersNodeName,
-                                            parameterName,
-                                            governanceActionProcessElement.getElementHeader().getGUID());
-            }
-        }
-
-        if (governanceActionProcessElement.getProperties() != null)
-        {
-            if (governanceActionProcessElement.getProperties().getDescription() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     governanceActionProcessElement.getProperties().getDescription(),
-                                     "Description",
-                                     VisualStyle.DESCRIPTION);
-            }
-        }
     }
 }

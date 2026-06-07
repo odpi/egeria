@@ -81,9 +81,10 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * @param annotationType type of annotation
      * @param nameProperties list of names with properties
      * @return annotation
+     * @throws UserNotAuthorizedException if there is a problem with the user's authorization
      */
     protected ResourceProfileAnnotationProperties getNameListAnnotation(AnnotationType                  annotationType,
-                                                                        Map<String, ResourceProperties> nameProperties)
+                                                                        Map<String, ResourceProperties> nameProperties) throws UserNotAuthorizedException
     {
         Map<String, String> nameList = new HashMap<>();
 
