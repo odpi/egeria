@@ -268,7 +268,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNameListAnnotation(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.util.Map)">
 <h3>getNameListAnnotation</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/properties/surveyreports/ResourceProfileAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileAnnotationProperties</a></span>&nbsp;<span class="element-name">getNameListAnnotation</span><wbr><span class="parameters">(<a href="../../../../frameworks/opensurvey/controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OSSUnityCatalogServerSurveyBase.ResourceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.ResourceProperties</a>&gt;&nbsp;nameProperties)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OSSUnityCatalogServerSurveyBase.ResourceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.ResourceProperties</a>&gt;&nbsp;nameProperties)</span>
+                                                             throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Fill out a name list annotation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -276,6 +277,8 @@ loadScripts(document, 'script');</script>
 <dd><code>nameProperties</code> - list of names with properties</dd>
 <dt>Returns:</dt>
 <dd>annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - if there is a problem with the user's authorization</dd>
 </dl>
 </section>
 </li>
