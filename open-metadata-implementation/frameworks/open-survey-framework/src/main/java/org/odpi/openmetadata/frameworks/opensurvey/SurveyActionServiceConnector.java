@@ -364,12 +364,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     /**
      * Transfer common properties into an annotation.
      *
-     * @param annotation     output annotation
-     * @param annotationType annotation type definition
+     * @param annotation       output annotation
+     * @param annotationType   annotation type definition
      */
     protected void setUpAnnotation(AnnotationProperties annotation,
-                                   AnnotationType annotationType)
+                                   AnnotationType       annotationType) throws UserNotAuthorizedException
     {
+        String surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
+
+        annotation.setQualifiedName(surveyReportGUID + "::" + annotationType.getName() + "::" + new Date());
+        annotation.setDisplayName(annotationType.getName() + " for survey report " + surveyReportGUID);
         annotation.setAnnotationType(annotationType.getName());
         annotation.setAnalysisStep(annotationType.getAnalysisStep());
         annotation.setSummary(annotationType.getSummary());

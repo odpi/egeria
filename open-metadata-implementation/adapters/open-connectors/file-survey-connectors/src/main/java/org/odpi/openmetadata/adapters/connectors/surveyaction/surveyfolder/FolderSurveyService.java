@@ -473,8 +473,10 @@ public class FolderSurveyService extends SurveyActionServiceConnector
          * Create the summary stats for this folder.
          *
          * @return annotation
+         * @throws PropertyServerException    problem connecting to the open metadata repositories
+         * @throws UserNotAuthorizedException insufficient access
          */
-        public Annotation getFolderAnnotation() throws PropertyServerException
+        public Annotation getFolderAnnotation() throws PropertyServerException, UserNotAuthorizedException
         {
             ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties = new ResourceMeasureAnnotationProperties();
 
