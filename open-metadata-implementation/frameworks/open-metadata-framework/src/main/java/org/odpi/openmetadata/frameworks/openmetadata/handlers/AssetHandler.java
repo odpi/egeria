@@ -2953,7 +2953,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId       calling user
      * @param searchString string to search for (may include RegExs)
      * @param deploymentStatusList   optional status list
-     * @param searchOptions   multiple options to control the query
+     * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -2962,11 +2962,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public List<OpenMetadataRootElement> findInfrastructure(String                 userId,
                                                             String                 searchString,
                                                             List<DeploymentStatus> deploymentStatusList,
-                                                            SearchOptions          searchOptions) throws InvalidParameterException,
+                                                            SearchOptions          suppliedSearchOptions) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
         final String methodName = "findInfrastructure";
+
+        SearchOptions searchOptions = new SearchOptions(suppliedSearchOptions);
+
+        if (searchOptions.getMetadataElementTypeName() == null)
+        {
+            searchOptions.setMetadataElementTypeName(OpenMetadataType.INFRASTRUCTURE.typeName);
+        }
 
         List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
                                                                                    searchString,
@@ -2983,7 +2990,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId     calling user
      * @param category   type to search for
      * @param deploymentStatusList optional status
-     * @param queryOptions multiple options to control the query
+     * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -2992,11 +2999,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public List<OpenMetadataRootElement> getInfrastructureByCategory(String                 userId,
                                                                      String                 category,
                                                                      List<DeploymentStatus> deploymentStatusList,
-                                                                     QueryOptions           queryOptions) throws InvalidParameterException,
+                                                                     QueryOptions           suppliedQueryOptions) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
     {
         final String methodName = "getInfrastructureByCategory";
+
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.INFRASTRUCTURE.typeName);
+        }
 
         List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
                                                                                          category,
