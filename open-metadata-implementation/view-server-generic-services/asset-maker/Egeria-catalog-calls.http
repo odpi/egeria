@@ -1,0 +1,396 @@
+# Egeria-metadata-collections
+# A metadata collection is an asset that describes a logical collection of metadata.
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("peterToken", response.body); %}
+
+
+###
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "garygeeke",
+  "password" : "secret"
+}
+
+> {% client.global.set("garyToken", response.body); %}
+
+###
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "ivorpadlock",
+  "password" : "secret"
+}
+
+> {% client.global.set("ivorToken", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Infrastructure assets
+
+
+###
+# @name find InfrastructureAsset (left-hand navigation - unfiltered - NOT WORKING)
+# Returns the list of all infrastructure assets
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/infrastructure-assets/by-search-string
+Authorization: Bearer {{ivorToken}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "graphQueryDepth" : 0
+}
+
+###
+# @name find InfrastructureAsset (left-hand navigation - unfiltered - WORKAROUND)
+# Retrieve the list of asset metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "ITInfrastructure",
+  "graphQueryDepth": 0
+}
+
+###
+# @name find InfrastructureAsset (left-hand navigation - unfiltered)
+# Returns the list of all infrastructure assets
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/infrastructure-assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "graphQueryDepth" : 0
+}
+
+###
+# @name find InfrastructureAsset (left-hand navigation - filtered)
+# Returns the list of infrastructure assets matching the search string and optional deployment status.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/infrastructure-assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "deploymentStatusList" : ["ACTIVE", null],
+  "searchString" : "ams",
+  "graphQueryDepth" : 0
+}
+
+###
+
+@infraGUID=75acfa5a-1c6e-4ee6-a358-092921ce9513
+
+###
+# @name get InfrastructureAsset for right-hand detail panel
+# Return the properties of a specific asset with one level of relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{infraGUID}}/retrieve
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "graphQueryDepth" : 1
+}
+
+###
+# =====================================================================================================================
+# Work with software capabilities
+
+###
+# @name findSoftwareCapabilities (left-hand navigation - unfiltered)
+# Retrieve the list of software capability metadata elements
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/search
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "graphQueryDepth" : 0
+}
+
+
+###
+# @name findSoftwareCapabilities (left-hand navigation - filtered)
+# Retrieve the list of software capability metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/search
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "JacquardIntegrationGroup",
+  "graphQueryDepth" : 0
+}
+
+###
+
+@softwareCapabilityGUID=4a99a249-8ec4-43a5-9157-4bff67619962
+
+###
+# @name getSoftwareCapabilityByGUID
+# Retrieve a specific software capability.
+# Further Information: https://egeria-project.org/concepts/software-capability
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/software-capabilities/{{softwareCapabilityGUID}}
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody"
+}
+
+
+###
+# =====================================================================================================================
+# Work with Data Sets
+
+###
+# @name list DataSet - left-hand navigation (unfiltered)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "ContentStatusSearchString",
+  "metadataElementTypeName" : "DataSet",
+  "graphQueryDepth" : 0
+}
+
+###
+# @name list DataSet - left-hand navigation (filtered by type, value and content status)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "ContentStatusSearchString",
+  "metadataElementTypeName" : "TabularDataSet",
+  "searchString" : "contentStatus",
+  "contentStatusList" : ["ACTIVE", null],
+  "graphQueryDepth" : 0
+}
+
+###
+
+@dataSetGUID=add guid here
+
+###
+# @name get DataSet for right-hand detail panel
+# Return the properties of a specific asset with one level of relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{dataSetGUID}}/retrieve
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "graphQueryDepth" : 1
+}
+
+
+###
+# =====================================================================================================================
+# Work with Data Stores
+
+
+###
+# @name list DataStore - left-hand navigation (unfiltered)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "ContentStatusSearchString",
+  "metadataElementTypeName" : "DataStore",
+  "graphQueryDepth" : 0
+}
+
+###
+# @name list DataStore - left-hand navigation (filtered by type, value and content status)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "Database",
+  "searchString" : "BRANCH Database",
+  "contentStatusList" : ["ACTIVE", null],
+  "graphQueryDepth" : 0
+}
+
+###
+
+@dataStoreGUID=d156faa6-90cf-4be8-b3c1-c002f3e9a0e5
+
+###
+# @name get DataStore for right-hand detail panel
+# Return the properties of a specific asset with one level of relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{dataStoreGUID}}/retrieve
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "graphQueryDepth" : 1
+}
+
+###
+# =====================================================================================================================
+# Work with Data Feed
+
+
+###
+# @name list DataFeed - left-hand navigation (unfiltered)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "ContentStatusSearchString",
+  "metadataElementTypeName" : "DataFeed",
+  "graphQueryDepth" : 0
+}
+
+###
+# @name list DataFeed - left-hand navigation (filtered by type, value and content status)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "Topic",
+  "searchString" : "CustomerChangeTopic",
+  "contentStatusList" : ["ACTIVE", null],
+  "graphQueryDepth" : 0
+}
+
+###
+
+@dataFeedGUID=fa67f6eb-f299-4056-ad64-4307a98a43d0
+
+###
+# @name get DataFeed for right-hand detail panel
+# Return the properties of a specific asset with one level of relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{dataFeedGUID}}/retrieve
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "graphQueryDepth" : 1
+}
+
+
+###
+# =====================================================================================================================
+# Work with Endpoints
+
+
+###
+# @name findEndpoints - left-hand navigation (unfiltered)
+# Retrieve the list of endpoint metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "graphQueryDepth": 0
+}
+
+
+###
+# @name findEndpoints left-hand navigation (filtered by search string)
+# Retrieve the list of endpoint metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-search-string
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "contentStatus",
+  "graphQueryDepth": 0
+}
+
+###
+
+@endpointGUID=e03fa422-cde5-427f-a620-4e05d0183f1e
+
+###
+# @name getEndpointByGUID
+# Return the properties of a specific endpoint.
+#
+# @param endpointGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/{{endpointGUID}}/retrieve
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
