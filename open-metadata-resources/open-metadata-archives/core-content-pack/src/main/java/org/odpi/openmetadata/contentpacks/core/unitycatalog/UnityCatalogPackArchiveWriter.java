@@ -19,6 +19,8 @@ import org.odpi.openmetadata.contentpacks.core.SoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
@@ -235,19 +237,25 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     {
         final String qualifiedName = "Provision::" + technologyName + "::GovernanceActionProcess";
         final String displayName = "Provision Governance Action Process for " + technologyName;
-        final String description = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
+        final String summary = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                      qualifiedName,
-                                                                      displayName,
-                                                                      versionName,
-                                                                      description,
-                                                                      url,
-                                                                      null,
-                                                                      0,
-                                                                      null,
-                                                                      null,
-                                                                      null);
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                   qualifiedName,
+                                                                   null,
+                                                                   displayName,
+                                                                   summary,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   url,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null);
 
 
         List<RequestParameterType> supportedRequestParameters = null;
@@ -261,7 +269,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                          OpenMetadataType.SOLUTION_COMPONENT.typeName + "::" + qualifiedName,
                                                                          "PROVISION-" + technologyName.toUpperCase(),
                                                                          displayName,
-                                                                         description,
+                                                                         summary,
                                                                          versionName,
                                                                          SolutionComponentType.MULTI_STEP_PROCESS.getSolutionComponentType(),
                                                                          DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
@@ -277,7 +285,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         qualifiedName + "::Step1",
                                                                         "Create the new element",
@@ -316,7 +324,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addResourceListRelationshipByGUID(technologyType.getGUID(),
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
-                                                            description,
+                                                            summary,
                                                             provisionRequestType.getRequestParameters());
         }
         else
@@ -347,15 +355,16 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -396,15 +405,16 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -452,15 +462,16 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder(),
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(guid.equals(assetGUID));
 
         archiveHelper.addPropertyFacet(assetGUID,
@@ -553,15 +564,16 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                              null));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(guid.equals(assetGUID));
 
         extendedProperties   = new HashMap<>();
@@ -630,15 +642,18 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addProcessAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                         qualifiedName,
+                                                         UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder(),
+                                                         deployedImplementationType.getDeployedImplementationType(),
+                                                         PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                         null,
+                                                         null,
+                                                         ActivityStatus.APPROVED,
+                                                         null,
+                                                         extendedProperties,
+                                                         classifications);
         assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -680,15 +695,18 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addProcessAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                         qualifiedName,
+                                                         UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder(),
+                                                         deployedImplementationType.getDeployedImplementationType(),
+                                                         PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                         null,
+                                                         null,
+                                                         ActivityStatus.APPROVED,
+                                                         null,
+                                                         extendedProperties,
+                                                         classifications);
         assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -730,15 +748,18 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addProcessAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                         qualifiedName,
+                                                         UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
+                                                         deployedImplementationType.getDeployedImplementationType(),
+                                                         PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                         null,
+                                                         null,
+                                                         ActivityStatus.APPROVED,
+                                                         null,
+                                                         extendedProperties,
+                                                         classifications);
         assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());

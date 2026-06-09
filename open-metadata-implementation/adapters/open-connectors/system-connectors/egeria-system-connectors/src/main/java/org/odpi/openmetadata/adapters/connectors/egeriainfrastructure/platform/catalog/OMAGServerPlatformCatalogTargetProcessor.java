@@ -40,6 +40,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelati
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -873,6 +874,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             properties.setDisplayName("User Token Manager");
             properties.setDescription("Manages user logons and generates bearer tokens for the platform.");
             properties.setDeployedImplementationType(DeployedImplementationType.USER_AUTHENTICATION_MANAGER.getDeployedImplementationType());
+            properties.setDeploymentStatus(DeploymentStatus.ACTIVE);
 
             NewElementOptions newElementOptions = new NewElementOptions();
 
@@ -900,6 +902,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             properties.setDescription("Manages authorization requests for the platform.");
             properties.setDeployedImplementationType(DeployedImplementationType.PLATFORM_SECURITY_CONNECTOR.getDeployedImplementationType());
             properties.setURL(DeployedImplementationType.PLATFORM_SECURITY_CONNECTOR.getWikiLink());
+            properties.setDeploymentStatus(DeploymentStatus.ACTIVE);
 
             NewElementOptions newElementOptions = new NewElementOptions();
 
@@ -1287,6 +1290,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                 inventoryCatalogProperties.setQualifiedName(OpenMetadataType.INVENTORY_CATALOG.typeName + "::" + serverQualifiedName + "_openMetadataRepository");
                 inventoryCatalogProperties.setDisplayName("Local repository capability for server " + omagMetadataStoreProperties.getServerName() + ".");
                 inventoryCatalogProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
+                inventoryCatalogProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
 
                 NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
 
@@ -1317,6 +1321,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                 }
 
                 metadataCollectionProperties.setDescription("This is the metadata belonging to (homed on) server " + omagMetadataStoreProperties.getServerName() + ".");
+                metadataCollectionProperties.setContentStatus(ContentStatus.ACTIVE);
 
                 CapabilityAssetUseProperties capabilityAssetUseProperties = new CapabilityAssetUseProperties();
 
@@ -1962,6 +1967,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                 cohortMemberProperties.setQualifiedName(OpenMetadataType.COHORT_MEMBER.typeName + "::" + serverQualifiedName + "_cohortMember_" + cohort.getCohortName());
                 cohortMemberProperties.setDisplayName("Cohort member of " + cohort.getCohortName() + " for server " + omagServerProperties.getServerName() + ".");
                 cohortMemberProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
+                cohortMemberProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
 
                 NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
 

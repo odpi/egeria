@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -250,6 +251,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             properties.setQualifiedName(fileClassification.getAssetTypeName() + "::" + fileClassification.getPathName());
                             properties.setTypeName(fileClassification.getAssetTypeName());
+                            properties.setContentStatus(ContentStatus.ACTIVE);
                             properties.setDeployedImplementationType(fileClassification.getDeployedImplementationType());
                             properties.setPathName(fileClassification.getPathName());
                             properties.setDisplayName(fileClassification.getFileName());

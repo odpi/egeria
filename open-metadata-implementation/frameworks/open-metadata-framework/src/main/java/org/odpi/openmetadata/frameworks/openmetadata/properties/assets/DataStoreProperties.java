@@ -41,9 +41,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class DataStoreProperties extends DataAssetProperties
 {
-    private String pathName      = null;
-    private Date storeCreateTime = null;
-    private Date storeUpdateTime = null;
+    private String pathName        = null;
+    private Date   storeCreateTime = null;
+    private Date   storeUpdateTime = null;
 
 
 

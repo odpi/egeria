@@ -8,6 +8,8 @@ import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -86,14 +88,17 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             additionalProperties.put(OpenMetadataProperty.OPERATING_SYSTEM.name, hostDefinition.getOperatingSystem());
             additionalProperties.put(OpenMetadataProperty.PATCH_LEVEL.name, hostDefinition.getPatchLevel());
 
-            archiveHelper.addAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
-                                   hostDefinition.getQualifiedName(),
-                                   hostDefinition.getHostId(),
-                                   null,
-                                   hostDefinition.getDescription(),
-                                   hostDefinition.getZones(),
-                                   additionalProperties,
-                                   null);
+            archiveHelper.addInfrastructureAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
+                                                 hostDefinition.getQualifiedName(),
+                                                 hostDefinition.getHostId(),
+                                                 null,
+                                                 versionName,
+                                                 hostDefinition.getDescription(),
+                                                 DeploymentStatus.ACTIVE,
+                                                 hostDefinition.getZones(),
+                                                 additionalProperties,
+                                                 null,
+                                                 null);
 
             archiveHelper.addKnownLocationRelationship(hostDefinition.getHostLocation().getQualifiedName(),
                                                        hostDefinition.getQualifiedName());
@@ -117,14 +122,17 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             }
 
             archiveHelper.setGUID(systemDefinition.getQualifiedName(), systemDefinition.getSystemGUID());
-            String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                       systemDefinition.getQualifiedName(),
-                                                       systemDefinition.getSystemId(),
-                                                       systemDefinition.getVersionIdentifier(),
-                                                       systemDefinition.getDescription(),
-                                                       systemDefinition.getZones(),
-                                                       null,
-                                                       extendedProperties);
+            String serverGUID = archiveHelper.addInfrastructureAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                                     systemDefinition.getQualifiedName(),
+                                                                     systemDefinition.getSystemId(),
+                                                                     DeployedImplementationType.SOFTWARE_SERVER.getDeployedImplementationType(),
+                                                                     systemDefinition.getVersionIdentifier(),
+                                                                     systemDefinition.getDescription(),
+                                                                     DeploymentStatus.ACTIVE,
+                                                                     systemDefinition.getZones(),
+                                                                     null,
+                                                                     extendedProperties,
+                                                                     null);
             assert(serverGUID.equals(systemDefinition.getSystemGUID()));
 
             if (systemDefinition.getSystemType().getSoftwareServerCapabilities() != null)

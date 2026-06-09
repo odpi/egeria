@@ -3764,31 +3764,6 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create an asset entity.
-     *
-     * @param typeName name of asset subtype to use - default is Asset
-     * @param qualifiedName unique name for the asset
-     * @param name display name for the asset
-     * @param description description about the asset
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     * @param classifications list of classifications (if any)
-     *
-     * @return id for the asset
-     */
-    public String addAsset(String               typeName,
-                           String               qualifiedName,
-                           String               name,
-                           String               description,
-                           Map<String, String>  additionalProperties,
-                           Map<String, Object>  extendedProperties,
-                           List<Classification> classifications)
-    {
-        return this.addAsset(typeName, qualifiedName, name, null,null, description, additionalProperties, extendedProperties, classifications);
-    }
-
-
-    /**
      * Create an asset entity with the supplied anchor.
      *
      * @param typeName name of asset subtype to use - default is Asset
@@ -3859,7 +3834,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create an asset entity that is anchored to itself.
+     * Create a data asset entity that is anchored to itself.
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
@@ -3867,25 +3842,27 @@ public class SimpleCatalogArchiveHelper
      * @param deployedImplementationType type of technology
      * @param versionIdentifier version for the asset
      * @param description description about the asset
+     * @param contentStatus status of the digital resource's content
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      * @param classifications list of classifications (if any)
      *
      * @return id for the asset
      */
-    public String addAsset(String               typeName,
-                           String               qualifiedName,
-                           String               displayName,
-                           String               deployedImplementationType,
-                           String               versionIdentifier,
-                           String               description,
-                           Map<String, String>  additionalProperties,
-                           Map<String, Object>  extendedProperties,
-                           List<Classification> classifications)
+    public String addDataAsset(String               typeName,
+                               String               qualifiedName,
+                               String               displayName,
+                               String               deployedImplementationType,
+                               String               versionIdentifier,
+                               String               description,
+                               ContentStatus        contentStatus,
+                               Map<String, String>  additionalProperties,
+                               Map<String, Object>  extendedProperties,
+                               List<Classification> classifications)
     {
-        final String methodName = "addAsset";
+        final String methodName = "addDataAsset";
 
-        String assetTypeName = OpenMetadataType.ASSET.typeName;
+        String assetTypeName = OpenMetadataType.DATA_ASSET.typeName;
 
         if (typeName != null)
         {
@@ -3908,6 +3885,10 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        if (contentStatus != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTENT_STATUS.name, ContentStatus.getOpenTypeGUID(), ContentStatus.getOpenTypeName(), contentStatus.getOrdinal(), contentStatus.getDisplayName(), contentStatus.getDescription(), methodName);
+        }
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -3924,112 +3905,41 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create an asset entity.
+     * Create a data asset entity that is anchored to itself.
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
-     * @param name display name for the asset
+     * @param displayName display name for the asset
+     * @param deployedImplementationType type of technology
+     * @param versionIdentifier version for the asset
      * @param description description about the asset
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     *
-     * @return id for the asset
-     */
-    public String addAsset(String              typeName,
-                           String              qualifiedName,
-                           String              name,
-                           String              description,
-                           Map<String, String> additionalProperties,
-                           Map<String, Object> extendedProperties)
-    {
-        return this.addAsset(typeName, qualifiedName, name, null, versionName, description, additionalProperties, extendedProperties, null);
-    }
-
-
-    /**
-     * Create an asset entity.
-     *
-     * @param typeName name of asset subtype to use - default is Asset
-     * @param qualifiedName unique name for the asset
-     * @param name display name for the asset
-     * @param versionIdentifier version of the asset
-     * @param description description about the asset
+     * @param deploymentStatus status of the digital resource's content
      * @param governanceZones list of zones to add to the asset
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     *
-     * @return id for the asset
-     */
-    public String addAsset(String              typeName,
-                           String              qualifiedName,
-                           String              name,
-                           String              versionIdentifier,
-                           String              description,
-                           List<String>        governanceZones,
-                           Map<String, String> additionalProperties,
-                           Map<String, Object> extendedProperties)
-    {
-        final String methodName = "addAsset (with governance zones)";
-
-        if (governanceZones == null)
-        {
-            return this.addAsset(typeName, qualifiedName, name, null, versionIdentifier, description, additionalProperties, extendedProperties, null);
-        }
-        else
-        {
-            List<Classification> classifications = new ArrayList<>();
-
-            InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
-                                                                                           null,
-                                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                                           governanceZones,
-                                                                                           methodName);
-
-            Classification classification = archiveHelper.getClassification(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                            properties,
-                                                                            InstanceStatus.ACTIVE);
-
-            classifications.add(classification);
-
-            return this.addAsset(typeName, qualifiedName, name, description, additionalProperties, extendedProperties, classifications);
-        }
-    }
-
-
-    /**
-     * Create a process entity.
-     *
-     * @param typeName name of asset subtype to use - default is Asset
-     * @param qualifiedName unique name for the asset
-     * @param name display name for the asset
-     * @param versionIdentifier version of the asset
-     * @param description description about the asset
-     * @param url further information about the process
-     * @param formula description of the logic that this process performs
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      * @param classifications list of classifications (if any)
      *
      * @return id for the asset
      */
-    public String addProcess(String               typeName,
-                             String               qualifiedName,
-                             String               name,
-                             String               versionIdentifier,
-                             String               description,
-                             String               url,
-                             String               formula,
-                             Map<String, String>  additionalProperties,
-                             Map<String, Object>  extendedProperties,
-                             List<Classification> classifications)
+    public String addInfrastructureAsset(String               typeName,
+                                         String               qualifiedName,
+                                         String               displayName,
+                                         String               deployedImplementationType,
+                                         String               versionIdentifier,
+                                         String               description,
+                                         DeploymentStatus     deploymentStatus,
+                                         List<String>         governanceZones,
+                                         Map<String, String>  additionalProperties,
+                                         Map<String, Object>  extendedProperties,
+                                         List<Classification> classifications)
     {
-        final String methodName = "addProcess";
+        final String methodName = "addInfrastructureAsset";
 
-        String processTypeName = OpenMetadataType.PROCESS.typeName;
+        String assetTypeName = OpenMetadataType.INFRASTRUCTURE.typeName;
 
         if (typeName != null)
         {
-            processTypeName = typeName;
+            assetTypeName = typeName;
         }
 
         List<Classification> entityClassifications = classifications;
@@ -4041,18 +3951,112 @@ public class SimpleCatalogArchiveHelper
 
         String guid = idToGUIDMap.getGUID(qualifiedName);
 
-        entityClassifications.add(this.getAnchorClassification(guid, processTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        entityClassifications.add(this.getAnchorClassification(guid, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        if (governanceZones != null)
+        {
+            InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                           null,
+                                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                           governanceZones,
+                                                                                           methodName);
+
+
+            Classification classification = archiveHelper.getClassification(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                            properties,
+                                                                            InstanceStatus.ACTIVE);
+            entityClassifications.add(classification);
+        }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        if (deploymentStatus != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYMENT_STATUS.name, DeploymentStatus.getOpenTypeGUID(), DeploymentStatus.getOpenTypeName(), deploymentStatus.getOrdinal(), deploymentStatus.getDisplayName(), deploymentStatus.getDescription(), methodName);
+        }
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
+                                                                 guid,
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 entityClassifications);
+
+        archiveBuilder.addEntity(assetEntity);
+
+        return assetEntity.getGUID();
+    }
+
+
+    /**
+     * Create a data asset entity that is anchored to itself.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param displayName display name for the asset
+     * @param deployedImplementationType type of technology
+     * @param versionIdentifier version for the asset
+     * @param description description about the asset
+     * @param url further information about the process
+     * @param formula description of the logic that this process performs  * @param activityStatus status of the process
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addProcessAsset(String               typeName,
+                                  String               qualifiedName,
+                                  String               displayName,
+                                  String               deployedImplementationType,
+                                  String               versionIdentifier,
+                                  String               description,
+                                  String               url,
+                                  String               formula,
+                                  ActivityStatus       activityStatus,
+                                  Map<String, String>  additionalProperties,
+                                  Map<String, Object>  extendedProperties,
+                                  List<Classification> classifications)
+    {
+        final String methodName = "addProcessAsset";
+
+        String assetTypeName = OpenMetadataType.PROCESS.typeName;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        List<Classification> entityClassifications = classifications;
+
+        if (entityClassifications == null)
+        {
+            entityClassifications = new ArrayList<>();
+        }
+
+        String guid = idToGUIDMap.getGUID(qualifiedName);
+
+        entityClassifications.add(this.getAnchorClassification(guid, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.FORMULA.name, formula, methodName);
+        if (activityStatus != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTIVITY_STATUS.name, ActivityStatus.getOpenTypeGUID(), ActivityStatus.getOpenTypeName(), activityStatus.getOrdinal(), activityStatus.getDisplayName(), activityStatus.getDescription(), methodName);
+        }
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
-        EntityDetail assetEntity = archiveHelper.getEntityDetail(processTypeName,
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
                                                                  guid,
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
@@ -6769,11 +6773,11 @@ public class SimpleCatalogArchiveHelper
      * @param methodName calling method
      * @return classification
      */
-    Classification getAnchorClassification(String anchorGUID,
-                                           String anchorTypeName,
-                                           String anchorDomainName,
-                                           String anchorScopeGUID,
-                                           String methodName)
+    public Classification getAnchorClassification(String anchorGUID,
+                                                  String anchorTypeName,
+                                                  String anchorDomainName,
+                                                  String anchorScopeGUID,
+                                                  String methodName)
     {
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
                                                                                                 OpenMetadataProperty.ANCHOR_GUID.name,

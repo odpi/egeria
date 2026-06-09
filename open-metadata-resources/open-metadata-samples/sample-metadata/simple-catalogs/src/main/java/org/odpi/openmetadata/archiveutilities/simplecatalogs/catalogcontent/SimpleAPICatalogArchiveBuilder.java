@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -35,30 +37,30 @@ public class SimpleAPICatalogArchiveBuilder
     /*
      * Names for API definitions
      */
-    private static final String customerQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer";
+    static final String customerQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer";
     private static final String customerDisplayName   = "Customer API";
     private static final String customerDescription   = "API for interacting with customer master.";
 
-    private static final String getCustomerQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
+    static final String getCustomerQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
     private static final String getCustomerDisplayName    = "Get Customer Operation";
     private static final String getCustomerDescription    = "API operation to retrieved details about the customer.";
     private static final String getCustomerPath           = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
     private static final String getCustomerCommand        = "GET";
 
-    private static final String customerNoRequestQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request/customerNo";
-    private static final String customerNoResponseQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerNo";
+    static final String customerNoRequestQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request/customerNo";
+    static final String customerNoResponseQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerNo";
     private static final String customerNoDisplayName           = "customerNo";
     private static final String customerNoDescription           = "The unique identifier assigned internally for a customer.";
     private static final String customerNoDataType              = "string";
     private static final int    customerNoLength                = 12;
 
-    private static final String customerNameQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerName";
+    static final String customerNameQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerName";
     private static final String customerNameDisplayName   = "customerName";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "string";
     private static final int    customerNameLength        = 40;
 
-    private static final String customerCardIdQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/responses/customerCardId";
+    static final String customerCardIdQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/responses/customerCardId";
     private static final String customerCardIdDisplayName   = "customerCardId";
     private static final String customerCardIdDescription   = "The store card number for the customer.  Null if not issued.";
     private static final String customerCardIdDataType      = "string";
@@ -140,12 +142,18 @@ public class SimpleAPICatalogArchiveBuilder
      */
     public void fillBuilder()
     {
-        String assetGUID = archiveHelper.addAsset(apiAssetTypeName,
-                                                  customerQualifiedName,
-                                                  customerDisplayName,
-                                                  customerDescription,
-                                                  null,
-                                                  null);
+        String assetGUID = archiveHelper.addProcessAsset(apiAssetTypeName,
+                                                         customerQualifiedName,
+                                                         customerDisplayName,
+                                                         DeployedImplementationType.REST_API.getDeployedImplementationType(),
+                                                         versionName,
+                                                         customerDescription,
+                                                         null,
+                                                         null,
+                                                         ActivityStatus.APPROVED,
+                                                         null,
+                                                         null,
+                                                         null);
 
         String apiSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                        apiAssetTypeName,

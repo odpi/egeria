@@ -86,6 +86,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                           String              secretsStoreFileName,
                                           Map<String, String> additionalProperties)
     {
+        final String methodName = "addIntegrationConnector";
+
         try
         {
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
@@ -115,17 +117,22 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
-            Map<String, Object> extendedProperties = new HashMap<>();
+            List<Classification> classifications = new ArrayList<>();
 
-            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
+            classifications.add(this.getAnchorClassification(null, DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(), OpenMetadataType.ASSET.typeName, null, methodName));
 
-            String connectorGUID = super.addAsset(DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  displayName,
-                                                  description,
-                                                  additionalProperties,
-                                                  extendedProperties);
+            String connectorGUID = super.addProcessAsset(DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                         qualifiedName,
+                                                         displayName,
+                                                         DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                                         versionName,
+                                                         description,
+                                                         null,
+                                                         null,
+                                                         ActivityStatus.IN_PROGRESS,
+                                                         additionalProperties,
+                                                         null,
+                                                         classifications);
 
             this.addSupportedTemplateTypes(connectorGUID,
                                            DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
@@ -448,6 +455,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                        String                     description,
                                        Map<String, String>        additionalProperties)
     {
+        final String methodName = "addGovernanceService";
+
         try
         {
             String assetTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
@@ -484,17 +493,22 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
-            Map<String, Object> extendedProperties = new HashMap<>();
+            List<Classification> classifications = new ArrayList<>();
 
-            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                   deployedImplementationType);
+            classifications.add(this.getAnchorClassification(null, deployedImplementationType, OpenMetadataType.ASSET.typeName, null, methodName));
 
-            String serviceGUID = super.addAsset(assetTypeName,
-                                                qualifiedName,
-                                                displayName,
-                                                description,
-                                                additionalProperties,
-                                                extendedProperties);
+            String serviceGUID = super.addProcessAsset(assetTypeName,
+                                                       qualifiedName,
+                                                       displayName,
+                                                       deployedImplementationType,
+                                                       versionName,
+                                                       description,
+                                                       null,
+                                                       null,
+                                                       ActivityStatus.APPROVED,
+                                                       additionalProperties,
+                                                       null,
+                                                       classifications);
 
             if (serviceGUID != null)
             {
@@ -1546,63 +1560,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
-    }
-
-
-    /**
-     * Create a governance action process.
-     *
-     * @param typeName name of process subtype to use - default is GovernanceActionProcess
-     * @param qualifiedName unique name for the capability
-     * @param name display name for the capability
-     * @param versionIdentifier identifier of the version for the process implementation
-     * @param description description about the capability
-     * @param url further information about the process
-     * @param formula logic for the process
-     * @param domainIdentifier which governance domain - 0=all
-     * @param additionalProperties any other properties
-     * @param extendedProperties properties for subtype
-     * @param classifications list of classifications (if any)
-     * @return unique identifier for the solution component for the new governance action process
-     */
-    public String addGovernanceActionProcess(String               typeName,
-                                             String               qualifiedName,
-                                             String               name,
-                                             String               versionIdentifier,
-                                             String               description,
-                                             String               url,
-                                             String               formula,
-                                             int                  domainIdentifier,
-                                             Map<String, String>  additionalProperties,
-                                             Map<String, Object>  extendedProperties,
-                                             List<Classification> classifications)
-    {
-        String processTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName;
-
-        if (typeName != null)
-        {
-            processTypeName = typeName;
-        }
-
-        Map<String, Object> processExtendedProperties = extendedProperties;
-
-        if (processExtendedProperties == null)
-        {
-            processExtendedProperties = new HashMap<>();
-
-            processExtendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier);
-        }
-
-        return super.addProcess(processTypeName,
-                                qualifiedName,
-                                name,
-                                versionIdentifier,
-                                description,
-                                url,
-                                formula,
-                                additionalProperties,
-                                extendedProperties,
-                                classifications);
     }
 
 

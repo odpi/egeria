@@ -4,12 +4,14 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
@@ -36,27 +38,27 @@ public class SimpleEventCatalogArchiveBuilder
     /*
      * Names for event definitions
      */
-    private static final String customerChangeQualifiedName = "global-event-bus/CustomerDomain/Topics/CustomerChange";
+    static final String customerChangeQualifiedName = "global-event-bus/CustomerDomain/Topics/CustomerChange";
     private static final String customerChangeDisplayName   = "CustomerChangeTopic";
     private static final String customerChangeDescription   = "Topic for distributing updates when a customer status changes.";
 
-    private static final String newCustomerStatusQualifiedName  = "global-event-bus/CustomerDomain/EventTypes/NewCustomerStatus";
+    static final String newCustomerStatusQualifiedName  = "global-event-bus/CustomerDomain/EventTypes/NewCustomerStatus";
     private static final String newCustomerStatusDisplayName    = "New Customer Status Event Type";
     private static final String newCustomerStatusDescription    = "Event payload to notify subscribers that a customer status has changed.";
 
-    private static final String customerIdQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerId";
+    static final String customerIdQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerId";
     private static final String customerIdDisplayName   = "customerId";
     private static final String customerIdDescription   = "The unique identifier assigned internally for a customer.";
     private static final String customerIdDataType      = "string";
     private static final int    customerIdLength        = 12;
 
-    private static final String customerNameQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerName";
+    static final String customerNameQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerName";
     private static final String customerNameDisplayName   = "customerName";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "string";
     private static final int    customerNameLength        = 40;
 
-    private static final String customerStatusQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerStatus";
+    static final String customerStatusQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerStatus";
     private static final String customerStatusDisplayName   = "customerStatus";
     private static final String customerStatusDescription   = "The calculated status for a customer indicating their value to the organization.";
     private static final String customerStatusDataType      = "string";
@@ -130,15 +132,22 @@ public class SimpleEventCatalogArchiveBuilder
      */
     public void fillBuilder()
     {
-        String assetGUID = archiveHelper.addAsset(OpenMetadataType.TOPIC.typeName,
-                                                  customerChangeQualifiedName,
-                                                  customerChangeDisplayName,
-                                                  DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
-                                                  null,
-                                                  customerChangeDescription,
-                                                  null,
-                                                  null,
-                                                  null);
+        final String methodName = "fillBuilder";
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(archiveHelper.getAnchorClassification(null, OpenMetadataType.TOPIC.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        String assetGUID = archiveHelper.addDataAsset(OpenMetadataType.TOPIC.typeName,
+                                                      customerChangeQualifiedName,
+                                                      customerChangeDisplayName,
+                                                      DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
+                                                      versionName,
+                                                      customerChangeDescription,
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      null,
+                                                      classifications);
 
         String eventTypeListGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                        OpenMetadataType.TOPIC.typeName,

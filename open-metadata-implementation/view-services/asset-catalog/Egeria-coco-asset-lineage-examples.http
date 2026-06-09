@@ -1,0 +1,213 @@
+# Egeria-asset-catalog-omvs
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "garygeeke",
+  "password" : "secret"
+}
+
+> {% client.global.set("garyToken", response.body); %}
+
+###
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "tomtally",
+  "password" : "secret"
+}
+
+> {% client.global.set("tomToken", response.body); %}
+
+###
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("peterToken", response.body); %}
+
+###
+# =====================================================================================================================
+# Asset search requests around cooc-sus ODS - only gary has access
+
+
+###
+# @name get the GUID for a named asset
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "System::coco-sus",
+  "namePropertyName" : "qualifiedName"
+}
+
+> {% client.global.set("cocoSusGUID", response.body.guid); %}
+
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-graph
+Authorization: Bearer {{tomToken}}
+Content-Type: application/json
+
+
+###
+# @name=getAssetLineageGraph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+
+###
+# @name=getAssetLineageGraph - all of the parameters
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "asOfTime": "{{$isoTimestamp}}",
+  "includeOnlyRelationships" : ["DataSetContent"],
+  "limitToISCQualifiedName": "",
+  "highlightISCQualifiedName": "",
+  "allAnchors" : true
+}
+
+
+###
+# @name=getAssetLineageGraph coco-sus - local supply chain
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "limitToISCQualifiedName": "InformationSupplyChain::Sustainability Reporting"
+}
+
+
+###
+# @name=getAssetLineageGraph coco-sus - highlight sustainability
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "highlightISCQualifiedName": "InformationSupplyChain::Sustainability Reporting"
+}
+
+###
+# @name=getAssetLineageGraph coco-sus - full graph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+###
+# =====================================================================================================================
+# Asset search requests around the simple catalog - through Peter's eyes
+
+
+###
+# @name get the GUID for a named asset
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "RETAILSCHEMA",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("simpleDatabaseGUID", response.body.guid); %}
+
+
+###
+# @name=findAssetsInDomain
+# Locate string value in elements that are anchored to assets.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "searchString" : "customerId"
+}
+
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{simpleDatabaseGUID}}/as-graph
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+
+###
+# @name=getAssetLineageGraph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{simpleDatabaseGUID}}/as-lineage-graph
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+###

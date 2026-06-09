@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplement
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
@@ -1317,6 +1318,7 @@ public abstract class AtlasIntegrationModuleBase
         Map<String, Object> attributes = atlasFSPathEntity.getAttributes();
 
         dataAssetProperties.setTypeName(egeriaTypeName);
+        dataAssetProperties.setContentStatus(ContentStatus.ACTIVE);
         dataAssetProperties.setDeployedImplementationType(atlasFSPathEntity.getTypeName());
         dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + "::" + atlasFSPathEntity.getTypeName() + "::" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
         dataAssetProperties.setDisplayName(getAtlasStringProperty(attributes, atlasNamePropertyName));

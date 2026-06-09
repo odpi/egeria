@@ -228,6 +228,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         csvFileProperties.setDisplayName(displayName);
         csvFileProperties.setDescription(description);
         csvFileProperties.setResourceName(pathName);
+        csvFileProperties.setContentStatus(ContentStatus.ACTIVE);
         csvFileProperties.setVersionIdentifier(versionIdentifier);
         csvFileProperties.setPathName(pathName);
         csvFileProperties.setFileName(fileName);
