@@ -3887,7 +3887,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         if (contentStatus != null)
         {
-            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTENT_STATUS.name, ContentStatus.getOpenTypeGUID(), ContentStatus.getOpenTypeName(), contentStatus.getOrdinal(), contentStatus.getDisplayName(), contentStatus.getDescription(), methodName);
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTENT_STATUS.name, ContentStatus.getOpenTypeGUID(), ContentStatus.getOpenTypeName(), contentStatus.getOrdinal(), contentStatus.name(), contentStatus.getDescription(), methodName);
         }
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -3975,7 +3975,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         if (deploymentStatus != null)
         {
-            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYMENT_STATUS.name, DeploymentStatus.getOpenTypeGUID(), DeploymentStatus.getOpenTypeName(), deploymentStatus.getOrdinal(), deploymentStatus.getDisplayName(), deploymentStatus.getDescription(), methodName);
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYMENT_STATUS.name, DeploymentStatus.getOpenTypeGUID(), DeploymentStatus.getOpenTypeName(), deploymentStatus.getOrdinal(), deploymentStatus.name(), deploymentStatus.getDescription(), methodName);
         }
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -4051,7 +4051,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.FORMULA.name, formula, methodName);
         if (activityStatus != null)
         {
-            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTIVITY_STATUS.name, ActivityStatus.getOpenTypeGUID(), ActivityStatus.getOpenTypeName(), activityStatus.getOrdinal(), activityStatus.getDisplayName(), activityStatus.getDescription(), methodName);
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTIVITY_STATUS.name, ActivityStatus.getOpenTypeGUID(), ActivityStatus.getOpenTypeName(), activityStatus.getOrdinal(), activityStatus.name(), activityStatus.getDescription(), methodName);
         }
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
