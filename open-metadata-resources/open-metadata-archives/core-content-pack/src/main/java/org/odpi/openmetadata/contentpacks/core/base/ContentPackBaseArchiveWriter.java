@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigur
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -234,15 +236,16 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                              null,
                                                                              null));
 
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  PlaceholderProperty.FILE_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      PlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
 
         if (connectorTypeGUID != null)
         {
@@ -472,15 +475,17 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                     methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  serverName,
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  serverVersionIdentifier,
-                                                  description,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addInfrastructureAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                                qualifiedName,
+                                                                serverName,
+                                                                deployedImplementationType.getDeployedImplementationType(),
+                                                                serverVersionIdentifier,
+                                                                description,
+                                                                DeploymentStatus.ACTIVE,
+                                                                null,
+                                                                null,
+                                                                extendedProperties,
+                                                                classifications);
         assert(guid.equals(assetGUID));
 
         if (softwareCapabilityType != null)
@@ -741,15 +746,17 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addInfrastructureAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                                qualifiedName,
+                                                                PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                                deployedImplementationType.getDeployedImplementationType(),
+                                                                PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                                DeploymentStatus.ACTIVE,
+                                                                null,
+                                                                null,
+                                                                extendedProperties,
+                                                                classifications);
         assert(guid.equals(assetGUID));
 
         if (softwareCapabilityType != null)
@@ -947,15 +954,16 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         }
 
         archiveHelper.setGUID(qualifiedName, templateGUID);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  assetDisplayName,
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  versionIdentifier,
-                                                  assetDescription,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      assetDisplayName,
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      versionIdentifier,
+                                                      assetDescription,
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(templateGUID.equals(assetGUID));
 
         String connectionGUID = addTechnologyConnection(assetGUID,
@@ -1076,15 +1084,16 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         archiveHelper.setGUID(qualifiedName, templateGUID);
 
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  assetName,
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  versionIdentifier,
-                                                  assetDescription,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      assetName,
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      versionIdentifier,
+                                                      assetDescription,
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
         assert(templateGUID.equals(assetGUID));
 
         String connectionGUID;
@@ -2176,19 +2185,25 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                   TemplateDefinition                   createTemplate,
                                                                   RequestTypeDefinition                surveyRequestType)
     {
-        String description = "Create a " + technologyType.getDeployedImplementationType() + ", run a survey against it, and print out the resulting report.";
+        String summary = "Create a " + technologyType.getDeployedImplementationType() + ", run a survey against it, and print out the resulting report.";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                      assetType + ":CreateAndSurveyGovernanceActionProcess",
-                                                                      assetType + ":CreateAndSurvey",
-                                                                      null,
-                                                                      description,
-                                                                      url,
-                                                                      null,
-                                                                      0,
-                                                                      null,
-                                                                      null,
-                                                                      null);
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                   assetType + ":CreateAndSurveyGovernanceActionProcess",
+                                                                   null,
+                                                                   assetType + ":CreateAndSurvey",
+                                                                   null,
+                                                                   summary,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   url,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null);
 
         List<RequestParameterType> supportedRequestParameters = null;
 
@@ -2225,7 +2240,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                          OpenMetadataType.SOLUTION_COMPONENT.typeName + "::" + assetType + "::CreateAndSurvey",
                                                                          "CREATE-AND-SURVEY-" + assetType.toUpperCase(),
                                                                          "Create and Survey Governance Action Process for " + technologyType.getDeployedImplementationType(),
-                                                                         description,
+                                                                         summary,
                                                                          versionName,
                                                                          SolutionComponentType.MULTI_STEP_PROCESS.getSolutionComponentType(),
                                                                          DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
@@ -2245,7 +2260,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                         null,
                                                                         assetType + "::CreateAndSurvey::Step1",
                                                                         "Create the " + assetType + " entity",
-                                                                        "Create the description of the " + technologyType.getDeployedImplementationType(),
+                                                                        "Create the summary of the " + technologyType.getDeployedImplementationType(),
                                                                         0,
                                                                         supportedRequestParameters,
                                                                         null,
@@ -2343,7 +2358,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
             archiveHelper.addResourceListRelationshipByGUID(technologyType.getGUID(),
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
-                                                            description,
+                                                            summary,
                                                             createRequestType.getRequestParameters());
         }
         else
@@ -2500,19 +2515,25 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                   TemplateDefinition                   createTemplate,
                                                                   RequestTypeDefinition                catalogRequestType)
     {
-        String description = "Create a " + technologyType.getDeployedImplementationType() + " and configure an integration connector to " + actionName + " its contents.";
+        String summary = "Create a " + technologyType.getDeployedImplementationType() + " and configure an integration connector to " + actionName + " its contents.";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                      assetType + "::CreateAsCatalogTargetGovernanceActionProcess",
-                                                                      assetType + "::CreateAsCatalogTarget",
-                                                                      null,
-                                                                      description,
-                                                                      url,
-                                                                      null,
-                                                                      0,
-                                                                      null,
-                                                                      null,
-                                                                      null);
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                   assetType + "::CreateAsCatalogTargetGovernanceActionProcess",
+                                                                   null,
+                                                                   assetType + "::CreateAsCatalogTarget",
+                                                                   summary,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   url,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null);
 
         List<RequestParameterType> supportedRequestParameters = null;
 
@@ -2533,7 +2554,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                          OpenMetadataType.SOLUTION_COMPONENT.typeName + "::" + assetType + "::CreateAsCatalogTarget",
                                                                          "CREATE-AND-" + actionName.toUpperCase() + "-" + assetType.toUpperCase(),
                                                                          "Create and " + actionName + " Governance Action Process for " + technologyType.getDeployedImplementationType(),
-                                                                         description,
+                                                                         summary,
                                                                          versionName,
                                                                          SolutionComponentType.MULTI_STEP_PROCESS.getSolutionComponentType(),
                                                                          DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
@@ -2549,11 +2570,11 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::CreateAsCatalogTarget::Step1",
                                                                         "Create the " + technologyType.getAssociatedTypeName() + " entity",
-                                                                        "Create the description of the " + technologyType.getDeployedImplementationType(),
+                                                                        "Create the summary of the " + technologyType.getDeployedImplementationType(),
                                                                         0,
                                                                         supportedRequestParameters,
                                                                         null,
@@ -2583,7 +2604,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::CreateAsCatalogTarget::Step2",
                                                                         "Connect new asset to integration connector",
@@ -2619,7 +2640,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
             archiveHelper.addResourceListRelationshipByGUID(technologyType.getGUID(),
                                                             processGUID,
                                                             ResourceUse.CATALOG_RESOURCE.getResourceUse(),
-                                                            description,
+                                                            summary,
                                                             createRequestType.getRequestParameters());
         }
         else
@@ -2646,25 +2667,31 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                   String                               url,
                                                                   RequestTypeDefinition                deleteRequestType)
     {
-        String description = "Delete the asset for " + technologyType.getDeployedImplementationType() + " using the same template properties that were used to create it.  This will delete all of the metadata anchored to the asset and relationships to other entities such as the catalog target relationships.";
+        String summary = "Delete the asset for " + technologyType.getDeployedImplementationType() + " using the same template properties that were used to create it.  This will delete all of the metadata anchored to the asset and relationships to other entities such as the catalog target relationships.";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                      assetType + ":DeleteAssetWithTemplateGovernanceActionProcess",
-                                                                      assetType + ":DeleteAsset",
-                                                                      null,
-                                                                      description,
-                                                                      url,
-                                                                      null,
-                                                                      0,
-                                                                      null,
-                                                                      null,
-                                                                      null);
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                   assetType + ":DeleteAssetWithTemplateGovernanceActionProcess",
+                                                                   null,
+                                                                   assetType + ":DeleteAsset",
+                                                                   summary,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   url,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null);
 
         String processComponentGUID = archiveHelper.addSolutionComponent(OpenMetadataType.SOLUTION_COMPONENT.typeName,
                                                                          OpenMetadataType.SOLUTION_COMPONENT.typeName + "::" + assetType + "::DeleteAsCatalogTarget",
                                                                          "DELETE-WITH-TEMPLATE-FOR-" + assetType.toUpperCase(),
                                                                          "Delete with Template Governance Action Process for " + technologyType.getDeployedImplementationType(),
-                                                                         description,
+                                                                         summary,
                                                                          versionName,
                                                                          SolutionComponentType.MULTI_STEP_PROCESS.getSolutionComponentType(),
                                                                          DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
@@ -2680,7 +2707,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::Delete Asset::Step1",
                                                                         "Delete the " + technologyType.getAssociatedTypeName() + " entity",
@@ -2714,8 +2741,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         {
             archiveHelper.addResourceListRelationshipByGUID(technologyType.getGUID(),
                                                             processGUID,
-                                                            ResourceUse.SURVEY_RESOURCE.getResourceUse(),
-                                                            description,
+                                                            ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                            summary,
                                                             deleteRequestType.getRequestParameters());
         }
         else

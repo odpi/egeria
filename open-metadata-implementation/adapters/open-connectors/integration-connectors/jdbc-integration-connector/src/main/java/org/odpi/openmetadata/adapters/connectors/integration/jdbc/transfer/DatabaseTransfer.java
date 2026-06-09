@@ -6,8 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.RelationalDatabaseProperties;
 
 import java.util.List;
 
@@ -107,9 +109,10 @@ public class DatabaseTransfer {
         String databaseProductName = jdbc.getDatabaseProductName();
         String url = jdbc.getUrl();
 
-        DatabaseProperties databaseProperties = new DatabaseProperties();
+        RelationalDatabaseProperties databaseProperties = new RelationalDatabaseProperties();
         databaseProperties.setQualifiedName(databaseManagerName + "::" + address);
         databaseProperties.setDisplayName(StringUtils.isBlank(catalog) ? address : catalog);
+        databaseProperties.setContentStatus(ContentStatus.ACTIVE);
         databaseProperties.setDatabaseInstance(driverName);
         databaseProperties.setVersionIdentifier(databaseProductVersion);
         databaseProperties.setDeployedImplementationType(databaseProductName);

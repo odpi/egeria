@@ -27,7 +27,7 @@ Content-Type: application/json
 ###
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/local-repository/mode/postgres-repository
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -200,15 +201,16 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         String qualifiedName = "LandingArea::" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + "::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::WeeklyMeasurements::" + PlaceholderProperty.FILE_NAME.getPlaceholder();
 
-        String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
-                                                  qualifiedName,
-                                                  PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
-                                                  FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
-                                                  "V1.0",
-                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
-                                                  this.getAssetAdditionalProperties(),
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(FileType.CSV_FILE.getAssetSubTypeName(),
+                                                      qualifiedName,
+                                                      PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                                      FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
+                                                      "V1.0",
+                                                      CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      this.getAssetAdditionalProperties(),
+                                                      extendedProperties,
+                                                      classifications);
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),
@@ -409,15 +411,16 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         String qualifiedName = "DataLake::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::WeeklyMeasurements::" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + "::" + PlaceholderProperty.FILE_NAME.getPlaceholder();
 
-        String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
-                                                  qualifiedName,
-                                                  PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
-                                                  FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
-                                                  "V1.0",
-                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
-                                                  this.getAssetAdditionalProperties(),
-                                                  extendedProperties,
-                                                  classifications);
+        String assetGUID = archiveHelper.addDataAsset(FileType.CSV_FILE.getAssetSubTypeName(),
+                                                      qualifiedName,
+                                                      PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                                      FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
+                                                      "V1.0",
+                                                      CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      this.getAssetAdditionalProperties(),
+                                                      extendedProperties,
+                                                      classifications);
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),

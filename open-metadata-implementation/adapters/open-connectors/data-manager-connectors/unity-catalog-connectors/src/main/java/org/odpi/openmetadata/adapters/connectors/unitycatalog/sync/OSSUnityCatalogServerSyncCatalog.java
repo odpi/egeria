@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.RelatedElementsIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -511,6 +512,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         catalogProperties.setDisplayName(info.getName());
         catalogProperties.setDescription(info.getComment());
+        catalogProperties.setContentStatus(ContentStatus.ACTIVE);
         catalogProperties.setDeployedImplementationType(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
 
         // catalogProperties.setAdditionalProperties(info.getProperties());

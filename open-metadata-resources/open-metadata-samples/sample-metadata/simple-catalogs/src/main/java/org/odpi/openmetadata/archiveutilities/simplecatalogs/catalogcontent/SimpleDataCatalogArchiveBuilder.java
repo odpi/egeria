@@ -4,10 +4,14 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
@@ -38,33 +42,33 @@ public class SimpleDataCatalogArchiveBuilder
     private static final String branchDisplayName   = "BRANCH Database";
     private static final String branchDescription   = "Main branch system database.";
 
-    private static final String retailSchemaQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
+    static final String retailSchemaQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
     private static final String retailSchemaDisplayName   = "RETAILSCHEMA";
     private static final String retailSchemaDescription   = "Retail banking schema.";
 
-    private static final String customerTableQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
+    static final String customerTableQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
     private static final String customerTableDisplayName   = "CUSTOMER";
     private static final String customerTableDescription   = "Branch customer table for retail banking.";
 
-    private static final String customerIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTID";
+    static final String customerIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTID";
     private static final String customerIdDisplayName   = "CUSTID";
     private static final String customerIdDescription   = "The unique identifier assigned internally for a customer.";
     private static final String customerIdDataType      = "CHAR";
     private static final int    customerIdLength        = 12;
 
-    private static final String customerNameQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTNAME";
+    static final String customerNameQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTNAME";
     private static final String customerNameDisplayName   = "CUSTNAME";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "CHAR";
     private static final int    customerNameLength        = 40;
 
-    private static final String customerStatusQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTSTATUS";
+    static final String customerStatusQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTSTATUS";
     private static final String customerStatusDisplayName   = "CUSTSTATUS";
     private static final String customerStatusDescription   = "The calculated status for a customer indicating their value to the organization.";
     private static final String customerStatusDataType      = "CHAR";
     private static final int    customerStatusLength        = 10;
 
-    private static final String customerCardIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTCARD";
+    static final String customerCardIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTCARD";
     private static final String customerCardIdDisplayName   = "CUSTCARD";
     private static final String customerCardIdDescription   = "The store card number for the customer.  Null if not issued.";
     private static final String customerCardIdDataType      = "CHAR";
@@ -148,19 +152,37 @@ public class SimpleDataCatalogArchiveBuilder
      */
     public void fillBuilder()
     {
-        String databaseGUID = archiveHelper.addAsset(databaseAssetTypeName,
-                                                     branchQualifiedName,
-                                                     branchDisplayName,
-                                                     branchDescription,
-                                                     null,
-                                                     null);
+        final String methodName = "fillBuilder";
 
-        String databaseSchemaGUID = archiveHelper.addAsset(databaseSchemaAssetTypeName,
-                                                           retailSchemaQualifiedName,
-                                                           retailSchemaDisplayName,
-                                                           retailSchemaDescription,
-                                                           null,
-                                                           null);
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(archiveHelper.getAnchorClassification(null, databaseAssetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        String databaseGUID = archiveHelper.addDataAsset(databaseAssetTypeName,
+                                                         branchQualifiedName,
+                                                         branchDisplayName,
+                                                         DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType(),
+                                                         versionName,
+                                                         branchDescription,
+                                                         ContentStatus.ACTIVE,
+                                                         null,
+                                                         null,
+                                                         classifications);
+
+        classifications = new ArrayList<>();
+
+        classifications.add(archiveHelper.getAnchorClassification(databaseGUID, databaseAssetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        String databaseSchemaGUID = archiveHelper.addDataAsset(databaseSchemaAssetTypeName,
+                                                               retailSchemaQualifiedName,
+                                                               retailSchemaDisplayName,
+                                                               DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                                                               versionName,
+                                                               retailSchemaDescription,
+                                                               ContentStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               classifications);
 
         archiveHelper.addDataSetContent(databaseSchemaGUID, databaseGUID, null, null, null, null);
 
