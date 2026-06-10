@@ -3333,6 +3333,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param limitToISCQualifiedName  Return whether the returned results should just show a particular information supply chain.
      * This supply chain has to be connected to the starting asset to show.
      * @param highlightISCQualifiedName Return whether a particular information supply chain should be highlighted.
+     * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
      * @param suppliedQueryOptions various other options to control the query
      *
      * @return graph of elements or
@@ -3344,6 +3345,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                   String       assetGUID,
                                                   String       limitToISCQualifiedName,
                                                   String       highlightISCQualifiedName,
+                                                  boolean      allAnchors,
                                                   QueryOptions suppliedQueryOptions) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -3354,49 +3356,44 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(assetGUID, guidParameter, methodName);
 
-        OpenMetadataRootElement openMetadataRootElement = this.getAssetByGUID(userId, assetGUID, suppliedQueryOptions);
+        List<AssetLineageGraphNode>         linkedAssets              = new ArrayList<>();
+        List<AssetLineageGraphRelationship> lineageRelationships      = new ArrayList<>();
+        Set<String>                         upstreamProcessedAssets   = new HashSet<>();
+        Set<String>                         downstreamProcessedAssets = new HashSet<>();
 
-        if (openMetadataRootElement != null)
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
+        queryOptions.setIncludeOnlyRelationships(getLineageRelationshipTypeNames(queryOptions.getIncludeOnlyRelationships()));
+
+        this.getAssetLineageGraphNodes(userId,
+                                       assetGUID,
+                                       allAnchors,
+                                       0,
+                                       queryOptions.getIncludeOnlyRelationships(),
+                                       limitToISCQualifiedName,
+                                       queryOptions,
+                                       linkedAssets,
+                                       lineageRelationships,
+                                       upstreamProcessedAssets,
+                                       downstreamProcessedAssets);
+
+        if (! linkedAssets.isEmpty())
         {
-            List<AssetLineageGraphNode>         linkedAssets              = new ArrayList<>();
-            List<AssetLineageGraphRelationship> lineageRelationships      = new ArrayList<>();
-            Set<String>                         upstreamProcessedAssets   = new HashSet<>();
-            Set<String>                         downstreamProcessedAssets = new HashSet<>();
+            AssetLineageGraph assetLineageGraph = new AssetLineageGraph(linkedAssets.get(0));
 
-            QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
-
-            queryOptions.setIncludeOnlyRelationships(getLineageRelationshipTypeNames(queryOptions.getIncludeOnlyRelationships()));
-
-            this.getAssetLineageGraphNodes(userId,
-                                           assetGUID,
-                                           0,
-                                           queryOptions.getIncludeOnlyRelationships(),
-                                           limitToISCQualifiedName,
-                                           queryOptions,
-                                           linkedAssets,
-                                           lineageRelationships,
-                                           upstreamProcessedAssets,
-                                           downstreamProcessedAssets);
-
-            if (! linkedAssets.isEmpty())
+            if (linkedAssets.size() > 1)
             {
-                AssetLineageGraph assetLineageGraph = new AssetLineageGraph(linkedAssets.get(0));
-
-                if (linkedAssets.size() > 1)
-                {
-                    assetLineageGraph.setLinkedAssets(new ArrayList<>(linkedAssets.subList(1, linkedAssets.size())));
-                }
-
-                assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
-
-                AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph, highlightISCQualifiedName);
-                assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
-                assetLineageGraph.setEdgeMermaidGraph(graphBuilder.getEdgeMermaidGraph());
-
-                return assetLineageGraph;
+                assetLineageGraph.setLinkedAssets(new ArrayList<>(linkedAssets.subList(1, linkedAssets.size())));
             }
-        }
 
+            assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
+
+            AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph, highlightISCQualifiedName);
+            assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+            assetLineageGraph.setEdgeMermaidGraph(graphBuilder.getEdgeMermaidGraph());
+
+            return assetLineageGraph;
+        }
 
         return null;
     }
@@ -3473,6 +3470,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the asset
+     * @param allAnchors should anchored elements be included
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
@@ -3487,6 +3485,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      */
     void getAssetLineageGraphNodes(String                                                userId,
                                    String                                                elementGUID,
+                                   boolean                                               allAnchors,
                                    int                                                   direction,
                                    List<String>                                          lineageRelationshipTypeNames,
                                    String                                                limitToInformationSupplyChain,
@@ -3503,6 +3502,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
                                                                     elementGUID,
+                                                                    allAnchors,
                                                                     direction,
                                                                     lineageRelationshipTypeNames,
                                                                     limitToInformationSupplyChain,
@@ -3553,6 +3553,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 {
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
+                                                   allAnchors,
                                                    2,
                                                    lineageRelationshipTypeNames,
                                                    limitToInformationSupplyChain,
@@ -3594,6 +3595,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 {
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
+                                                   allAnchors,
                                                    1,
                                                    lineageRelationshipTypeNames,
                                                    limitToInformationSupplyChain,
@@ -3614,6 +3616,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
+     * @param allAnchors
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
@@ -3627,6 +3630,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      */
     AssetLineageGraphNode getAssetLineageGraphNode(String                    userId,
                                                    String                    assetGUID,
+                                                   boolean                   allAnchors,
                                                    int                       direction,
                                                    List<String>              lineageRelationshipTypeNames,
                                                    String                    limitToInformationSupplyChain,
@@ -3647,6 +3651,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
              */
             List<RelatedMetadataNodeSummary> relationships = this.getAssetLineageRelationships(userId,
                                                                                                asset.getElementHeader().getGUID(),
+                                                                                               allAnchors,
                                                                                                direction,
                                                                                                lineageRelationshipTypeNames,
                                                                                                limitToInformationSupplyChain,
@@ -3785,6 +3790,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
+     * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param queryOptions options for the query
@@ -3795,6 +3801,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      */
     private List<RelatedMetadataNodeSummary> getAssetLineageRelationships(String       userId,
                                                                           String       assetGUID,
+                                                                          boolean      allAnchors,
                                                                           int          direction,
                                                                           List<String> lineageRelationshipTypeNames,
                                                                           String       limitToInformationSupplyChain,
@@ -3809,7 +3816,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
         */
         List<RelatedMetadataElement> assetRelationships = this.getLineageRelationshipsForElement(userId,
                                                                                                  assetGUID,
-                                                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                                  direction,
                                                                                                  lineageRelationshipTypeNames,
                                                                                                  limitToInformationSupplyChain,
@@ -3820,61 +3826,63 @@ public class AssetHandler extends OpenMetadataHandlerBase
             lineageRelationships.addAll(propertyHelper.getRelatedNodeSummaries(assetGUID, assetRelationships));
         }
 
-        /*
-         * Now find the SchemaElements that belong to the asset.
-         */
-        SearchClassifications         searchClassifications    = new SearchClassifications();
-        List<ClassificationCondition> classificationConditions = new ArrayList<>();
-        ClassificationCondition       classificationCondition  = new ClassificationCondition();
-        SearchProperties              searchProperties         = new SearchProperties();
-        List<PropertyCondition>       propertyConditions       = new ArrayList<>();
-        PropertyCondition             propertyCondition        = new PropertyCondition();
-        PrimitiveTypePropertyValue    primitivePropertyValue   = new PrimitiveTypePropertyValue();
-
-        primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(assetGUID);
-        primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
-
-        propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
-        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
-        propertyCondition.setValue(primitivePropertyValue);
-        propertyConditions.add(propertyCondition);
-        searchProperties.setMatchCriteria(MatchCriteria.ALL);
-        searchProperties.setConditions(propertyConditions);
-
-        classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
-        classificationCondition.setSearchProperties(searchProperties);
-        classificationConditions.add(classificationCondition);
-        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
-        searchClassifications.setConditions(classificationConditions);
-
-        QueryOptions schemaQueryOptions = new QueryOptions(queryOptions);
-
-        schemaQueryOptions.setMetadataElementTypeName(OpenMetadataType.SCHEMA_ELEMENT.typeName);
-
-        List<OpenMetadataElement> anchoredElements = openMetadataClient.findMetadataElements(userId,
-                                                                                             null,
-                                                                                             searchClassifications,
-                                                                                             schemaQueryOptions);
-
-        /*
-         * For each schema element in the asset, retrieve its lineage relationships
-         */
-        if (anchoredElements != null)
+        if (allAnchors)
         {
-            for (OpenMetadataElement anchoredElement : anchoredElements)
-            {
-                List<RelatedMetadataElement> schemaRelationships = this.getLineageRelationshipsForElement(userId,
-                                                                                                          anchoredElement.getElementGUID(),
-                                                                                                          OpenMetadataType.SCHEMA_ELEMENT.typeName,
-                                                                                                          direction,
-                                                                                                          lineageRelationshipTypeNames,
-                                                                                                          limitToInformationSupplyChain,
-                                                                                                          queryOptions);
+            /*
+             * Now find the SchemaElements that belong to the asset.
+             */
+            SearchClassifications         searchClassifications    = new SearchClassifications();
+            List<ClassificationCondition> classificationConditions = new ArrayList<>();
+            ClassificationCondition       classificationCondition  = new ClassificationCondition();
+            SearchProperties              searchProperties         = new SearchProperties();
+            List<PropertyCondition>       propertyConditions       = new ArrayList<>();
+            PropertyCondition             propertyCondition        = new PropertyCondition();
+            PrimitiveTypePropertyValue    primitivePropertyValue   = new PrimitiveTypePropertyValue();
 
-                if (schemaRelationships != null)
+            primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+            primitivePropertyValue.setPrimitiveValue(assetGUID);
+            primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
+
+            propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+            propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+            propertyCondition.setValue(primitivePropertyValue);
+            propertyConditions.add(propertyCondition);
+            searchProperties.setMatchCriteria(MatchCriteria.ALL);
+            searchProperties.setConditions(propertyConditions);
+
+            classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+            classificationCondition.setSearchProperties(searchProperties);
+            classificationConditions.add(classificationCondition);
+            searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+            searchClassifications.setConditions(classificationConditions);
+
+            QueryOptions schemaQueryOptions = new QueryOptions(queryOptions);
+
+            schemaQueryOptions.setMetadataElementTypeName(OpenMetadataType.SCHEMA_ELEMENT.typeName);
+
+            List<OpenMetadataElement> anchoredElements = openMetadataClient.findMetadataElements(userId,
+                                                                                                 null,
+                                                                                                 searchClassifications,
+                                                                                                 schemaQueryOptions);
+
+            /*
+             * For each schema element in the asset, retrieve its lineage relationships
+             */
+            if (anchoredElements != null)
+            {
+                for (OpenMetadataElement anchoredElement : anchoredElements)
                 {
-                    lineageRelationships.addAll(propertyHelper.getRelatedNodeSummaries(assetGUID, schemaRelationships));
+                    List<RelatedMetadataElement> schemaRelationships = this.getLineageRelationshipsForElement(userId,
+                                                                                                              anchoredElement.getElementGUID(),
+                                                                                                              direction,
+                                                                                                              lineageRelationshipTypeNames,
+                                                                                                              limitToInformationSupplyChain,
+                                                                                                              queryOptions);
+
+                    if (schemaRelationships != null)
+                    {
+                        lineageRelationships.addAll(propertyHelper.getRelatedNodeSummaries(assetGUID, schemaRelationships));
+                    }
                 }
             }
         }
@@ -3893,7 +3901,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param elementGUID starting element
-     * @param elementTypeName type name of element
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
@@ -3905,7 +3912,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
      */
     List<RelatedMetadataElement> getLineageRelationshipsForElement(String       userId,
                                                                    String       elementGUID,
-                                                                   String       elementTypeName,
                                                                    int          direction,
                                                                    List<String> lineageRelationshipTypeNames,
                                                                    String       limitToInformationSupplyChain,
@@ -3923,7 +3929,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         RelatedMetadataElementList relationships = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  direction,
-                                                                                                 elementTypeName,
+                                                                                                 null,
                                                                                                  queryOptions);
 
         if ((relationships != null) && (relationships.getElementList() != null))
@@ -3990,7 +3996,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             AssetGraph assetGraph = new AssetGraph(asset);
 
             /*
-             * This map will hold all of the relationships retrieved for the graph.  It initially,
+             * This map will hold all the relationships retrieved for the graph.  It initially,
              * holds the relationships connected to the starting asset - however, as the related
              * elements are extracted, their relationships are added.
              */

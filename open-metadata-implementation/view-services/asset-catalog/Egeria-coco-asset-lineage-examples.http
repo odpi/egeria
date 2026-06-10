@@ -44,6 +44,36 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
+# Asset search requests around lon02 machine - only gary has access
+
+
+###
+# @name get the GUID for a named asset
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "lon02",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("lon02GUID", response.body.guid); %}
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{lon02GUID}}/as-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+###
+# =====================================================================================================================
 # Asset search requests around cooc-sus ODS - only gary has access
 
 
@@ -64,7 +94,7 @@ Content-Type: application/json
 
 
 ###
-# @name=getAssetGraph
+# @name=getAssetGraph (gary)
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
 # Note the number of anchored elements returned is controlled by the paging.
 #
@@ -74,7 +104,7 @@ Authorization: Bearer {{garyToken}}
 Content-Type: application/json
 
 ###
-# @name=getAssetGraph
+# @name=getAssetGraph (tom)
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
 # Note the number of anchored elements returned is controlled by the paging.
 #
@@ -85,7 +115,7 @@ Content-Type: application/json
 
 
 ###
-# @name=getAssetLineageGraph
+# @name=getAssetLineageGraph (gary)
 # Return all the elements that are linked to an asset using lineage relationships.  The relationships are
 # retrieved both from the asset, and the anchored schema elements.
 #
@@ -96,7 +126,7 @@ Content-Type: application/json
 
 
 ###
-# @name=getAssetLineageGraph - all of the parameters
+# @name=getAssetLineageGraph - all of the detail
 # Return all the elements that are linked to an asset using lineage relationships.  The relationships are
 # retrieved both from the asset, and the anchored schema elements.
 #
@@ -106,11 +136,7 @@ Authorization: Bearer {{garyToken}}
 Content-Type: application/json
 
 {
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "asOfTime": "{{$isoTimestamp}}",
-  "includeOnlyRelationships" : ["DataSetContent"],
-  "limitToISCQualifiedName": "",
-  "highlightISCQualifiedName": "",
+  "class" : "AssetLineageGraphRequestBody",
   "allAnchors" : true
 }
 
@@ -144,15 +170,6 @@ Content-Type: application/json
   "highlightISCQualifiedName": "InformationSupplyChain::Sustainability Reporting"
 }
 
-###
-# @name=getAssetLineageGraph coco-sus - full graph
-# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
-# retrieved both from the asset, and the anchored schema elements.
-#
-# Lineage: https://egeria-project.org/features/lineage-management/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
-Authorization: Bearer {{garyToken}}
-Content-Type: application/json
 
 ###
 # =====================================================================================================================
@@ -163,7 +180,7 @@ Content-Type: application/json
 # @name get the GUID for a named asset
 # Retrieve the metadata element using its unique identifier.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{peterToken}}
+Authorization: Bearer {{garyToken}}
 Content-Type: application/json
 
 {
