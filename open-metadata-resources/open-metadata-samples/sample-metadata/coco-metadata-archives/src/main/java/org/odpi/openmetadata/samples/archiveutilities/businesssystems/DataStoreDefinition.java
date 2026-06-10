@@ -19,15 +19,17 @@ public enum DataStoreDefinition
              "Database",
              "V2.6",
              new String[]{"business-systems", "sustainability"},
+             null,
                 0),
     ;
 
-    private final String   dataStoreId;
-    private final String   description;
-    private final String   typeName;
-    private final String   versionIdentifier;
-    private final String[] zones;
-    private final long     loadTime;
+    private final String             dataStoreId;
+    private final String             description;
+    private final String             typeName;
+    private final String             versionIdentifier;
+    private final String[]           zones;
+    private final SystemDefinition[] deployedOn;
+    private final long               loadTime;
 
 
     /**
@@ -40,18 +42,20 @@ public enum DataStoreDefinition
      * @param zones             zone membership
      * @param loadTime          time offset to set creationTime
      */
-    DataStoreDefinition(String   dataStoreId,
-                        String   description,
-                        String   typeName,
-                        String   versionIdentifier,
-                        String[] zones,
-                        long     loadTime)
+    DataStoreDefinition(String             dataStoreId,
+                        String             description,
+                        String             typeName,
+                        String             versionIdentifier,
+                        String[]           zones,
+                        SystemDefinition[] deployedOn,
+                        long               loadTime)
     {
         this.dataStoreId = dataStoreId;
         this.description = description;
         this.typeName = typeName;
         this.versionIdentifier = versionIdentifier;
         this.zones = zones;
+        this.deployedOn = deployedOn;
         this.loadTime = loadTime;
     }
 
@@ -98,7 +102,7 @@ public enum DataStoreDefinition
 
 
     /**
-     * Return the list of zones that this server belongs to.
+     * Return the list of zones that this data store belongs to.
      *
      * @return list of strings
      */
@@ -107,6 +111,22 @@ public enum DataStoreDefinition
         if (zones != null)
         {
             return Arrays.asList(zones);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of systems that this data store belongs to.
+     *
+     * @return list of strings
+     */
+    public List<SystemDefinition> getDeployedOn()
+    {
+        if (deployedOn != null)
+        {
+            return Arrays.asList(deployedOn);
         }
 
         return null;

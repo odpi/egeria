@@ -124,6 +124,7 @@ public class AssetCatalogRESTServices extends TokenController
                                                                  assetGUID,
                                                                  requestBody.getLimitToISCQualifiedName(),
                                                                  requestBody.getHighlightISCQualifiedName(),
+                                                                 requestBody.getAllAnchors(),
                                                                  requestBody));
             }
             else
@@ -132,6 +133,7 @@ public class AssetCatalogRESTServices extends TokenController
                                                                  assetGUID,
                                                                  null,
                                                                  null,
+                                                                 false,
                                                                  null));
             }
         }
