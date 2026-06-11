@@ -67,74 +67,6 @@ public enum SystemTypeDefinition
 
 
     /**
-     * metadata-access-store - Metadata server with a repository that is part of the open metadata ecosystem.
-     */
-    OPEN_METADATA_ACCESS_STORE("metadata-access-store",
-        "Open Metadata Access Store",
-        "Metadata server with a repository that is part of the open metadata ecosystem.",
-        "These servers are part of a middleware deployment.",
-         new String[]{
-                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
-                 OpenMetadataType.INVENTORY_CATALOG.typeName,
-                 OpenMetadataType.COHORT_MEMBER.typeName}),
-
-    /**
-     * metadata-access-point - Server supporting Open Metadata Access Services (OMASs) but no metadata repository. It is connected to the open metadata ecosystem via a cohort.
-     */
-    OPEN_METADATA_ACCESS_POINT("metadata-access-point",
-         "Open Metadata Access Point",
-         "Server supporting Open Metadata Access Services (OMASs) but no metadata repository. It is connected to the open metadata ecosystem via a cohort.",
-         "These servers are part of a middleware deployment.",
-           new String[]{OpenMetadataType.SOFTWARE_SERVICE.typeName,
-                   OpenMetadataType.COHORT_MEMBER.typeName}),
-
-
-    /**
-     * engine-host - Server hosting governance engine. It is part of the open metadata ecosystem.
-     */
-    ENGINE_HOST_SERVER("engine-host",
-         "Open Metadata Engine Host Server",
-         "Server hosting governance engine. It is part of the open metadata ecosystem.",
-         "These servers are part of a middleware deployment.",
-         new String[]{OpenMetadataType.WORKFLOW_ENGINE.typeName}),
-
-    /**
-     * integration-daemon - Server hosting integration connectors responsible for synchronizing metadata. It is part of the open metadata ecosystem.
-     */
-    INTEGRATION_DAEMON("integration-daemon",
-         "Open Metadata Integration Daemon",
-         "Server hosting integration connectors responsible for synchronizing metadata. It is part of the open metadata ecosystem.",
-         "These servers are part of a middleware deployment.",
-         new String[]{OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName}),
-
-    /**
-     * repository-proxy - Server hosting a repository connector responsible for synchronizing metadata from a third party metadata repository. It is part of the open metadata ecosystem.
-     */
-    REPOSITORY_PROXY("repository-proxy",
-         "Open Metadata Repository Proxy",
-         "Server hosting a repository connector responsible for synchronizing metadata from a third party metadata repository. It is part of the open metadata ecosystem.",
-         "These servers are part of a middleware deployment.",
-         new String[]{OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName, OpenMetadataType.COHORT_MEMBER.typeName}),
-
-    /**
-     * view-server - Open Metadata View Server
-     */
-    VIEW_SERVER("view-server",
-                "Open Metadata View Server",
-                "Server providing REST API implementations for a UI.",
-                "These servers are part of a middleware deployment.",
-                new String[]{OpenMetadataType.SOFTWARE_SERVICE.typeName}),
-
-    /**
-     * view-client - UI server supplying UI code (javascript/typescript) to the browser.
-     */
-    VIEW_CLIENT("view-client",
-                "Open Metadata View Client",
-                "UI server supplying UI code (javascript/typescript) to the browser.",
-                "These servers are part of a middleware deployment.",
-                null),
-
-    /**
      * cloud-saas-service - Application or service hosted by an external cloud provider.
      */
     CLOUD_SAAS_SERVICE("cloud-saas-service",
@@ -245,6 +177,16 @@ public enum SystemTypeDefinition
         return softwareServerCapabilities;
     }
 
+
+    /**
+     * This is the name of the open metadata type to use when creating the Host entity.
+     *
+     * @return string value
+     */
+    public String getOpenMetadataTypeName()
+    {
+        return OpenMetadataType.SOFTWARE_SERVER.typeName;
+    }
 
     /**
      * Output of this enum class and main value.

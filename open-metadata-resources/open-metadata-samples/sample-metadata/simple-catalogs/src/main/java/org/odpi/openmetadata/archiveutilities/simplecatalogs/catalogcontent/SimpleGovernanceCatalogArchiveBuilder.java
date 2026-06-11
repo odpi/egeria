@@ -49,11 +49,6 @@ public class SimpleGovernanceCatalogArchiveBuilder
     private static final String uniqueCustomerIdentifierDisplayName    = "UniqueCustomerIdentifier";
     private static final String uniqueCustomerIdentifierDescription    = "Unique identifier for a customer generated on first contact.";
 
-    private static final String eventCustomerIdQualifiedName       = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerId";
-    private static final String apiCustomerNoRequestQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request/customerNo";
-    private static final String apiCustomerNoResponseQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerNo";
-    private static final String dbCustIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTID";
-
     /*
      * Specific values for initializing TypeDefs
      */
@@ -130,19 +125,19 @@ public class SimpleGovernanceCatalogArchiveBuilder
                                                         uniqueCustomerIdentifierDisplayName,
                                                         uniqueCustomerIdentifierDescription);
 
-        String elementGUID = archiveHelper.getGUID(eventCustomerIdQualifiedName);
+        String elementGUID = archiveHelper.getGUID(SimpleEventCatalogArchiveBuilder.customerIdQualifiedName);
 
         archiveHelper.linkTermToReferenceable(glossaryTermGUID, elementGUID);
 
-        elementGUID = archiveHelper.getGUID(apiCustomerNoRequestQualifiedName);
+        elementGUID = archiveHelper.getGUID(SimpleAPICatalogArchiveBuilder.customerNoRequestQualifiedName);
 
         archiveHelper.linkTermToReferenceable(glossaryTermGUID, elementGUID);
 
-        elementGUID = archiveHelper.getGUID(apiCustomerNoResponseQualifiedName);
+        elementGUID = archiveHelper.getGUID(SimpleAPICatalogArchiveBuilder.customerNoResponseQualifiedName);
 
         archiveHelper.linkTermToReferenceable(glossaryTermGUID, elementGUID);
 
-        elementGUID = archiveHelper.getGUID(dbCustIdQualifiedName);
+        elementGUID = archiveHelper.getGUID(SimpleDataCatalogArchiveBuilder.customerIdQualifiedName);
 
         archiveHelper.linkTermToReferenceable(glossaryTermGUID, elementGUID);
 
@@ -172,15 +167,7 @@ public class SimpleGovernanceCatalogArchiveBuilder
                                              "calls",
                                              iscQualifiedName);
 
-        sourceGUID = archiveHelper.getGUID(SimpleAPICatalogArchiveBuilder.getCustomerQualifiedName);
-        destinationGUID = archiveHelper.getGUID(SimpleDataCatalogArchiveBuilder.customerTableQualifiedName);
-        archiveHelper.addLineageRelationship(sourceGUID,
-                                             destinationGUID,
-                                             OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                             "retrieve customer",
-                                             iscQualifiedName);
-
-        sourceGUID = archiveHelper.getGUID(SimpleDataCatalogArchiveBuilder.customerTableQualifiedName);
+        sourceGUID = archiveHelper.getGUID(SimpleDataCatalogArchiveBuilder.retailSchemaQualifiedName);
         destinationGUID = archiveHelper.getGUID(SimpleEventCatalogArchiveBuilder.customerChangeQualifiedName);
         archiveHelper.addLineageRelationship(sourceGUID,
                                              destinationGUID,

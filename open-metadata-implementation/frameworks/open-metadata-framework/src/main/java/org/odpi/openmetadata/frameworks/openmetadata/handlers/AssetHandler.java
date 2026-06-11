@@ -3389,7 +3389,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
 
             AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph, highlightISCQualifiedName);
-            assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+            assetLineageGraph.setFullLineageMermaidGraph(graphBuilder.getMermaidGraph());
             assetLineageGraph.setEdgeMermaidGraph(graphBuilder.getEdgeMermaidGraph());
 
             return assetLineageGraph;
@@ -3421,7 +3421,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Construct a list of the lineage relationship types to search for,
+     * Construct the list of the lineage relationship types to search for.
      *
      * @param relationshipTypes relationship type names supplied by the user.
      * @return list of relationship type names

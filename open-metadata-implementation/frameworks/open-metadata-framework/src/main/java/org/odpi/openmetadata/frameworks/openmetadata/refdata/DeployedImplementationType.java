@@ -626,6 +626,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                     "A database schema hosted on a relational database server callable through a JDBC Driver.",
                                     "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
+    /**
+     * A virtual machine (VM) is a software implementation of a machine (computer) that executes programs like a physical machine
+     */
+    VIRTUAL_MACHINE("d990e9de-6d17-47ef-bbd6-afd144ef34f5",
+                        "Virtual Machine",
+                        DeployedImplementationType.TECHNOLOGY,
+                        OpenMetadataType.VIRTUAL_MACHINE.typeName,
+                        null,
+                        "A virtual machine (VM) is a software implementation of a machine (computer) that executes programs like a physical machine.",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS),
 
     /**
      * A computer (hardware) with an operating system for running software.
@@ -691,7 +701,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A two-handed portable device with network, touchscreen, and battery power.
      */
     TABLET("6f617a49-2f25-44d0-b507-d2e4ac3db603",
-           "Smart Phone",
+           "Tablet",
            DeployedImplementationType.BARE_METAL_COMPUTER,
            OpenMetadataType.BARE_METAL_COMPUTER.typeName,
            null,

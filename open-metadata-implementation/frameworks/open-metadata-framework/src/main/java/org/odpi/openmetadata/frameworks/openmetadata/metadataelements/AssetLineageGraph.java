@@ -12,9 +12,10 @@ import java.util.Objects;
  */
 public class AssetLineageGraph extends AssetLineageGraphNode
 {
-    private List<AssetLineageGraphNode>         linkedAssets         = null;
-    private List<AssetLineageGraphRelationship> lineageRelationships = null;
-    private String                              edgeMermaidGraph     = null;
+    private List<AssetLineageGraphNode>         linkedAssets            = null;
+    private List<AssetLineageGraphRelationship> lineageRelationships    = null;
+    private String                              fullLineageMermaidGraph = null;
+    private String                              edgeMermaidGraph        = null;
 
 
     /**
@@ -47,9 +48,10 @@ public class AssetLineageGraph extends AssetLineageGraphNode
 
         if (template != null)
         {
-            linkedAssets         = template.getLinkedAssets();
-            lineageRelationships = template.getLineageRelationships();
-            edgeMermaidGraph     = template.getEdgeMermaidGraph();
+            linkedAssets            = template.getLinkedAssets();
+            lineageRelationships    = template.getLineageRelationships();
+            fullLineageMermaidGraph = template.getFullLineageMermaidGraph();
+            edgeMermaidGraph        = template.getEdgeMermaidGraph();
         }
     }
 
@@ -99,6 +101,28 @@ public class AssetLineageGraph extends AssetLineageGraphNode
 
 
     /**
+     * Return the full lineage graph in Mermaid markdown format.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getFullLineageMermaidGraph()
+    {
+        return fullLineageMermaidGraph;
+    }
+
+
+    /**
+     * Set up the full lineage graph in Mermaid markdown format.
+     *
+     * @param fullLineageMermaidGraph string in Mermaid markdown
+     */
+    public void setFullLineageMermaidGraph(String fullLineageMermaidGraph)
+    {
+        this.fullLineageMermaidGraph = fullLineageMermaidGraph;
+    }
+
+
+    /**
      * Return the ultimate sources and destinations found within the lineage graph.
      *
      * @return string in Mermaid markdown
@@ -131,6 +155,7 @@ public class AssetLineageGraph extends AssetLineageGraphNode
         return "AssetLineageGraph{" +
                 "linkedAssets=" + linkedAssets +
                 ", lineageRelationships=" + lineageRelationships +
+                ", fullLineageMermaidGraph='" + fullLineageMermaidGraph + '\'' +
                 ", edgeMermaidGraph='" + edgeMermaidGraph + '\'' +
                 "} " + super.toString();
     }
@@ -150,6 +175,7 @@ public class AssetLineageGraph extends AssetLineageGraphNode
         if (!super.equals(objectToCompare)) return false;
         AssetLineageGraph that = (AssetLineageGraph) objectToCompare;
         return Objects.equals(linkedAssets, that.linkedAssets) &&
+                Objects.equals(fullLineageMermaidGraph, that.fullLineageMermaidGraph) &&
                 Objects.equals(lineageRelationships, that.lineageRelationships) &&
                 Objects.equals(edgeMermaidGraph, that.edgeMermaidGraph);
     }
@@ -163,6 +189,6 @@ public class AssetLineageGraph extends AssetLineageGraphNode
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), linkedAssets, lineageRelationships, edgeMermaidGraph);
+        return Objects.hash(super.hashCode(), linkedAssets, lineageRelationships, fullLineageMermaidGraph, edgeMermaidGraph);
     }
 }

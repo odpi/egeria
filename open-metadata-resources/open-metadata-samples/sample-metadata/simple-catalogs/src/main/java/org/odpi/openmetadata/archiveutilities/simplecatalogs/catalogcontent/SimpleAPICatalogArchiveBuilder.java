@@ -35,43 +35,52 @@ public class SimpleAPICatalogArchiveBuilder
     private static final Date                    creationDate       = new Date(1632046251579L);
 
     /*
+     * Additional AssetTypes for basic file connector
+     */
+    private static final String apiAssetTypeName       = OpenMetadataType.DEPLOYED_API.typeName;
+    private static final String apiSchemaTypeTypeName  = OpenMetadataType.API_SCHEMA_TYPE.typeName;
+    private static final String apiSchemaAttributeTypeName  = OpenMetadataType.API_PARAMETER.typeName;
+
+    private static final String categoryName  = "Customer Domain";
+
+    /*
      * Names for API definitions
      */
-    static final String customerQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer";
+    static final String customerQualifiedName = apiAssetTypeName + "::" + "global-api-gateway/CustomerDomain/APIs/Customer";
+    private static final String customerResourceName  = "global-api-gateway/CustomerDomain/APIs/Customer";
+    private static final String customerPathName      = "global-api-gateway/CustomerDomain/APIs";
     private static final String customerDisplayName   = "Customer API";
     private static final String customerDescription   = "API for interacting with customer master.";
 
-    static final String getCustomerQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
+    static final String getCustomerQualifiedName  = OpenMetadataType.API_OPERATION.typeName + "::" + "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
+    private static final String getCustomerPathName       = "global-api-gateway/CustomerDomain/APIs/Customer";
     private static final String getCustomerDisplayName    = "Get Customer Operation";
     private static final String getCustomerDescription    = "API operation to retrieved details about the customer.";
     private static final String getCustomerPath           = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer";
     private static final String getCustomerCommand        = "GET";
 
-    static final String customerNoRequestQualifiedName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request/customerNo";
-    static final String customerNoResponseQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerNo";
-    private static final String customerNoDisplayName           = "customerNo";
-    private static final String customerNoDescription           = "The unique identifier assigned internally for a customer.";
-    private static final String customerNoDataType              = "string";
-    private static final int    customerNoLength                = 12;
+    static final String customerNoRequestQualifiedName  = apiSchemaAttributeTypeName + "::" + "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request/customerNo";
+    static final String customerNoResponseQualifiedName = apiSchemaAttributeTypeName + "::" + "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerNo";
+    private static final String customerNoRequestPathName  = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/request";
+    private static final String customerNoResponsePathName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response";
+    private static final String customerNoDisplayName      = "customerNo";
+    private static final String customerNoDescription      = "The unique identifier assigned internally for a customer.";
+    private static final String customerNoDataType         = "string";
+    private static final int    customerNoLength           = 12;
 
     static final String customerNameQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response/customerName";
+    private static final String customerNamePathName      = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/response";
     private static final String customerNameDisplayName   = "customerName";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "string";
     private static final int    customerNameLength        = 40;
 
     static final String customerCardIdQualifiedName = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/responses/customerCardId";
+    private static final String customerCardIdPathName      = "global-api-gateway/CustomerDomain/APIs/Customer/getCustomer/responses";
     private static final String customerCardIdDisplayName   = "customerCardId";
     private static final String customerCardIdDescription   = "The store card number for the customer.  Null if not issued.";
     private static final String customerCardIdDataType      = "string";
     private static final int    customerCardIdLength        = 10;
-
-    /*
-     * Additional AssetTypes for basic file connector
-     */
-    private static final String apiAssetTypeName       = "DeployedAPI";
-    private static final String apiSchemaTypeTypeName  = "APISchemaType";
-    private static final String apiSchemaAttributeTypeName  = "APIParameter";
 
 
     /*
@@ -145,6 +154,9 @@ public class SimpleAPICatalogArchiveBuilder
         String assetGUID = archiveHelper.addProcessAsset(apiAssetTypeName,
                                                          customerQualifiedName,
                                                          customerDisplayName,
+                                                         customerResourceName,
+                                                         customerPathName,
+                                                         categoryName,
                                                          DeployedImplementationType.REST_API.getDeployedImplementationType(),
                                                          versionName,
                                                          customerDescription,
@@ -168,6 +180,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 apiSchemaTypeGUID,
                                                                 getCustomerQualifiedName,
                                                                 getCustomerDisplayName,
+                                                                getCustomerPathName,
                                                                 getCustomerDescription,
                                                                 getCustomerPath,
                                                                 getCustomerCommand,
@@ -189,6 +202,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 null,
                                                                 customerNoRequestQualifiedName,
                                                                 customerNoDisplayName,
+                                                                customerNoRequestPathName,
                                                                 customerNoDescription,
                                                                 customerNoDataType,
                                                                 customerNoLength,
@@ -213,6 +227,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                          null,
                                                          customerNoResponseQualifiedName,
                                                          customerNoDisplayName,
+                                                         customerNoResponsePathName,
                                                          customerNoDescription,
                                                          customerNoDataType,
                                                          customerNoLength,
@@ -227,6 +242,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                          null,
                                                          customerNameQualifiedName,
                                                          customerNameDisplayName,
+                                                         customerNamePathName,
                                                          customerNameDescription,
                                                          customerNameDataType,
                                                          customerNameLength,
@@ -241,6 +257,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                          null,
                                                          customerCardIdQualifiedName,
                                                          customerCardIdDisplayName,
+                                                         customerCardIdPathName,
                                                          customerCardIdDescription,
                                                          customerCardIdDataType,
                                                          customerCardIdLength,

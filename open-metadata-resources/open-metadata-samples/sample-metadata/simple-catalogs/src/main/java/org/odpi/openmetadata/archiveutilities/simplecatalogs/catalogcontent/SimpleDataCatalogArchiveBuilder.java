@@ -5,6 +5,7 @@ package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
@@ -38,37 +39,53 @@ public class SimpleDataCatalogArchiveBuilder
     /*
      * Names for data definitions
      */
-    private static final String branchQualifiedName = "V37B8752.FH567.sys/BRANCH";
+
+    private static final String categoryName = "Customer Domain";
+
+    private static final String machineQualifiedName = OpenMetadataType.BARE_METAL_COMPUTER.typeName + "::" + "V37B8752.FH567.sys";
+    private static final String machineResourceName  = "V37B8752.FH567.sys";
+    private static final String machineDisplayName   = "V37B8752.FH567.sys";
+
+    private static final String branchQualifiedName = OpenMetadataType.DATABASE.typeName + "::" + "V37B8752.FH567.sys/BRANCH";
+    private static final String branchResourceName  = "V37B8752.FH567.sys/BRANCH";
+    private static final String branchPathName      = "V37B8752.FH567.sys";
     private static final String branchDisplayName   = "BRANCH Database";
     private static final String branchDescription   = "Main branch system database.";
 
-    static final String retailSchemaQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
+    static final String retailSchemaQualifiedName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
+    private static final String retailSchemaResourceName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
+    private static final String retailSchemaPathName = "V37B8752.FH567.sys/BRANCH";
     private static final String retailSchemaDisplayName   = "RETAILSCHEMA";
     private static final String retailSchemaDescription   = "Retail banking schema.";
 
-    static final String customerTableQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
+    static final String customerTableQualifiedName = OpenMetadataType.RELATIONAL_TABLE.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
+    private static final String customerTablePathName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA";
     private static final String customerTableDisplayName   = "CUSTOMER";
     private static final String customerTableDescription   = "Branch customer table for retail banking.";
 
-    static final String customerIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTID";
+    static final String customerIdQualifiedName = OpenMetadataType.RELATIONAL_COLUMN.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTID";
+    private static final String customerIdPathName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
     private static final String customerIdDisplayName   = "CUSTID";
     private static final String customerIdDescription   = "The unique identifier assigned internally for a customer.";
     private static final String customerIdDataType      = "CHAR";
     private static final int    customerIdLength        = 12;
 
-    static final String customerNameQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTNAME";
+    static final String customerNameQualifiedName = OpenMetadataType.RELATIONAL_COLUMN.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTNAME";
+    private static final String customerNamePathName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
     private static final String customerNameDisplayName   = "CUSTNAME";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "CHAR";
     private static final int    customerNameLength        = 40;
 
-    static final String customerStatusQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTSTATUS";
+    static final String customerStatusQualifiedName = OpenMetadataType.RELATIONAL_COLUMN.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTSTATUS";
+    private static final String customerStatusPathName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
     private static final String customerStatusDisplayName   = "CUSTSTATUS";
     private static final String customerStatusDescription   = "The calculated status for a customer indicating their value to the organization.";
     private static final String customerStatusDataType      = "CHAR";
     private static final int    customerStatusLength        = 10;
 
-    static final String customerCardIdQualifiedName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTCARD";
+    static final String customerCardIdQualifiedName = OpenMetadataType.RELATIONAL_COLUMN.typeName + "::" + "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER.CUSTCARD";
+    private static final String customerCardIdPathName = "V37B8752.FH567.sys/BRANCH.RETAILSCHEMA.CUSTOMER";
     private static final String customerCardIdDisplayName   = "CUSTCARD";
     private static final String customerCardIdDescription   = "The store card number for the customer.  Null if not issued.";
     private static final String customerCardIdDataType      = "CHAR";
@@ -77,12 +94,12 @@ public class SimpleDataCatalogArchiveBuilder
     /*
      * Additional AssetTypes for data stores
      */
-    private static final String databaseAssetTypeName            = "Database";
-    private static final String databaseSchemaAssetTypeName      = "DeployedDatabaseSchema";
-    private static final String relationalTopLevelSchemaTypeName = "RelationalDBSchemaType";
-    private static final String relationalTableTypeName          = "RelationalTable";
-    private static final String relationalTableSchemaTypeName    = "RelationalTableType";
-    private static final String relationalColumnTypeName         = "RelationalColumn";
+    private static final String databaseAssetTypeName            = OpenMetadataType.DATABASE.typeName;
+    private static final String databaseSchemaAssetTypeName      = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName;
+    private static final String relationalTopLevelSchemaTypeName = OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName;
+    private static final String relationalTableTypeName          = OpenMetadataType.RELATIONAL_TABLE.typeName;
+    private static final String relationalTableSchemaTypeName    = OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName;
+    private static final String relationalColumnTypeName         = OpenMetadataType.RELATIONAL_COLUMN.typeName;
 
 
     /*
@@ -156,11 +173,33 @@ public class SimpleDataCatalogArchiveBuilder
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(archiveHelper.getAnchorClassification(null, databaseAssetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        classifications.add(archiveHelper.getAnchorClassification(null, OpenMetadataType.BARE_METAL_COMPUTER.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        String machineGUID = archiveHelper.addInfrastructureAsset(OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                                                                  machineQualifiedName,
+                                                                  machineDisplayName,
+                                                                  machineResourceName,
+                                                                  null,
+                                                                  categoryName,
+                                                                  DeployedImplementationType.BARE_METAL_COMPUTER.getDeployedImplementationType(),
+                                                                  versionName,
+                                                                  null,
+                                                                  DeploymentStatus.ACTIVE,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  classifications);
+        classifications = new ArrayList<>();
+
+        classifications.add(archiveHelper.getAnchorClassification(machineGUID, OpenMetadataType.BARE_METAL_COMPUTER.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
 
         String databaseGUID = archiveHelper.addDataAsset(databaseAssetTypeName,
                                                          branchQualifiedName,
                                                          branchDisplayName,
+                                                         branchResourceName,
+                                                         branchPathName,
+                                                         categoryName,
                                                          DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType(),
                                                          versionName,
                                                          branchDescription,
@@ -169,13 +208,12 @@ public class SimpleDataCatalogArchiveBuilder
                                                          null,
                                                          classifications);
 
-        classifications = new ArrayList<>();
-
-        classifications.add(archiveHelper.getAnchorClassification(databaseGUID, databaseAssetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
-
         String databaseSchemaGUID = archiveHelper.addDataAsset(databaseSchemaAssetTypeName,
                                                                retailSchemaQualifiedName,
                                                                retailSchemaDisplayName,
+                                                               retailSchemaResourceName,
+                                                               retailSchemaPathName,
+                                                               categoryName,
                                                                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                                versionName,
                                                                retailSchemaDescription,
@@ -200,6 +238,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                                       relationalTableSchemaTypeName,
                                                                       customerTableQualifiedName,
                                                                       customerTableDisplayName,
+                                                                      customerTablePathName,
                                                                       customerTableDescription,
                                                                       null,
                                                                       0,
@@ -214,6 +253,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                                        null,
                                                                        customerIdQualifiedName,
                                                                        customerIdDisplayName,
+                                                                       customerIdPathName,
                                                                        customerIdDescription,
                                                                        customerIdDataType,
                                                                        customerIdLength,
@@ -228,6 +268,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 null,
                                                                 customerNameQualifiedName,
                                                                 customerNameDisplayName,
+                                                                customerNamePathName,
                                                                 customerNameDescription,
                                                                 customerNameDataType,
                                                                 customerNameLength,
@@ -242,6 +283,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 null,
                                                                 customerStatusQualifiedName,
                                                                 customerStatusDisplayName,
+                                                                customerStatusPathName,
                                                                 customerStatusDescription,
                                                                 customerStatusDataType,
                                                                 customerStatusLength,
@@ -256,6 +298,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 null,
                                                                 customerCardIdQualifiedName,
                                                                 customerCardIdDisplayName,
+                                                                customerCardIdPathName,
                                                                 customerCardIdDescription,
                                                                 customerCardIdDataType,
                                                                 customerCardIdLength,

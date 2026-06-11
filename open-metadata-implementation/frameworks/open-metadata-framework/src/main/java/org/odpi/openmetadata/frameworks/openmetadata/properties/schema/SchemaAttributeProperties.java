@@ -34,6 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {
+    private String            namespacePath         = null;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
     private String            defaultValueOverride  = null;
@@ -66,6 +67,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
+            namespacePath         = template.getNamespacePath();
             allowsDuplicateValues = template.getAllowsDuplicateValues();
             orderedValues         = template.getOrderedValues();
             sortOrder             = template.getSortOrder();
@@ -73,10 +75,32 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             length                = template.getLength();
             precision             = template.getPrecision();
             isNullable            = template.getIsNullable();
-            defaultValueOverride = template.getDefaultValueOverride();
-            nativeClass          = template.getNativeClass();
-            aliases              = template.getAliases();
+            defaultValueOverride  = template.getDefaultValueOverride();
+            nativeClass           = template.getNativeClass();
+            aliases               = template.getAliases();
         }
+    }
+
+
+    /**
+     * Return the name of the namespace that this type belongs to.
+     *
+     * @return string name
+     */
+    public String getNamespacePath()
+    {
+        return namespacePath;
+    }
+
+
+    /**
+     * Set up the name of the namespace that this type belongs to.
+     *
+     * @param namespacePath string name
+     */
+    public void setNamespacePath(String namespacePath)
+    {
+        this.namespacePath = namespacePath;
     }
 
 
@@ -309,6 +333,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     {
         return "SchemaAttributeProperties{" +
                 "allowsDuplicateValues=" + allowsDuplicateValues +
+                ", namespace='" + namespacePath + '\'' +
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
@@ -345,15 +370,16 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         }
         SchemaAttributeProperties that = (SchemaAttributeProperties) objectToCompare;
         return allowsDuplicateValues == that.allowsDuplicateValues &&
-                       orderedValues == that.orderedValues &&
-                       minimumLength == that.minimumLength &&
-                       length == that.length &&
-                       precision == that.precision &&
-                       isNullable == that.isNullable &&
-                       Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
-                       sortOrder == that.sortOrder &&
-                       Objects.equals(nativeClass, that.nativeClass) &&
-                       Objects.equals(aliases, that.aliases);
+                orderedValues == that.orderedValues &&
+                minimumLength == that.minimumLength &&
+                Objects.equals(namespacePath, that.namespacePath) &&
+                length == that.length &&
+                precision == that.precision &&
+                isNullable == that.isNullable &&
+                Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
+                sortOrder == that.sortOrder &&
+                Objects.equals(nativeClass, that.nativeClass) &&
+                Objects.equals(aliases, that.aliases);
     }
 
 
@@ -365,6 +391,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), allowsDuplicateValues, orderedValues, defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeClass, aliases);
+        return Objects.hash(super.hashCode(), namespacePath, allowsDuplicateValues, orderedValues, defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeClass, aliases);
     }
 }

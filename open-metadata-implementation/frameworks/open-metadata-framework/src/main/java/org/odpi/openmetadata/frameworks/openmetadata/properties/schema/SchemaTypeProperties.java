@@ -65,12 +65,12 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            usage             = template.getUsage();
+            usage            = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespacePath    = template.getNamespacePath();
             formula          = template.getFormula();
-            formulaType       = template.getFormulaType();
-            queries           = template.getQueries();
+            formulaType      = template.getFormulaType();
+            queries          = template.getQueries();
         }
     }
 

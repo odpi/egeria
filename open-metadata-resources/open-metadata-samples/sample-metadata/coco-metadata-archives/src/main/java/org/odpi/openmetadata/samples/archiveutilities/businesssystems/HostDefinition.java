@@ -17,21 +17,25 @@ public enum HostDefinition
      * ams03 - Amsterdam data centre standard machine 02.
      */
     COCO_MFG_PLANNING_AMS_HOST("ams03",
-                              "Amsterdam data centre standard machine 03.",
-                              HostTypeDefinition.BARE_METAL,
-                              FacilityDefinition.AMSTERDAM_DC,
-                              "https://ams03.coco.com",
-                              "Ubuntu",
-                              "23.04",
-                              null,
-                              new String[]{"it-machines"},
-                              0),
+                               "Amsterdam-03",
+                               "Amsterdam data centre standard machine 03.",
+                               "AMS03BM",
+                               HostTypeDefinition.BARE_METAL,
+                               FacilityDefinition.AMSTERDAM_DC,
+                               "https://ams03.coco.com",
+                               "Ubuntu",
+                               "23.04",
+                               null,
+                               new String[]{"it-machines"},
+                               0),
 
     /**
      * ams45 - Amsterdam data centre standard machine 45.
      */
     COCO_PROCUREMENT_AMS_HOST("ams45",
+                              "Amsterdam-45",
                               "Amsterdam data centre standard machine 45.",
+                              "AMS45BM",
                               HostTypeDefinition.BARE_METAL,
                               FacilityDefinition.AMSTERDAM_DC,
                               "https://ams45.coco.com",
@@ -45,7 +49,9 @@ public enum HostDefinition
      * 327-3 - NY data center standard machine 327-3.
      */
     COCO_PROCUREMENT_NY_HOST("327-3",
+                             "NewYork-327-3",
                              "NY data center standard machine 327-3.",
+                             "NY327-3BM",
                              HostTypeDefinition.BARE_METAL,
                              FacilityDefinition.NEW_YORK_DC,
                              "https://ny327-3.coco.com",
@@ -59,7 +65,9 @@ public enum HostDefinition
      * winch12 - Winchester data centre standard machine 12.
      */
     COCO_PROCUREMENT_WINCH_HOST("winch12",
+                                "Winchester-12",
                                 "Winchester data centre standard machine 12.",
+                                "WINCHESTER12BM",
                                 HostTypeDefinition.BARE_METAL,
                                 FacilityDefinition.WINCHESTER_DC,
                                 "https://winch12.coco.com",
@@ -73,7 +81,9 @@ public enum HostDefinition
      * winch17 - Winchester data centre standard machine 17.
      */
     DEPOT_MANAGEMENT_WINCH_HOST("winch17",
+                                "Winchester-17",
                                 "Winchester data centre standard machine 17.",
+                                "WINCHESTER17BM",
                                 HostTypeDefinition.BARE_METAL,
                                 FacilityDefinition.WINCHESTER_DC,
                                 "https://winch17.coco.com",
@@ -87,21 +97,25 @@ public enum HostDefinition
      * kcdepot - Kansas City data centre standard machine 01.
      */
     DEPOT_MANAGEMENT_KC_HOST("kcdepot",
-                                "Kansas City data centre standard machine 01.",
-                                HostTypeDefinition.BARE_METAL,
-                                FacilityDefinition.WINCHESTER_DC,
-                                "https://kc01.coco.com",
-                                "Ubuntu",
-                                "23.04",
-                                null,
-                                new String[]{"it-machines"},
-                                510),
+                             "KansasCity-Depot-01",
+                             "Kansas City data centre standard machine 01.",
+                             "WINCHESTER12BM",
+                             HostTypeDefinition.BARE_METAL,
+                             FacilityDefinition.WINCHESTER_DC,
+                             "https://kc01.coco.com",
+                             "Ubuntu",
+                             "23.04",
+                             null,
+                             new String[]{"it-machines"},
+                             510),
 
     /**
      * capital - Austin data centre standard machine capital.
      */
     COCO_PROCUREMENT_AUS_HOST("capital",
+                              "capital",
                               "Austin data centre standard machine capital.",
+                              "AUSCAPBM",
                               HostTypeDefinition.BARE_METAL,
                               FacilityDefinition.AUSTIN_DC,
                               "https://capital.aus.coco.com",
@@ -115,7 +129,9 @@ public enum HostDefinition
      * ed01 - Edmonton data centre standard machine 01.
      */
     COCO_PROCUREMENT_ED_HOST("ed01",
+                             "Edmonton-01",
                              "Edmonton data centre standard machine 01.",
+                             "ED01BM",
                              HostTypeDefinition.BARE_METAL,
                              FacilityDefinition.EDMONTON_OFFICE,
                              "https://ed01.coco.com",
@@ -129,21 +145,25 @@ public enum HostDefinition
      * ed02 - Edmonton data centre standard machine 17.
      */
     DEPOT_MANAGEMENT_ED_HOST("ed02",
-                                "Edmonton data centre standard machine 02.",
-                                HostTypeDefinition.BARE_METAL,
-                                FacilityDefinition.EDMONTON_OFFICE,
-                                "https://ed02.coco.com",
-                                "Ubuntu",
-                                "23.04",
-                                null,
-                                new String[]{"it-machines"},
-                                520),
+                             "Edmonton-2",
+                             "Edmonton data centre standard machine 02.",
+                             "ED02BM",
+                             HostTypeDefinition.BARE_METAL,
+                             FacilityDefinition.EDMONTON_OFFICE,
+                             "https://ed02.coco.com",
+                             "Ubuntu",
+                             "23.04",
+                             null,
+                             new String[]{"it-machines"},
+                             520),
 
     /**
      * ams23 - Amsterdam data centre standard machine 23.
      */
     COCO_INVENTORY_HOST("ams23",
+                        "Amsterdam-23",
                         "Amsterdam data centre standard machine 23.",
+                        "AMS23BM",
                         HostTypeDefinition.BARE_METAL,
                         FacilityDefinition.AMSTERDAM_DC,
                         "https://ams23.coco.com",
@@ -157,7 +177,9 @@ public enum HostDefinition
      * ams04 - Amsterdam data centre standard machine 04.
      */
     COCO_SUS_AMS_HOST("ams04",
+                      "Amsterdam-4",
                       "Amsterdam data centre standard machine 04.",
+                      "AMS04BM",
                       HostTypeDefinition.BARE_METAL,
                       FacilityDefinition.AMSTERDAM_DC,
                       "https://ams04.coco.com",
@@ -171,7 +193,9 @@ public enum HostDefinition
      * ams02 - Amsterdam data centre standard machine 02.
      */
     COCO_HRIM_HOST("ams02",
+                   "Amsterdam-2",
                    "Amsterdam data centre standard machine 02.",
+                   "AMS02BM",
                    HostTypeDefinition.BARE_METAL,
                    FacilityDefinition.AMSTERDAM_DC,
                    "https://ams02.coco.com",
@@ -185,7 +209,9 @@ public enum HostDefinition
      * ams06 - Amsterdam data centre standard machine 06.
      */
     COCO_PAGES_HOST("ams06",
+                    "Amsterdam-6",
                     "Amsterdam data centre standard machine 06.",
+                    "AMS06BM",
                     HostTypeDefinition.BARE_METAL,
                     FacilityDefinition.AMSTERDAM_DC,
                     "https://ams06.coco.com",
@@ -199,7 +225,9 @@ public enum HostDefinition
      * ams01 - Amsterdam data centre standard machine 01.
      */
     SEC_ADMIN_HOST("ams01",
+                   "Amsterdam-1",
                    "Amsterdam data centre standard machine 01.",
+                   "AMS01BM",
                    HostTypeDefinition.BARE_METAL,
                    FacilityDefinition.AMSTERDAM_DC,
                    "https://ams01.coco.com",
@@ -213,7 +241,9 @@ public enum HostDefinition
      * lon02 - London data centre standard machine 02.
      */
     UK_PAYROLL_HOST("lon02",
+                    "London-2",
                     "London data centre standard machine 02.",
+                    "LON02BM",
                     HostTypeDefinition.BARE_METAL,
                     FacilityDefinition.LONDON_DC,
                     "https://lon02.coco.com",
@@ -227,7 +257,9 @@ public enum HostDefinition
      * ams56 - Amsterdam data centre standard machine 56.
      */
     NL_PAYROLL_HOST("ams56",
+                    "Amsterdam-56",
                     "Amsterdam data centre standard machine 56.",
+                    "AMS56BM",
                     HostTypeDefinition.BARE_METAL,
                     FacilityDefinition.AMSTERDAM_DC,
                     "https://ams56.coco.com",
@@ -241,7 +273,9 @@ public enum HostDefinition
      * ed05 - Edmonton data centre standard machine 05.
      */
     CA_PAYROLL_HOST("ed05",
+                    "Edmonton-5",
                     "Edmonton data centre standard machine 05.",
+                    "EDMONTON05BM",
                     HostTypeDefinition.BARE_METAL,
                     FacilityDefinition.EDMONTON_OFFICE,
                     "https://ed05.coco.com",
@@ -255,10 +289,12 @@ public enum HostDefinition
      * mopac - Austin data center standard machine mopac.
      */
     AUS_MANUFACTURING_CONTROL_HOST("mopac",
+                                   "MOPAC",
                                    "Austin data center standard machine mopac.",
+                                   "AUS07BM",
                                    HostTypeDefinition.BARE_METAL,
                                    FacilityDefinition.AUSTIN_DC,
-                                   "https://mopac.aus.coc.com",
+                                   "https://mopac.aus.coco.com",
                                    "Linux",
                                    "21.1",
                                    null,
@@ -269,21 +305,25 @@ public enum HostDefinition
      * winch06 - Winchester data centre metadata host Edge01.
      */
     AUS_OMAG_EDGE_03("longhorn",
-                       "Austin data centre standard machine for metadata host Edge03.",
-                       HostTypeDefinition.BARE_METAL,
-                       FacilityDefinition.WINCHESTER_DC,
-                       "https://winch06.coco.com",
-                       "Ubuntu",
-                       "22.04",
-                       null,
-                       new String[]{"it-machines"},
-                       2000),
+                     "longhorn",
+                     "Austin data centre standard machine for metadata host Edge03.",
+                     "AUS08BM",
+                     HostTypeDefinition.BARE_METAL,
+                     FacilityDefinition.WINCHESTER_DC,
+                     "https://aus08.coco.com",
+                     "Ubuntu",
+                     "22.04",
+                     null,
+                     new String[]{"it-machines"},
+                     2000),
 
     /**
      * winch01 - Winchester data centre standard machine 01.
      */
     WINCH_MANUFACTURING_CONTROL_HOST("winch01",
+                                     "Winchester-01",
                                      "Winchester data centre standard machine 01.",
+                                     "WINCHESTER01BM",
                                      HostTypeDefinition.BARE_METAL,
                                      FacilityDefinition.WINCHESTER_DC,
                                      "https://winch01.coco.com",
@@ -297,7 +337,9 @@ public enum HostDefinition
      * winch06 - Winchester data centre metadata host Edge01.
      */
     WINCH_OMAG_EDGE_01("winch06",
+                       "Winchester-06",
                        "Winchester data centre metadata host machine 06.",
+                       "WINCHESTER06BM",
                        HostTypeDefinition.BARE_METAL,
                        FacilityDefinition.WINCHESTER_DC,
                        "https://winch06.coco.com",
@@ -312,7 +354,9 @@ public enum HostDefinition
      * ed04 - Edmonton data centre standard machine 04.
      */
     ED_MANUFACTURING_CONTROL_HOST("ed04",
+                                  "Edmonton-04",
                                   "Edmonton data centre standard machine 04.",
+                                  "EDMONTON04BM",
                                   HostTypeDefinition.BARE_METAL,
                                   FacilityDefinition.EDMONTON_OFFICE,
                                   "https://ed04.coco.com",
@@ -326,7 +370,9 @@ public enum HostDefinition
      * ed04 - Edmonton data centre standard machine 04.
      */
     ED_OMAG_EDGE_02("ed013",
+                    "Edmonton-13",
                     "Edmonton data centre metadata host machine 13.",
+                    "EDMONTON013BM",
                     HostTypeDefinition.BARE_METAL,
                     FacilityDefinition.EDMONTON_OFFICE,
                     "https://ed013.coco.com",
@@ -340,7 +386,9 @@ public enum HostDefinition
      * ams14 - Amsterdam data centre standard machine ams14.
      */
     HAZ_MAT_HOST("ams14",
+                 "Amsterdam-14",
                  "Amsterdam data centre standard machine ams14.",
+                 "AMS14BM",
                  HostTypeDefinition.BARE_METAL,
                  FacilityDefinition.AMSTERDAM_DC,
                  "https://ams14.coco.com",
@@ -352,7 +400,9 @@ public enum HostDefinition
     ;
 
     private final String                      hostId;
+    private final String                      displayName;
     private final String                      description;
+    private final String                      resourceName;
     private final HostTypeDefinition          hostType;
     private final FacilityDefinition          hostLocation;
     private final String                      networkAddress;
@@ -378,7 +428,9 @@ public enum HostDefinition
      * @param loadTime          time offset to set creationTime
      */
     HostDefinition(String                      hostId,
+                   String                      displayName,
                    String                      description,
+                   String                      resourceName,
                    HostTypeDefinition          hostType,
                    FacilityDefinition          hostLocation,
                    String                      networkAddress,
@@ -389,7 +441,9 @@ public enum HostDefinition
                    long                        loadTime)
     {
         this.hostId = hostId;
+        this.displayName = displayName;
         this.description = description;
+        this.resourceName = resourceName;
         this.hostType = hostType;
         this.hostLocation = hostLocation;
         this.networkAddress = networkAddress;
@@ -424,6 +478,16 @@ public enum HostDefinition
 
 
     /**
+     * Return the display name for this system.
+     *
+     * @return string
+     */
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    /**
      * Return the description of this system.
      *
      * @return string
@@ -431,6 +495,17 @@ public enum HostDefinition
     public String getDescription()
     {
         return description;
+    }
+
+
+    /**
+     * Return the resource name for this system.
+     *
+     * @return string
+     */
+    public String getResourceName()
+    {
+        return resourceName;
     }
 
 
@@ -506,9 +581,20 @@ public enum HostDefinition
 
 
     /**
+     * Return the category of the hosts.
+     *
+     * @return string
+     */
+    public String getCategory()
+    {
+        return "Data Center Assets";
+    }
+
+
+    /**
      * Return the host that this system system is deployed on.
      *
-     * @return
+     * @return host definition
      */
     public HostDefinition getDeployedOn()
     {

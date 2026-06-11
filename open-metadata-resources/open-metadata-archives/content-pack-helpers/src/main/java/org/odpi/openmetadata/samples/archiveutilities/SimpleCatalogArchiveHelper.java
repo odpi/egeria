@@ -3839,6 +3839,9 @@ public class SimpleCatalogArchiveHelper
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
      * @param displayName display name for the asset
+     * @param resourceName full technical name for the asset
+     * @param pathName qualifying path information
+     * @param category category of data asset
      * @param deployedImplementationType type of technology
      * @param versionIdentifier version for the asset
      * @param description description about the asset
@@ -3852,6 +3855,9 @@ public class SimpleCatalogArchiveHelper
     public String addDataAsset(String               typeName,
                                String               qualifiedName,
                                String               displayName,
+                               String               resourceName,
+                               String               pathName,
+                               String               category,
                                String               deployedImplementationType,
                                String               versionIdentifier,
                                String               description,
@@ -3882,6 +3888,9 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_NAME.name, resourceName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE_PATH.name, pathName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
@@ -3910,6 +3919,9 @@ public class SimpleCatalogArchiveHelper
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
      * @param displayName display name for the asset
+     * @param resourceName full technical name for the asset
+     * @param pathName qualifying path information
+     * @param category category of data asset
      * @param deployedImplementationType type of technology
      * @param versionIdentifier version for the asset
      * @param description description about the asset
@@ -3924,6 +3936,9 @@ public class SimpleCatalogArchiveHelper
     public String addInfrastructureAsset(String               typeName,
                                          String               qualifiedName,
                                          String               displayName,
+                                         String               resourceName,
+                                         String               pathName,
+                                         String               category,
                                          String               deployedImplementationType,
                                          String               versionIdentifier,
                                          String               description,
@@ -3970,6 +3985,9 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_NAME.name, resourceName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE_PATH.name, pathName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
@@ -3998,6 +4016,9 @@ public class SimpleCatalogArchiveHelper
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
      * @param displayName display name for the asset
+     * @param resourceName full technical name for the asset
+     * @param pathName qualifying path information
+     * @param category category of data asset
      * @param deployedImplementationType type of technology
      * @param versionIdentifier version for the asset
      * @param description description about the asset
@@ -4012,6 +4033,9 @@ public class SimpleCatalogArchiveHelper
     public String addProcessAsset(String               typeName,
                                   String               qualifiedName,
                                   String               displayName,
+                                  String               resourceName,
+                                  String               pathName,
+                                  String               category,
                                   String               deployedImplementationType,
                                   String               versionIdentifier,
                                   String               description,
@@ -4044,6 +4068,9 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_NAME.name, resourceName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE_PATH.name, pathName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
@@ -4568,9 +4595,6 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-
-
-
     /**
      * Create the schema type for an API operation.
      *
@@ -4578,6 +4602,7 @@ public class SimpleCatalogArchiveHelper
      * @param assetTypeName anchor type name
      * @param apiSchemaTypeGUID unique identifier of top level schemaType
      * @param qualifiedName unique name for the schema type
+     * @param namespacePath path name to api operation
      * @param displayName display name for the schema type
      * @param description description about the schema type
      * @param path the path name for the operation
@@ -4591,6 +4616,7 @@ public class SimpleCatalogArchiveHelper
                                   String              apiSchemaTypeGUID,
                                   String              qualifiedName,
                                   String              displayName,
+                                  String              namespacePath,
                                   String              description,
                                   String              path,
                                   String              command,
@@ -4600,6 +4626,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE_PATH.name, namespacePath, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PATH.name, path, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COMMAND.name, command, methodName);
@@ -4894,6 +4921,7 @@ public class SimpleCatalogArchiveHelper
      * @param schemaTypeName name of schema type subtype to use - default is PrimitiveSchemaType
      * @param qualifiedName unique name for the schema attribute
      * @param displayName display name for the schema attribute
+     * @param namespacePath fully qualified path.
      * @param description description about the schema attribute
      * @param dataType data type for the schema attribute
      * @param length length of the storage used by the schema attribute
@@ -4908,6 +4936,7 @@ public class SimpleCatalogArchiveHelper
                                      String              schemaTypeName,
                                      String              qualifiedName,
                                      String              displayName,
+                                     String              namespacePath,
                                      String              description,
                                      String              dataType,
                                      int                 length,
@@ -4932,6 +4961,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.NAMESPACE_PATH.name, namespacePath, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.LENGTH.name, length, methodName);
         entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);

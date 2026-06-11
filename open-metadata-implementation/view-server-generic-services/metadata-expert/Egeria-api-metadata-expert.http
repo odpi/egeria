@@ -502,7 +502,7 @@ Content-Type: application/json
 ###
 # @name findElementsForAnchor
 # Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# title, text, summary, identifier or description.
 # The breadth of the search is determined by the supplied anchorGUID.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/for-anchor/{{anchorGUID}}
 Authorization: Bearer {{token}}
