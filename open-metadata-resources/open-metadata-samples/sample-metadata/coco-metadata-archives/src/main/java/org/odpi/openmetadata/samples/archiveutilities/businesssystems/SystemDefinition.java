@@ -609,6 +609,16 @@ public enum SystemDefinition
 
 
     /**
+     * Return the category of the hosts.
+     *
+     * @return string
+     */
+    public String getCategory()
+    {
+        return "Data Center Assets";
+    }
+
+    /**
      * Return the userId used by this server.  Will be null for a cloud service.
      *
      * @return string

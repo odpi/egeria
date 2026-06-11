@@ -220,8 +220,6 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, PlaceholderProperty.FILE_EXTENSION.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
@@ -239,6 +237,9 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
                                                       qualifiedName,
                                                       PlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                                                      "Basic Templates",
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -460,8 +461,6 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.IDENTIFIER.name, serverName);
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.RESOURCE_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.NAMESPACE_PATH.name, namespacePath);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -478,6 +477,9 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String assetGUID = archiveHelper.addInfrastructureAsset(deployedImplementationType.getAssociatedTypeName(),
                                                                 qualifiedName,
                                                                 serverName,
+                                                                PlaceholderProperty.RESOURCE_NAME.getPlaceholder(),
+                                                                namespacePath,
+                                                                "Basic Templates",
                                                                 deployedImplementationType.getDeployedImplementationType(),
                                                                 serverVersionIdentifier,
                                                                 description,
@@ -735,10 +737,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         final String methodName = "createHostCatalogTemplate";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + PlaceholderProperty.HOST_URL.getPlaceholder();
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.HOST_URL.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
@@ -749,13 +748,16 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String assetGUID = archiveHelper.addInfrastructureAsset(deployedImplementationType.getAssociatedTypeName(),
                                                                 qualifiedName,
                                                                 PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                                PlaceholderProperty.HOST_URL.getPlaceholder(),
+                                                                null,
+                                                                "Basic Templates",
                                                                 deployedImplementationType.getDeployedImplementationType(),
                                                                 PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                                 DeploymentStatus.ACTIVE,
                                                                 null,
                                                                 null,
-                                                                extendedProperties,
+                                                                null,
                                                                 classifications);
         assert(guid.equals(assetGUID));
 
@@ -928,16 +930,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         final String methodName = "createDataAssetCatalogTemplate";
 
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-
-        if (suppliedExtendedProperties != null)
-        {
-            extendedProperties.putAll(suppliedExtendedProperties);
-        }
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a data asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -957,12 +950,15 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
                                                       qualifiedName,
                                                       assetDisplayName,
+                                                      null,
+                                                      null,
+                                                      "Basic Templates",
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       versionIdentifier,
                                                       assetDescription,
                                                       ContentStatus.ACTIVE,
                                                       null,
-                                                      extendedProperties,
+                                                      suppliedExtendedProperties,
                                                       classifications);
         assert(templateGUID.equals(assetGUID));
 
@@ -1057,16 +1053,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         final String methodName = "createTabularDataSetCatalogTemplate";
 
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-
-        if (suppliedExtendedProperties != null)
-        {
-            extendedProperties.putAll(suppliedExtendedProperties);
-        }
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a tabular data set of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -1087,12 +1074,15 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
                                                       qualifiedName,
                                                       assetName,
+                                                      null,
+                                                      null,
+                                                      "Basic Templates",
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       versionIdentifier,
                                                       assetDescription,
                                                       ContentStatus.ACTIVE,
                                                       null,
-                                                      extendedProperties,
+                                                      suppliedExtendedProperties,
                                                       classifications);
         assert(templateGUID.equals(assetGUID));
 

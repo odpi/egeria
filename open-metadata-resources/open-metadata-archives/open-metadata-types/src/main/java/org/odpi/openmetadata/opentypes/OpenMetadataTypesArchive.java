@@ -170,6 +170,7 @@ public class OpenMetadataTypesArchive
         update0424GovernanceZones();
         update0455ExceptionManagement();
         update0485DataProcessingPurposes();
+        update0505SchemaAttributes();
         update0595DesignPatterns();
         add0705DataSharing();
     }
@@ -964,6 +965,38 @@ public class OpenMetadataTypesArchive
         return relationshipDef;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0505SchemaAttributes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeEntity());
+
+
+    }
+
+    private TypeDefPatch updateSchemaAttributeEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE_PATH));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

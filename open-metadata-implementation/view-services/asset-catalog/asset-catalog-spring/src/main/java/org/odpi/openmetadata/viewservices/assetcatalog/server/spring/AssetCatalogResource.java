@@ -91,9 +91,9 @@ public class AssetCatalogResource
                     url="https://egeria-project.org/concepts/asset/"))
 
     public OpenMetadataRootElementResponse getAssetGraph(@PathVariable String serverName,
-                                            @PathVariable String assetGUID,
-                                            @RequestBody(required = false)
-                                            ResultsRequestBody requestBody)
+                                                         @PathVariable String assetGUID,
+                                                         @RequestBody(required = false)
+                                                             ResultsRequestBody requestBody)
     {
         return restAPI.getAssetGraph(serverName, assetGUID, requestBody);
     }

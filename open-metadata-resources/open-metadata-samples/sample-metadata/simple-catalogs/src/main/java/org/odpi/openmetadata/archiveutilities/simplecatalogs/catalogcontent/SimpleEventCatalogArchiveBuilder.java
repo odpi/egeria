@@ -38,27 +38,34 @@ public class SimpleEventCatalogArchiveBuilder
     /*
      * Names for event definitions
      */
-    static final String customerChangeQualifiedName = "global-event-bus/CustomerDomain/Topics/CustomerChange";
+    private static final String customerChangeCategoryName = "Customer Domain";
+
+    static final String customerChangeQualifiedName = OpenMetadataType.TOPIC.typeName + "::" + "global-event-bus/CustomerDomain/Topics/CustomerChange";
+    private static final String customerChangeResourceName  = "global-event-bus/CustomerDomain/Topics/CustomerChange";
+    private static final String customerChangePathName      = "global-event-bus/CustomerDomain/Topics";
     private static final String customerChangeDisplayName   = "CustomerChangeTopic";
     private static final String customerChangeDescription   = "Topic for distributing updates when a customer status changes.";
 
-    static final String newCustomerStatusQualifiedName  = "global-event-bus/CustomerDomain/EventTypes/NewCustomerStatus";
+    static final String newCustomerStatusQualifiedName  = OpenMetadataType.EVENT_TYPE.typeName + "::" + "global-event-bus/CustomerDomain/EventTypes/NewCustomerStatus";
     private static final String newCustomerStatusDisplayName    = "New Customer Status Event Type";
     private static final String newCustomerStatusDescription    = "Event payload to notify subscribers that a customer status has changed.";
 
-    static final String customerIdQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerId";
+    static final String customerIdQualifiedName = OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName + "::" + "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerId";
+    private static final String customerIdPathName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers";
     private static final String customerIdDisplayName   = "customerId";
     private static final String customerIdDescription   = "The unique identifier assigned internally for a customer.";
     private static final String customerIdDataType      = "string";
     private static final int    customerIdLength        = 12;
 
-    static final String customerNameQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerName";
+    static final String customerNameQualifiedName = OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName + "::" + "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerName";
+    private static final String customerNamePathName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers";
     private static final String customerNameDisplayName   = "customerName";
     private static final String customerNameDescription   = "The name for a customer - as supplied by the customer.";
     private static final String customerNameDataType      = "string";
     private static final int    customerNameLength        = 40;
 
-    static final String customerStatusQualifiedName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerStatus";
+    static final String customerStatusQualifiedName = OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName + "::" + "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers/customerStatus";
+    private static final String customerStatusPathName = "global-event-bus/CustomerDomain/EventAttributes/CustomerIdentifiers";
     private static final String customerStatusDisplayName   = "customerStatus";
     private static final String customerStatusDescription   = "The calculated status for a customer indicating their value to the organization.";
     private static final String customerStatusDataType      = "string";
@@ -141,6 +148,9 @@ public class SimpleEventCatalogArchiveBuilder
         String assetGUID = archiveHelper.addDataAsset(OpenMetadataType.TOPIC.typeName,
                                                       customerChangeQualifiedName,
                                                       customerChangeDisplayName,
+                                                      customerChangeResourceName,
+                                                      customerChangePathName,
+                                                      customerChangeCategoryName,
                                                       DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
                                                       versionName,
                                                       customerChangeDescription,
@@ -173,6 +183,7 @@ public class SimpleEventCatalogArchiveBuilder
                                                                      null,
                                                                      customerIdQualifiedName,
                                                                      customerIdDisplayName,
+                                                                     customerIdPathName,
                                                                      customerIdDescription,
                                                                      customerIdDataType,
                                                                      customerIdLength,
@@ -187,6 +198,7 @@ public class SimpleEventCatalogArchiveBuilder
                                                               null,
                                                               customerNameQualifiedName,
                                                               customerNameDisplayName,
+                                                              customerNamePathName,
                                                               customerNameDescription,
                                                               customerNameDataType,
                                                               customerNameLength,
@@ -201,6 +213,7 @@ public class SimpleEventCatalogArchiveBuilder
                                                               null,
                                                               customerStatusQualifiedName,
                                                               customerStatusDisplayName,
+                                                              customerStatusPathName,
                                                               customerStatusDescription,
                                                               customerStatusDataType,
                                                               customerStatusLength,

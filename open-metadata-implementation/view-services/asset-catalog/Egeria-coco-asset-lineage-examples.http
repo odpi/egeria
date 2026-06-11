@@ -57,7 +57,7 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "name" : "lon02",
-  "namePropertyName" : "displayName"
+  "namePropertyName" : "identifier"
 }
 
 > {% client.global.set("lon02GUID", response.body.guid); %}
@@ -224,6 +224,51 @@ Content-Type: application/json
 #
 # Lineage: https://egeria-project.org/features/lineage-management/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{simpleDatabaseGUID}}/as-lineage-graph
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+
+
+###
+# =====================================================================================================================
+# Asset search requests around RETAILSCHEMA machine - only gary has access
+
+
+###
+# @name get the GUID for a named asset
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "RETAILSCHEMA",
+  "namePropertyName" : "displayName",
+  "metadataElementTypeName" : "DeployedDatabaseSchema"
+}
+
+> {% client.global.set("retailSchemaGUID", response.body.guid); %}
+
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{retailSchemaGUID}}/as-graph
+Authorization: Bearer {{peterToken}}
+Content-Type: application/json
+
+
+###
+# @name=getAssetLineageGraph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{retailSchemaGUID}}/as-lineage-graph
 Authorization: Bearer {{peterToken}}
 Content-Type: application/json
 

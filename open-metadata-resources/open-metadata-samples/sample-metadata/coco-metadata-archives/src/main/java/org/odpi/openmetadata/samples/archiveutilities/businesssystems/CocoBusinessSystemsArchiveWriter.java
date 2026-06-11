@@ -9,7 +9,6 @@ import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -82,6 +81,9 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (HostDefinition hostDefinition : HostDefinition.values())
         {
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataProperty.IDENTIFIER.name, hostDefinition.getHostId());
 
             Map<String, String> additionalProperties = new HashMap<>();
 
@@ -90,14 +92,17 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
 
             archiveHelper.addInfrastructureAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
                                                  hostDefinition.getQualifiedName(),
-                                                 hostDefinition.getHostId(),
-                                                 null,
+                                                 hostDefinition.getDisplayName(),
+                                                 hostDefinition.getResourceName(),
+                                                 hostDefinition.getNetworkAddress(),
+                                                 hostDefinition.getCategory(),
+                                                 hostDefinition.getHostType().getDeployedImplementationType(),
                                                  versionName,
                                                  hostDefinition.getDescription(),
                                                  DeploymentStatus.ACTIVE,
                                                  hostDefinition.getZones(),
                                                  additionalProperties,
-                                                 null,
+                                                 extendedProperties,
                                                  null);
 
             archiveHelper.addKnownLocationRelationship(hostDefinition.getHostLocation().getQualifiedName(),
@@ -113,19 +118,22 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (SystemDefinition systemDefinition : SystemDefinition.values())
         {
-            Map<String, Object> extendedProperties = new HashMap<>();
+            Map<String, Object> extendedProperties = null;
 
-            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
             if (systemDefinition.getUserId() != null)
             {
+                extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.USER_ID.name, systemDefinition.getUserId());
             }
 
             archiveHelper.setGUID(systemDefinition.getQualifiedName(), systemDefinition.getSystemGUID());
-            String serverGUID = archiveHelper.addInfrastructureAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
+            String serverGUID = archiveHelper.addInfrastructureAsset(systemDefinition.getSystemType().getOpenMetadataTypeName(),
                                                                      systemDefinition.getQualifiedName(),
+                                                                     systemDefinition.getDescription(),
                                                                      systemDefinition.getSystemId(),
-                                                                     DeployedImplementationType.SOFTWARE_SERVER.getDeployedImplementationType(),
+                                                                     systemDefinition.getNetworkAddress(),
+                                                                     systemDefinition.getCategory(),
+                                                                     systemDefinition.getSystemType().getPreferredValue(),
                                                                      systemDefinition.getVersionIdentifier(),
                                                                      systemDefinition.getDescription(),
                                                                      DeploymentStatus.ACTIVE,
