@@ -2241,7 +2241,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Process an event that was published by the Asset Manager OMAS.
+     * Process an event that was published by the Open Metadata Framework Manager.
      *
      * @param event event object - call getEventType to find out what type of event.
      */

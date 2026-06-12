@@ -25,9 +25,6 @@ import java.util.Date;
  */
 public abstract class DynamicIntegrationConnectorBase extends IntegrationConnectorBase implements CatalogTargetFactory
 {
-    protected Date lastRefreshCompleteTime = null;
-
-
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
@@ -88,9 +85,6 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
                 }
             }
         }
-
-
-        lastRefreshCompleteTime = new Date();
     }
 
 

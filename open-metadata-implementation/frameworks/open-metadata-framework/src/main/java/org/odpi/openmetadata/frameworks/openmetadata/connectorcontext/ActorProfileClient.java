@@ -98,9 +98,9 @@ public class ActorProfileClient extends ConnectorContextClientBase
     {
         String actorProfileGUID = actorProfileHandler.createActorProfile(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(actorProfileGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(actorProfileGUID);
         }
 
         return actorProfileGUID;
@@ -134,9 +134,9 @@ public class ActorProfileClient extends ConnectorContextClientBase
     {
         String actorProfileGUID = actorProfileHandler.createActorProfileFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(actorProfileGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(actorProfileGUID);
         }
 
         return actorProfileGUID;
@@ -162,9 +162,9 @@ public class ActorProfileClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = actorProfileHandler.updateActorProfile(connectorUserId, actorProfileGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(actorProfileGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(actorProfileGUID);
         }
 
         return updateOccurred;
@@ -312,9 +312,9 @@ public class ActorProfileClient extends ConnectorContextClientBase
     {
         actorProfileHandler.deleteActorProfile(connectorUserId, actorProfileGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(actorProfileGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(actorProfileGUID);
         }
     }
 

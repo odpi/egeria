@@ -61,7 +61,7 @@ public class HarvestSurveysConnector extends DynamicIntegrationConnectorBase imp
 
 
     /**
-     * Process an event that was published by the Asset Manager OMAS.  Only process new surveys
+     * Process an event that was published by the Open Metadata Framework Manager.  Only process new surveys
      *
      * @param event event object - call getEventType to find out what type of event.
      */

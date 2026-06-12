@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.ContactDetailsHand
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactDetailsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactThroughProperties;
@@ -85,9 +84,9 @@ public class ContactDetailsClient extends ConnectorContextClientBase
                                                                                properties,
                                                                                parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(contactDetailsGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(contactDetailsGUID);
         }
 
         return contactDetailsGUID;
@@ -127,9 +126,9 @@ public class ContactDetailsClient extends ConnectorContextClientBase
                                                                                            placeholderProperties,
                                                                                            parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(contactDetailsGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(contactDetailsGUID);
         }
 
         return contactDetailsGUID;
@@ -155,9 +154,9 @@ public class ContactDetailsClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = contactDetailsHandler.updateContactDetails(connectorUserId, contactDetailsGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(contactDetailsGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(contactDetailsGUID);
         }
 
         return updateOccurred;
@@ -226,9 +225,9 @@ public class ContactDetailsClient extends ConnectorContextClientBase
     {
         contactDetailsHandler.deleteContactDetails(connectorUserId, contactDetailsGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(contactDetailsGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(contactDetailsGUID);
         }
     }
 

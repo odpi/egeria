@@ -79,9 +79,9 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
     {
         String elementGUID = connectorTypeHandler.createConnectorType(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -115,9 +115,9 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
     {
         String elementGUID = connectorTypeHandler.createConnectorTypeFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = connectorTypeHandler.updateConnectorType(connectorUserId, connectorTypeGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(connectorTypeGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(connectorTypeGUID);
         }
 
         return updateOccurred;
@@ -167,9 +167,9 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
     {
         connectorTypeHandler.deleteConnectorType(connectorUserId, connectorTypeGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(connectorTypeGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(connectorTypeGUID);
         }
     }
 

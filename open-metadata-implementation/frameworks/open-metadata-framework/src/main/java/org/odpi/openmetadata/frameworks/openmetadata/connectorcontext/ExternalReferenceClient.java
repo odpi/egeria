@@ -82,9 +82,9 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
     {
         String elementGUID = externalReferenceHandler.createExternalReference(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -118,9 +118,9 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
     {
         String elementGUID = externalReferenceHandler.createExternalReferenceFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -146,9 +146,9 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = externalReferenceHandler.updateExternalReference(connectorUserId, externalReferenceGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(externalReferenceGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(externalReferenceGUID);
         }
 
         return updateOccurred;
@@ -298,9 +298,9 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
     {
         externalReferenceHandler.deleteExternalReference(connectorUserId, externalReferenceGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(externalReferenceGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(externalReferenceGUID);
         }
     }
 

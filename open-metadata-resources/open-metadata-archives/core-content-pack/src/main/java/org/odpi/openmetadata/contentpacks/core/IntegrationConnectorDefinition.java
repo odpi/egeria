@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adapters.connectors.babbage.BabbageAnalyticalEngine
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
+import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -483,6 +484,28 @@ public enum IntegrationConnectorDefinition
                               "2e7ec1b4-a8ba-4be6-b345-2c1735a94c7a",
                               "Babbage Analytical Engine",
                               "Initiates analytical processing that generates statistics on the content and operation of the open metadata ecosystem.  The analytical processors are called lovelace analytical services.",
+                              true,
+                              null,
+                              null,
+                              null,
+                              null,
+                              ContentPackDefinition.CORE_CONTENT_PACK),
+
+    LISKOV_DATA_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
+                              "LiskovDataHubManagerIntegrationConnector",
+                              "Manages the content of the data dictionary for a data hub.",
+                              DataHubManagerProvider.class.getName(),
+                              "DataHubManager",
+                              "datahubnpa",
+                              null,
+                              null,
+                              null,
+                              null,
+                              60*24, // 24 hours
+                              null,
+                              "805026d3-d873-4f11-ab44-5477862aadcf",
+                              "Data Hub Manager",
+                              "Builds a data dictionary for a data hub by scavenging information from the data hub stores.  This includes schema information and the survey reports.",
                               true,
                               null,
                               null,

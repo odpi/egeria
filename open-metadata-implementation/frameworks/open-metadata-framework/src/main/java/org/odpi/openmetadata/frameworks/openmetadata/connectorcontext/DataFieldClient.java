@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
@@ -81,9 +80,9 @@ public class DataFieldClient extends ConnectorContextClientBase
     {
         String elementGUID = dataFieldHandler.createDataField(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -117,9 +116,9 @@ public class DataFieldClient extends ConnectorContextClientBase
     {
         String elementGUID = dataFieldHandler.createDataFieldFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -145,9 +144,9 @@ public class DataFieldClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = dataFieldHandler.updateDataField(connectorUserId, dataFieldGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(dataFieldGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(dataFieldGUID);
         }
 
         return updateOccurred;
@@ -210,9 +209,9 @@ public class DataFieldClient extends ConnectorContextClientBase
     {
         dataFieldHandler.deleteDataField(connectorUserId, dataFieldGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(dataFieldGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(dataFieldGUID);
         }
     }
 

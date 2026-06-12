@@ -116,9 +116,9 @@ public class SchemaTypeClient extends ConnectorContextClientBase
     {
         String elementGUID = schemaTypeHandler.createSchemaType(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -152,9 +152,9 @@ public class SchemaTypeClient extends ConnectorContextClientBase
     {
         String elementGUID = schemaTypeHandler.createSchemaTypeFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -180,9 +180,9 @@ public class SchemaTypeClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = schemaTypeHandler.updateSchemaType(connectorUserId, schemaTypeGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(schemaTypeGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(schemaTypeGUID);
         }
 
         return updateOccurred;
@@ -246,9 +246,9 @@ public class SchemaTypeClient extends ConnectorContextClientBase
     {
         schemaTypeHandler.deleteSchemaType(connectorUserId, schemaTypeGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(schemaTypeGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(schemaTypeGUID);
         }
     }
 

@@ -138,7 +138,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         /*
          * Iterate through the schema attached to the parent catalog.
          */
-        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
+        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
                                                                        catalogTargetName,
                                                                        connectorName,
                                                                        parentGUID,
@@ -213,7 +213,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         /*
          * Iterate through the schema attached to the parent catalog.
          */
-        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
+        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
                                                                        catalogTargetName,
                                                                        connectorName,
                                                                        parentGUID,

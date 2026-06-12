@@ -79,9 +79,9 @@ public class DataValueSpecificationClient extends ConnectorContextClientBase
     {
         String elementGUID = dataValueSpecificationHandler.createDataValueSpecification(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -115,9 +115,9 @@ public class DataValueSpecificationClient extends ConnectorContextClientBase
     {
         String elementGUID = dataValueSpecificationHandler.createDataValueSpecificationFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class DataValueSpecificationClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = dataValueSpecificationHandler.updateDataValueSpecification(connectorUserId, dataValueSpecificationGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(dataValueSpecificationGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(dataValueSpecificationGUID);
         }
 
         return updateOccurred;
@@ -293,9 +293,9 @@ public class DataValueSpecificationClient extends ConnectorContextClientBase
     {
         dataValueSpecificationHandler.deleteDataValueSpecification(connectorUserId, dataValueSpecificationGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(dataValueSpecificationGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(dataValueSpecificationGUID);
         }
     }
 

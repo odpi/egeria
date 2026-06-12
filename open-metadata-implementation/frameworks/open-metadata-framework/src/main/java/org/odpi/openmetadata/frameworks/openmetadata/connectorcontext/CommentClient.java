@@ -79,9 +79,9 @@ public class CommentClient extends ConnectorContextClientBase
     {
         String commentGUID = commentHandler.addCommentToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(commentGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(commentGUID);
         }
 
         return commentGUID;
@@ -108,9 +108,9 @@ public class CommentClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = commentHandler.updateComment(connectorUserId, commentGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(commentGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(commentGUID);
         }
 
         return updateOccurred;
@@ -179,9 +179,9 @@ public class CommentClient extends ConnectorContextClientBase
     {
         commentHandler.deleteComment(connectorUserId, commentGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(commentGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(commentGUID);
         }
     }
 

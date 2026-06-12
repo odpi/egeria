@@ -69,7 +69,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         if (myContext != null)
         {
-            myContext.registerListener(this);
+            myContext.registerOpenLineageListener(this);
         }
     }
 

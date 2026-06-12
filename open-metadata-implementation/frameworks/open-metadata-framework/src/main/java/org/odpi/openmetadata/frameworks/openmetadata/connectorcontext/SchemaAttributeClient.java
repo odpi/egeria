@@ -93,9 +93,9 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
     {
         String elementGUID = schemaAttributeHandler.createSchemaAttribute(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -130,9 +130,9 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
     {
         String elementGUID = schemaAttributeHandler.createSchemaAttributeFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -158,9 +158,9 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = schemaAttributeHandler.updateSchemaAttribute(connectorUserId, schemaAttributeGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(schemaAttributeGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(schemaAttributeGUID);
         }
 
         return updateOccurred;

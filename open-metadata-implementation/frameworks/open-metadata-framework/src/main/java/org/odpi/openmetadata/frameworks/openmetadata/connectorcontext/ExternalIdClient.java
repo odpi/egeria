@@ -131,9 +131,9 @@ public class ExternalIdClient extends ConnectorContextClientBase
                                                             null);
         }
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -167,9 +167,9 @@ public class ExternalIdClient extends ConnectorContextClientBase
     {
         String elementGUID = externalIdHandler.createExternalIdFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -195,9 +195,9 @@ public class ExternalIdClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = externalIdHandler.updateExternalId(connectorUserId, externalIdGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(externalIdGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(externalIdGUID);
         }
 
         return updateOccurred;
@@ -435,9 +435,9 @@ public class ExternalIdClient extends ConnectorContextClientBase
     {
         externalIdHandler.deleteExternalId(connectorUserId, externalIdGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(externalIdGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(externalIdGUID);
         }
     }
 

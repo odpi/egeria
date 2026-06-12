@@ -73,9 +73,9 @@ public class LikeClient extends ConnectorContextClientBase
     {
         String likeGUID = likeHandler.addLikeToElement(connectorUserId, elementGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(likeGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(likeGUID);
         }
     }
 
@@ -97,9 +97,9 @@ public class LikeClient extends ConnectorContextClientBase
     {
         String likeGUID = likeHandler.removeLikeFromElement(connectorUserId, elementGUID, metadataSourceOptions);
 
-        if ((parentContext.getIntegrationReportWriter() != null) && (likeGUID != null))
+        if ((parentContext.getActivityReportWriter() != null) && (likeGUID != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(likeGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(likeGUID);
         }
     }
 

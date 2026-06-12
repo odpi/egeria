@@ -79,9 +79,9 @@ public class ConnectionClient extends ConnectorContextClientBase
     {
         String elementGUID = connectionHandler.createConnection(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -115,9 +115,9 @@ public class ConnectionClient extends ConnectorContextClientBase
     {
         String elementGUID = connectionHandler.createConnectionFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class ConnectionClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = connectionHandler.updateConnection(connectorUserId, connectionGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(connectionGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(connectionGUID);
         }
 
         return updateOccurred;
@@ -335,9 +335,9 @@ public class ConnectionClient extends ConnectorContextClientBase
     {
         connectionHandler.deleteConnection(connectorUserId, connectionGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(connectionGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(connectionGUID);
         }
     }
 

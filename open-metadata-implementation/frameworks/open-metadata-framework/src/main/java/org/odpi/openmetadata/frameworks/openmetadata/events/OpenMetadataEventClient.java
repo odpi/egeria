@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 
 /**
  * OpenMetadataEventClient provides the implementation to manage the interaction with the server to
- * set up a listener to support the receipt of inbound events from the Asset Manager OMAS Out Topic.
+ * set up a listener to support the receipt of inbound events from the Open Metadata Framework Out Topic.
  */
 public abstract class OpenMetadataEventClient implements OpenMetadataEventInterface
 {
@@ -76,8 +76,8 @@ public abstract class OpenMetadataEventClient implements OpenMetadataEventInterf
 
 
     /**
-     * Register a listener object that will be passed each of the events published by
-     * the Asset Manager OMAS.
+     * Register a listener object that will be passed the events published by
+     * the Open Metadata Framework Manager.
      *
      * @param userId calling user
      * @param listener listener object

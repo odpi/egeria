@@ -82,9 +82,9 @@ public class PropertyFacetClient extends ConnectorContextClientBase
     {
         String propertyFacetGUID = propertyFacetHandler.addPropertyFacetToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties, relationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(propertyFacetGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(propertyFacetGUID);
         }
 
         return propertyFacetGUID;
@@ -111,9 +111,9 @@ public class PropertyFacetClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = propertyFacetHandler.updatePropertyFacet(connectorUserId, propertyFacetGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(propertyFacetGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(propertyFacetGUID);
         }
 
         return updateOccurred;
@@ -137,9 +137,9 @@ public class PropertyFacetClient extends ConnectorContextClientBase
     {
         propertyFacetHandler.deletePropertyFacet(connectorUserId, propertyFacetGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(propertyFacetGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(propertyFacetGUID);
         }
     }
 

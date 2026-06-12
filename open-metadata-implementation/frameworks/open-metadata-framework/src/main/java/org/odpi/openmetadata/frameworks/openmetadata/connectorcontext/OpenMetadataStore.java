@@ -963,9 +963,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                      properties,
                                                                                      parentRelationshipProperties);
 
-        if ((metadataElementGUID != null) && (parentContext.getIntegrationReportWriter() != null))
+        if ((metadataElementGUID != null) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(metadataElementGUID);
         }
 
         return metadataElementGUID;
@@ -1084,9 +1084,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                           placeholderProperties,
                                                                                           parentRelationshipProperties);
 
-        if ((metadataElementGUID != null) && (parentContext.getIntegrationReportWriter() != null))
+        if ((metadataElementGUID != null) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(metadataElementGUID);
         }
 
         return metadataElementGUID;
@@ -1214,9 +1214,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                  properties);
 
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
 
         return updateOccurred;
@@ -1310,9 +1310,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                    effectiveFrom,
                                                                    effectiveTo);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
     }
 
@@ -1357,9 +1357,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                         metadataElementGUID,
                                                         deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(metadataElementGUID);
         }
     }
 
@@ -1381,9 +1381,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         openMetadataClient.archiveMetadataElementInStore(connectorUserId, metadataElementGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(metadataElementGUID);
         }
     }
 
@@ -1416,9 +1416,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                           metadataSourceOptions,
                                                           properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
     }
 
@@ -1477,9 +1477,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                             updateOptions,
                                                             properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
     }
 
@@ -1513,9 +1513,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                   effectiveFrom,
                                                                   effectiveTo);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
     }
 
@@ -1542,9 +1542,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                             classificationName,
                                                             metadataSourceOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
         }
     }
 
@@ -1620,9 +1620,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                   makeAnchorOptions,
                                                                                   properties);
 
-        if ((relationshipGUID != null) && (parentContext.getIntegrationReportWriter() != null))
+        if ((relationshipGUID != null) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(relationshipGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(relationshipGUID);
         }
 
         return relationshipGUID;
@@ -1652,9 +1652,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                      updateOptions,
                                                      properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(relationshipGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(relationshipGUID);
         }
     }
 
@@ -1685,9 +1685,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                 effectiveFrom,
                                                                 effectiveTo);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(relationshipGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(relationshipGUID);
         }
     }
 
@@ -1728,9 +1728,9 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                      relationshipGUID,
                                                      deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(relationshipGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(relationshipGUID);
         }
     }
 }

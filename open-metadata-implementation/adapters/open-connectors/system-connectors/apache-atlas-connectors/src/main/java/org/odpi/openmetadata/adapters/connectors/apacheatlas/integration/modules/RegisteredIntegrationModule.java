@@ -50,7 +50,7 @@ public interface RegisteredIntegrationModule
 
 
     /**
-     * Process an event that was published by the Asset Manager OMAS.  The listener is only registered if metadata is flowing
+     * Process an event that was published by the Open Metadata Framework Manager.  The listener is only registered if metadata is flowing
      * from the open metadata ecosystem to Apache Atlas.
      *
      * @param event event object

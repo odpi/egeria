@@ -336,6 +336,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                         DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                         DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
+    DATA_HUB_MANAGER_INTEGRATION_CONNECTOR(325,
+                                           "0ced349c-9a49-45db-a751-4973db83ebb0",
+                                           "Egeria::IntegrationConnector::DataHubManager",
+                                           "Data Hub Manager Integration Connector",
+                                           "This connector builds out a data dictionary for the data stores that are members of a Data Hub.",
+                                           "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                                           "org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider",
+                                           ComponentDevelopmentStatus.STABLE,
+                                           DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                           DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     JDBC_INTEGRATION_CONNECTOR(330,
                                "49cd6772-1efd-40bb-a1d9-cc9460962ff6",
                                "Egeria::IntegrationConnector::RelationalDatabase::JDBC",

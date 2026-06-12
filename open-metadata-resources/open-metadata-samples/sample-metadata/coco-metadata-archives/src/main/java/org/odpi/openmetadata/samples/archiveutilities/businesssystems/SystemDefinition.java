@@ -21,6 +21,7 @@ public enum SystemDefinition
     COCO_CRM("a2e43afa-386a-4acd-ba1d-7773b368c34a",
              "globalCRM",
              "Global customer ordering system.",
+             "Global customer ordering system used to manage the sales of Coco Pharmaceuticals' products.  This include the generic treatments and the new personalized medicine.",
              "globalcrmnpa",
              SystemTypeDefinition.CLOUD_SAAS_SERVICE,
              "",
@@ -35,6 +36,7 @@ public enum SystemDefinition
 
     COCO_PRODUCT_PLANNING("dd424526-24e9-4a10-a575-0700dfb8743a",
                           "cocoProducts",
+                          "Coco Product Management",
                           "Product Management System used by the board to plan product offerings.",
                           "cocoproductnpa",
                           SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -52,6 +54,7 @@ public enum SystemDefinition
      */
     COCO_PROCUREMENT_AMS("cbe8c0bb-0e27-4d2a-825f-f017ee939028",
                          "procurement01",
+                         "Coco Pharmaceuticals Procurement",
                          "Purchasing system for Coco Pharmaceuticals.",
                          "procurement01npa",
                          SystemTypeDefinition.COTS_SERVER,
@@ -69,6 +72,7 @@ public enum SystemDefinition
      */
     COCO_PROCUREMENT_NY("0ba9a684-9665-4026-990b-ac90a3db6134",
                         "procurement02",
+                        "New York Procurement",
                         "Local purchasing system for New York Site.",
                         "procurement02npa",
                         SystemTypeDefinition.COTS_SERVER,
@@ -86,6 +90,7 @@ public enum SystemDefinition
      */
     COCO_PROCUREMENT_WINCH("db144477-e6cb-4fd1-9521-4a577de9af04",
                            "procurement03",
+                           "Winchester Factory Procurement",
                            "Local purchasing system for Winchester Factory Site.",
                            "procurement03npa",
                            SystemTypeDefinition.COTS_SERVER,
@@ -103,6 +108,7 @@ public enum SystemDefinition
      */
     COCO_PROCUREMENT_AUS("23fb5e33-11c9-4eb6-91d6-f2e873f8da68",
                          "procurement04",
+                         "Austin Factory Procurement.",
                          "Local purchasing system for Austin Factory Site.",
                          "procurement04npa",
                          SystemTypeDefinition.COTS_SERVER,
@@ -120,6 +126,7 @@ public enum SystemDefinition
      */
     COCO_PROCUREMENT_ED("a5abdf72-0e5f-4366-8072-fac3bbb41ea6",
                         "procurement05",
+                        "Edmonton Factory Procurement.",
                         "Local purchasing system for Edmonton Factory Site.",
                         "procurement05npa",
                         SystemTypeDefinition.COTS_SERVER,
@@ -137,6 +144,7 @@ public enum SystemDefinition
      */
     COCO_INVENTORY("467dd9a0-89d6-4796-a058-c079bf54b6c7",
                    "coco-inventory",
+                   "Coco Inventory",
                    "Inventory for raw materials and products produced across all Coco Pharmaceuticals sites (except Austin).",
                    "cocoinventorynpa",
                    SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -154,6 +162,7 @@ public enum SystemDefinition
      */
     AUS_INVENTORY("9e29ee1f-01d3-482c-9d1b-8b3f36ce62d2",
                   "aus-inventory",
+                  "Austin Inventory",
                   "Inventory for raw materials and products produced across all Coco Pharmaceuticals sites .",
                   "ausinventorynpa",
                   SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -171,6 +180,7 @@ public enum SystemDefinition
      */
     COCO_HRIM("88c42780-6fb1-49e2-a584-8af90cdc7728",
               "coco-hrim",
+              "Human Resources Information Manager (HRIM)",
               "Human Resources Information Manager (HRIM) provides the central management application for employee management including hiring, skills management, recognition and all reasons for termination of employment.",
               "cocohrinnpa",
               SystemTypeDefinition.COTS_SERVER,
@@ -187,7 +197,8 @@ public enum SystemDefinition
      * cocopages - Employee directory with business partners.
      */
     COCO_PAGES("a47906f0-67f0-46ed-890d-85cb049ffa60",
-               "cocopages",
+               "ocopages",
+               "CocoPages",
                "Employee directory with business partners.",
                "cocopagesnpa",
                SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -205,6 +216,7 @@ public enum SystemDefinition
      */
     SEC_ADMIN("f49d1515-0f69-4a40-a674-7cc1cacca182",
               "sec-admin",
+              "SecAdmin",
               "Security administration for all access grants to Coco Pharmaceutical systems.",
               "secadminnpa",
               SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -222,6 +234,7 @@ public enum SystemDefinition
      */
     EMPLOYEE_EXPENSES("ad8eab54-c2f7-494d-82d0-bf5985e5a58d",
                       "coco-expenses",
+                      "Coco Expenses",
                       "Employee expense declaration for Coco Pharmaceuticals.",
                       null,
                       SystemTypeDefinition.CLOUD_SAAS_SERVICE,
@@ -239,6 +252,7 @@ public enum SystemDefinition
      */
     UK_PAYROLL("12c9d1a4-2a5d-4e7c-a640-97f206270425",
                "UK payroll",
+               "UK payroll",
                "Payroll and UK tax calculations.",
                "ukpayrollnpa",
                SystemTypeDefinition.COTS_SERVER,
@@ -255,6 +269,7 @@ public enum SystemDefinition
      * Netherlands payroll - Payroll and Dutch tax calculations.
      */
     NL_PAYROLL("ae0c7768-c01e-4bd1-8a47-fbacfccf2f63",
+               "NL payroll",
                "Netherlands payroll",
                "Payroll and Dutch tax calculations.",
                "nlpayrollnpa",
@@ -272,6 +287,7 @@ public enum SystemDefinition
      * Canadian payroll - Payroll and Canadian tax calculations.
      */
     CA_PAYROLL("35bef6c5-25d7-47b1-91db-f9bce0238612",
+               "CA payroll",
                "Canadian payroll",
                "Payroll and Canadian tax calculations.",
                "nlpayrollnpa",
@@ -291,6 +307,7 @@ public enum SystemDefinition
      */
     COCO_LEDGERS("11071e76-23a8-4f3d-bd07-3b9aa9781bda",
                  "coco-ledgers",
+                 "Coco Ledgers",
                  "Ledgers for Coco Pharmaceuticals.",
                  "cocoledgersnpa",
                  SystemTypeDefinition.CLOUD_SAAS_SERVICE,
@@ -309,6 +326,7 @@ public enum SystemDefinition
      */
     AUS_MANUFACTURING_CONTROL("c24e9ea0-171a-46d8-a5d8-3fedcfe97aa4",
                               "MFCTRL9482",
+                              "Austin Manufacturing Control System",
                               "Manufacturing control system for the Austin factory.",
                               "ausmfgctrl",
                               SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -326,6 +344,7 @@ public enum SystemDefinition
      */
     WINCH_MANUFACTURING_CONTROL("0f59833f-8a8a-488b-808a-9ea24618bb6c",
                                 "winch-mfg-control",
+                                "Winchester Manufacturing Control System",
                                 "Manufacturing control system for the Winchester factory.",
                                 "winchmfgnpa",
                                 SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -343,6 +362,7 @@ public enum SystemDefinition
      */
     ED_MANUFACTURING_CONTROL("bdf60c10-e8f8-4b49-9f92-e0c6a40b0d7b",
                              "ed-mfg-control",
+                             "Edmonton Manufacturing Control System",
                              "Manufacturing control system for the Edmonton factory.",
                              "edmfgnpa",
                              SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -360,7 +380,8 @@ public enum SystemDefinition
      */
     MANUFACTURING_PLANNING("25e2e56d-2e2f-4f6f-a1ed-019dd76d589a",
                            "manufacturing-planning",
-                           "Global manufacturing planning.",
+                           "Global Manufacturing Planning",
+                           "Global manufacturing planning supporting all factories.",
                            "globmfgplannpa",
                            SystemTypeDefinition.COTS_SERVER,
                            "V7.8",
@@ -377,6 +398,7 @@ public enum SystemDefinition
      */
     HAZ_MAT("6e786315-ae54-445b-b516-f3c1f0e5f289",
             "coco-haz-mat",
+            "Coco HazMat Inventory",
             "Coco Pharmaceuticals Hazardous Materials Inventory.",
             "edmfgnpa",
             SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -394,6 +416,7 @@ public enum SystemDefinition
      */
     AUS_HAZ_MAT("047691ac-8628-472d-aca0-82bedc947ef4",
                 "austin-haz-mat",
+                "Austin HazMat Inventory",
                 "Austin Manufacturing Hazardous Materials Inventory.",
                 "aushazmatnpa",
                 SystemTypeDefinition.HOME_GROWN_APP_SERVER,
@@ -412,7 +435,8 @@ public enum SystemDefinition
      */
     COCO_SUS("8a578f0d-f7ae-4255-b4a5-236241fa5449",
              "coco-sus",
-             "Coco Pharmaceuticals Sustainability Data Marts.",
+             "Coco Pharmaceuticals Sustainability Data Marts",
+             "Coco Pharmaceuticals Sustainability Data Marts collect data to support Coco Pharmaceuticals sustainability reporting.  Today it focuses on the greenhouse gas emission levels across different activities in Coco Pharmaceuticals.",
              "cocosusnpa",
              SystemTypeDefinition.DATABASE_SERVER,
              "V3.4",
@@ -429,7 +453,8 @@ public enum SystemDefinition
      */
     COCO_SUS_DASHBOARDS("5a2927f3-eed6-4509-bceb-2c29aa415090",
                         "coco-sus-dashboards",
-                        "Coco Pharmaceuticals Sustainability Dashboards and Reporting on SuperSet.",
+                        "Coco Pharmaceuticals Sustainability Dashboards",
+                        "Coco Pharmaceuticals Sustainability Dashboards and Reporting on Apache SuperSet.",
                         "cocosusssnpa",
                         SystemTypeDefinition.COTS_SERVER,
                         "V1.2",
@@ -446,7 +471,8 @@ public enum SystemDefinition
      */
     COCO_SUS_CALCULATORS("3dbe7e96-c9e5-4336-a29a-9342258e50f8",
                          "coco-sus-calculators",
-                         "Coco Pharmaceuticals Sustainability Calculators on Airflow.",
+                         "Coco Pharmaceuticals Sustainability Calculators",
+                         "Apache Airflow DAGs responsible for running the calculators that perform emissions calculations and roll-ups.",
                          "cocosuscalcnpa",
                          SystemTypeDefinition.ETL_ENGINE,
                          "V3.4",
@@ -460,7 +486,8 @@ public enum SystemDefinition
 
     WINCHESTER_DEPOT_MANAGEMENT("c7b1467a-dea2-4288-95e5-8e1bc3ab2ed3",
                                 "WINCHDEPOT01",
-                                "Depot management system in Winchester",
+                                "Winchester Depot Management System",
+                                "Depot management system in Winchester.",
                                 "winchdepotmgt01",
                                 SystemTypeDefinition.COTS_SERVER,
                                 "V27.6",
@@ -474,7 +501,8 @@ public enum SystemDefinition
 
     KANSAS_CITY_DEPOT_MANAGEMENT("987df321-d940-4ce5-9ae1-8258736f0445",
                                  "KCDEPOT01",
-                                 "Depot management system in Kansas City",
+                                 "Kansas City Depot Management System",
+                                 "Depot management system in Kansas City.",
                                  "kansasdepotmgt01",
                                  SystemTypeDefinition.COTS_SERVER,
                                  "V27.6",
@@ -488,6 +516,7 @@ public enum SystemDefinition
 
     EDMONTON_DEPOT_MANAGEMENT("afefd870-5616-4f35-a557-774b88b96bef",
                               "EDDEPOT01",
+                              "Edmonton Depot Management System",
                               "Depot management system in Edmonton",
                               "eddepotmgt01",
                               SystemTypeDefinition.COTS_SERVER,
@@ -505,6 +534,7 @@ public enum SystemDefinition
 
     private final String               systemGUID;
     private final String               systemId;
+    private final String               displayName;
     private final String               description;
     private final String               userId;
     private final SystemTypeDefinition systemType;
@@ -523,6 +553,7 @@ public enum SystemDefinition
      *
      * @param systemGUID        open metadata guid
      * @param systemId          unique id for the enum
+     * @param displayName       display name for the enum
      * @param description       description of the use of this value
      * @param userId            userId of the server
      * @param systemType        category of system
@@ -536,6 +567,7 @@ public enum SystemDefinition
      */
     SystemDefinition(String                 systemGUID,
                      String                 systemId,
+                     String                 displayName,
                      String                 description,
                      String                 userId,
                      SystemTypeDefinition   systemType,
@@ -550,6 +582,7 @@ public enum SystemDefinition
     {
         this.systemGUID = systemGUID;
         this.systemId = systemId;
+        this.displayName = displayName;
         this.description = description;
         this.userId = userId;
         this.systemType = systemType;
@@ -594,6 +627,17 @@ public enum SystemDefinition
     public String getSystemId()
     {
         return systemId;
+    }
+
+
+    /**
+     * Return the display name for this system.
+     *
+     * @return string
+     */
+    public String getDisplayName()
+    {
+        return displayName;
     }
 
 
