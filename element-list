@@ -88,6 +88,8 @@ org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatat
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues
+org.odpi.openmetadata.adapters.connectors.liskov
+org.odpi.openmetadata.adapters.connectors.liskov.ffdc
 org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
