@@ -1227,7 +1227,7 @@ public class OpenMetadataTypesArchive
     private EntityDef getDataSharingRequestCollection()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SHARING_REQUEST,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName));
     }
 
 
