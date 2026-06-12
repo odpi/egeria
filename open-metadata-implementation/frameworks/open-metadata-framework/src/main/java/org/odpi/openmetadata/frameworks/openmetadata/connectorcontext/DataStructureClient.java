@@ -80,9 +80,9 @@ public class DataStructureClient extends ConnectorContextClientBase
     {
         String elementGUID = dataStructureHandler.createDataStructure(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -116,9 +116,9 @@ public class DataStructureClient extends ConnectorContextClientBase
     {
         String elementGUID = dataStructureHandler.createDataStructureFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -144,9 +144,9 @@ public class DataStructureClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = dataStructureHandler.updateDataStructure(connectorUserId, dataStructureGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(dataStructureGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(dataStructureGUID);
         }
 
         return updateOccurred;
@@ -214,9 +214,9 @@ public class DataStructureClient extends ConnectorContextClientBase
     {
         dataStructureHandler.deleteDataStructure(connectorUserId, dataStructureGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(dataStructureGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(dataStructureGUID);
         }
     }
 

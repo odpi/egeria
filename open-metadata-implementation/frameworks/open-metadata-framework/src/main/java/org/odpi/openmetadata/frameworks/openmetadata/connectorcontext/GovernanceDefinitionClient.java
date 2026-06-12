@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -99,9 +98,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     {
         String elementGUID = governanceDefinitionHandler.createGovernanceDefinition(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -136,9 +135,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     {
         String elementGUID = governanceDefinitionHandler.createGovernanceDefinitionFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -164,9 +163,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = governanceDefinitionHandler.updateGovernanceDefinition(connectorUserId, governanceDefinitionGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(governanceDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(governanceDefinitionGUID);
         }
 
         return updateOccurred;
@@ -883,9 +882,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     {
         governanceDefinitionHandler.deleteGovernanceDefinition(connectorUserId, governanceDefinitionGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(governanceDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(governanceDefinitionGUID);
         }
     }
 

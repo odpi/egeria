@@ -80,9 +80,9 @@ public class EndpointClient extends ConnectorContextClientBase
     {
         String elementGUID = endpointHandler.createEndpoint(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -116,9 +116,9 @@ public class EndpointClient extends ConnectorContextClientBase
     {
         String elementGUID = endpointHandler.createEndpointFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -144,9 +144,9 @@ public class EndpointClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = endpointHandler.updateEndpoint(connectorUserId, endpointGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(endpointGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(endpointGUID);
         }
 
         return updateOccurred;
@@ -211,9 +211,9 @@ public class EndpointClient extends ConnectorContextClientBase
     {
         endpointHandler.deleteEndpoint(connectorUserId, endpointGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(endpointGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(endpointGUID);
         }
     }
 

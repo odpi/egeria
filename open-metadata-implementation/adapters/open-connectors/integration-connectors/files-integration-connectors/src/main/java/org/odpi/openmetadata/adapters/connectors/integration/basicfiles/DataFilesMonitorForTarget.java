@@ -299,6 +299,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                         placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), fileClassification.getFileType());
                         placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), fileClassification.getFileExtension());
                         placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), fileClassification.getFileName());
+                        placeholderProperties.put(PlaceholderProperty.FILE_ENCODING.getName(), fileClassification.getEncoding());
                         if (fileClassification.getCreationTime() != null)
                         {
                             placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), fileClassification.getCreationTime().toString());

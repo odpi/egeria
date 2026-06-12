@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.ContributionRecord
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
@@ -85,9 +84,9 @@ public class ContributionRecordClient extends ConnectorContextClientBase
     {
         String contributionRecordGUID = contributionRecordHandler.addContributionRecordToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties, relationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(contributionRecordGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(contributionRecordGUID);
         }
 
         return contributionRecordGUID;
@@ -127,9 +126,9 @@ public class ContributionRecordClient extends ConnectorContextClientBase
                                                                                                        placeholderProperties,
                                                                                                        parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(contributionRecordGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(contributionRecordGUID);
         }
 
         return contributionRecordGUID;
@@ -157,9 +156,9 @@ public class ContributionRecordClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = contributionRecordHandler.updateContributionRecord(connectorUserId, contributionRecordGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(contributionRecordGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(contributionRecordGUID);
         }
 
         return updateOccurred;
@@ -183,9 +182,9 @@ public class ContributionRecordClient extends ConnectorContextClientBase
     {
         contributionRecordHandler.deleteContributionRecord(connectorUserId, contributionRecordGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(contributionRecordGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(contributionRecordGUID);
         }
     }
 

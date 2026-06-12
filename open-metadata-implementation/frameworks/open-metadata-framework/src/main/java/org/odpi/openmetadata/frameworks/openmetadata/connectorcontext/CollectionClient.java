@@ -107,9 +107,9 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         String elementGUID = collectionHandler.createCollection(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         String elementGUID = collectionHandler.createCollectionFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -171,9 +171,9 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = collectionHandler.updateCollection(connectorUserId, collectionGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(collectionGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(collectionGUID);
         }
 
         return updateOccurred;
@@ -1022,9 +1022,9 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         collectionHandler.deleteCollection(connectorUserId, collectionGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(collectionGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(collectionGUID);
         }
     }
 

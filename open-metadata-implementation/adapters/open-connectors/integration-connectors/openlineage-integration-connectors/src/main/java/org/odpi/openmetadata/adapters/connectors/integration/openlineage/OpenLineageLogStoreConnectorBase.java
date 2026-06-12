@@ -172,7 +172,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
         if (myContext != null)
         {
-            myContext.registerListener(this);
+            myContext.registerOpenLineageListener(this);
         }
     }
 

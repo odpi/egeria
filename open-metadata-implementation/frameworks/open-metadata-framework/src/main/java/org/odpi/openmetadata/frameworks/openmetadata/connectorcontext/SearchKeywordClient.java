@@ -79,9 +79,9 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     {
         String searchKeywordGUID = searchKeywordHandler.addSearchKeywordToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(searchKeywordGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(searchKeywordGUID);
         }
 
         return searchKeywordGUID;
@@ -108,9 +108,9 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = searchKeywordHandler.updateSearchKeyword(connectorUserId, searchKeywordGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(searchKeywordGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(searchKeywordGUID);
         }
 
         return updateOccurred;
@@ -134,9 +134,9 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     {
         searchKeywordHandler.deleteSearchKeyword(connectorUserId, searchKeywordGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(searchKeywordGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(searchKeywordGUID);
         }
     }
 

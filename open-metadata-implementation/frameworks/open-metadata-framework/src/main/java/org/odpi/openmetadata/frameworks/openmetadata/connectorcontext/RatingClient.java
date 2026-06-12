@@ -75,9 +75,9 @@ public class RatingClient extends ConnectorContextClientBase
     {
         String ratingGUID = ratingHandler.addRatingToElement(connectorUserId, elementGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(ratingGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(ratingGUID);
         }
     }
 
@@ -99,9 +99,9 @@ public class RatingClient extends ConnectorContextClientBase
     {
         String ratingGUID = ratingHandler.removeRatingFromElement(connectorUserId, elementGUID, metadataSourceOptions);
 
-        if ((parentContext.getIntegrationReportWriter() != null) && (ratingGUID != null))
+        if ((parentContext.getActivityReportWriter() != null) && (ratingGUID != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(ratingGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(ratingGUID);
         }
     }
 

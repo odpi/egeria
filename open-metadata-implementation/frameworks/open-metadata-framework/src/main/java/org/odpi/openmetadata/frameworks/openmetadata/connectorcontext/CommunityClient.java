@@ -79,9 +79,9 @@ public class CommunityClient extends ConnectorContextClientBase
     {
         String elementGUID = communityHandler.createCommunity(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -115,9 +115,9 @@ public class CommunityClient extends ConnectorContextClientBase
     {
         String elementGUID = communityHandler.createCommunityFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class CommunityClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = communityHandler.updateCommunity(connectorUserId, communityGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(communityGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(communityGUID);
         }
 
         return updateOccurred;
@@ -167,9 +167,9 @@ public class CommunityClient extends ConnectorContextClientBase
     {
         communityHandler.deleteCommunity(connectorUserId, communityGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(communityGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(communityGUID);
         }
     }
 

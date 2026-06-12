@@ -111,9 +111,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         String elementGUID = glossaryTermHandler.createGlossaryTerm(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -147,9 +147,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         String elementGUID = glossaryTermHandler.createGlossaryTermFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -175,9 +175,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = glossaryTermHandler.updateGlossaryTerm(connectorUserId, glossaryTermGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(glossaryTermGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(glossaryTermGUID);
         }
 
         return updateOccurred;
@@ -203,9 +203,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         glossaryTermHandler.updateGlossaryTermFromTemplate(connectorUserId, glossaryTermGUID, templateGUID, updateWithTemplateOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(glossaryTermGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(glossaryTermGUID);
         }
     }
 
@@ -229,9 +229,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         glossaryTermHandler.moveGlossaryTerm(connectorUserId, glossaryTermGUID, glossaryGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(glossaryTermGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(glossaryTermGUID);
         }
     }
 
@@ -516,9 +516,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         glossaryTermHandler.deleteGlossaryTerm(connectorUserId, glossaryTermGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(glossaryTermGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(glossaryTermGUID);
         }
     }
 

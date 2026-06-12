@@ -82,9 +82,9 @@ public class LocationClient extends ConnectorContextClientBase
     {
         String elementGUID = locationHandler.createLocation(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -119,9 +119,9 @@ public class LocationClient extends ConnectorContextClientBase
     {
         String elementGUID = locationHandler.createLocationFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -147,9 +147,9 @@ public class LocationClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = locationHandler.updateLocation(connectorUserId, locationGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(locationGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
         }
 
         return updateOccurred;
@@ -297,9 +297,9 @@ public class LocationClient extends ConnectorContextClientBase
     {
         locationHandler.deleteLocation(connectorUserId, locationGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(locationGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(locationGUID);
         }
     }
 

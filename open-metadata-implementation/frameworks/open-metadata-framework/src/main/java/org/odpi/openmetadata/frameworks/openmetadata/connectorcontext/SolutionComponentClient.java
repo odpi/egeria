@@ -79,9 +79,9 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     {
         String elementGUID = solutionComponentHandler.createSolutionComponent(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -114,9 +114,9 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     {
         String elementGUID = solutionComponentHandler.createSolutionComponentFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -142,9 +142,9 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = solutionComponentHandler.updateSolutionComponent(connectorUserId, solutionComponentGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(solutionComponentGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(solutionComponentGUID);
         }
 
         return updateOccurred;
@@ -293,9 +293,9 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     {
         solutionComponentHandler.deleteSolutionComponent(connectorUserId, solutionComponentGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(solutionComponentGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(solutionComponentGUID);
         }
     }
 

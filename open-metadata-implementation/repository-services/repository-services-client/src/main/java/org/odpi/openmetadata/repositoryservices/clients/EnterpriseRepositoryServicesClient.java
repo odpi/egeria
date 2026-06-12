@@ -88,7 +88,7 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
 
     /**
      * Register a listener object that will be passed each of the events published by
-     * the Asset Manager OMAS.
+     * the Open Metadata Repository Service.
      *
      * @param userId calling user
      * @param listener listener object

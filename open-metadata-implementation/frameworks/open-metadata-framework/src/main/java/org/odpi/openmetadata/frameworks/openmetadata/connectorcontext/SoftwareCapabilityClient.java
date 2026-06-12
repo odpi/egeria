@@ -95,9 +95,9 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
     {
         String elementGUID = softwareCapabilityHandler.createSoftwareCapability(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -131,9 +131,9 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
     {
         String elementGUID = softwareCapabilityHandler.createSoftwareCapabilityFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -159,9 +159,9 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = softwareCapabilityHandler.updateSoftwareCapability(connectorUserId, softwareCapabilityGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(softwareCapabilityGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(softwareCapabilityGUID);
         }
 
         return updateOccurred;
@@ -226,9 +226,9 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
     {
         softwareCapabilityHandler.deleteSoftwareCapability(connectorUserId, softwareCapabilityGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(softwareCapabilityGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(softwareCapabilityGUID);
         }
     }
 

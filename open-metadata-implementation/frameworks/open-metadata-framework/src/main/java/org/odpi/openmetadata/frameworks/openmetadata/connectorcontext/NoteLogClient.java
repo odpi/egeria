@@ -82,9 +82,9 @@ public class NoteLogClient extends ConnectorContextClientBase
     {
         String noteLogGUID = noteLogHandler.createNoteLog(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(noteLogGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(noteLogGUID);
         }
 
         return noteLogGUID;
@@ -118,9 +118,9 @@ public class NoteLogClient extends ConnectorContextClientBase
     {
         String elementGUID = noteLogHandler.createNoteLogFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -146,9 +146,9 @@ public class NoteLogClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = noteLogHandler.updateNoteLog(connectorUserId, noteLogGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(noteLogGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(noteLogGUID);
         }
 
         return updateOccurred;
@@ -170,9 +170,9 @@ public class NoteLogClient extends ConnectorContextClientBase
     {
         noteLogHandler.removeNoteLog(connectorUserId, noteLogGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(noteLogGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(noteLogGUID);
         }
     }
 

@@ -57,9 +57,9 @@ public class ConnectorContextBase
     protected final String                  localServerName;
     protected final String                  localServiceName;
     protected final String                  externalSourceGUID;
-    protected final String                  externalSourceName;
-    protected final String                  connectorId;
-    protected final String                  connectorName;
+    protected final String externalSourceName;
+    protected final String connectorInstanceId;
+    protected final String connectorName;
     protected final String                  connectorGUID;
     protected final String                  connectorUserId;
     protected final AuditLog                auditLog;
@@ -69,7 +69,7 @@ public class ConnectorContextBase
     protected final ConnectorActivityReportWriter connectorActivityReportWriter;
 
     protected final FileClassifier       fileClassifier;
-    private   final FilesListenerManager listenerManager;
+    private   final FilesListenerManager fileListenerManager;
     private final   RequestId            requestId = new RequestId();
 
 
@@ -156,17 +156,17 @@ public class ConnectorContextBase
                                 int                      maxPageSize,
                                 DeleteMethod             deleteMethod)
     {
-        this.localServerName           = localServerName;
-        this.localServiceName          = localServiceName;
-        this.externalSourceGUID        = externalSourceGUID;
-        this.externalSourceName        = externalSourceName;
-        this.connectorId               = connectorId;
-        this.connectorName             = connectorName;
-        this.connectorGUID             = connectorGUID;
-        this.connectorUserId           = connectorUserId;
-        this.auditLog                  = auditLog;
-        this.maxPageSize               = maxPageSize;
-        this.defaultDeleteMethod       = deleteMethod;
+        this.localServerName     = localServerName;
+        this.localServiceName    = localServiceName;
+        this.externalSourceGUID  = externalSourceGUID;
+        this.externalSourceName  = externalSourceName;
+        this.connectorInstanceId = connectorId;
+        this.connectorName       = connectorName;
+        this.connectorGUID       = connectorGUID;
+        this.connectorUserId     = connectorUserId;
+        this.auditLog            = auditLog;
+        this.maxPageSize         = maxPageSize;
+        this.defaultDeleteMethod = deleteMethod;
 
         this.generateIntegrationReport = generateIntegrationReport;
 
@@ -682,8 +682,8 @@ public class ConnectorContextBase
                                                                        auditLog,
                                                                        maxPageSize);
 
-        this.fileClassifier            = new FileClassifier(this);
-        this.listenerManager           = new FilesListenerManager(auditLog, connectorName);
+        this.fileClassifier      = new FileClassifier(this);
+        this.fileListenerManager = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
         {
@@ -1451,9 +1451,9 @@ public class ConnectorContextBase
      *
      * @return string name
      */
-    public String getConnectorId()
+    public String getConnectorInstanceId()
     {
-        return connectorId;
+        return connectorInstanceId;
     }
 
 
@@ -1485,7 +1485,7 @@ public class ConnectorContextBase
      *
      * @return report writer or null
      */
-    ConnectorActivityReportWriter getIntegrationReportWriter()
+    ConnectorActivityReportWriter getActivityReportWriter()
     {
         return connectorActivityReportWriter;
     }
@@ -1665,7 +1665,7 @@ public class ConnectorContextBase
                                              File                           directoryToMonitor,
                                              FileFilter                     fileFilter) throws InvalidParameterException
     {
-        return listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
+        return fileListenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
     }
 
 
@@ -1680,7 +1680,7 @@ public class ConnectorContextBase
     public void unregisterDirectoryListener(FileDirectoryListenerInterface listener,
                                             File                           directoryToMonitor) throws InvalidParameterException
     {
-        listenerManager.unregisterDirectoryListener(listener, directoryToMonitor);
+        fileListenerManager.unregisterDirectoryListener(listener, directoryToMonitor);
     }
 
 
@@ -1699,7 +1699,7 @@ public class ConnectorContextBase
                                                  File                           directoryToMonitor,
                                                  FileFilter                     fileFilter) throws InvalidParameterException
     {
-        return listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
+        return fileListenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
     }
 
 
@@ -1714,7 +1714,7 @@ public class ConnectorContextBase
     public void unregisterDirectoryTreeListener(FileDirectoryListenerInterface listener,
                                                 File                           directoryToMonitor) throws InvalidParameterException
     {
-        listenerManager.unregisterDirectoryTreeListener(listener, directoryToMonitor);
+        fileListenerManager.unregisterDirectoryTreeListener(listener, directoryToMonitor);
     }
 
 
@@ -1773,10 +1773,7 @@ public class ConnectorContextBase
                 elementTypeNames.addAll(elementType.getSuperTypeNames());
             }
 
-            if (elementTypeNames.contains(typeName))
-            {
-                return true;
-            }
+            return elementTypeNames.contains(typeName);
         }
 
         return false;
@@ -2156,7 +2153,7 @@ public class ConnectorContextBase
      */
     public void disconnect()
     {
-        listenerManager.disconnect();
+        fileListenerManager.disconnect();
         // todo - disconnect for event client
 
         isActive = false;

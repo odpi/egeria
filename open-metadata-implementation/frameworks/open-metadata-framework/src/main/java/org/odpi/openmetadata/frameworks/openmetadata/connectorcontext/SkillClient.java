@@ -14,9 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SkillProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -97,9 +94,9 @@ public class SkillClient extends ConnectorContextClientBase
     {
         String skillGUID = skillHandler.createSkill(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(skillGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(skillGUID);
         }
 
         return skillGUID;
@@ -133,9 +130,9 @@ public class SkillClient extends ConnectorContextClientBase
     {
         String skillGUID = skillHandler.createSkillFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(skillGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(skillGUID);
         }
 
         return skillGUID;
@@ -161,9 +158,9 @@ public class SkillClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = skillHandler.updateSkill(connectorUserId, skillGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(skillGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(skillGUID);
         }
 
         return updateOccurred;
@@ -185,9 +182,9 @@ public class SkillClient extends ConnectorContextClientBase
     {
         skillHandler.deleteSkill(connectorUserId, skillGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(skillGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(skillGUID);
         }
     }
 

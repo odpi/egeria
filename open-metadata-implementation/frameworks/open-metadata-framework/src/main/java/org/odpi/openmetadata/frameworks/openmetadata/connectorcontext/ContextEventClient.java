@@ -79,9 +79,9 @@ public class ContextEventClient extends ConnectorContextClientBase
     {
         String elementGUID = contextEventHandler.createContextEvent(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -115,9 +115,9 @@ public class ContextEventClient extends ConnectorContextClientBase
     {
         String elementGUID = contextEventHandler.createContextEventFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class ContextEventClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = contextEventHandler.updateContextEvent(connectorUserId, contextEventGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(contextEventGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(contextEventGUID);
         }
 
         return updateOccurred;
@@ -379,9 +379,9 @@ public class ContextEventClient extends ConnectorContextClientBase
     {
         contextEventHandler.deleteContextEvent(connectorUserId, contextEventGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(contextEventGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(contextEventGUID);
         }
     }
 

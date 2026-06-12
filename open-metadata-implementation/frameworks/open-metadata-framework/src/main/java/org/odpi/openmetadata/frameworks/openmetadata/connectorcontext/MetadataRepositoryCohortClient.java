@@ -80,9 +80,9 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
     {
         String elementGUID = metadataRepositoryCohortHandler.createMetadataRepositoryCohort(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -116,9 +116,9 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
     {
         String elementGUID = metadataRepositoryCohortHandler.createMetadataRepositoryCohortFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -143,9 +143,9 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = metadataRepositoryCohortHandler.updateMetadataRepositoryCohort(connectorUserId, metadataRepositoryCohortGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataRepositoryCohortGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataRepositoryCohortGUID);
         }
 
         return updateOccurred;
@@ -167,9 +167,9 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
     {
         metadataRepositoryCohortHandler.deleteMetadataRepositoryCohort(connectorUserId, metadataRepositoryCohortGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(metadataRepositoryCohortGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(metadataRepositoryCohortGUID);
         }
     }
 

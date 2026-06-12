@@ -54,7 +54,6 @@ public class IntegrationContext extends ConnectorContextBase
     protected final PermittedSynchronization permittedSynchronization;
 
     private boolean isRefreshInProgress      = false;
-    private Date    refreshStartTime         = null;
     private long    minMinutesBetweenRefresh = 0;
 
     private boolean listenerRegistered = false;
@@ -78,28 +77,28 @@ public class IntegrationContext extends ConnectorContextBase
      * @param governanceConfiguration   client for managing catalog targets
      * @param openGovernanceClient      client for initiating governance actions
      * @param auditLog                  logging destination
-     * @param maxPageSize               max number of elements that can be returned on a query
+     * @param maxPageSize               max elements that can be returned on a query
      * @param deleteMethod              default delete method
      */
-    public IntegrationContext(String localServerName,
-                              String localServiceName,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String connectorId,
-                              String connectorName,
-                              String connectorUserId,
-                              String connectorGUID,
-                              boolean generateIntegrationReport,
-                              PermittedSynchronization permittedSynchronization,
-                              OpenMetadataClient openMetadataClient,
-                              OpenMetadataEventClient openMetadataEventClient,
-                              ConnectedAssetClient connectedAssetClient,
+    public IntegrationContext(String                     localServerName,
+                              String                     localServiceName,
+                              String                     externalSourceGUID,
+                              String                     externalSourceName,
+                              String                     connectorId,
+                              String                     connectorName,
+                              String                     connectorUserId,
+                              String                     connectorGUID,
+                              boolean                    generateIntegrationReport,
+                              PermittedSynchronization   permittedSynchronization,
+                              OpenMetadataClient         openMetadataClient,
+                              OpenMetadataEventClient    openMetadataEventClient,
+                              ConnectedAssetClient       connectedAssetClient,
                               OpenLineageListenerManager openLineageListenerManager,
-                              GovernanceConfiguration governanceConfiguration,
-                              OpenGovernanceClient openGovernanceClient,
-                              AuditLog auditLog,
-                              int maxPageSize,
-                              DeleteMethod deleteMethod)
+                              GovernanceConfiguration    governanceConfiguration,
+                              OpenGovernanceClient       openGovernanceClient,
+                              AuditLog                   auditLog,
+                              int                        maxPageSize,
+                              DeleteMethod               deleteMethod)
     {
         super(localServerName,
               localServiceName,
@@ -171,14 +170,14 @@ public class IntegrationContext extends ConnectorContextBase
             metadataSourceName = externalSourceName; // default to the value set up for the connector in RegisteredIntegrationConnector
         }
 
-        String metadataSourceGUID = getMetadataCollectionGUID(metadataSourceName,
-                                                              requestedCatalogTarget.getCatalogTargetElement());
+        String metadataSourceGUID = getMetadataSourceGUID(metadataSourceName,
+                                                          requestedCatalogTarget.getCatalogTargetElement());
 
         return new CatalogTargetContext(localServerName,
                                         localServiceName,
                                         metadataSourceGUID,
                                         metadataSourceName,
-                                        connectorId,
+                                        connectorInstanceId,
                                         connectorName,
                                         connectorUserId,
                                         connectorGUID,
@@ -206,7 +205,7 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param listener listener to call
      */
-    public void registerListener(OpenLineageEventListener listener)
+    public void registerOpenLineageListener(OpenLineageEventListener listener)
     {
         openLineageListenerManager.registerListener(listener);
     }
@@ -262,7 +261,7 @@ public class IntegrationContext extends ConnectorContextBase
      * @param includedNames list of names to include (null means ignore value)
      * @return flag indicating whether to work with the database
      */
-    public boolean elementShouldBeCatalogued(String elementName,
+    public boolean elementShouldBeCatalogued(String       elementName,
                                              List<String> excludedNames,
                                              List<String> includedNames)
     {
@@ -395,7 +394,7 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @return string name
      */
-    public String getMetadataCollectionGUID()
+    public String getMetadataSourceGUID()
     {
         return externalSourceGUID;
     }
@@ -406,28 +405,28 @@ public class IntegrationContext extends ConnectorContextBase
      * of a software capability,  This qualified name is supplied through open metadata values and may be incorrect
      * which is why any exceptions from retrieving the software capability are passed through to the caller.
      *
-     * @param metadataCollectionQualifiedName supplied qualified name for the metadata collection
+     * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
      * @return null or unique identifier of the associated software capability
      * @throws InvalidParameterException  the unique name is null or not known.
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
      * @throws PropertyServerException    a problem accessing the metadata store
      */
-    private String getMetadataCollectionGUID(String metadataCollectionQualifiedName,
-                                             OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+    private String getMetadataSourceGUID(String                  metadataSourceQualifiedName,
+                                         OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        if (metadataCollectionQualifiedName != null)
+        if (metadataSourceQualifiedName != null)
         {
-            if (externalSourceCache.get(metadataCollectionQualifiedName) != null)
+            if (externalSourceCache.get(metadataSourceQualifiedName) != null)
             {
-                return externalSourceCache.get(metadataCollectionQualifiedName);
+                return externalSourceCache.get(metadataSourceQualifiedName);
             }
             else
             {
                 AssetClient assetClient = this.getAssetClient(OpenMetadataType.METADATA_COLLECTION.typeName);
 
-                String metadataCollectionGUID = assetClient.setUpMetadataSource(metadataCollectionQualifiedName,
+                String metadataCollectionGUID = assetClient.setUpMetadataSource(metadataSourceQualifiedName,
                                                                                 catalogTargetElement.getElementHeader().getGUID(),
                                                                                 connectorName,
                                                                                 connectorUserId,
@@ -435,7 +434,7 @@ public class IntegrationContext extends ConnectorContextBase
 
                 if (metadataCollectionGUID != null)
                 {
-                    externalSourceCache.put(metadataCollectionQualifiedName, metadataCollectionGUID);
+                    externalSourceCache.put(metadataSourceQualifiedName, metadataCollectionGUID);
 
                     return metadataCollectionGUID;
                 }
@@ -484,10 +483,21 @@ public class IntegrationContext extends ConnectorContextBase
     }
 
 
+    /**
+     * Return the time when this refresh started.
+     *
+     * @return date/time or null if no refresh is in progress.
+     */
     public Date getRefreshStartTime()
     {
-        return refreshStartTime;
+        if (connectorActivityReportWriter == null)
+        {
+            return new Date();
+        }
+
+        return new Date(connectorActivityReportWriter.getRefreshStartDate().getTime());
     }
+
 
     /**
      * Return the time when the next refresh is scheduled to start.
@@ -502,13 +512,13 @@ public class IntegrationContext extends ConnectorContextBase
             return null;
         }
 
-        if (refreshStartTime == null)
+        if (connectorActivityReportWriter == null)
         {
             return new Date(System.currentTimeMillis() + (minMinutesBetweenRefresh * 60 * 1000));
         }
         else
         {
-            return new Date(refreshStartTime.getTime() + (minMinutesBetweenRefresh * 60 * 1000));
+            return new Date(connectorActivityReportWriter.getRefreshStartDate().getTime() + (minMinutesBetweenRefresh * 60 * 1000));
         }
     }
 

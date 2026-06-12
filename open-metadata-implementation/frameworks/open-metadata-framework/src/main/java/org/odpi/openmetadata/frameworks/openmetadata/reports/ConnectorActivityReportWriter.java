@@ -60,10 +60,10 @@ public class ConnectorActivityReportWriter
                                          String                        userId,
                                          ConnectorActivityReportClient connectorActivityReportClient)
     {
-        this.serverName               = localServerName;
-        this.integrationConnectorGUID = connectorGUID;
-        this.connectorId              = connectorId;
-        this.connectorName            = connectorName;
+        this.serverName                    = localServerName;
+        this.integrationConnectorGUID      = connectorGUID;
+        this.connectorId                   = connectorId;
+        this.connectorName                 = connectorName;
         this.userId                        = userId;
         this.connectorActivityReportClient = connectorActivityReportClient;
     }
@@ -92,6 +92,15 @@ public class ConnectorActivityReportWriter
         refreshStartDate = new Date();
     }
 
+    /**
+     * Return the date/time that the connector started refreshing.
+     *
+     * @return date/time
+     */
+    public Date getRefreshStartDate()
+    {
+        return refreshStartDate;
+    }
 
 
     /**
@@ -100,6 +109,17 @@ public class ConnectorActivityReportWriter
     public void setRefreshEndDate()
     {
         refreshEndDate = new Date();
+    }
+
+
+    /**
+     * Return the date/time that the connector completed refreshing.
+     *
+     * @return date/time
+     */
+    public Date getRefreshEndDate()
+    {
+        return refreshEndDate;
     }
 
 

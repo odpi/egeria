@@ -77,9 +77,9 @@ public class InformalTagClient extends ConnectorContextClientBase
     {
         String elementGUID = informalTagHandler.createInformalTag(connectorUserId, newElementOptions, initialClassifications, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -114,9 +114,9 @@ public class InformalTagClient extends ConnectorContextClientBase
     {
         String elementGUID = informalTagHandler.createTagFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -142,9 +142,9 @@ public class InformalTagClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = informalTagHandler.updateTagDescription(connectorUserId, informalTagGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(informalTagGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(informalTagGUID);
         }
 
         return updateOccurred;
@@ -167,9 +167,9 @@ public class InformalTagClient extends ConnectorContextClientBase
     {
         informalTagHandler.deleteTag(connectorUserId, informalTagGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(informalTagGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(informalTagGUID);
         }
     }
 

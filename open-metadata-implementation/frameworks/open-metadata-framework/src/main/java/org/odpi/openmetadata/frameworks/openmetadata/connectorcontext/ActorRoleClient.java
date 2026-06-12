@@ -105,9 +105,9 @@ public class ActorRoleClient extends ConnectorContextClientBase
     {
         String actorRoleGUID = actorRoleHandler.createActorRole(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(actorRoleGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(actorRoleGUID);
         }
 
         return actorRoleGUID;
@@ -142,9 +142,9 @@ public class ActorRoleClient extends ConnectorContextClientBase
     {
         String actorRoleGUID = actorRoleHandler.createActorRoleFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(actorRoleGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(actorRoleGUID);
         }
 
         return actorRoleGUID;
@@ -170,9 +170,9 @@ public class ActorRoleClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = actorRoleHandler.updateActorRole(connectorUserId, actorRoleGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(actorRoleGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(actorRoleGUID);
         }
 
         return updateOccurred;
@@ -321,9 +321,9 @@ public class ActorRoleClient extends ConnectorContextClientBase
     {
         actorRoleHandler.deleteActorRole(connectorUserId, actorRoleGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(actorRoleGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(actorRoleGUID);
         }
     }
 

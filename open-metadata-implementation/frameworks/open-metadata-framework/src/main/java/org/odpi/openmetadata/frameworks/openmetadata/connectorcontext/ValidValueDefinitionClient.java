@@ -132,9 +132,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     {
         String validValueDefinitionGUID = validValueDefinitionHandler.createValidValueDefinition(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(validValueDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(validValueDefinitionGUID);
         }
 
         return validValueDefinitionGUID;
@@ -168,9 +168,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     {
         String validValueDefinitionGUID = validValueDefinitionHandler.createValidValueDefinitionFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(validValueDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(validValueDefinitionGUID);
         }
 
         return validValueDefinitionGUID;
@@ -196,9 +196,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = validValueDefinitionHandler.updateValidValueDefinition(connectorUserId, validValueDefinitionGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(validValueDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(validValueDefinitionGUID);
         }
 
         return updateOccurred;
@@ -557,9 +557,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     {
         validValueDefinitionHandler.deleteValidValueDefinition(connectorUserId, validValueDefinitionGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(validValueDefinitionGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(validValueDefinitionGUID);
         }
     }
 

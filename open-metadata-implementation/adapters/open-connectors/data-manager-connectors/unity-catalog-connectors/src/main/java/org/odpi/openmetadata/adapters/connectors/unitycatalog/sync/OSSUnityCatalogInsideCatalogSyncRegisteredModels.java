@@ -109,7 +109,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                                                                           UserNotAuthorizedException,
                                                                                                           ConnectorCheckedException
     {
-        RelatedElementsIterator modelIterator = new RelatedElementsIterator(context.getMetadataCollectionGUID(),
+        RelatedElementsIterator modelIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,

@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * The context manager is a specialized class that sets up access to the OMAS client that it is
+ * The context manager is a specialized class that sets up access to the OMF client to provide access to open metadata.
  */
 package org.odpi.openmetadata.frameworks.integration.contextmanager;

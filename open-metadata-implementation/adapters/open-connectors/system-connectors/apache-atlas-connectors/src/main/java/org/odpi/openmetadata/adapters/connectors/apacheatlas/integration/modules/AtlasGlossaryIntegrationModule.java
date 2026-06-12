@@ -317,8 +317,8 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
 
     /**
-     * Process an event that was published by the Asset Manager OMAS.  This connector is only interested in listening for
-     * glossaries, glossary categories and glossary terms.   The listener that calls this method is only registered if metadata is flowing
+     * Process an event that was published by the Open Metadata Framework Manager.  This connector is only interested in listening for
+     * glossaries, glossary folders, and glossary terms.   The listener that calls this method is only registered if metadata is flowing
      * from the open metadata ecosystem to Apache Atlas.
      *
      * @param event event object

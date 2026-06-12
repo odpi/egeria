@@ -94,9 +94,9 @@ public class AnnotationClient extends ConnectorContextClientBase
     {
         String elementGUID = annotationHandler.createAnnotation(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -130,9 +130,9 @@ public class AnnotationClient extends ConnectorContextClientBase
     {
         String elementGUID = annotationHandler.createAnnotationFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -158,9 +158,9 @@ public class AnnotationClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = annotationHandler.updateAnnotation(connectorUserId, annotationGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(annotationGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(annotationGUID);
         }
 
         return updateOccurred;
@@ -437,9 +437,9 @@ public class AnnotationClient extends ConnectorContextClientBase
     {
         annotationHandler.deleteAnnotation(connectorUserId, annotationGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(annotationGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(annotationGUID);
         }
     }
 

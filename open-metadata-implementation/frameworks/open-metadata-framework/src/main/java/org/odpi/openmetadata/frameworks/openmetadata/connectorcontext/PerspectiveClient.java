@@ -94,9 +94,9 @@ public class PerspectiveClient extends ConnectorContextClientBase
     {
         String perspectiveGUID = perspectiveHandler.createPerspective(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(perspectiveGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(perspectiveGUID);
         }
 
         return perspectiveGUID;
@@ -130,9 +130,9 @@ public class PerspectiveClient extends ConnectorContextClientBase
     {
         String perspectiveGUID = perspectiveHandler.createPerspectiveFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(perspectiveGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(perspectiveGUID);
         }
 
         return perspectiveGUID;
@@ -158,9 +158,9 @@ public class PerspectiveClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = perspectiveHandler.updatePerspective(connectorUserId, perspectiveGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(perspectiveGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(perspectiveGUID);
         }
 
         return updateOccurred;
@@ -182,9 +182,9 @@ public class PerspectiveClient extends ConnectorContextClientBase
     {
         perspectiveHandler.deletePerspective(connectorUserId, perspectiveGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(perspectiveGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(perspectiveGUID);
         }
     }
 

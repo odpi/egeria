@@ -110,9 +110,9 @@ public class AssetClient extends ConnectorContextClientBase
     {
         String assetGUID = assetHandler.createAsset(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(assetGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(assetGUID);
         }
 
         return assetGUID;
@@ -175,9 +175,9 @@ public class AssetClient extends ConnectorContextClientBase
     {
         String assetGUID = assetHandler.createAssetFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(assetGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(assetGUID);
         }
 
         return assetGUID;
@@ -230,9 +230,9 @@ public class AssetClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = assetHandler.updateAsset(connectorUserId, assetGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(assetGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
         }
 
         return updateOccurred;
@@ -899,9 +899,9 @@ public class AssetClient extends ConnectorContextClientBase
     {
         assetHandler.deleteAsset(connectorUserId, assetGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(assetGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(assetGUID);
         }
     }
 

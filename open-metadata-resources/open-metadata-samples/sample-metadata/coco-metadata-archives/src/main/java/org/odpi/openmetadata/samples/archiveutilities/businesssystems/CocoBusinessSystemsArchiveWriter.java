@@ -129,7 +129,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.setGUID(systemDefinition.getQualifiedName(), systemDefinition.getSystemGUID());
             String serverGUID = archiveHelper.addInfrastructureAsset(systemDefinition.getSystemType().getOpenMetadataTypeName(),
                                                                      systemDefinition.getQualifiedName(),
-                                                                     systemDefinition.getDescription(),
+                                                                     systemDefinition.getDisplayName(),
                                                                      systemDefinition.getSystemId(),
                                                                      systemDefinition.getNetworkAddress(),
                                                                      systemDefinition.getCategory(),

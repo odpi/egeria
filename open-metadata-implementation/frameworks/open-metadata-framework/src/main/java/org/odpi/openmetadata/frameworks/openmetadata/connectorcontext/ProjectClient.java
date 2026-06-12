@@ -85,9 +85,9 @@ public class ProjectClient extends ConnectorContextClientBase
     {
         String elementGUID = projectHandler.createProject(connectorUserId, newElementOptions, optionalClassification, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -121,9 +121,9 @@ public class ProjectClient extends ConnectorContextClientBase
     {
         String elementGUID = projectHandler.createProjectFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -149,9 +149,9 @@ public class ProjectClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = projectHandler.updateProject(connectorUserId, projectGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(projectGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
         }
 
         return updateOccurred;
@@ -305,9 +305,9 @@ public class ProjectClient extends ConnectorContextClientBase
     {
         projectHandler.deleteProject(connectorUserId, projectGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(projectGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(projectGUID);
         }
     }
 

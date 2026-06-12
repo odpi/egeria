@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileId
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Collections;
@@ -114,9 +113,9 @@ public class UserIdentityClient extends ConnectorContextClientBase
     {
         String elementGUID = userIdentityHandler.createUserIdentity(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -150,9 +149,9 @@ public class UserIdentityClient extends ConnectorContextClientBase
     {
         String elementGUID = userIdentityHandler.createUserIdentityFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, replacementClassifications, placeholderProperties, parentRelationshipProperties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementCreation(elementGUID);
+            parentContext.getActivityReportWriter().reportElementCreation(elementGUID);
         }
 
         return elementGUID;
@@ -178,9 +177,9 @@ public class UserIdentityClient extends ConnectorContextClientBase
     {
         boolean updateOccurred = userIdentityHandler.updateUserIdentity(connectorUserId, userIdentityGUID, updateOptions, properties);
 
-        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        if ((updateOccurred) && (parentContext.getActivityReportWriter() != null))
         {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(userIdentityGUID);
+            parentContext.getActivityReportWriter().reportElementUpdate(userIdentityGUID);
         }
 
         return updateOccurred;
@@ -303,9 +302,9 @@ public class UserIdentityClient extends ConnectorContextClientBase
     {
         userIdentityHandler.deleteUserIdentity(connectorUserId, userIdentityGUID, deleteOptions);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if (parentContext.getActivityReportWriter() != null)
         {
-            parentContext.getIntegrationReportWriter().reportElementDelete(userIdentityGUID);
+            parentContext.getActivityReportWriter().reportElementDelete(userIdentityGUID);
         }
     }
 
