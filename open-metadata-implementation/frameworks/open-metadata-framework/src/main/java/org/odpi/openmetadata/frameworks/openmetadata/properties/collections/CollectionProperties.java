@@ -40,7 +40,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataHubProperties.class, name = "DataHubProperties"),
                 @JsonSubTypes.Type(value = DataProcessingActionProperties.class, name = "DataProcessingActionProperties"),
                 @JsonSubTypes.Type(value = DataProcessingDescriptionProperties.class, name = "DataProcessingDescriptionProperties"),
-                @JsonSubTypes.Type(value = DataSharingRequestProperties.class, name = "DataSharingRequestProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
                 @JsonSubTypes.Type(value = DesignModelProperties.class, name = "DesignModelProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),

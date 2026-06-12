@@ -14963,10 +14963,6 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new DataHubProperties();
                         }
-                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
-                        {
-                            beanProperties = new DataSharingRequestProperties();
-                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SPEC_COLLECTION.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPORT_TYPE.typeName))
@@ -16217,7 +16213,14 @@ public class OpenMetadataPropertyConverterBase
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO.typeName))
                             {
-                                beanProperties = new ToDoProperties();
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
+                                {
+                                    beanProperties = new DataSharingRequestProperties();
+                                }
+                                else
+                                {
+                                    beanProperties = new ToDoProperties();
+                                }
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.MEETING.typeName))
                             {

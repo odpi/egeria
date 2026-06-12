@@ -856,7 +856,14 @@ public class MermaidGraphBuilderBase
                 {
                     if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TO_DO.typeName))
                     {
-                        return VisualStyle.TO_DO;
+                        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
+                        {
+                            return VisualStyle.DATA_SHARING_REQUEST;
+                        }
+                        else
+                        {
+                            return VisualStyle.TO_DO;
+                        }
                     }
                     if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ENGINE_ACTION.typeName))
                     {
@@ -892,10 +899,6 @@ public class MermaidGraphBuilderBase
         else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_HUB.typeName))
         {
             return VisualStyle.DATA_HUB;
-        }
-        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_SHARING_REQUEST.typeName))
-        {
-            return VisualStyle.DATA_SHARING_REQUEST;
         }
         else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RESULTS_SET_COLLECTION.typeName))
         {
