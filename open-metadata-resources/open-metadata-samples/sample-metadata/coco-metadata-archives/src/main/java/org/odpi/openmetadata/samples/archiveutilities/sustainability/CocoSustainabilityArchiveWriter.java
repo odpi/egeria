@@ -350,9 +350,9 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                             glossaryTermDefinition.getName(),
                                                             glossaryTermDefinition.getSummary(),
                                                             glossaryTermDefinition.getDescription(),
-                                                            null,
+                                                            glossaryTermDefinition.getExamples(),
                                                             glossaryTermDefinition.getAbbreviation(),
-                                                            null,
+                                                            glossaryTermDefinition.getUsage(),
                                                             glossaryTermDefinition.getUrl(),
                                                             false,
                                                             null,
@@ -360,10 +360,13 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                             null,
                                                             null);
 
-            if (glossaryTermDefinition.getCategory() != null)
+            if (glossaryTermDefinition.getCategories() != null)
             {
-                archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getCategory().getName()),
-                                                glossaryTermGUID);
+                for (GlossaryCategoryDefinition glossaryCategoryDefinition : glossaryTermDefinition.getCategories())
+                {
+                    archiveHelper.addTermToCategory(categoryLookup.get(glossaryCategoryDefinition.getName()),
+                                                    glossaryTermGUID);
+                }
             }
         }
     }
