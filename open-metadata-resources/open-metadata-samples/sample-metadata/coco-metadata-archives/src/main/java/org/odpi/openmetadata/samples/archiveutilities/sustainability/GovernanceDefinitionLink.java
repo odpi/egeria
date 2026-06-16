@@ -11,10 +11,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 public enum GovernanceDefinitionLink
 {
     HANDLE_THREAT(GovernanceDefinition.SUSTAINABILITY_TREAT,
-                  OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
-                  GovernanceDefinition.SUSTAINABILITY_PRINCIPLE),
+                  OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
+                  GovernanceDefinition.SUSTAINABILITY_IMPERATIVE),
 
     SUPPORT_REGULATION(GovernanceDefinition.CSRD_REGULATION,
+                       OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
+                       GovernanceDefinition.SUSTAINABILITY_IMPERATIVE),
+
+    SUPPORT_SUSTAINABILITY(GovernanceDefinition.SUSTAINABILITY_IMPERATIVE,
                        OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
                        GovernanceDefinition.SUSTAINABILITY_PRINCIPLE),
 
@@ -24,7 +28,7 @@ public enum GovernanceDefinitionLink
 
     STRATEGY_RESPONSE_2(GovernanceDefinition.SUSTAINABILITY_PRINCIPLE,
                         OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
-                        GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN),
+                        GovernanceDefinition.NEW_SUSTAINABILITY_COMMUNITY),
 
     STRATEGY_RESPONSE_3(GovernanceDefinition.SUSTAINABILITY_PRINCIPLE,
                         OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
@@ -34,15 +38,15 @@ public enum GovernanceDefinitionLink
            OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
-    IMPL_2(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
+    IMPL_2(GovernanceDefinition.NEW_SUSTAINABILITY_COMMUNITY,
            OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_LEADER_RESPONSIBILITY),
 
-    IMPL_3(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
+    IMPL_3(GovernanceDefinition.NEW_SUSTAINABILITY_COMMUNITY,
            OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
-    IMPL_4(GovernanceDefinition.NEW_SUSTAINABILITY_DOMAIN,
+    IMPL_4(GovernanceDefinition.NEW_SUSTAINABILITY_COMMUNITY,
            OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
            GovernanceDefinition.SUSTAINABILITY_TECHNOLOGY_LEAD_RESPONSIBILITY),
 

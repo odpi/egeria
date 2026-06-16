@@ -98,57 +98,6 @@ Content-Type: application/json
 
 
 ###
-# @name createGovernanceStrategy (with parent)
-# Create an anchored governance definition linked to a parent of type GovernanceStrategy
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "GovernanceStrategyProperties",
-    "domainIdentifier": 0,
-    "qualifiedName": "add unique name here",
-    "displayName": "add short name here",
-    "summary": "add summary here",
-    "description": "add description here",
-    "scope": "add scope of effect for this definition",
-    "importance": "add importance for this definition",
-    "businessImperatives" : [],
-    "implications": [],
-    "outcomes": [],
-    "results": [],
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
 # @name createRegulation (with parent)
 # Create an anchored governance definition linked to a parent of type Regulation
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
@@ -712,7 +661,7 @@ Content-Type: application/json
 # @name linkPeerDefinitions
 # Attach two peer governance definitions. Request body is optional.
 # The relationshipTypeNme can be:
-## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
+## * GovernanceDriverLink between governance drivers (BusinessImperitive, Regulation, RegulationArticle, Threat).
 ## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
 ## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
@@ -757,7 +706,7 @@ Content-Type: application/json
 # @name attachSupportingDefinition
 # Attach a supporting governance definition. Request body is optional.
 # The relationshipTypeNme can be:
-## * GovernanceResponse between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat) and governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
+## * GovernanceResponse between governance drivers (BusinessImperitive, Regulation, RegulationArticle, Threat) and governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
 ## * GovernanceMechanism between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach) and governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionOneGUID}}/supporting-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
 Authorization: Bearer {{token}}
