@@ -157,16 +157,6 @@ public interface DeployedImplementationTypeDefinition
                 return DeployedImplementationTypeDefinition.this.getSubComponents();
             }
 
-            /**
-             * Return the segments that preceded this segment.
-             *
-             * @return list of segments
-             */
-            @Override
-            public List<InformationSupplyChainDefinition> getLinkedFromSegment()
-            {
-                return List.of();
-            }
 
             @Override
             public String getImplementationResource()

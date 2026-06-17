@@ -281,6 +281,18 @@ public enum SolutionComponent implements SolutionComponentDefinition
                                InformationSupplyChain.SUSTAINABILITY_REPORTING},
                        null),
 
+    EGERIA("83346c39-115f-4033-9f3e-98caea678cf5",
+                       SolutionComponentType.SOFTWARE_SERVICE.getSolutionComponentType(),
+                       "OMAG Server Platform",
+                       "Egeria Open Metadata and Governance",
+                       "A metadata and context capture, management and distribution service.",
+                       "EGERIA",
+                       "V1.0",
+                       null,
+                       new InformationSupplyChain[]{
+                               InformationSupplyChain.SUSTAINABILITY_REPORTING},
+                       null),
+
     SUSTAINABILITY_CALCULATORS("06edd666-06fd-43ef-b7bd-22e2651c334f",
                                SolutionComponentType.AUTOMATED_ACTION.getSolutionComponentType(),
                                "Analytics Application",
@@ -528,22 +540,6 @@ public enum SolutionComponent implements SolutionComponentDefinition
         }
 
         return Arrays.asList(subComponents);
-    }
-
-
-    /**
-     * Return the segments that preceded this segment.
-     *
-     * @return list of segments
-     */
-    public List<InformationSupplyChainDefinition> getLinkedFromSegment()
-    {
-        if (linkedFromSegment == null)
-        {
-            return null;
-        }
-
-        return Arrays.asList(linkedFromSegment);
     }
 
 

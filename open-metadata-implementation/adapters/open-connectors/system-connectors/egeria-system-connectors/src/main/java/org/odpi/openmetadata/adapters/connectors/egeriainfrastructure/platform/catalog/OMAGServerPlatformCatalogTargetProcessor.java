@@ -1539,7 +1539,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
                         placementProperties.put(PlaceholderProperty.HOST_IDENTIFIER.getName(), getKafkaHostIdentifier(configurationProperties));
                         placementProperties.put(PlaceholderProperty.PORT_NUMBER.getName(), getKafkaPortNumber(configurationProperties));
-                        placementProperties.put(PlaceholderProperty.SERVER_NAME.getName(), "Default Apache Atlas");
+                        placementProperties.put(PlaceholderProperty.SERVER_NAME.getName(), "Default Apache Kafka");
                         placementProperties.put(PlaceholderProperty.DESCRIPTION.getName(), "Apache Kafka topic distributing audit log events from the OMAG Servers.");
                         placementProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), softwareServerProperties.getVersionIdentifier());
                         placementProperties.put(KafkaPlaceholderProperty.FULL_TOPIC_NAME.getName(), topicName);

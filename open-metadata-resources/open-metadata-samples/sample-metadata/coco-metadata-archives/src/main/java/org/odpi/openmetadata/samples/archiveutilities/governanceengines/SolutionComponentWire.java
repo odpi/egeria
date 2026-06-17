@@ -151,7 +151,11 @@ public enum SolutionComponentWire implements SolutionComponentWireDefinition
                                        "Summaries of the flights and other high-carbon activities made by employees.",
                                        new InformationSupplyChain[]{InformationSupplyChain.SUSTAINABILITY_REPORTING}),
 
-
+    SUSTAINABILITY_GOVERNANCE(SolutionComponent.SUSTAINABILITY_ODS,
+                                       SolutionComponent.EGERIA,
+                                       "governance data",
+                                       "Information to support sustainability governance.",
+                                       new InformationSupplyChain[]{InformationSupplyChain.SUSTAINABILITY_REPORTING}),
 
 
     ;
