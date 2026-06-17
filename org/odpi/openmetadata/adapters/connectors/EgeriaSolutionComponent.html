@@ -114,23 +114,27 @@ implements <a href="../../frameworks/openmetadata/definitions/SolutionComponentD
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#AUDIT_LOG_TOPIC" class="member-name-link">AUDIT_LOG_TOPIC</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DEFAULT_UNITY_CATALOG" class="member-name-link">DEFAULT_UNITY_CATALOG</a></code></div>
+<div class="col-first even-row-color"><code><a href="#COHORT" class="member-name-link">COHORT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DR_EGERIA" class="member-name-link">DR_EGERIA</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DEFAULT_UNITY_CATALOG" class="member-name-link">DEFAULT_UNITY_CATALOG</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#EGERIA_BUILD" class="member-name-link">EGERIA_BUILD</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DR_EGERIA" class="member-name-link">DR_EGERIA</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#EGERIA_POSTGRESQL_DATABASE" class="member-name-link">EGERIA_POSTGRESQL_DATABASE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EGERIA_BUILD" class="member-name-link">EGERIA_BUILD</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#HEY_EGERIA" class="member-name-link">HEY_EGERIA</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EGERIA_POSTGRESQL_DATABASE" class="member-name-link">EGERIA_POSTGRESQL_DATABASE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#JUPYTER_HUB" class="member-name-link">JUPYTER_HUB</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#HEY_EGERIA" class="member-name-link">HEY_EGERIA</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#LOAD_ARCHIVE" class="member-name-link">LOAD_ARCHIVE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#JUPYTER_HUB" class="member-name-link">JUPYTER_HUB</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#MARQUEZ_POSTGRESQL_DATABASE" class="member-name-link">MARQUEZ_POSTGRESQL_DATABASE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#LOAD_ARCHIVE" class="member-name-link">LOAD_ARCHIVE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#MY_EGERIA" class="member-name-link">MY_EGERIA</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MARQUEZ_POSTGRESQL_DATABASE" class="member-name-link">MARQUEZ_POSTGRESQL_DATABASE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#MY_EGERIA" class="member-name-link">MY_EGERIA</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#OL_CONSUMER" class="member-name-link">OL_CONSUMER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#OL_KAFKA_TOPIC" class="member-name-link">OL_KAFKA_TOPIC</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -210,34 +214,29 @@ implements <a href="../../frameworks/openmetadata/definitions/SolutionComponentD
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return which type of software component is likely to be deployed to implement this solution component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedFromSegment()" class="member-name-link">getLinkedFromSegment</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the segments that preceded this segment.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of subcomponents.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getURL()" class="member-name-link">getURL</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getURL()" class="member-name-link">getURL</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an optional URL that describes this solution component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -328,6 +327,12 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="OL_CONSUMER">
+<h3>OL_CONSUMER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></span>&nbsp;<span class="element-name">OL_CONSUMER</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="OPEN_METADATA_TOPIC">
 <h3>OPEN_METADATA_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TOPIC</span></div>
@@ -403,6 +408,12 @@ the order they are declared.</div>
 <section class="detail" id="USER_WORKSPACE">
 <h3>USER_WORKSPACE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></span>&nbsp;<span class="element-name">USER_WORKSPACE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="COHORT">
+<h3>COHORT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></span>&nbsp;<span class="element-name">COHORT</span></div>
 </section>
 </li>
 </ul>
@@ -545,19 +556,6 @@ not permitted.)</div>
 <dd><code><a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getSubComponents()">getSubComponents</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>null or list</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLinkedFromSegment()">
-<h3>getLinkedFromSegment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/definitions/InformationSupplyChainDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">InformationSupplyChainDefinition</a>&gt;</span>&nbsp;<span class="element-name">getLinkedFromSegment</span>()</div>
-<div class="block">Return the segments that preceded this segment.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getLinkedFromSegment()">getLinkedFromSegment</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
-<dt>Returns:</dt>
-<dd>list of segments</dd>
 </dl>
 </section>
 </li>
