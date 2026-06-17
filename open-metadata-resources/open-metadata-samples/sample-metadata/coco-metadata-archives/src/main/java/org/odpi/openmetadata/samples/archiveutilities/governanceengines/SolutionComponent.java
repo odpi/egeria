@@ -365,6 +365,18 @@ public enum SolutionComponent implements SolutionComponentDefinition
                             InformationSupplyChain.SUSTAINABILITY_REPORTING},
                     null),
 
+    SUSTAINABILITY_COMMUNITY("777611b8-3bc8-4b47-8abf-f1d1e5325d23",
+                    SolutionComponentType.MANUAL_PROCESS.getSolutionComponentType(),
+                    "Community",
+                    "Sustainability Community",
+                    "Community to support sustainability initiatives.",
+                    "SUS-Community",
+                    "V1.0",
+                    null,
+                    new InformationSupplyChain[]{
+                            InformationSupplyChain.SUSTAINABILITY_REPORTING},
+                    null),
+
 
     ;
 

@@ -65,7 +65,12 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
     SUSTAINABILITY_CHAMPION("ac0e0d11-6523-499f-bcdb-5db15fc49ac8",
                              "SustainabilityChampion",
                              "Sustainability Champion",
-                             "A Coco Pharmaceuticals employee focused on improving sustainability in their work environment."),
+                             "A Coco Pharmaceuticals employee focused on improving sustainability in their business unit."),
+
+    SUSTAINABILITY_LOCATION_LEADER("80c95168-b585-40a8-8f40-d1c0d2ffff4d",
+                            "SustainabilityLocationLeader",
+                            "Sustainability Location Leader",
+                            "A Coco Pharmaceuticals employee focused on improving sustainability in their location."),
 
     EMPLOYEE("9d35b578-c275-4a06-bcfd-8685a088a726",
                             "Employee",

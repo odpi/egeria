@@ -157,6 +157,12 @@ public enum SolutionComponentWire implements SolutionComponentWireDefinition
                                        "Information to support sustainability governance.",
                                        new InformationSupplyChain[]{InformationSupplyChain.SUSTAINABILITY_REPORTING}),
 
+    SUSTAINABILITY_COMMUNITY_TO_DASHBOARD(SolutionComponent.SUSTAINABILITY_COMMUNITY,
+                              SolutionComponent.SUSTAINABILITY_DASHBOARDS,
+                              "review status",
+                              "Understand the status of sustainability.",
+                              new InformationSupplyChain[]{InformationSupplyChain.SUSTAINABILITY_REPORTING}),
+
 
     ;
 

@@ -38,7 +38,7 @@ Content-Type: application/json
 ###
 # @name getAllRelatedMetadataElements
 # Retrieve the metadata elements connected to the information supply chain.
-# This typically shows the solution components that are part of the informaiton supply chain
+# This typically shows the solution components that are part of the information supply chain
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{sustainabilityReportingGUID}}/any-type?startingAtEnd=0
 Authorization: Bearer {{token}}
 Content-Type: application/json

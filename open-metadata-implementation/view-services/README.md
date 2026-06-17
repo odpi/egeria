@@ -46,7 +46,7 @@ The view services are as follows:
 
 * **[Digital Business](digital-business)** - search, maintain and view the contents of business capabilities.
 
-  The Digital Business OMVS is for user interfaces supporting the creation and editing of informaiton about the capabilities of an organization and how they relate to one another.
+  The Digital Business OMVS is for user interfaces supporting the creation and editing of information about the capabilities of an organization and how they relate to one another.
 
 * **[Glossary Manager](glossary-manager)** - search, maintain and view the contents of specific glossary terms.
 

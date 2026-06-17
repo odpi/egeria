@@ -481,14 +481,25 @@ public class MyProfileRESTServices extends TokenController
                                                         methodName,
                                                         OpenMetadataProperty.USER_ID.name);
                 }
-
-                String noteLogGUID = this.getNoteLogGUID(actorProfile, "MyActivity", userId, false, serverName);
-
-                if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
+                else if (actorProfile.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new ActivityEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String noteLogGUID = this.getNoteLogGUID(actorProfile,
+                                                             actorProfileProperties.getDisplayName() + " Activities",
+                                                             "Record of activities performed by " + actorProfileProperties.getDisplayName(),
+                                                             userId,
+                                                             false,
+                                                             serverName);
 
-                    response.setGUID(notificationGUID);
+                    if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
+                    {
+                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new ActivityEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+
+                        response.setGUID(notificationGUID);
+                    }
+                    else
+                    {
+                        restExceptionHandler.handleInvalidPropertiesObject(NotificationProperties.class.getName(), methodName);
+                    }
                 }
                 else
                 {
@@ -516,6 +527,7 @@ public class MyProfileRESTServices extends TokenController
      *
      * @param actorProfile profile of this user
      * @param noteLogName short name of note log
+     * @param noteLogDescription description of note log
      * @param userId calling user
      * @param makePrivate should the note log be private?
      * @param serverName server name
@@ -526,6 +538,7 @@ public class MyProfileRESTServices extends TokenController
      */
     private String getNoteLogGUID(OpenMetadataRootElement actorProfile,
                                   String                  noteLogName,
+                                  String                  noteLogDescription,
                                   String                  userId,
                                   boolean                 makePrivate,
                                   String                  serverName) throws InvalidParameterException,
@@ -558,6 +571,7 @@ public class MyProfileRESTServices extends TokenController
         NoteLogProperties noteLogProperties = new NoteLogProperties();
 
         noteLogProperties.setQualifiedName(noteLogQName);
+        noteLogProperties.setDisplayName(noteLogName);
 
         Map<String, ClassificationProperties> initialClassifications = null;
         if (makePrivate)
@@ -620,14 +634,25 @@ public class MyProfileRESTServices extends TokenController
                                                         methodName,
                                                         OpenMetadataProperty.USER_ID.name);
                 }
-
-                String noteLogGUID = this.getNoteLogGUID(actorProfile, "MyBlog", userId, false, serverName);
-
-                if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
+                else if (actorProfile.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new BlogEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String noteLogGUID = this.getNoteLogGUID(actorProfile,
+                                                             actorProfileProperties.getDisplayName() + " Blog",
+                                                             "Personal blog by " + actorProfileProperties.getDisplayName(),
+                                                             userId,
+                                                             false,
+                                                             serverName);
 
-                    response.setGUID(notificationGUID);
+                    if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
+                    {
+                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new BlogEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+
+                        response.setGUID(notificationGUID);
+                    }
+                    else
+                    {
+                        restExceptionHandler.handleInvalidPropertiesObject(NotificationProperties.class.getName(), methodName);
+                    }
                 }
                 else
                 {
@@ -693,7 +718,12 @@ public class MyProfileRESTServices extends TokenController
                                                         OpenMetadataProperty.USER_ID.name);
                 }
 
-                String noteLogGUID = this.getNoteLogGUID(actorProfile, "MyJournal", userId, true, serverName);
+                String noteLogGUID = this.getNoteLogGUID(actorProfile,
+                                                         "MyJournal",
+                                                         "My Private Journal",
+                                                         userId,
+                                                         true,
+                                                         serverName);
 
                 if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
                 {
@@ -708,7 +738,7 @@ public class MyProfileRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ActorProfileProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(NotificationProperties.class.getName(), methodName);
                 }
             }
             else
