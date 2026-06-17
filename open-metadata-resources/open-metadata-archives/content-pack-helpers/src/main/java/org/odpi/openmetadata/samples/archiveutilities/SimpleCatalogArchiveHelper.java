@@ -341,6 +341,8 @@ public class SimpleCatalogArchiveHelper
      */
     public void addSolutionComponentWires(List<SolutionComponentWireDefinition> solutionComponentWireDefinitions)
     {
+        Map<String, Set<String>> iscMembership = new HashMap<>();
+
         for (SolutionComponentWireDefinition solutionComponentWire : solutionComponentWireDefinitions)
         {
             this.addSolutionLinkingWireRelationship(solutionComponentWire.getComponent1().getGUID(),
@@ -348,6 +350,40 @@ public class SimpleCatalogArchiveHelper
                                                     solutionComponentWire.getLabel(),
                                                     solutionComponentWire.getDescription(),
                                                     solutionComponentWire.getISCQualifiedNames());
+
+            if (solutionComponentWire.getISCQualifiedNames() != null)
+            {
+                for (String iscQualifiedName : solutionComponentWire.getISCQualifiedNames())
+                {
+                    Set<String> iscMembershipList = iscMembership.get(iscQualifiedName);
+                    if (iscMembershipList == null)
+                    {
+                        iscMembershipList = new HashSet<>();
+                        iscMembership.put(iscQualifiedName, iscMembershipList);
+                    }
+
+                    iscMembershipList.add(solutionComponentWire.getComponent1().getGUID());
+                    iscMembershipList.add(solutionComponentWire.getComponent2().getGUID());
+                }
+            }
+        }
+
+        for (String iscQualifiedName : iscMembership.keySet())
+        {
+            String iscGUID = idToGUIDMap.getGUID(iscQualifiedName);
+
+            if (iscGUID != null)
+            {
+                Set<String> iscMembershipList = iscMembership.get(iscQualifiedName);
+
+                if (iscMembershipList != null)
+                {
+                    for (String solutionGUID : iscMembershipList)
+                    {
+                        this.addMemberToCollection(iscGUID, solutionGUID, null);
+                    }
+                }
+            }
         }
     }
 
@@ -473,14 +509,6 @@ public class SimpleCatalogArchiveHelper
                 for (SolutionComponentDefinition parentComponent : solutionComponent.getParentComponents())
                 {
                     this.addSolutionCompositionRelationship(parentComponent.getGUID(), componentGUID);
-                }
-            }
-
-            if (solutionComponent.getLinkedFromSegment() != null)
-            {
-                for (InformationSupplyChainDefinition linkedSegment : solutionComponent.getLinkedFromSegment())
-                {
-                    this.addMemberToCollection(linkedSegment.getGUID(), componentGUID, null);
                 }
             }
 
@@ -7626,20 +7654,20 @@ public class SimpleCatalogArchiveHelper
      * @param solutionComponent2GUID guid of component at end 2
      * @param label used in lineage graphs
      * @param description explains the progression of control between components
-     * @param iscQualifiedNamesGUIDs optional list of information supply chain segments that his link is part of
+     * @param iscQualifiedNames optional list of information supply chain segments that his link is part of
      */
     public void addSolutionLinkingWireRelationship(String       solutionComponent1GUID,
                                                    String       solutionComponent2GUID,
                                                    String       label,
                                                    String       description,
-                                                   List<String> iscQualifiedNamesGUIDs)
+                                                   List<String> iscQualifiedNames)
     {
         final String methodName = "addSolutionLinkingWireRelationship";
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent1GUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent2GUID));
 
-        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ISC_QUALIFIED_NAMES.name, iscQualifiedNamesGUIDs, methodName);
+        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ISC_QUALIFIED_NAMES.name, iscQualifiedNames, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, label, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 

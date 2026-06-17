@@ -342,8 +342,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addValidMetadataValue(actorRoleGroup.getGUID(),
                                        actorRoleGroup.getName(),
                                        actorRoleGroup.getDescription(),
-                                       DataType.STRING.getDisplayName(),
                                        OpenMetadataProperty.ACTOR_ROLE_GROUPS.name,
+                                       DataType.STRING.getDisplayName(),
                                        null,
                                        null,
                                        actorRoleGroup.getName(),
@@ -702,6 +702,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         /*
+         * Add information supply chains.
+         */
+        super.addInformationSupplyChains();
+
+        /*
          * Add Egeria's common solution definitions
          */
         archiveHelper.addSolutionRoles(List.of(EgeriaRoleDefinition.values()));
@@ -735,11 +740,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Connect the governance engines to the governance services using the request types.
          */
         super.createRequestTypes(ContentPackDefinition.CORE_CONTENT_PACK);
-
-        /*
-         * Add information supply chains.
-         */
-        super.addInformationSupplyChains();
 
         /*
          * Create a helper process for Apache Kafka.

@@ -67,14 +67,6 @@ public interface SolutionComponentDefinition extends ReferenceableDefinition
 
 
     /**
-     * Return the segments that preceded this segment.
-     *
-     * @return list of segments
-     */
-    List<InformationSupplyChainDefinition> getLinkedFromSegment();
-
-
-    /**
      * Return the GUID of the implementation element (or null)
      *
      * @return guid

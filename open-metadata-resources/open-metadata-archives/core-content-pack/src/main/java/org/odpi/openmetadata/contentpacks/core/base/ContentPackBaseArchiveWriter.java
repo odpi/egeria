@@ -1428,19 +1428,6 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                 }
             }
 
-            if (solutionComponentDefinition.getLinkedFromSegment() != null)
-            {
-                for (InformationSupplyChainDefinition linkedSegment : solutionComponentDefinition.getLinkedFromSegment())
-                {
-                    archiveHelper.addImplementedByRelationship(linkedSegment.getGUID(),
-                                                               solutionComponentDefinition.getGUID(),
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null);
-                }
-            }
-
             if (solutionComponentDefinition.getImplementationResource() != null)
             {
                 archiveHelper.addImplementationResourceRelationship(solutionComponentDefinition.getGUID(),

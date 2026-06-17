@@ -50,6 +50,20 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
                           null),
 
     /**
+     * Open Lineage Highway
+     */
+    OPEN_LINEAGE_HIGHWAY("b96bb8d0-477f-41eb-b5e4-1ddbed845c8a",
+                          "Open Lineage Highway Information Supply Chain",
+                          "Identifies the data flows related to synchronizing open lineage between tools.",
+                          "Open-Lineage-Highway",
+                          ScopeDefinition.WITHIN_SOLUTION,
+                          new String[]{"To ensure the best, and consistent operational lineage is available to all connected tools."},
+                          null,
+                          null,
+                          false,
+                          null),
+
+    /**
      * Dynamic Configuration
      */
     DYNAMIC_CONFIGURATION("07f7699b-d6a7-4722-a919-02d016cf161f",
