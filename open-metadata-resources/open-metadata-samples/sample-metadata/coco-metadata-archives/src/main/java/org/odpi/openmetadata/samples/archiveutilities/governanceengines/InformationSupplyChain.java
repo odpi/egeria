@@ -131,7 +131,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
                                        null),
 
     PERSONALIZED_TREATMENT_ORDER("adbae740-57a3-41b8-a722-266b895794e6",
-                                 "Personalized Treatment Ordering Informaiton Supply Chain",
+                                 "Personalized Treatment Ordering Information Supply Chain",
                                  "Delivering information about a new personalized medicine order so that it fulfilled and invoiced.",
                                  "Personalized Treatment Ordering",
                                  ScopeDefinition.WITHIN_ORGANIZATION,

@@ -85,7 +85,7 @@ public enum VisualStyle
     REQUEST_PARAMETERS(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.BLACK.getColourNumber(), "flag"),
     FAILED_GOVERNANCE_ACTION_PROCESS_STEP(Colour.WHITE.getColourNumber(), Colour.ORANGE_RED.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
 
-    LOCATION(Colour.BLACK.getColourNumber(), Colour.GOLD.getColourNumber(), Colour.BLACK.getColourNumber(), "circle"),
+    LOCATION(Colour.BLACK.getColourNumber(), Colour.GOLD.getColourNumber(), Colour.BLACK.getColourNumber(), "braces"),
 
 
     GOVERNANCE_DEFINITION(Colour.WHITE.getColourNumber(), Colour.DARK_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),

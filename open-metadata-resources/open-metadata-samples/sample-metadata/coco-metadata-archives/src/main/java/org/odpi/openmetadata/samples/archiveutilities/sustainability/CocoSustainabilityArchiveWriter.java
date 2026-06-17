@@ -334,9 +334,12 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
         for (GlossaryCategoryDefinition glossaryCategoryDefinition : GlossaryCategoryDefinition.values())
         {
             String glossaryCategoryGUID = archiveHelper.addGlossaryCategory(glossaryGUID,
+                                                                            true,
+                                                                            null,
                                                                             glossaryCategoryDefinition.getQualifiedName(),
                                                                             glossaryCategoryDefinition.getName(),
-                                                                            glossaryCategoryDefinition.getDescription());
+                                                                            glossaryCategoryDefinition.getDescription(),
+                                                                            null);
 
             categoryLookup.put(glossaryCategoryDefinition.getName(), glossaryCategoryGUID);
         }
@@ -399,13 +402,10 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             }
             else
             {
-                locationGUID = archiveHelper.addFixedLocation(facilityDefinition.getQualifiedName(),
+                locationGUID = archiveHelper.addCyberLocation(facilityDefinition.getQualifiedName(),
                                                               facilityDefinition.getIdentifier(),
                                                               facilityDefinition.getDisplayName(),
                                                               facilityDefinition.getDescription(),
-                                                              null,
-                                                              null,
-                                                              null,
                                                               null,
                                                               null);
             }

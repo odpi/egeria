@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 # @name Add CloudInformationModel
-# CloudInformationModel provides a large glossary based on the content of the Cloud Informaiton Model.
+# CloudInformationModel provides a large glossary based on the content of the Cloud Information Model.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
 Content-Type: text/plain

@@ -73,8 +73,14 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 {
                     super.startSubgraph(designAreaName, VisualStyle.SOLUTION_SUBGRAPH);
 
+                    /*
+                     * Add the solution components that are explicit members of the information supply chains
+                     */
                     super.addUnlinkedRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), OpenMetadataType.SOLUTION_COMPONENT.typeName, VisualStyle.DEFAULT_SOLUTION_COMPONENT, informationSupplyChainElement.getElementHeader().getGUID());
 
+                    /*
+                     * Only add the links between the solution components that are part of this informaito nsupply chain.
+                     */
                     for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                     {
                         if ((collectionMember != null) &&
@@ -86,7 +92,9 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                 {
                                     for (RelatedMetadataElementSummary sideLink : hierarchySummary.getSideLinks())
                                     {
-                                        if ((sideLink != null) && (sideLink.getRelationshipProperties() instanceof SolutionLinkingWireProperties relationshipProperties))
+                                        if ((sideLink != null) &&
+                                                (sideLink.getRelationshipProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties) &&
+                                                (solutionLinkingWireProperties.getISCQualifiedNames() != null) && (solutionLinkingWireProperties.getISCQualifiedNames().contains(informationSupplyChainProperties.getQualifiedName())))
                                         {
                                             String label = null;
 

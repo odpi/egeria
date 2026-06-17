@@ -71,14 +71,13 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                     "stores data",
                     "Egeria has multiple options for storing both metadata and operational data on PostgreSQL.",
                     new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION,
-                    EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
+                    null}),
 
     EGERIA_KAFKA(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getSolutionComponent(),
                  EgeriaSolutionComponent.APACHE_KAFKA,
                  "exchanges notifications",
                  "Egeria uses Apache Kafka to both send and receive notifications.",
-                 new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION,
-                         EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
+                 null),
 
     METADATA_ACCESS_STORE_REPOSITORY(EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponent(),
                                      DeployedImplementationType.OPEN_METADATA_REPOSITORY.getSolutionComponent(),
@@ -226,7 +225,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                          EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getSolutionComponent(),
                          "access metadata",
                          "The pyegeria library provides a python interface to the OMAG Server Platform REST APIs.  This includes server administration and status.",
-                         new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
+                         null),
 
     AIRFLOW_TO_OL_PROXY(DeployedImplementationType.APACHE_AIRFLOW_SERVER.getSolutionComponent(),
                         EgeriaSolutionComponent.OL_PROXY,
@@ -377,7 +376,10 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
 
         for (InformationSupplyChainDefinition informationSupplyChain : informationSupplyChains)
         {
-            iscQualifiedNames.add(informationSupplyChain.getQualifiedName());
+            if (informationSupplyChain != null)
+            {
+                iscQualifiedNames.add(informationSupplyChain.getQualifiedName());
+            }
         }
 
         return iscQualifiedNames;

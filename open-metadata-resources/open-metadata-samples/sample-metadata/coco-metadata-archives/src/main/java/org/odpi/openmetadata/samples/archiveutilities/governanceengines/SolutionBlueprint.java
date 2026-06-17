@@ -81,9 +81,12 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
                                       SolutionComponent.HAZMAT_INVENTORY,
                                       SolutionComponent.ACCOUNTING_LEDGER,
                                       SolutionComponent.GOODS_INVENTORY,
+                                      SolutionComponent.EGERIA,
+                                      SolutionComponent.SUSTAINABILITY_COMMUNITY,
                               },
                              new ActorRoleDefinition[]{
                                      SolutionRoleDefinition.SUSTAINABILITY_LEADER,
+                                     SolutionRoleDefinition.SUSTAINABILITY_LOCATION_LEADER,
                                      SolutionRoleDefinition.SUSTAINABILITY_EXECUTIVE,
                                      SolutionRoleDefinition.SUSTAINABILITY_CHAMPION
                              }),

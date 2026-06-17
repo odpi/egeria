@@ -5900,23 +5900,6 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-    /**
-     * Add a glossary category to the archive and connect it to its glossary.
-     *
-     * @param glossaryGUID identifier of the glossary.
-     * @param qualifiedName unique name for the category.
-     * @param displayName display name for the category.
-     * @param description description of the category.
-     *
-     * @return identifier of the category
-     */
-    public String addGlossaryCategory(String              glossaryGUID,
-                                      String              qualifiedName,
-                                      String              displayName,
-                                      String              description)
-    {
-        return addGlossaryCategory(glossaryGUID, false, null, qualifiedName, displayName, description, null);
-    }
 
 
     /**
