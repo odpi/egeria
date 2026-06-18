@@ -161,7 +161,7 @@ public enum CocoSubjectAreaDefinition
                     "Treatment",
                     "Information relating to the Coco Pharmaceutical products and practices around patient care.",
                     "Within research, sales, manufacturing and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' treatments.",
+                    "Controlling data management relating to Coco Pharmaceuticals treatments.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
@@ -172,7 +172,7 @@ public enum CocoSubjectAreaDefinition
                     "Product",
                     "Information relating to the Coco Pharmaceutical products to be used in particular treatments.",
                     "Within research, sales, manufacturing and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' treatments.",
+                    "Controlling data management relating to Coco Pharmaceuticals treatments.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
@@ -183,7 +183,7 @@ public enum CocoSubjectAreaDefinition
                     "Order",
                     "Information relating to orders for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' treatments.",
+                    "Controlling data management relating to Coco Pharmaceuticals treatments.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
@@ -194,83 +194,83 @@ public enum CocoSubjectAreaDefinition
                     "Recipe",
                     "Information relating to the ingredients and manufacturing know-how for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' treatments.",
+                    "Controlling data management relating to Coco Pharmaceuticals treatments.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * ServiceQuality - Information relating to the Coco Pharmaceuticals' business operations.
+     * ServiceQuality - Information about the Coco Pharmaceuticals business operations.
      */
     SERVICE_QUALITY("ServiceQuality",
                     null,
                     "Service Quality",
-                    "Information relating to the Coco Pharmaceuticals' business operations.",
+                    "Information relating to the Coco Pharmaceuticals business operations.",
                     "Within research, sales, manufacturing, finance and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' business operations.",
+                    "Controlling data management relating to Coco Pharmaceuticals business operations.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * ServiceQuality:Contract - Information relating to the Coco Pharmaceuticals' contracts.
+     * ServiceQuality:Contract - Information relating to the Coco Pharmaceuticals contracts.
      */
     CONTRACT       ("ServiceQuality:Contract",
                     CocoSubjectAreaDefinition.SERVICE_QUALITY,
                     "Contract",
-                    "Information relating to the Coco Pharmaceuticals' contracts.",
+                    "Information relating to the Coco Pharmaceuticals contracts.",
                     "Within research, sales, manufacturing, finance and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' business operations.",
+                    "Controlling data management relating to Coco Pharmaceuticals business operations.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * ServiceQuality:Stock - Information relating to the Coco Pharmaceuticals' stock management and control.
+     * ServiceQuality:Stock - Information relating to the Coco Pharmaceuticals stock management and control.
      */
     STOCK          ("ServiceQuality:Stock",
                     CocoSubjectAreaDefinition.SERVICE_QUALITY,
                     "Stock",
-                    "Information relating to the Coco Pharmaceuticals' stock management and control.",
+                    "Information relating to the Coco Pharmaceuticals stock management and control.",
                     "Within research, sales, manufacturing, finance and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' business operations.",
+                    "Controlling data management relating to Coco Pharmaceuticals business operations.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * ServiceQuality:Distribution - Information relating to the Coco Pharmaceuticals' distribution of treatments.
+     * ServiceQuality:Distribution - Information relating to the Coco Pharmaceuticals distribution of treatments.
      */
     DISTRIBUTION   ("ServiceQuality:Distribution",
                     CocoSubjectAreaDefinition.SERVICE_QUALITY,
                     "Distribution",
-                    "Information relating to the Coco Pharmaceuticals' distribution of treatments.",
+                    "Information relating to the Coco Pharmaceuticals distribution of treatments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' business operations.",
+                    "Controlling data management relating to Coco Pharmaceuticals business operations.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * ServiceQuality:Invoice - Information relating to the Coco Pharmaceuticals' billing and payments.
+     * ServiceQuality:Invoice - Information relating to the Coco Pharmaceuticals billing and payments.
      */
     INVOICE        ("ServiceQuality:Invoice",
                     CocoSubjectAreaDefinition.SERVICE_QUALITY,
                     "Invoice",
-                    "Information relating to the Coco Pharmaceuticals' billing and payments.",
+                    "Information relating to the Coco Pharmaceuticals billing and payments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
-                    "Controlling data management relating to Coco Pharmaceuticals' business operations.",
+                    "Controlling data management relating to Coco Pharmaceuticals business operations.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
-     * Governance - Information relating to the Coco Pharmaceuticals' governance initiatives.
+     * Governance - Information relating to the Coco Pharmaceuticals governance initiatives.
      */
     GOVERNANCE("Governance",
                     null,
                     "Governance",
-                    "Information relating to the Coco Pharmaceuticals' governance initiatives.",
+                    "Information relating to the Coco Pharmaceuticals governance initiatives.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Education on the terminology associated with a governance domain",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
 
     /**
-     * Product Development - information relating to the Coco Pharmaceuticals' product development initiatives.
+     * Product Development - information relating to the Coco Pharmaceuticals product development initiatives.
      */
     PRODUCT_DEVELOPMENT("ProductDevelopment",
                null,
                "Product Development",
-               "Information relating to the Coco Pharmaceuticals' treatment development initiatives.",
+               "Information relating to the Coco Pharmaceuticals treatment development initiatives.",
                "Within research and the board.",
                "Coordinating and regulating data during the development of new treatments",
                GovernanceDomainDefinition.ALL.getDomainIdentifier()),
@@ -281,7 +281,7 @@ public enum CocoSubjectAreaDefinition
     CLINICAL_TRIAL("ProductDevelopment:ClinicalTrial",
                     CocoSubjectAreaDefinition.PRODUCT_DEVELOPMENT,
                     "Clinical Trial",
-                        "Information relating to the clinical trials run to support Coco Pharmaceuticals' product development initiatives.",
+                        "Information relating to the clinical trials run to support Coco Pharmaceuticals product development initiatives.",
                         "Within research and the board.",
                         "Coordinating and regulating data during a clinical trial.",
                         GovernanceDomainDefinition.ALL.getDomainIdentifier()),

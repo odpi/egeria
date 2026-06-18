@@ -756,6 +756,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param properties properties of the action
      * @param initialClassifications classification to add to the action
      * @param actionSourceGUID unique identifier of the source of the action
+     * @param iscQualifiedName qualified name of the supply chain making the request
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param assignmentType the assignment type for the AssignmentScope relationship
@@ -771,6 +772,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                     Map<String, ClassificationProperties> initialClassifications,
                                     ActionProperties                      properties,
                                     String                                actionSourceGUID,
+                                    String                                iscQualifiedName,
                                     List<String>                          actionCauseGUIDs,
                                     String                                assignToGUID,
                                     AssignmentType                        assignmentType,
@@ -782,6 +784,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                  initialClassifications,
                                  properties,
                                  actionSourceGUID,
+                                 iscQualifiedName,
                                  actionCauseGUIDs,
                                  assignToGUID,
                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
@@ -796,6 +799,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId caller's userId
      * @param properties properties of the action
      * @param actionSourceGUID unique identifier of the source of the action
+     * @param iscQualifiedName qualified name of the supply chain making the request
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param noteLogGUID unique identifier of the note log
      * @param actionTargets the list of elements that should be acted upon
@@ -810,6 +814,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                      Map<String, ClassificationProperties> initialClassifications,
                                      ActionProperties                      properties,
                                      String                                actionSourceGUID,
+                                     String                                iscQualifiedName,
                                      List<String>                          actionCauseGUIDs,
                                      String                                noteLogGUID,
                                      List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
@@ -820,6 +825,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                  initialClassifications,
                                  properties,
                                  actionSourceGUID,
+                                 iscQualifiedName,
                                  actionCauseGUIDs,
                                  noteLogGUID,
                                  OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
@@ -836,6 +842,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param initialClassifications classification to add to the action
      * @param properties properties of the action
      * @param actionSourceGUID unique identifier of the source of the action
+     * @param iscQualifiedName qualified name of the supply chain making the request
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param assignToRelationshipTypeName typeName of the relationship
@@ -852,6 +859,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                 Map<String, ClassificationProperties> initialClassifications,
                                 ActionProperties                      properties,
                                 String                                actionSourceGUID,
+                                String                                iscQualifiedName,
                                 List<String>                          actionCauseGUIDs,
                                 String                                assignToGUID,
                                 String                                assignToRelationshipTypeName,
@@ -892,11 +900,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
             newElementOptions.setIsOwnAnchor(true);
         }
 
+        ActionRequesterProperties parentRelationshipProperties = new ActionRequesterProperties();
+
+        parentRelationshipProperties.setISCQualifiedName(iscQualifiedName);
+
         String actionGUID = this.createAsset(userId,
                                              newElementOptions,
                                              initialClassifications,
                                              properties,
-                                             null);
+                                             parentRelationshipProperties);
 
         if (actionGUID != null)
         {

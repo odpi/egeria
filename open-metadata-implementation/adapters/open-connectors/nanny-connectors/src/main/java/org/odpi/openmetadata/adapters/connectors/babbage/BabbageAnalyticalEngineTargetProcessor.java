@@ -96,6 +96,7 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
                                                                                                                      null,
                                                                                                                      null,
                                                                                                                      connectorName,
+                                                                                                                     null,
                                                                                                                      null);
 
                     auditLog.logMessage(methodName,

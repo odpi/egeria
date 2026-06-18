@@ -29,7 +29,7 @@ public class AssetLocalLineageGraphMermaidGraphBuilder extends MermaidGraphBuild
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Lineage associated with Asset - ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

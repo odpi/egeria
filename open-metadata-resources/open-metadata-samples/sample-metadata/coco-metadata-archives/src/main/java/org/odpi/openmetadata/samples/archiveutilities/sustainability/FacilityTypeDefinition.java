@@ -5,7 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 /**
  * The FacilityTypeDefinition is used to feed the definition of the FacilityTypes valid value set for
- * Coco Pharmaceuticals' sustainability program.
+ * Coco Pharmaceuticals sustainability program.
  */
 public enum FacilityTypeDefinition
 {

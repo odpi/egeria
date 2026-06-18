@@ -7,7 +7,7 @@ import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinit
 
 /**
  * The SustainabilityRoleDefinition is used to feed the definition of the governance roles for
- * Coco Pharmaceuticals' sustainability program.
+ * Coco Pharmaceuticals sustainability program.
  */
 public enum GovernanceRoleDefinition
 {

@@ -726,6 +726,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                               requestBody.getRequestType(),
                                                               requestBody.getRequestParameters(),
                                                               requestBody.getProcessName(),
+                                                              requestBody.getISCQualifiedName(),
                                                               requestBody.getRequestSourceName(),
                                                               requestBody.getOriginatorServiceName(),
                                                               requestBody.getOriginatorEngineName()));
@@ -788,7 +789,8 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                       requestBody.getStartDate(),
                                                                       requestBody.getRequestParameters(),
                                                                       requestBody.getOriginatorServiceName(),
-                                                                      requestBody.getOriginatorEngineName()));
+                                                                      requestBody.getOriginatorEngineName(),
+                                                                      requestBody.getISCQualifiedName()));
             }
             else
             {
@@ -848,7 +850,8 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                          requestBody.getStartDate(),
                                                                          requestBody.getRequestParameters(),
                                                                          requestBody.getOriginatorServiceName(),
-                                                                         requestBody.getOriginatorEngineName()));
+                                                                         requestBody.getOriginatorEngineName(),
+                                                                         requestBody.getISCQualifiedName()));
             }
             else
             {

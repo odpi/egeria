@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 /**
- * The JobLevelDefinition is used to feed the definition of the JobLevel valid value set for Coco Pharmaceuticals' employees.
+ * The JobLevelDefinition is used to feed the definition of the JobLevel valid value set for Coco Pharmaceuticals employees.
  */
 public enum JobLevelDefinition
 {
@@ -51,7 +51,7 @@ public enum JobLevelDefinition
 
     public static final String             validValueSetName = "JobLevel";
     public static final String             validValueSetPropertyName = "jobLevel";
-    public static final String             validValueSetDescription = "Describes the seniority of an employee in the Coco Pharmaceuticals' organization.";
+    public static final String             validValueSetDescription = "Describes the seniority of an employee in the Coco Pharmaceuticals organization.";
     public static final String             validValueSetUsage = "Stored in the `jobLevel` additional property of the Person entity.";
     public static final String             validValueSetScope = "Used when the person described has an employment contract with Coco Pharmaceuticals.";
     public static final JobLevelDefinition defaultValue       = JobLevelDefinition.LEVEL_2;

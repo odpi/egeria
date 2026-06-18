@@ -36,6 +36,7 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
     private String                requestType           = null;
     private Map<String, String>   requestParameters     = null;
     private String                processName           = null;
+    private String                iscQualifiedName      = null;
     private String                requestSourceName     = null;
     private String                originatorServiceName = null;
     private String                originatorEngineName  = null;
@@ -75,6 +76,7 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
             requestSourceName     = template.getRequestSourceName();
             originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName  = template.getOriginatorEngineName();
+            iscQualifiedName      = template.getISCQualifiedName();
         }
     }
 
@@ -430,6 +432,28 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
 
 
     /**
+     * Return the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @param iscQualifiedName string name
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -453,6 +477,7 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
                 ", requestSourceName='" + requestSourceName + '\'' +
                 ", originatorServiceName='" + originatorServiceName + '\'' +
                 ", originatorEngineName='" + originatorEngineName + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 "} " + super.toString();
     }
 
@@ -483,7 +508,8 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
                 Objects.equals(processName, that.processName) &&
                 Objects.equals(requestSourceName, that.requestSourceName) &&
                 Objects.equals(originatorServiceName, that.originatorServiceName) &&
-                Objects.equals(originatorEngineName, that.originatorEngineName);
+                Objects.equals(originatorEngineName, that.originatorEngineName) &&
+                Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 
     /**
@@ -497,6 +523,6 @@ public class InitiateEngineActionRequestBody extends GAFAPIRequest
         return Objects.hash(super.hashCode(), qualifiedName, domainIdentifier, displayName, description,
                             actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startDate,
                             requestType, requestParameters, processName, requestSourceName, originatorServiceName,
-                            originatorEngineName);
+                            originatorEngineName, iscQualifiedName);
     }
 }

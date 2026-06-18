@@ -28,7 +28,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Asset - ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

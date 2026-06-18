@@ -1193,8 +1193,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                        String                governanceEngineName,
                                        String                requestType,
                                        Map<String, String>   requestParameters) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         return actionControlClient.initiateEngineAction(userId,
                                                         qualifiedName,
@@ -1209,6 +1209,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                         governanceEngineName,
                                                         requestType,
                                                         requestParameters,
+                                                        null,
                                                         null,
                                                         null,
                                                         engineActionGUID,
@@ -1233,6 +1234,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param requestType request type to identify the governance action service to run
      * @param requestParameters properties to pass to the governance action service
      * @param processName name of the process that this action is a part of
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action
      *
@@ -1252,9 +1254,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                        String                governanceEngineName,
                                        String                requestType,
                                        Map<String, String>   requestParameters,
-                                       String                processName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                       String                processName,
+                                       String                iscQualifiedName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         return actionControlClient.initiateEngineAction(userId,
                                                         qualifiedName,
@@ -1270,6 +1273,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                         requestType,
                                                         requestParameters,
                                                         processName,
+                                                        iscQualifiedName,
                                                         null,
                                                         engineActionGUID,
                                                         governanceEngineName);
@@ -1286,6 +1290,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
@@ -1299,9 +1304,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
                                                String                originatorServiceName,
-                                               String                originatorEngineName) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                               String                originatorEngineName,
+                                               String                iscQualifiedName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         return actionControlClient.initiateGovernanceActionType(userId,
                                                                 governanceActionTypeQualifiedName,
@@ -1311,7 +1317,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                 startTime,
                                                                 requestParameters,
                                                                 originatorServiceName,
-                                                                originatorEngineName);
+                                                                originatorEngineName,
+                                                                iscQualifiedName);
     }
 
 
@@ -1324,6 +1331,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param actionCauseGUIDs  request cause elements for the resulting engine action
      * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action process instance
      *
@@ -1337,9 +1345,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                   List<String>          actionSourceGUIDs,
                                                   List<String>          actionCauseGUIDs,
                                                   List<NewActionTarget> actionTargets,
-                                                  Date                  startTime) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                                  Date                  startTime,
+                                                  String                iscQualifiedName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         return actionControlClient.initiateGovernanceActionProcess(userId,
                                                                    processQualifiedName,
@@ -1349,7 +1358,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                    startTime,
                                                                    requestParameters,
                                                                    null,
-                                                                   null);
+                                                                   null,
+                                                                   iscQualifiedName);
     }
 
 

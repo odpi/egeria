@@ -158,6 +158,7 @@ public class OpenMetadataTypesArchive
          * New types for this release
          */
         update0010BaseModel();
+        update0013Actions();
         update0019MoreInformation();
         update0112Person();
         update0118ActorRoles();
@@ -168,7 +169,9 @@ public class OpenMetadataTypesArchive
         update0405GovernanceDrivers();
         update0423SecurityDefinitions();
         update0424GovernanceZones();
+        update0451Notifications();
         update0455ExceptionManagement();
+        update0463EngineActions();
         update0485DataProcessingPurposes();
         update0505SchemaAttributes();
         update0595DesignPatterns();
@@ -205,6 +208,30 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0013Actions()
+    {
+        this.archiveBuilder.addTypeDefPatch(getActionRequesterPatch());
+    }
+
+    private TypeDefPatch getActionRequesterPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -997,6 +1024,75 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0451Notifications()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateNotificationSubscriberRelationship());
+
+
+    }
+
+    private TypeDefPatch updateNotificationSubscriberRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0463EngineActions()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
+
+
+    }
+
+    private TypeDefPatch updateEngineActionEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

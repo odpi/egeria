@@ -9,7 +9,7 @@ import org.odpi.openmetadata.samples.archiveutilities.organization.WorkLocationD
 
 /**
  * The FacilityDefinition is used to feed the location definitions for the sites and facilities that Coco Pharmaceuticals operates.  It is used by
- * Coco Pharmaceuticals' sustainability program.  It links to the valid values for the major sites (WorkLocations).
+ * Coco Pharmaceuticals sustainability program.  It links to the valid values for the major sites (WorkLocations).
  */
 public enum FacilityDefinition
 {

@@ -81,6 +81,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param startTime future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName optional unique name of the information supply chain.
      * @param methodName calling method
      *
      * @return unique identifier of the first engine action
@@ -97,6 +98,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                Date                  startTime,
                                                String                originatorServiceName,
                                                String                originatorEngineName,
+                                               String                iscQualifiedName,
                                                String                methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -139,6 +141,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                governanceActionTypeQualifiedName,
                                                originatorServiceName,
                                                originatorEngineName,
+                                               iscQualifiedName,
                                                methodName);
         }
         else
@@ -317,6 +320,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
+     * @param iscQualifiedName unique identifier of the information supply chain
      * @param methodName calling method
      * @return unique identifier of the prepared engine action
      * @throws InvalidParameterException null qualified name
@@ -333,6 +337,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String                requestSourceName,
                                                String                originatorServiceName,
                                                String                originatorEngineName,
+                                               String                iscQualifiedName,
                                                String                methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -502,6 +507,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      governanceActionTypeName,
                                                      null,
                                                      null,
+                                                     iscQualifiedName,
                                                      null,
                                                      null,
                                                      methodName);
@@ -543,6 +549,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestedStartDate future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of the integration service that initiated the governance action
      * @param methodName calling method
      *
      * @return unique identifier of the governance action process instance
@@ -559,6 +566,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   Date                  requestedStartDate,
                                                   String                originatorServiceName,
                                                   String                originatorEngineName,
+                                                  String                iscQualifiedName,
                                                   String                methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -774,6 +782,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              false,
                                                                              requestedStartDate,
                                                                              null,
+                                                                             iscQualifiedName,
                                                                              userId,
                                                                              combinedRequestParameters,
                                                                              actionSourceGUIDs,
@@ -795,7 +804,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        engineActionGUID,
                                                        engineActionGUIDParameterName,
                                                        OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeGUID,
-                                                       null,
+                                                       repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    null,
+                                                                                                    OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                    iscQualifiedName,
+                                                                                                    methodName),
                                                        methodName);
                 }
 
@@ -831,6 +844,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param mandatoryGuard is this guard mandatory?
      * @param suppliedStartTime has the caller requested a start time?
      * @param previousEngineActionGUID unique identifier of the previous engine action
+     * @param iscQualifiedName unique name of the integration service that initiated the governance action
      * @param requesterUserId original requesting user
      * @param initialRequestParameters request parameters  from the caller
      * @param actionSourceGUIDs identifiers of the request sources
@@ -854,6 +868,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       boolean               mandatoryGuard,
                                                       Date                  suppliedStartTime,
                                                       String                previousEngineActionGUID,
+                                                      String                iscQualifiedName,
                                                       String                requesterUserId,
                                                       Map<String, String>   initialRequestParameters,
                                                       List<String>          actionSourceGUIDs,
@@ -1116,6 +1131,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 governanceActionProcessStepName,
                                                                 anchorGUID,
                                                                 processName,
+                                                                iscQualifiedName,
                                                                 requestSourceName,
                                                                 originatorServiceName,
                                                                 originatorEngineName,
@@ -1137,6 +1153,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        nextEngineActionProperties,
                                                                                        OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                                        mandatoryGuard,
+                                                                                       methodName);
+
+            nextEngineActionProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                       nextEngineActionProperties,
+                                                                                       OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                       iscQualifiedName,
                                                                                        methodName);
 
             repositoryHandler.createRelationship(userId,
@@ -1410,6 +1432,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param processStepName unique name of the governance action process step that initiated this engine action as part of
      *                                 a governance action process (or null if this is standalone governance action)
      * @param processName name of the process
+     * @param iscQualifiedName qualified name of the information supply chain
      * @param methodName calling method
      *
      * @return unique identifier of the engine action
@@ -1436,16 +1459,17 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      String                governanceActionTypeName,
                                      String                anchorGUID,
                                      String                processName,
+                                     String                iscQualifiedName,
                                      String                processStepGUID,
                                      String                processStepName,
                                      String                methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String qualifiedNameParameterName  = "qualifiedName";
         final String engineNameParameterName     = "governanceEngineName";
         final String requestTypeParameterName    = "requestType";
-        final String anchorGUIDParameterName     = "anchorGUID";
+        final String iscQualifiedNameParameterName  = "iscQualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -1462,6 +1486,27 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         requestType,
                                                                         methodName);
 
+        /*
+         * Check that the caller has the right to use the information supply chain.
+         */
+        if (iscQualifiedName != null)
+        {
+            this.getBeanGUIDByUniqueName(userId,
+                                         iscQualifiedName,
+                                         iscQualifiedNameParameterName,
+                                         OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                         OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeGUID,
+                                         OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                         null,
+                                         null,
+                                         null,
+                                         null,
+                                         false,
+                                         false,
+                                         null,
+                                         methodName);
+        }
+
         EngineActionBuilder builder = new EngineActionBuilder(qualifiedName,
                                                               domainIdentifier,
                                                               displayName,
@@ -1471,6 +1516,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               governanceActionTypeGUID,
                                                               governanceActionTypeName,
                                                               processName,
+                                                              iscQualifiedName,
                                                               processStepGUID,
                                                               processStepName,
                                                               requesterUserId,
@@ -1528,7 +1574,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   true,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeGUID,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
-                                                  null,
+                                                  repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                               null,
+                                                                                               OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                               iscQualifiedName,
+                                                                                               methodName),
                                                   null,
                                                   null,
                                                   null,
@@ -1614,6 +1664,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceActionProcessStepName unique name of the governance action process step that initiated this engine action as part of
      *                                 a governance action process (or null if this is standalone engine action)
      * @param processName name of process this is a part of
+     * @param iscQualifiedName qualified name from the information supply chain
      * @param requestSourceName where did the request come from
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
@@ -1644,6 +1695,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               String                governanceActionProcessStepName,
                                                               String                anchorGUID,
                                                               String                processName,
+                                                              String                iscQualifiedName,
                                                               String                requestSourceName,
                                                               String                originatorServiceName,
                                                               String                originatorEngineName,
@@ -1744,6 +1796,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   null,
                                   anchorGUID,
                                   processName,
+                                  iscQualifiedName,
                                   governanceActionProcessStepGUID,
                                   governanceActionProcessStepName,
                                   methodName);
@@ -2609,8 +2662,14 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataProperty.REQUESTER_USER_ID.name,
                                                                                     properties,
                                                                                     methodName);
+
+                        String iscQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                    OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                    properties,
+                                                                                    methodName);
                         this.initiateNextEngineActions(userId,
                                                        engineActionGUID,
+                                                       iscQualifiedName,
                                                        governanceActionProcessStepGUID,
                                                        anchorGUID,
                                                        processName,
@@ -2762,6 +2821,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param previousEngineActionGUID unique identifier of engine action that has just completed
+     * @param iscQualifiedName qualified name from the information supply chain
      * @param previousGovernanceActionProcessStepGUID governance action process driving previous engine action(s)
      * @param anchorGUID unique identifier of the first engine action to execute for the process
      * @param processName name of initiating process (if any)
@@ -2778,6 +2838,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     private void initiateNextEngineActions(String                userId,
                                            String                previousEngineActionGUID,
+                                           String                iscQualifiedName,
                                            String                previousGovernanceActionProcessStepGUID,
                                            String                anchorGUID,
                                            String                processName,
@@ -2867,6 +2928,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     mandatoryGuard,
                                                                     null,
                                                                     previousEngineActionGUID,
+                                                                    iscQualifiedName,
                                                                     requesterUserId,
                                                                     callerRequestParameters,
                                                                     null,

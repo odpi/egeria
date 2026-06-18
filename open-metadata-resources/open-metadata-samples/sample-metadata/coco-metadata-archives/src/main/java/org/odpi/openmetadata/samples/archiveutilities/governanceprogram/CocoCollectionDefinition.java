@@ -44,6 +44,17 @@ public enum CocoCollectionDefinition
                           null),
 
     /**
+     * Sustainability Regulations
+     */
+    SUSTAINABILITY_REGULATIONS("3a3139b4-1648-4d2a-a685-88b4d1eae44f",
+                          OpenMetadataType.COLLECTION_FOLDER.typeName,
+                          null,
+                          CORPORATE_REGULATION_LIBRARY,
+                          "Sustainability Regulations",
+                          "Resources relating to sustainability regulations.",
+                          null),
+
+    /**
      * Privacy Regulations
      */
     PRIVACY_REGULATIONS("27e48750-a09d-4a45-a3d4-3dd8f70290a9",
@@ -88,13 +99,13 @@ public enum CocoCollectionDefinition
 
 
     /**
-     * Coco Pharmaceuticals' Solutions
+     * Coco Pharmaceuticals Solutions
      */
     SOLUTIONS("af34b0cc-8ace-4622-bc8a-46813027d695",
                       OpenMetadataType.ROOT_COLLECTION.typeName,
                       null,
                       null,
-                      "Coco Pharmaceuticals' Solutions",
+                      "Coco Pharmaceuticals Solutions",
                       "These solutions are critical for the success of Coco Pharmaceuticals.",
                       null),
 

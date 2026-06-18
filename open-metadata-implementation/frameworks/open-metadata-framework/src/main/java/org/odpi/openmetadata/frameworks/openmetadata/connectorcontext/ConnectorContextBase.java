@@ -1906,6 +1906,7 @@ public class ConnectorContextBase
      * @param initialClassifications classification to add to the action
      * @param properties properties of the action
      * @param actionSourceGUID unique identifier of the source of the action
+     * @param iscQualifiedName qualified name of the supply chain making the request
      * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
      * @param noteLogGUID unique identifier of the note log
      * @param actionTargets the list of elements that should be acted upon
@@ -1919,13 +1920,14 @@ public class ConnectorContextBase
     public String createNoteLogEntry(Map<String, ClassificationProperties> initialClassifications,
                                      ActionProperties                      properties,
                                      String                                actionSourceGUID,
+                                     String                                iscQualifiedName,
                                      List<String>                          actionCauseGUIDs,
                                      String                                noteLogGUID,
                                      List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return assetHandler.createNoteLogEntry(connectorUserId, initialClassifications, properties, actionSourceGUID, actionCauseGUIDs, noteLogGUID, actionTargets);
+        return assetHandler.createNoteLogEntry(connectorUserId, initialClassifications, properties, actionSourceGUID, iscQualifiedName, actionCauseGUIDs, noteLogGUID, actionTargets);
     }
 
 

@@ -24,7 +24,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Process - ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(processGraph.getGovernanceActionProcess().getProperties().getDisplayName()));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(processGraph.getGovernanceActionProcess().getProperties().getDisplayName()));
         mermaidGraph.append(" [");
         mermaidGraph.append(processGraph.getGovernanceActionProcess().getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

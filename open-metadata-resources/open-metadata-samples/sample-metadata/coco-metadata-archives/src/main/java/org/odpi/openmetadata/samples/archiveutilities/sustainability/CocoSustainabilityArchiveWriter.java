@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 /**
- * CocoSustainabilityArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals'
+ * CocoSustainabilityArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals
  * sustainability initiative.
  */
 public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
@@ -36,7 +36,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private static final String                  archiveGUID        = "be351568-97ec-4c34-bca5-aff93f326d9e";
     private static final String                  archiveName        = "Coco Pharmaceuticals Sustainability Project";
-    private static final String                  archiveDescription = "The base definitions for Coco Pharmaceuticals' sustainability initiative.";
+    private static final String                  archiveDescription = "The base definitions for Coco Pharmaceuticals sustainability initiative.";
 
     private static final Date                    creationDate       = new Date(1639984840038L);
 
@@ -212,7 +212,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
             assert governanceDefinition.getGUID().equals(governanceDefinitionGUID);
 
-            archiveHelper.addMemberToCollection(sustainabilityFolioGUID,governanceDefinitionGUID, "Sustainability governance definition");
+            archiveHelper.addMemberToCollection(sustainabilityFolioGUID, governanceDefinitionGUID, "Sustainability governance definition");
         }
 
 
@@ -224,7 +224,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                         null);
         }
 
-        archiveHelper.addMemberToCollection(sustainabilityFolioGUID, sustainabilityFolioGUID, "Sustainability governance definition");
+        archiveHelper.addMemberToCollection(CocoCollectionDefinition.SUSTAINABILITY_REGULATIONS.getGUID(), GovernanceDefinition.CSRD_REGULATION.getGUID(), "Sustainability governance definition");
+
     }
 
 

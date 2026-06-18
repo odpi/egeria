@@ -19,7 +19,7 @@ public enum GovernanceDefinition
                               OpenMetadataType.BUSINESS_IMPERATIVE.typeName,
                               "BUSINESS-IMPERATIVE-06",
                               "Protecting Coco Pharmaceuticals from global instability",
-                              "How do we ensure that Coco Pharmaceuticals' operations are effective, resilient and sustainable in the light of global instability",
+                              "How do we ensure that Coco Pharmaceuticals operations are effective, resilient and sustainable in the light of global instability",
                               "Climate change is upon us.  Natural resources are being depleted at an alarming rate and some are becoming difficult, if not impossible, to obtain.  Coco needs to be actively monitoring its operations ensuring it keeps pace with leaner operations and use of sustainable resources.  This is important for operational resilience, and avoiding reputational damage for being a polluter.",
                               "High",
                               new String[]{
@@ -157,7 +157,7 @@ public enum GovernanceDefinition
                                                   OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                                   "SUSTAINABILITY_09",
                                                   "Deliver Sustainability Reporting Capability",
-                                                  "Operate an information supply chain to measure and monitor Coco Pharmaceuticals' operations for sustainability.",
+                                                  "Operate an information supply chain to measure and monitor Coco Pharmaceuticals operations for sustainability.",
                                                   null,
                                                   "High",
                                                   null,

@@ -27,6 +27,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
     private String              governanceActionTypeGUID        = null;
     private String              governanceActionTypeName        = null;
     private String              processName                     = null;
+    private String              iscQualifiedName                = null;
     private String              governanceActionProcessStepGUID = null;
     private String              governanceActionProcessStepName = null;
     private String              requesterUserId                 = null;
@@ -53,6 +54,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this engine action
      * @param governanceActionTypeName unique name of the governance action process step that initiated this engine action
      * @param processName name of the process that requested the engine action
+     * @param iscQualifiedName qualified name of the information supply chain
      * @param processStepGUID unique identifier of the governance action process step that initiated this engine action
      * @param processStepName unique name of the governance action process step that initiated this engine action
      * @param requesterUserId  the caller
@@ -79,6 +81,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
                         String               governanceActionTypeGUID,
                         String               governanceActionTypeName,
                         String               processName,
+                        String               iscQualifiedName,
                         String               processStepGUID,
                         String               processStepName,
                         String               requesterUserId,
@@ -113,6 +116,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
         this.governanceActionTypeGUID = governanceActionTypeGUID;
         this.governanceActionTypeName = governanceActionTypeName;
         this.processName = processName;
+        this.iscQualifiedName = iscQualifiedName;
         this.governanceActionProcessStepGUID = processStepGUID;
         this.governanceActionProcessStepName = processStepName;
         this.requesterUserId = requesterUserId;
@@ -263,6 +267,12 @@ public class EngineActionBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataProperty.PROCESS_NAME.name,
                                                                   processName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                  iscQualifiedName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

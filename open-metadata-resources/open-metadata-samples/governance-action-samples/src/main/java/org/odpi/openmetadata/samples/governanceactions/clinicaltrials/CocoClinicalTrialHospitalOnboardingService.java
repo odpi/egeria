@@ -1055,7 +1055,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                        null,
                                                        requestParameters,
                                                        governanceServiceName,
-                                                       governanceEngineName);
+                                                       governanceEngineName,
+                                                       null);
     }
 
 }

@@ -70,8 +70,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                     EgeriaSolutionComponent.WORKSPACES_POSTGRES_SERVER,
                     "stores data",
                     "Egeria has multiple options for storing both metadata and operational data on PostgreSQL.",
-                    new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION,
-                    null}),
+                    null),
 
     EGERIA_KAFKA(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getSolutionComponent(),
                  EgeriaSolutionComponent.APACHE_KAFKA,
@@ -109,7 +108,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                                  "metadata change notifications",
                                  "A metadata access store sends a kafka event each time a metadata element, relationship, or classification changes.",
                                     new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.OPEN_METADATA_OBSERVABILITY,
-                                    EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION}),
+                                    EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
 
     METADATA_ACCESS_STORE_COHORT_EVENTS(EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponent(),
                                     EgeriaSolutionComponent.COHORT,
@@ -121,13 +120,13 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                                  EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getSolutionComponent(),
                                  "metadata change notifications",
                                  "An integration connector uses open metadata events to monitor changing metadata.",
-                                 new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION}),
+                                 new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
 
     ENGINE_HOST_OM_EVENTS(EgeriaSolutionComponent.OPEN_METADATA_TOPIC,
                               EgeriaDeployedImplementationType.ENGINE_HOST.getSolutionComponent(),
                               "metadata change notifications",
                               "A governance service uses open metadata events to monitor changing metadata.",
-                          new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.DYNAMIC_CONFIGURATION}),
+                          new InformationSupplyChainDefinition[]{EgeriaInformationSupplyChainDefinition.OPEN_METADATA_HIGHWAY}),
 
     METADATA_ACCESS_STORE_OG_EVENTS(EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponent(),
                                     EgeriaSolutionComponent.OPEN_GOVERNANCE_TOPIC,

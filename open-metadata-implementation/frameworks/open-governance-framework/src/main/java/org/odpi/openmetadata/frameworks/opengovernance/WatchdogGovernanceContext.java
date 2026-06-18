@@ -89,8 +89,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                 String                governanceEngineName,
                                 String                requestType,
                                 Map<String, String>   requestParameters) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**
@@ -110,6 +110,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @param requestType request type to identify the governance action service to run
      * @param requestParameters properties to pass to the governance action service
      * @param processName name of the process that this action is a part of
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action
      *
@@ -128,9 +129,10 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                 String                governanceEngineName,
                                 String                requestType,
                                 Map<String, String>   requestParameters,
-                                String                processName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
+                                String                processName,
+                                String                iscQualifiedName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
     /**
      * Using the named governance action type as a template, initiate an engine action.
@@ -143,6 +145,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
@@ -156,9 +159,10 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                         Date                  startTime,
                                         Map<String, String>   requestParameters,
                                         String                originatorServiceName,
-                                        String                originatorEngineName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException;
+                                        String                originatorEngineName,
+                                        String                iscQualifiedName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
     /**
      * Using the named governance action process as a template, initiate a chain of governance actions.
@@ -169,6 +173,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @param actionCauseGUIDs  request cause elements for the resulting engine action
      * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action process instance
      *
@@ -181,7 +186,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                            List<String>          actionSourceGUIDs,
                                            List<String>          actionCauseGUIDs,
                                            List<NewActionTarget> actionTargets,
-                                           Date                  startTime) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
+                                           Date                  startTime,
+                                           String                iscQualifiedName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 }

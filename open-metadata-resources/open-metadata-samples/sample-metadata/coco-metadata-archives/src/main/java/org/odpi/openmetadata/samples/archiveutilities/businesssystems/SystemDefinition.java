@@ -21,7 +21,7 @@ public enum SystemDefinition
     COCO_CRM("a2e43afa-386a-4acd-ba1d-7773b368c34a",
              "globalCRM",
              "Global customer ordering system.",
-             "Global customer ordering system used to manage the sales of Coco Pharmaceuticals' products.  This include the generic treatments and the new personalized medicine.",
+             "Global customer ordering system used to manage the sales of Coco Pharmaceuticals products.  This include the generic treatments and the new personalized medicine.",
              "globalcrmnpa",
              SystemTypeDefinition.CLOUD_SAAS_SERVICE,
              "",

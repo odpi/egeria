@@ -108,17 +108,17 @@ public enum GlossaryTermDefinition
              null),
 
     /**
-     * Graphical summary of Coco Pharmaceuticals' sustainability data.
+     * Graphical summary of Coco Pharmaceuticals sustainability data.
      */
     SUSTAINABILITY_DASHBOARD("Sustainability Dashboard",
-                             "Graphical summary of Coco Pharmaceuticals' sustainability data.",
+                             "Graphical summary of Coco Pharmaceuticals sustainability data.",
                              null,
                              null,
                              null,
                              null,
                              new GlossaryCategoryDefinition[]{GlossaryCategoryDefinition.GENERAL_KNOWLEDGE},
                              null,
-                             "The sustainability dashboard provides detailed information about the impact of the different activities undertaken by Coco Pharmaceuticals' and how this impact is changing over time.",
+                             "The sustainability dashboard provides detailed information about the impact of the different activities undertaken by Coco Pharmaceuticals and how this impact is changing over time.",
                              null,
                              null,
                              null),

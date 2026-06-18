@@ -33,6 +33,7 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
     private Date                  startDate                         = null;
     private String                originatorServiceName             = null;
     private String                originatorEngineName              = null;
+    private String                iscQualifiedName                  = null;
 
 
     /**
@@ -63,6 +64,7 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
             startDate                         = template.getStartDate();
             originatorServiceName             = template.getOriginatorServiceName();
             originatorEngineName              = template.getOriginatorEngineName();
+            iscQualifiedName                  = template.getISCQualifiedName();
         }
     }
 
@@ -256,6 +258,28 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
 
 
     /**
+     * Return the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @param iscQualifiedName string name
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -272,6 +296,7 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
                 ", startDate=" + startDate +
                 ", originatorServiceName='" + originatorServiceName + '\'' +
                 ", originatorEngineName='" + originatorEngineName + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 "} " + super.toString();
     }
 
@@ -295,7 +320,8 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
                 Objects.equals(actionTargets, that.actionTargets) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(originatorServiceName, that.originatorServiceName) &&
-                Objects.equals(originatorEngineName, that.originatorEngineName);
+                Objects.equals(originatorEngineName, that.originatorEngineName) &&
+                Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 
 
@@ -308,6 +334,6 @@ public class InitiateGovernanceActionTypeRequestBody extends GAFAPIRequest
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), governanceActionTypeQualifiedName, requestParameters, actionSourceGUIDs,
-                            actionCauseGUIDs, actionTargets, startDate, originatorServiceName, originatorEngineName);
+                            actionCauseGUIDs, actionTargets, startDate, originatorServiceName, originatorEngineName, iscQualifiedName);
     }
 }
