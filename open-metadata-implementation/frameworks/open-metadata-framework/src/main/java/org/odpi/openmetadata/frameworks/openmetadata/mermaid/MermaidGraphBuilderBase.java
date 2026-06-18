@@ -1325,8 +1325,8 @@ public class MermaidGraphBuilderBase
         {
             String quotesGone = displayName.replaceAll("\"", "'");
             String doubleSlashGone = quotesGone.replaceAll("//", "/ /");
-            String placeholderStartGone = doubleSlashGone.replaceAll("~\\{", "~ {");
-            return placeholderStartGone.replaceAll("}~", "} ~");
+            String placeholderStartGone = doubleSlashGone.replaceAll("~\\{", " *");
+            return placeholderStartGone.replaceAll("}~", "* ");
         }
 
         return null;

@@ -393,7 +393,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param solutionBlueprintDefinitions list of definitions
      */
-    public void addSolutionBlueprints(List<SolutionBlueprintDefinition> solutionBlueprintDefinitions)
+    public void addSolutionBlueprints(List<SolutionBlueprintDefinition> solutionBlueprintDefinitions,
+                                      String                            collectionGUID)
     {
         final String methodName = "addSolutionBlueprints";
 
@@ -420,6 +421,10 @@ public class SimpleCatalogArchiveHelper
                                                "6.1-SNAPSHOT",
                                                null,
                                                methodName);
+            }
+            else if (collectionGUID != null)
+            {
+                this.addMemberToCollection(collectionGUID, blueprintGUID, null);
             }
 
             if (solutionBlueprint.getSolutionComponents() != null)
@@ -2952,22 +2957,22 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Link a referenceable to a governance definition to define the scope there it applies.
+     * Link a referenceable to a scope to define the scope there it applies.
      *
      * @param referenceableQName qualified name of the referenceable
-     * @param governanceDefinitionQName qualified name of the governance definition
+     * @param scopeQName qualified name of the governance definition
      */
-    public void addGovernanceDefinitionScopeRelationship(String  referenceableQName,
-                                                         String  governanceDefinitionQName)
+    public void addScopedByRelationship(String  referenceableQName,
+                                        String  scopeQName)
     {
-        String guid1 = idToGUIDMap.getGUID(governanceDefinitionQName);
+        String guid1 = idToGUIDMap.getGUID(scopeQName);
         String guid2 = idToGUIDMap.getGUID(referenceableQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governance_definition_scope_relationship"),
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_scoped_by_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -3400,7 +3405,7 @@ public class SimpleCatalogArchiveHelper
 
         classifications.add(this.getAnchorClassification(null,
                                                          OpenMetadataType.BUSINESS_CAPABILITY.typeName,
-                                                         OpenMetadataType.COLLECTION.typeName,
+                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                          null,
                                                          methodName));
 

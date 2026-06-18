@@ -58,6 +58,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     public void getArchiveContent()
     {
         /*
+         * Add the content collections
+         */
+        addContentCollections(ContentPackDefinition.CORE_CONTENT_PACK);
+
+        /*
          * Add the root digital product catalog.
          */
         addDigitalProductCatalogDefinition(ContentPackDefinition.CORE_CONTENT_PACK);
@@ -670,7 +675,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                     Object   potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
                     ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;
-                    archiveHelper.addConnectorType(connectorProvider);
+                    String connectorTypeGUID = archiveHelper.addConnectorType(connectorProvider);
+
+                    archiveHelper.addMemberToCollection(ContentCollectionDefinition.OPEN_CONNECTORS.getGUID(), connectorTypeGUID, null);
                 }
                 catch (Exception error)
                 {
@@ -713,7 +720,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addSolutionComponents(List.of(org.odpi.openmetadata.adapters.connectors.EgeriaSolutionComponent.values()));
         archiveHelper.addSolutionComponentActors(List.of(org.odpi.openmetadata.adapters.connectors.EgeriaSolutionComponentActor.values()));
         archiveHelper.addSolutionComponentWires(List.of(org.odpi.openmetadata.adapters.connectors.EgeriaSolutionComponentWire.values()));
-        archiveHelper.addSolutionBlueprints(List.of(org.odpi.openmetadata.adapters.connectors.EgeriaSolutionBlueprint.values()));
+        archiveHelper.addSolutionBlueprints(List.of(org.odpi.openmetadata.adapters.connectors.EgeriaSolutionBlueprint.values()), ContentCollectionDefinition.EGERIA_SOLUTIONS.getGUID());
 
 
         /*
@@ -1402,8 +1409,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         for (ExceptionTypeDefinition exceptionTypeDefinition : ExceptionTypeDefinition.values())
         {
-            archiveHelper.setGUID(exceptionTypeDefinition.getQualifiedName(), exceptionTypeDefinition.getGUID());
-
             String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.EXCEPTION_TYPE.typeName,
                                                                 exceptionTypeDefinition.getQualifiedName(),
                                                                 exceptionTypeDefinition.getIdentifier(),
@@ -1412,7 +1417,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 exceptionTypeDefinition.getDescription(),
                                                                 exceptionTypeDefinition.getScope().getPreferredValue(),
                                                                 exceptionTypeDefinition.getDetails(),
-                                                                0,
+                                                                exceptionTypeDefinition.getDomainIdentifier(),
                                                                 null,
                                                                 null,
                                                                 null,

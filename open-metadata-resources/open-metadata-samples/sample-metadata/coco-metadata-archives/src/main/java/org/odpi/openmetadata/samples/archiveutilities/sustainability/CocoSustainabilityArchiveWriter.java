@@ -6,10 +6,10 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoCollectionDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
@@ -78,19 +78,23 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     {
         archiveHelper.setGUID(sustainabilityFolioQName, sustainabilityFolioGUID);
 
-        archiveHelper.addCollection(OpenMetadataType.FOLIO_COLLECTION.typeName,
-                                    null,
-                                    OpenMetadataType.FOLIO_COLLECTION.typeName,
-                                    OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
-                                    null,
-                                    null,
-                                    sustainabilityFolioQName,
-                                    sustainabilityFolioDisplayName,
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    null);
+        String folioGUID = archiveHelper.addCollection(OpenMetadataType.FOLIO_COLLECTION.typeName,
+                                                       null,
+                                                       OpenMetadataType.FOLIO_COLLECTION.typeName,
+                                                       OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                       null,
+                                                       null,
+                                                       sustainabilityFolioQName,
+                                                       sustainabilityFolioDisplayName,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null);
+
+        assert (folioGUID.equals(sustainabilityFolioGUID));
+
+        archiveHelper.addMemberToCollection(CocoCollectionDefinition.GOVERNANCE_FOLIOS.getGUID(), folioGUID, null);
     }
 
     /**
@@ -219,6 +223,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                         link.getChildDefinition().getQualifiedName(),
                                                                         null);
         }
+
+        archiveHelper.addMemberToCollection(sustainabilityFolioGUID, sustainabilityFolioGUID, "Sustainability governance definition");
     }
 
 
@@ -269,6 +275,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                         roleDefinition.getGovernanceResponsibility().getQualifiedName());
             }
         }
+
+        archiveHelper.addScopedByRelationship(SustainabilityRoleDefinition.SUSTAINABILITY_OFFICER.getQualifiedName(), sustainabilityFolioQName);
     }
 
 

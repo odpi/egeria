@@ -235,6 +235,22 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeBusinessAreas()
     {
+        final String collection = "Coco Pharmaceuticals Business Areas";
+
+        archiveHelper.addCollection(OpenMetadataType.ROOT_COLLECTION.typeName,
+                                    null,
+                                    OpenMetadataType.ROOT_COLLECTION.typeName,
+                                    OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                    null,
+                                    null,
+                                    OpenMetadataType.ROOT_COLLECTION.typeName + "::" + collection,
+                                    collection,
+                                    "These are the business areas that make up the Coco Pharmaceuticals organization.",
+                                    null,
+                                    null,
+                                    null,
+                                    null);
+
         for (BusinessAreaDefinition businessAreaDefinition : BusinessAreaDefinition.values())
         {
             archiveHelper.addBusinessArea(businessAreaDefinition.getQualifiedName(),

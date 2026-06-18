@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplemen
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
-import org.odpi.openmetadata.frameworks.openmetadata.definitions.InformationSupplyChainDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
@@ -96,6 +95,60 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                    null,
                                    null,
                                    name);
+    }
+
+
+    /**
+     * Add a collection definition for this content pack (if applicable).
+     *
+     * @param contentPackDefinition which content pack is this for?
+     */
+    protected void addContentCollections(ContentPackDefinition contentPackDefinition)
+    {
+        for (ContentCollectionDefinition collectionDefinition : ContentCollectionDefinition.values())
+        {
+            if (collectionDefinition.getContentPackDefinition() == contentPackDefinition)
+            {
+                archiveHelper.setGUID(collectionDefinition.getQualifiedName(), collectionDefinition.getGUID());
+
+                if (collectionDefinition.getParent() != null)
+                {
+                    String collectionGUID = archiveHelper.addCollection(collectionDefinition.getTypeName(),
+                                                                        collectionDefinition.getParent().getGUID(),
+                                                                        collectionDefinition.getParent().getTypeName(),
+                                                                        OpenMetadataType.COLLECTION.typeName,
+                                                                        null,
+                                                                        null,
+                                                                        collectionDefinition.getQualifiedName(),
+                                                                        collectionDefinition.getDisplayName(),
+                                                                        collectionDefinition.getDescription(),
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+                    archiveHelper.addMemberToCollection(collectionDefinition.getParent().getGUID(),
+                                                        collectionGUID,
+                                                        null);
+                }
+                else
+                {
+                    archiveHelper.addCollection(collectionDefinition.getTypeName(),
+                                                collectionDefinition.getGUID(),
+                                                collectionDefinition.getTypeName(),
+                                                OpenMetadataType.COLLECTION.typeName,
+                                                null,
+                                                null,
+                                                collectionDefinition.getQualifiedName(),
+                                                collectionDefinition.getDisplayName(),
+                                                collectionDefinition.getDescription(),
+                                                null,
+                                                null,
+                                                null,
+                                                null);
+                }
+            }
+        }
     }
 
 
@@ -191,6 +244,10 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                         versionName,
                                                         null,
                                                         methodName);
+            }
+            else
+            {
+                archiveHelper.addMemberToCollection(ContentCollectionDefinition.EGERIA_SUPPLY_CHAINS.getGUID(), iscGUID, null);
             }
         }
     }
@@ -1450,7 +1507,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     protected void addSolutionBlueprints(ContentPackDefinition contentPackDefinition,
                                          List<String>          additionalComponentGUIDs)
     {
-        for (SolutionBlueprint solutionBlueprint : SolutionBlueprint.values())
+        for (ContentPackSolutionBlueprint solutionBlueprint : ContentPackSolutionBlueprint.values())
         {
             if (solutionBlueprint.getContentPackDefinition() == contentPackDefinition)
             {
@@ -1466,6 +1523,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                                   null);
 
                 assert(solutionBlueprint.getSolutionBlueprintGUID().equals(solutionBlueprintGUID));
+
+                archiveHelper.addMemberToCollection(ContentCollectionDefinition.CONTENT_PACK_CONTENTS.getGUID(), solutionBlueprintGUID, null);
 
                 if (additionalComponentGUIDs != null)
                 {
@@ -1544,7 +1603,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      */
     protected void addSolutionLinkingWires(ContentPackDefinition contentPackDefinition)
     {
-        for (SolutionLinkingWire solutionLinkingWire : SolutionLinkingWire.values())
+        for (ContentPackSolutionLinkingWire solutionLinkingWire : ContentPackSolutionLinkingWire.values())
         {
             if (solutionLinkingWire.getContentPackDefinition().equals(contentPackDefinition))
             {
@@ -1581,6 +1640,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                                 null);
 
                 assert(integrationGroupDefinition.getGUID().equals(integrationGroupGUID));
+
+                archiveHelper.addMemberToCollection(ContentCollectionDefinition.INTEGRATION_GROUPS.getGUID(), integrationGroupGUID, null);
             }
         }
     }
@@ -1760,6 +1821,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                            null,
                                                            null,
                                                            null);
+
+                archiveHelper.addMemberToCollection(ContentCollectionDefinition.LOVELACE_SERVICES.getGUID(), lovelaceServiceDefinition.getCatalogTargetGUID(), null);
             }
         }
     }
