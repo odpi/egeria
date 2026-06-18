@@ -23,7 +23,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
         {
             mermaidGraph.append("---\n");
             mermaidGraph.append("title: Solution Component - ");
-            mermaidGraph.append(super.removeTroublesomeCharacters(solutionComponentProperties.getDisplayName()));
+            mermaidGraph.append(super.removeTroublesomeTitleCharacters(solutionComponentProperties.getDisplayName()));
             mermaidGraph.append(" [");
             mermaidGraph.append(solutionComponentElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

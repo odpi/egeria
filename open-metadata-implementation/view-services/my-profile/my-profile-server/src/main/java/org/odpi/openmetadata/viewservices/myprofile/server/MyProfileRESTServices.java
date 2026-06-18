@@ -492,7 +492,7 @@ public class MyProfileRESTServices extends TokenController
 
                     if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
                     {
-                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new ActivityEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new ActivityEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null,  null, noteLogGUID, null);
 
                         response.setGUID(notificationGUID);
                     }
@@ -645,7 +645,7 @@ public class MyProfileRESTServices extends TokenController
 
                     if (requestBody.getProperties() instanceof NotificationProperties notificationProperties)
                     {
-                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new BlogEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                        String notificationGUID = assetHandler.createNoteLogEntry(userId, null, new BlogEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, null, noteLogGUID, null);
 
                         response.setGUID(notificationGUID);
                     }
@@ -732,7 +732,7 @@ public class MyProfileRESTServices extends TokenController
                     zoneMembershipProperties.setZoneMembership(Collections.singletonList(userId));
                     initialClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
 
-                    String notificationGUID = assetHandler.createNoteLogEntry(userId, initialClassifications, new JournalEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, noteLogGUID, null);
+                    String notificationGUID = assetHandler.createNoteLogEntry(userId, initialClassifications, new JournalEntryProperties(notificationProperties), actorProfile.getElementHeader().getGUID(), null, null, noteLogGUID, null);
 
                     response.setGUID(notificationGUID);
                 }

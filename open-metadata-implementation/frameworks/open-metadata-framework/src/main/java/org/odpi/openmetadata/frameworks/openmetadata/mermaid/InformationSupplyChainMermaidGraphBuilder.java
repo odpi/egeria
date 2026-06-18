@@ -29,7 +29,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
 
             mermaidGraph.append("---\n");
             mermaidGraph.append("title: Information Supply Chain - ");
-            mermaidGraph.append(super.removeTroublesomeCharacters(informationSupplyChainProperties.getDisplayName()));
+            mermaidGraph.append(super.removeTroublesomeTitleCharacters(informationSupplyChainProperties.getDisplayName()));
             mermaidGraph.append(" [");
             mermaidGraph.append(informationSupplyChainElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

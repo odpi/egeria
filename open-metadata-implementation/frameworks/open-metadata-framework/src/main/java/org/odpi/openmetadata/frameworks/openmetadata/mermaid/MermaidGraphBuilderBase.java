@@ -1314,7 +1314,7 @@ public class MermaidGraphBuilderBase
      * rather than the display name.  This change puts a space between the two slashes to allow the display.
      * In addition, some display names include messages that have double quotes in their content.  This removes them
      * to avoid confusing mermaid.
-     * There also seems to be a problem wit the new placeholder properties
+     * There also seems to be a problem with the new placeholder properties
      *
      * @param displayName original display name
      * @return doctored display name
@@ -1326,7 +1326,30 @@ public class MermaidGraphBuilderBase
             String quotesGone = displayName.replaceAll("\"", "'");
             String doubleSlashGone = quotesGone.replaceAll("//", "/ /");
             String placeholderStartGone = doubleSlashGone.replaceAll("~\\{", " *");
-            return placeholderStartGone.replaceAll("}~", "* ");
+            String placeholderEndGone =  placeholderStartGone.replaceAll("}~", "* ");
+            return placeholderEndGone.replaceAll(": ", " - ");
+        }
+
+        return null;
+    }
+
+
+    /**
+     * If a display name has part of a URL in it (eg it is from a qualified name), Mermaid displays "unsupported link"
+     * rather than the display name.  This change puts a space between the two slashes to allow the display.
+     * In addition, some display names include messages that have double quotes in their content.  This removes them
+     * to avoid confusing mermaid.
+     * There also seems to be a problem with the new placeholder properties
+     *
+     * @param displayName original display name
+     * @return doctored display name
+     */
+    protected String removeTroublesomeTitleCharacters(String displayName)
+    {
+        if (displayName != null)
+        {
+            String quotesGone = displayName.replaceAll("\"", "'");
+            return quotesGone.replaceAll(": ", " - ");
         }
 
         return null;

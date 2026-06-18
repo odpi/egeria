@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 /**
- * CocoGovernanceProgramArchiveWriter creates a physical open metadata archive file containing the core definition of Coco Pharmaceuticals'
+ * CocoGovernanceProgramArchiveWriter creates a physical open metadata archive file containing the core definition of Coco Pharmaceuticals
  * governance program.
  */
 public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
@@ -34,7 +34,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private static final String archiveGUID        = "ac202586-4042-407b-ae51-8096dfda223e";
     private static final String archiveName        = "Coco Pharmaceuticals Governance Program";
-    private static final String archiveDescription = "The core definition of Coco Pharmaceuticals' governance program.";
+    private static final String archiveDescription = "The core definition of Coco Pharmaceuticals governance program.";
 
     private static final Date   creationDate       = new Date(1639984840038L);
 

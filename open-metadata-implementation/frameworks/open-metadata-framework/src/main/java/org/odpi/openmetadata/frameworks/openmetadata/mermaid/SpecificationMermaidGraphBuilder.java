@@ -63,7 +63,7 @@ public class SpecificationMermaidGraphBuilder extends MermaidGraphBuilderBase
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Specification for - ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(elementDisplayName));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(elementDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(elementHeader.getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

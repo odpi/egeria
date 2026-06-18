@@ -1857,17 +1857,19 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
             archiveHelper.setGUID(governanceEngineDefinition.getName(),
                                   governanceEngineDefinition.getGUID());
 
-            archiveHelper.addGovernanceEngine(governanceEngineDefinition.getType(),
-                                              governanceEngineDefinition.getName(),
-                                              governanceEngineDefinition.getDisplayName(),
-                                              governanceEngineDefinition.getDescription(),
-                                              null,
-                                              null,
-                                              null,
-                                              null,
-                                              governanceEngineDefinition.getUserId(),
-                                              null,
-                                              null);
+            String engineGUID = archiveHelper.addGovernanceEngine(governanceEngineDefinition.getType(),
+                                                                  governanceEngineDefinition.getName(),
+                                                                  governanceEngineDefinition.getDisplayName(),
+                                                                  governanceEngineDefinition.getDescription(),
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  governanceEngineDefinition.getUserId(),
+                                                                  null,
+                                                                  null);
+
+            archiveHelper.addMemberToCollection(ContentCollectionDefinition.GOVERNANCE_ENGINES.getGUID(), engineGUID, null);
         }
     }
 

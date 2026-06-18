@@ -53,7 +53,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         }
         if (currentDisplayName != null)
         {
-            mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
+            mermaidGraph.append(super.removeTroublesomeTitleCharacters(currentDisplayName));
             mermaidGraph.append(" [");
         }
         else
@@ -90,7 +90,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
          */
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Results matching: ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(searchString));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(searchString));
         mermaidGraph.append("\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
         /*

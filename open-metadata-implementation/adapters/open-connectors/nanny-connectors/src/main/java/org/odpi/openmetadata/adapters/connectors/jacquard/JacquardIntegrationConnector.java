@@ -1728,13 +1728,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
             {
                 String engineActionGUID = integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
-                                                                                              Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
-                                                                                              Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
-                                                                                              notificationWatchdogTargets,
-                                                                                              null,
-                                                                                              null,
-                                                                                              connectorName,
-                                                                                              null);
+                                                                                                                 Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
+                                                                                                                 Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
+                                                                                                                 notificationWatchdogTargets,
+                                                                                                                 null,
+                                                                                                                 null,
+                                                                                                                 connectorName,
+                                                                                                                 null,
+                                                                                                                 null);
                 auditLog.logMessage(methodName,
                                     JacquardAuditCode.BARDOT_STARTED.getMessageDefinition(connectorName,
                                                                                           engineActionGUID,

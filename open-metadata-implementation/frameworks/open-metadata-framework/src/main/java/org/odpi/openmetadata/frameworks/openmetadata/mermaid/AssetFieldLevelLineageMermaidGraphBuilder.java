@@ -26,7 +26,7 @@ public class AssetFieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuild
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Field-Level Lineage Analysis Graph for Asset - ");
-        mermaidGraph.append(super.removeTroublesomeCharacters(currentDisplayName));
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(currentDisplayName));
         mermaidGraph.append(" [");
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

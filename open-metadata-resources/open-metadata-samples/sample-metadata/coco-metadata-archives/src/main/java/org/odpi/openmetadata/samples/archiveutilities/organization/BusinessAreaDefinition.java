@@ -31,11 +31,11 @@ public enum BusinessAreaDefinition
           "Management of cash flow and financial health of Coco Pharmaceuticals."),
 
     /**
-     * Management of people, their skills and well-being for Coco Pharmaceuticals.
+     * Management of people, their skills, and well-being for Coco Pharmaceuticals.
      */
     HR("HR",
        "Human Resources",
-       "Management of people, their skills and well-being for Coco Pharmaceuticals."),
+       "Management of people, their skills, and well-being for Coco Pharmaceuticals."),
 
     /**
      * Provision of computing services for Coco Pharmaceuticals.
@@ -45,33 +45,33 @@ public enum BusinessAreaDefinition
        "Provision of computing services for Coco Pharmaceuticals."),
 
     /**
-     * Production of Coco Pharmaceuticals' products.
+     * Production of Coco Pharmaceuticals products.
      */
     MANUFACTURING("MFG",
        "Manufacturing",
-       "Production of Coco Pharmaceuticals' products."),
+       "Production of Coco Pharmaceuticals products."),
 
 
     /**
-     * Warehouse management and distribution of Coco Pharmaceuticals' products to customers.
+     * Warehouse management and distribution of Coco Pharmaceuticals products to customers.
      */
     DISTRIBUTION("DIST",
                   "Distribution",
-                  "Warehouse management and distribution of Coco Pharmaceuticals' products to customers."),
+                  "Warehouse management and distribution of Coco Pharmaceuticals products to customers."),
 
     /**
-     * Managing customer relationships to sell them appropriate Coco Pharmaceuticals' products.
+     * Managing customer relationships to sell them appropriate Coco Pharmaceuticals products.
      */
     SALES("SALES",
           "Sales",
-          "Managing customer relationships to sell them appropriate Coco Pharmaceuticals' products."),
+          "Managing customer relationships to sell them appropriate Coco Pharmaceuticals products."),
 
     /**
-     * Management of how Coco Pharmaceuticals operates, balancing business strategy and profits against ethics, legal requirements and regulations.
+     * Management of how Coco Pharmaceuticals operates, balancing business strategy and profits against ethics, legal requirements, and regulations.
      */
     GOVERNANCE("GOV",
           "Governance",
-          "Management of how Coco Pharmaceuticals operates, balancing business strategy and profits against ethics, legal requirements and regulations."),
+          "Management of how Coco Pharmaceuticals operates, balancing business strategy and profits against ethics, legal requirements, and regulations."),
 
     ;
 

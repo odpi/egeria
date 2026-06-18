@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 /**
- * CocoOrganizationArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals'
+ * CocoOrganizationArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals
  * featured persona.  This includes the definition of the organizations they work with and
  */
 public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
@@ -29,8 +29,8 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      * This is the header information for the archive.
      */
     private static final String archiveGUID        = "3250f0f9-99fc-4af5-bed9-b746577f119b";
-    private static final String archiveName        = "Coco Pharmaceuticals' organization and operations";
-    private static final String archiveDescription = "The base definitions for Coco Pharmaceuticals' organization and business capabilities.";
+    private static final String archiveName        = "Coco Pharmaceuticals organization and operations";
+    private static final String archiveDescription = "The base definitions for Coco Pharmaceuticals organization and business capabilities.";
 
     private static final Date   creationDate       = new Date(1639984840038L);
 
@@ -237,27 +237,29 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String collection = "Coco Pharmaceuticals Business Areas";
 
-        archiveHelper.addCollection(OpenMetadataType.ROOT_COLLECTION.typeName,
-                                    null,
-                                    OpenMetadataType.ROOT_COLLECTION.typeName,
-                                    OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
-                                    null,
-                                    null,
-                                    OpenMetadataType.ROOT_COLLECTION.typeName + "::" + collection,
-                                    collection,
-                                    "These are the business areas that make up the Coco Pharmaceuticals organization.",
-                                    null,
-                                    null,
-                                    null,
-                                    null);
+        String collectionGUID = archiveHelper.addCollection(OpenMetadataType.ROOT_COLLECTION.typeName,
+                                                            null,
+                                                            OpenMetadataType.ROOT_COLLECTION.typeName,
+                                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                            null,
+                                                            null,
+                                                            OpenMetadataType.ROOT_COLLECTION.typeName + "::" + collection,
+                                                            collection,
+                                                            "These are the business areas that make up the Coco Pharmaceuticals organization.",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
 
         for (BusinessAreaDefinition businessAreaDefinition : BusinessAreaDefinition.values())
         {
-            archiveHelper.addBusinessArea(businessAreaDefinition.getQualifiedName(),
-                                          businessAreaDefinition.getIdentifier(),
-                                          businessAreaDefinition.getDisplayName(),
-                                          businessAreaDefinition.getDescription(),
-                                          null);
+            String businessAreaGUID = archiveHelper.addBusinessArea(businessAreaDefinition.getQualifiedName(),
+                                                                    businessAreaDefinition.getIdentifier(),
+                                                                    businessAreaDefinition.getDisplayName(),
+                                                                    businessAreaDefinition.getDescription(),
+                                                                    null);
+
+            archiveHelper.addMemberToCollection(collectionGUID, businessAreaGUID, null);
         }
     }
 

@@ -401,6 +401,9 @@ public class OpenMetadataElementBuilder
                                                                                          OpenMetadataProperty.PROCESS_NAME.name,
                                                                                          engineActionProperties.getProcessName());
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                         engineActionProperties.getISCQualifiedName());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.PROCESS_STEP_GUID.name,
                                                                                          engineActionProperties.getProcessStepGUID());
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,

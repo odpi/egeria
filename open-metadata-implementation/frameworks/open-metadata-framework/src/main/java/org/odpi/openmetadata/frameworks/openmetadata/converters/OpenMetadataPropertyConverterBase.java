@@ -13263,6 +13263,7 @@ public class OpenMetadataPropertyConverterBase
 
                 ((ActionRequesterProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((ActionRequesterProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((ActionRequesterProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ACTIONS_RELATIONSHIP.typeName))
             {
@@ -14130,6 +14131,7 @@ public class OpenMetadataPropertyConverterBase
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setActivityStatus(this.removeActivityStatus(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setZoneMembership(this.removeZoneMembership(elementProperties));
+                ((NotificationSubscriberProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setLastNotification(this.removeLastNotification(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PEER_RELATIONSHIP.typeName))
@@ -16261,6 +16263,7 @@ public class OpenMetadataPropertyConverterBase
                                 ((EngineActionProperties) beanProperties).setGovernanceActionTypeGUID(this.removeGovernanceActionTypeGUID(elementProperties));
                                 ((EngineActionProperties) beanProperties).setGovernanceActionTypeName(this.removeGovernanceActionTypeName(elementProperties));
                                 ((EngineActionProperties) beanProperties).setProcessName(this.removeProcessName(elementProperties));
+                                ((EngineActionProperties) beanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                                 ((EngineActionProperties) beanProperties).setProcessStepGUID(this.removeProcessStepGUID(elementProperties));
                                 ((EngineActionProperties) beanProperties).setProcessStepName(this.removeProcessStepName(elementProperties));
                                 ((EngineActionProperties) beanProperties).setRequesterUserId(this.removeRequesterUserId(elementProperties));

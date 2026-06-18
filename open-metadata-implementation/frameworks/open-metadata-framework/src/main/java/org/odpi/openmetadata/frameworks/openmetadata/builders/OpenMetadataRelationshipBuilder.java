@@ -289,6 +289,10 @@ public class OpenMetadataRelationshipBuilder
                                                                               OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                               notificationSubscriberProperties.getZoneMembership());
 
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                         notificationSubscriberProperties.getISCQualifiedName());
+
                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                        OpenMetadataProperty.LAST_NOTIFICATION.name,
                                                                        notificationSubscriberProperties.getLastNotification());

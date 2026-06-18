@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 /**
- * The EmployeeTypeDefinition is used to feed the definition of the EmployeeType valid value set for Coco Pharmaceuticals' employees.
+ * The EmployeeTypeDefinition is used to feed the definition of the EmployeeType valid value set for Coco Pharmaceuticals employees.
  */
 public enum EmployeeTypeDefinition
 {

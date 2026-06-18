@@ -26,6 +26,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
 {
     private ActivityStatus activityStatus   = null;
     private List<String>   zoneMembership   = null;
+    private String         iscQualifiedName = null;
     private Date           lastNotification = null;
 
 
@@ -52,6 +53,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         {
             this.activityStatus = template.getActivityStatus();
             this.zoneMembership = template.getZoneMembership();
+            this.iscQualifiedName = template.getISCQualifiedName();
             this.lastNotification = template.getLastNotification();
         }
     }
@@ -105,6 +107,28 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
 
 
     /**
+     * Return the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @param iscQualifiedName string name
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
+    }
+
+
+    /**
      * Return the last notification time
      *
      * @return date
@@ -137,6 +161,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         return "NotificationSubscriberProperties{" +
                 "activityStatus=" + getActivityStatus() +
                 ", zoneMembership=" + getZoneMembership() +
+                ", iscQualifiedName='" + getISCQualifiedName() + '\'' +
                 ", lastNotification=" + getLastNotification() +
                 "} " + super.toString();
     }
@@ -166,6 +191,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
         NotificationSubscriberProperties that = (NotificationSubscriberProperties) objectToCompare;
         return  activityStatus == that.activityStatus &&
                 Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(iscQualifiedName, that.iscQualifiedName) &&
                 Objects.equals(lastNotification, that.lastNotification);
     }
 
@@ -178,6 +204,6 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityStatus, zoneMembership, lastNotification);
+        return Objects.hash(super.hashCode(), activityStatus, zoneMembership, iscQualifiedName, lastNotification);
     }
 }

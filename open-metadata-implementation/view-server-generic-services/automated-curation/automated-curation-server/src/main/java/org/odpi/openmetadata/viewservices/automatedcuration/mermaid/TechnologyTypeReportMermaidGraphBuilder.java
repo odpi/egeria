@@ -29,7 +29,7 @@ public class TechnologyTypeReportMermaidGraphBuilder extends MermaidGraphBuilder
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Technology Report for - ");
-        mermaidGraph.append(technologyTypeReport.getDisplayName());
+        mermaidGraph.append(super.removeTroublesomeTitleCharacters(technologyTypeReport.getDisplayName()));
         mermaidGraph.append(" [");
         mermaidGraph.append(technologyTypeReport.getTechnologyTypeGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

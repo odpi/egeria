@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBean
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -27,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ActionRequesterProperties.class, name = "ActionRequesterProperties"),
                 @JsonSubTypes.Type(value = ControlFlowProperties.class, name = "ControlFlowProperties"),
                 @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
                 @JsonSubTypes.Type(value = DataMappingProperties.class, name = "DataMappingProperties"),

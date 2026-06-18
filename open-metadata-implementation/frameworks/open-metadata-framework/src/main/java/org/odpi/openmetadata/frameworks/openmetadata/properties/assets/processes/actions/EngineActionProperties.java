@@ -34,6 +34,7 @@ public class EngineActionProperties extends ActionProperties
     private String              governanceActionTypeGUID = null;
     private String              governanceActionTypeName = null;
     private String              processName              = null;
+    private String              iscQualifiedName         = null;
     private String              processStepGUID          = null;
     private String              processStepName          = null;
     private String              requesterUserId          = null;
@@ -77,6 +78,7 @@ public class EngineActionProperties extends ActionProperties
             governanceActionTypeName = template.getGovernanceActionTypeName();
 
             processName = template.getProcessName();
+            iscQualifiedName = template.getISCQualifiedName();
             processStepGUID = template.getProcessStepGUID();
             processStepName = template.getProcessStepName();
 
@@ -265,6 +267,28 @@ public class EngineActionProperties extends ActionProperties
     public void setProcessName(String processName)
     {
         this.processName = processName;
+    }
+
+
+    /**
+     * Return the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @return string name
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the information supply chain that this that originated this request (if any).
+     *
+     * @param iscQualifiedName string name
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
     }
 
 
@@ -460,6 +484,7 @@ public class EngineActionProperties extends ActionProperties
                 ", governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
                 ", governanceActionTypeName='" + governanceActionTypeName + '\'' +
                 ", processName='" + processName + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 ", processStepGUID='" + processStepGUID + '\'' +
                 ", processStepName='" + processStepName + '\'' +
                 ", requesterUserId='" + requesterUserId + '\'' +
@@ -485,7 +510,7 @@ public class EngineActionProperties extends ActionProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         EngineActionProperties that = (EngineActionProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier && Objects.equals(mandatoryGuards, that.mandatoryGuards) && Objects.equals(receivedGuards, that.receivedGuards) && Objects.equals(executorEngineGUID, that.executorEngineGUID) && Objects.equals(executorEngineName, that.executorEngineName) && Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) && Objects.equals(governanceActionTypeName, that.governanceActionTypeName) && Objects.equals(processName, that.processName) && Objects.equals(processStepGUID, that.processStepGUID) && Objects.equals(processStepName, that.processStepName) && Objects.equals(requesterUserId, that.requesterUserId) && Objects.equals(requestType, that.requestType) && Objects.equals(requestParameters, that.requestParameters) && Objects.equals(processingEngineUserId, that.processingEngineUserId) && Objects.equals(completionGuards, that.completionGuards) && Objects.equals(completionMessage, that.completionMessage);
+        return domainIdentifier == that.domainIdentifier && Objects.equals(mandatoryGuards, that.mandatoryGuards) && Objects.equals(receivedGuards, that.receivedGuards) && Objects.equals(executorEngineGUID, that.executorEngineGUID) && Objects.equals(executorEngineName, that.executorEngineName) && Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) && Objects.equals(governanceActionTypeName, that.governanceActionTypeName) && Objects.equals(processName, that.processName) && Objects.equals(iscQualifiedName, that.iscQualifiedName) && Objects.equals(processStepGUID, that.processStepGUID) && Objects.equals(processStepName, that.processStepName) && Objects.equals(requesterUserId, that.requesterUserId) && Objects.equals(requestType, that.requestType) && Objects.equals(requestParameters, that.requestParameters) && Objects.equals(processingEngineUserId, that.processingEngineUserId) && Objects.equals(completionGuards, that.completionGuards) && Objects.equals(completionMessage, that.completionMessage);
     }
 
     /**
@@ -496,6 +521,6 @@ public class EngineActionProperties extends ActionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, mandatoryGuards, receivedGuards, executorEngineGUID, executorEngineName, governanceActionTypeGUID, governanceActionTypeName, processName, processStepGUID, processStepName, requesterUserId, requestType, requestParameters, processingEngineUserId, completionGuards, completionMessage);
+        return Objects.hash(super.hashCode(), domainIdentifier, mandatoryGuards, receivedGuards, executorEngineGUID, executorEngineName, governanceActionTypeGUID, governanceActionTypeName, processName, iscQualifiedName, processStepGUID, processStepName, requesterUserId, requestType, requestParameters, processingEngineUserId, completionGuards, completionMessage);
     }
 }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 /**
- * The CountryCodeDefinition is used to feed the definition of the CountryCode valid value set for Coco Pharmaceuticals' employees and locations.
+ * The CountryCodeDefinition is used to feed the definition of the CountryCode valid value set for Coco Pharmaceuticals employees and locations.
  */
 public enum CountryCodeDefinition
 {

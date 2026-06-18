@@ -299,8 +299,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                     Map<String, String>                   requestParameters,
                                     String                                actionRequesterGUID,
                                     List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName = "dismissSubscriber";
 
@@ -462,6 +462,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                           initialClassifications,
                                                           subscriberNotificationProperties,
                                                           actionRequesterGUID,
+                                                          notificationSubscriberProperties.getISCQualifiedName(),
                                                           Collections.singletonList(notificationTypeGUID),
                                                           subscriberGUID,
                                                           AssignmentType.REVIEWER,
@@ -473,6 +474,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                            initialClassifications,
                                                            subscriberNotificationProperties,
                                                            actionRequesterGUID,
+                                                           notificationSubscriberProperties.getISCQualifiedName(),
                                                            Collections.singletonList(notificationTypeGUID),
                                                            subscriberGUID,
                                                            actionTargets);
@@ -499,7 +501,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                                                             null,
                                                                                             requestParameters,
                                                                                             localServiceName,
-                                                                                            null);
+                                                                                            null,
+                                                                                            notificationSubscriberProperties.getISCQualifiedName());
                             }
                         }
                     }
@@ -513,7 +516,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                                                  null,
                                                                                  requestParameters,
                                                                                  localServiceName,
-                                                                                 null);
+                                                                                 null,
+                                                                                 notificationSubscriberProperties.getISCQualifiedName());
                     }
                 }
                 else

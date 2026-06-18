@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
  * The SolutionRoleDefinition is used to feed the definition of the solution roles for
- * Coco Pharmaceuticals' solution blueprints.
+ * Coco Pharmaceuticals solution blueprints.
  */
 public enum SolutionRoleDefinition implements ActorRoleDefinition
 {

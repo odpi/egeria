@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 /**
- * The ContactTypeDefinition is used to feed the definition of the contactType valid value set for Coco Pharmaceuticals' employees.
+ * The ContactTypeDefinition is used to feed the definition of the contactType valid value set for Coco Pharmaceuticals employees.
  */
 public enum ContactTypeDefinition
 {
@@ -52,7 +52,7 @@ public enum ContactTypeDefinition
     public static final String validValueSetName        = "ContactType";
     public static final String validValueSetDescription = "Identifies the purpose of an individual's contact details.";
     public static final String validValueSetUsage       = "Used in the contactType attribute of ContactDetails entities.";
-    public static final String validValueSetScope       = "For profiles of Coco Pharmaceuticals' employees and partners.";
+    public static final String validValueSetScope       = "For profiles of Coco Pharmaceuticals employees and partners.";
 
 
     private final String preferredValue;

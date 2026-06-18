@@ -377,6 +377,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                                                                   null,
                                                                                   requestParameters,
                                                                                   connectorName,
+                                                                                  null,
                                                                                   null);
                             }
                         }

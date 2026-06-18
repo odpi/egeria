@@ -83,6 +83,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param requestType governance request type from the caller
      * @param requestParameters properties to pass to the governance service
      * @param processName name of the process that this action is a part of
+     * @param iscQualifiedName unique name of an information supply chain
      * @param requestSourceName source of the request
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
@@ -107,6 +108,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                        String                requestType,
                                        Map<String, String>   requestParameters,
                                        String                processName,
+                                       String                iscQualifiedName,
                                        String                requestSourceName,
                                        String                originatorServiceName,
                                        String                originatorEngineName) throws InvalidParameterException,
@@ -136,6 +138,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         requestBody.setRequestType(requestType);
         requestBody.setRequestParameters(requestParameters);
         requestBody.setProcessName(processName);
+        requestBody.setISCQualifiedName(iscQualifiedName);
         requestBody.setRequestSourceName(requestSourceName);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
@@ -163,6 +166,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
@@ -178,9 +182,10 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
                                                String                originatorServiceName,
-                                               String                originatorEngineName) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                               String                originatorEngineName,
+                                               String                iscQualifiedName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName = "initiateGovernanceActionType";
         final String qualifiedNameParameterName = "governanceActionTypeQualifiedName";
@@ -199,6 +204,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
+        requestBody.setISCQualifiedName(iscQualifiedName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -222,6 +228,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
@@ -237,9 +244,10 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                   Date                  startTime,
                                                   Map<String, String>   requestParameters,
                                                   String                originatorServiceName,
-                                                  String                originatorEngineName) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                                  String                originatorEngineName,
+                                                  String                iscQualifiedName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName = "initiateGovernanceActionProcess";
         final String qualifiedNameParameterName = "processQualifiedName";
@@ -258,6 +266,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
+        requestBody.setISCQualifiedName(iscQualifiedName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,

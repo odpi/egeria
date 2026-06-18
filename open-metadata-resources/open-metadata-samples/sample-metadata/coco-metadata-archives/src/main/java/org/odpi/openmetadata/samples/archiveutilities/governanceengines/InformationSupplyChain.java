@@ -73,6 +73,23 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
                                                  "Clinical Trial Validation Information Supply Chain Template",
                                                  "Template for a new clinical trial validation information supply chain."),
 
+    /**
+     * Delivering data for the XXX clinical trial from the hospitals to the Coco Researchers.
+     */
+    CLINICAL_TRIAL_ONBOARDING_PIPELINE("72cc7d19-aef1-4c16-9c4a-977bcf24a89a",
+                                       "Clinical Trial Onboarding Pipeline Information Supply Chain",
+                                       "Validating incoming data.",
+                                       "Clinical-Trial-Onboarding-Pipeline",
+                                       ScopeDefinition.WITHIN_PROJECT,
+                                       new String[]
+                                                         {
+                                                                 "Ensure incoming data is validated and catalogued.",
+                                                         },
+                                       SolutionRoleDefinition.CLINICAL_TRIAL_SPONSOR.getGUID(),
+                                       CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE,
+                                       false,
+                                       null),
+
 
     /**
      * Delivering the data necessary to add a person as a subject to XXX clinical trial

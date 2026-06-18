@@ -29,7 +29,7 @@ public class OrganizationTreeMermaidGraphBuilder extends MermaidGraphBuilderBase
             String rootNodeId = organization.getElementHeader().getGUID();
             mermaidGraph.append("---\n");
             mermaidGraph.append("title: Team structure - ");
-            mermaidGraph.append(super.removeTroublesomeCharacters(organizationProperties.getDisplayName()));
+            mermaidGraph.append(super.removeTroublesomeTitleCharacters(organizationProperties.getDisplayName()));
             mermaidGraph.append(" [");
             mermaidGraph.append(rootNodeId);
             mermaidGraph.append("]\n---\nflowchart RL\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");

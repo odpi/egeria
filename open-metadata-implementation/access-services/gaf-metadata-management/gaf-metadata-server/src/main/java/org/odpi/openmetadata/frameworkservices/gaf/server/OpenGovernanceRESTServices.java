@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.converters.OpenMetadataElementStubConverter;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
@@ -1285,6 +1286,7 @@ public class OpenGovernanceRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProcessName(),
+                                                                     requestBody.getISCQualifiedName(),
                                                                      null,
                                                                      null,
                                                                      methodName);
@@ -1366,6 +1368,7 @@ public class OpenGovernanceRESTServices
                                                                       requestBody.getStartDate(),
                                                                       requestBody.getOriginatorServiceName(),
                                                                       requestBody.getOriginatorEngineName(),
+                                                                      requestBody.getISCQualifiedName(),
                                                                       methodName));
             }
             else
@@ -1423,6 +1426,7 @@ public class OpenGovernanceRESTServices
                                                                          requestBody.getStartDate(),
                                                                          requestBody.getOriginatorServiceName(),
                                                                          requestBody.getOriginatorEngineName(),
+                                                                         requestBody.getISCQualifiedName(),
                                                                          methodName));
             }
             else

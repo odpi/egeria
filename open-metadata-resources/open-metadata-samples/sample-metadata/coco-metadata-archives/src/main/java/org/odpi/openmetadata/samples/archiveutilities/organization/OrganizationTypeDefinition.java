@@ -15,7 +15,7 @@ public enum OrganizationTypeDefinition
     PRIMARY("Primary",
         "Primary Organization",
         "This is the controlling organization that is the decision maker and owner of the open metadata landscape.",
-        "Use this for coco Pharmaceuticals' Organization entity."),
+        "Use this for coco Pharmaceuticals Organization entity."),
 
     /**
      * This is for a business partner's Organization entity.

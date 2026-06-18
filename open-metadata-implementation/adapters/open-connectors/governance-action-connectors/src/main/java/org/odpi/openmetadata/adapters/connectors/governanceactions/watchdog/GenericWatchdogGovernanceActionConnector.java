@@ -381,6 +381,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
                                                                   null,
                                                                   null,
                                                                   actionTargets,
+                                                                  null,
                                                                   null);
             }
             catch (OMFCheckedExceptionBase nestedError)

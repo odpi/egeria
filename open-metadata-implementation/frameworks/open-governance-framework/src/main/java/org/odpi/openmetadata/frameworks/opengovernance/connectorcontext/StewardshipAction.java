@@ -82,6 +82,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @param requestType governance request type from the caller
      * @param requestParameters properties to pass to the governance service
      * @param processName name of the process that this action is a part of
+     * @param iscQualifiedName unique name of an information supply chain
      * @param requestSourceName source of the request
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
@@ -104,13 +105,14 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                        String                requestType,
                                        Map<String, String>   requestParameters,
                                        String                processName,
+                                       String                iscQualifiedName,
                                        String                requestSourceName,
                                        String                originatorServiceName,
                                        String                originatorEngineName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return actionControlInterface.initiateEngineAction(connectorUserId, qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, requestSourceName, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateEngineAction(connectorUserId, qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, iscQualifiedName, requestSourceName, originatorServiceName, originatorEngineName);
     }
 
 
@@ -125,6 +127,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
@@ -138,11 +141,12 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
                                                String                originatorServiceName,
-                                               String                originatorEngineName) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                               String                originatorEngineName,
+                                               String                iscQualifiedName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionType(connectorUserId, governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionType(connectorUserId, governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName, iscQualifiedName);
     }
 
 
@@ -157,6 +161,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param iscQualifiedName unique name of an information supply chain
      *
      * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
@@ -170,11 +175,12 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                   Date                  startTime,
                                                   Map<String, String>   requestParameters,
                                                   String                originatorServiceName,
-                                                  String                originatorEngineName) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                                  String                originatorEngineName,
+                                                  String                iscQualifiedName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionProcess(connectorUserId, processQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionProcess(connectorUserId, processQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName, iscQualifiedName);
     }
 
 
