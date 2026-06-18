@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 
@@ -20,6 +21,7 @@ public enum ExceptionTypeDefinition
                          "A UserIdentity element stored in open metadata does not have a corresponding UserAccount defined for the user.",
                          "This exception is raised by OMAGServerPlatformCataloguer when a UserIdentity element is found without a corresponding UserAccount in the platform's security connector.",
                          "This exception provides information about missing user accounts in the platform's security connector.  It indicates that the user is not connecting to the platform and therefore cannot access resources or participate in the open metadata ecosystem.",
+                         GovernanceDomain.SECURITY.getOrdinal(),
                          ScopeDefinition.WITHIN_ORGANIZATION,
                          false,
                          null,
@@ -34,7 +36,8 @@ public enum ExceptionTypeDefinition
                          "The platform's user directory has an active user account with no corresponding UserIdentity element stored in open metadata.",
                          "This exception is raised by OMAGServerPlatformCataloguer when a UserIdentity element is not found for one of the user account's in the platform's security connector.",
                          "This exception provides information about unexpected user accounts in the platform's security connector.  This user account could be used to connect to the platform and access the open metadata ecosystem.",
-                         ScopeDefinition.WITHIN_ORGANIZATION,
+                          GovernanceDomain.SECURITY.getOrdinal(),
+                          ScopeDefinition.WITHIN_ORGANIZATION,
                          false,
                          null,
                          null),
@@ -43,15 +46,16 @@ public enum ExceptionTypeDefinition
      * Missing User Identity Exception
      */
     CLEAR_TEXT_PASSWORD("769e2f89-a940-4f32-abbc-a427c78c14ca",
-                          "CLEAR-TEXT-PASSWORD",
-                          "Clear Text Password Exception",
-                          "The platform's user directory has an active user account with a clear text password.",
-                          "This exception is raised by OMAGServerPlatformCataloguer when a user account has a clear text password defined.",
-                          "This exception provides information about unsecured user accounts in the platform's security connector.  The credentials for this user account should be reset as soon as possible.  Update the user account to CREDENTIALS_EXPIRED if the user account is active, so the password will be updated on the next login, or disable the account.",
-                          ScopeDefinition.WITHIN_ORGANIZATION,
-                          false,
-                          null,
-                          null),
+                        "CLEAR-TEXT-PASSWORD",
+                        "Clear Text Password Exception",
+                        "The platform's user directory has an active user account with a clear text password.",
+                        "This exception is raised by OMAGServerPlatformCataloguer when a user account has a clear text password defined.",
+                        "This exception provides information about unsecured user accounts in the platform's security connector.  The credentials for this user account should be reset as soon as possible.  Update the user account to CREDENTIALS_EXPIRED if the user account is active, so the password will be updated on the next login, or disable the account.",
+                        GovernanceDomain.SECURITY.getOrdinal(),
+                        ScopeDefinition.WITHIN_ORGANIZATION,
+                        false,
+                        null,
+                        null),
     ;
 
 
@@ -61,6 +65,7 @@ public enum ExceptionTypeDefinition
     private final String          summary;
     private final String          description;
     private final String          details;
+    private final int             domainIdentifier;
     private final ScopeDefinition scope;
     private final boolean         isTemplate;
     private final String          templateName;
@@ -75,6 +80,7 @@ public enum ExceptionTypeDefinition
      * @param summary        short description for the enum
      * @param description   description of how to use this value
      * @param details qualifying details
+     * @param domainIdentifier domain identifier
      * @param scope usage scope
      */
     ExceptionTypeDefinition(String          guid,
@@ -83,6 +89,7 @@ public enum ExceptionTypeDefinition
                             String          summary,
                             String          description,
                             String          details,
+                            int             domainIdentifier,
                             ScopeDefinition scope,
                             boolean         isTemplate,
                             String          templateName,
@@ -94,6 +101,7 @@ public enum ExceptionTypeDefinition
         this.summary             = summary;
         this.description         = description;
         this.details             = details;
+        this.domainIdentifier    = domainIdentifier;
         this.scope               = scope;
         this.isTemplate          = isTemplate;
         this.templateName        = templateName;
@@ -166,6 +174,17 @@ public enum ExceptionTypeDefinition
      * @return string
      */
     public String getDetails() { return details; }
+
+
+    /**
+     * Return the governance domain identifier for the certification type.
+     *
+     * @return int
+     */
+    public int getDomainIdentifier()
+    {
+        return domainIdentifier;
+    }
 
 
     /**

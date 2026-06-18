@@ -13,13 +13,13 @@ public enum CocoCollectionDefinition
     /**
      * Corporate Regulation Library
      */
-    TOP_LEVEL("f565ca0f-617f-4a55-8ad8-2a9d66861239",
-              OpenMetadataType.ROOT_COLLECTION.typeName,
-              null,
-              null,
-              "Corporate Regulation Library",
-              "Definitions used to describe key regulations and standards used by Coco Pharmaceuticals.",
-              null),
+    CORPORATE_REGULATION_LIBRARY("f565ca0f-617f-4a55-8ad8-2a9d66861239",
+                                 OpenMetadataType.ROOT_COLLECTION.typeName,
+                                 null,
+                                 null,
+                                 "Corporate Regulation Library",
+                                 "Definitions used to describe key regulations and standards used by Coco Pharmaceuticals.",
+                                 null),
 
     /**
      * Security Regulations
@@ -27,7 +27,7 @@ public enum CocoCollectionDefinition
     SECURITY_REGULATIONS("54a95fb3-2147-4bf1-ab1d-9d424647f188",
                          OpenMetadataType.COLLECTION_FOLDER.typeName,
                          null,
-                         TOP_LEVEL,
+                         CORPORATE_REGULATION_LIBRARY,
                          "Security Regulations",
                          "Resources relating to security regulations.",
                          null),
@@ -38,7 +38,7 @@ public enum CocoCollectionDefinition
     FINANCIAL_REGULATIONS("78f885b8-5243-40c6-8722-a70abcd03eb0",
                           OpenMetadataType.COLLECTION_FOLDER.typeName,
                           null,
-                          TOP_LEVEL,
+                          CORPORATE_REGULATION_LIBRARY,
                           "Financial Regulations",
                           "Resources relating to financial regulations.",
                           null),
@@ -49,7 +49,7 @@ public enum CocoCollectionDefinition
     PRIVACY_REGULATIONS("27e48750-a09d-4a45-a3d4-3dd8f70290a9",
                         OpenMetadataType.COLLECTION_FOLDER.typeName,
                         null,
-                        TOP_LEVEL,
+                        CORPORATE_REGULATION_LIBRARY,
                         "Privacy Regulations",
                         "Resources relating to privacy regulations.",
                         null),
@@ -60,7 +60,7 @@ public enum CocoCollectionDefinition
     PHARMACEUTICAL_INDUSTRY_REGULATIONS("3a45bb15-0f11-4e05-8f64-0ca395a08636",
                                         OpenMetadataType.COLLECTION_FOLDER.typeName,
                                         null,
-                                        TOP_LEVEL,
+                                        CORPORATE_REGULATION_LIBRARY,
                                         "Pharmaceutical Industry Regulations",
                                         "Resources relating to regulations specific to the pharmaceutical industry.",
                                         null),
@@ -75,6 +75,28 @@ public enum CocoCollectionDefinition
                                "Resources relating to regulations for conducting clinical trials.",
                                null),
 
+    /**
+     * Governance Folios
+     */
+    GOVERNANCE_FOLIOS("e3567b73-1d1b-4ee2-ad06-d1d70dcdf70e",
+                      OpenMetadataType.ROOT_COLLECTION.typeName,
+                      null,
+                      null,
+                      "Governance Folios",
+                      "Organization of governance definitions into folios of responsibilities.",
+                      null),
+
+
+    /**
+     * Coco Pharmaceuticals' Solutions
+     */
+    SOLUTIONS("af34b0cc-8ace-4622-bc8a-46813027d695",
+                      OpenMetadataType.ROOT_COLLECTION.typeName,
+                      null,
+                      null,
+                      "Coco Pharmaceuticals' Solutions",
+                      "These solutions are critical for the success of Coco Pharmaceuticals.",
+                      null),
 
 
     ;

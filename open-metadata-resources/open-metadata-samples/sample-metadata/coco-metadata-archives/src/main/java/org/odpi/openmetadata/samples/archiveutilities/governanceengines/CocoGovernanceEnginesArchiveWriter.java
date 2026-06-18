@@ -270,7 +270,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         archiveHelper.addSolutionComponents(List.of(SolutionComponent.values()));
         archiveHelper.addSolutionComponentActors(List.of(SolutionComponentActor.values()));
         archiveHelper.addSolutionComponentWires(List.of(SolutionComponentWire.values()));
-        archiveHelper.addSolutionBlueprints(List.of(SolutionBlueprint.values()));
+        archiveHelper.addSolutionBlueprints(List.of(SolutionBlueprint.values()), CocoCollectionDefinition.SOLUTIONS.getGUID());
 
         this.addOnboardingGovernanceActionProcess();
     }

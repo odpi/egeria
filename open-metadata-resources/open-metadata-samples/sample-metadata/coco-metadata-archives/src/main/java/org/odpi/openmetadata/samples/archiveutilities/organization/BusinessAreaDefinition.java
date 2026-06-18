@@ -10,11 +10,11 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 public enum BusinessAreaDefinition
 {
     /**
-     * Scientific exploration, discovery and validation of new treatments for cancer.
+     * Scientific exploration, discovery, and validation of new treatments for cancer.
      */
     RESEARCH("RES",
              "Research",
-             "Scientific exploration, discovery and validation of new treatments for cancer."),
+             "Scientific exploration, discovery, and validation of new treatments for cancer."),
 
     /**
      * Formal validation of new treatments for cancer with patients.
@@ -60,11 +60,11 @@ public enum BusinessAreaDefinition
                   "Warehouse management and distribution of Coco Pharmaceuticals' products to customers."),
 
     /**
-     * Managing customer relationships in order to sell them appropriate Coco Pharmaceuticals' products.
+     * Managing customer relationships to sell them appropriate Coco Pharmaceuticals' products.
      */
     SALES("SALES",
           "Sales",
-          "Managing customer relationships in order to sell them appropriate Coco Pharmaceuticals' products."),
+          "Managing customer relationships to sell them appropriate Coco Pharmaceuticals' products."),
 
     /**
      * Management of how Coco Pharmaceuticals operates, balancing business strategy and profits against ethics, legal requirements and regulations.
