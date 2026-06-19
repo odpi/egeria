@@ -30,10 +30,16 @@ public enum Category
                            "List of open metadata type information."),
 
     /**
+     * Resources to define the structure of an organization.
+     */
+    ORGANIZATION("Organization",
+                 "Resources to define the structure of an organization."),
+
+    /**
      * A set of guided tasks to enable a new data-oriented use case.
      */
     SUSTAINABILITY("Sustainability",
-                 "Resources to support sustainability initiatives."),
+                   "Resources to support sustainability initiatives."),
 
     /**
      * A collection of guided activities either suggested, or taken, to complete a project.
