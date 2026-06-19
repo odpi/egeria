@@ -424,6 +424,99 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     }
 
 
+    protected void addDataSetCatalogTemplates(ContentPackDefinition contentPackDefinition)
+    {
+        for (DataSetTemplateDefinition templateDefinition : DataSetTemplateDefinition.values())
+        {
+            if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
+            {
+                createDataSetCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                             templateDefinition.getDeployedImplementationType(),
+                                             templateDefinition.getQualifiedName(),
+                                             templateDefinition.getConnectorTypeGUID());
+            }
+        }
+    }
+
+    /**
+     * Create a template for a dataset and link it to the associated open metadata type.
+     * The template consists of a DataFile asset plus an optional connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType values for the template
+     * @param connectorTypeGUID          connector type to link to the connection
+     */
+    protected void createDataSetCatalogTemplate(String                               templateGUID,
+                                                DeployedImplementationTypeDefinition deployedImplementationType,
+                                                String                               qualifiedName,
+                                                String                               connectorTypeGUID)
+    {
+        final String methodName = "createDataSetCatalogTemplate";
+
+        List<Classification> classifications    = new ArrayList<>();
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a data set of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FORMULA.getPlaceholder(),
+                                                                             PlaceholderProperty.FORMULA_TYPE.getPlaceholder(),
+                                                                             null,
+                                                                             null));
+
+        archiveHelper.setGUID(qualifiedName, templateGUID);
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                      null,
+                                                      null,
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      ContentStatus.ACTIVE,
+                                                      null,
+                                                      null,
+                                                      classifications);
+
+        assert(assetGUID.equals(templateGUID));
+
+        if (connectorTypeGUID != null)
+        {
+            String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                                PlaceholderProperty.DISPLAY_NAME.getPlaceholder() + " connection",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                connectorTypeGUID,
+                                                                null,
+                                                                assetGUID,
+                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                OpenMetadataType.ASSET.typeName,
+                                                                null);
+
+            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
+        }
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               null,
+                                               PlaceholderProperty.getDataSetPlaceholderPropertyTypes());
+    }
+
+
     /**
      * Loop through the server template definitions creating the specified templates.
      *
