@@ -302,8 +302,6 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, null);
-
                 if (! finalAnalysisStep.equals(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName()))
                 {
                     annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
