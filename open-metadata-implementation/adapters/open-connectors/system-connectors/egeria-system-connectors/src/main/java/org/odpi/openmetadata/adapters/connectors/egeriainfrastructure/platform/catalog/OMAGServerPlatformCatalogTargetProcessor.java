@@ -1513,10 +1513,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                         }
                     }
 
+                    final String auditLogLabel = "audit log events";
+
                     DataFlowProperties dataFlowProperties = new DataFlowProperties();
 
                     dataFlowProperties.setFormula(formula);
-                    dataFlowProperties.setLabel("audit log events");
+                    dataFlowProperties.setLabel(auditLogLabel);
                     dataFlowProperties.setDescription("Audit log events from server " + softwareServerProperties.getDisplayName());
                     dataFlowProperties.setISCQualifiedName(EgeriaInformationSupplyChainDefinition.OPEN_METADATA_OBSERVABILITY.getQualifiedName());
 
@@ -1576,7 +1578,9 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                             {
                                 if ((lineageLink != null) &&
                                         (! lineageLink.getRelatedElementAtEnd1()) &&
-                                        (lineageLink.getRelatedElement().getElementHeader().getGUID().equals(topicGUID)))
+                                        (lineageLink.getRelatedElement().getElementHeader().getGUID().equals(topicGUID)) &&
+                                        (lineageLink.getRelationshipProperties() instanceof DataFlowProperties relationshipProperties) &&
+                                        (auditLogLabel.equals(relationshipProperties.getLabel())))
                                 {
                                     lineageRelationshipGUID = lineageLink.getRelationshipHeader().getGUID();
                                     break;
