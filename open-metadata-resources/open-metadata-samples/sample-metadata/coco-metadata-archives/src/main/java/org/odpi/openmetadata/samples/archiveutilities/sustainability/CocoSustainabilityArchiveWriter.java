@@ -393,21 +393,40 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
         {
             String locationGUID;
 
-            if (facilityDefinition.getAssociatedWorkLocation() != null)
+            if (facilityDefinition.getFacilityType() != FacilityTypeDefinition.CLOUD)
             {
-                locationGUID = archiveHelper.addFixedLocation(facilityDefinition.getQualifiedName(),
-                                                              facilityDefinition.getIdentifier(),
-                                                              facilityDefinition.getDisplayName(),
-                                                              facilityDefinition.getDescription(),
-                                                              null,
-                                                              null,
-                                                              facilityDefinition.getAssociatedWorkLocation().getPostalAddress(),
-                                                              facilityDefinition.getAssociatedWorkLocation().getTimeZone(),
-                                                              null);
+                if (facilityDefinition.getAssociatedWorkLocation() != null)
+                {
+                    locationGUID = archiveHelper.addFixedLocation(facilityDefinition.getQualifiedName(),
+                                                                  facilityDefinition.getIdentifier(),
+                                                                  facilityDefinition.getDisplayName(),
+                                                                  facilityDefinition.getDescription(),
+                                                                  null,
+                                                                  null,
+                                                                  facilityDefinition.getAssociatedWorkLocation().getPostalAddress(),
+                                                                  facilityDefinition.getAssociatedWorkLocation().getTimeZone(),
+                                                                  null);
 
-                String validValueGUID = archiveHelper.getGUID(facilityDefinition.getAssociatedWorkLocation().getQualifiedName());
+                    String validValueGUID = archiveHelper.getGUID(facilityDefinition.getAssociatedWorkLocation().getRefDataQualifiedName());
 
-                archiveHelper.addMoreInformationLink(validValueGUID, locationGUID);
+                    archiveHelper.addMoreInformationLink(validValueGUID, locationGUID);
+
+                    validValueGUID = archiveHelper.getGUID(facilityDefinition.getAssociatedWorkLocation().getValidMetadataQualifiedName());
+
+                    archiveHelper.addMoreInformationLink(validValueGUID, locationGUID);
+                }
+                else
+                {
+                    locationGUID = archiveHelper.addFixedLocation(facilityDefinition.getQualifiedName(),
+                                                                  facilityDefinition.getIdentifier(),
+                                                                  facilityDefinition.getDisplayName(),
+                                                                  facilityDefinition.getDescription(),
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null);
+                }
             }
             else
             {

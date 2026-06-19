@@ -6,6 +6,8 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
@@ -72,6 +74,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeContactTypesValidValueSet()
     {
+        /*
+         * First, add these values as valid metadata values
+         */
         for (ContactTypeDefinition contactTypeDefinition : ContactTypeDefinition.values())
         {
             this.addValidMetadataValue(contactTypeDefinition.getDisplayName(),
@@ -81,6 +86,65 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        contactTypeDefinition.getPreferredValue());
         }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + ContactTypeDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               null,
+                                                               ContactTypeDefinition.validValueSetName,
+                                                               ContactTypeDefinition.validValueSetDescription,
+                                                               null,
+                                                               ContactTypeDefinition.validValueSetUsage,
+                                                               null,
+                                                               ContactTypeDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (ContactTypeDefinition contactTypeDefinition : ContactTypeDefinition.values())
+            {
+                String valueQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + contactTypeDefinition.getDisplayName();
+
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            valueQName,
+                                            Category.ORGANIZATION.getName(),
+                                            null,
+                                            contactTypeDefinition.getDisplayName(),
+                                            contactTypeDefinition.getDescription(),
+                                            null,
+                                            ContactTypeDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            ContactTypeDefinition.validValueSetScope,
+                                            contactTypeDefinition.getPreferredValue(),
+                                            null,
+                                            false,
+                                            contactTypeDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
+        }
     }
 
 
@@ -89,6 +153,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeJobLevelDefinitionValidValueSet()
     {
+        /*
+         * First, add these values as valid metadata values
+         */
         for (JobLevelDefinition jobLevelDefinition : JobLevelDefinition.values())
         {
             this.addValidMetadataValue(jobLevelDefinition.getDisplayName(),
@@ -97,6 +164,65 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        JobLevelDefinition.validValueSetPropertyName,
                                        jobLevelDefinition.getPreferredValue());
+        }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + JobLevelDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               JobLevelDefinition.validValueSetPropertyName,
+                                                               JobLevelDefinition.validValueSetName,
+                                                               JobLevelDefinition.validValueSetDescription,
+                                                               null,
+                                                               JobLevelDefinition.validValueSetUsage,
+                                                               null,
+                                                               JobLevelDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (JobLevelDefinition jobLevelDefinition : JobLevelDefinition.values())
+            {
+                String valueQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + jobLevelDefinition.getDisplayName();
+
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            valueQName,
+                                            Category.ORGANIZATION.getName(),
+                                            JobLevelDefinition.validValueSetPropertyName,
+                                            jobLevelDefinition.getDisplayName(),
+                                            jobLevelDefinition.getDescription(),
+                                            null,
+                                            JobLevelDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            JobLevelDefinition.validValueSetScope,
+                                            jobLevelDefinition.getPreferredValue(),
+                                            null,
+                                            false,
+                                            jobLevelDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
         }
     }
 
@@ -108,12 +234,74 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (EmployeeTypeDefinition employeeTypeDefinition : EmployeeTypeDefinition.values())
         {
+            /*
+             * First, add these values as valid metadata values
+             */
             this.addValidMetadataValue(employeeTypeDefinition.getDisplayName(),
                                        employeeTypeDefinition.getDescription(),
                                        OpenMetadataProperty.EMPLOYEE_TYPE.name,
                                        null,
                                        null,
                                        employeeTypeDefinition.getPreferredValue());
+        }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + EmployeeTypeDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               null,
+                                                               EmployeeTypeDefinition.validValueSetName,
+                                                               EmployeeTypeDefinition.validValueSetDescription,
+                                                               null,
+                                                               EmployeeTypeDefinition.validValueSetUsage,
+                                                               null,
+                                                               EmployeeTypeDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (EmployeeTypeDefinition employeeTypeDefinition : EmployeeTypeDefinition.values())
+            {
+                String valueQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + employeeTypeDefinition.getDisplayName();
+
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            valueQName,
+                                            Category.ORGANIZATION.getName(),
+                                            null,
+                                            employeeTypeDefinition.getDisplayName(),
+                                            employeeTypeDefinition.getDescription(),
+                                            null,
+                                            EmployeeTypeDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            EmployeeTypeDefinition.validValueSetScope,
+                                            employeeTypeDefinition.getPreferredValue(),
+                                            null,
+                                            false,
+                                            employeeTypeDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
         }
     }
 
@@ -123,6 +311,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeOrganizationTypeValidValueSet()
     {
+        /*
+         * First, add these values as valid metadata values
+         */
         for (OrganizationTypeDefinition organizationTypeDefinition : OrganizationTypeDefinition.values())
         {
             this.addValidMetadataValue(organizationTypeDefinition.getDisplayName(),
@@ -132,6 +323,65 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        null,
                                        organizationTypeDefinition.getPreferredValue());
         }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + OrganizationTypeDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               null,
+                                                               OrganizationTypeDefinition.validValueSetName,
+                                                               OrganizationTypeDefinition.validValueSetDescription,
+                                                               null,
+                                                               OrganizationTypeDefinition.validValueSetUsage,
+                                                               null,
+                                                               OrganizationTypeDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (OrganizationTypeDefinition organizationTypeDefinition : OrganizationTypeDefinition.values())
+            {
+                String valueQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + organizationTypeDefinition.getDisplayName();
+
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            valueQName,
+                                            Category.ORGANIZATION.getName(),
+                                            null,
+                                            organizationTypeDefinition.getDisplayName(),
+                                            organizationTypeDefinition.getDescription(),
+                                            null,
+                                            OrganizationTypeDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            OrganizationTypeDefinition.validValueSetScope,
+                                            organizationTypeDefinition.getPreferredValue(),
+                                            null,
+                                            false,
+                                            organizationTypeDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
+        }
     }
 
 
@@ -140,6 +390,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeWorkLocationsValidValueSet()
     {
+        /*
+         * First, add these values as valid metadata values
+         */
         for (WorkLocationDefinition workLocationDefinition : WorkLocationDefinition.values())
         {
             this.addValidMetadataValue(workLocationDefinition.getDisplayName(),
@@ -149,6 +402,63 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        WorkLocationDefinition.validValueSetPropertyName,
                                        workLocationDefinition.getWorkLocationId());
         }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + WorkLocationDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               WorkLocationDefinition.validValueSetPropertyName,
+                                                               WorkLocationDefinition.validValueSetName,
+                                                               WorkLocationDefinition.validValueSetDescription,
+                                                               null,
+                                                               WorkLocationDefinition.validValueSetUsage,
+                                                               null,
+                                                               WorkLocationDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (WorkLocationDefinition workLocationDefinition : WorkLocationDefinition.values())
+            {
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            workLocationDefinition.getRefDataQualifiedName(),
+                                            Category.ORGANIZATION.getName(),
+                                            WorkLocationDefinition.validValueSetPropertyName,
+                                            workLocationDefinition.getDisplayName(),
+                                            workLocationDefinition.getPostalAddress(),
+                                            null,
+                                            WorkLocationDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            WorkLocationDefinition.validValueSetScope,
+                                            workLocationDefinition.getWorkLocationId(),
+                                            null,
+                                            false,
+                                            workLocationDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
+        }
     }
 
 
@@ -157,6 +467,9 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeCountryCodesValidValueSet()
     {
+        /*
+         * First, add these values as valid metadata values
+         */
         for (CountryCodeDefinition countryCodeDefinition : CountryCodeDefinition.values())
         {
             this.addValidMetadataValue(countryCodeDefinition.getDisplayName(),
@@ -166,11 +479,70 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                        CountryCodeDefinition.validValueSetPropertyName,
                                        countryCodeDefinition.getPreferredValue());
         }
+
+        /*
+         * Then, add these values as a reference data set.
+         */
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + CountryCodeDefinition.validValueSetName;
+
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               validValueSetQName,
+                                                               Category.ORGANIZATION.getName(),
+                                                               CountryCodeDefinition.validValueSetPropertyName,
+                                                               CountryCodeDefinition.validValueSetName,
+                                                               CountryCodeDefinition.validValueSetDescription,
+                                                               null,
+                                                               CountryCodeDefinition.validValueSetUsage,
+                                                               null,
+                                                               CountryCodeDefinition.validValueSetScope,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               0,
+                                                               false,
+                                                               null);
+
+        if (validValueSetGUID != null)
+        {
+            for (CountryCodeDefinition countryCodeDefinition : CountryCodeDefinition.values())
+            {
+                String valueQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + countryCodeDefinition.getDisplayName();
+
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                            null,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                            valueQName,
+                                            Category.ORGANIZATION.getName(),
+                                            CountryCodeDefinition.validValueSetPropertyName,
+                                            countryCodeDefinition.getDisplayName(),
+                                            null,
+                                            null,
+                                            CountryCodeDefinition.validValueSetUsage,
+                                            DataType.STRING.getDisplayName(),
+                                            CountryCodeDefinition.validValueSetScope,
+                                            countryCodeDefinition.getPreferredValue(),
+                                            null,
+                                            false,
+                                            countryCodeDefinition.ordinal(),
+                                            false,
+                                            null);
+            }
+        }
     }
 
 
     /**
-     * Creates Person actor profiles, user identities and contact details.
+     * Creates Person actor profiles, user identities, and contact details.
      */
     private void writePersonProfiles()
     {

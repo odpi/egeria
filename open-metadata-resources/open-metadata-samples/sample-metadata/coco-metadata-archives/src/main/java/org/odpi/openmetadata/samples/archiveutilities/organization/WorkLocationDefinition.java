@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -234,13 +235,19 @@ public enum WorkLocationDefinition
         this.timeZone = timeZone;
     }
 
-    public String getQualifiedName()
+    public String getValidMetadataQualifiedName()
     {
         return constructValidValueQualifiedName(null,
                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                 validValueSetPropertyName,
                                                 workLocationId);
     }
+
+    public String getRefDataQualifiedName()
+    {
+        return OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + displayName;
+    }
+
 
     /**
      * Return the standard value for work location.
