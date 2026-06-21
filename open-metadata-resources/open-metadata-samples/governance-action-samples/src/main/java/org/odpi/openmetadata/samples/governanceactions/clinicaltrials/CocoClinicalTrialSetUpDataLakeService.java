@@ -36,7 +36,11 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Responsible for setting up the mechanisms that support the smooth operation of a clinical trial.
+ * The data lake is unity catalog and delta lake.  It sits inside the data hub.  It is used to store the raw data
+ * collected from the clinical trial.  The data lake is also used to store the processed data used for
+ * analysis and calculations.
+ *
+ * This service is responsible for setting up the mechanisms in the data lake that support the smooth operation of a clinical trial.
  * This includes:
  * <ul>
  *     <li>Creating a new volume in the data lake catalog (Unity Catalog).</li>

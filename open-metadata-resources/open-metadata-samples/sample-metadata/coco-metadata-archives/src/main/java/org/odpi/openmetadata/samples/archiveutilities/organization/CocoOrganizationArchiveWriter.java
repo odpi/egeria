@@ -584,7 +584,13 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                          null,
                                                          additionalProperties);
 
-            String userIdGUID  = archiveHelper.addUserIdentity(userIdQualifiedName, personDefinition.getUserId(), personDefinition.getDistinguishedName(), null);
+            String userIdGUID  = archiveHelper.addUserIdentity(profileGUID,
+                                                               OpenMetadataType.PERSON.typeName,
+                                                               OpenMetadataType.ACTOR.typeName,
+                                                               userIdQualifiedName,
+                                                               personDefinition.getUserId(),
+                                                               personDefinition.getDistinguishedName(),
+                                                               null);
 
             archiveHelper.addProfileIdentity(profileGUID, userIdGUID, null, null, null);
 
@@ -819,7 +825,13 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                      null,
                                                      additionalProperties);
 
-        String userIdGUID  = archiveHelper.addUserIdentity(userIdQualifiedName, userId, distinguishedName, null);
+        String userIdGUID  = archiveHelper.addUserIdentity(profileGUID,
+                                                           OpenMetadataType.PERSON.typeName,
+                                                           OpenMetadataType.ACTOR.typeName,
+                                                           userIdQualifiedName,
+                                                           userId,
+                                                           distinguishedName,
+                                                           null);
 
         archiveHelper.addProfileIdentity(profileGUID, userIdGUID, null, null, null);
 

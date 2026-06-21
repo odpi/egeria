@@ -166,6 +166,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
