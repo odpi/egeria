@@ -92,7 +92,11 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CocoClinicalTrialSetUpDataLakeService</span>
 <span class="extends-implements">extends <a href="CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></span></div>
-<div class="block">Responsible for setting up the mechanisms that support the smooth operation of a clinical trial.
+<div class="block">The data lake is unity catalog and delta lake.  It sits inside the data hub.  It is used to store the raw data
+ collected from the clinical trial.  The data lake is also used to store the processed data used for
+ analysis and calculations.
+
+ This service is responsible for setting up the mechanisms in the data lake that support the smooth operation of a clinical trial.
  This includes:
  <ul>
      <li>Creating a new volume in the data lake catalog (Unity Catalog).</li>
