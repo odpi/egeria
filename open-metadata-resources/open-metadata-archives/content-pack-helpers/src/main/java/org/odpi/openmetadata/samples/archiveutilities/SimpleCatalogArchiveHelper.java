@@ -1451,12 +1451,18 @@ public class SimpleCatalogArchiveHelper
      * @param additionalProperties any additional properties
      * @return unique identifier of the user identity
      */
-    public String addUserIdentity(String              qualifiedName,
+    public String addUserIdentity(String              anchorGUID,
+                                  String              anchorTypeName,
+                                  String              anchorDomainName,
+                                  String              qualifiedName,
                                   String              userId,
                                   String              distinguishedName,
                                   Map<String, String> additionalProperties)
     {
         final String methodName = "addUserIdentity";
+
+        List<Classification> classifications = new ArrayList<>();
+        classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, null, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USER_ID.name, userId, methodName);
@@ -1467,7 +1473,7 @@ public class SimpleCatalogArchiveHelper
                                                                   idToGUIDMap.getGUID(qualifiedName),
                                                                   properties,
                                                                   InstanceStatus.ACTIVE,
-                                                                  null);
+                                                                  classifications);
 
         archiveBuilder.addEntity(userIdentity);
 
