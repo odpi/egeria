@@ -404,6 +404,8 @@ public class IntegrationGroupHandler
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports(),
                                                                        serverName,
+                                                                       integrationGroupGUID,
+                                                                       integrationGroupName,
                                                                        integrationContextManager,
                                                                        auditLog);
                     /*

@@ -107,7 +107,7 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "templateGUID": "add guid here",
   "replacementProperties": {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -443,7 +443,7 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "templateGUID": "add guid here",
   "replacementProperties": {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",
@@ -908,7 +908,7 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "templateGUID": "add guid here",
   "replacementProperties": {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",

@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -27,6 +25,7 @@ public class IntegrationConnectorReport
 {
     private String                     connectorId              = null;
     private String                     connectorGUID            = null;
+    private String                     integrationGroupGUID     = null;
     private String                     connectorName            = null;
     private Connection                 connection               = null;
     private String                     connectorInstanceId      = null;
@@ -57,6 +56,7 @@ public class IntegrationConnectorReport
         {
             connectorId              = template.getConnectorId();
             connectorGUID            = template.getConnectorGUID();
+            integrationGroupGUID     = template.getIntegrationGroupGUID();
             connectorName            = template.getConnectorName();
             connection               = template.getConnection();
             connectorInstanceId      = template.getConnectorInstanceId();
@@ -110,6 +110,28 @@ public class IntegrationConnectorReport
     public void setConnectorGUID(String connectorGUID)
     {
         this.connectorGUID = connectorGUID;
+    }
+
+
+    /**
+     * Return the unique identifier of the integration group that this connector belongs to.
+     *
+     * @return string guid
+     */
+    public String getIntegrationGroupGUID()
+    {
+        return integrationGroupGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the integration group that this connector belongs to.
+     *
+     * @param integrationGroupGUID string guid
+     */
+    public void setIntegrationGroupGUID(String integrationGroupGUID)
+    {
+        this.integrationGroupGUID = integrationGroupGUID;
     }
 
 
@@ -329,6 +351,7 @@ public class IntegrationConnectorReport
         return "IntegrationConnectorReport{" +
                        "connectorId='" + connectorId + '\'' +
                        ", connectorGUID='" + connectorGUID + '\'' +
+                       ", integrationGroupGUID='" + integrationGroupGUID + '\'' +
                        ", connectorName='" + connectorName + '\'' +
                        ", connection=" + connection +
                        ", connectorInstanceId='" + connectorInstanceId + '\'' +
@@ -363,6 +386,7 @@ public class IntegrationConnectorReport
         return minMinutesBetweenRefresh == that.minMinutesBetweenRefresh &&
                        Objects.equals(connectorId, that.connectorId) &&
                        Objects.equals(connectorGUID, that.connectorGUID) &&
+                       Objects.equals(integrationGroupGUID, that.integrationGroupGUID) &&
                        Objects.equals(connectorName, that.connectorName) &&
                        Objects.equals(connection, that.connection) &&
                        Objects.equals(connectorInstanceId, that.connectorInstanceId) &&
@@ -382,7 +406,8 @@ public class IntegrationConnectorReport
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, connectorGUID, connectorName, connection, connectorInstanceId, connectorStatus, lastStatusChange,
+        return Objects.hash(connectorId, connectorGUID, integrationGroupGUID, connectorName, connection,
+                            connectorInstanceId, connectorStatus, lastStatusChange,
                             lastRefreshTime, minMinutesBetweenRefresh, failingExceptionMessage, statistics);
     }
 }
