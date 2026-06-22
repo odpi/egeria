@@ -644,7 +644,7 @@ Content-Type: application/json
   "parentAtEnd1": true,
   "templateGUID": "template GUID",
   "replacementProperties": {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "propertyName" : {
         "class": "PrimitiveTypePropertyValue",

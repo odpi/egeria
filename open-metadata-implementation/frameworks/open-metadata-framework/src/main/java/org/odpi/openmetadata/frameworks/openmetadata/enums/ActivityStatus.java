@@ -83,7 +83,7 @@ public enum ActivityStatus implements OpenMetadataEnum
     /**
      * The activity was abandoned because it is no longer relevant.
      */
-    ABANDONED       ("2911bd8f-4993-4968-b12b-1eade7987093",  15, "Abandoned",     "The activity was abandoned because it is no longer relevant.  Some work may have occurred but is what stopped, probabbly in an inclomple state..", false),
+    ABANDONED       ("2911bd8f-4993-4968-b12b-1eade7987093",  15, "Abandoned",     "The activity was abandoned because it is no longer relevant.  Some work may have occurred but is what stopped, probably in an incomplete state.", false),
 
     /**
      * Undefined or user-defined status.

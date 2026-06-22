@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LicenseProperties extends RelationshipBeanProperties
 {
-    private String licenseId     = null;
-    private Date   coverageStart = null;
+    private String              licenseId              = null;
+    private Date                coverageStart          = null;
     private Date                coverageEnd            = null;
     private String              conditions             = null;
     private String              licensedBy             = null;

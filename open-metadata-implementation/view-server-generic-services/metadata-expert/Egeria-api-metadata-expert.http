@@ -87,7 +87,7 @@ Content-Type: application/json
   "effectiveFrom" : "{{$isoTimestamp}}",
   "effectiveTo": "{{$isoTimestamp}}",
   "replacementProperties" : {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "propertyName" : {
         "class": "PrimitiveTypePropertyValue",
@@ -126,7 +126,7 @@ Content-Type: application/json
   "forDuplicateProcessing" : false,
   "effectiveTime" : "{{$isoTimestamp}}",
   "properties" : {
-    "class": "ElementProperties",
+    "class": "EntityElementProperties",
     "propertyValueMap" : {
       "description" : {
         "class": "PrimitiveTypePropertyValue",

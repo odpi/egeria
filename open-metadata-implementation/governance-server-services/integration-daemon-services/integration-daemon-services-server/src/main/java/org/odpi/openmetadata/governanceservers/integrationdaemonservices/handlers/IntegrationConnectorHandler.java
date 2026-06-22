@@ -41,6 +41,8 @@ public class IntegrationConnectorHandler
      * These values are set in the constructor and do not change.
      */
     private final String                    integrationDaemonName;
+    private final String                    integrationGroupGUID;
+    private final String                    integrationGroupName;
     private final String                    integrationConnectorId;
     private       String                    integrationConnectorGUID;
     private       String                    integrationConnectorName;
@@ -91,6 +93,8 @@ public class IntegrationConnectorHandler
      * @param permittedSynchronization what is the direction that metadata can be synchronized - affects the methods available through the context
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param integrationDaemonName name of the integration daemon - used for messages
+     * @param integrationGroupGUID unique identifier of the integration group that this connector belongs to
+     * @param integrationGroupName unique name of the integration group that this connector belongs to
      * @param contextManager the specialized context manager for this connector's integration service
      * @param auditLog logging destination
      */
@@ -107,12 +111,16 @@ public class IntegrationConnectorHandler
                                 PermittedSynchronization   permittedSynchronization,
                                 boolean                    generateIntegrationReport,
                                 String                     integrationDaemonName,
+                                String                     integrationGroupGUID,
+                                String                     integrationGroupName,
                                 IntegrationContextManager  contextManager,
                                 AuditLog                   auditLog)
     {
         final String actionDescription = "Initializing integration connector";
 
         this.integrationDaemonName       = integrationDaemonName;
+        this.integrationGroupGUID        = integrationGroupGUID;
+        this.integrationGroupName        = integrationGroupName;
         this.integrationConnectorId      = connectorId;
         this.integrationConnectorGUID    = connectorGUID;
         this.integrationConnectorName    = connectorName;
@@ -152,6 +160,7 @@ public class IntegrationConnectorHandler
         connectorReport.setLastStatusChange(lastStatusChange);
         connectorReport.setLastRefreshTime(lastRefreshTime);
         connectorReport.setMinMinutesBetweenRefresh(minMinutesBetweenRefresh);
+        connectorReport.setIntegrationGroupGUID(integrationGroupGUID);
 
         return connectorReport;
     }
