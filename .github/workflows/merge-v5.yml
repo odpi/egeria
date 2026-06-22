@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5.0.0
         name: Checkout source
-      - uses: gradle/wrapper-validation-action@v2
+      - uses: gradle/wrapper-validation-action@v3
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
