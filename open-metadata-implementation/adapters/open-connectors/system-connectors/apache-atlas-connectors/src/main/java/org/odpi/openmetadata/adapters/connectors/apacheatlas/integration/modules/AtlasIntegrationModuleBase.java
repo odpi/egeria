@@ -646,6 +646,7 @@ public abstract class AtlasIntegrationModuleBase
     {
         ExternalIdProperties externalIdentifierProperties = new ExternalIdProperties();
 
+        externalIdentifierProperties.setQualifiedName(OpenMetadataType.EXTERNAL_ID.typeName + "::" + atlasTypeName + "::" + atlasGUID);
         externalIdentifierProperties.setKey(atlasGUID);
         externalIdentifierProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
         externalIdentifierProperties.setExternalInstanceTypeName(atlasTypeName);

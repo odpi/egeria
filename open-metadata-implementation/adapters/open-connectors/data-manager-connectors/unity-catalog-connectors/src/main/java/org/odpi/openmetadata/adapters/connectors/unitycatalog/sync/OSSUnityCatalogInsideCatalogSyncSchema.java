@@ -218,7 +218,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                        connectorName,
                                                                        parentGUID,
                                                                        parentRelationshipTypeName,
-                                                                       1,
+                                                                       2,
                                                                        deployedImplementationType.getAssociatedTypeName(),
                                                                        context,
                                                                        targetPermittedSynchronization,
@@ -429,7 +429,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
 
         templateOptions.setParentGUID(catalogGUID);
-        templateOptions.setParentAtEnd1(true);
+        templateOptions.setParentAtEnd1(false);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
         String ucSchemaGUID = assetClient.createAssetFromTemplate(templateOptions,

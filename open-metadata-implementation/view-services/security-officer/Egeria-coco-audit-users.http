@@ -53,7 +53,7 @@ Content-Type: application/json
 # https://egeria-project.org/types/0037-Software-Server-Platforms/
 
 ###
-# @name getPlatformsByName (gary)
+# @name getPlatformsByName (ivor)
 # Returns the list of platforms with a particular name. The name is specified in the filter.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name
 Authorization: Bearer {{ivorToken}}
@@ -181,6 +181,32 @@ Content-Type: application/json
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts
 Authorization: Bearer {{garyToken}}
+
+###
+# @name: getUserList
+# Return the list of users registered with the platform security connector.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param status status of the user - or null for any status
+# @param type   type of user - or null for any type
+# @return list of matching userIds in the user directory
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts
+Authorization: Bearer {{ivorToken}}
+
+###
+# @name: getUserList for active employees
+# Return the list of users registered with the platform security connector.
+#
+# @param serverName  name of called server
+# @param platformGUID unique identifier of the platform
+# @param status status of the user - or null for any status
+# @param type   type of user - or null for any type
+# @return list of matching userIds in the user directory
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/platforms/{{omagServerPlatformGUID}}/user-accounts?status=AVAILABLE&type=EMPLOYEE
+Authorization: Bearer {{ivorToken}}
 
 ###
 

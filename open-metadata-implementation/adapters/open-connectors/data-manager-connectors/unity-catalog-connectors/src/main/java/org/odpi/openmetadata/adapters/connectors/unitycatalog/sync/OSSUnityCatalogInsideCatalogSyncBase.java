@@ -338,6 +338,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     {
         ExternalIdProperties externalIdProperties = new ExternalIdProperties();
 
+        externalIdProperties.setQualifiedName(OpenMetadataType.EXTERNAL_ID.typeName + "::" + elementType + "::" + id);
+
         externalIdProperties.setKey(id);
         externalIdProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
         externalIdProperties.setExternalInstanceTypeName(elementType);
