@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public abstract class IntegrationIterator
     protected final int                      maxPageSize;
     protected final AuditLog                 auditLog;
 
-    protected List<OpenMetadataRootElement> elementCache = null;
+    protected List<OpenMetadataRootElement> elementCache = new ArrayList<>();
     protected int                           startFrom    = 0;
 
 
@@ -72,7 +73,7 @@ public abstract class IntegrationIterator
     /**
      * Retrieve information from the open metadata repositories.
      *
-     * @return boolean where true means there are elements to process.
+     * @return boolean where true means more elements to process.
      *
      * @throws InvalidParameterException problem with a parameter value
      * @throws PropertyServerException repository not working properly
@@ -95,6 +96,11 @@ public abstract class IntegrationIterator
                                           PropertyServerException,
                                           UserNotAuthorizedException
     {
+        if (elementCache == null)
+        {
+            return false;
+        }
+
         return fillCache();
     }
 
@@ -111,7 +117,12 @@ public abstract class IntegrationIterator
                                                 PropertyServerException,
                                                 UserNotAuthorizedException
     {
-        OpenMetadataRootElement element =  elementCache.remove(0);
+        OpenMetadataRootElement element = null;
+
+        if (! elementCache.isEmpty())
+        {
+            element = elementCache.remove(0);
+        }
 
         return this.fillOutMemberElement(element, true);
     }

@@ -67,7 +67,7 @@ public class RelatedElementsIterator extends IntegrationIterator
     /**
      * Retrieve information from the open metadata repositories.
      *
-     * @return boolean where true means there are elements to process.
+     * @return boolean where true means more elements to process.
      *
      * @throws InvalidParameterException problem with a parameter value
      * @throws PropertyServerException repository not working properly
@@ -77,7 +77,7 @@ public class RelatedElementsIterator extends IntegrationIterator
                                          PropertyServerException,
                                          UserNotAuthorizedException
     {
-        if ((elementCache == null) || (elementCache.isEmpty()))
+        if ((elementCache != null) && (elementCache.isEmpty()))
         {
             ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(metadataTypeName);
 

@@ -22,6 +22,11 @@ public enum CountryCodeDefinition
      * United Kingdom (UK)
      */
     UK  ("UK", "United Kingdom (UK)"),
+
+    /**
+     * Canada
+     */
+    CANADA  ("CA", "Canada"),
     ;
 
     public static final String validValueSetName         = "CountryCode";

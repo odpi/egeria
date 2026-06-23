@@ -631,6 +631,4 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
             }
         }
     }
-
-
 }

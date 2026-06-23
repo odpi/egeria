@@ -88,14 +88,18 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is unable to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException
     {
         final String methodName = "refresh";
 
-        if (UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName().equals(this.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
+        /*
+         * Although this connector processes catalogs, its catalog target is the Unity Catalog Server.
+         * The catalog to work on is passed in the configuration properties.
+         */
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(this.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
         {
             if ((this.getConfigurationProperties() != null) &&
                 (this.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()) != null))
@@ -196,13 +200,23 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                                                                                                            includeSchemaNames,
                                                                                                            auditLog);
 
-            ucFullNameToEgeriaGUID.putAll(syncSchema.refresh(catalogGUID,
-                                                             OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                             null));
+            Map<String, String> requestNameToGUIDMap = syncSchema.refresh(catalogGUID,
+                                                                          OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                          null);
 
-            ucFullNameToEgeriaGUID.putAll(syncSchema.refreshChildren(catalogGUID,
-                                                                     OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                     null));
+            if (requestNameToGUIDMap != null)
+            {
+                ucFullNameToEgeriaGUID.putAll(requestNameToGUIDMap);
+            }
+
+            requestNameToGUIDMap = syncSchema.refreshChildren(catalogGUID,
+                                                              OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                              null);
+
+            if (requestNameToGUIDMap != null)
+            {
+                ucFullNameToEgeriaGUID.putAll(requestNameToGUIDMap);
+            }
         }
         catch (Exception exception)
         {
@@ -251,7 +265,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                 /*
                  * Is this event of interest?  Could it have been processed before?  Is it part of this catalog?
                  */
-                if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
+                if (((lastRefreshCompleteTime == null) || (lastUpdateTime.after(lastRefreshCompleteTime))) &&
                         (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
                         (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.ASSET.typeName)))
                 {
