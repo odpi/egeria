@@ -397,7 +397,7 @@ public class MemberElement
 
         return "MemberElement{" +
                 "element=" + elementGUID +
-                "externalIdentifiers=" + externalIdentifier +
+                ", externalIdentifiers=" + externalIdentifier +
                 ", catalogTargetName='" + catalogTargetName + '\'' +
                 ", isElementActive=" + isElementActive +
                 ", targetPermittedSynchronization=" + targetPermittedSynchronization +

@@ -749,13 +749,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         properties = propertyHelper.addStringProperty(null,
                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                      "Collection::" + clinicalTrialId + "::DataSpecification");
+                                                      "DataSpec::" + clinicalTrialId);
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "The data needed to conduct this clinical trial.");
 
-        String dataSpecGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.COLLECTION.typeName,
-                                                                                                    initialClassifications,
+        String dataSpecGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
+                                                                                                    null,
                                                                                                     topLevelProjectGUID,
                                                                                                     false,
                                                                                                     null,
