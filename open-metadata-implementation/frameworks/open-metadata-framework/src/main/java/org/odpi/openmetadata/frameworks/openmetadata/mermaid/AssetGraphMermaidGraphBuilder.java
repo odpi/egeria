@@ -59,13 +59,19 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 for (RelatedMetadataNodeSummary line : assetGraph.getRelationships())
                 {
+                    /*
+                     * Remove relationships that are better part of the lineage or action graphs.
+                     * DataSetContent and DerivedSchemaTypeQueryTarget are kept in this graph because
+                     * although they are part of the lineage graph too, they are also structural.
+                     */
                     if ((line != null) &&
                             (! propertyHelper.isTypeOf(line.getRelationshipHeader(), Arrays.asList(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
-                                                                                                   OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.ULTIMATE_SOURCE.typeName,
+                                                                                                   OpenMetadataType.ULTIMATE_DESTINATION.typeName,
                                                                                                    OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                                    OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,

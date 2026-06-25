@@ -1,0 +1,98 @@
+# Egeria-surveys
+# Further Information: https://egeria-project.org/guides/developer/survey-action-services/overview/?h=surveys#survey-action-service-implementation
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# List the different types of info that can be retieved
+###
+# @name getSpecificationPropertyTypes
+# Return the list of specification property types.
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/type-names
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# =====================================================================================================================
+# Extract details about the available surveys
+###
+# @name getSpecificationPropertyByType
+# Return the list of specification properties for produced annotation type - links to the element that produces it - eg governance action processes and types
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_ANNOTATION_TYPE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 100,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name get Survey Resource ResourceList relationships - end 1 is tech type; end 2 is governance action
+# Retrieve relationships of the requested relationship type name and with the requested a value found in
+# one of the relationship's properties specified.  The value must match exactly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/ResourceList/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Survey Resource",
+    "propertyNames" : ["resourceUse"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# =====================================================================================================================
+# Valid values for annotationType
+
+###
+# @name getValidMetadataValues
+# Retrieve all the valid values for annotation type.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-valid-metadata-values/annotationType?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+@preferredValue=Capture List of File Volumes
+
+###
+# @name getConsistentMetadataValues
+# Retrieve all the consistent valid values for the requested property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/annotationType/consistent-metadata-values?preferredValue={{preferredValue}}&startFrom=0&pageSize=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+

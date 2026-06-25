@@ -428,7 +428,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         templateOptions.setIsOwnAnchor(false);
         templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
 
-        templateOptions.setParentGUID(catalogGUID);
+        templateOptions.setParentGUID(parentGUID);
         templateOptions.setParentAtEnd1(false);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 

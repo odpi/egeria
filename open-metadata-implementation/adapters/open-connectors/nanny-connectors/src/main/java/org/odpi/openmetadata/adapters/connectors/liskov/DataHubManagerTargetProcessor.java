@@ -13,9 +13,12 @@ import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
@@ -23,6 +26,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -74,18 +79,29 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
 
         try
         {
-            OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElement();
+            /*
+             * These are lookup tables for data fields and data structures found in the data hub.
+             * They are used to match schema attributes to the data fields.
+             */
+            Map<String, String>     dataFields     = new HashMap<>();
+            Map<String, String>     dataStructures = new HashMap<>();
 
-            if ((catalogTargetElement != null) &&
-                    (propertyHelper.isTypeOf(catalogTargetElement.getElementHeader(), OpenMetadataType.DATA_HUB.typeName)) &&
-                    (catalogTargetElement.getProperties() instanceof DataHubProperties dataHubProperties))
+
+            OpenMetadataRootElement dataHubElement = this.getCatalogTargetElement();
+
+            /*
+             * Notice that members that are not data hubs are skipped.
+             */
+            if ((dataHubElement != null) &&
+                    (propertyHelper.isTypeOf(dataHubElement.getElementHeader(), OpenMetadataType.DATA_HUB.typeName)) &&
+                    (dataHubElement.getProperties() instanceof DataHubProperties dataHubProperties))
             {
-                String dataHubGUID        = catalogTargetElement.getElementHeader().getGUID();
+                String dataHubGUID        = dataHubElement.getElementHeader().getGUID();
                 String dataDictionaryGUID = null;
 
-                if (catalogTargetElement.getDataDescription() != null)
+                if (dataHubElement.getDataDescription() != null)
                 {
-                    for (RelatedMetadataElementSummary dataDescription : catalogTargetElement.getDataDescription())
+                    for (RelatedMetadataElementSummary dataDescription : dataHubElement.getDataDescription())
                     {
                         if ((dataDescription != null) &&
                                 (propertyHelper.isTypeOf(dataDescription.getRelatedElement().getElementHeader(),
@@ -99,6 +115,9 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
 
                 CollectionClient collectionClient = integrationContext.getCollectionClient(OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName);
 
+                /*
+                 * Create the data dictionary if it is missing
+                 */
                 if (dataDictionaryGUID == null)
                 {
                     DataDictionaryProperties dataDictionaryProperties = new DataDictionaryProperties();
@@ -129,25 +148,46 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
                                                                                                              dataHubGUID));
                 }
 
-                OpenMetadataRootElement DataDictionary = collectionClient.getCollectionByGUID(dataDictionaryGUID, collectionClient.getGetOptions());
+                OpenMetadataRootElement dataDictionary = collectionClient.getCollectionByGUID(dataDictionaryGUID, collectionClient.getGetOptions());
 
-                if (DataDictionary != null)
+                if (dataDictionary != null)
                 {
-                    if (catalogTargetElement.getCollectionMembers() != null)
-                    {
-                        for (RelatedMetadataElementSummary member : catalogTargetElement.getCollectionMembers())
-                        {
-                            if ((member != null) && (member.getRelatedElement().getProperties() instanceof DataStoreProperties dataStoreProperties))
-                            {
-                                auditLog.logMessage(methodName, LiskovAuditCode.REFRESHING_DATA_HUB_STORE.getMessageDefinition(connectorName,
-                                                                                                                               member.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                                               dataStoreProperties.getDisplayName(),
-                                                                                                                               member.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                               dataHubProperties.getDisplayName(),
-                                                                                                                               dataHubGUID));
+                    auditLog.logMessage(methodName, LiskovAuditCode.RETRIEVING_DATA_FIELDS.getMessageDefinition(connectorName,
+                                                                                                                dataHubProperties.getDisplayName(),
+                                                                                                                dataHubGUID));
 
-                                refreshDataStore(DataDictionary, member.getRelatedElement().getElementHeader().getGUID(), dataHubGUID);
+                    /*
+                     * Extract the existing data fields.
+                     */
+                    if (dataDictionary.getCollectionMembers() != null)
+                    {
+                        for (RelatedMetadataElementSummary member : dataHubElement.getCollectionMembers())
+                        {
+                            if (member != null)
+                            {
+                                retrieveDataDictionaryElements(member, dataFields, dataStructures);
                             }
+                        }
+                    }
+                }
+
+                /*
+                 * Process the members of the data hub
+                 */
+                if (dataHubElement.getCollectionMembers() != null)
+                {
+                    for (RelatedMetadataElementSummary member : dataHubElement.getCollectionMembers())
+                    {
+                        if ((member != null) && (member.getRelatedElement().getProperties() instanceof DataStoreProperties dataStoreProperties))
+                        {
+                            auditLog.logMessage(methodName, LiskovAuditCode.REFRESHING_DATA_HUB_STORE.getMessageDefinition(connectorName,
+                                                                                                                           member.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                                                           dataStoreProperties.getDisplayName(),
+                                                                                                                           member.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                           dataHubProperties.getDisplayName(),
+                                                                                                                           dataHubGUID));
+
+                            refreshDataStore(dataDictionary, member.getRelatedElement().getElementHeader().getGUID(), dataHubGUID, dataFields, dataStructures);
                         }
                     }
                 }
@@ -174,9 +214,50 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
     }
 
 
+    private void retrieveDataDictionaryElements(RelatedMetadataElementSummary member,
+                                                Map<String, String>           dataFields,
+                                                Map<String, String>           dataStructures) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        if ((member != null) && (member.getRelatedElement().getProperties() instanceof ReferenceableProperties dataDictionaryElementProperties))
+        {
+            if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_FIELD.typeName))
+            {
+                dataFields.put(dataDictionaryElementProperties.getQualifiedName(), member.getRelatedElement().getElementHeader().getGUID());
+            }
+            else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_STRUCTURE.typeName))
+            {
+                dataStructures.put(dataDictionaryElementProperties.getQualifiedName(), member.getRelatedElement().getElementHeader().getGUID());
+            }
+            else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.COLLECTION_FOLDER.typeName))
+            {
+                /*
+                 * Need to process the subfolders.
+                 */
+                CollectionClient collectionClient = integrationContext.getCollectionClient(OpenMetadataType.COLLECTION_FOLDER.typeName);
+
+                OpenMetadataRootElement subFolder = collectionClient.getCollectionByGUID(member.getRelatedElement().getElementHeader().getGUID(), collectionClient.getGetOptions());
+
+                if (subFolder != null)
+                {
+                    if (subFolder.getCollectionMembers() != null)
+                    {
+                        for (RelatedMetadataElementSummary subMember : subFolder.getCollectionMembers())
+                        {
+                            retrieveDataDictionaryElements(subMember, dataFields, dataStructures);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void refreshDataStore(OpenMetadataRootElement dataDictionaryElement,
                                   String                  dataStoreGUID,
-                                  String                  dataHubGUID)
+                                  String                  dataHubGUID,
+                                  Map<String, String>     dataFields,
+                                  Map<String, String>     dataStructures)
     {
         String methodName = "refreshDataStore(" + dataStoreGUID + ")";
 
@@ -186,6 +267,10 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
 
             OpenMetadataRootElement dataStoreElement = assetClient.getAssetByGUID(dataStoreGUID, assetClient.getGetOptions());
 
+            if ((dataStoreElement != null) && (dataStoreElement.getSchemaType() != null))
+            {
+
+            }
 
         }
         catch (Exception error)

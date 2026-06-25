@@ -81,7 +81,7 @@ Authorization: Bearer {{token}}
 
 
 ###
-# @name refreshConnectors
+# @name refreshConnectors (Unity Catalog Server)
 # Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
 Authorization: Bearer {{token}}
@@ -94,7 +94,7 @@ Content-Type: application/json
 
 
 ###
-# @name refreshConnectors
+# @name refreshConnectors (Unity Catalog Inside Connector)
 # Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
 Authorization: Bearer {{token}}
@@ -149,7 +149,7 @@ Authorization: Bearer {{token}}
 
 
 ###
-# @name refreshConnectors
+# @name refreshConnectors (PostgreSQL Server)
 # Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
 Authorization: Bearer {{token}}
@@ -162,7 +162,7 @@ Content-Type: application/json
 
 
 ###
-# @name refreshConnectors
+# @name refreshConnectors (PostgreSQL database)
 # Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
 Authorization: Bearer {{token}}
@@ -170,5 +170,5 @@ Content-Type: application/json
 
 {
   "class" : "NameRequestBody",
-  "name" : "JDBCDatabaseCatalogue"
+  "name" : "JDBCDatabaseCataloguer"
 }
