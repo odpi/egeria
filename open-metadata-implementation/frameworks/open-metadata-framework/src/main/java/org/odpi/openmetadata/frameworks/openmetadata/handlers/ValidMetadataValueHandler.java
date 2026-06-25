@@ -1028,30 +1028,33 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
 
         String validValueGUID = getValidValueGUID(userId, typeName, propertyName, mapName, preferredValue);
 
-        QueryOptions queryOptions = new QueryOptions();
-
-        queryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_METADATA_VALUE.typeName);
-        queryOptions.setStartFrom(startFrom);
-        queryOptions.setPageSize(pageSize);
-
-        RelatedMetadataElementList relatedMetadataElements = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                           validValueGUID,
-                                                                                                           0,
-                                                                                                           OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
-                                                                                                           queryOptions);
-        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+        if (validValueGUID != null)
         {
-            List<ValidMetadataValueDetail> results = new ArrayList<>();
+            QueryOptions queryOptions = new QueryOptions();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_METADATA_VALUE.typeName);
+            queryOptions.setStartFrom(startFrom);
+            queryOptions.setPageSize(pageSize);
+
+            RelatedMetadataElementList relatedMetadataElements = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                               validValueGUID,
+                                                                                                               0,
+                                                                                                               OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
+                                                                                                               queryOptions);
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
-                if (relatedMetadataElement != null)
-                {
-                    results.add(this.convertValidValue(relatedMetadataElement.getElement()));
-                }
-            }
+                List<ValidMetadataValueDetail> results = new ArrayList<>();
 
-            return results;
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        results.add(this.convertValidValue(relatedMetadataElement.getElement()));
+                    }
+                }
+
+                return results;
+            }
         }
 
         return null;

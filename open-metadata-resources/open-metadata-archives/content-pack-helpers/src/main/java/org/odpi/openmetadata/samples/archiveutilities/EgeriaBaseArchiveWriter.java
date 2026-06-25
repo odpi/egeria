@@ -246,7 +246,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                    annotationType.getName(),
                                    annotationType.getSummary(),
                                    OpenMetadataProperty.ANNOTATION_TYPE.name,
-                                   null,
+                                   DataType.STRING.getDisplayName(),
                                    annotationType.getOpenMetadataTypeName(),
                                    null,
                                    annotationType.getName(),

@@ -656,7 +656,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, clinicalTrialDescription);
-        properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.START_DATE.name, new Date());
+        properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_START_DATE.name, new Date());
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
                                                                                      null,

@@ -1441,7 +1441,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return unique identifier of the new metadata element
      *
-     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws InvalidParameterException the type name, status, or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException a problem with the metadata store
      */

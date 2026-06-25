@@ -92,8 +92,17 @@ public enum LiskovAuditCode implements AuditLogMessageSet
     REFRESHING_DATA_HUB_STORE("LISKOV-DATA-HUB-MANAGER-0016",
                               AuditLogRecordSeverityLevel.INFO,
                               "The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data hub {4} ({5})",
-                              "The connector is initiating its refreshing of a data hub .",
+                              "The connector is initiating its refreshing of a data hub.",
                               "No action is required.  This message is for monitoring the activity of the data hub management."),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0017 - The {0} integration connector is retrieving known data dictionary definitions for data hub {1} ({2})
+     */
+    RETRIEVING_DATA_FIELDS("LISKOV-DATA-HUB-MANAGER-0017",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector is retrieving known data dictionary definitions for data hub {1} ({2})",
+                              "The connector is initiating its retrieving the contents of the data dictionary for a data hub.",
+                              "No action is required.  This message is for monitoring the progress of the data hub management refresh."),
     ;
 
     private final String                      logMessageId;
