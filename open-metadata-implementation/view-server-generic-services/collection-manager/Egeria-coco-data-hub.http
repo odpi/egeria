@@ -1,0 +1,95 @@
+# Egeria-coco-data-hub
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+
+
+###
+# =====================================================================================================================
+# Create Collections: https://egeria-project.org/concepts/collection
+
+
+###
+# @name createCollection (own anchor)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "DataHubProperties",
+    "qualifiedName": "CocoPharma::DataHub::coco-data-hub",
+    "identifier" : "coco-data-hub",
+    "displayName" : "coco-data-hub"
+  }
+}
+
+> {% client.global.set("cocoDataHubGUID", response.body.guid); %}
+
+###
+# @name getCollectionByGUID
+# Return the properties of a specific collection. Request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{cocoDataHubGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# =====================================================================================================================
+# Work with servers.
+# https://egeria-project.org/types/00040-Software-Servers/
+
+###
+# @name getServersByName
+# Returns the list of servers with a particular name.  The name is specified in the filter.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "integration-daemon"
+}
+
+> {% client.global.set("integrationDaemonGUID", response.body.elements[0].elementHeader.guid); %}
+
+
+###
+# @name refreshConnectors
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "DataHubManager"
+}

@@ -412,6 +412,9 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                   UserNotAuthorizedException
     {
         final String methodName = "getTreatmentValidationInformationSupplyChain";
+        final String parameterName = "toplevelInformationSupplyChainGUID";
+
+        propertyHelper.validateGUID(toplevelInformationSupplyChainGUID, parameterName, methodName);
 
         RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(toplevelInformationSupplyChainGUID,
                                                                                                                                     1,
@@ -463,6 +466,17 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
+        final String methodName = "createInformationSupplyChain";
+        final String parameterName = "informationSupplyChainTemplateGUID";
+        final String parameterName2 = "clinicalTrialProjectGUID";
+        final String parameterName3 = "clinicalTrialName";
+        final String parameterName4 = "clinicalTrialId";
+
+        propertyHelper.validateGUID(informationSupplyChainTemplateGUID, parameterName, methodName);
+        propertyHelper.validateGUID(clinicalTrialProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName4, methodName);
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(), clinicalTrialId);
@@ -511,6 +525,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
+        final String methodName = "setUpCertificationType";
+        final String parameterName = "certificationTypeTemplateGUID";
+        final String parameterName2 = "clinicalTrialProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+
+        propertyHelper.validateGUID(certificationTypeTemplateGUID, parameterName, methodName);
+        propertyHelper.validateGUID(clinicalTrialProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(), clinicalTrialId);
@@ -561,6 +584,29 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                             String integrationDeveloperGUID,
                                                             String dataScientistGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createClinicalTrialProjects";
+        final String parameterName = "parentProjectGUID";
+        final String parameterName2 = "clinicalTrialId";
+        final String parameterName3 = "clinicalTrialName";
+        final String parameterName4 = "clinicalTrialDescription";
+        final String parameterName5 = "processOwnerGUID";
+        final String parameterName6 = "clinicalTrialManagerGUID";
+        final String parameterName7 = "dataEngineerGUID";
+        final String parameterName8 = "itProjectManagerGUID";
+        final String parameterName9 = "integrationDeveloperGUID";
+        final String parameterName10 = "dataScientistGUID";
+
+        propertyHelper.validateGUID(parentProjectGUID, parameterName, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialDescription, parameterName4, methodName);
+        propertyHelper.validateGUID(processOwnerGUID, parameterName5, methodName);
+        propertyHelper.validateGUID(clinicalTrialManagerGUID, parameterName6, methodName);
+        propertyHelper.validateGUID(dataEngineerGUID, parameterName7, methodName);
+        propertyHelper.validateGUID(itProjectManagerGUID, parameterName8, methodName);
+        propertyHelper.validateGUID(integrationDeveloperGUID, parameterName9, methodName);
+        propertyHelper.validateGUID(dataScientistGUID, parameterName10, methodName);
+
         Map<String, String> projects = new HashMap<>();
 
         String topLevelProjectGUID = this.createTopLevelProject(parentProjectGUID, clinicalTrialId, clinicalTrialName, clinicalTrialDescription, processOwnerGUID);
@@ -649,6 +695,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                          String clinicalTrialDescription,
                                          String clinicalTrialOwnerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createTopLevelProject";
+        final String parameterName = "parentProjectGUID";
+        final String parameterName2 = "clinicalTrialId";
+        final String parameterName3 = "clinicalTrialName";
+        final String parameterName4 = "clinicalTrialDescription";
+        final String parameterName5 = "clinicalTrialOwnerGUID";
+
+        propertyHelper.validateGUID(parentProjectGUID, parameterName, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialDescription, parameterName4, methodName);
+        propertyHelper.validateGUID(clinicalTrialOwnerGUID, parameterName5, methodName);
+
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                         "Project::" + clinicalTrialId + "::" + clinicalTrialName);
@@ -701,6 +760,21 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                          String clinicalTrialManagerGUID,
                                          String dataScientistGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createDataSpecProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "clinicalTrialId";
+        final String parameterName3 = "clinicalTrialName";
+        final String parameterName4 = "clinicalTrialOwnerGUID";
+        final String parameterName5 = "clinicalTrialManagerGUID";
+        final String parameterName6 = "dataScientistGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName3, methodName);
+        propertyHelper.validateGUID(clinicalTrialOwnerGUID, parameterName4, methodName);
+        propertyHelper.validateGUID(clinicalTrialManagerGUID, parameterName5, methodName);
+        propertyHelper.validateGUID(dataScientistGUID, parameterName6, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -797,6 +871,21 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                      String clinicalTrialOwnerGUID,
                                                      String clinicalTrialManagerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createDataSharingAgreementProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "dataSpecProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "clinicalTrialOwnerGUID";
+        final String parameterName6 = "clinicalTrialManagerGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(dataSpecProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(clinicalTrialOwnerGUID, parameterName5, methodName);
+        propertyHelper.validateGUID(clinicalTrialManagerGUID, parameterName6, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -862,6 +951,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                     String clinicalTrialName,
                                     String itProjectManager) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createDevProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "dataSpecProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "itProjectManager";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(dataSpecProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(itProjectManager, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -922,6 +1024,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                           String clinicalTrialName,
                                           String dataEngineerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createTemplatesProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "devProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "dataEngineerGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(devProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(dataEngineerGUID, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -975,6 +1090,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                    String clinicalTrialName,
                                    String integrationDeveloperGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createDQProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "devProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "integrationDeveloperGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(devProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(integrationDeveloperGUID, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -1028,6 +1156,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                    String clinicalTrialName,
                                                    String clinicalTrialManagerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createHospitalManagementProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "dataSharingAgreementProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "clinicalTrialManagerGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(dataSharingAgreementProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(clinicalTrialManagerGUID, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -1087,6 +1228,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                     String clinicalTrialName,
                                                     String dataEngineerGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createOnboardingPipelinesProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "devProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "dataEngineerGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(devProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(dataEngineerGUID, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);
@@ -1146,6 +1300,19 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                          String clinicalTrialName,
                                          String dataScientistGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createAnalysisProject";
+        final String parameterName = "topLevelProjectGUID";
+        final String parameterName2 = "onboardingPipelinesProjectGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "dataScientistGUID";
+
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(onboardingPipelinesProjectGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateGUID(dataScientistGUID, parameterName5, methodName);
+
         Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
         initialClassifications.put(OpenMetadataType.TASK_CLASSIFICATION.typeName, null);

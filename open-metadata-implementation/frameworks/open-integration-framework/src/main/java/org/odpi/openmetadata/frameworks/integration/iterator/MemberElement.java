@@ -175,6 +175,7 @@ public class MemberElement
                                         Date   thirdPartyElementLastUpdateTime)
     {
         final String methodName = "getMemberAction";
+        MemberAction memberAction = null;
 
         if (element != null) /* Element in Egeria.  */
         {
@@ -187,7 +188,7 @@ public class MemberElement
                         if ((targetPermittedSynchronization == PermittedSynchronization.BOTH_DIRECTIONS) ||
                                 (targetPermittedSynchronization == PermittedSynchronization.TO_THIRD_PARTY))
                         {
-                            return MemberAction.CREATE_INSTANCE_IN_THIRD_PARTY;
+                            memberAction = MemberAction.CREATE_INSTANCE_IN_THIRD_PARTY;
                         }
                         else if (targetPermittedSynchronization == PermittedSynchronization.FROM_THIRD_PARTY)
                         {
@@ -200,7 +201,7 @@ public class MemberElement
                                                                                                          catalogTargetName,
                                                                                                          targetPermittedSynchronization.name()));
 
-                            return MemberAction.NO_ACTION;
+                            memberAction = MemberAction.NO_ACTION;
                         }
                     }
                     else if (instanceSyncDirection != null) /* this should be true */
@@ -208,11 +209,11 @@ public class MemberElement
                         if ((instanceSyncDirection == PermittedSynchronization.BOTH_DIRECTIONS) ||
                             (instanceSyncDirection == PermittedSynchronization.FROM_THIRD_PARTY))
                         {
-                            return MemberAction.DELETE_INSTANCE_IN_OPEN_METADATA;
+                            memberAction = MemberAction.DELETE_INSTANCE_IN_OPEN_METADATA;
                         }
                         else if (instanceSyncDirection == PermittedSynchronization.TO_THIRD_PARTY)
                         {
-                            return MemberAction.CREATE_INSTANCE_IN_THIRD_PARTY;
+                            memberAction = MemberAction.CREATE_INSTANCE_IN_THIRD_PARTY;
                         }
                     }
                 }
@@ -222,19 +223,19 @@ public class MemberElement
 
                     if (dateComparison == DateComparison.DATES_EQUAL)
                     {
-                        return MemberAction.NO_ACTION;
+                        memberAction = MemberAction.NO_ACTION;
                     }
 
                     if (dateComparison == DateComparison.EGERIA_COPY_NEWEST)
                     {
                         if (instanceSyncDirection == PermittedSynchronization.FROM_THIRD_PARTY)
                         {
-                            return MemberAction.UPDATE_INSTANCE_IN_OPEN_METADATA;
+                            memberAction = MemberAction.UPDATE_INSTANCE_IN_OPEN_METADATA;
                         }
                         else if ((instanceSyncDirection == PermittedSynchronization.BOTH_DIRECTIONS) ||
                                 (instanceSyncDirection == PermittedSynchronization.TO_THIRD_PARTY))
                         {
-                            return MemberAction.UPDATE_INSTANCE_IN_THIRD_PARTY;
+                            memberAction = MemberAction.UPDATE_INSTANCE_IN_THIRD_PARTY;
                         }
                     }
 
@@ -242,12 +243,12 @@ public class MemberElement
                     {
                         if (instanceSyncDirection == PermittedSynchronization.TO_THIRD_PARTY)
                         {
-                            return MemberAction.UPDATE_INSTANCE_IN_THIRD_PARTY;
+                            memberAction = MemberAction.UPDATE_INSTANCE_IN_THIRD_PARTY;
                         }
                         else if ((instanceSyncDirection == PermittedSynchronization.BOTH_DIRECTIONS) ||
                                 (instanceSyncDirection == PermittedSynchronization.FROM_THIRD_PARTY))
                         {
-                            return MemberAction.UPDATE_INSTANCE_IN_OPEN_METADATA;
+                            memberAction = MemberAction.UPDATE_INSTANCE_IN_OPEN_METADATA;
                         }
                     }
                 }
@@ -256,11 +257,11 @@ public class MemberElement
             {
                 if (targetPermittedSynchronization == PermittedSynchronization.TO_THIRD_PARTY)
                 {
-                    return MemberAction.DELETE_INSTANCE_IN_THIRD_PARTY;
+                    memberAction = MemberAction.DELETE_INSTANCE_IN_THIRD_PARTY;
                 }
                 else if (targetPermittedSynchronization == PermittedSynchronization.FROM_THIRD_PARTY)
                 {
-                    return MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
+                    memberAction = MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
                 }
                 else if (targetPermittedSynchronization == PermittedSynchronization.BOTH_DIRECTIONS)
                 {
@@ -269,27 +270,38 @@ public class MemberElement
                     if ((dateComparison == DateComparison.EGERIA_COPY_NEWEST) ||
                         (dateComparison == DateComparison.DATES_EQUAL))
                     {
-                        return MemberAction.DELETE_INSTANCE_IN_THIRD_PARTY;
+                        memberAction = MemberAction.DELETE_INSTANCE_IN_THIRD_PARTY;
                     }
                     else if (dateComparison == DateComparison.THIRD_PARTY_COPY_NEWEST)
                     {
-                        return MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
+                        memberAction = MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
                     }
                 }
             }
         }
         else /* No element in Egeria. */
         {
-            return MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
+            memberAction = MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
         }
 
-        /*
-         *  This is a logic error.
-         */
-        auditLog.logMessage(methodName,
-                            OIFAuditCode.UNKNOWN_ACTION.getMessageDefinition(connectorName, this.toString()));
+        if (memberAction != null)
+        {
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.MEMBER_ACTION.getMessageDefinition(connectorName,
+                                                                                memberAction.name(),
+                                                                                this.toString()));
+            return memberAction;
+        }
+        else
+        {
+            /*
+             *  This is a logic error.
+             */
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.UNKNOWN_ACTION.getMessageDefinition(connectorName, this.toString()));
 
-        return MemberAction.UNKNOWN_ACTION;
+            return MemberAction.UNKNOWN_ACTION;
+        }
     }
 
 

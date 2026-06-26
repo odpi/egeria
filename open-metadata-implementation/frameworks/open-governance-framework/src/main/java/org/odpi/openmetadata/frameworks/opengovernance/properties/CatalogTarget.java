@@ -127,7 +127,7 @@ public class CatalogTarget extends CatalogTargetProperties
 
 
     /**
-     * Return details of the catalog target element.  This is extracted from the entity proxy so the classification list may not be complete.
+     * Return details of the catalog target element.
      *
      * @return element stub
      */
@@ -138,7 +138,7 @@ public class CatalogTarget extends CatalogTargetProperties
 
 
     /**
-     * Set up details of the catalog target element.  This is extracted from the entity proxy so the classification list may not be complete.
+     * Set up details of the catalog target element.
      *
      * @param catalogTargetElement element stub
      */

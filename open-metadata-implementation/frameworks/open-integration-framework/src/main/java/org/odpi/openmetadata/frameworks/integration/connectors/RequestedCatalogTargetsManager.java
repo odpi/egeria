@@ -120,15 +120,15 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
             while (catalogTargetList != null)
             {
-                for (OpenMetadataRootElement catalogTarget : catalogTargetList)
+                for (OpenMetadataRootElement catalogTargetRootElement : catalogTargetList)
                 {
-                    if ((catalogTarget != null) && (catalogTarget.getRelatedBy() != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
+                    if ((catalogTargetRootElement != null) && (catalogTargetRootElement.getRelatedBy() != null) && (catalogTargetRootElement.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
                     {
-                        RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID());
+                        RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTargetRootElement.getRelatedBy().getRelationshipHeader().getGUID());
 
                         if (knownCatalogTarget == null)
                         {
-                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
+                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTargetRootElement);
                             /*
                              * This is a new catalog target.
                              */
@@ -138,16 +138,20 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
                             this.newCatalogTarget(knownCatalogTarget);
                         }
-                        else if (! knownCatalogTarget.getRelationshipVersions().equals(catalogTarget.getRelatedBy().getRelationshipHeader().getVersions()))
+                        else if (! knownCatalogTarget.getRelationshipVersions().equals(catalogTargetRootElement.getRelatedBy().getRelationshipHeader().getVersions()))
                         {
                             RequestedCatalogTarget oldCatalogTarget = knownCatalogTarget;
-                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
+                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTargetRootElement);
 
                             knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetFactory,
                                                                                 newCatalogTarget,
                                                                                 integrationContext);
 
                             this.updatedCatalogTarget(oldCatalogTarget, knownCatalogTarget);
+                        }
+                        else
+                        {
+                            knownCatalogTarget.setCatalogTargetElement(catalogTargetRootElement);
                         }
                     }
                 }

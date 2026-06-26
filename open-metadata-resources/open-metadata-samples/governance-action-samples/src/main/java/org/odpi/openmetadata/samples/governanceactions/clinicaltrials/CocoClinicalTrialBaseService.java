@@ -51,6 +51,9 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "getInformationSupplyChainQualifiedName";
+        final String parameterName = "informationSupplyChainGUID";
+
+        propertyHelper.validateGUID(informationSupplyChainGUID, parameterName, methodName);
         
         OpenMetadataElement informationSupplyChain = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(informationSupplyChainGUID);
         
@@ -79,6 +82,9 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                             UserNotAuthorizedException
     {
         final String methodName = "getEmailForPersonGUID";
+        final String parameterName = "personGUID";
+
+        propertyHelper.validateGUID(personGUID, parameterName, methodName);
 
         PersonContactDetails personContactDetails = new PersonContactDetails();
 
@@ -137,6 +143,11 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                           UserNotAuthorizedException
     {
         final String methodName = "checkCertificationValidForProject";
+        final String parameterName = "certificationTypeGUID";
+        final String parameterName2 = "projectGUID";
+
+        propertyHelper.validateGUID(certificationTypeGUID, parameterName, methodName);
+        propertyHelper.validateGUID(projectGUID, parameterName2, methodName);
 
         int projectStartFrom = 0;
         RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
@@ -193,6 +204,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
+        final String methodName = "addActionTargetToProcess";
+        final String parameterName = "actionTargetGUID";
+        final String parameterName2 = "processGUID";
+
+        propertyHelper.validateGUID(actionTargetGUID, parameterName, methodName);
+        propertyHelper.validateGUID(processGUID, parameterName2, methodName);
+
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                               processGUID,
                                                                               actionTargetGUID,
@@ -225,6 +243,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
+        final String methodName = "addSolutionComponentImplementedByRelationship";
+        final String parameterName = "implementationGUID";
+        final String parameterName2 = "solutionComponentGUID";
+
+        propertyHelper.validateGUID(implementationGUID, parameterName, methodName);
+        propertyHelper.validateGUID(solutionComponentGUID, parameterName2, methodName);
+
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DESIGN_STEP.name,
                                                                         this.getClass().getName());
@@ -266,6 +291,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
+        final String methodName = "addSolutionComponentImplementationResource";
+        final String parameterName = "implementationGUID";
+        final String parameterName2 = "solutionComponentGUID";
+
+        propertyHelper.validateGUID(implementationGUID, parameterName, methodName);
+        propertyHelper.validateGUID(solutionComponentGUID, parameterName2, methodName);
+
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.ROLE.name,
                                                                         role);
@@ -300,6 +332,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
+        final String methodName = "addResourceListRelationship";
+        final String parameterName = "consumerGUID";
+        final String parameterName2 = "resourceGUID";
+
+        propertyHelper.validateGUID(consumerGUID, parameterName, methodName);
+        propertyHelper.validateGUID(resourceGUID, parameterName2, methodName);
+
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                               consumerGUID,
                                                                               resourceGUID,
@@ -343,6 +382,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
+        final String methodName = "addGovernedByRelationship";
+        final String parameterName = "sandboxSchemaGUID";
+        final String parameterName2 = "dataQualityCertificationTypeGUID";
+
+        propertyHelper.validateGUID(sandboxSchemaGUID, parameterName, methodName);
+        propertyHelper.validateGUID(dataQualityCertificationTypeGUID, parameterName2, methodName);
+
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                               sandboxSchemaGUID,
                                                                               dataQualityCertificationTypeGUID,
@@ -365,6 +411,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
     protected String createPopulateSandboxDAG(String airflowDAGName,
                                               String topLevelProjectGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createPopulateSandboxDAG";
+        final String parameterName = "airflowDAGName";
+        final String parameterName2 = "topLevelProjectGUID";
+
+        propertyHelper.validateMandatoryName(airflowDAGName, parameterName, methodName);
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName2, methodName);
+
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                         "Apache Airflow DAG:" + airflowDAGName);
@@ -400,6 +453,10 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      */
     protected String createSandboxSchema(String topLevelProjectGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "createSandboxSchema";
+        final String parameterName = "topLevelProjectGUID";
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName, methodName);
+
         return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                                                           null,
                                                                                           true,

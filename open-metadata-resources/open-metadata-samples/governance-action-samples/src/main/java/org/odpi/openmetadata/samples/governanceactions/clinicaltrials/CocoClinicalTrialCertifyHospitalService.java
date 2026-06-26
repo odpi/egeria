@@ -192,6 +192,20 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                                                                                     UserNotAuthorizedException, ConnectorCheckedException
     {
         final String methodName = "updateCertificationToHospital";
+        final String parameterName = "projectGUID";
+        final String parameterName1 = "certificationTypeGUID";
+        final String parameterName2 = "hospitalGUID";
+        final String parameterName3 = "hospitalName";
+        final String parameterName4 = "custodianGUID";
+        final String parameterName5 = "clinicalTrialName";
+
+
+        propertyHelper.validateGUID(projectGUID, parameterName, methodName);
+        propertyHelper.validateGUID(hospitalGUID, parameterName2, methodName);
+        propertyHelper.validateGUID(certificationTypeGUID, parameterName1, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName3, methodName);
+        propertyHelper.validateGUID(custodianGUID, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName5, methodName);
 
         int startFrom = 0;
         OpenMetadataRelationshipList existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
