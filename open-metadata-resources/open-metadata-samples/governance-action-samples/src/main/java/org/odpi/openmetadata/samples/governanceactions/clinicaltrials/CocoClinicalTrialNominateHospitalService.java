@@ -210,6 +210,25 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
+        final String methodName = "addNewCertificationToHospital";
+        final String parameterName = "hospitalGUID";
+        final String parameterName2 = "certificationTypeGUID";
+        final String parameterName3 = "hospitalContactGUID";
+        final String parameterName4 = "hospitalContactTypeName";
+        final String parameterName5 = "custodianGUID";
+        final String parameterName6 = "custodianTypeName";
+        final String parameterName7 = "processOwnerGUID";
+        final String parameterName8 = "processOwnerTypeName";
+
+        propertyHelper.validateGUID(hospitalGUID, parameterName, methodName);
+        propertyHelper.validateGUID(certificationTypeGUID, parameterName2, methodName);
+        propertyHelper.validateGUID(hospitalContactGUID, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(hospitalContactTypeName, parameterName4, methodName);
+        propertyHelper.validateGUID(custodianGUID, parameterName5, methodName);
+        propertyHelper.validateMandatoryName(custodianTypeName, parameterName6, methodName);
+        propertyHelper.validateGUID(processOwnerGUID, parameterName7, methodName);
+        propertyHelper.validateMandatoryName(processOwnerTypeName, parameterName8, methodName);
+
         int startFrom = 0;
         OpenMetadataRelationshipList existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
                                                                                                                                        certificationTypeGUID,

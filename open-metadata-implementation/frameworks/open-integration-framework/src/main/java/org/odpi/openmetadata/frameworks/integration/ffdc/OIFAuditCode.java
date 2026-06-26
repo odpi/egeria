@@ -193,6 +193,15 @@ public enum OIFAuditCode implements AuditLogMessageSet
                          "The connector throws an exception to indicate that it should not continue since something has gone very wrong with the connector or Open Metadata Framework since the connector is expecting an element of a certain type, with bean properties that match that type, but the OMF has returned something different.",
                          "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem."),
 
+    /**
+     * OIF-CONNECTOR-0019 - The {0} connector is recommending the {1} action to take for element {2}
+     */
+    MEMBER_ACTION ("OIF-CONNECTOR-0019",
+                    AuditLogRecordSeverityLevel.ACTION,
+                    "The {0} connector is recommending the {1} action to take for element {2}",
+                    "The connector stops processing.",
+                    "Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened."),
+
     ;
 
     private final String                      logMessageId;

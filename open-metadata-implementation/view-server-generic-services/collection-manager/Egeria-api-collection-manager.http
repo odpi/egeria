@@ -1,4 +1,4 @@
-# Egeria-collection-manager-api
+# Egeria-api-collection-manager
 
 @baseURL=https://localhost:7443
 @viewServer=view-server

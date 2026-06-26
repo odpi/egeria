@@ -491,6 +491,27 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
+        final String methodName = "createDataLake";
+        final String parameterName = "externalSourceGUID";
+        final String parameterName2 = "topLevelProjectGUID";
+        final String parameterName3 = "catalogGUID";
+        final String parameterName4 = "catalogName";
+        final String parameterName5 = "schemaName";
+        final String parameterName6 = "description";
+        final String parameterName7 = "templateGUID";
+        final String parameterName8 = "serverNetworkAddress";
+        final String parameterName9 = "externalSourceName";
+
+        propertyHelper.validateGUID(externalSourceGUID, parameterName, methodName);
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName2, methodName);
+        propertyHelper.validateGUID(catalogGUID, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(catalogName, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(schemaName, parameterName5, methodName);
+        propertyHelper.validateMandatoryName(description, parameterName6, methodName);
+        propertyHelper.validateGUID(templateGUID, parameterName7, methodName);
+        propertyHelper.validateMandatoryName(serverNetworkAddress, parameterName8, methodName);
+        propertyHelper.validateMandatoryName(externalSourceName, parameterName9, methodName);
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), serverNetworkAddress);
@@ -559,6 +580,29 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
+        final String methodName = "createVolume";
+        final String parameterName = "externalSourceGUID";
+        final String parameterName2 = "externalSourceName";
+        final String parameterName3 = "templateGUID";
+        final String parameterName4 = "serverNetworkAddress";
+        final String parameterName5 = "catalogName";
+        final String parameterName6 = "schemaGUID";
+        final String parameterName7 = "schemaName";
+        final String parameterName8 = "volumeName";
+        final String parameterName9 = "description";
+        final String parameterName10 = "dataLakePathName";
+
+        propertyHelper.validateGUID(externalSourceGUID, parameterName, methodName);
+        propertyHelper.validateMandatoryName(externalSourceName, parameterName2, methodName);
+        propertyHelper.validateGUID(templateGUID, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(serverNetworkAddress, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(catalogName, parameterName5, methodName);
+        propertyHelper.validateGUID(schemaGUID, parameterName6, methodName);
+        propertyHelper.validateMandatoryName(schemaName, parameterName7, methodName);
+        propertyHelper.validateMandatoryName(volumeName, parameterName8, methodName);
+        propertyHelper.validateMandatoryName(description, parameterName9, methodName);
+        propertyHelper.validateMandatoryName(dataLakePathName, parameterName10, methodName);
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), serverNetworkAddress);
@@ -618,6 +662,15 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
+        final String methodName = "createValidatedFilesDataSet";
+        final String parameterName = "validatedFilesDataSetName";
+        final String parameterName2 = "validatedWeeklyFilesTemplateGUID";
+        final String parameterName3 = "topLevelProjectGUID";
+
+        propertyHelper.validateMandatoryName(validatedFilesDataSetName, parameterName, methodName);
+        propertyHelper.validateGUID(validatedWeeklyFilesTemplateGUID, parameterName2, methodName);
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName3, methodName);
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(PlaceholderProperty.DISPLAY_NAME.getName(), validatedFilesDataSetName);
@@ -647,11 +700,18 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
      * Create the landing area folder.
      *
      * @param pathName landing area folder name
+     * @param volumeGUID unique identifier of the volume
+     * @throws InvalidParameterException the parameters are invalid
      */
     private void provisionVolume(String pathName,
-                                 String volumeGUID)
+                                 String volumeGUID) throws InvalidParameterException
     {
         final String methodName = "provisionVolume";
+        final String parameterName = "pathName";
+        final String parameterName2 = "volumeGUID";
+
+        propertyHelper.validateMandatoryName(pathName, parameterName, methodName);
+        propertyHelper.validateGUID(volumeGUID, parameterName2, methodName);
 
         File volumeDirectory = new File(pathName);
 
@@ -688,6 +748,15 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        final String methodName = "monitorVolumeAsset";
+        final String parameterName = "integrationConnectorGUID";
+        final String parameterName2 = "volumeAssetGUID";
+        final String parameterName3 = "dataLakeCatalogQualifiedName";
+
+        propertyHelper.validateGUID(integrationConnectorGUID, parameterName, methodName);
+        propertyHelper.validateGUID(volumeAssetGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(dataLakeCatalogQualifiedName, parameterName3, methodName);
+
         if (integrationConnectorGUID != null)
         {
             CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
@@ -726,6 +795,17 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                       UserNotAuthorizedException
     {
         final String methodName = "passOnDestinationFolder";
+        final String parameterName = "destinationDirectory";
+        final String parameterName2 = "landingAreaDirectoryTemplateGUID";
+        final String parameterName3 = "landingAreaFileTemplateGUID";
+        final String parameterName4 = "dataLakeFileTemplateGUID";
+        final String parameterName5 = "hospitalOnboardingProcessGUID";
+
+        propertyHelper.validateMandatoryName(destinationDirectory, parameterName, methodName);
+        propertyHelper.validateGUID(landingAreaDirectoryTemplateGUID, parameterName2, methodName);
+        propertyHelper.validateGUID(landingAreaFileTemplateGUID, parameterName3, methodName);
+        propertyHelper.validateGUID(dataLakeFileTemplateGUID, parameterName4, methodName);
+        propertyHelper.validateGUID(hospitalOnboardingProcessGUID, parameterName5, methodName);
 
         RelatedMetadataElement processFlowRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(hospitalOnboardingProcessGUID,
                                                                                                                             1,
@@ -756,7 +836,4 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                                                       requestParameters));
         }
     }
-
-
-
 }

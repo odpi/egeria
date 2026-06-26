@@ -410,6 +410,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
+        final String methodName = "addContextEventToDataLakeFolder";
+        final String parameterName = "dataLakePathName";
+        final String parameterName2 = "clinicalTrialGUID";
+        final String parameterName3 = "clinicalTrialId";
+        final String parameterName4 = "clinicalTrialName";
+        final String parameterName5 = "hospitalName";
+        propertyHelper.validateMandatoryName(dataLakePathName, parameterName, methodName);
+        propertyHelper.validateGUID(clinicalTrialGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName5, methodName);
+
         String dataLakeFolderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(dataLakePathName, OpenMetadataProperty.PATH_NAME.name);
 
         if (dataLakeFolderGUID != null)
@@ -472,6 +484,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                        UserNotAuthorizedException
     {
         final String methodName = "checkHospitalCertification";
+        final String parameterName1 = "projectGUID";
+        final String parameterName2 = "clinicalTrialName";
+        final String parameterName3 = "hospitalGUID";
+        final String parameterName4 = "hospitalName";
+        final String parameterName5 = "certificationTypeGUID";
+        final String parameterName6 = "stewardGUID";
+
+        propertyHelper.validateGUID(projectGUID, parameterName1, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName2, methodName);
+        propertyHelper.validateGUID(hospitalGUID, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName4, methodName);
+        propertyHelper.validateGUID(certificationTypeGUID, parameterName5, methodName);
 
         PersonContactDetails custodianContactDetails = null;
 
@@ -660,6 +684,21 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
+        final String methodName = "catalogLandingAreaFolder";
+        final String parameterName1 = "hospitalName";
+        final String parameterName2 = "landingAreaPathName";
+        final String parameterName3 = "landingAreaDirectoryTemplateGUID";
+        final String parameterName4 = "topLevelProjectGUID";
+        final String parameterName5 = "topLevelProjectName";
+        final String parameterName6 = "topLevelProjectFolderName";
+
+        propertyHelper.validateMandatoryName(hospitalName, parameterName1, methodName);
+        propertyHelper.validateMandatoryName(landingAreaPathName, parameterName2, methodName);
+        propertyHelper.validateGUID(landingAreaDirectoryTemplateGUID, parameterName3, methodName);
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(topLevelProjectName, parameterName5, methodName);
+        propertyHelper.validateMandatoryName(topLevelProjectFolderName, parameterName6, methodName);
+
         Map<String, String> placeholderPropertyValues = new HashMap<>();
 
         placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), landingAreaPathName);
@@ -714,6 +753,21 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                    UserNotAuthorizedException
     {
         final String methodName = "createTemplate";
+        final String parameterName1 = "rawTemplateGUID";
+        final String parameterName2 = "templateType";
+        final String parameterName3 = "hospitalName";
+        final String parameterName4 = "clinicalTrialId";
+        final String parameterName5 = "clinicalTrialName";
+        final String parameterName6 = "hospitalContactDetails";
+        final String parameterName7 = "topLevelProjectGUID";
+
+        propertyHelper.validateGUID(rawTemplateGUID, parameterName1, methodName);
+        propertyHelper.validateMandatoryName(templateType, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName5, methodName);
+        propertyHelper.validateObject(hospitalContactDetails, parameterName6, methodName);
+        propertyHelper.validateGUID(topLevelProjectGUID, parameterName7, methodName);
 
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -786,6 +840,29 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                        UserNotAuthorizedException
     {
         final String methodName = "createNewFileProcess";
+        final String parameterName1 = "onboardingProcessGUID";
+        final String parameterName2 = "clinicalTrialId";
+        final String parameterName3 = "clinicalTrialName";
+        final String parameterName4 = "clinicalTrialGUID";
+        final String parameterName5 = "hospitalName";
+        final String parameterName6 = "stewardGUID";
+        final String parameterName7 = "dataLakeTemplateName";
+        final String parameterName8 = "dataQualityCertificationType";
+        final String parameterName9 = "integrationConnectorGUID";
+        final String parameterName10 = "informationSupplyChainQualifiedName";
+        final String parameterName11 = "validatedWeeklyFilesDataSetGUID";
+
+        propertyHelper.validateGUID(onboardingProcessGUID, parameterName1, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName3, methodName);
+        propertyHelper.validateGUID(clinicalTrialGUID, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName5, methodName);
+        propertyHelper.validateGUID(stewardGUID, parameterName6, methodName);
+        propertyHelper.validateMandatoryName(dataLakeTemplateName, parameterName7, methodName);
+        propertyHelper.validateMandatoryName(dataQualityCertificationType, parameterName8, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, parameterName9, methodName);
+        propertyHelper.validateMandatoryName(informationSupplyChainQualifiedName, parameterName10, methodName);
+        propertyHelper.validateGUID(validatedWeeklyFilesDataSetGUID, parameterName11, methodName);
 
         String processQualifiedName = "Coco::GovernanceActionProcess::" + clinicalTrialId + "::" + hospitalName + "::WeeklyMeasurements::Onboarding";
 
@@ -951,6 +1028,23 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
+        final String methodName = "startMonitoringLandingArea";
+        final String parameterName1 = "folderGUID";
+        final String parameterName2 = "integrationConnectorGUID";
+        final String parameterName3 = "templateName";
+        final String parameterName4 = "hospitalName";
+        final String parameterName5 = "clinicalTrialId";
+        final String parameterName6 = "clinicalTrialName";
+        final String parameterName7 = "newFileProcessName";
+
+        propertyHelper.validateGUID(folderGUID, parameterName1, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, parameterName2, methodName);
+        propertyHelper.validateMandatoryName(templateName, parameterName3, methodName);
+        propertyHelper.validateMandatoryName(hospitalName, parameterName4, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameterName5, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialName, parameterName6, methodName);
+        propertyHelper.validateMandatoryName(newFileProcessName, parameterName7, methodName);
+
         CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
         catalogTargetProperties.setCatalogTargetName(clinicalTrialId + "::" + clinicalTrialName + "::" + hospitalName);
@@ -986,10 +1080,15 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * Create the landing area folder.
      *
      * @param pathName landing area folder name
+     *
+     * @throws InvalidParameterException the path name is null or empty
      */
-    private void provisionLandingFolder(String pathName)
+    private void provisionLandingFolder(String pathName) throws InvalidParameterException
     {
         final String methodName = "provisionLandingFolder";
+        final String parameterName1 = "pathName";
+
+        propertyHelper.validateMandatoryName(pathName, parameterName1, methodName);
 
         File landingFolder = new File(pathName);
 
