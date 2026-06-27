@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorDefinition;
+
 /**
  * The PersonDefinition is used to feed the definition of the Actors that work for/with Coco Pharmaceuticals.  It is used to bootstrap
  * multiple Coco Pharmaceuticals demos.
  */
-public enum PersonDefinition
+public enum PersonDefinition implements ActorDefinition
 {
     /**
      * Dr Zachary P Now
@@ -677,6 +679,12 @@ public enum PersonDefinition
     }
 
 
+    /**
+     * Return the unique identifier of the element.
+     *
+     * @return string
+     */
+    @Override
     public String getQualifiedName()
     {
         if (employeeNumber != null)
@@ -693,10 +701,39 @@ public enum PersonDefinition
         }
     }
 
+    /**
+     * Return the identifier of the element.
+     *
+     * @return string
+     */
+    @Override
+    public String getIdentifier()
+    {
+        return null;
+    }
 
+
+    /**
+     * Return the display name of this element.
+     *
+     * @return string
+     */
+    @Override
     public String getDisplayName()
     {
         return displayName;
+    }
+
+
+    /**
+     * Return the details description of this element.
+     *
+     * @return string
+     */
+    @Override
+    public String getDescription()
+    {
+        return null;
     }
 
 

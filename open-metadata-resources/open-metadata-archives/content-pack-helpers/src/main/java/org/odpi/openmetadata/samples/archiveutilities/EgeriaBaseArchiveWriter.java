@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ProjectDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -375,6 +379,131 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                              ordinal,
                                              isDefaultValue,
                                              additionalProperties);
+        }
+    }
+
+
+
+    /**
+     * Creates Project Hierarchy and dependencies.
+     *
+     * @param projectDefinitions - list of project definitions to create.
+     */
+    protected void writeProjects(ProjectDefinition[] projectDefinitions)
+    {
+        for (ProjectDefinition projectDefinition : projectDefinitions)
+        {
+            archiveHelper.addProject(null,
+                                     projectDefinition.getQualifiedName(),
+                                     projectDefinition.getIdentifier(),
+                                     projectDefinition.getDisplayName(),
+                                     projectDefinition.getMission(),
+                                     projectDefinition.getDescription(),
+                                     projectDefinition.getURL(),
+                                     new Date(),
+                                     null,
+                                     null,
+                                     null,
+                                     projectDefinition.getProjectStatus().getName(),
+                                     projectDefinition.isCampaign(),
+                                     projectDefinition.isTask(),
+                                     projectDefinition.getProjectTypeClassification(),
+                                     null,
+                                     null,
+                                     null);
+
+            String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
+
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.PROJECT_MANAGER.getName()),
+                                       projectManagerQName,
+                                       projectDefinition.getIdentifier() + ":ProjectManager",
+                                       projectDefinition.getDisplayName() + " project manager",
+                                       "Person responsible for ensuring the project stays on track, meeting its goals with the time and resources budget and reporting status and issues to the sponsor.",
+                                       ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
+                                       true,
+                                       1,
+                                       null,
+                                       null);
+
+            String projectTeamQName = projectDefinition.getQualifiedName() + ":ProjectTeam";
+
+            if ((projectDefinition.getMembers() != null) || (! projectDefinition.isTask()))
+            {
+                archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                           List.of(ActorRoleGroup.TEAM_MEMBER.getName()),
+                                           projectTeamQName,
+                                           projectDefinition.getIdentifier() + ":ProjectTeam",
+                                           projectDefinition.getDisplayName() + " project team",
+                                           "Project team members that perform the assign tasks to meet the projects goals, paying attention to their use of time and resources as directed by the project leader.",
+                                           ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
+                                           false,
+                                           0,
+                                           null,
+                                           null);
+            }
+
+            String projectSponsorQName = projectDefinition.getQualifiedName() + ":ProjectSponsor";
+
+            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
+                                       List.of(ActorRoleGroup.EXECUTIVE_SPONSOR.getName()),
+                                       projectSponsorQName,
+                                       projectDefinition.getIdentifier() + ":ProjectSponsor",
+                                       projectDefinition.getDisplayName() + " project sponsor",
+                                       "Person responsible for funding the project and overseeing the project's progress and use of resources.  May act a mentor to the project leader.",
+                                       ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
+                                       true,
+                                       1,
+                                       null,
+                                       null);
+
+            archiveHelper.addProjectManagementRelationship(projectDefinition.getQualifiedName(),
+                                                           projectManagerQName);
+
+            if (projectDefinition.getControllingProject() != null)
+            {
+                archiveHelper.addProjectHierarchyRelationship(projectDefinition.getControllingProject().getQualifiedName(),
+                                                              projectDefinition.getQualifiedName());
+            }
+
+            if (projectDefinition.getDependentOn() != null)
+            {
+                for (ProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
+                {
+                    archiveHelper.addProjectDependencyRelationship(dependentOnProject.getQualifiedName(),
+                                                                   projectDefinition.getQualifiedName(),
+                                                                   null);
+                }
+            }
+
+            if (projectDefinition.getLeader() != null)
+            {
+                archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getLeader().getQualifiedName(),
+                                                                   projectManagerQName,
+                                                                   false,
+                                                                   0);
+
+            }
+
+            if (projectDefinition.getMembers() != null)
+            {
+                for (ActorDefinition member : projectDefinition.getMembers())
+                {
+                    archiveHelper.addPersonRoleAppointmentRelationship(member.getQualifiedName(),
+                                                                       projectTeamQName,
+                                                                       false,
+                                                                       0);
+                }
+            }
+
+            if (projectDefinition.getSponsor() != null)
+            {
+                archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getSponsor().getQualifiedName(),
+                                                                   projectSponsorQName,
+                                                                   false,
+                                                                   0);
+
+            }
         }
     }
 

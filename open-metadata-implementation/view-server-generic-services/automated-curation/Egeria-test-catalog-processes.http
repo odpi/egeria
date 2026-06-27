@@ -58,7 +58,7 @@ Content-Type: application/json
     "hostURL" : "http://localhost",
     "portNumber" : "8087",
     "serverName" : "Coco Unity Catalog",
-    "versionIdentifier" : "v0.3.0-SNAPSHOT",
+    "versionIdentifier" : "v0.4.0",
     "description" : "Coco's instance of the Unity Catalog (UC) Server.",
     "serverUserId" : "uc1"
   }
@@ -124,9 +124,9 @@ Content-Type: application/json
   "requestParameters" : {
     "serverName" : "LocalPostgreSQL1",
     "hostIdentifier" : "localhost",
-    "portNumber" : "5432",
+    "portNumber" : "5442",
     "secretsStorePathName" : "secrets/integration.omsecrets",
-    "secretsCollectionName" : "PostgreSQL Server:LocalPostgreSQL1",
+    "secretsCollectionName" : "PostgreSQL Server Secret",
     "versionIdentifier" : "1.0",
     "description" : "PostgreSQL database in egeria-workspaces."
   }

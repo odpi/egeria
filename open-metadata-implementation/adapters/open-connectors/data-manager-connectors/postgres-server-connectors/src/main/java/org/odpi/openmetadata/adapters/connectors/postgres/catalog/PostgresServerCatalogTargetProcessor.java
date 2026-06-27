@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -371,7 +372,8 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
             placeholderProperties = new HashMap<>();
         }
 
-        placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
+        placeholderProperties.put(PostgresPlaceholderProperty.DATABASE_NAME.getName(), databaseName);
+        placeholderProperties.put(PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getName(), null);
 
         OpenMetadataElement templateElement = openMetadataStore.getMetadataElementByGUID(databaseTemplateGUID);
 

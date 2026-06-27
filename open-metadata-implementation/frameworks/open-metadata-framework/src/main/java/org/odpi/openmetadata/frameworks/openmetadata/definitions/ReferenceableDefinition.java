@@ -72,6 +72,14 @@ public interface ReferenceableDefinition
 
 
     /**
+     * Return the URL for the element.
+     *
+     * @return string
+     */
+    default String getURL() { return null; };
+
+
+    /**
      * Return the details description of this element.
      *
      * @return string

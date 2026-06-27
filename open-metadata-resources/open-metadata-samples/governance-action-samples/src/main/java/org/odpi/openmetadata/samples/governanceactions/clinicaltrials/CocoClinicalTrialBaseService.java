@@ -204,7 +204,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        final String methodName = "addActionTargetToProcess";
+        String methodName = "addActionTargetToProcess(" + processGUID + ", " + actionTargetName + ", " + actionTargetGUID + ")";
         final String parameterName = "actionTargetGUID";
         final String parameterName2 = "processGUID";
 

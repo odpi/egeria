@@ -151,6 +151,13 @@ public enum ActorRoleGroup
                 "Person assigned to a team.",
                 "18cbe878-e528-4d5f-b635-a61763e823c1"),
 
+    /**
+     * Sponsor for an initiative (project, community, ...).
+     */
+    EXECUTIVE_SPONSOR("executive-sponsor",
+                "Sponsor for an initiative (project, community, ...).",
+                "6b6d7732-ebb2-4062-bca2-9e3e8dc3210b"),
+
     ;
 
     /**
