@@ -4,9 +4,12 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ProjectDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -66,7 +69,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         writeDataProcessingPurposes();
         writeSubjectAreaDefinitions();
         writeCommunities();
-        writeProjects();
+        writeProjects(CocoProjectDefinition.values());
         writeRoles();
     }
 
@@ -407,87 +410,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                                        false,
                                                                        0);
                 }
-            }
-        }
-    }
-
-
-
-    /**
-     * Creates Project Hierarchy and dependencies.
-     */
-    private void writeProjects()
-    {
-        for (CocoProjectDefinition projectDefinition : CocoProjectDefinition.values())
-        {
-            archiveHelper.addProject(null,
-                                     projectDefinition.getQualifiedName(),
-                                     projectDefinition.getIdentifier(),
-                                     projectDefinition.getDisplayName(),
-                                     projectDefinition.getDescription(),
-                                     new Date(),
-                                     null,
-                                     null,
-                                     null,
-                                     projectDefinition.getProjectStatus().getName(),
-                                     projectDefinition.isCampaign(),
-                                     projectDefinition.isTask(),
-                                     projectDefinition.getProjectTypeClassification(),
-                                     null,
-                                     null,
-                                     null);
-
-            String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
-
-            archiveHelper.addActorRole(OpenMetadataType.PERSON_ROLE.typeName,
-                                       List.of(ActorRoleGroup.PROJECT_MANAGER.getName()),
-                                       projectManagerQName,
-                                       projectDefinition.getIdentifier() + ":ProjectManager",
-                                       projectDefinition.getDisplayName() + " project manager",
-                                       null,
-                                       null,
-                                       true,
-                                       1,
-                                       null,
-                                       null);
-
-            archiveHelper.addProjectManagementRelationship(projectDefinition.getQualifiedName(),
-                                                           projectManagerQName);
-
-            if (projectDefinition.getControllingProject() != null)
-            {
-                archiveHelper.addProjectHierarchyRelationship(projectDefinition.getControllingProject().getQualifiedName(),
-                                                              projectDefinition.getQualifiedName());
-            }
-
-            if (projectDefinition.getDependentOn() != null)
-            {
-                for (CocoProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
-                {
-                    archiveHelper.addProjectDependencyRelationship(dependentOnProject.getQualifiedName(),
-                                                                   projectDefinition.getQualifiedName(),
-                                                                   null);
-                }
-            }
-
-            if (projectDefinition.getLeader() != null)
-            {
-                archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getLeader().getQualifiedName(),
-                                                                   projectManagerQName,
-                                                                   false,
-                                                                   0);
-
-            }
-
-            if (projectDefinition.getMembers() != null)
-            {
-                for (PersonDefinition member : projectDefinition.getMembers())
-                {
-                    archiveHelper.addProjectTeamRelationship(projectDefinition.getQualifiedName(),
-                                                             member.getQualifiedName(),
-                                                             AssignmentType.CONTRIBUTOR.getDisplayName());
-                }
-
             }
         }
     }

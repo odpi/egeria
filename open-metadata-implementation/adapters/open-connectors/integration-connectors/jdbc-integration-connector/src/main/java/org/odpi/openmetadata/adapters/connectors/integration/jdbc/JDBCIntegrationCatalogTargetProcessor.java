@@ -10,16 +10,11 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
-import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
-import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.sql.Connection;
@@ -108,10 +103,10 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
      * @param databaseName qualified name of the database
      * @param configurationProperties configuration properties for the database
      */
-    public void refreshDatabase(JDBCResourceConnector jdbcResourceConnector,
-                                String                databaseName,
-                                OpenMetadataRootElement          databaseElement,
-                                Map<String, Object>   configurationProperties) throws ConnectorCheckedException
+    public void refreshDatabase(JDBCResourceConnector   jdbcResourceConnector,
+                                String                  databaseName,
+                                OpenMetadataRootElement databaseElement,
+                                Map<String, Object>     configurationProperties) throws ConnectorCheckedException
     {
         final String methodName = "JDBCIntegrationConnector.refresh";
 

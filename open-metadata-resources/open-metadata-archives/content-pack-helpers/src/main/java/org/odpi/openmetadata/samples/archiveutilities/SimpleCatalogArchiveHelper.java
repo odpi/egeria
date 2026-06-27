@@ -2110,7 +2110,9 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName qualified name of project
      * @param identifier unique identifier of project - typically allocated externally
      * @param name display name
+     * @param mission mission of the project
      * @param description description
+     * @param url url of the project scenario
      * @param startDate date the project started
      * @param plannedEndDate date the project is expected to end
      * @param projectPhase lifecycle phase of the project
@@ -2128,7 +2130,9 @@ public class SimpleCatalogArchiveHelper
                               String               qualifiedName,
                               String               identifier,
                               String               name,
+                              String               mission,
                               String               description,
+                              String               url,
                               Date                 startDate,
                               Date                 plannedEndDate,
                               String               projectPhase,
@@ -2153,7 +2157,9 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MISSION.name, mission, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
         properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTUAL_START_DATE.name, startDate, methodName);
         properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_COMPLETION_DATE.name, plannedEndDate, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_PHASE.name, projectPhase, methodName);

@@ -355,6 +355,7 @@ public class OpenMetadataTypesArchive4_0
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
 
         relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setMultiLink(true);
 
         return relationshipDef;
     }
