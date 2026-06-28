@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummaryList;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -30,7 +31,7 @@ import java.util.Map;
 /**
  * Provides services for connectors to work with lineage relationships.
  */
-public class ClassificationManagerClient extends ConnectorContextClientBase
+public class ClassificationExplorerClient extends ConnectorContextClientBase
 {
     private final StewardshipManagementHandler stewardshipManagementHandler;
 
@@ -49,16 +50,16 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
-    public ClassificationManagerClient(ConnectorContextBase     parentContext,
-                                       String                   localServerName,
-                                       String                   localServiceName,
-                                       String                   connectorUserId,
-                                       String                   connectorGUID,
-                                       String                   externalSourceGUID,
-                                       String                   externalSourceName,
-                                       OpenMetadataClient       openMetadataClient,
-                                       AuditLog                 auditLog,
-                                       int                      maxPageSize)
+    public ClassificationExplorerClient(ConnectorContextBase     parentContext,
+                                        String                   localServerName,
+                                        String                   localServiceName,
+                                        String                   connectorUserId,
+                                        String                   connectorGUID,
+                                        String                   externalSourceGUID,
+                                        String                   externalSourceName,
+                                        OpenMetadataClient       openMetadataClient,
+                                        AuditLog                 auditLog,
+                                        int                      maxPageSize)
     {
         super(parentContext, localServerName, localServiceName, connectorUserId, connectorGUID, externalSourceGUID, externalSourceName, auditLog, maxPageSize);
 
@@ -72,8 +73,8 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @param template client to copy
      * @param specificTypeName type name override
      */
-    public ClassificationManagerClient(ClassificationManagerClient template,
-                                       String      specificTypeName)
+    public ClassificationExplorerClient(ClassificationExplorerClient template,
+                                        String      specificTypeName)
     {
         super(template);
 
@@ -883,6 +884,124 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                                              PropertyServerException
     {
         return stewardshipManagementHandler.getCertifications(connectorUserId, elementGUID, queryOptions);
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested value
+     * found in one of the relationship's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param queryOptions multiple options to control the query
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> getRelatedElements(String              elementGUID,
+                                                            String              relationshipTypeName,
+                                                            int                 startingAtEnd,
+                                                            String              propertyValue,
+                                                            List<String>        propertyNames,
+                                                            QueryOptions        queryOptions,
+                                                            String              methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return stewardshipManagementHandler.getRelatedElements(connectorUserId, elementGUID, relationshipTypeName, startingAtEnd, propertyValue, propertyNames, queryOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must be contained in one of the properties specified (or any property if no property names are specified).
+     * An open metadata type name may be supplied to restrict the linked elements that are matched.
+     *
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param searchOptions multiple options to control the query
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> findRelatedElementsWithPropertyValue(String              elementGUID,
+                                                                              String              relationshipTypeName,
+                                                                              int                 startingAtEnd,
+                                                                              String              propertyValue,
+                                                                              List<String>        propertyNames,
+                                                                              SearchOptions       searchOptions) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        return stewardshipManagementHandler.findRelatedElementsWithPropertyValue(connectorUserId, elementGUID, relationshipTypeName, startingAtEnd, propertyValue, propertyNames, searchOptions);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param relationshipTypeName name of relationship
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param queryOptions multiple options to control the query
+     * @param methodName  calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummaryList getRelationships(String              relationshipTypeName,
+                                                            String              propertyValue,
+                                                            List<String>        propertyNames,
+                                                            QueryOptions        queryOptions,
+                                                            String              methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return stewardshipManagementHandler.getRelationships(connectorUserId, relationshipTypeName, propertyValue, propertyNames, queryOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param relationshipTypeName name of relationship
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param searchOptions multiple options to control the query
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummaryList findRelationshipsWithPropertyValue(String              relationshipTypeName,
+                                                                              String              propertyValue,
+                                                                              List<String>        propertyNames,
+                                                                              SearchOptions       searchOptions) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        return stewardshipManagementHandler.findRelationshipsWithPropertyValue(connectorUserId,
+                                                                               relationshipTypeName,
+                                                                               propertyValue,
+                                                                               propertyNames,
+                                                                               searchOptions);
     }
 
 

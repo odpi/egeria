@@ -215,6 +215,25 @@ public class SolutionComponentClient extends ConnectorContextClientBase
         solutionComponentHandler.linkSolutionLinkingWire(connectorUserId, solutionComponentOneGUID, solutionComponentTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
+    /**
+     * Update the wire relationship.
+     *
+     * @param relationshipGUID unique identifier for the relationship
+     * @param updateOptions options for the request
+     * @param properties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void updateSolutionLinkingWire(String                        relationshipGUID,
+                                          UpdateOptions                 updateOptions,
+                                          SolutionLinkingWireProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        solutionComponentHandler.updateSolutionLinkingWire(connectorUserId, relationshipGUID, updateOptions, properties);
+    }
+
 
     /**
      * Detach an element communicating with a solution component.

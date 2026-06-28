@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -70,12 +70,12 @@ public class MetadataCollectionIterator extends IntegrationIterator
 
         if ((elementCache != null) && (elementCache.isEmpty()))
         {
-            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(metadataTypeName);
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(metadataTypeName);
 
-            elementCache = classificationManagerClient.getRootElementsByName(metadataCollectionGUID,
-                                                                             Collections.singletonList(OpenMetadataProperty.METADATA_COLLECTION_ID.name),
-                                                                             classificationManagerClient.getQueryOptions(startFrom, maxPageSize),
-                                                                             methodName);
+            elementCache = classificationExplorerClient.getRootElementsByName(metadataCollectionGUID,
+                                                                              Collections.singletonList(OpenMetadataProperty.METADATA_COLLECTION_ID.name),
+                                                                              classificationExplorerClient.getQueryOptions(startFrom, maxPageSize),
+                                                                              methodName);
             startFrom = startFrom + maxPageSize;
         }
 

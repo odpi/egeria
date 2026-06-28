@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder;
@@ -78,7 +78,7 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
 
         try
         {
-            ClassificationManagerClient classificationManagerClient = connectorContext.getClassificationManagerClient();
+            ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient();
 
             List<String> knownGUIDs = new ArrayList<>();
 
@@ -88,8 +88,8 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
 
                 try
                 {
-                    existingValue = classificationManagerClient.getRootElementByGUID(existingValue.getElementHeader().getGUID(),
-                                                                                     classificationManagerClient.getGetOptions());
+                    existingValue = classificationExplorerClient.getRootElementByGUID(existingValue.getElementHeader().getGUID(),
+                                                                                      classificationExplorerClient.getGetOptions());
 
                 }
                 catch (Exception error)
@@ -171,9 +171,9 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
                 pageSize = 100;
             }
 
-            ClassificationManagerClient classificationManagerClient = connectorContext.getClassificationManagerClient(metadataTypeName);
+            ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient(metadataTypeName);
 
-            SearchOptions searchOptions = classificationManagerClient.getSearchOptions(startFrom, pageSize);
+            SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, pageSize);
 
             /*
              * Retrieving by creation date/time ensure the order is preserved.
@@ -183,7 +183,7 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
             /*
              * Retrieve all the reference data sets and add them to the records.
              */
-            List<OpenMetadataRootElement> rootElements = classificationManagerClient.findRootElements(null, searchOptions);
+            List<OpenMetadataRootElement> rootElements = classificationExplorerClient.findRootElements(null, searchOptions);
 
             while (rootElements != null)
             {
@@ -198,7 +198,7 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
                 }
 
                 searchOptions.setStartFrom(searchOptions.getStartFrom() + pageSize);
-                rootElements = classificationManagerClient.findRootElements(null, searchOptions);
+                rootElements = classificationExplorerClient.findRootElements(null, searchOptions);
             }
         }
         catch (Exception error)

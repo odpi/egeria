@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.T
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValueDefinitionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
@@ -76,9 +76,9 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
          */
         try
         {
-            ClassificationManagerClient classificationManagerClient = connectorContext.getClassificationManagerClient(OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
-            OpenMetadataRootElement validValueSet = classificationManagerClient.getRootElementByGUID(startingElementGUID,
-                                                                                                     classificationManagerClient.getGetOptions());
+            ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient(OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
+            OpenMetadataRootElement validValueSet = classificationExplorerClient.getRootElementByGUID(startingElementGUID,
+                                                                                                      classificationExplorerClient.getGetOptions());
 
             if (validValueSet != null)
             {

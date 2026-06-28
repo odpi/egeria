@@ -54,18 +54,18 @@ public class ConnectorContextBase
     protected final AssetHandler            assetHandler;
     protected final ContextEventHandler     contextEventHandler;
 
-    protected final String                  localServerName;
-    protected final String                  localServiceName;
-    protected final String                  externalSourceGUID;
-    protected final String externalSourceName;
-    protected final String connectorInstanceId;
-    protected final String connectorName;
-    protected final String                  connectorGUID;
-    protected final String                  connectorUserId;
-    protected final AuditLog                auditLog;
-    protected final int                     maxPageSize;
-    protected final DeleteMethod            defaultDeleteMethod;
-    protected final boolean                 generateIntegrationReport;
+    protected final String                        localServerName;
+    protected final String                        localServiceName;
+    protected final String                        externalSourceGUID;
+    protected final String                        externalSourceName;
+    protected final String                        connectorInstanceId;
+    protected final String                        connectorName;
+    protected final String                        connectorGUID;
+    protected final String                        connectorUserId;
+    protected final AuditLog                      auditLog;
+    protected final int                           maxPageSize;
+    protected final DeleteMethod                  defaultDeleteMethod;
+    protected final boolean                       generateIntegrationReport;
     protected final ConnectorActivityReportWriter connectorActivityReportWriter;
 
     protected final FileClassifier       fileClassifier;
@@ -79,7 +79,7 @@ public class ConnectorContextBase
     private final   ActorRoleClient                actorRoleClient;
     private final   AnnotationClient               annotationClient;
     protected final AssetClient                    assetClient;
-    private final   ClassificationManagerClient    classificationManagerClient;
+    private final   ClassificationExplorerClient   classificationExplorerClient;
     private final   CollectionClient               collectionClient;
     private final   CommentClient                  commentClient;
     private final   CommunityClient                communityClient;
@@ -98,6 +98,7 @@ public class ConnectorContextBase
     private final   GlossaryTermClient             glossaryTermClient;
     protected final GovernanceDefinitionClient     governanceDefinitionClient;
     private final   InformalTagClient              informalTagClient;
+    private final   InformationSupplyChainClient   informationSupplyChainClient;
     private final   LikeClient                     likeClient;
     private final   LineageClient                  lineageClient;
     private final   LocationClient                 locationClient;
@@ -240,16 +241,16 @@ public class ConnectorContextBase
                                            auditLog,
                                            maxPageSize);
 
-        this.classificationManagerClient = new ClassificationManagerClient(this,
-                                                                           localServerName,
-                                                                           localServiceName,
-                                                                           connectorUserId,
-                                                                           connectorGUID,
-                                                                           externalSourceGUID,
-                                                                           externalSourceName,
-                                                                           openMetadataClient,
-                                                                           auditLog,
-                                                                           maxPageSize);
+        this.classificationExplorerClient = new ClassificationExplorerClient(this,
+                                                                             localServerName,
+                                                                             localServiceName,
+                                                                             connectorUserId,
+                                                                             connectorGUID,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
+                                                                             openMetadataClient,
+                                                                             auditLog,
+                                                                             maxPageSize);
 
         this.collectionClient = new CollectionClient(this,
                                                      localServerName,
@@ -448,6 +449,17 @@ public class ConnectorContextBase
                                                        openMetadataClient,
                                                        auditLog,
                                                        maxPageSize);
+
+        this.informationSupplyChainClient = new InformationSupplyChainClient(this,
+                                                                             localServerName,
+                                                                             localServiceName,
+                                                                             connectorUserId,
+                                                                             connectorGUID,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
+                                                                             openMetadataClient,
+                                                                             auditLog,
+                                                                             maxPageSize);
 
         this.likeClient = new LikeClient(this,
                                          localServerName,
@@ -910,9 +922,9 @@ public class ConnectorContextBase
      * @param specificTypeName override type name
      * @return connector context client
      */
-    public ClassificationManagerClient getClassificationManagerClient(String specificTypeName)
+    public ClassificationExplorerClient getClassificationExplorerClient(String specificTypeName)
     {
-        return new ClassificationManagerClient(classificationManagerClient, specificTypeName);
+        return new ClassificationExplorerClient(classificationExplorerClient, specificTypeName);
     }
 
 
@@ -921,9 +933,9 @@ public class ConnectorContextBase
      *
      * @return connector context client
      */
-    public ClassificationManagerClient getClassificationManagerClient()
+    public ClassificationExplorerClient getClassificationExplorerClient()
     {
-        return classificationManagerClient;
+        return classificationExplorerClient;
     }
 
 
@@ -1144,6 +1156,16 @@ public class ConnectorContextBase
         return informalTagClient;
     }
 
+
+    /**
+     * Return the client for managing information supply chaine.
+     *
+     * @return connector context client
+     */
+    public InformationSupplyChainClient getInformationSupplyChainClient()
+    {
+        return informationSupplyChainClient;
+    }
 
 
     /**

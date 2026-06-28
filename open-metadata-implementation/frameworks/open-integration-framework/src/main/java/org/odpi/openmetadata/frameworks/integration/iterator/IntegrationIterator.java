@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -144,28 +144,28 @@ public abstract class IntegrationIterator
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-        OpenMetadataRootElement element = classificationManagerClient.getRootElementByUniqueName(qualifiedName,
-                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                 classificationManagerClient.getQueryOptions());
+        OpenMetadataRootElement element = classificationExplorerClient.getRootElementByUniqueName(qualifiedName,
+                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                  classificationExplorerClient.getQueryOptions());
 
         if (element != null)
         {
             return this.fillOutMemberElement(element, true);
         }
 
-        element = classificationManagerClient.getLineageElementByUniqueName(qualifiedName,
-                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            classificationManagerClient.getGetOptions());
+        element = classificationExplorerClient.getLineageElementByUniqueName(qualifiedName,
+                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                             classificationExplorerClient.getGetOptions());
         if (element != null)
         {
             return this.fillOutMemberElement(element, false);
         }
 
-        element = classificationManagerClient.getDeletedElementByUniqueName(qualifiedName,
-                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            classificationManagerClient.getGetOptions());
+        element = classificationExplorerClient.getDeletedElementByUniqueName(qualifiedName,
+                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                             classificationExplorerClient.getGetOptions());
 
         return this.fillOutMemberElement(element, false);
     }

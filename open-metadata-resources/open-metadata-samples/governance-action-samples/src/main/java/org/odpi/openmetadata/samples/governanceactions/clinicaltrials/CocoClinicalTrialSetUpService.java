@@ -6,9 +6,14 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummaryList;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -401,41 +406,83 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
     }
 
 
+    private void updateSolutionLinkingWires(String clinicalTrialId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        ClassificationExplorerClient classificationExplorerClient = governanceContext.getClassificationExplorerClient();
+
+        MetadataRelationshipSummaryList solutionLinkingWires = classificationExplorerClient.findRelationshipsWithPropertyValue(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                                                               CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                                                                                                                               Collections.singletonList(OpenMetadataProperty.ISC_QUALIFIED_NAMES.name),
+                                                                                                                               classificationExplorerClient.getSearchOptions());
+
+        if ((solutionLinkingWires != null) && (solutionLinkingWires.getElementList() != null))
+        {
+            for (MetadataRelationshipSummary solutionLinkingWire : solutionLinkingWires.getElementList())
+            {
+                if (solutionLinkingWire.getRelationshipProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties)
+                {
+                    if (solutionLinkingWireProperties.getISCQualifiedNames() != null)
+                    {
+                        List<String> newISCQualifiedNames = new ArrayList<>(solutionLinkingWireProperties.getISCQualifiedNames());
+
+                        for (String iscQualifiedName : solutionLinkingWireProperties.getISCQualifiedNames())
+                        {
+                            if ((iscQualifiedName != null) && (iscQualifiedName.contains(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder())))
+                            {
+                                String newISCQualifiedName = iscQualifiedName.replace(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(), clinicalTrialId);
+                                newISCQualifiedNames.add(newISCQualifiedName);
+                            }
+                        }
+
+                        SolutionLinkingWireProperties newSolutionLinkingWireProperties = new SolutionLinkingWireProperties(solutionLinkingWireProperties);
+
+                        newSolutionLinkingWireProperties.setISCQualifiedNames(newISCQualifiedNames);
+
+                        governanceContext.getSolutionComponentClient().updateSolutionLinkingWire(solutionLinkingWire.getRelationshipHeader().getGUID(), classificationExplorerClient.getUpdateOptions(true), newSolutionLinkingWireProperties);
+                    }
+                }
+            }
+        }
+    }
+
+
     /**
      * The information supply chain template creates three information supply chains.  There is a top level one for
      * the whole clinical trial and two segments for the subject onboarding and the treatment validation
      * @param toplevelInformationSupplyChainGUID new top level information supply chain
-     * @return guid of clinical trial treatment validation information supply chain
+     * @param clinicalTrialId clinical trial id
+     * @return the guid of the clinical trial treatment validation information supply chain
      */
-    private String getTreatmentValidationInformationSupplyChain(String toplevelInformationSupplyChainGUID) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException
+    private String getTreatmentValidationInformationSupplyChain(String toplevelInformationSupplyChainGUID,
+                                                                String clinicalTrialId) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String methodName = "getTreatmentValidationInformationSupplyChain";
         final String parameterName = "toplevelInformationSupplyChainGUID";
+        final String parameter2Name = "clinicalTrialId";
 
         propertyHelper.validateGUID(toplevelInformationSupplyChainGUID, parameterName, methodName);
+        propertyHelper.validateMandatoryName(clinicalTrialId, parameter2Name, methodName);
 
-        RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(toplevelInformationSupplyChainGUID,
-                                                                                                                                    1,
-                                                                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                                                    0,
-                                                                                                                                    governanceContext.getMaxPageSize());
+        /*
+         * This is the qualified name of the Information Supply Chain to return.
+         */
+        String iscQualifiedName = "InformationSupplyChain::Clinical Trial Treatment Validation Information Supply Chain: "+clinicalTrialId;
 
-        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+        CollectionClient collectionClient = governanceContext.getCollectionClient();
+        List<OpenMetadataRootElement> relatedMembers = collectionClient.getCollectionMembers(toplevelInformationSupplyChainGUID,
+                                                                                             collectionClient.getQueryOptions());
+
+        if (relatedMembers != null)
         {
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+            for (OpenMetadataRootElement member : relatedMembers)
             {
-                if (relatedMetadataElement != null)
+                if ((member != null) && (member.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties))
                 {
-                    String qualifiedName = propertyHelper.getStringProperty(governanceServiceName,
-                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                            relatedMetadataElement.getElement().getElementProperties(),
-                                                                            methodName);
-
-                    if ("Clinical Trial Treatment Validation::".equals(qualifiedName))
+                    if (iscQualifiedName.equals(informationSupplyChainProperties.getQualifiedName()))
                     {
-                        return relatedMetadataElement.getElement().getElementGUID();
+                        return member.getElementHeader().getGUID();
                     }
                 }
             }
@@ -498,7 +545,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                        false);
         if (informationSupplyChainGUID != null)
         {
-            return this.getTreatmentValidationInformationSupplyChain(informationSupplyChainGUID);
+            updateSolutionLinkingWires(clinicalTrialId);
+            return this.getTreatmentValidationInformationSupplyChain(informationSupplyChainGUID, clinicalTrialId);
         }
 
         /*

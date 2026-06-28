@@ -523,17 +523,17 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         /*
          * The new cancellation process is connected to the subscription's resource list for east access.
          */
-        ClassificationManagerClient classificationManagerClient = governanceContext.getClassificationManagerClient();
+        ClassificationExplorerClient classificationExplorerClient = governanceContext.getClassificationExplorerClient();
 
         ResourceListProperties resourceListProperties = new  ResourceListProperties();
 
         resourceListProperties.setResourceUse(ResourceUse.CANCEL_SUBSCRIPTION.getResourceUse());
         resourceListProperties.setDescription(ResourceUse.CANCEL_SUBSCRIPTION.getDescription());
 
-        classificationManagerClient.addResourceListToElement(subscriptionGUID,
-                                                             cancelSubscriptionGUID,
-                                                             new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
-                                                             resourceListProperties);
+        classificationExplorerClient.addResourceListToElement(subscriptionGUID,
+                                                              cancelSubscriptionGUID,
+                                                              new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions()),
+                                                              resourceListProperties);
 
 
     }

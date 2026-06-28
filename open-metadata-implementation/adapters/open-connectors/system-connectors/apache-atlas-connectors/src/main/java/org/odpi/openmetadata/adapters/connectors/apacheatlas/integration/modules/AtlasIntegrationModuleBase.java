@@ -99,9 +99,9 @@ public abstract class AtlasIntegrationModuleBase
     protected final SchemaAttributeClient       schemaAttributeClient;
     protected final CollectionClient            glossaryClient;
     protected final GlossaryTermClient          glossaryTermClient;
-    protected final InformalTagClient           informalTagClient;
-    protected final ClassificationManagerClient classificationManagerClient;
-    protected final ExternalIdClient            externalIdClient;
+    protected final InformalTagClient            informalTagClient;
+    protected final ClassificationExplorerClient classificationExplorerClient;
+    protected final ExternalIdClient             externalIdClient;
     protected final OpenMetadataStore           openMetadataStore;
 
 
@@ -138,9 +138,9 @@ public abstract class AtlasIntegrationModuleBase
         this.schemaTypeClient            = myContext.getSchemaTypeClient();
         this.schemaAttributeClient       = myContext.getSchemaAttributeClient();
         this.glossaryClient              = myContext.getCollectionClient(OpenMetadataType.GLOSSARY.typeName);
-        this.glossaryTermClient          = myContext.getGlossaryTermClient();
-        this.classificationManagerClient = myContext.getClassificationManagerClient();
-        this.informalTagClient           = myContext.getInformalTagClient();
+        this.glossaryTermClient           = myContext.getGlossaryTermClient();
+        this.classificationExplorerClient = myContext.getClassificationExplorerClient();
+        this.informalTagClient            = myContext.getInformalTagClient();
         this.externalIdClient            = myContext.getExternalIdClient();
         this.openMetadataStore           = myContext.getOpenMetadataStore();
 
@@ -153,7 +153,7 @@ public abstract class AtlasIntegrationModuleBase
         this.schemaAttributeClient.setForDuplicateProcessing(true);
         this.glossaryClient.setForDuplicateProcessing(true);
         this.glossaryTermClient.setForDuplicateProcessing(true);
-        this.classificationManagerClient.setForDuplicateProcessing(true);
+        this.classificationExplorerClient.setForDuplicateProcessing(true);
         this.informalTagClient.setForDuplicateProcessing(true);
         this.externalIdClient.setForDuplicateProcessing(true);
         this.openMetadataStore.setForDuplicateProcessing(true);
@@ -1455,9 +1455,9 @@ public abstract class AtlasIntegrationModuleBase
                 properties.setOwnerTypeName(egeriaOwnerTypeName);
                 properties.setOwnerPropertyName(egeriaOwnerPropertyName);
 
-                classificationManagerClient.addOwnership(egeriaGUID,
-                                                         properties,
-                                                         classificationManagerClient.getMetadataSourceOptions());
+                classificationExplorerClient.addOwnership(egeriaGUID,
+                                                          properties,
+                                                          classificationExplorerClient.getMetadataSourceOptions());
             }
         }
     }
