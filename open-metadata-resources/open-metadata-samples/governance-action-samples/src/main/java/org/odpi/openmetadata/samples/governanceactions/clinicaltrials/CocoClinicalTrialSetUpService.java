@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialDomainDefinition;
@@ -438,7 +439,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                         newSolutionLinkingWireProperties.setISCQualifiedNames(newISCQualifiedNames);
 
-                        governanceContext.getSolutionComponentClient().updateSolutionLinkingWire(solutionLinkingWire.getRelationshipHeader().getGUID(), classificationExplorerClient.getUpdateOptions(true), newSolutionLinkingWireProperties);
+                        UpdateOptions updateOptions = classificationExplorerClient.getUpdateOptions(true);
+
+                        updateOptions.setExternalSourceGUID(solutionLinkingWire.getRelationshipHeader().getOrigin().getHomeMetadataCollectionId());
+                        updateOptions.setExternalSourceName(solutionLinkingWire.getRelationshipHeader().getOrigin().getHomeMetadataCollectionName());
+
+                        governanceContext.getSolutionComponentClient().updateSolutionLinkingWire(solutionLinkingWire.getRelationshipHeader().getGUID(), updateOptions, newSolutionLinkingWireProperties);
                     }
                 }
             }
