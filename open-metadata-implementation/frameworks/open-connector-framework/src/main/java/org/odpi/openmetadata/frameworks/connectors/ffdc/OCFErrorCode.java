@@ -259,6 +259,14 @@ public enum OCFErrorCode implements ExceptionMessageSet
                                    "The connector cannot access the digital resource it is supposed to connect to.",
                                    "Update the source of the endpoint.  This may be from a template or from a connector."),
 
+    /**
+     * OCF-CONNECTOR-400-011 - {0} element {1} does not exist
+     */
+    MISSING_ELEMENT(400, "OCF-CONNECTOR-400-008",
+                "{0} element {1} does not exist",
+                "The connector terminates because it can not find an element that it depends on.",
+                "Ensure the element is correctly identified and exists in the metadata repository.  Then retry the request."),
+
 
     /**
      * OCF-CONNECTOR-404-001 - Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable

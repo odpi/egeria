@@ -7,11 +7,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummaryList;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
@@ -455,20 +453,17 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
     /**
      * The information supply chain template creates three information supply chains.  There is a top level one for
      * the whole clinical trial and two segments for the subject onboarding and the treatment validation
-     * @param toplevelInformationSupplyChainGUID new top level information supply chain
      * @param clinicalTrialId clinical trial id
      * @return the guid of the clinical trial treatment validation information supply chain
      */
-    private String getTreatmentValidationInformationSupplyChain(String toplevelInformationSupplyChainGUID,
-                                                                String clinicalTrialId) throws InvalidParameterException,
+    private String getTreatmentValidationInformationSupplyChain(String clinicalTrialId) throws InvalidParameterException,
                                                                                                PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                                                                               UserNotAuthorizedException,
+                                                                                               ConnectorCheckedException
     {
         final String methodName = "getTreatmentValidationInformationSupplyChain";
-        final String parameterName = "toplevelInformationSupplyChainGUID";
         final String parameter2Name = "clinicalTrialId";
 
-        propertyHelper.validateGUID(toplevelInformationSupplyChainGUID, parameterName, methodName);
         propertyHelper.validateMandatoryName(clinicalTrialId, parameter2Name, methodName);
 
         /*
@@ -476,28 +471,22 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
          */
         String iscQualifiedName = "InformationSupplyChain::Clinical Trial Treatment Validation Information Supply Chain: "+clinicalTrialId;
 
-        CollectionClient collectionClient = governanceContext.getCollectionClient();
-        List<OpenMetadataRootElement> relatedMembers = collectionClient.getCollectionMembers(toplevelInformationSupplyChainGUID,
-                                                                                             collectionClient.getQueryOptions());
+        OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();
 
-        if (relatedMembers != null)
+        String informationSupplyChainGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(iscQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataStore.getGetOptions());
+
+        if (informationSupplyChainGUID != null)
         {
-            for (OpenMetadataRootElement member : relatedMembers)
-            {
-                if ((member != null) && (member.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties))
-                {
-                    if (iscQualifiedName.equals(informationSupplyChainProperties.getQualifiedName()))
-                    {
-                        return member.getElementHeader().getGUID();
-                    }
-                }
-            }
+            return informationSupplyChainGUID;
         }
-
-        /*
-         * Should not get here
-         */
-        return null;
+        else
+        {
+            /*
+             * Should not get here
+             */
+            super.throwMissingElement(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, iscQualifiedName, methodName);
+            return null;
+        }
     }
 
     /**
@@ -517,7 +506,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                 String clinicalTrialProjectGUID,
                                                 String informationSupplyChainTemplateGUID) throws InvalidParameterException,
                                                                                                   PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  ConnectorCheckedException
     {
         final String methodName = "createInformationSupplyChain";
         final String parameterName = "informationSupplyChainTemplateGUID";
@@ -552,7 +542,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         if (informationSupplyChainGUID != null)
         {
             updateSolutionLinkingWires(clinicalTrialId);
-            return this.getTreatmentValidationInformationSupplyChain(informationSupplyChainGUID, clinicalTrialId);
+            return this.getTreatmentValidationInformationSupplyChain(clinicalTrialId);
         }
 
         /*

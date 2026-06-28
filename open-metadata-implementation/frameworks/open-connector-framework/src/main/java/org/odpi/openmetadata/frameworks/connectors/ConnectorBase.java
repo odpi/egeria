@@ -887,7 +887,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Log that the connector can not process the type of asset it has been passed.
+     * Log that the connector cannot find the type of asset it has been passed.
      *
      * @param assetGUID identifier of the asset
      * @param assetTypeName type of the asset
@@ -907,6 +907,24 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
                                             methodName);
     }
 
+
+    /**
+     * Log that the connector cannot find an element it needs
+     *
+     * @param elementTypeName type of the element
+     * @param elementIdentifier name of the element
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwMissingElement(String elementTypeName,
+                                       String elementIdentifier,
+                                       String methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.MISSING_ELEMENT.getMessageDefinition(elementTypeName,
+                                                                                              elementIdentifier),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
 
 
     /**
