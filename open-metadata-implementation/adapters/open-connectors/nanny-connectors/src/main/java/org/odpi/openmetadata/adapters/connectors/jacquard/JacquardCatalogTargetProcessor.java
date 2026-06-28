@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProc
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
@@ -147,7 +147,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                          * the creation and last update times are saved in the data set's DataScope
                          * classification.  This will trigger the Baudot Notification Manager to send a notification.
                          */
-                        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(OpenMetadataType.ASSET.typeName);
+                        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.ASSET.typeName);
 
                         if (dataSet.getElementHeader().getDataScope() == null)
                         {
@@ -159,9 +159,9 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                             dataScopeProperties.setDataCollectionStartTime(dataSetCreateTime);
                             dataScopeProperties.setDataCollectionEndTime(dataSetLastUpdateTime);
 
-                            classificationManagerClient.addDataScopeClassification(dataSet.getElementHeader().getGUID(),
-                                                                                   dataScopeProperties,
-                                                                                   integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
+                            classificationExplorerClient.addDataScopeClassification(dataSet.getElementHeader().getGUID(),
+                                                                                    dataScopeProperties,
+                                                                                    integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
                         }
                         else
                         {
@@ -189,9 +189,9 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                             dataScopeProperties.setDataCollectionStartTime(dataSetCreateTime);
                             dataScopeProperties.setDataCollectionEndTime(dataSetLastUpdateTime);
 
-                            classificationManagerClient.updateDataScopeClassification(dataSet.getElementHeader().getGUID(),
-                                                                                     dataScopeProperties,
-                                                                                     integrationContext.getOpenMetadataStore().getUpdateOptions(true));
+                            classificationExplorerClient.updateDataScopeClassification(dataSet.getElementHeader().getGUID(),
+                                                                                       dataScopeProperties,
+                                                                                       integrationContext.getOpenMetadataStore().getUpdateOptions(true));
                         }
                     }
                 }

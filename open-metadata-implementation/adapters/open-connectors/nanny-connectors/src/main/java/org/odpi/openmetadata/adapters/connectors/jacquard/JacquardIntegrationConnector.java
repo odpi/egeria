@@ -511,15 +511,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        CollectionClient            collectionClient            = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        CollectionClient             collectionClient             = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
         final String methodName = "getProduct";
 
         /*
          * If the product is already defined, then extract its element.  This works for products and product families.
          */
-        OpenMetadataRootElement productElement = classificationManagerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
+        OpenMetadataRootElement productElement = classificationExplorerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
 
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
 
@@ -581,7 +581,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
         personRoleProperties.setDescription(ProductRoleDefinition.PRODUCT_MANAGER.getDescription());
 
-        OpenMetadataRootElement productManagerElement = classificationManagerClient.getRootElementByUniqueName(personRoleProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
+        OpenMetadataRootElement productManagerElement = classificationExplorerClient.getRootElementByUniqueName(personRoleProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
 
         if (productManagerElement == null)
         {
@@ -612,17 +612,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                         personRoleProperties,
                                                                         assignmentScopeProperties);
 
-            productManagerElement = classificationManagerClient.getRootElementByGUID(productManagerGUID, collectionClient.getGetOptions());
+            productManagerElement = classificationExplorerClient.getRootElementByGUID(productManagerGUID, collectionClient.getGetOptions());
 
             if (productDefinition.getCommunity() != null)
             {
                 assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getDisplayName());
                 assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
 
-                classificationManagerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
-                                                                 productManagerGUID,
-                                                                 new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                                 assignmentScopeProperties);
+                classificationExplorerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
+                                                                  productManagerGUID,
+                                                                  new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                                  assignmentScopeProperties);
             }
         }
 
@@ -648,10 +648,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         if ((propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)) && (productDefinition.getCommunity() != null))
         {
-            classificationManagerClient.addScopeToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
-                                                          productElement.getElementHeader().getGUID(),
-                                                          new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
-                                                          null);
+            classificationExplorerClient.addScopeToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
+                                                           productElement.getElementHeader().getGUID(),
+                                                           new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions()),
+                                                           null);
         }
 
         /*
@@ -750,9 +750,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if ((dataFieldIdentifiers != null) || (dataFieldDefinitions != null))
         {
-            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-            NewElementOptions newElementOptions = new NewElementOptions(classificationManagerClient.getMetadataSourceOptions());
+            NewElementOptions newElementOptions = new NewElementOptions(classificationExplorerClient.getMetadataSourceOptions());
 
             newElementOptions.setIsOwnAnchor(false);
             newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
@@ -766,9 +766,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             dataSpecProperties.setDescription("The data specification lists the fields in the " + productDefinition.getProductName() + " product.");
             dataSpecProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
 
-            OpenMetadataRootElement dataSpecElement = classificationManagerClient.getRootElementByUniqueName(dataSpecProperties.getQualifiedName(),
-                                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                             classificationManagerClient.getGetOptions());
+            OpenMetadataRootElement dataSpecElement = classificationExplorerClient.getRootElementByUniqueName(dataSpecProperties.getQualifiedName(),
+                                                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                              classificationExplorerClient.getGetOptions());
             if (dataSpecElement == null)
             {
                 CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
@@ -800,7 +800,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             dataStructureProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
             dataStructureProperties.setNamePatterns(Collections.singletonList(productDefinition.getDataSpecTableName()));
 
-            OpenMetadataRootElement dataStructureElement = classificationManagerClient.getRootElementByUniqueName(dataStructureProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, dataStructureClient.getGetOptions());
+            OpenMetadataRootElement dataStructureElement = classificationExplorerClient.getRootElementByUniqueName(dataStructureProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, dataStructureClient.getGetOptions());
 
             if (dataStructureElement == null)
             {
@@ -878,7 +878,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (productQuestionDefinitions != null)
         {
-            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
             for (ProductQuestionDefinition productQuestionDefinition : productQuestionDefinitions)
             {
@@ -889,10 +889,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 supplementaryPropertiesProperties.setLabel("Guiding question");
                 supplementaryPropertiesProperties.setDescription("This is the type of question that " + productDefinition.getProductName() + " is designed to answer.");
 
-                classificationManagerClient.addSupplementaryPropertiesToElement(productElement.getElementHeader().getGUID(),
-                                                                                questionGUID,
-                                                                                classificationManagerClient.getMakeAnchorOptions(false),
-                                                                                supplementaryPropertiesProperties);
+                classificationExplorerClient.addSupplementaryPropertiesToElement(productElement.getElementHeader().getGUID(),
+                                                                                 questionGUID,
+                                                                                 classificationExplorerClient.getMakeAnchorOptions(false),
+                                                                                 supplementaryPropertiesProperties);
             }
         }
     }
@@ -1020,8 +1020,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * The notification of changes to a subscription is managed via a notification type.
          */
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
-        GovernanceDefinitionClient  notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+        GovernanceDefinitionClient   notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
         MakeAnchorOptions           makeAnchorOptions            = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
@@ -1036,7 +1036,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
         notificationTypeProperties.setNotificationInterval(productSubscriptionDefinition.getNotificationInterval());
 
-        OpenMetadataRootElement notificationTypeElement = classificationManagerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
+        OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
 
         if (notificationTypeElement == null)
         {
@@ -1155,11 +1155,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
     {
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
         String processQualifiedName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
 
-        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationManagerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
+        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationExplorerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
 
         if (subscriptionGovernanceActionProcessElement == null)
         {
@@ -1303,10 +1303,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             resourceListProperties.setResourceUse(ResourceUse.CREATE_SUBSCRIPTION.getResourceUse());
             resourceListProperties.setDescription(ResourceUse.CREATE_SUBSCRIPTION.getDescription());
 
-            classificationManagerClient.addResourceListToElement(productGUID,
-                                                                 governanceActionProcessGUID,
-                                                                 classificationManagerClient.getMakeAnchorOptions(false),
-                                                                 resourceListProperties);
+            classificationExplorerClient.addResourceListToElement(productGUID,
+                                                                  governanceActionProcessGUID,
+                                                                  classificationExplorerClient.getMakeAnchorOptions(false),
+                                                                  resourceListProperties);
 
             /*
              * Link the new governance action process to the glossary term for more explanation.
@@ -1316,10 +1316,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 String glossaryTermGUID = glossaryTerms.get(productSubscriptionDefinition.getGlossaryTerm().getQualifiedName());
                 if (glossaryTermGUID != null)
                 {
-                    classificationManagerClient.setupSemanticAssignment(governanceActionProcessGUID,
-                                                                        glossaryTermGUID,
-                                                                        null,
-                                                                        classificationManagerClient.getMakeAnchorOptions(false));
+                    classificationExplorerClient.setupSemanticAssignment(governanceActionProcessGUID,
+                                                                         glossaryTermGUID,
+                                                                         null,
+                                                                         classificationExplorerClient.getMakeAnchorOptions(false));
                 }
             }
         }
@@ -1347,12 +1347,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if (productDefinition.getConnectorProvider() != null)
         {
             // todo support updates to the asset
-            AssetClient                 assetClient                 = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
-            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+            AssetClient                  assetClient                  = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
             String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
 
-            OpenMetadataRootElement assetElement = classificationManagerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationManagerClient.getGetOptions());
+            OpenMetadataRootElement assetElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
 
             if (assetElement == null)
             {
@@ -1808,12 +1808,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Link the governance definitions to the product catalog ...
          */
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-        classificationManagerClient.addMoreInformationToElement(topLevelGUID,
-                                                                governanceDefinitions.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
-                                                                new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
-                                                                null);
+        classificationExplorerClient.addMoreInformationToElement(topLevelGUID,
+                                                                 governanceDefinitions.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
+                                                                 new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions()),
+                                                                 null);
 
         /*
          * Now set up all the other folders.
@@ -2632,12 +2632,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             String glossaryTermGUID = glossaryTerms.get(dataFieldDefinition.getGlossaryTerm().getQualifiedName());
             if (glossaryTermGUID != null)
             {
-                ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+                ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-                classificationManagerClient.setupSemanticAssignment(dataFieldGUID,
-                                                                    glossaryTermGUID,
-                                                                    null,
-                                                                    classificationManagerClient.getMakeAnchorOptions(false));
+                classificationExplorerClient.setupSemanticAssignment(dataFieldGUID,
+                                                                     glossaryTermGUID,
+                                                                     null,
+                                                                     classificationExplorerClient.getMakeAnchorOptions(false));
             }
         }
         auditLog.logMessage(methodName,
@@ -3137,12 +3137,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         String productDeveloperRoleGUID = roleMap.get(ProductRoleDefinition.JACQUARD_SUPPORT.getQualifiedName());
 
-        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-        classificationManagerClient.addScopeToElement(productDeveloperRoleGUID,
-                                                      integrationContext.getIntegrationConnectorGUID(),
-                                                      new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
-                                                      null);
+        classificationExplorerClient.addScopeToElement(productDeveloperRoleGUID,
+                                                       integrationContext.getIntegrationConnectorGUID(),
+                                                       new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions()),
+                                                       null);
 
         return roleMap;
     }

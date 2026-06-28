@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -78,7 +78,7 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
 
         try
         {
-            ClassificationManagerClient classificationManagerClient = connectorContext.getClassificationManagerClient();
+            ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient();
 
             List<String> knownGUIDs = new ArrayList<>();
 
@@ -88,8 +88,8 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
 
                 try
                 {
-                    existingValue = classificationManagerClient.getRelationshipSummaryByGUID(existingValue.getRelationshipHeader().getGUID(),
-                                                                                             classificationManagerClient.getGetOptions());
+                    existingValue = classificationExplorerClient.getRelationshipSummaryByGUID(existingValue.getRelationshipHeader().getGUID(),
+                                                                                              classificationExplorerClient.getGetOptions());
 
                 }
                 catch (Exception error)
@@ -156,9 +156,9 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
                 pageSize = 100;
             }
 
-            ClassificationManagerClient classificationManagerClient = connectorContext.getClassificationManagerClient();
+            ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient();
 
-            SearchOptions searchOptions = classificationManagerClient.getSearchOptions(startFrom, pageSize);
+            SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, pageSize);
 
             /*
              * Retrieving by creation date/time ensure the order is preserved.
@@ -168,7 +168,7 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
             /*
              * Retrieve all the reference data sets and add them to the records.
              */
-            List<MetadataRelationshipSummary> relationships = classificationManagerClient.getRelationshipsByType(metadataTypeName, searchOptions);
+            List<MetadataRelationshipSummary> relationships = classificationExplorerClient.getRelationshipsByType(metadataTypeName, searchOptions);
 
             while (relationships != null)
             {
@@ -182,7 +182,7 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
                 }
 
                 searchOptions.setStartFrom(searchOptions.getStartFrom() + pageSize);
-                relationships = classificationManagerClient.getRelationshipsByType(metadataTypeName, searchOptions);
+                relationships = classificationExplorerClient.getRelationshipsByType(metadataTypeName, searchOptions);
             }
         }
         catch (Exception error)

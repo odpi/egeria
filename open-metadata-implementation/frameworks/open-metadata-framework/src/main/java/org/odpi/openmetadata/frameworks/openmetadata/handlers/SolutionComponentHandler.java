@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
@@ -252,6 +253,32 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                                         makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
+
+
+    /**
+     * Update the wire relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier for the relationship
+     * @param updateOptions options for the request
+     * @param properties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public void updateSolutionLinkingWire(String                        userId,
+                                          String                        relationshipGUID,
+                                          UpdateOptions                 updateOptions,
+                                          SolutionLinkingWireProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(properties));
+    }
+
 
 
     /**

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -79,12 +79,12 @@ public class RelatedElementsIterator extends IntegrationIterator
     {
         if ((elementCache != null) && (elementCache.isEmpty()))
         {
-            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(metadataTypeName);
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(metadataTypeName);
 
-            elementCache = classificationManagerClient.getRelatedRootElements(parentGUID,
-                                                                              parentAtEnd,
-                                                                              parentRelationshipTypeName,
-                                                                              classificationManagerClient.getQueryOptions(startFrom, maxPageSize));
+            elementCache = classificationExplorerClient.getRelatedRootElements(parentGUID,
+                                                                               parentAtEnd,
+                                                                               parentRelationshipTypeName,
+                                                                               classificationExplorerClient.getQueryOptions(startFrom, maxPageSize));
 
             startFrom = startFrom + maxPageSize;
         }
