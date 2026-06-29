@@ -131,6 +131,16 @@ public enum OpenMetadataType
                          LineageRelationshipProperties.class),
 
     /**
+     * Common root for data lineage relationships.
+     */
+    DATA_LINEAGE_RELATIONSHIP("72323bcd-ddd2-46e3-a99e-0247f7bb9008",
+                         "DataLineageRelationship",
+                         OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
+                         "604a91bd-0c78-44b5-8ea0-d9c7e50aea18",
+                         "Common root for data lineage relationships.",
+                         DataLineageRelationshipProperties.class),
+
+    /**
      * An element whose real-world counterpart has been deleted or moved to offline archived.
      */
     MEMENTO_CLASSIFICATION("ecdcd472-6701-4303-8dec-267bcb54feb9",
@@ -6288,22 +6298,22 @@ public enum OpenMetadataType
     /**
      * Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.
      */
-    ULTIMATE_SOURCE("e5649e7a-4d97-4a41-a91d-20f521f961aa",
-                    "UltimateSource",
-                    OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
-                    "f85c52e9-cbfa-4e8c-9a54-17c0e0576cef",
-                    "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.",
-                    UltimateSourceProperties.class),
+    ULTIMATE_SOURCE_RELATIONSHIP("e5649e7a-4d97-4a41-a91d-20f521f961aa",
+                                 "UltimateSource",
+                                 OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
+                                 "f85c52e9-cbfa-4e8c-9a54-17c0e0576cef",
+                                 "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.",
+                                 UltimateSourceProperties.class),
 
     /**
      * Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.
      */
-    ULTIMATE_DESTINATION("27d48f4a-a5bd-4320-a4ba-55f03adbb27b",
-                         "UltimateDestination",
-                         OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
-                         "f8e24bca-3fe7-48f6-af28-48a1cc9f18e7",
-                         "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.",
-                         UltimateDestinationProperties.class),
+    ULTIMATE_DESTINATION_RELATIONSHIP("27d48f4a-a5bd-4320-a4ba-55f03adbb27b",
+                                      "UltimateDestination",
+                                      OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
+                                      "f8e24bca-3fe7-48f6-af28-48a1cc9f18e7",
+                                      "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.",
+                                      UltimateDestinationProperties.class),
 
 
     /**

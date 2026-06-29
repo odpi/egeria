@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = UltimateDestinationProperties.class, name = "UltimateDestinationProperties"),
                 @JsonSubTypes.Type(value = UltimateSourceProperties.class, name = "UltimateSourceProperties"),
         })
-public class LineageBoundaryProperties  extends LineageRelationshipProperties
+public class LineageBoundaryProperties  extends DataLineageRelationshipProperties
 {
     private Map<String, Integer> hops = null;
 

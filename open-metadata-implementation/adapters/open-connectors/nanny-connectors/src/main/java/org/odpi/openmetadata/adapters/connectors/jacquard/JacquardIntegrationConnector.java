@@ -1391,7 +1391,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
                 searchKeywordProperties.setDisplayName("productized");
-                searchKeywordProperties.setDescription("Asset " + assetGUID + "is a part of product " + productGUID + ".");
+                searchKeywordProperties.setDescription("Asset " + assetGUID + " is a part of product " + productGUID + ".");
 
                 searchKeywordClient.addSearchKeywordToElement(assetGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);
 

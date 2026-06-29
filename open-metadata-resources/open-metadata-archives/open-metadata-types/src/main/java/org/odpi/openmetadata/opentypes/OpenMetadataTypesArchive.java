@@ -157,6 +157,7 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        addDataLineageRelationships();
         update0010BaseModel();
         update0013Actions();
         update0019MoreInformation();
@@ -176,6 +177,7 @@ public class OpenMetadataTypesArchive
         update0505SchemaAttributes();
         update0595DesignPatterns();
         add0705DataSharing();
+        update0735SolutionPortsAndWires();
     }
 
     /*
@@ -208,6 +210,7 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -1308,6 +1311,146 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void addDataLineageRelationships()
+    {
+        this.archiveBuilder.addRelationshipDef(getDataLineageRelationship());
+
+        this.archiveBuilder.addTypeDefPatch(getDataFlowPatch());
+        this.archiveBuilder.addTypeDefPatch(getLineageMappingPatch());
+        this.archiveBuilder.addTypeDefPatch(getProcessCallPatch());
+        this.archiveBuilder.addTypeDefPatch(getUltimateSourcePatch());
+        this.archiveBuilder.addTypeDefPatch(getUltimateDestinationPatch());
+    }
+
+    private RelationshipDef getDataLineageRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        relationshipDef.setMultiLink(true);
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "dataLineageSources";
+        final String                     end1AttributeDescription     = "Sources of data lineage";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "dataLineageDestinations";
+        final String                     end2AttributeDescription     = "Destinations of data lineage.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ONE_WAY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTEGRATION_STYLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROTOCOL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FREQUENCY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_EXCHANGED));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    private TypeDefPatch getDataFlowPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch getProcessCallPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch getLineageMappingPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch getUltimateSourcePatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_SOURCE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch getUltimateDestinationPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_DESTINATION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void add0705DataSharing()
     {
         this.archiveBuilder.addEntityDef(getDataHubCollection());
@@ -1326,6 +1469,42 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName));
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0735SolutionPortsAndWires()
+    {
+        this.archiveBuilder.addTypeDefPatch(getSolutionLinkingWireRelationshipPatch());
+    }
+
+    private TypeDefPatch getSolutionLinkingWireRelationshipPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ONE_WAY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTEGRATION_STYLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROTOCOL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FREQUENCY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_EXCHANGED));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
