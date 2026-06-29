@@ -15,7 +15,7 @@ import java.util.List;
 public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
     /**
-     * Construct a mermaid markdown graph.
+     * Construct a mermaid Markdown graph.
      *
      * @param assetLineageGraph content
      * @param ultimateSources list of edge elements feeding the asset
@@ -57,7 +57,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
 
                     super.appendMermaidLine(null,
                                             node.getElementHeader().getGUID(),
-                                            OpenMetadataType.ULTIMATE_SOURCE.typeName,
+                                            OpenMetadataType.ULTIMATE_SOURCE_RELATIONSHIP.typeName,
                                             assetLineageGraph.getElementHeader().getGUID());
                 }
             }
@@ -79,7 +79,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
 
                     super.appendMermaidLine(null,
                                             assetLineageGraph.getElementHeader().getGUID(),
-                                            OpenMetadataType.ULTIMATE_DESTINATION.typeName,
+                                            OpenMetadataType.ULTIMATE_DESTINATION_RELATIONSHIP.typeName,
                                             node.getElementHeader().getGUID());
                 }
             }

@@ -64,7 +64,7 @@ public class OpenMetadataRelationshipBuilder
 
 
     /**
-     * Convert the properties beans into Element properties beans.  This is a bit fiddly in order to ensure the
+     * Convert the properties beans into Element properties beans.  This is a bit fiddly to ensure the
      * effectivity dates are properly included for each relationship.
      *
      * @param relationshipProperties properties bean
@@ -130,7 +130,53 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                          lineageRelationshipProperties.getISCQualifiedName());
 
-                    if (properties instanceof ControlFlowProperties controlFlowProperties)
+                    if (properties instanceof DataLineageRelationshipProperties dataLineageRelationshipProperties)
+                    {
+                        elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                              OpenMetadataProperty.ONE_WAY.name,
+                                                                              dataLineageRelationshipProperties.getOneWay());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.INTEGRATION_STYLE.name,
+                                                                             dataLineageRelationshipProperties.getIntegrationStyle());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.PROTOCOL.name,
+                                                                             dataLineageRelationshipProperties.getProtocol());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.FREQUENCY.name,
+                                                                             dataLineageRelationshipProperties.getFrequency());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.DATA_EXCHANGED.name,
+                                                                             dataLineageRelationshipProperties.getDataExchanged());
+
+                        if (properties instanceof DataFlowProperties dataFlowProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FORMULA.name,
+                                                                                 dataFlowProperties.getFormula());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FORMULA_TYPE.name,
+                                                                                 dataFlowProperties.getFormulaType());
+                        }
+                        else if (properties instanceof ProcessCallProperties processCallProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FORMULA.name,
+                                                                                 processCallProperties.getFormula());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FORMULA_TYPE.name,
+                                                                                 processCallProperties.getFormulaType());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.LINE_NUMBER.name,
+                                                                                 processCallProperties.getLineNumber());
+                        }
+                        else if (properties instanceof LineageBoundaryProperties lineageBoundaryProperties)
+                        {
+                            elementProperties = propertyHelper.addIntMapProperty(elementProperties,
+                                                                                 OpenMetadataProperty.HOPS.name,
+                                                                                 lineageBoundaryProperties.getHops());
+                        }
+                    }
+                    else if (properties instanceof ControlFlowProperties controlFlowProperties)
                     {
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.GUARD.name,
@@ -138,15 +184,6 @@ public class OpenMetadataRelationshipBuilder
                         elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                               OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                               controlFlowProperties.getMandatoryGuard());
-                    }
-                    else if (properties instanceof DataFlowProperties dataFlowProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.FORMULA.name,
-                                                                             dataFlowProperties.getFormula());
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.FORMULA_TYPE.name,
-                                                                             dataFlowProperties.getFormulaType());
                     }
                     else if (properties instanceof DataMappingProperties dataMappingProperties)
                     {
@@ -165,24 +202,6 @@ public class OpenMetadataRelationshipBuilder
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.QUERY_TYPE.name,
                                                                              dataMappingProperties.getQueryType());
-                    }
-                    else if (properties instanceof ProcessCallProperties processCallProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.FORMULA.name,
-                                                                             processCallProperties.getFormula());
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.FORMULA_TYPE.name,
-                                                                             processCallProperties.getFormulaType());
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.LINE_NUMBER.name,
-                                                                             processCallProperties.getLineNumber());
-                    }
-                    else if (properties instanceof LineageBoundaryProperties lineageBoundaryProperties)
-                    {
-                        elementProperties = propertyHelper.addIntMapProperty(elementProperties,
-                                                                             OpenMetadataProperty.HOPS.name,
-                                                                             lineageBoundaryProperties.getHops());
                     }
                 }
                 else if (properties instanceof AnnotationMatchProperties annotationMatchProperties)
@@ -356,6 +375,21 @@ public class OpenMetadataRelationshipBuilder
                     elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                               OpenMetadataProperty.ISC_QUALIFIED_NAMES.name,
                                                                               solutionLinkingWireProperties.getISCQualifiedNames());
+                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                          OpenMetadataProperty.ONE_WAY.name,
+                                                                          solutionLinkingWireProperties.getOneWay());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.INTEGRATION_STYLE.name,
+                                                                         solutionLinkingWireProperties.getIntegrationStyle());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.PROTOCOL.name,
+                                                                         solutionLinkingWireProperties.getProtocol());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.FREQUENCY.name,
+                                                                         solutionLinkingWireProperties.getFrequency());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DATA_EXCHANGED.name,
+                                                                         solutionLinkingWireProperties.getDataExchanged());
                 }
             }
             else if (properties instanceof PartOfRelationshipProperties partOfRelationshipProperties)

@@ -11437,6 +11437,72 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeFrequency(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFrequency";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.FREQUENCY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeDataExchanged(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataExchanged";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DATA_EXCHANGED.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected boolean removeOneWay(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeOneWay";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeBooleanProperty(localServiceName,
+                                                       OpenMetadataProperty.ONE_WAY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Extract the estimatedVolumetrics property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
@@ -13261,9 +13327,9 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new ActionRequesterProperties();
 
-                ((ActionRequesterProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((ActionRequesterProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((ActionRequesterProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ACTIONS_RELATIONSHIP.typeName))
             {
@@ -13614,9 +13680,9 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new ControlFlowProperties();
 
-                ((ControlFlowProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((ControlFlowProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((ControlFlowProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                 ((ControlFlowProperties)relationshipBeanProperties).setGuard(this.removeGuard(elementProperties));
                 ((ControlFlowProperties)relationshipBeanProperties).setMandatoryGuard(this.removeMandatoryGuard(elementProperties));
             }
@@ -13671,9 +13737,14 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DataFlowProperties();
 
-                ((DataFlowProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((DataFlowProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((DataFlowProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
                 ((DataFlowProperties)relationshipBeanProperties).setFormula(this.removeFormula(elementProperties));
                 ((DataFlowProperties)relationshipBeanProperties).setFormulaType(this.removeFormulaType(elementProperties));
             }
@@ -13681,9 +13752,9 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DataMappingProperties();
 
-                ((DataMappingProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((DataMappingProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((DataMappingProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setFormula(this.removeFormula(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setFormulaType(this.removeFormulaType(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
@@ -13758,7 +13829,9 @@ public class OpenMetadataPropertyConverterBase
 
                 ((DigitalProductDependencyProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((DigitalProductDependencyProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((DigitalProductDependencyProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName))
             {
@@ -13990,9 +14063,14 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new LineageMappingProperties();
 
-                ((LineageMappingProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((LineageMappingProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((LineageMappingProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName))
             {
@@ -14184,9 +14262,14 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new ProcessCallProperties();
 
-                ((ProcessCallProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((ProcessCallProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((ProcessCallProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
                 ((ProcessCallProperties)relationshipBeanProperties).setFormula(this.removeFormula(elementProperties));
                 ((ProcessCallProperties)relationshipBeanProperties).setFormulaType(this.removeFormulaType(elementProperties));
                 ((ProcessCallProperties)relationshipBeanProperties).setLineNumber(this.removeLineNumber(elementProperties));
@@ -14486,6 +14569,11 @@ public class OpenMetadataPropertyConverterBase
                 ((SolutionLinkingWireProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((SolutionLinkingWireProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((SolutionLinkingWireProperties)relationshipBeanProperties).setISCQualifiedNames(this.removeISCQualifiedNames(elementProperties));
+                ((SolutionLinkingWireProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((SolutionLinkingWireProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((SolutionLinkingWireProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((SolutionLinkingWireProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((SolutionLinkingWireProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName))
             {
@@ -14580,23 +14668,33 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new TypedByConceptBeadProperties();
             }
-            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ULTIMATE_DESTINATION.typeName))
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ULTIMATE_DESTINATION_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new UltimateDestinationProperties();
 
-                ((UltimateDestinationProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((UltimateDestinationProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((UltimateDestinationProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
-                ((UltimateDestinationProperties)relationshipBeanProperties).setHops(this.removeHops(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
+                ((LineageBoundaryProperties)relationshipBeanProperties).setHops(this.removeHops(elementProperties));
             }
-            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ULTIMATE_SOURCE.typeName))
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ULTIMATE_SOURCE_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new UltimateSourceProperties();
 
-                ((UltimateSourceProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((UltimateSourceProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((UltimateSourceProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
-                ((UltimateSourceProperties)relationshipBeanProperties).setHops(this.removeHops(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
+                ((LineageBoundaryProperties)relationshipBeanProperties).setHops(this.removeHops(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName))
             {
@@ -14669,7 +14767,20 @@ public class OpenMetadataPropertyConverterBase
             {
                 if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.LINEAGE_RELATIONSHIP.typeName))
                 {
-                    relationshipBeanProperties = new LineageRelationshipProperties();
+                    if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_LINEAGE_RELATIONSHIP.typeName))
+                    {
+                        relationshipBeanProperties = new DataLineageRelationshipProperties();
+
+                        ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
+                        ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
+                        ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
+                        ((DataLineageRelationshipProperties)relationshipBeanProperties).setFrequency(this.removeFrequency(elementProperties));
+                        ((DataLineageRelationshipProperties)relationshipBeanProperties).setDataExchanged(this.removeDataExchanged(elementProperties));
+                    }
+                    else
+                    {
+                        relationshipBeanProperties = new LineageRelationshipProperties();
+                    }
 
                     ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
                 }

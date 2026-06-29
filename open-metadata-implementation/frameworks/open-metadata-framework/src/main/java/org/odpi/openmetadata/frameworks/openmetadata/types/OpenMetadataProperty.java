@@ -2494,6 +2494,21 @@ public enum OpenMetadataProperty
     INTEGRATION_STYLE("integrationStyle", DataType.STRING, DataType.STRING.getDisplayName(), "Mechanism to flow data and control along the segment.", null, "be8d6edd-d405-40b4-b270-c80d7dcf5a60"),
 
     /**
+     * How frequently is this expected to run? e.g.real-time, hourly, daily, on batch completion.
+     */
+    FREQUENCY("frequency", DataType.STRING, DataType.STRING.getDisplayName(), "How frequently is this expected to run? e.g.real-time, hourly, daily, on batch completion?", "real-time", "58af8c36-71fa-4df4-9bc0-0a528422ea25"),
+
+    /**
+     * A full explanation of what data flows and why.
+     */
+    DATA_EXCHANGED("dataExchanged", DataType.STRING, DataType.STRING.getDisplayName(), "A full explanation of what data flows and why.", null, "c697b193-fb2c-482f-a220-0c3e2cd2fc4e"),
+
+    /**
+     * Is the data flowing one-way or bidirectional?
+     */
+    ONE_WAY("oneWay", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is the data flowing one-way or bidirectional?", "true", "e53b41c2-ea95-4d4c-a3ef-62b00f8d41a4"),
+
+    /**
      * Properties that describe the expected volumes of data flowing through this segment.
      */
     ESTIMATED_VOLUMETRICS("estimatedVolumetrics", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Properties that describe the expected volumes of data flowing through this segment.", null, "4ef715ca-fa9b-49fe-9c8e-7dbc7769f9c0"),

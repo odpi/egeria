@@ -124,7 +124,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
     @Override
     public String getQualifiedName()
     {
-        return "SolutionActorRole::" + guid + "::" + identifier;
+        return "SolutionActorRole::Coco::" + identifier;
     }
 
 

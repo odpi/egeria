@@ -1872,8 +1872,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getCollectionMembers(String userId,
-                                                              String collectionGUID,
+    public List<OpenMetadataRootElement> getCollectionMembers(String       userId,
+                                                              String       collectionGUID,
                                                               QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException

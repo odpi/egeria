@@ -1373,7 +1373,7 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getUltimateSourceRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_SOURCE,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_SOURCE_RELATIONSHIP,
                                                                                 this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName),
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -1424,7 +1424,7 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getUltimateDestinationRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_DESTINATION,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_DESTINATION_RELATIONSHIP,
                                                                                 this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName),
                                                                                 ClassificationPropagationRule.NONE);
 

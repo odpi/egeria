@@ -15,12 +15,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -1770,17 +1773,29 @@ public class MermaidGraphBuilderBase
                 nodeDisplayName = ratingProperties.getStarRating().getDisplayName();
             }
         }
-
-        if (nodeDisplayName == null)
+        else if (metadataElementSummary.getProperties() instanceof SearchKeywordProperties searchKeywordProperties)
         {
-            if (metadataElementSummary.getElementHeader().getType().getTypeName().equals(OpenMetadataType.LIKE.typeName))
+            nodeDisplayName = searchKeywordProperties.getDisplayName();
+        }
+        else if (metadataElementSummary.getProperties() instanceof TranslationDetailProperties translationDetailProperties)
+        {
+            nodeDisplayName = translationDetailProperties.getLanguage();
+        }
+        else if (metadataElementSummary.getProperties() instanceof LikeProperties likeProperties)
+        {
+            if (likeProperties.getEmoji() != null)
             {
-                nodeDisplayName = metadataElementSummary.getElementHeader().getVersions().getCreatedBy();
+                nodeDisplayName = metadataElementSummary.getElementHeader().getVersions().getCreatedBy() + " ( " + likeProperties.getEmoji() + " )";
             }
             else
             {
-                nodeDisplayName = metadataElementSummary.getElementHeader().getGUID();
+                nodeDisplayName = metadataElementSummary.getElementHeader().getVersions().getCreatedBy();
             }
+        }
+
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getElementHeader().getGUID();
         }
 
         return nodeDisplayName;
