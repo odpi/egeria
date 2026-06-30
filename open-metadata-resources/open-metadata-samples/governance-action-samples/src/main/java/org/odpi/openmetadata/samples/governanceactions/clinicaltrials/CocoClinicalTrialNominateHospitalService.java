@@ -251,7 +251,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                 if (certification != null)
                 {
                     governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(certification.getRelationshipGUID(),
-                                                                                          governanceContext.getOpenMetadataStore().getUpdateOptions(false),
+                                                                                          governanceContext.getOpenMetadataStore().getUpdateOptions(true),
                                                                                           updatedProperties);
                 }
             }

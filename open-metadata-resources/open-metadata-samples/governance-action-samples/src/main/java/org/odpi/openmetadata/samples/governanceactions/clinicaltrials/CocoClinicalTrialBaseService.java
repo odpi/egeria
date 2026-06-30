@@ -81,7 +81,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        final String methodName = "getEmailForPersonGUID";
+        final String methodName = "getContactDetailsForPersonGUID";
         final String parameterName = "personGUID";
 
         propertyHelper.validateGUID(personGUID, parameterName, methodName);

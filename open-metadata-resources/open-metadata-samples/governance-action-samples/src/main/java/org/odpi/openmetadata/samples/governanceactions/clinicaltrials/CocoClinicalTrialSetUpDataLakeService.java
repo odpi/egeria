@@ -824,7 +824,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
             requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName(), destinationDirectory);
 
             governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(processFlowRelationship.getRelationshipGUID(),
-                                                                                  governanceContext.getOpenMetadataStore().getUpdateOptions(false),
+                                                                                  governanceContext.getOpenMetadataStore().getUpdateOptions(true),
                                                                                   propertyHelper.addStringMapProperty(null,
                                                                                                                       OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                                                       requestParameters));

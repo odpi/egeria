@@ -496,6 +496,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         propertyHelper.validateGUID(hospitalGUID, parameterName3, methodName);
         propertyHelper.validateMandatoryName(hospitalName, parameterName4, methodName);
         propertyHelper.validateGUID(certificationTypeGUID, parameterName5, methodName);
+        propertyHelper.validateGUID(stewardGUID, parameterName6, methodName);
 
         PersonContactDetails custodianContactDetails = null;
 
