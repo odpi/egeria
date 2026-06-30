@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
@@ -23,7 +22,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataE
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -39,8 +37,7 @@ import java.util.*;
  * The data lake is unity catalog and delta lake.  It sits inside the data hub.  It is used to store the raw data
  * collected from the clinical trial.  The data lake is also used to store the processed data used for
  * analysis and calculations.
- *
- * This service is responsible for setting up the mechanisms in the data lake that support the smooth operation of a clinical trial.
+ * This service sets up the mechanisms in the data lake that support the smooth operation of a clinical trial.
  * This includes:
  * <ul>
  *     <li>Creating a new volume in the data lake catalog (Unity Catalog).</li>
@@ -531,8 +528,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         templateOptions.setAnchorScopeGUIDs(Collections.singletonList(topLevelProjectGUID));
         templateOptions.setAllowRetrieve(true);
         templateOptions.setParentGUID(catalogGUID);
-        templateOptions.setParentAtEnd1(true);
-        templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
+        templateOptions.setParentAtEnd1(false);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
 
         return openMetadataStore.createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                                                                    templateOptions,
@@ -540,10 +537,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                    null,
                                                                    null,
                                                                    placeholderProperties,
-                                                                   new NewElementProperties(propertyHelper.addEnumProperty(null,
-                                                                                                                           OpenMetadataProperty.USE_TYPE.name,
-                                                                                                                           CapabilityAssetUseType.getOpenTypeName(),
-                                                                                                                           CapabilityAssetUseType.OWNS.name())));
+                                                                   null);
 
     }
 
