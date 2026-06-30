@@ -267,7 +267,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                     if ((endDate == null) && (startDate == null))
                     {
                         governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(certification.getRelationshipGUID(),
-                                                                                              governanceContext.getOpenMetadataStore().getUpdateOptions(false),
+                                                                                              governanceContext.getOpenMetadataStore().getUpdateOptions(true),
                                                                                               updatedProperties);
                     }
                 }
