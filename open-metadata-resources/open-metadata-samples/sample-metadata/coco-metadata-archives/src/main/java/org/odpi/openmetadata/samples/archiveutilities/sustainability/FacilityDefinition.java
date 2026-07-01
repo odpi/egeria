@@ -417,6 +417,19 @@ public enum FacilityDefinition
                      OrganizationDefinition.HAMPTON),
 
     /**
+     * Bowden Arrow Hospital
+     */
+    BO("BAH",
+                     "Bowden Arrow Hospital",
+                     "Sheffield Suite, Bowden Arrow Hospital",
+                     FacilityTypeDefinition.SITE,
+                     null,
+                     WorkLocationDefinition.BOWDEN_ARROW_HOSPITAL,
+                     null,
+                     null,
+                     OrganizationDefinition.BOWDEN_ARROW),
+
+    /**
      * Oak Dene Hospital
      */
     OAK_DENE_HOSPITAL("ODH",

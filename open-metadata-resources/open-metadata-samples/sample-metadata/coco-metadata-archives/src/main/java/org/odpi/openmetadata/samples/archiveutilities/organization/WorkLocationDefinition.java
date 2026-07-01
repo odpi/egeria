@@ -278,44 +278,49 @@ public enum WorkLocationDefinition
      */
     public String getPostalAddress()
     {
-        String postalAddress = null;
+        StringBuilder postalAddress = new StringBuilder();
 
         if (buildingName != null)
         {
-            postalAddress = buildingName + ", ";
+            postalAddress.append(buildingName).append(", ");
         }
 
         if (streetNumber != null)
         {
-            postalAddress = postalAddress + streetNumber + " ";
+            postalAddress.append(streetNumber).append(" ");
         }
 
         if (streetName != null)
         {
-            postalAddress = postalAddress + streetName + ", ";
+            postalAddress.append(streetName).append(", ");
         }
 
         if (district != null)
         {
-            postalAddress = postalAddress + district + ", ";
+            postalAddress.append(district).append(", ");
         }
 
         if (city != null)
         {
-            postalAddress = postalAddress + city + ", ";
+            postalAddress.append(city).append(", ");
         }
 
         if (area != null)
         {
-            postalAddress = postalAddress + area + ", ";
+            postalAddress.append(area).append(", ");
         }
 
         if (country != null)
         {
-            postalAddress = postalAddress + country;
+            postalAddress.append(country);
         }
 
-        return postalAddress;
+        if (postalAddress.isEmpty())
+        {
+            return null;
+        }
+
+        return postalAddress.toString();
     }
 
 
