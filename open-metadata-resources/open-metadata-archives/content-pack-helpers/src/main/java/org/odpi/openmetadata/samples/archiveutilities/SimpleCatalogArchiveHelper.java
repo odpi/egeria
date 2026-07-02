@@ -4886,6 +4886,30 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create the relationship between a RelationalDBSchemaTypeList element and a child element using the RelationalDBSchemaType relationship.
+     *
+     * @param relationalDBSchemaTypeListGUID unique identifier of the parent element
+     * @param relationalDBSchemaTypeGUID unique identifier of the child element
+     */
+    public void addRelationalDBSchema(String relationalDBSchemaTypeListGUID,
+                                      String relationalDBSchemaTypeGUID)
+    {
+        EntityDetail relationalDBSchemaTypeListEntity = archiveBuilder.getEntity(relationalDBSchemaTypeListGUID);
+        EntityDetail relationalDBSchemaTypeEntity = archiveBuilder.getEntity(relationalDBSchemaTypeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(relationalDBSchemaTypeListEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(relationalDBSchemaTypeEntity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName,
+                                                                     idToGUIDMap.getGUID(relationalDBSchemaTypeListGUID + "_to_" + relationalDBSchemaTypeGUID + "_relational_db_schema_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
      * Create the relationship between a SchemaType element and a child SchemaAttribute element using the AttributeForSchema relationship.
      *
      * @param schemaTypeGUID unique identifier of the parent element

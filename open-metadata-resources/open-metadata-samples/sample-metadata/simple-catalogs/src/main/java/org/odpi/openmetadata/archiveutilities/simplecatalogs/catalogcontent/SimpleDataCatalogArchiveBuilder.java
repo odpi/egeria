@@ -92,17 +92,6 @@ public class SimpleDataCatalogArchiveBuilder
     private static final int    customerCardIdLength        = 10;
 
     /*
-     * Additional AssetTypes for data stores
-     */
-    private static final String databaseAssetTypeName            = OpenMetadataType.DATABASE.typeName;
-    private static final String databaseSchemaAssetTypeName      = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName;
-    private static final String relationalTopLevelSchemaTypeName = OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName;
-    private static final String relationalTableTypeName          = OpenMetadataType.RELATIONAL_TABLE.typeName;
-    private static final String relationalTableSchemaTypeName    = OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName;
-    private static final String relationalColumnTypeName         = OpenMetadataType.RELATIONAL_COLUMN.typeName;
-
-
-    /*
      * Specific values for initializing TypeDefs
      */
     private static final long   versionNumber = 1L;
@@ -194,7 +183,7 @@ public class SimpleDataCatalogArchiveBuilder
         classifications.add(archiveHelper.getAnchorClassification(machineGUID, OpenMetadataType.BARE_METAL_COMPUTER.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
 
 
-        String databaseGUID = archiveHelper.addDataAsset(databaseAssetTypeName,
+        String databaseGUID = archiveHelper.addDataAsset(OpenMetadataType.DATABASE.typeName,
                                                          branchQualifiedName,
                                                          branchDisplayName,
                                                          branchResourceName,
@@ -208,7 +197,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                          null,
                                                          classifications);
 
-        String databaseSchemaGUID = archiveHelper.addDataAsset(databaseSchemaAssetTypeName,
+        String databaseSchemaGUID = archiveHelper.addDataAsset(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                                retailSchemaQualifiedName,
                                                                retailSchemaDisplayName,
                                                                retailSchemaResourceName,
@@ -224,18 +213,28 @@ public class SimpleDataCatalogArchiveBuilder
 
         archiveHelper.addDataSetContent(databaseSchemaGUID, databaseGUID, null, null, null, null);
 
+        String databaseSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(databaseSchemaGUID,
+                                                                            OpenMetadataType.DATABASE.typeName,
+                                                                            OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_LIST.typeName,
+                                                                            branchQualifiedName + "_schema_detail",
+                                                                            branchDisplayName + " Schema Detail",
+                                                                            null,
+                                                                            null);
+
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(databaseSchemaGUID,
-                                                                            databaseSchemaAssetTypeName,
-                                                                            relationalTopLevelSchemaTypeName,
+                                                                            OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                            OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                             retailSchemaQualifiedName + "_schema_detail",
                                                                             retailSchemaDisplayName + " Schema Detail",
                                                                             null,
                                                                             null);
 
+        archiveHelper.addRelationalDBSchema(databaseSchemaTypeGUID, topLevelSchemaTypeGUID);
+
         String relationalTableGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
-                                                                      databaseSchemaAssetTypeName,
-                                                                      relationalTableTypeName,
-                                                                      relationalTableSchemaTypeName,
+                                                                      OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                      OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                                      OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName,
                                                                       customerTableQualifiedName,
                                                                       customerTableDisplayName,
                                                                       customerTablePathName,
@@ -248,8 +247,8 @@ public class SimpleDataCatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 0, 0, 0, relationalTableGUID);
 
         String relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
-                                                                       databaseSchemaAssetTypeName,
-                                                                       relationalColumnTypeName,
+                                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                       OpenMetadataType.RELATIONAL_COLUMN.typeName,
                                                                        null,
                                                                        customerIdQualifiedName,
                                                                        customerIdDisplayName,
@@ -263,8 +262,8 @@ public class SimpleDataCatalogArchiveBuilder
         archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 1, 0, 0, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
-                                                                databaseSchemaAssetTypeName,
-                                                                relationalColumnTypeName,
+                                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                OpenMetadataType.RELATIONAL_COLUMN.typeName,
                                                                 null,
                                                                 customerNameQualifiedName,
                                                                 customerNameDisplayName,
@@ -278,8 +277,8 @@ public class SimpleDataCatalogArchiveBuilder
         archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 2, 1, 1, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
-                                                                databaseSchemaAssetTypeName,
-                                                                relationalColumnTypeName,
+                                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                OpenMetadataType.RELATIONAL_COLUMN.typeName,
                                                                 null,
                                                                 customerStatusQualifiedName,
                                                                 customerStatusDisplayName,
@@ -293,8 +292,8 @@ public class SimpleDataCatalogArchiveBuilder
         archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 3, 1, 1, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
-                                                                databaseSchemaAssetTypeName,
-                                                                relationalColumnTypeName,
+                                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                OpenMetadataType.RELATIONAL_COLUMN.typeName,
                                                                 null,
                                                                 customerCardIdQualifiedName,
                                                                 customerCardIdDisplayName,

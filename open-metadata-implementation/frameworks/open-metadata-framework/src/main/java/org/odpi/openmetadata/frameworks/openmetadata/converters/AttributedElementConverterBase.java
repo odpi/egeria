@@ -503,6 +503,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             processedRelationshipTypes.add(OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName);
             processedRelationshipTypes.add(OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setContainsDBSchemas(super.getRelatedElements(OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDatabaseSchemaType(super.getRelatedElement(OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName);
 
             attributedMetadataElement.setForeignKeys(super.getRelatedElements(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setLinkedToPrimaryKey(super.getRelatedElement(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName, relatedMetadataElements, true));

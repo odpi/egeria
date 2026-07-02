@@ -438,6 +438,8 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedElementSummary(openMetadataRootElement.getAPIRequest(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummary(openMetadataRootElement.getAPIResponse(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
+            super.addRelatedElementSummary(openMetadataRootElement.getDatabaseSchemaType(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getContainsDBSchemas(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummary(openMetadataRootElement.getLinkedToPrimaryKey(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getForeignKeys(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getVertices(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);

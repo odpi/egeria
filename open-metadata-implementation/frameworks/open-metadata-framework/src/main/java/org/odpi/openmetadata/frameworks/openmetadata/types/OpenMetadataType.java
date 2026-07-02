@@ -58,9 +58,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreIn
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
@@ -523,6 +521,16 @@ public enum OpenMetadataType
                       "06af0148-0fc4-4bb0-a972-3af64592e080",
                       "Defines that a collection should be treated like a folder.",
                       CollectionFolderProperties.class),
+
+    /**
+     * A collection of IT systems and related equipment supporting a key function of the business.
+     */
+    IT_SUBSYSTEM("f814d981-913c-4a3c-8204-398e6d772853",
+                      "ITSubsystem",
+                      OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                      "1c9ede84-88ad-4635-af7b-ea8088871a3f",
+                      "A collection of IT systems and related equipment supporting a key function of the business.",
+                      ITSubsystemProperties.class),
 
     /**
      * This collection identifies a set of elements that are part of a folio of work or responsibility.
@@ -4933,11 +4941,30 @@ public enum OpenMetadataType
     /**
      * A schema type for a relational database.
      */
+    RELATIONAL_DB_SCHEMA_TYPE_LIST("8104dc9c-31ed-40c9-b8de-d0e2e7d1f269",
+                              "RelationalDBSchemaTypeList",
+                              OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
+                              "fb32ce38-2aa0-4339-b5dd-e0fb6f8971ad",
+                              "A schema type for a relational database.",
+                              RelationalDBSchemaTypeListProperties.class),
+
+    /**
+     * A link between a relational database schema list for a relational database schema's schema type.
+     */
+    RELATIONAL_DB_SCHEMA("f0bbd2ef-9dbe-42b4-9797-a35d1bd59d1d",
+                              "RelationalDBSchema",
+                              OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
+                              "75494963-67b7-4288-a430-b71c9c40ef6e",
+                              "A link between a relational database schema list for a relational database schema's schema type.",
+                              RelationalDBSchemaProperties.class),
+    /**
+     * A schema type for a relational database schema.
+     */
     RELATIONAL_DB_SCHEMA_TYPE("f20f5f45-1afb-41c1-9a09-34d8812626a4",
                               "RelationalDBSchemaType",
                               OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                               "35e655b6-019d-411c-bd6b-a0a01f542d74",
-                              "A schema type for a relational database.",
+                              "A schema type for a relational database schema.",
                               RelationalDBSchemaTypeProperties.class),
 
     /**
