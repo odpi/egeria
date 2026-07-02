@@ -64,9 +64,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreIn
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
@@ -14386,6 +14384,10 @@ public class OpenMetadataPropertyConverterBase
                 ((RelatedTermProperties)relationshipBeanProperties).setSteward(this.removeSteward(elementProperties));
                 ((RelatedTermProperties)relationshipBeanProperties).setSource(this.removeSource(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName))
+            {
+                relationshipBeanProperties = new RelationalDBSchemaProperties();
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ReplacementTermProperties();
@@ -15172,6 +15174,10 @@ public class OpenMetadataPropertyConverterBase
                             ((InformationSupplyChainProperties)beanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                             ((InformationSupplyChainProperties)beanProperties).setEstimatedVolumetrics(this.removeEstimatedVolumetrics(elementProperties));
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.IT_SUBSYSTEM.typeName))
+                        {
+                            beanProperties = new ITSubsystemProperties();
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION.typeName))
                         {
                             beanProperties = new NamingStandardRuleSetProperties();
@@ -15751,6 +15757,10 @@ public class OpenMetadataPropertyConverterBase
                                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName))
                                     {
                                         beanProperties = new RelationalDBSchemaTypeProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_LIST.typeName))
+                                    {
+                                        beanProperties = new RelationalDBSchemaTypeListProperties();
                                     }
                                     else
                                     {

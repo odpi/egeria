@@ -28,8 +28,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String archiveFileName = "CocoSustainabilityArchive.omarchive";
 
     private static final String sustainabilityFolioGUID = "1b6a5706-9619-4432-b10f-743d89675679";
-    private static final String sustainabilityFolioQName = "Folio::Sustainability";
-    private static final String sustainabilityFolioDisplayName = "Sustainability Folio";
+    private static final String sustainabilityFolioQName = "Folio::Sustainability Community";
+    private static final String sustainabilityFolioDisplayName = "Sustainability Community Folio";
     /*
      * This is the header information for the archive.
      */

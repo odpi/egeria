@@ -161,6 +161,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0013Actions();
         update0019MoreInformation();
+        update0021Collections();
         update0112Person();
         update0118ActorRoles();
         update0135ActionsForPeople();
@@ -175,6 +176,7 @@ public class OpenMetadataTypesArchive
         update0463EngineActions();
         update0485DataProcessingPurposes();
         update0505SchemaAttributes();
+        update0534RelationalSchemas();
         update0595DesignPatterns();
         add0705DataSharing();
         update0735SolutionPortsAndWires();
@@ -235,6 +237,20 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0021Collections()
+    {
+        this.archiveBuilder.addEntityDef(getITSubsystemEntity());
+    }
+
+    private EntityDef getITSubsystemEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.IT_SUBSYSTEM,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -991,6 +1007,64 @@ public class OpenMetadataTypesArchive
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
 
         relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0534RelationalSchemas()
+    {
+        this.archiveBuilder.addEntityDef(addRelationalDBSchemaListEntity());
+        this.archiveBuilder.addRelationshipDef(addRelationalDBSchemaRelationship());
+    }
+
+
+    private EntityDef addRelationalDBSchemaListEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_LIST,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
+    }
+
+
+    private RelationshipDef addRelationalDBSchemaRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.RELATIONAL_DB_SCHEMA,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "databaseSchemaType";
+        final String                     end1AttributeDescription     = "Link to the database where this schema is located.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_LIST.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "containsDBSchemas";
+        final String                     end2AttributeDescription     = "The schemas found in the database.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
     }

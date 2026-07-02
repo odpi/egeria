@@ -87,7 +87,7 @@ public enum CocoCollectionDefinition
                                null),
 
     /**
-     * Governance Folios
+     * Governance Folios - RootCollection::Coco::Governance Folios
      */
     GOVERNANCE_FOLIOS("e3567b73-1d1b-4ee2-ad06-d1d70dcdf70e",
                       OpenMetadataType.ROOT_COLLECTION.typeName,
@@ -105,9 +105,32 @@ public enum CocoCollectionDefinition
                       OpenMetadataType.ROOT_COLLECTION.typeName,
                       null,
                       null,
-                      "Coco Pharmaceuticals Solutions",
+                      "Strategic Solutions",
                       "These solutions are critical for the success of Coco Pharmaceuticals.",
                       null),
+
+
+    /**
+     * Strategic Data Hubs - RootCollection::Coco::Strategic Data Hubs
+     */
+    DATA_HUBS("90725652-7878-4f32-aef9-be6a94670411",
+              OpenMetadataType.ROOT_COLLECTION.typeName,
+              null,
+              null,
+              "Strategic Data Hubs",
+              "These Data Hubs manage authoritative data at Coco Pharmaceuticals.  They are designed for sharing and distribution within the organization.",
+              null),
+
+    /**
+     * IT Systems Inventory - RootCollection::Coco::IT Systems Inventory
+     */
+    IT_SUBSYSTEMS("2df4c8bb-2781-4426-9590-1ac064b64c8a",
+              OpenMetadataType.ROOT_COLLECTION.typeName,
+              null,
+              null,
+              "IT Systems Inventory",
+              "These systems are the strategic systems supporting Coco Pharmaceuticals transformation.  They are organizaed by subsystem.",
+              null),
 
 
     ;
