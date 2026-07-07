@@ -40,12 +40,8 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
     /*
      * These values are extracted from the server definition's server capabilities.
      * Data Access Manager is the software capability that all of the Unity catalog elements are linked off of.
-     * The metadata collection information comes from the metadata collection that is linked off of the
-     * InventoryCatalog software capability.
      */
     String dataAccessManagerGUID = null;
-    String metadataCollectionGUID = null;
-    String metadataCollectionName = null;
 
     /*
      * This is the connector to access the Unity Catalog services.
