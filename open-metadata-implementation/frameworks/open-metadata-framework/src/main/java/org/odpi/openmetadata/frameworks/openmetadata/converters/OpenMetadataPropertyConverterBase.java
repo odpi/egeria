@@ -15659,6 +15659,10 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new GovernanceApproachProperties();
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RISK.typeName))
+                            {
+                                beanProperties = new RiskProperties();
+                            }
                             else
                             {
                                 beanProperties = new GovernancePolicyProperties();

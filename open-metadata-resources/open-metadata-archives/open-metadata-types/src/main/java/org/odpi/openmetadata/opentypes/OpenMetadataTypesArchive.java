@@ -169,6 +169,7 @@ public class OpenMetadataTypesArchive
         update0340Dictionary();
         update0395SupplementaryProperties();
         update0405GovernanceDrivers();
+        update0415GovernanceResponses();
         update0423SecurityDefinitions();
         update0424GovernanceZones();
         update0451Notifications();
@@ -817,6 +818,23 @@ public class OpenMetadataTypesArchive
 
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0415GovernanceResponses()
+    {
+        this.archiveBuilder.addEntityDef(getRiskEntity());
+    }
+
+
+    private EntityDef getRiskEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RISK,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName));
     }
 
     /*
