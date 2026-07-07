@@ -3285,6 +3285,17 @@ public enum OpenMetadataType
                         "Defines a preferred approach to managing or using data.",
                         GovernanceApproachProperties.class),
 
+
+    /**
+     * Defines a preferred approach to managing or using data.
+     */
+    RISK("e214d7d8-e4e4-4f67-841d-702b4c6c3d0a",
+         "Risk",
+         OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+         "c0cac30b-9e05-488a-a478-33103502006b",
+         "A risk is the probability that a threat will materialize and the potential consequences if it does.",
+         RiskProperties.class),
+
     /**
      * Links related governance policies together.
      */
