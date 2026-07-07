@@ -140,7 +140,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                  * Create the object that does all the work.
                  */
                 String address = jdbcResourceConnector.getConnection().getEndpoint().getNetworkAddress();
-                String catalog = "";
+                String catalog = null;
 
                 if (configurationProperties.get("catalog") != null)
                 {
