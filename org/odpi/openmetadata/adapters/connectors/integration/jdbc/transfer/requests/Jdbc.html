@@ -176,7 +176,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Get foreign keys as described by the primary key columns referenced by foreign key columns of target table</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/JdbcPrimaryKey.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcPrimaryKey</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrimaryKeys(java.lang.String,java.lang.String)" class="member-name-link">getPrimaryKeys</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrimaryKeys(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getPrimaryKeys</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get table primary keys</div>
@@ -441,13 +442,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getPrimaryKeys(java.lang.String,java.lang.String)">
+<section class="detail" id="getPrimaryKeys(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getPrimaryKeys</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/JdbcPrimaryKey.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcPrimaryKey</a>&gt;</span>&nbsp;<span class="element-name">getPrimaryKeys</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/JdbcPrimaryKey.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcPrimaryKey</a>&gt;</span>&nbsp;<span class="element-name">getPrimaryKeys</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName)</span></div>
 <div class="block">Get table primary keys</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>catalog</code> - catalog name</dd>
 <dd><code>schemaName</code> - schema name</dd>
 <dd><code>tableName</code> - table name</dd>
 <dt>Returns:</dt>
