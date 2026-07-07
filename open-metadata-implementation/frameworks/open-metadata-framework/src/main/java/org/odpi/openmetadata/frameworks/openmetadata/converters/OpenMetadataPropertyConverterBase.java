@@ -8360,6 +8360,29 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the receivedGuards property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return list of guards
+     */
+    protected List<String> removeProducedGuards(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeProducedGuards";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.PRODUCED_GUARDS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the mandatoryGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -15478,6 +15501,7 @@ public class OpenMetadataPropertyConverterBase
                                     }
 
                                     ((GovernanceActionTypeProperties) beanProperties).setWaitTime(this.removeWaitTime(elementProperties));
+                                    ((GovernanceActionTypeProperties) beanProperties).setProducedGuards(this.removeProducedGuards(elementProperties));
                                 }
                                 else
                                 {

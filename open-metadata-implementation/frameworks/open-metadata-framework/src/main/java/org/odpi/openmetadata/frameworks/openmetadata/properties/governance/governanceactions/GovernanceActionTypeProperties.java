@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance.gove
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceActionTypeProperties extends GovernanceActionProperties
 {
-    private int waitTime = 0;
+    private int          waitTime = 0;
+    private List<String> producedGuards = null;
 
 
     /**
@@ -50,7 +52,8 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
 
         if (template != null)
         {
-            waitTime = template.getWaitTime();
+            waitTime       = template.getWaitTime();
+            producedGuards = template.getProducedGuards();
         }
     }
 
@@ -78,6 +81,28 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
 
 
     /**
+     * Return the list of guards produced by the governance service.
+     *
+     * @return list of guards
+     */
+    public List<String> getProducedGuards()
+    {
+        return producedGuards;
+    }
+
+
+    /**
+     * Set up the list of guards produced by the governance service.
+     *
+     * @param producedGuards list of guards
+     */
+    public void setProducedGuards(List<String> producedGuards)
+    {
+        this.producedGuards = producedGuards;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -87,6 +112,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
     {
         return "GovernanceActionTypeProperties{" +
                 "waitTime=" + waitTime +
+                ", producedGuards=" + producedGuards +
                 "} " + super.toString();
     }
 
@@ -100,20 +126,10 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GovernanceActionTypeProperties that = (GovernanceActionTypeProperties) objectToCompare;
-        return waitTime == that.waitTime;
+        return waitTime == that.waitTime && Objects.equals(producedGuards, that.producedGuards);
     }
 
 
@@ -125,6 +141,6 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), waitTime);
+        return Objects.hash(super.hashCode(), waitTime, producedGuards);
     }
 }

@@ -1547,6 +1547,10 @@ public class OpenMetadataElementBuilder
                                                                                           OpenMetadataProperty.WAIT_TIME.name,
                                                                                           governanceActionTypeProperties.getWaitTime());
 
+                                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                                  OpenMetadataProperty.PRODUCED_GUARDS.name,
+                                                                                                  governanceActionTypeProperties.getProducedGuards());
+
                                         if (governanceActionProperties instanceof GovernanceActionProcessStepProperties governanceActionProcessStepProperties)
                                         {
                                             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
