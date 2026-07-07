@@ -123,13 +123,14 @@ public class Jdbc {
     /**
      * Get table primary keys
      *
+     * @param catalog catalog name
      * @param schemaName schema name
      * @param tableName table name
      *
      * @return primary keys
      */
-    public List<JdbcPrimaryKey> getPrimaryKeys(String schemaName, String tableName){
-        return new JdbcGetPrimaryKeys(jdbcMetadata, auditLog).apply(schemaName, tableName);
+    public List<JdbcPrimaryKey> getPrimaryKeys(String catalog, String schemaName, String tableName){
+        return new JdbcGetPrimaryKeys(jdbcMetadata, auditLog).apply(catalog, schemaName, tableName);
     }
 
     /**

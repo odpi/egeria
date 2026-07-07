@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
+import org.apache.commons.lang3.function.TriFunction;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadata;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcPrimaryKey;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -10,14 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC;
 
 /**
  * Manages the getPrimaryKeys call to jdbc
  */
-class JdbcGetPrimaryKeys implements BiFunction<String, String, List<JdbcPrimaryKey>> {
+class JdbcGetPrimaryKeys implements TriFunction<String, String, String, List<JdbcPrimaryKey>> {
 
     private final JdbcMetadata jdbcMetadata;
     private final AuditLog auditLog;
@@ -30,17 +30,18 @@ class JdbcGetPrimaryKeys implements BiFunction<String, String, List<JdbcPrimaryK
     /**
      * Get table primary keys
      *
+     * @param catalog catalog name
      * @param schemaName schema name
      * @param tableName table name
      *
      * @return primary keys
      */
     @Override
-    public List<JdbcPrimaryKey> apply(String schemaName, String tableName){
+    public List<JdbcPrimaryKey> apply(String catalog, String schemaName, String tableName){
         String methodName = "JdbcGetPrimaryKeys";
         try{
             return Optional.ofNullable(
-                    jdbcMetadata.getPrimaryKeys(null, schemaName, tableName))
+                    jdbcMetadata.getPrimaryKeys(catalog, schemaName, tableName))
                     .orElseGet(ArrayList::new);
         }catch (SQLException sqlException){
             auditLog.logException("Reading primary keys from JDBC for schema " + schemaName + " and table " + tableName,
