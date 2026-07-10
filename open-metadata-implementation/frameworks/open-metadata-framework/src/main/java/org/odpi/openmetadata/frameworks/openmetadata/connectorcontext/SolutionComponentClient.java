@@ -251,7 +251,7 @@ public class SolutionComponentClient extends ConnectorContextClientBase
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        solutionComponentHandler.detachSolutionLinkingWire(connectorUserId, solutionComponentOneGUID, solutionComponentTwoGUID, deleteOptions);
+        solutionComponentHandler.detachAllSolutionLinkingWires(connectorUserId, solutionComponentOneGUID, solutionComponentTwoGUID, deleteOptions);
     }
 
 

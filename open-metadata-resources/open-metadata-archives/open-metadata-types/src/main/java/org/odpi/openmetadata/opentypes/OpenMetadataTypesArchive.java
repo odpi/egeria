@@ -1580,6 +1580,21 @@ public class OpenMetadataTypesArchive
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setMultiLink(true);
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "wiredFrom";
+        final String                     end1AttributeDescription     = "Component that the wire originates from.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         /*
          * Build the attributes

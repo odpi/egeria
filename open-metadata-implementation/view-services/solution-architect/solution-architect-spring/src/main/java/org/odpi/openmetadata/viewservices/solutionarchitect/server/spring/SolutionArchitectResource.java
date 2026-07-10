@@ -829,7 +829,7 @@ public class SolutionArchitectResource
      * @param solutionComponentTwoGUID      unique identifier of the second solution component
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return relationship GUID or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -842,7 +842,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public VoidResponse linkSolutionLinkingWire(@PathVariable
+    public GUIDResponse linkSolutionLinkingWire(@PathVariable
                                                 String                     serverName,
                                                 @PathVariable
                                                 String solutionComponentOneGUID,
@@ -856,7 +856,35 @@ public class SolutionArchitectResource
 
 
     /**
-     * Detach a solution component from a peer solution component.
+     * Update the solution linking wire relationship.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param relationshipGUID unique identifier for the relationship
+     * @param requestBody the properties of the relationship
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/relationships/{relationshipGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateSolutionLinkingWire",
+            description="Update the solution linking wire relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse updateSolutionLinkingWire(@PathVariable String                        serverName,
+                                                  @PathVariable String                        relationshipGUID,
+                                                  @RequestBody  UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateSolutionLinkingWire(serverName, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Delete all solution linking wire relationships between two metadata elements.
      *
      * @param serverName         name of called server
      * @param solutionComponentOneGUID  unique identifier of the first solution component
@@ -871,12 +899,12 @@ public class SolutionArchitectResource
     @PostMapping(path = "/solution-components/{solutionComponentOneGUID}/wired-to/{solutionComponentTwoGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachSolutionLinkingWire",
-            description="Detach a solution component from a peer solution component.",
+    @Operation(summary="detachAllSolutionLinkingWires",
+            description="Detach a solution component from a peer solution component.  All solution linking wires are removed.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public VoidResponse detachSolutionLinkingWire(@PathVariable
+    public VoidResponse detachAllSolutionLinkingWires(@PathVariable
                                                   String                    serverName,
                                                   @PathVariable
                                                   String solutionComponentOneGUID,
@@ -885,7 +913,38 @@ public class SolutionArchitectResource
                                                   @RequestBody (required = false)
                                                   DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
+        return restAPI.detachAllSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution component from a peer solution component.
+     *
+     * @param serverName         name of called server
+     * @param relationshipGUID  unique identifier of the first solution component
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/wires/{relationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSolutionLinkingWire",
+            description="Detach a solution component from a peer solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse detachSolutionLinkingWire(@PathVariable
+                                                  String                    serverName,
+                                                  @PathVariable
+                                                  String relationshipGUID,
+                                                  @RequestBody (required = false)
+                                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSolutionLinkingWire(serverName, relationshipGUID, requestBody);
     }
 
 
