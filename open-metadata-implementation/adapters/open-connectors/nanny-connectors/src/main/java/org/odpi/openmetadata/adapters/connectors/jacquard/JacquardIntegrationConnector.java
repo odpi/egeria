@@ -2869,6 +2869,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
             Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
+            Set<String> newSolutionComponentQNames = new HashSet<>();
 
             /*
              * Add the solution components to open metadata.  A map of qualifiedNames to GUIDs is maintained to
@@ -2891,6 +2892,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
                 solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
 
+                /*
+                 * Has the component already been defined?
+                 */
                 List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, null);
 
                 if (solutionComponents != null)
@@ -2911,10 +2915,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 if (componentGUID == null)
                 {
+                    /*
+                     * Create the missing component.
+                     */
                     componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
                                                                                     null,
                                                                                     solutionComponentProperties,
                                                                                     null);
+
+                    /*
+                     * Record the missing component so its wires are also added.
+                     */
+                    newSolutionComponentQNames.add(solutionComponentProperties.getQualifiedName());
 
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
@@ -2927,27 +2939,30 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
 
             /*
-             * Link the components together
+             * Link the new components together.
              */
             for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
             {
-                SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
+                if ((newSolutionComponentQNames.contains(solutionComponentWire.getComponent1().getQualifiedName())) || (newSolutionComponentQNames.contains(solutionComponentWire.getComponent2().getQualifiedName())))
+                {
+                    SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
 
-                solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
-                solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
+                    solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
+                    solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
 
-                solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
-                                                                qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
-                                                                new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
-                                                                solutionLinkingWireProperties);
+                    solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
+                                                                    qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
+                                                                    new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
+                                                                    solutionLinkingWireProperties);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                            solutionComponentWire.getComponent1().getQualifiedName(),
-                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                            solutionComponentWire.getComponent2().getQualifiedName(),
-                                                                                            OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                                solutionComponentWire.getComponent1().getQualifiedName(),
+                                                                                                OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                                solutionComponentWire.getComponent2().getQualifiedName(),
+                                                                                                OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
+                }
             }
 
             /*
