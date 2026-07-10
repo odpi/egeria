@@ -8,14 +8,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.DesignPatternHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworkservices.omf.rest.RelatedMetadataElementsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -1501,12 +1499,12 @@ public class SolutionArchitectRESTServices extends TokenController
      * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return relationship GUID or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSolutionLinkingWire(String                     serverName,
+    public GUIDResponse linkSolutionLinkingWire(String                     serverName,
                                                 String                     solutionComponentOneGUID,
                                                 String                     solutionComponentTwoGUID,
                                                 NewRelationshipRequestBody requestBody)
@@ -1515,7 +1513,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1531,19 +1529,19 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties)
                 {
-                    handler.linkSolutionLinkingWire(userId,
-                                                    solutionComponentOneGUID,
-                                                    solutionComponentTwoGUID,
-                                                    requestBody,
-                                                    solutionLinkingWireProperties);
+                    response.setGUID(handler.linkSolutionLinkingWire(userId,
+                                                                     solutionComponentOneGUID,
+                                                                     solutionComponentTwoGUID,
+                                                                     requestBody,
+                                                                     solutionLinkingWireProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkSolutionLinkingWire(userId,
-                                                    solutionComponentOneGUID,
-                                                    solutionComponentTwoGUID,
-                                                    requestBody,
-                                                    null);
+                    response.setGUID(handler.linkSolutionLinkingWire(userId,
+                                                                     solutionComponentOneGUID,
+                                                                     solutionComponentTwoGUID,
+                                                                     requestBody,
+                                                                     null));
                 }
                 else
                 {
@@ -1570,7 +1568,65 @@ public class SolutionArchitectRESTServices extends TokenController
 
 
     /**
-     * Detach a solution component from a solution component.
+     * Update the solution linking wire relationship.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param relationshipGUID unique identifier for the relationship
+     * @param requestBody the properties of the relationship
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateSolutionLinkingWire(String                        serverName,
+                                                  String                        relationshipGUID,
+                                                  UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateSolutionLinkingWire";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SolutionLinkingWireProperties properties)
+                {
+                    handler.updateSolutionLinkingWire(userId, relationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LineageRelationshipProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete all solution linking wire relationships between two metadata elements.
      *
      * @param serverName         name of called server
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
@@ -1582,9 +1638,56 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    public VoidResponse detachAllSolutionLinkingWire(String                        serverName,
+                                                     String                        solutionComponentOneGUID,
+                                                     String                        solutionComponentTwoGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAllSolutionLinkingWire";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            handler.detachAllSolutionLinkingWires(userId,
+                                                  solutionComponentOneGUID,
+                                                  solutionComponentTwoGUID,
+                                                  requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a solution component from a solution component.
+     *
+     * @param serverName       name of called server
+     * @param relationshipGUID unique identifier of the relationship (returned from create)
+     * @param requestBody      description of the relationship.
+     * @return void or
+     * InvalidParameterException  one of the parameters is null or invalid.
+     * PropertyServerException    a problem retrieving information from the property server(s).
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
     public VoidResponse detachSolutionLinkingWire(String                        serverName,
-                                                  String                        solutionComponentOneGUID,
-                                                  String                        solutionComponentTwoGUID,
+                                                  String                        relationshipGUID,
                                                   DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSolutionLinkingWire";
@@ -1604,10 +1707,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
 
-            handler.detachSolutionLinkingWire(userId,
-                                              solutionComponentOneGUID,
-                                              solutionComponentTwoGUID,
-                                              requestBody);
+            handler.detachSolutionLinkingWire(userId, relationshipGUID, requestBody);
         }
         catch (Throwable error)
         {

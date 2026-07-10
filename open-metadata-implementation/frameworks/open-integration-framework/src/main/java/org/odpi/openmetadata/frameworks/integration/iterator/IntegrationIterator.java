@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
@@ -124,7 +125,14 @@ public abstract class IntegrationIterator
             element = elementCache.remove(0);
         }
 
-        return this.fillOutMemberElement(element, true);
+        String qualifiedName = null;
+
+        if ((element != null) && (element.getProperties() instanceof ReferenceableProperties referenceableProperties))
+        {
+            qualifiedName = referenceableProperties.getQualifiedName();
+        }
+
+        return this.fillOutMemberElement(element, qualifiedName, true);
     }
 
 
@@ -152,7 +160,7 @@ public abstract class IntegrationIterator
 
         if (element != null)
         {
-            return this.fillOutMemberElement(element, true);
+            return this.fillOutMemberElement(element, qualifiedName,true);
         }
 
         element = classificationExplorerClient.getLineageElementByUniqueName(qualifiedName,
@@ -160,31 +168,33 @@ public abstract class IntegrationIterator
                                                                              classificationExplorerClient.getGetOptions());
         if (element != null)
         {
-            return this.fillOutMemberElement(element, false);
+            return this.fillOutMemberElement(element, qualifiedName,false);
         }
 
         element = classificationExplorerClient.getDeletedElementByUniqueName(qualifiedName,
                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                              classificationExplorerClient.getGetOptions());
 
-        return this.fillOutMemberElement(element, false);
+        return this.fillOutMemberElement(element, qualifiedName, false);
     }
 
 
     /**
      * Create the member element.
      *
-     * @param element element retrieved from the open metadata repositories.
+     * @param element         element retrieved from the open metadata repositories.
+     * @param qualifiedName   qualified name of the element
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
-     *
      * @return member element
      */
     private MemberElement fillOutMemberElement(OpenMetadataRootElement element,
+                                               String                  qualifiedName,
                                                boolean                 isElementActive)
     {
         if (metadataCollectionGUID != null)
         {
             return new MemberElement(element,
+                                     qualifiedName,
                                      metadataCollectionGUID,
                                      isElementActive,
                                      catalogTargetName,
@@ -195,6 +205,7 @@ public abstract class IntegrationIterator
         else if (element != null)
         {
             return new MemberElement(element,
+                                     qualifiedName,
                                      element.getElementHeader().getGUID(),
                                      isElementActive,
                                      catalogTargetName,
@@ -205,6 +216,7 @@ public abstract class IntegrationIterator
         else
         {
             return new MemberElement(null,
+                                     qualifiedName,
                                      null,
                                      isElementActive,
                                      catalogTargetName,

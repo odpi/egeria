@@ -26,6 +26,7 @@ import java.util.Map;
 public class MemberElement
 {
     private final OpenMetadataRootElement       element;
+    private final String                        qualifiedName;
     private       RelatedMetadataElementSummary externalIdentifier = null;
     private final String                        catalogTargetName;
     private final String                        connectorName;
@@ -39,6 +40,7 @@ public class MemberElement
      * Create a member element.
      *
      * @param element open metadata element
+     * @param qualifiedName   qualified name of the element
      * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
      * @param catalogTargetName name of target
@@ -47,6 +49,7 @@ public class MemberElement
      * @param auditLog logging destination
      */
     MemberElement(OpenMetadataRootElement  element,
+                  String                   qualifiedName,
                   String                   externalScopeGUID,
                   boolean                  isElementActive,
                   String                   catalogTargetName,
@@ -55,6 +58,7 @@ public class MemberElement
                   AuditLog                 auditLog)
     {
         this.element                        = element;
+        this.qualifiedName                  = qualifiedName;
         this.isElementActive                = isElementActive;
         this.catalogTargetName              = catalogTargetName;
         this.connectorName                  = connectorName;
@@ -409,6 +413,7 @@ public class MemberElement
 
         return "MemberElement{" +
                 "element=" + elementGUID +
+                ", qualifiedName=" + qualifiedName +
                 ", externalIdentifiers=" + externalIdentifier +
                 ", catalogTargetName='" + catalogTargetName + '\'' +
                 ", isElementActive=" + isElementActive +

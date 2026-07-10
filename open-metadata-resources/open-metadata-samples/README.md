@@ -18,4 +18,4 @@ The open metadata samples illustrate how to use the various APIs of Egeria.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.
+Copyright Contributors to the Egeria project.

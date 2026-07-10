@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
@@ -221,24 +220,25 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     /**
      * Attach an element communicating with a solution component.
      *
-     * @param userId                  userId of the user making the request
+     * @param userId                   userId of the user making the request
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
      * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
-     * @param makeAnchorOptions  options to control access to open metadata
-     * @param relationshipProperties  additional properties for the relationship.
+     * @param makeAnchorOptions        options to control access to open metadata
+     * @param relationshipProperties   additional properties for the relationship.
+     * @return unique identifier of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSolutionLinkingWire(String                        userId,
-                                        String                        solutionComponentOneGUID,
-                                        String                        solutionComponentTwoGUID,
-                                        MakeAnchorOptions             makeAnchorOptions,
-                                        SolutionLinkingWireProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public String linkSolutionLinkingWire(String                        userId,
+                                          String                        solutionComponentOneGUID,
+                                          String                        solutionComponentTwoGUID,
+                                          MakeAnchorOptions             makeAnchorOptions,
+                                          SolutionLinkingWireProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
-        final String methodName = "linkSolutionLinkingWire";
+        final String methodName            = "linkSolutionLinkingWire";
         final String end1GUIDParameterName = "solutionComponentOneGUID";
         final String end2GUIDParameterName = "solutionComponentTwoGUID";
 
@@ -246,12 +246,12 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(solutionComponentOneGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(solutionComponentTwoGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
-                                                        solutionComponentOneGUID,
-                                                        solutionComponentTwoGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                               solutionComponentOneGUID,
+                                                               solutionComponentTwoGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
@@ -280,7 +280,6 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Detach an element communicating with a solution component.
      *
@@ -292,14 +291,14 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachSolutionLinkingWire(String        userId,
-                                          String        solutionComponentOneGUID,
-                                          String        solutionComponentTwoGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+    public void detachAllSolutionLinkingWires(String        userId,
+                                              String        solutionComponentOneGUID,
+                                              String        solutionComponentTwoGUID,
+                                              DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        final String methodName = "detachSolutionLinkingWire";
+        final String methodName = "detachAllSolutionLinkingWires";
 
         final String end1GUIDParameterName = "solutionComponentOneGUID";
         final String end2GUIDParameterName = "solutionComponentTwoGUID";
@@ -315,6 +314,32 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
+    /**
+     * Detach an element communicating with a solution component.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param relationshipGUID unique identifier of the solution component at end 1
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionLinkingWire(String        userId,
+                                          String        relationshipGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "detachSolutionLinkingWire";
+
+        final String end1GUIDParameterName = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, end1GUIDParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, relationshipGUID, deleteOptions);
+    }
 
 
     /**
