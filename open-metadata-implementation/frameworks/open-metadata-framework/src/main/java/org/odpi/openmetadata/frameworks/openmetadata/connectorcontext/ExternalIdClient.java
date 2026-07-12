@@ -11,11 +11,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -123,12 +125,20 @@ public class ExternalIdClient extends ConnectorContextClientBase
          */
         if ((elementGUID != null) && (externalSourceGUID != null))
         {
-            openMetadataClient.createRelatedElementsInStore(connectorUserId,
-                                                            OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
-                                                            elementGUID,
-                                                            externalSourceGUID,
-                                                            null,
-                                                            null);
+            OpenMetadataElement metadataCollection = openMetadataClient.getMetadataElementByUniqueName(connectorUserId,
+                                                                                                       externalSourceGUID,
+                                                                                                       OpenMetadataProperty.MANAGED_METADATA_COLLECTION_ID.name,
+                                                                                                       this.getGetOptions());
+
+            if (metadataCollection != null)
+            {
+                openMetadataClient.createRelatedElementsInStore(connectorUserId,
+                                                                OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                                elementGUID,
+                                                                metadataCollection.getElementGUID(),
+                                                                null,
+                                                                null);
+            }
         }
 
         if (parentContext.getActivityReportWriter() != null)

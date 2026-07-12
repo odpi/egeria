@@ -38,6 +38,58 @@ Content-Type: application/json
 
 > {% client.global.set("integrationDaemonGUID", response.body.elements[0].elementHeader.guid); %}
 
+###
+# =====================================================================================================================
+# Catalog File Ditectory
+#
+
+###
+# @name initiate Catalog File Directory GovernanceActionProcess
+# Catalog a usinty catalog server and all of its internal catalogs.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "FileDirectory::CreateAsCatalogTargetGovernanceActionProcess",
+  "requestParameters" : {
+    "fileSystemName" : null,
+    "directoryPathName" : "./coco-data-lake",
+    "directoryName" : "coco-data-lake",
+    "versionIdentifier" : "1.0",
+    "description" : "Files in the Coco Pharmaceuticals Data Lake.",
+    "waitForDirectory" : true
+  }
+}
+
+> {% client.global.set("instanceGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{instanceGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=5
+Authorization: Bearer {{token}}
+
+
+###
+# @name refreshConnectors (FilesCataloguer)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "FilesCataloguer"
+}
 
 ###
 # =====================================================================================================================
