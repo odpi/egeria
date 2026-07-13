@@ -61,7 +61,7 @@ class OmasCreateSchema implements BiFunction<String, DeployedDatabaseSchemaPrope
         {
             auditLog.logException("Creating schema with qualified name " + newSchemaProperties.getQualifiedName()
                     + " in database with guid " + databaseGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
         return Optional.empty();
     }

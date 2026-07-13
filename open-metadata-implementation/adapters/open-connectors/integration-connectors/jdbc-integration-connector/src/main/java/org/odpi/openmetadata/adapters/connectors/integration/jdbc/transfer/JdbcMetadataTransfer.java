@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.*;
 
 /**
- * Transfers metadata from jdbc in an exploratory way. What can be accessed will be transferred
+ * Transfers metadata from jdbc in an exploratory way. What can be accessed will be transferred.
  */
 public class JdbcMetadataTransfer
 {
@@ -111,7 +111,7 @@ public class JdbcMetadataTransfer
         // already known tables by the omas, previously transferred
         List<OpenMetadataRootElement> omasTables = omas.getTables(databaseGuid);
         // a table update will always occur as long as the table is returned by jdbc
-        List<OpenMetadataRootElement> omasTablesUpdated = jdbc.getTables(catalogName, "").parallelStream()
+        List<OpenMetadataRootElement> omasTablesUpdated = jdbc.getTables(catalogName, null).stream()
                 .filter(jdbcTable -> jdbcTable.getTableSchem() == null || jdbcTable.getTableSchem().isEmpty())
                 .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
                 .map(new TableTransfer(omas, databaseElement, auditLog, omasTables, databaseQualifiedName, databaseGuid))
@@ -155,7 +155,7 @@ public class JdbcMetadataTransfer
         List<OpenMetadataRootElement> omasViews = omas.getViews(databaseGUID);
 
         // a view update will always occur as long as the view is returned by jdbc
-        List<OpenMetadataRootElement> omasViewsUpdated = jdbc.getViews(catalogName, "").parallelStream()
+        List<OpenMetadataRootElement> omasViewsUpdated = jdbc.getViews(catalogName, null).stream()
                 .filter(jdbcView -> jdbcView.getTableSchem() == null || jdbcView.getTableSchem().isEmpty())
                 .filter(view -> transferCustomizations.shouldTransferTable(view.getTableName()))
                 .map(new ViewTransfer(omas, databaseElement, auditLog, omasViews, databaseQualifiedName, databaseGUID))
@@ -194,10 +194,10 @@ public class JdbcMetadataTransfer
 
         String databaseGuid = databaseElement.getElementHeader().getGUID();
 
-        omas.getTables(databaseGuid).parallelStream()
+        omas.getTables(databaseGuid).stream()
                 .filter(table -> transferCustomizations.shouldTransferTable(omas.getDisplayName(table)))
                 .peek(table -> {
-                    String schemaName = "";
+                    String schemaName = null;
                     String tableName = omas.getDisplayName(table);
                     String tableGuid = table.getElementHeader().getGUID();
 
@@ -205,7 +205,7 @@ public class JdbcMetadataTransfer
                     // already known columns by the omas, previously transferred
                     List<OpenMetadataRootElement> omasColumns = omas.getColumns(tableGuid);
                     // a column update will always occur as long as the column is returned by jdbc
-                    List<OpenMetadataRootElement> omasUpdatedColumns = jdbc.getColumns(catalogName, schemaName, tableName).parallelStream()
+                    List<OpenMetadataRootElement> omasUpdatedColumns = jdbc.getColumns(catalogName, schemaName, tableName).stream()
                             .filter(column -> transferCustomizations.shouldTransferColumn(column.getColumnName()))
                             .map(new ColumnTransfer(omas, databaseElement, auditLog, omasColumns, jdbcPrimaryKeys, table)).toList();
 
@@ -236,12 +236,12 @@ public class JdbcMetadataTransfer
         long start = System.currentTimeMillis();
 
         Set<JdbcForeignKey> foreignKeys = Stream.concat(
-                        jdbc.getTables(catalogName, "").stream()
+                        jdbc.getTables(catalogName, null).stream()
                                 .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
-                                .flatMap( t -> jdbc.getImportedKeys(catalogName, "", t.getTableName()).stream() ),
-                        jdbc.getTables(catalogName, "").stream()
+                                .flatMap( t -> jdbc.getImportedKeys(catalogName, null, t.getTableName()).stream() ),
+                        jdbc.getTables(catalogName, null).stream()
                                 .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
-                                .flatMap( t -> jdbc.getExportedKeys(catalogName, "", t.getTableName()).stream() ))
+                                .flatMap( t -> jdbc.getExportedKeys(catalogName, null, t.getTableName()).stream() ))
                 .collect(Collectors.toSet());
 
         foreignKeys.forEach(new ForeignKeyTransfer(omas, auditLog, databaseElement));
@@ -269,7 +269,7 @@ public class JdbcMetadataTransfer
         List<OpenMetadataRootElement> omasSchemas = omas.getSchemas(databaseGuid);
         // a schema update will always occur as long as the schema is returned by jdbc
         List<OpenMetadataRootElement> omasSchemasUpdated =
-                jdbc.getSchemas(catalogName).parallelStream()
+                jdbc.getSchemas(catalogName).stream()
                         .filter(schema -> transferCustomizations.shouldTransferSchema(schema.getTableSchem()))
                         .map(new SchemaTransfer(omas, auditLog, omasSchemas, databaseQualifiedName, databaseGuid))
                         .toList();
@@ -298,7 +298,7 @@ public class JdbcMetadataTransfer
     private void transferTables(OpenMetadataRootElement databaseElement, List<OpenMetadataRootElement> schemas){
         long start = System.currentTimeMillis();
 
-        schemas.parallelStream()
+        schemas.stream()
                 .filter(schema -> transferCustomizations.shouldTransferSchema(omas.getDisplayName(schema)))
                 .peek(schema -> {
             String schemaDisplayName = omas.getDisplayName(schema);
@@ -308,7 +308,7 @@ public class JdbcMetadataTransfer
             // already known tables by the omas, previously transferred
             List<OpenMetadataRootElement> omasTables = omas.getTables(schemaGuid);
             // a table update will always occur as long as the table is returned by jdbc
-            List<OpenMetadataRootElement> omasTablesUpdated = jdbc.getTables(catalogName, schemaDisplayName).parallelStream()
+            List<OpenMetadataRootElement> omasTablesUpdated = jdbc.getTables(catalogName, schemaDisplayName).stream()
                     .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
                     .map(new TableTransfer(omas, databaseElement, auditLog, omasTables, schemaQualifiedName, schemaGuid))
                     .toList();
@@ -339,7 +339,7 @@ public class JdbcMetadataTransfer
     {
         long start = System.currentTimeMillis();
 
-        schemas.parallelStream()
+        schemas.stream()
                 .filter(schema -> transferCustomizations.shouldTransferSchema(omas.getDisplayName(schema)))
                 .peek(schema -> {
                     String schemaDisplayName = omas.getDisplayName(schema);
@@ -349,7 +349,7 @@ public class JdbcMetadataTransfer
                     // already known views by the omas, previously transferred
                     List<OpenMetadataRootElement> omasViews = omas.getViews(schemaGuid);
                     // a view update will always occur as long as the view is returned by jdbc
-                    List<OpenMetadataRootElement> omasViewsUpdated = jdbc.getViews(catalogName, schemaDisplayName).parallelStream()
+                    List<OpenMetadataRootElement> omasViewsUpdated = jdbc.getViews(catalogName, schemaDisplayName).stream()
                             .filter(jdbcView -> transferCustomizations.shouldTransferTable(jdbcView.getTableName()))
                             .map(new ViewTransfer(omas, databaseElement, auditLog, omasViews, schemaQualifiedName, schemaGuid))
                             .toList();
@@ -380,9 +380,9 @@ public class JdbcMetadataTransfer
     {
         long start = System.currentTimeMillis();
 
-         schemas.parallelStream()
+         schemas.stream()
                  .filter(schema -> transferCustomizations.shouldTransferSchema(omas.getDisplayName(schema)))
-                 .flatMap(s -> omas.getTables(s.getElementHeader().getGUID()).parallelStream())
+                 .flatMap(s -> omas.getTables(s.getElementHeader().getGUID()).stream())
                  .filter(table -> transferCustomizations.shouldTransferTable(omas.getDisplayName(table)))
                  .peek(table -> {
                      String schemaName = omas.getAdditionalProperties(table).get(Jdbc.JDBC_SCHEMA_KEY);
@@ -393,7 +393,7 @@ public class JdbcMetadataTransfer
                      // already known columns by the omas, previously transferred
                      List<OpenMetadataRootElement> omasColumns = omas.getColumns(tableGuid);
                      // a column update will always occur as long as the column is returned by jdbc
-                     List<OpenMetadataRootElement> omasUpdatedColumns = jdbc.getColumns(catalogName, schemaName, tableName).parallelStream()
+                     List<OpenMetadataRootElement> omasUpdatedColumns = jdbc.getColumns(catalogName, schemaName, tableName).stream()
                              .filter(column -> transferCustomizations.shouldTransferColumn(column.getColumnName()))
                              .map(new ColumnTransfer(omas, databaseElement, auditLog, omasColumns, jdbcPrimaryKeys, table)).collect(Collectors.toList());
 

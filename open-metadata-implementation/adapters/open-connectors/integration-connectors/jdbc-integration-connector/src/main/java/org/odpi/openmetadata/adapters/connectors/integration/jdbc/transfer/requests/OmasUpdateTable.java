@@ -41,7 +41,7 @@ class OmasUpdateTable implements BiConsumer<String, RelationalTableProperties>
         {
             auditLog.logException("Updating table with qualifiedName " + tableProperties.getQualifiedName()
                     + " and guid " + tableGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

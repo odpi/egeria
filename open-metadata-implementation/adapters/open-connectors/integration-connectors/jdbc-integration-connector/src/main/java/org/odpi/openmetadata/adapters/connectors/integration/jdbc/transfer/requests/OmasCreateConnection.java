@@ -50,7 +50,7 @@ class OmasCreateConnection implements Function<ConnectionProperties, Optional<St
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
             auditLog.logException("Creating connection with qualified name " + newConnectionProperties.getQualifiedName(),
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
 
         return Optional.empty();

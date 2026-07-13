@@ -45,7 +45,7 @@ class OmasSetPrimaryKey implements BiConsumer<String, PrimaryKeyProperties> {
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
         {
             auditLog.logException("Setting primary key on column with guid " + columnGuid ,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

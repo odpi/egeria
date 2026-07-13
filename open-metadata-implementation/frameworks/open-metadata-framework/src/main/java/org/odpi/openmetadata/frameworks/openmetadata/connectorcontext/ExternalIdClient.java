@@ -72,17 +72,18 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * @param anchorScopeGUIDs broad search scope - typically server technology type GUID
      * @param externalIdLinkProperties properties for the relationship
      * @param externalIdProperties properties for the external Id itself.
+     * @return unique identifier of the newly created element
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void createExternalId(String                   elementGUID,
-                                 List<String>             anchorScopeGUIDs,
-                                 ExternalIdLinkProperties externalIdLinkProperties,
-                                 ExternalIdProperties     externalIdProperties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public String createExternalId(String                   elementGUID,
+                                   List<String>             anchorScopeGUIDs,
+                                   ExternalIdLinkProperties externalIdLinkProperties,
+                                   ExternalIdProperties     externalIdProperties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
@@ -93,10 +94,10 @@ public class ExternalIdClient extends ConnectorContextClientBase
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
 
-        this.createExternalId(newElementOptions,
-                              null,
-                              externalIdProperties,
-                              externalIdLinkProperties);
+        return this.createExternalId(newElementOptions,
+                                     null,
+                                     externalIdProperties,
+                                     externalIdLinkProperties);
     }
 
     /**

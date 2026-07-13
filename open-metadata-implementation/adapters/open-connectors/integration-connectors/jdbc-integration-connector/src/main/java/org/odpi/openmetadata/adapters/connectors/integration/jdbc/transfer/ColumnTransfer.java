@@ -77,7 +77,7 @@ public class ColumnTransfer implements Function<JdbcColumn, OpenMetadataRootElem
             return omasColumn.get();
         }
 
-        Optional<String> columnGuid = omas.createColumn(omasTable.getElementHeader().getGUID(), columnProperties);
+        Optional<String> columnGuid = omas.createColumn(anchorAsset, omasTable.getElementHeader().getGUID(), columnProperties);
         auditLog.logMessage("Created column with qualified name " + columnProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
 

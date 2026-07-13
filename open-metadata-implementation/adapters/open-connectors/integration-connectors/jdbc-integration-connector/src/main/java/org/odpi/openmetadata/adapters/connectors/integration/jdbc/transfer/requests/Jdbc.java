@@ -75,23 +75,25 @@ public class Jdbc {
     /**
      * Get all tables of a schema
      *
+     * @param catalog catalog name
      * @param schemaName schema name
      *
      * @return tables
      */
     public List<JdbcTable> getTables(String catalog, String schemaName){
-        return new JdbcGetTables(jdbcMetadata, auditLog).apply(catalog, schemaName);
+        return new JdbcGetTables(jdbcMetadata, auditLog).apply(catalog, schemaName, null);
     }
 
     /**
      * Get all views of a schema
      *
+     * @param catalog catalog name
      * @param schemaName schema name
      *
      * @return views
      */
     public List<JdbcTable> getViews(String catalog, String schemaName){
-        return new JdbcGetViews(jdbcMetadata, auditLog).apply(catalog, schemaName);
+        return new JdbcGetViews(jdbcMetadata, auditLog).apply(catalog, schemaName, null);
     }
 
     /**

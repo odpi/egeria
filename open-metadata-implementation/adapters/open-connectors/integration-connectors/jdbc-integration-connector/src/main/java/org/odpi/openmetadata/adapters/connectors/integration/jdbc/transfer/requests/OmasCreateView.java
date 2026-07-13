@@ -10,11 +10,17 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.CalculatedValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -25,14 +31,14 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 class OmasCreateView implements BiFunction<String, RelationalTableProperties, Optional<String>>
 {
-    private final OpenMetadataRootElement              anchorAsset;
+    private final OpenMetadataRootElement   anchorAsset;
     private final CalculatedValueProperties calculatedValueProperties;
     private final AssetClient               dataAssetClient;
     private final SchemaTypeClient          databaseSchemaTypeClient;
     private final SchemaAttributeClient     databaseViewClient;
     private final AuditLog                  auditLog;
 
-    OmasCreateView(OpenMetadataRootElement              anchorAsset,
+    OmasCreateView(OpenMetadataRootElement   anchorAsset,
                    CalculatedValueProperties calculatedValueProperties,
                    AssetClient               dataAssetClient,
                    SchemaTypeClient          databaseSchemaTypeClient,
@@ -64,28 +70,59 @@ class OmasCreateView implements BiFunction<String, RelationalTableProperties, Op
 
         try
         {
-            // ToDo - check schemaType attached; set up anchor; set up parent; set up initial classifications
+            OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(parentGuid, dataAssetClient.getGetOptions());
+
+            String schemaTypeGUID;
+
+            if ((dataAsset.getSchemaType() == null) && (dataAsset.getProperties() instanceof AssetProperties assetProperties))
+            {
+                NewElementOptions newElementOptions = new NewElementOptions(databaseSchemaTypeClient.getMetadataSourceOptions());
+
+                newElementOptions.setAnchorGUID(anchorAsset.getElementHeader().getGUID());
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setParentGUID(parentGuid);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+                RelationalDBSchemaTypeProperties schemaTypeProperties = new RelationalDBSchemaTypeProperties();
+
+                schemaTypeProperties.setQualifiedName(assetProperties.getQualifiedName() + "_schemaType");
+                schemaTypeProperties.setDisplayName("Schema Type for " + assetProperties.getDisplayName());
+
+                schemaTypeGUID = databaseSchemaTypeClient.createSchemaType(newElementOptions, null, schemaTypeProperties, null);
+            }
+            else
+            {
+                schemaTypeGUID = dataAsset.getSchemaType().getRelatedElement().getElementHeader().getGUID();
+            }
 
             NewElementOptions newElementOptions = new NewElementOptions(databaseViewClient.getMetadataSourceOptions());
 
             newElementOptions.setAnchorGUID(anchorAsset.getElementHeader().getGUID());
             newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setParentGUID(parentGuid);
+            newElementOptions.setParentGUID(schemaTypeGUID);
             newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+            AttributeForSchemaProperties attributeForSchemaProperties = new AttributeForSchemaProperties();
+            attributeForSchemaProperties.setMaxCardinality(1);
+            attributeForSchemaProperties.setMinCardinality(1);
+
+            Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+            initialClassifications.put(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, calculatedValueProperties);
 
             return Optional.ofNullable(databaseViewClient.createSchemaAttribute(newElementOptions,
-                                                                                null,
+                                                                                initialClassifications,
                                                                                 newViewProperties,
-                                                                                null));
+                                                                                attributeForSchemaProperties));
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
             auditLog.logException("Creating view with qualified name " + newViewProperties.getQualifiedName()
                     + " in parent with guid " + parentGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
         return Optional.empty();
     }
-
 }

@@ -47,7 +47,7 @@ class OmasCreateEndpoint implements Function<EndpointProperties, Optional<String
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
             auditLog.logException("Creating endpoint with qualified name " + newEndpointProperties.getQualifiedName(),
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
 
         return Optional.empty();

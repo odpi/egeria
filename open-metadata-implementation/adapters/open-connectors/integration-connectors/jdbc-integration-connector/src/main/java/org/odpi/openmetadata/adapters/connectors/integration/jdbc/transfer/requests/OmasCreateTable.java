@@ -10,8 +10,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -29,11 +33,11 @@ class OmasCreateTable implements BiFunction<String, RelationalTableProperties, O
     private final SchemaAttributeClient databaseTableClient;
     private final AuditLog              auditLog;
 
-    OmasCreateTable(OpenMetadataRootElement          anchorAsset,
-                    AssetClient           dataAssetClient,
-                    SchemaTypeClient      databaseSchemaTypeClient,
-                    SchemaAttributeClient databaseTableClient,
-                    AuditLog              auditLog)
+    OmasCreateTable(OpenMetadataRootElement anchorAsset,
+                    AssetClient             dataAssetClient,
+                    SchemaTypeClient        databaseSchemaTypeClient,
+                    SchemaAttributeClient   databaseTableClient,
+                    AuditLog                auditLog)
     {
         this.anchorAsset         = anchorAsset;
         this.dataAssetClient     = dataAssetClient;
@@ -41,6 +45,7 @@ class OmasCreateTable implements BiFunction<String, RelationalTableProperties, O
         this.databaseTableClient = databaseTableClient;
         this.auditLog            = auditLog;
     }
+
 
     /**
      * Create table in schema
@@ -60,21 +65,52 @@ class OmasCreateTable implements BiFunction<String, RelationalTableProperties, O
         {
             OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(parentGuid, dataAssetClient.getGetOptions());
 
-            if (dataAsset.getSchemaType() == null)
-            {
-                // ToDo - check schemaType attached; set up anchor; set up parent
-                NewElementOptions newElementOptions = new NewElementOptions(dataAssetClient.getMetadataSourceOptions());
+            String schemaTypeGUID;
 
+            if ((dataAsset.getSchemaType() == null) && (dataAsset.getProperties() instanceof AssetProperties assetProperties))
+            {
+                NewElementOptions newElementOptions = new NewElementOptions(databaseSchemaTypeClient.getMetadataSourceOptions());
+
+                newElementOptions.setAnchorGUID(anchorAsset.getElementHeader().getGUID());
+                newElementOptions.setIsOwnAnchor(false);
                 newElementOptions.setParentGUID(parentGuid);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+                RelationalDBSchemaTypeProperties schemaTypeProperties = new RelationalDBSchemaTypeProperties();
+
+                schemaTypeProperties.setQualifiedName(assetProperties.getQualifiedName() + "_schemaType");
+                schemaTypeProperties.setDisplayName("Schema Type for " + assetProperties.getDisplayName());
+
+                schemaTypeGUID = databaseSchemaTypeClient.createSchemaType(newElementOptions, null, schemaTypeProperties, null);
+            }
+            else
+            {
+                schemaTypeGUID = dataAsset.getSchemaType().getRelatedElement().getElementHeader().getGUID();
             }
 
-            return Optional.empty(); // todo Optional.ofNullable(databaseTableClient.createSchemaAttribute(null, newTableProperties));
+            NewElementOptions newElementOptions = new NewElementOptions(databaseTableClient.getMetadataSourceOptions());
+
+            newElementOptions.setAnchorGUID(anchorAsset.getElementHeader().getGUID());
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setParentGUID(schemaTypeGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+            AttributeForSchemaProperties attributeForSchemaProperties = new AttributeForSchemaProperties();
+            attributeForSchemaProperties.setMaxCardinality(1);
+            attributeForSchemaProperties.setMinCardinality(1);
+
+            return Optional.ofNullable(databaseTableClient.createSchemaAttribute(newElementOptions,
+                                                                                null,
+                                                                                 newTableProperties,
+                                                                                 attributeForSchemaProperties));
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
             auditLog.logException("Creating table with qualified name " + newTableProperties.getQualifiedName()
                     + " in parent with guid " + parentGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
         return Optional.empty();
     }

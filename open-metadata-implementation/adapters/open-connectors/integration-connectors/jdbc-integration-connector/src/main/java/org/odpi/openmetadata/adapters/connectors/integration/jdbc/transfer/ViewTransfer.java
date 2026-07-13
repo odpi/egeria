@@ -31,7 +31,7 @@ public class ViewTransfer implements Function<JdbcTable, OpenMetadataRootElement
     private final String parentGuid;
 
     public ViewTransfer(Omas                         omas,
-                        OpenMetadataRootElement                 anchorAsset,
+                        OpenMetadataRootElement      anchorAsset,
                         AuditLog                     auditLog,
                         List<OpenMetadataRootElement> omasViews,
                         String                       parentQualifiedName,

@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * JDBCIntegrationCatalogTargetProcessor supports the cataloguing of database schema via the JDBC interface for
- * a single database that is linked as a catalog target.
+ * a single database linked as a catalog target.
  */
 public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcessorBase
 {

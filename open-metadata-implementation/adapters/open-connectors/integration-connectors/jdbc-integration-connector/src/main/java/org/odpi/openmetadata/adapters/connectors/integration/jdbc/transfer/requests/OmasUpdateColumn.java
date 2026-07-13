@@ -48,7 +48,7 @@ class OmasUpdateColumn implements BiConsumer<String, RelationalColumnProperties>
         {
             auditLog.logException("Updating column with qualifiedName " + columnProperties.getQualifiedName()
                     + " and guid " + columnGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

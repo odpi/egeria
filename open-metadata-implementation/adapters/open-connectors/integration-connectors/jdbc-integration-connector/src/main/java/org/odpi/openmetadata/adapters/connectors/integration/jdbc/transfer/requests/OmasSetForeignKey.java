@@ -51,7 +51,7 @@ class OmasSetForeignKey implements TriConsumer<String, String, ForeignKeyPropert
         {
             auditLog.logException("Setting foreign key in OMAS for primary key column guid " + primaryKeyColumnGuid +
                             " and foreign key column guid " + foreignKeyColumnGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

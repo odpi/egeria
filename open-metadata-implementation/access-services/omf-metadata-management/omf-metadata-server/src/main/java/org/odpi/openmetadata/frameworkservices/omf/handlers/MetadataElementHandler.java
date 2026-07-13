@@ -1722,24 +1722,14 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                     instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
                 }
 
-                try
-                {
-                    Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                          null,
-                                                                                          null,
-                                                                                          InstanceProvenanceType.LOCAL_COHORT,
-                                                                                          userId,
-                                                                                          classificationName,
-                                                                                          metadataElementTypeName,
-                                                                                          ClassificationOrigin.ASSIGNED,
-                                                                                          null,
-                                                                                          builder.getInstanceProperties(instancePropertyValueMap, null, null));
-                    builder.setClassification(classification);
-                }
-                catch (TypeErrorException error)
-                {
-                    errorHandler.handleUnsupportedType(error, methodName, classificationName);
-                }
+                builder.setClassification(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          classificationName,
+                                          instancePropertyValueMap,
+                                          null,
+                                          null,
+                                          methodName);
             }
         }
 
