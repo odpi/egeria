@@ -121,33 +121,9 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CATEGORY_ALREADY_EXISTS" class="member-name-link">CATEGORY_ALREADY_EXISTS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-004 - Glossary category {0} already exists in Apache Atlas</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">JDBC-INTEGRATION-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#MISSING_CORRELATION" class="member-name-link">MISSING_CORRELATION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-0036 - The {0} integration connector can not retrieve the correlation information for (1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ASSET_MANAGER" class="member-name-link">NULL_ASSET_MANAGER</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-003 - Integration connector {0} has been configured without a metadataSourceQualifiedName value</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-001 - Integration connector {0} has been configured without the URL to Apache Atlas</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_USER" class="member-name-link">NULL_USER</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-002 - Integration connector {0} has been configured with either a null userId or password for connecting to Apache Atlas</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#TERM_ALREADY_EXISTS" class="member-name-link">TERM_ALREADY_EXISTS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -213,48 +189,6 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="NULL_URL">
-<h3>NULL_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">NULL_URL</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-001 - Integration connector {0} has been configured without the URL to Apache Atlas</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_USER">
-<h3>NULL_USER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-002 - Integration connector {0} has been configured with either a null userId or password for connecting to Apache Atlas</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ASSET_MANAGER">
-<h3>NULL_ASSET_MANAGER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">NULL_ASSET_MANAGER</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-003 - Integration connector {0} has been configured without a metadataSourceQualifiedName value</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CATEGORY_ALREADY_EXISTS">
-<h3>CATEGORY_ALREADY_EXISTS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">CATEGORY_ALREADY_EXISTS</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-004 - Glossary category {0} already exists in Apache Atlas</div>
-</section>
-</li>
-<li>
-<section class="detail" id="TERM_ALREADY_EXISTS">
-<h3>TERM_ALREADY_EXISTS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">TERM_ALREADY_EXISTS</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas</div>
-</section>
-</li>
-<li>
-<section class="detail" id="MISSING_CORRELATION">
-<h3>MISSING_CORRELATION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">MISSING_CORRELATION</span></div>
-<div class="block">JDBC-INTEGRATION-CONNECTOR-0036 - The {0} integration connector can not retrieve the correlation information for (1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}</div>
-</section>
-</li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>

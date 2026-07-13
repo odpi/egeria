@@ -110,10 +110,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createColumn(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties)" class="member-name-link">createColumn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createColumn(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties)" class="member-name-link">createColumn</a><wbr>(<a href="../../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;anchorAsset,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
  <a href="../../../../../../frameworks/openmetadata/properties/schema/databases/RelationalColumnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases">RelationalColumnProperties</a>&nbsp;newColumnProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create column in table</div>
+<div class="block">Create a column in a table</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDatabase(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties)" class="member-name-link">createDatabase</a><wbr>(<a href="../../../../../../frameworks/openmetadata/properties/assets/databases/DatabaseProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases">DatabaseProperties</a>&nbsp;newDatabaseProperties)</code></div>
@@ -485,13 +486,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createColumn(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties)">
+<section class="detail" id="createColumn(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties)">
 <h3>createColumn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">createColumn</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">createColumn</span><wbr><span class="parameters">(<a href="../../../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;anchorAsset,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
  <a href="../../../../../../frameworks/openmetadata/properties/schema/databases/RelationalColumnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases">RelationalColumnProperties</a>&nbsp;newColumnProperties)</span></div>
-<div class="block">Create column in table</div>
+<div class="block">Create a column in a table</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>anchorAsset</code> - anchor asset</dd>
 <dd><code>databaseTableGUID</code> - table guid</dd>
 <dd><code>newColumnProperties</code> - properties</dd>
 <dt>Returns:</dt>
