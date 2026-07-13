@@ -47,7 +47,7 @@ class OmasUpdateDatabase implements BiConsumer<String, DatabaseProperties>
         {
             auditLog.logException("Updating database with qualifiedName " + databaseProperties.getQualifiedName()
                     + " and guid " + databaseGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

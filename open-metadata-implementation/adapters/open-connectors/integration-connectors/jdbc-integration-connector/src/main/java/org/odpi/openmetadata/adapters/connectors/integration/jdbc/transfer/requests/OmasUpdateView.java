@@ -40,7 +40,7 @@ class OmasUpdateView implements BiConsumer<String, RelationalTableProperties>
         {
             auditLog.logException("Updating view with qualifiedName " + viewProperties.getQualifiedName()
                     + " and guid " + viewGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

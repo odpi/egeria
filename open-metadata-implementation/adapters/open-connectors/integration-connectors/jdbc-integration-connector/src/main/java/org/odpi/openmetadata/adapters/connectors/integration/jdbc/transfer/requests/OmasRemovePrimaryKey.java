@@ -44,7 +44,7 @@ class OmasRemovePrimaryKey implements Consumer<String>
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
         {
             auditLog.logException("Removing primary key from column with guid " + columnGuid ,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

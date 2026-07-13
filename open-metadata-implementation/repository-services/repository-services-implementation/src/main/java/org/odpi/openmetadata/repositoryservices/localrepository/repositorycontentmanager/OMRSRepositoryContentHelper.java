@@ -797,7 +797,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
 
-
     /**
      * Populate the skeleton entity with vital header and type information, regardless of whether it is an EntityDetail
      * or EntitySummary.
@@ -1062,23 +1061,19 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         if (classifications != null)
         {
             /*
-             * Make sure the classifications have the same metadata collection id as their entity.
+             * Remove any nulls
              */
-            List<Classification> homedClassifications = new ArrayList<>();
+            List<Classification> validClassifications = new ArrayList<>();
 
             for (Classification classification : classifications)
             {
                 if (classification != null)
                 {
-                    classification.setMetadataCollectionId(metadataCollectionId);
-                    classification.setMetadataCollectionName(metadataCollectionName);
-                    classification.setReplicatedBy(replicatedBy);
-
-                    homedClassifications.add(classification);
+                    validClassifications.add(classification);
                 }
             }
 
-            entity.setClassifications(homedClassifications);
+            entity.setClassifications(validClassifications);
         }
 
         return entity;

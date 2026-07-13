@@ -47,7 +47,7 @@ class OmasSetupEndpoint implements BiConsumer<String, String> {
         {
             auditLog.logException("Setting endpoint for connection with guid " + connectionGuid +
                     " and endpoint with guid " + endpointGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

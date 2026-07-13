@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
- *     <li>Severity - is this an event, decision, action, error or exception</li>
+ *     <li>Severity - is this an event, decision, action, error, or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the situation</li>
  *     <li>UserAction - describes how a user should correct the situation</li>
@@ -79,7 +79,7 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
 
     EXCEPTION_WRITING_OMAS("JDBC-INTEGRATION-CONNECTOR-0006",
                            AuditLogRecordSeverityLevel.EXCEPTION,
-                           "An exception was received by method {0}. Exception message is: {1}",
+                           "An {0} exception was received by method {1}. Exception message is: {2}",
                            "Upserting an entity into the Metadata Access Server failed.",
                            "Investigate OMAS availability. If it is available then contact the Egeria team for support"),
     EXITING_ON_DATABASE_TRANSFER_FAIL("JDBC-INTEGRATION-CONNECTOR-0007",
@@ -90,7 +90,7 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
     EXCEPTION_READING_OMAS("JDBC-INTEGRATION-CONNECTOR-0008",
                            AuditLogRecordSeverityLevel.EXCEPTION,
                            "Error reading data from Metadata Access Server in method {0}. Possible message is {1}",
-                           "Reading OMAS information",
+                           "Reading open metadata from the repository.",
                            "Consult logs for further details"),
     PARTIAL_TRANSFER_COMPLETE_FOR_DB_OBJECTS("JDBC-INTEGRATION-CONNECTOR-0009",
                                              AuditLogRecordSeverityLevel.INFO,

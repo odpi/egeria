@@ -48,7 +48,7 @@ class OmasSetupConnectorType implements BiConsumer<String, String> {
         {
             auditLog.logException("Setting connector type for connection with guid " + connectionGuid +
                     " and connector type with guid " + connectorTypeGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

@@ -85,3 +85,31 @@ This is its connection definition to use on the [administration commands that co
 - `include/exclude` (optional): lists with database object names to filter out the import, no wildcards supported
 
 
+## Implementation Notes
+
+This connector aims to maximise the compatibility with as many JDBC supporting databases as possible, although most testing is done on PostgreSQL.
+
+The use of null as a wildcard (or "no-filter") for catalog, schemaPattern, and tableNamePattern parameters in JDBC DatabaseMetaData methods is the standard behavior defined by the JDBC specification, and it is correct for almost all compliant JDBC drivers, not just PostgreSQL.
+
+1. JDBC Specification Rules
+   According to the JDBC API documentation for DatabaseMetaData:
+   - null: Means that the parameter's value should not be used to narrow the search. It acts as a wildcard, returning all available results regardless of that attribute.
+   - "" (Empty String): Specifically matches those items that have no catalog/schema. In many databases, an empty string literal search will return nothing because objects are almost always associated with some schema or catalog (even if it's "public", "dbo", or the user's name).
+2. Why PostgreSQL was failing with ""
+   In PostgreSQL:
+   - Databases are mapped to JDBC catalogs.
+   - Schemas (like public) are mapped to JDBC schemas.
+   - If you pass schemaPattern = "" to getTables(), the driver looks for tables with literally no schema. Since all tables in PostgreSQL reside in a schema, it returns an empty result set.
+   - Passing null tells the driver "return tables from all schemas."
+3. Behavior in Other Databases
+   Most enterprise databases follow the same logic:
+   - Oracle: Uses null to see all schemas. Using "" will typically return nothing because every object belongs to a schema (user).
+   - SQL Server: Catalogs map to databases and schemas map to owners (like dbo). null is the correct way to ignore these filters.
+   - MySQL: Note that MySQL is a slight outlier—it often treats catalogs and schemas as synonymous. However, even in MySQL, null is the safest way to indicate "any".
+4. Summary of Changes in Egeria
+   The recent changes to JDBCIntegrationConnector aligned the implementation with the JDBC standard:
+   - Initializing catalog to null instead of "" allows the connector to browse all catalogs (databases) available on the connection.
+   - Passing null for schemaName when no schema is specified ensures that tables are retrieved from all schemas rather than searching for "schema-less" tables.
+   
+### Conclusion
+Using null is the correct and portable approach for generic JDBC metadata retrieval. It ensures the widest compatibility across different database vendors by following the specification's definition of a non-narrowing parameter.

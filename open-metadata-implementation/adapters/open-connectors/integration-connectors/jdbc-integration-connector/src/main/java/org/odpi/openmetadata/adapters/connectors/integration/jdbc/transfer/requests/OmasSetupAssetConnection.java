@@ -45,7 +45,7 @@ class OmasSetupAssetConnection implements TriConsumer<String, String, String> {
             auditLog.logException("Setting up asset connection for asset with guid " + assetGuid
                             + ", with summary  " + assetSummary
                             + ", and connection with guid " + connectionGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 

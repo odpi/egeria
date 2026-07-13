@@ -221,7 +221,7 @@ public class Omas {
      *
      * @return guid
      */
-    public Optional<String> createView(OpenMetadataRootElement              anchorAsset,
+    public Optional<String> createView(OpenMetadataRootElement   anchorAsset,
                                        String                    databaseSchemaGUID,
                                        RelationalTableProperties newViewProperties,
                                        CalculatedValueProperties calculatedValueProperties)
@@ -236,17 +236,20 @@ public class Omas {
 
 
     /**
-     * Create column in table
+     * Create a column in a table
      *
+     * @param anchorAsset anchor asset
      * @param databaseTableGUID table guid
      * @param newColumnProperties properties
      *
      * @return guid
      */
-    public Optional<String> createColumn(String                     databaseTableGUID,
+    public Optional<String> createColumn(OpenMetadataRootElement    anchorAsset,
+                                         String                     databaseTableGUID,
                                          RelationalColumnProperties newColumnProperties)
     {
-        return new OmasCreateColumn(databaseColumnClient,
+        return new OmasCreateColumn(anchorAsset,
+                                    databaseColumnClient,
                                     auditLog).apply(databaseTableGUID, newColumnProperties);
     }
 

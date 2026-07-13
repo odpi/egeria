@@ -25,8 +25,8 @@ Content-Type: application/json
 # https://egeria-project.org/types/00040-Software-Servers/
 
 ###
-# @name getServersByName
-# Returns the list of servers with a particular name.  The name is specified in the filter.
+# @name get integration-deamon's GUID for later refresh calls
+# Uses a getServersByName and extracts the retunred GUID
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
 Authorization: Bearer {{token}}
@@ -165,7 +165,7 @@ Content-Type: application/json
 
 ###
 # @name initiate Catalog PostgreSQL Server GovernanceActionProcess
-# Catalog a usinty catalog server and all of its internal catalogs.
+# The paramters passed here are for the PostgreSQL server in egeria-workspaces shared infrastructure container.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}

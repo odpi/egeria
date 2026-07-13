@@ -43,7 +43,7 @@ class OmasUpdateSchema implements BiConsumer<String, DeployedDatabaseSchemaPrope
         {
             auditLog.logException("Updating schema with qualifiedName " + schemaProperties.getQualifiedName()
                     + " and guid " + schemaGuid,
-                    EXCEPTION_WRITING_OMAS.getMessageDefinition(methodName, e.getMessage()), e);
+                    EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()), e);
         }
     }
 
