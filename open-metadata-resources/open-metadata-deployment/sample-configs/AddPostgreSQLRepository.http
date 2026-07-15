@@ -27,7 +27,7 @@ Content-Type: application/json
 ###
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/mode/postgres-repository
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -39,3 +39,14 @@ Content-Type: application/json
 }
 
 ###
+
+@activeMetadataStoreMetadataCollectionId=c5226c53-4917-42b4-8219-f532b19cb550
+
+###
+# @name Set local metadata collection id
+# Set up the identifier of the collection of metadata that originates from this metadata server.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/metadata-collection-id
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+{{activeMetadataStoreMetadataCollectionId}}

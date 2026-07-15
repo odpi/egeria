@@ -1324,6 +1324,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail   newEntity = repositoryHelper.getNewEntity(repositoryName,
                                                                  metadataCollectionId,
                                                                  metadataCollectionName,
+                                                                 metadataCollectionId,
+                                                                 metadataCollectionName,
                                                                  InstanceProvenanceType.LOCAL_COHORT,
                                                                  null,
                                                                  userId,
@@ -1402,6 +1404,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete - ok to create new instance
          */
         EntityDetail   newEntity = repositoryHelper.getNewEntity(repositoryName,
+                                                                 metadataCollectionId,
+                                                                 metadataCollectionName,
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  InstanceProvenanceType.EXTERNAL_SOURCE,
