@@ -421,33 +421,11 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return a filled out entity.  It just needs to add the classifications.
-     *
-     * @param sourceName            source of the request (used for logging)
-     * @param metadataCollectionId  unique identifier for the home metadata collection
-     * @param provenanceType        origin of the entity
-     * @param replicatedBy          for external entities only - null for local cohort
-     * @param userName              name of the creator
-     * @param typeName              name of the type
-     * @param properties            properties for the entity
-     * @param classifications       list of classifications for the entity
-     * @return an entity that is filled out
-     * @throws TypeErrorException  the type name is not recognized as an entity type
-     */
-    EntityDetail getNewEntity(String                 sourceName,
-                              String                 metadataCollectionId,
-                              InstanceProvenanceType provenanceType,
-                              String                 replicatedBy,
-                              String                 userName,
-                              String                 typeName,
-                              InstanceProperties     properties,
-                              List<Classification>   classifications) throws TypeErrorException;
-
-
-    /**
-     * Return a filled out entity.  It just needs to add the classifications.
+     * Return a filled-out entity.  It just needs to add the classifications.
      *
      * @param sourceName             source of the request (used for logging)
+     * @param localMetadataCollectionId unique identifier for the local metadata collection
+     * @param localMetadataCollectionName unique name for the local metadata collection
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
@@ -460,6 +438,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @throws TypeErrorException  the type name is not recognized as an entity type
      */
     EntityDetail getNewEntity(String                 sourceName,
+                              String                 localMetadataCollectionId,
+                              String                 localMetadataCollectionName,
                               String                 metadataCollectionId,
                               String                 metadataCollectionName,
                               InstanceProvenanceType provenanceType,

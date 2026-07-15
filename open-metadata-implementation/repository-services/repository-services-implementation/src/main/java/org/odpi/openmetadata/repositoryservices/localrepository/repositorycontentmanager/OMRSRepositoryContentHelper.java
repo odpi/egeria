@@ -995,37 +995,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return a filled out entity.  It just needs to add the classifications.
-     *
-     * @param sourceName           source of the request (used for logging)
-     * @param metadataCollectionId unique identifier for the home metadata collection
-     * @param provenanceType       origin of the entity
-     * @param replicatedBy          for external entities only - null for local cohort
-     * @param userName             name of the creator
-     * @param typeName             name of the type
-     * @param properties           properties for the entity
-     * @param classifications      list of classifications for the entity
-     * @return an entity that is filled out
-     * @throws TypeErrorException the type name is not recognized as an entity type
-     */
-    @Override
-    public EntityDetail getNewEntity(String                 sourceName,
-                                     String                 metadataCollectionId,
-                                     InstanceProvenanceType provenanceType,
-                                     String                 replicatedBy,
-                                     String                 userName,
-                                     String                 typeName,
-                                     InstanceProperties     properties,
-                                     List<Classification>   classifications) throws TypeErrorException
-    {
-        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, replicatedBy, userName, typeName, properties, classifications);
-    }
-
-
-    /**
-     * Return a filled out entity.  It just needs to add the classifications.
+     * Return a filled-out entity.  It just needs to add the classifications.
      *
      * @param sourceName             source of the request (used for logging)
+     * @param localMetadataCollectionId unique identifier for the local metadata collection - used to fill out classification headers if local
+     * @param localMetadataCollectionName unique name for the local metadata collection - used to fill out classification headers if local
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
@@ -1039,6 +1013,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     @Override
     public EntityDetail getNewEntity(String                 sourceName,
+                                     String                 localMetadataCollectionId,
+                                     String                 localMetadataCollectionName,
                                      String                 metadataCollectionId,
                                      String                 metadataCollectionName,
                                      InstanceProvenanceType provenanceType,
@@ -1061,7 +1037,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         if (classifications != null)
         {
             /*
-             * Remove any nulls
+             * Remove any nulls and set classifications to local cohort unless they are already set up.
              */
             List<Classification> validClassifications = new ArrayList<>();
 
@@ -1069,6 +1045,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             {
                 if (classification != null)
                 {
+                    if (classification.getMetadataCollectionId() == null)
+                    {
+                        classification.setMetadataCollectionId(localMetadataCollectionId);
+                        classification.setMetadataCollectionName(localMetadataCollectionName);
+                        classification.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
+                    }
+
                     validClassifications.add(classification);
                 }
             }
