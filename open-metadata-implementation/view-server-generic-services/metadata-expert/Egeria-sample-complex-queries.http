@@ -1,0 +1,192 @@
+# Egeria-sample-complex-queries
+# A set of tests showing complex classification queries
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token. Run this request first to create/refresh the token.
+
+# @name Token
+POST {{baseURL}}/servers/{{viewServer}}/api/token
+Content-Type: application/json
+
+{
+  "userId": "peterprofile",
+  "password": "secret"
+}
+
+> {%
+  client.global.set("token", response.body);
+%}
+
+###
+# =====================================================================================================================
+# Example single-condition queries.
+
+# @name ZoneMembership alone (ANY)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "FindRequestBody",
+  "matchClassifications": {
+    "class": "SearchClassifications",
+    "matchCriteria": "ANY",
+    "conditions": [
+      { "name": "ZoneMembership" }
+    ]
+  },
+  "limitResultsByStatus": ["ACTIVE"]
+}
+
+> {%
+  function elementCount(body) {
+    return (body && Array.isArray(body.elements)) ? body.elements.length : 0;
+  }
+  client.test("ZoneMembership alone returns a non-empty list", function() {
+    client.assert(elementCount(response.body) > 0, "expected at least one ZoneMembership-classified element, got: " + JSON.stringify(response.body).slice(0, 300));
+  });
+  client.global.set("zoneMembershipCount", elementCount(response.body));
+%}
+
+###
+
+# @name Confidentiality alone (ANY)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "FindRequestBody",
+  "matchClassifications": {
+    "class": "SearchClassifications",
+    "matchCriteria": "ANY",
+    "conditions": [
+      { "name": "Confidentiality" }
+    ]
+  },
+  "limitResultsByStatus": ["ACTIVE"]
+}
+
+> {%
+  function elementCount(body) {
+    return (body && Array.isArray(body.elements)) ? body.elements.length : 0;
+  }
+  client.test("Confidentiality alone returns a non-empty list", function() {
+    client.assert(elementCount(response.body) > 0, "expected at least one Confidentiality-classified element, got: " + JSON.stringify(response.body).slice(0, 300));
+  });
+  client.global.set("confidentialityCount", elementCount(response.body));
+%}
+
+###
+# =====================================================================================================================
+# Combining the two classification conditions above. ANY should return their union (at least as
+# many elements as either alone), ALL should return their intersection (0, since no element on
+# the qs demo data carries both classifications), and NONE should return elements carrying
+# neither.
+
+# @name combined — matchCriteria=ANY (should be >= max(zoneMembershipCount, confidentialityCount))
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "FindRequestBody",
+  "matchClassifications": {
+    "class": "SearchClassifications",
+    "matchCriteria": "ANY",
+    "conditions": [
+      { "name": "ZoneMembership" },
+      { "name": "Confidentiality" }
+    ]
+  },
+  "limitResultsByStatus": ["ACTIVE"]
+}
+
+> {%
+  function elementCount(body) {
+    return (body && Array.isArray(body.elements)) ? body.elements.length : 0;
+  }
+  client.test("MatchCriteria=ANY returns the union of the two single-condition counts", function() {
+    var count = elementCount(response.body);
+    var zoneCount = client.global.get("zoneMembershipCount") || 0;
+    var confCount = client.global.get("confidentialityCount") || 0;
+    var expectedMin = Math.max(zoneCount, confCount);
+    client.assert(count >= expectedMin,
+      "matchCriteria=ANY across ['ZoneMembership','Confidentiality'] returned " + count +
+      " elements, but ZoneMembership alone returned " + zoneCount +
+      " and Confidentiality alone returned " + confCount +
+      " — matchCriteria is being ignored for classification conditions (PY-15). " +
+      "Fails before the QueryBuilder.java fix; should pass after.");
+  });
+  client.global.set("combinedAnyCount", elementCount(response.body));
+%}
+
+###
+
+# @name combined — matchCriteria=ALL (expected 0 — no element has both classifications on this data)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "FindRequestBody",
+  "matchClassifications": {
+    "class": "SearchClassifications",
+    "matchCriteria": "ALL",
+    "conditions": [
+      { "name": "ZoneMembership" },
+      { "name": "Confidentiality" }
+    ]
+  },
+  "limitResultsByStatus": ["ACTIVE"]
+}
+
+> {%
+  function elementCount(body) {
+    return (body && Array.isArray(body.elements)) ? body.elements.length : 0;
+  }
+  client.test("matchCriteria=ALL returns the (expected-empty) intersection", function() {
+    var count = elementCount(response.body);
+    client.assert(count === 0, "expected 0 elements carrying both ZoneMembership and Confidentiality on the qs demo data, got " + count);
+  });
+%}
+
+###
+
+# @name combined — matchCriteria=NONE
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "FindRequestBody",
+  "matchClassifications": {
+    "class": "SearchClassifications",
+    "matchCriteria": "NONE",
+    "conditions": [
+      { "name": "ZoneMembership" },
+      { "name": "Confidentiality" }
+    ]
+  },
+  "limitResultsByStatus": ["ACTIVE"]
+}
+
+> {%
+  // NOTE: there's no principled "correct" expected count to assert here without a separate
+  // query for the total element population (NONE's correct result is "everything minus the
+  // union computed above", which this collection doesn't otherwise compute) — so this is
+  // deliberately observational rather than a strict pass/fail assertion. Confirmed live
+  // (2026-07-15, raw curl, cross-checked outside this runner): NONE currently returns 0,
+  // identical to the buggy ANY/ALL results — read this value by eye against the ANY/ALL
+  // requests above rather than trusting an automated assertion for this one.
+  function elementCount(body) {
+    return (body && Array.isArray(body.elements)) ? body.elements.length : 0;
+  }
+  client.test("matchCriteria=NONE — record the count for manual comparison against ANY/ALL above", function() {
+    client.log("MatchCriteria=NONE returned " + elementCount(response.body) + " elements. ");
+  });
+%}
