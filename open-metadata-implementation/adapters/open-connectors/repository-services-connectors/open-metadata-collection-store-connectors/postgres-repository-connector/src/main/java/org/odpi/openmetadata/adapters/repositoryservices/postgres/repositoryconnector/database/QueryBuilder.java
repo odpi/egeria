@@ -1038,6 +1038,24 @@ public class QueryBuilder
         if ((matchClassifications != null) && (matchClassifications.getConditions() != null))
         {
             StringBuilder stringBuilder  = new StringBuilder();
+            StringBuilder conditionsBuilder = new StringBuilder();
+            boolean       firstCondition  = true;
+
+            /*
+             * MatchCriteria was previously ignored here: every named classification condition was
+             * unconditionally AND-ed onto the classification-table join, so a query naming two or
+             * more mutually exclusive classifications (e.g. ZoneMembership OR Confidentiality) always
+             * returned zero rows regardless of whether the caller asked for ALL, ANY, or NONE. Mirror
+             * the pattern used for property conditions in getPropertyComparisonFromPropertyConditions()
+             * (ANY -> "or", ALL -> "and") and wrap the whole group in "not (...)" for NONE.
+             */
+            String matchOperand = " and ";
+
+            if (matchClassifications.getMatchCriteria() == MatchCriteria.ANY
+                    || matchClassifications.getMatchCriteria() == MatchCriteria.NONE)
+            {
+                matchOperand = " or ";
+            }
 
             for (ClassificationCondition classificationCondition : matchClassifications.getConditions())
             {
@@ -1047,28 +1065,51 @@ public class QueryBuilder
                      * Add in a type clause for the classification, even if the classification name is null to
                      * make the construction of the SQL easier.
                      */
-                    stringBuilder.append(" and (");
-                    stringBuilder.append(RepositoryColumn.TYPE_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
-                    stringBuilder.append(" like '%:");
-                    if (classificationCondition.getName() != null)
+                    if (firstCondition)
                     {
-                        stringBuilder.append(classificationCondition.getName());
+                        conditionsBuilder.append(" (");
+                        firstCondition = false;
                     }
                     else
                     {
-                        stringBuilder.append("%");
+                        conditionsBuilder.append(matchOperand);
                     }
-                    stringBuilder.append(":%' ");
+
+                    conditionsBuilder.append("(");
+                    conditionsBuilder.append(RepositoryColumn.TYPE_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
+                    conditionsBuilder.append(" like '%:");
+
+                    if (classificationCondition.getName() != null)
+                    {
+                        conditionsBuilder.append(classificationCondition.getName());
+                    }
+                    else
+                    {
+                        conditionsBuilder.append("%");
+                    }
+                    conditionsBuilder.append(":%' ");
 
                     if (classificationCondition.getMatchProperties() != null)
                     {
-                        stringBuilder.append(this.getSearchPropertiesClause(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                            RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
-                                                                            classificationCondition.getMatchProperties()));
+                        conditionsBuilder.append(this.getSearchPropertiesClause(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                                RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                                classificationCondition.getMatchProperties()));
                     }
 
-                    stringBuilder.append(") ");
+                    conditionsBuilder.append(") ");
                 }
+            }
+
+            if (!firstCondition)
+            {
+                conditionsBuilder.append(") ");
+
+                stringBuilder.append(" and ");
+                if (matchClassifications.getMatchCriteria() == MatchCriteria.NONE)
+                {
+                    stringBuilder.append("not ");
+                }
+                stringBuilder.append(conditionsBuilder);
             }
 
             return stringBuilder.toString();
