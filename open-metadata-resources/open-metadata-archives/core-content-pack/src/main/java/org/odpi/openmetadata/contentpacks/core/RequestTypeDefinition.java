@@ -48,6 +48,7 @@ public enum RequestTypeDefinition
                         null,
                         null,
                         true,
+                        ContentCollectionDefinition.WATCHDOG_ACTIONS,
                         ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -68,6 +69,7 @@ public enum RequestTypeDefinition
               DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
               null,
               true,
+              ContentCollectionDefinition.FILE_ACTIONS,
               ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -88,6 +90,7 @@ public enum RequestTypeDefinition
               DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
               null,
               true,
+              ContentCollectionDefinition.FILE_ACTIONS,
               ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -108,6 +111,7 @@ public enum RequestTypeDefinition
                 DeployedImplementationType.FILE,
                 null,
                 true,
+                ContentCollectionDefinition.FILE_ACTIONS,
                 ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -125,6 +129,7 @@ public enum RequestTypeDefinition
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getGUID(),
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDisplayName(),
                                 ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDescription(),
+                                ContentCollectionDefinition.WATCHDOG_ACTIONS,
                                 ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
@@ -142,6 +147,7 @@ public enum RequestTypeDefinition
                        "5ca5b9fb-2a38-43b6-9206-1465574129ce",
                        "Award Karma Points",
                        "Monitors contributions to the open metadata ecosystem and awards karma points to the users responsible.",
+                       ContentCollectionDefinition.ANALYTICAL_ACTIONS,
                        ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
     /**
@@ -159,6 +165,7 @@ public enum RequestTypeDefinition
                                   "3e1d7e33-f871-4a4f-b50d-25e59516f7bd",
                                   "Build Zone Membership Profile",
                                   "Counts the elements of each type in each Governance Zone.",
+                                  ContentCollectionDefinition.ANALYTICAL_ACTIONS,
                                   ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
 
@@ -180,6 +187,7 @@ public enum RequestTypeDefinition
                       DeployedImplementationType.TABULAR_DATA_SET,
                       null,
                       true,
+                      ContentCollectionDefinition.PRODUCT_CATALOG,
                       ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -200,6 +208,7 @@ public enum RequestTypeDefinition
                            DeployedImplementationType.TABULAR_DATA_SET,
                            null,
                            true,
+                           ContentCollectionDefinition.PRODUCT_CATALOG,
                            ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
@@ -220,6 +229,7 @@ public enum RequestTypeDefinition
                         null,
                         null,
                         true,
+                        ContentCollectionDefinition.PRODUCT_CATALOG,
                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
@@ -240,6 +250,7 @@ public enum RequestTypeDefinition
                         DeployedImplementationType.TABULAR_DATA_SET,
                         null,
                         true,
+                        ContentCollectionDefinition.PRODUCT_CATALOG,
                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
 
@@ -258,6 +269,7 @@ public enum RequestTypeDefinition
                 "0e982f14-b5f9-4c0d-9bdf-647a2a637efa",
                 "Seek Origin of Data",
                 "Using the lineage relationships, trace back to the source of data for a requested asset.  If a single DigitalResourceOrigin classification is encountered then add it to the asset.  If null, or multiple DigitalResourceOrigin classifications are encountered, raise an error.",
+                ContentCollectionDefinition.STEWARDSHIP,
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -275,6 +287,7 @@ public enum RequestTypeDefinition
                 "a6db6967-0e78-4898-9602-0748932f3cfa",
                 "Set Zone Membership",
                 "Set up the zone membership on the requested element.",
+                ContentCollectionDefinition.STEWARDSHIP,
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
 
@@ -293,6 +306,7 @@ public enum RequestTypeDefinition
                      "edd1702a-c7b5-47ab-8cd2-3750849fe238",
                      "Set Retention Period",
                      "Set up the retention period for the supplied asset.",
+                     ContentCollectionDefinition.STEWARDSHIP,
                      ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -310,6 +324,7 @@ public enum RequestTypeDefinition
                  "3f76aeab-bb47-4b5b-b77e-803cc73e7e13",
                  "Verify Asset",
                  "Verify that an asset has the correct classifications set up - which includes zone membership, retention and origin.",
+                 ContentCollectionDefinition.STEWARDSHIP,
                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -327,6 +342,7 @@ public enum RequestTypeDefinition
                          "255cb632-9bbc-4e1c-9e41-898673305341",
                          "Evaluate Annotations",
                          "Check a survey report for 'Request for Action' annotations and raise a ToDo request to the designated steward to resolve it.",
+                         ContentCollectionDefinition.STEWARDSHIP,
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -347,6 +363,7 @@ public enum RequestTypeDefinition
                          DeployedImplementationType.FILE,
                         null,
                         true,
+                         ContentCollectionDefinition.COMMUNICATION_ACTIONS,
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -367,6 +384,7 @@ public enum RequestTypeDefinition
                     DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR,
                     null,
                     false,
+                    ContentCollectionDefinition.COMMUNICATION_ACTIONS,
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -387,6 +405,7 @@ public enum RequestTypeDefinition
                     null,
                     null,
                     false,
+                    ContentCollectionDefinition.COMMUNICATION_ACTIONS,
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -404,6 +423,7 @@ public enum RequestTypeDefinition
                 "2cfe0c4a-7f63-4081-a8d5-ab6cc0159936",
                 "Qualified Name Deduplication",
                 "Link elements as duplicates if they have the same qualified name.",
+                ContentCollectionDefinition.STEWARDSHIP,
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
 
@@ -425,6 +445,7 @@ public enum RequestTypeDefinition
                     DeployedImplementationType.CSV_FILE,
                     null,
                     true,
+                    ContentCollectionDefinition.SURVEY_ACTIONS,
                     ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -445,6 +466,7 @@ public enum RequestTypeDefinition
                      DeployedImplementationType.FILE,
                      null,
                      true,
+                     ContentCollectionDefinition.SURVEY_ACTIONS,
                      ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -465,6 +487,7 @@ public enum RequestTypeDefinition
                   DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
                   null,
                   true,
+                  ContentCollectionDefinition.SURVEY_ACTIONS,
                   ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -485,6 +508,7 @@ public enum RequestTypeDefinition
                             DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
                             null,
                             true,
+                            ContentCollectionDefinition.SURVEY_ACTIONS,
                             ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -505,6 +529,7 @@ public enum RequestTypeDefinition
                        DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
                        null,
                        true,
+                       ContentCollectionDefinition.SURVEY_ACTIONS,
                        ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -525,6 +550,7 @@ public enum RequestTypeDefinition
                                  DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
                                  null,
                                  true,
+                                 ContentCollectionDefinition.SURVEY_ACTIONS,
                                  ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -545,6 +571,7 @@ public enum RequestTypeDefinition
                         AtlasDeployedImplementationType.APACHE_ATLAS_SERVER,
                         null,
                         true,
+                        ContentCollectionDefinition.SURVEY_ACTIONS,
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -565,6 +592,7 @@ public enum RequestTypeDefinition
                         KafkaDeployedImplementationType.APACHE_KAFKA_SERVER,
                         null,
                         true,
+                        ContentCollectionDefinition.SURVEY_ACTIONS,
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -585,6 +613,7 @@ public enum RequestTypeDefinition
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                      null,
                      true,
+                     ContentCollectionDefinition.SURVEY_ACTIONS,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -605,6 +634,7 @@ public enum RequestTypeDefinition
                       UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                       null,
                       true,
+                      ContentCollectionDefinition.SURVEY_ACTIONS,
                       ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -625,6 +655,7 @@ public enum RequestTypeDefinition
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                      null,
                      true,
+                     ContentCollectionDefinition.SURVEY_ACTIONS,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -645,6 +676,7 @@ public enum RequestTypeDefinition
                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                      null,
                      true,
+                     ContentCollectionDefinition.SURVEY_ACTIONS,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -665,6 +697,7 @@ public enum RequestTypeDefinition
                  UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                  null,
                  true,
+                 ContentCollectionDefinition.PROVISION_ACTIONS,
                  ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -685,6 +718,7 @@ public enum RequestTypeDefinition
                            PostgresDeployedImplementationType.POSTGRESQL_SERVER,
                            null,
                            true,
+                           ContentCollectionDefinition.SURVEY_ACTIONS,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -705,6 +739,7 @@ public enum RequestTypeDefinition
                              PostgresDeployedImplementationType.POSTGRESQL_SERVER,
                              null,
                              true,
+                             ContentCollectionDefinition.SURVEY_ACTIONS,
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -722,6 +757,7 @@ public enum RequestTypeDefinition
                        "44ff46f1-50f8-443c-836e-78458123340f",
                        "Create File Folder in Open Metadata",
                        "Create a FileFolder asset in open metadata to represent a file system directory.  This is typically used to request a survey or the cataloguing of the files/nested directories within the directory.",
+                       ContentCollectionDefinition.CREATE_ACTIONS,
                        ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -739,6 +775,7 @@ public enum RequestTypeDefinition
                        "f1729715-1e31-471c-93d1-fc9b406a6cec",
                        "Create Data Folder in Open Metadata",
                        "Create a DataFolder asset in open metadata to represent a file system directory.  This is typically used to request a survey or the cataloguing of the files/nested directories within the directory.",
+                       ContentCollectionDefinition.CREATE_ACTIONS,
                        ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -756,6 +793,7 @@ public enum RequestTypeDefinition
                        "a822725e-e721-4f78-88a0-115b48d9b787",
                        "Delete File Folder from Open Metadata",
                        "Delete the requested FileFolder asset using the template placeholder properties used to create it.",
+                       ContentCollectionDefinition.DELETE_ACTIONS,
                        ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -773,6 +811,7 @@ public enum RequestTypeDefinition
                        "05e01ab6-e897-4c36-97b8-1c647ed4b85c",
                        "Delete Data Folder from Open Metadata",
                        "Delete the requested DataFolder asset using the template placeholder properties used to create it.",
+                       ContentCollectionDefinition.DELETE_ACTIONS,
                        ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -793,6 +832,7 @@ public enum RequestTypeDefinition
                         null,
                         IntegrationConnectorDefinition.GENERAL_FOLDER_CATALOGUER.getSolutionComponentGUID(),
                         false,
+                        ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                         ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -813,6 +853,7 @@ public enum RequestTypeDefinition
                         null,
                         IntegrationConnectorDefinition.GENERAL_FOLDER_CATALOGUER.getSolutionComponentGUID(),
                         false,
+                        ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                         ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
@@ -830,6 +871,7 @@ public enum RequestTypeDefinition
                            "d7c2b07f-f316-43d8-abda-ce53d9a7521f",
                            "Create a software server in Open Metadata",
                            "Create a SoftwareServer asset in open metadata to represent a software server.",
+                           ContentCollectionDefinition.CREATE_ACTIONS,
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -847,6 +889,7 @@ public enum RequestTypeDefinition
                            "67bbc3e9-9237-4ef4-b15d-99127bf01704",
                            "Delete a software server from Open Metadata",
                            "Delete the requested SoftwareServer asset using the template placeholder properties used to create it.",
+                           ContentCollectionDefinition.DELETE_ACTIONS,
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -864,6 +907,7 @@ public enum RequestTypeDefinition
                             "60a8d234-bb90-4065-986b-362a4d56dd9c",
                             "Configure a software server cataloguer",
                             "Link the SoftwareServer asset to the requested SoftwareServer cataloguer.",
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -881,7 +925,8 @@ public enum RequestTypeDefinition
                        "65ef6295-6ddf-4c88-9764-eff5a84f402b",
                        "Create Apache Kafka Topic in Open Metadata",
                        "Create a KafkaTopic asset in open metadata.",
-                        ContentPackDefinition.CORE_CONTENT_PACK),
+                       ContentCollectionDefinition.CREATE_ACTIONS,
+                       ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * harvest-open-lineage-topic
@@ -901,6 +946,7 @@ public enum RequestTypeDefinition
                                null, // see SolutionLinkingWire
                                IntegrationConnectorDefinition.OPEN_LINEAGE_KAFKA_LISTENER.getSolutionComponentGUID(),
                                false,
+                               ContentCollectionDefinition.ANALYTICAL_ACTIONS,
                                ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
@@ -918,6 +964,7 @@ public enum RequestTypeDefinition
                        "6546488f-d8a2-415d-9d03-6ab72ba14c40",
                        "Delete an Apache Kafka Topic from Open Metadata",
                        "Delete the asset from the metadata store.",
+                       ContentCollectionDefinition.DELETE_ACTIONS,
                        ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -935,6 +982,7 @@ public enum RequestTypeDefinition
                      "e9ca091e-f9e7-4e5b-bd45-6d4f0e2d55aa",
                      "Create an OSS Unity Catalog Server in Open Metadata",
                      "Create the asset in the metadata store.",
+                     ContentCollectionDefinition.CREATE_ACTIONS,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -952,6 +1000,7 @@ public enum RequestTypeDefinition
                      "835b4fe4-03cf-4f4d-b0b5-e25d7dfe3299",
                      "Delete an OSS Unity Catalog Server from Open Metadata",
                      "Delete asset from the metadata repository.",
+                     ContentCollectionDefinition.DELETE_ACTIONS,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -969,6 +1018,7 @@ public enum RequestTypeDefinition
                         "8bba4467-0430-4a94-b8c5-b881fd3f9396",
                         "Create a Databricks Unity Catalog Server in Open Metadata",
                         "Create asset in the metadata repository.",
+                        ContentCollectionDefinition.CREATE_ACTIONS,
                         ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -986,6 +1036,7 @@ public enum RequestTypeDefinition
                         "c0ac2017-d7f4-49c2-9e9e-e995ced94177",
                         "Delete a Databricks Unity Catalog Server from Open Metadata",
                         "Delete asset from the metadata repository.",
+                        ContentCollectionDefinition.DELETE_ACTIONS,
                         ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -1006,6 +1057,7 @@ public enum RequestTypeDefinition
                       null,
                       IntegrationConnectorDefinition.UC_SERVER_CATALOGUER.getSolutionComponentGUID(),
                       false,
+                      ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                       ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -1023,6 +1075,7 @@ public enum RequestTypeDefinition
                         "cff46354-5b55-4b2f-bbb8-83db28507630",
                         "Create Apache Atlas Server in Open Metadata",
                         "Create an asset that represents the server.",
+                        ContentCollectionDefinition.CREATE_ACTIONS,
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -1040,6 +1093,7 @@ public enum RequestTypeDefinition
                         "521c46f9-b1a8-44a5-a5a8-ddae9bc21230",
                         "Delete Apache Atlas Server from Open Metadata",
                         "Delete asset from the metadata repository.",
+                        ContentCollectionDefinition.DELETE_ACTIONS,
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -1060,6 +1114,7 @@ public enum RequestTypeDefinition
                         null,
                          IntegrationConnectorDefinition.APACHE_ATLAS_EXCHANGE.getSolutionComponentGUID(),
                          false,
+                         ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                          ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -1077,6 +1132,7 @@ public enum RequestTypeDefinition
                         "36fa75fa-dd6e-4120-a6f4-2c1abf4e565d",
                         "Create Apache Kafka Server in Open Metadata",
                         "Create an asset that represents the server.",
+                        ContentCollectionDefinition.CREATE_ACTIONS,
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -1094,6 +1150,7 @@ public enum RequestTypeDefinition
                         "ab494047-24c5-4643-909c-183140ff2763",
                         "Delete Apache Kafka Server from Open Metadata",
                         "Delete asset from the metadata repository.",
+                        ContentCollectionDefinition.DELETE_ACTIONS,
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -1114,6 +1171,7 @@ public enum RequestTypeDefinition
                          null,
                          IntegrationConnectorDefinition.KAFKA_SERVER_CATALOGUER.getSolutionComponentGUID(),
                          false,
+                         ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                          ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
 
@@ -1132,6 +1190,7 @@ public enum RequestTypeDefinition
                                 "1bd75045-831c-4105-938f-19bca9bfc555",
                                 "Create OMAG Server Platform in Open Metadata",
                                 "Create an asset that represents the platform.",
+                                ContentCollectionDefinition.CREATE_ACTIONS,
                                 ContentPackDefinition.EGERIA_CONTENT_PACK),
 
     /**
@@ -1149,6 +1208,7 @@ public enum RequestTypeDefinition
                                 "4ef6b15b-cd35-413b-b63f-c6b605edda92",
                                 "Delete OMAG Server Platform from Open Metadata",
                                 "Delete asset from the metadata repository.",
+                                ContentCollectionDefinition.DELETE_ACTIONS,
                                 ContentPackDefinition.EGERIA_CONTENT_PACK),
 
     /**
@@ -1169,6 +1229,7 @@ public enum RequestTypeDefinition
                                  null,
                                  IntegrationConnectorDefinition.OMAG_SERVER_PLATFORM_CATALOGUER.getSolutionComponentGUID(),
                                  false,
+                                 ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                                  ContentPackDefinition.EGERIA_CONTENT_PACK),
 
 
@@ -1187,6 +1248,7 @@ public enum RequestTypeDefinition
                            "0e5f926f-19aa-4a4b-865b-ed80d63d9752",
                            "Create PostgreSQL Server asset in Open Metadata",
                            "Create an asset that represents the server.",
+                           ContentCollectionDefinition.CREATE_ACTIONS,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1204,6 +1266,7 @@ public enum RequestTypeDefinition
                            "e84da60e-cf37-4506-8594-aac93826185a",
                            "Delete PostgreSQL Server from Open Metadata",
                            "Delete asset from the metadata repository.",
+                           ContentCollectionDefinition.DELETE_ACTIONS,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1224,6 +1287,7 @@ public enum RequestTypeDefinition
                             null,
                             IntegrationConnectorDefinition.POSTGRES_SERVER_CATALOGUER.getSolutionComponentGUID(),
                             false,
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1241,6 +1305,7 @@ public enum RequestTypeDefinition
                        "1e13b511-e452-4fe4-a075-c0a5c021c051",
                        "Create PostgreSQL Database from Open Metadata",
                        "Create an open metadata element that represents a PostgreSQL database using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the database and the connection.  The schemas, tables and columns are not cataloged by this component.",
+                       ContentCollectionDefinition.CREATE_ACTIONS,
                        ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1258,6 +1323,7 @@ public enum RequestTypeDefinition
                        "c743bbc6-6e69-485c-8082-aee444ccc88e",
                        "Delete PostgreSQL Database from Open Metadata",
                        "Locate and delete the open metadata element that represents the PostgreSQL database described in the request.  The real database on the PostgreSQL server (if any) is unaffected by this component.",
+                       ContentCollectionDefinition.DELETE_ACTIONS,
                        ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1278,6 +1344,7 @@ public enum RequestTypeDefinition
                               null,
                               IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
                               false,
+                              ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                               ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1295,6 +1362,7 @@ public enum RequestTypeDefinition
                            "c9779e50-9585-4e65-9cd7-4bc00757fe97",
                            "Create PostgreSQL Schema in Open Metadata",
                            "Create an open metadata element that represents a PostgreSQL schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
+                           ContentCollectionDefinition.CREATE_ACTIONS,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1312,6 +1380,7 @@ public enum RequestTypeDefinition
                            "f2dd4107-88c1-4759-b62b-6ca68f5b8d8b",
                            "Delete PostgreSQL Schema from Open Metadata",
                            "Locate and delete the open metadata element that represents the PostgreSQL schema described in the request.  The real schema on the PostgreSQL server (if any) is unaffected by this component.",
+                           ContentCollectionDefinition.DELETE_ACTIONS,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -1332,6 +1401,7 @@ public enum RequestTypeDefinition
                             null,
                             IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
                             false,
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
 
@@ -1352,6 +1422,7 @@ public enum RequestTypeDefinition
     private final DeployedImplementationTypeDefinition worksWithTechnology;
     private final String                               configuresComponentGUID;
     private final boolean                              linkToMetadataServerSolutionComponent;
+    private final ContentCollectionDefinition          folder;
     private final ContentPackDefinition                contentPackDefinition;
 
     /**
@@ -1462,6 +1533,7 @@ public enum RequestTypeDefinition
      * @param solutionComponentGUID unique identifier of the solution component for the governance action type
      * @param solutionComponentName display name of the solution component for the governance action type
      * @param solutionComponentDescription description of the solution component for the governance action type
+     * @param folder folder for the design library
      * @param contentPackDefinition which content pack?
      */
     RequestTypeDefinition(String                      governanceRequestType,
@@ -1476,6 +1548,7 @@ public enum RequestTypeDefinition
                           String                      solutionComponentGUID,
                           String                      solutionComponentName,
                           String                      solutionComponentDescription,
+                          ContentCollectionDefinition folder,
                           ContentPackDefinition       contentPackDefinition)
     {
         this.governanceRequestType                 = governanceRequestType;
@@ -1493,6 +1566,7 @@ public enum RequestTypeDefinition
         this.contentPackDefinition                 = contentPackDefinition;
         this.worksWithTechnology                   = null;
         this.configuresComponentGUID               = null;
+        this.folder                                = folder;
         this.linkToMetadataServerSolutionComponent = true;
     }
 
@@ -1515,6 +1589,7 @@ public enum RequestTypeDefinition
      * @param worksWithTechnology technology that should be linked to the solution component
      * @param configuresComponentGUID component that is configured by this request type
      * @param linkToMetadataServerSolutionComponent should this component link to the open metadata server solution component
+     * @param folder folder for the design library
      * @param contentPackDefinition which content pack?
      */
     RequestTypeDefinition(String                               governanceRequestType,
@@ -1532,6 +1607,7 @@ public enum RequestTypeDefinition
                           DeployedImplementationTypeDefinition worksWithTechnology,
                           String                               configuresComponentGUID,
                           boolean                              linkToMetadataServerSolutionComponent,
+                          ContentCollectionDefinition          folder,
                           ContentPackDefinition                contentPackDefinition)
     {
         this.governanceRequestType                 = governanceRequestType;
@@ -1549,6 +1625,7 @@ public enum RequestTypeDefinition
         this.worksWithTechnology                   = worksWithTechnology;
         this.configuresComponentGUID               = configuresComponentGUID;
         this.linkToMetadataServerSolutionComponent = linkToMetadataServerSolutionComponent;
+        this.folder                                = folder;
         this.contentPackDefinition                 = contentPackDefinition;
     }
 
@@ -1715,6 +1792,17 @@ public enum RequestTypeDefinition
     public boolean linkToMetadataServerSolutionComponent()
     {
         return linkToMetadataServerSolutionComponent;
+    }
+
+
+    /**
+     * Retrieves the folder for the design library
+     *
+     * @return folder
+     */
+    public ContentCollectionDefinition getFolder()
+    {
+        return folder;
     }
 
 

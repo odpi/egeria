@@ -95,7 +95,7 @@ public enum ContentCollectionDefinition
                        ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * Open Connectors
+     * Analytical Services
      */
     LOVELACE_SERVICES("2da7b0dc-9848-402e-82ca-148a88bed6cb",
                     OpenMetadataType.COLLECTION_FOLDER.typeName,
@@ -103,6 +103,166 @@ public enum ContentCollectionDefinition
                     EGERIA_DESIGN_LIBRARY,
                     "Analytical Services",
                     "List of analytical services supplied with Egeria.  They are called Lovelace Services and they are registered with the Babbage Analytical engine.",
+                    null,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Governance Actions
+     */
+    GOVERNANCE_ACTIONS("54e12d1c-0648-475b-9ced-972040a16e8c",
+                       OpenMetadataType.COLLECTION_FOLDER.typeName,
+                       null,
+                       EGERIA_DESIGN_LIBRARY,
+                       "Governance Actions",
+                       "These are the reusable governance actions.  They can be executed as a single action, or used as a template for a step in a governance action process.",
+                       null,
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Watchdog Actions
+     */
+    WATCHDOG_ACTIONS("6f5f9877-0d74-4437-ae84-c6f6e7eb409f",
+                      OpenMetadataType.COLLECTION_FOLDER.typeName,
+                      null,
+                     GOVERNANCE_ACTIONS,
+                      "Watchdog Actions",
+                      "These are the governance actions that listen for events that trigger other governance actions.",
+                      null,
+                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * File Management Actions
+     */
+    FILE_ACTIONS("c318c044-29d9-4a84-8d52-37463ba5e1e7",
+                     OpenMetadataType.COLLECTION_FOLDER.typeName,
+                     null,
+                     GOVERNANCE_ACTIONS,
+                     "File Management Actions",
+                     "These are the governance actions that work with files and directories.",
+                     null,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Analytical Actions
+     */
+    ANALYTICAL_ACTIONS("68990afe-b17a-4acb-a2c2-df3eca46e1a1",
+                 OpenMetadataType.COLLECTION_FOLDER.typeName,
+                 null,
+                 GOVERNANCE_ACTIONS,
+                 "Analytical Actions",
+                 "These are the governance actions that scan the contents of the open metadata repositories and create analytical classifications to summarize the situation they find.",
+                 null,
+                 ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    /**
+     * Digital Product Catalog Actions
+     */
+    PRODUCT_CATALOG("3d850612-e261-491d-b6df-5918ee9cf7ed",
+                       OpenMetadataType.COLLECTION_FOLDER.typeName,
+                       null,
+                       GOVERNANCE_ACTIONS,
+                       "Digital Product Catalog Actions",
+                       "These are the governance actions that support the functions of the Digital Product Catalogs.",
+                       null,
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    /**
+     * Stewardship Actions
+     */
+    STEWARDSHIP("aa741e23-58b0-4232-bae3-263839492eea",
+                    OpenMetadataType.COLLECTION_FOLDER.typeName,
+                    null,
+                    GOVERNANCE_ACTIONS,
+                    "Stewardship Actions",
+                    "These are the governance actions that classify and link elements to to show how they should be governed.",
+                    null,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    /**
+     * Communication Actions
+     */
+    COMMUNICATION_ACTIONS("4cf7e747-f069-44d4-b5d3-467cb9d9848a",
+                          OpenMetadataType.COLLECTION_FOLDER.typeName,
+                          null,
+                          GOVERNANCE_ACTIONS,
+                          "Communication Actions",
+                          "These are the governance actions that help to communicate with people and systems.",
+                          null,
+                          ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Survey Actions
+     */
+    SURVEY_ACTIONS("9859ec6f-14eb-4fd1-8683-9677132e64e1",
+                   OpenMetadataType.COLLECTION_FOLDER.typeName,
+                   null,
+                   GOVERNANCE_ACTIONS,
+                   "Survey Actions",
+                   "These are the governance actions that conduct surveys on digital resources.",
+                   null,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Catalog Actions
+     */
+    CATALOG_ACTIONS("6160e663-cbb7-4bd1-b075-63e68676bdab",
+                   OpenMetadataType.COLLECTION_FOLDER.typeName,
+                   null,
+                   GOVERNANCE_ACTIONS,
+                   "Catalog Actions",
+                   "These are the governance actions that catalog digital resources.",
+                   null,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    /**
+     * Create Asset Actions
+     */
+    CREATE_ACTIONS("1d597d40-e336-4c18-b198-66527647e23d",
+                    OpenMetadataType.COLLECTION_FOLDER.typeName,
+                    null,
+                    CATALOG_ACTIONS,
+                    "Create Asset Actions",
+                    "These are the governance actions that create assets to represent digital resources.",
+                    null,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Delete Asset Actions
+     */
+    DELETE_ACTIONS("c0e983c4-7549-4c41-898e-741f5442b5e1",
+                   OpenMetadataType.COLLECTION_FOLDER.typeName,
+                   null,
+                   CATALOG_ACTIONS,
+                   "Delete Asset Actions",
+                   "These are the governance actions that delete assets that represent digital resources.",
+                   null,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Catalog Asset Content Actions
+     */
+    CATALOG_ASSET_CONTENTS("c2eca349-542c-4a6c-a532-afc3391c4760",
+                   OpenMetadataType.COLLECTION_FOLDER.typeName,
+                   null,
+                   CATALOG_ACTIONS,
+                   "Catalog Asset Content Actions",
+                   "These are the governance actions that catalog the contents of digital resources and link them to the assets that represent them.",
+                   null,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Provision Actions
+     */
+    PROVISION_ACTIONS("3fc7d511-eab2-45e3-a8a6-c74c3c37dfe5",
+                    OpenMetadataType.COLLECTION_FOLDER.typeName,
+                    null,
+                    GOVERNANCE_ACTIONS,
+                    "Provision Actions",
+                    "These are the governance actions that provision digital resources into other tools and systems.",
                     null,
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
