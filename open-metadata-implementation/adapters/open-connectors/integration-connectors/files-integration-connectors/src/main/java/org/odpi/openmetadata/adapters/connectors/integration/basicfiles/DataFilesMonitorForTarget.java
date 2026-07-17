@@ -398,7 +398,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                     auditLog.logException(methodName,
                                           BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
                                                   error.getClass().getName(),
-                                                  sourceName,
+                                                  connectorName,
                                                   file.getAbsolutePath(),
                                                   error.getMessage()),
                                           error);

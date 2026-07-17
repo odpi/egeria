@@ -952,7 +952,7 @@ Content-Type: application/json
 #
 # Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -980,7 +980,7 @@ Content-Type: application/json
 #
 # Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
