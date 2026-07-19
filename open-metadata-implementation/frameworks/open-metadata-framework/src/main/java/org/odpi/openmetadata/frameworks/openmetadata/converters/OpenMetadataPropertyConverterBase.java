@@ -16905,6 +16905,8 @@ public class OpenMetadataPropertyConverterBase
                         beanProperties = new SoftwareCapabilityProperties();
                     }
 
+                    ((SoftwareCapabilityProperties)beanProperties).setResourceName(this.removeResourceName(elementProperties));
+                    ((SoftwareCapabilityProperties)beanProperties).setNamespacePath(this.removeNamespacePath(elementProperties));
                     ((SoftwareCapabilityProperties)beanProperties).setDeploymentStatus(this.removeDeploymentStatus(elementProperties));
                     ((SoftwareCapabilityProperties)beanProperties).setUserDefinedDeploymentStatus(this.removeUserDefinedDeploymentStatus(elementProperties));
                     ((SoftwareCapabilityProperties)beanProperties).setPatchLevel(this.removePatchLevel(elementProperties));

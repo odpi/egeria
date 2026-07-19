@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
@@ -49,33 +49,36 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
      * @param catalogTargetGUID optional catalog target GUID
+     * @param dataFolderGUID optional GUID of the data folder element
      * @param deleteMethod should the connector use delete or archive?
      * @param templates names and GUIDs of templates
+     * @param fileSystemProperties properties of the file system
      * @param configurationProperties parameters to further modify the behaviour of the connector
      * @param integrationConnector associated connector
-     * @param dataFolderElement Egeria element for this directory
      * @param auditLog logging destination
      */
     public OMArchiveFilesMonitorForTarget(String                                    connectorName,
                                           String                                    sourceName,
                                           String                                    pathName,
                                           String                                    catalogTargetGUID,
+                                          String                                    dataFolderGUID,
                                           DeleteMethod                              deleteMethod,
                                           Map<String,String>                        templates,
+                                          FileSystemProperties                      fileSystemProperties,
                                           Map<String, Object>                       configurationProperties,
                                           BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                                          OpenMetadataRootElement                   dataFolderElement,
                                           AuditLog                                  auditLog)
     {
         super(connectorName,
               sourceName,
               pathName,
               catalogTargetGUID,
+              dataFolderGUID,
               deleteMethod,
               templates,
+              fileSystemProperties,
               configurationProperties,
               integrationConnector,
-              dataFolderElement,
               auditLog);
     }
 
@@ -178,7 +181,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
         {
             return super.addDataFileViaTemplate(assetTypeName,
                                                 fileTemplateGUID,
-                                                this.updateReplacementProperties(placeholderProperties.get(PlaceholderProperty.FILE_PATH_NAME.getName()),
+                                                this.updateReplacementProperties(placeholderProperties.get(PlaceholderProperty.FILE_ADDRESS.getName()),
                                                                                  replacementProperties),
                                                 placeholderProperties);
         }

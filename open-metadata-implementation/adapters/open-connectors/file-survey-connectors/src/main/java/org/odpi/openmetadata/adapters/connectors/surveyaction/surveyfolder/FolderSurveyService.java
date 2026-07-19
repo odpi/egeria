@@ -284,7 +284,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                 {
                     try
                     {
-                        FileClassifier     fileClassifier     = surveyContext.getFileClassifier();
+                        FileClassifier     fileClassifier     = surveyContext.getFileClassifier(null, null, null);
                         FileClassification fileClassification = fileClassifier.classifyFile(nestedFile);
 
                         if (deepFileAnalysis)
@@ -732,7 +732,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                         "," +
                         fileClassification.getFileExtension() +
                         "," +
-                        fileClassification.getPathName() +
+                        fileClassification.getCanonicalPathName() +
                         "," +
                         fileClassification.getFileType() +
                         "," +

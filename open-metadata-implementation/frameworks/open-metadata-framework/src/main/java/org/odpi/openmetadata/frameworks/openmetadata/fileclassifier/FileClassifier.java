@@ -29,23 +29,47 @@ import java.util.Map;
  */
 public class FileClassifier
 {
-    private final static String folderDivider = "/";
+    private final static String folderDivider        = "/";
     private final static String fileExtensionDivider = "\\.";
 
-    private final static Map<String, FileReferenceDataCache> fileNameReferenceDataCache = new HashMap<>();
+    private final static Map<String, FileReferenceDataCache> fileNameReferenceDataCache      = new HashMap<>();
     private final static Map<String, FileReferenceDataCache> fileExtensionReferenceDataCache = new HashMap<>();
 
     private final ValidMetadataValuesClient validMetadataValuesClient;
+
+    private final String fileSystemName;
+    private final String canonicalMountPoint;
+    private final String localMountPoint;
+    private final File   localMountPointFile;
 
 
     /**
      * Use the valid values to classify files on request.
      *
-     * @param connectorContext context being used by the connector.
+     * @param connectorContext    context being used by the connector
+     * @param fileSystemName      name of the file system
+     * @param canonicalMountPoint name of the canonical mount point
+     * @param localMountPoint     name of the local mount point
      */
-    public FileClassifier (ConnectorContextBase connectorContext)
+    public FileClassifier(ConnectorContextBase connectorContext,
+                          String               fileSystemName,
+                          String               canonicalMountPoint,
+                          String               localMountPoint)
     {
         this.validMetadataValuesClient = connectorContext.getValidMetadataValuesClient();
+
+        this.fileSystemName = fileSystemName;
+        this.canonicalMountPoint = canonicalMountPoint;
+        this.localMountPoint = localMountPoint;
+
+        if (localMountPoint != null)
+        {
+            this.localMountPointFile = new File(localMountPoint);
+        }
+        else
+        {
+            this.localMountPointFile = null;
+        }
     }
 
 
@@ -54,15 +78,15 @@ public class FileClassifier
      *
      * @param pathName name of the file
      * @return file classification
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
-     * @throws IOException unable to access the attributes of the file
+     * @throws IOException                unable to access the attributes of the file
      */
-    public FileClassification classifyFile(String pathName)  throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException,
-                                                                    IOException
+    public FileClassification classifyFile(String pathName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException,
+                                                                   IOException
     {
         return classifyFile(new File(pathName));
     }
@@ -73,8 +97,8 @@ public class FileClassifier
      *
      * @param file details of the file
      * @return file classification
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
      */
     public FileClassification classifyFile(File file) throws InvalidParameterException,
@@ -82,7 +106,7 @@ public class FileClassifier
                                                              UserNotAuthorizedException,
                                                              IOException
     {
-        Date creationTime = null;
+        Date creationTime     = null;
         Date lastModifiedTime = null;
         Date lastAccessedTime = null;
 
@@ -106,9 +130,11 @@ public class FileClassifier
         FileReferenceDataCache fileReferenceDataCache = getFileReferenceDataCache(file.getName(),
                                                                                   fileExtension);
 
-        return new FileClassification(file.getName(),
-                                      file.getCanonicalPath(),
+        return new FileClassification(fileSystemName,
+                                      file.getName(),
+                                      normalizePath(file.getCanonicalPath()),
                                       fileExtension,
+                                      normalizeAddress(file.getCanonicalPath()),
                                       creationTime,
                                       lastModifiedTime,
                                       lastAccessedTime,
@@ -122,6 +148,42 @@ public class FileClassifier
                                       fileReferenceDataCache.encoding,
                                       fileReferenceDataCache.assetTypeName,
                                       attr.size());
+    }
+
+
+    /**
+     * Convert the canonical fileSystemPathName name returned by the file system to Egeria's own view of the canonical fileSystemPathName name.
+     *
+     * @param fileSystemPathName name of the file system path
+     * @return normalized name
+     * @throws IOException if the local mount point cannot be resolved
+     */
+    private String normalizePath(String fileSystemPathName) throws IOException
+    {
+        if ((canonicalMountPoint != null) && (localMountPointFile != null))
+        {
+            return fileSystemPathName.replace(localMountPointFile.getCanonicalPath(), canonicalMountPoint);
+        }
+
+        return fileSystemPathName;
+    }
+
+
+    /**
+     * Convert the canonical fileSystemPathName name returned by the file system to Egeria's own view of the canonical fileSystemPathName name.
+     *
+     * @param fileSystemPathName name of the file system path
+     * @return normalized address
+     * @throws IOException if the local mount point cannot be resolved
+     */
+    private String normalizeAddress(String fileSystemPathName) throws IOException
+    {
+        if ((canonicalMountPoint != null) && (localMountPoint != null) && (localMountPointFile != null))
+        {
+            return fileSystemPathName.replace(localMountPointFile.getCanonicalPath(), localMountPoint);
+        }
+
+        return fileSystemPathName;
     }
 
 
@@ -140,11 +202,11 @@ public class FileClassifier
     /**
      * Retrieve the reference data for a particular type of file.
      *
-     * @param fileName name of the file
+     * @param fileName      name of the file
      * @param fileExtension file extension
      * @return file reference data
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
      */
     synchronized FileReferenceDataCache getFileReferenceDataCache(String fileName,
@@ -168,7 +230,6 @@ public class FileClassifier
     }
 
 
-
     /**
      * Retrieves the extension from a file name.  For example, if the file name is "three.txt", the method
      * returns "txt".  If the path name has multiple extensions, such as "my-jar.jar.gz", the final extension is returned (ie "gz").
@@ -181,7 +242,7 @@ public class FileClassifier
     {
         String result = null;
 
-        if ((fileName != null) && (! fileName.isEmpty()))
+        if ((fileName != null) && (!fileName.isEmpty()))
         {
             String[] tokens = fileName.split(fileExtensionDivider);
 
@@ -209,11 +270,11 @@ public class FileClassifier
     /**
      * Retrieve the reference data for a particular type of file.
      *
-     * @param fileName name of the file
+     * @param fileName      name of the file
      * @param fileExtension file extension
      * @return file reference data
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
      */
     private FileReferenceDataCache lookupFileReferenceData(String fileName,
@@ -245,12 +306,12 @@ public class FileClassifier
         if (validMetadataValue != null)
         {
             consistentValues = validMetadataValuesClient.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                             OpenMetadataProperty.FILE_NAME.name,
-                                                                             null,
-                                                                             validMetadataValue.getPreferredValue(),
-                                                                             0,
-                                                                             5);
-            fileNameMatched = true;
+                                                                                     OpenMetadataProperty.FILE_NAME.name,
+                                                                                     null,
+                                                                                     validMetadataValue.getPreferredValue(),
+                                                                                     0,
+                                                                                     5);
+            fileNameMatched  = true;
         }
         else
         {
@@ -259,8 +320,8 @@ public class FileClassifier
                 try
                 {
                     validMetadataValue = validMetadataValuesClient.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                                 OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                 fileExtension);
+                                                                                         OpenMetadataProperty.FILE_EXTENSION.name,
+                                                                                         fileExtension);
                 }
                 catch (InvalidParameterException notKnown)
                 {
@@ -270,11 +331,11 @@ public class FileClassifier
                 if (validMetadataValue != null)
                 {
                     consistentValues = validMetadataValuesClient.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                                     OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                     null,
-                                                                                     validMetadataValue.getPreferredValue(),
-                                                                                     0,
-                                                                                     5);
+                                                                                             OpenMetadataProperty.FILE_EXTENSION.name,
+                                                                                             null,
+                                                                                             validMetadataValue.getPreferredValue(),
+                                                                                             0,
+                                                                                             5);
 
                     fileExtensionMatched = true;
                 }
@@ -310,11 +371,11 @@ public class FileClassifier
 
                         List<ValidMetadataValueDetail> consistentFileTypeValues =
                                 validMetadataValuesClient.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                              OpenMetadataProperty.FILE_TYPE.name,
-                                                                              null,
-                                                                              consistentValue.getPreferredValue(),
-                                                                              0,
-                                                                              5);
+                                                                                      OpenMetadataProperty.FILE_TYPE.name,
+                                                                                      null,
+                                                                                      consistentValue.getPreferredValue(),
+                                                                                      0,
+                                                                                      5);
 
                         if (consistentFileTypeValues != null)
                         {

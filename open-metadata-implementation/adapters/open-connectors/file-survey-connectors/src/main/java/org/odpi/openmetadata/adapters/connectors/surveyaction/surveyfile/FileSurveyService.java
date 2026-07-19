@@ -49,7 +49,7 @@ public class FileSurveyService extends SurveyActionServiceConnector
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
             FileStatsExtractor fileStatsExtractor = new FileStatsExtractor(file,
-                                                                           surveyContext.getFileClassifier(),
+                                                                           surveyContext.getFileClassifier(null, null, null),
                                                                            this);
 
             AnnotationProperties measurementAnnotation = fileStatsExtractor.getAnnotation();

@@ -3,17 +3,19 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesTemplateType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,9 +40,12 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
     protected String            directoryName     = null;
 
     /**
-     * This is the folder element describing this directory from the open metadata ecosystem.
+     * Default values for the file system name and mount point.
      */
-    protected OpenMetadataRootElement dataFolderElement = null;
+    protected String            fileSystemName = FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getExample();
+    protected String            localMountPoint = FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample();
+    protected String            canonicalMountPoint = FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getExample();
+
 
     /**
      * This is the Java File object that is accessing the directory.
@@ -56,12 +61,14 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
      * This is the unique identifier of the CatalogTarget relationship that this directory matches.
      * Null means the value was supplied in the endpoint.
      */
-    protected String            catalogTargetGUID = null;
-
+    protected final String               catalogTargetGUID;
+    protected       String               dataFolderGUID;
+    protected final FileSystemProperties fileSystemProperties;
+    protected final Map<String, Object>  configurationProperties;
     /**
      * Templates for cataloguing files and folders
      */
-    protected final Map<String, String> templates = new HashMap<>();
+    protected final Map<String, String> templates = FilesTemplateType.getDefaultFileTemplates();
 
     /**
      * Template for creating todos
@@ -92,8 +99,6 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
      */
     protected boolean catalogClassifiedFiles              = true;
 
-    protected final Map<String, Object> configurationProperties;
-
     protected String  metadataSourceGUID = null;
     protected String  metadataSourceName = null;
 
@@ -105,22 +110,24 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
      * @param catalogTargetGUID optional catalog target GUID
+     * @param dataFolderGUID optional GUID of the data folder element
      * @param deleteMethod should the connector use delete or archive?
      * @param templates names and GUIDs of templates
+     * @param fileSystemProperties properties of the file system
      * @param configurationProperties parameters to further modify the behaviour of the connector
      * @param integrationConnector associated connector
-     * @param dataFolderElement Egeria element for this directory
      * @param auditLog logging destination
      */
     public DirectoryToMonitor (String                                    connectorName,
                                String                                    sourceName,
                                String                                    pathName,
                                String                                    catalogTargetGUID,
+                               String                                    dataFolderGUID,
                                DeleteMethod                              deleteMethod,
                                Map<String,String>                        templates,
+                               FileSystemProperties                      fileSystemProperties,
                                Map<String, Object>                       configurationProperties,
                                BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                               OpenMetadataRootElement                   dataFolderElement,
                                AuditLog                                  auditLog)
     {
         final String methodName = "DirectoryToMonitor";
@@ -137,21 +144,31 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
         }
 
         this.directoryFile = new File(this.directoryName);
-        this.dataFolderElement = dataFolderElement;
-
-        if (dataFolderElement != null)
-        {
-            this.metadataSourceGUID = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionId();
-            this.metadataSourceName = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionName();
-        }
+        this.dataFolderGUID = dataFolderGUID;
+        this.fileSystemProperties = fileSystemProperties;
+        this.configurationProperties = configurationProperties;
 
         this.catalogTargetGUID = catalogTargetGUID;
         this.integrationConnector = integrationConnector;
         this.auditLog = auditLog;
-        this.configurationProperties = configurationProperties;
 
         if (configurationProperties != null)
         {
+            if (configurationProperties.get(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName()) != null)
+            {
+                fileSystemName = configurationProperties.get(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName()).toString();
+            }
+
+            if (configurationProperties.get(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName()) != null)
+            {
+                localMountPoint = configurationProperties.get(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName()).toString();
+            }
+
+            if (configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()) != null)
+            {
+                localMountPoint = configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()).toString();
+            }
+
             if (configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()) != null)
             {
                 newFileProcessName = configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()).toString();
@@ -182,16 +199,16 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             this.templates.putAll(templates);
         }
 
+        if (fileSystemProperties != null)
+        {
+            fileSystemName = fileSystemProperties.getResourceName();
+            localMountPoint = fileSystemProperties.getLocalMountPoint();
+            canonicalMountPoint = fileSystemProperties.getCanonicalMountPoint();
+        }
+
         if (deleteMethod != null)
         {
-            if (deleteMethod.equals(DeleteMethod.SOFT_DELETE))
-            {
-                allowCatalogDelete = true;
-            }
-            else
-            {
-                allowCatalogDelete = false;
-            }
+            allowCatalogDelete = deleteMethod.equals(DeleteMethod.SOFT_DELETE);
         }
 
         auditLog.logMessage(methodName,
@@ -199,7 +216,39 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
                                                                                                                   this.directoryName,
                                                                                                                   Boolean.toString(waitForDirectory),
                                                                                                                   toDoTemplateQualifiedName,
-                                                                                                                  incidentReportTemplateQualifiedName));
+                                                                                                                  incidentReportTemplateQualifiedName,
+                                                                                                                  fileSystemName,
+                                                                                                                  localMountPoint,
+                                                                                                                  canonicalMountPoint));
+    }
+
+
+    /**
+     * Return the data folder element for this directory.
+     *
+     * @return root element for the data folder
+     * @throws ConnectorCheckedException problem accessing information
+     */
+    protected OpenMetadataRootElement getDataFolderElement() throws ConnectorCheckedException
+    {
+        OpenMetadataRootElement dataFolderElement;
+        if (dataFolderGUID == null)
+        {
+            dataFolderElement = integrationConnector.getFolderElement(directoryFile, fileSystemProperties, configurationProperties);
+
+            if (dataFolderElement != null)
+            {
+                this.dataFolderGUID     = dataFolderElement.getElementHeader().getGUID();
+                this.metadataSourceGUID = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionId();
+                this.metadataSourceName = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionName();
+            }
+        }
+        else
+        {
+            dataFolderElement = integrationConnector.getFolderElement(dataFolderGUID);
+        }
+
+        return dataFolderElement;
     }
 
 

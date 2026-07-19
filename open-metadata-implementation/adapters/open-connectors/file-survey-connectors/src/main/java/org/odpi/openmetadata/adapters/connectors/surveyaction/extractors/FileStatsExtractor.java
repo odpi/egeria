@@ -68,7 +68,7 @@ public class FileStatsExtractor
         Map<String, String> dataSourceProperties = new HashMap<>();
 
         dataSourceProperties.put(FileMetric.FILE_NAME.displayName, fileClassification.getFileName());
-        dataSourceProperties.put(FileMetric.PATH_NAME.displayName, fileClassification.getPathName());
+        dataSourceProperties.put(FileMetric.PATH_NAME.displayName, fileClassification.getCanonicalPathName());
         dataSourceProperties.put(FileMetric.FILE_EXTENSION.displayName, fileClassification.getFileExtension());
         dataSourceProperties.put(FileMetric.FILE_TYPE.displayName, fileClassification.getFileType());
         dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.displayName, fileClassification.getDeployedImplementationType());
@@ -98,7 +98,7 @@ public class FileStatsExtractor
         FileMeasurement fileMeasurement = new FileMeasurement();
 
         fileMeasurement.setFileName(fileClassification.getFileName());
-        fileMeasurement.setPathName(fileClassification.getPathName());
+        fileMeasurement.setPathName(fileClassification.getCanonicalPathName());
         fileMeasurement.setFileExtension(fileClassification.getFileExtension());
         fileMeasurement.setFileType(fileClassification.getFileType());
         fileMeasurement.setDeployedImplementationType(fileClassification.getDeployedImplementationType());

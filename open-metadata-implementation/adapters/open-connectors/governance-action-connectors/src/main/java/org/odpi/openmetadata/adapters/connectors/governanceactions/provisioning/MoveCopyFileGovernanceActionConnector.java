@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
@@ -54,6 +55,13 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
     private String  destinationFolderName                = null;
     private boolean copyFile                             = true;
     private boolean deleteFile                           = false;
+
+    /*
+     * Description of the file system
+     */
+    private String fileSystemName      = null;
+    private String localMountPoint     = null;
+    private String canonicalMountPoint = null;
 
     /*
      * This describes the default lineage pattern
@@ -244,40 +252,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                 createLineage = false;
             }
 
-            Object processNameOption = configurationProperties.get(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
-
-            if (processNameOption != null)
-            {
-                topLevelProcessName = processNameOption.toString();
-            }
-
-            Object templateNameOption = configurationProperties.get(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName());
-
-            if (templateNameOption != null)
-            {
-                destinationFileTemplateQualifiedName = templateNameOption.toString();
-            }
-
-            templateNameOption = configurationProperties.get(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
-
-            if (templateNameOption != null)
-            {
-                topLevelProcessTemplateQualifiedName = templateNameOption.toString();
-            }
-
-            Object fileNamePatternOption = configurationProperties.get(MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName());
-
-            if (fileNamePatternOption != null)
-            {
-                destinationFileNamePattern = fileNamePatternOption.toString();
-            }
-
-            Object destinationFolderOption = configurationProperties.get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
-
-            if (destinationFolderOption != null)
-            {
-                destinationFolderName = destinationFolderOption.toString();
-            }
+            topLevelProcessName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_NAME.getName(), configurationProperties, topLevelProcessName);
+            destinationFileTemplateQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName(), configurationProperties, destinationFileTemplateQualifiedName);
+            topLevelProcessTemplateQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName(), configurationProperties, topLevelProcessTemplateQualifiedName);
+            destinationFileNamePattern = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName(), configurationProperties, destinationFileNamePattern);
+            destinationFolderName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName(), configurationProperties, destinationFolderName);
 
             Object sourceLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
 
@@ -307,12 +286,12 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                 columnLevelLineage = false;
             }
 
-            informationSupplyChainQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName(), configurationProperties);
+            informationSupplyChainQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName(), configurationProperties, informationSupplyChainQualifiedName);
         }
 
         /*
          * Retrieve the source file and destination folder from either the request parameters or the action targets.  If both
-         * are specified then the action target elements take priority.
+         * are specified, then the action target elements take priority.
          */
         if (governanceContext.getRequestParameters() != null)
         {
@@ -368,6 +347,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                 {
                     columnLevelLineage = false;
                 }
+                fileSystemName      = super.getStringConfigurationProperty(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName(), configurationProperties, fileSystemName);
+                localMountPoint     = super.getStringConfigurationProperty(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName(), configurationProperties, localMountPoint);
+                canonicalMountPoint = super.getStringConfigurationProperty(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName(), configurationProperties, canonicalMountPoint);
+
+
             }
         }
 
@@ -756,7 +740,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
         OpenMetadataStore metadataStore = governanceContext.getOpenMetadataStore();
 
-        FileClassifier     fileClassifier = new FileClassifier(governanceContext);
+        FileClassifier     fileClassifier = governanceContext.getFileClassifier(fileSystemName, canonicalMountPoint, localMountPoint);
         FileClassification destinationFileClassification = fileClassifier.classifyFile(destinationFilePathName);
 
         String newFileGUID;
@@ -767,7 +751,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         String processGUID;
 
         /*
-         * Ensure that the top level process is set up
+         * Ensure that the top-level process is set up
          */
         if (topLevelProcessGUID == null)
         {
@@ -826,9 +810,6 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         /*
          * Cataloguing the new destination file.
          */
-        String assetTypeName = destinationFileClassification.getAssetTypeName();
-        String qualifiedName = assetTypeName + "::" + destinationFilePathName;
-
         OpenMetadataElement parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.PATH_NAME.name);
 
         if (parentElement == null)
@@ -857,10 +838,10 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             }
         }
 
-        ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
+        ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, destinationFileClassification.getQualifiedName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.DISPLAY_NAME.name, destinationFileClassification.getFileName());
-        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.RESOURCE_NAME.name, destinationFileClassification.getPathName());
-        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.PATH_NAME.name, destinationFileClassification.getPathName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.RESOURCE_NAME.name, destinationFileClassification.getCanonicalPathName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.PATH_NAME.name, destinationFileClassification.getCanonicalPathName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_NAME.name, destinationFileClassification.getFileName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_TYPE.name, destinationFileClassification.getFileType());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_EXTENSION.name, destinationFileClassification.getFileExtension());
@@ -882,10 +863,18 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
              */
             Map<String, String> placeholderProperties = new HashMap<>();
 
-            placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), destinationFileClassification.getPathName());
+            placeholderProperties.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), destinationFileClassification.getDeployedImplementationType());
+            placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), fileSystemName);
+            placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), destinationFileClassification.getCanonicalPathName());
+            placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), destinationFileClassification.getFileName());
             placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), destinationFileClassification.getFileType());
             placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), destinationFileClassification.getFileExtension());
-            placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), destinationFileClassification.getFileName());
+            placeholderProperties.put(PlaceholderProperty.FILE_ADDRESS.getName(), destinationFileClassification.getFileAddress());
+            placeholderProperties.put(PlaceholderProperty.FILE_ENCODING.getName(), destinationFileClassification.getEncoding());
+            placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
+            placeholderProperties.put(PlaceholderProperty.PROGRAMMING_LANGUAGE.getName(), null);
+            placeholderProperties.put(PlaceholderProperty.EMBEDDED_METADATA.getName(), null);
+            placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
             if (destinationFileClassification.getCreationTime() != null)
             {
                 placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), destinationFileClassification.getCreationTime().toString());
@@ -913,7 +902,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                 placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
             }
 
-            newFileGUID = metadataStore.getMetadataElementFromTemplate(assetTypeName,
+            newFileGUID = metadataStore.getMetadataElementFromTemplate(destinationFileClassification.getAssetTypeName(),
                                                                        anchorGUID,
                                                                        isOwnAnchor,
                                                                        null,
@@ -930,7 +919,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         }
         else // no template
         {
-            newFileGUID = metadataStore.createMetadataElementInStore(assetTypeName,
+            newFileGUID = metadataStore.createMetadataElementInStore(destinationFileClassification.getAssetTypeName(),
                                                                      null,
                                                                      null,
                                                                      true,

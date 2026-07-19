@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,33 +34,36 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
      * @param catalogTargetGUID optional catalog target GUID
+     * @param dataFolderGUID optional data folder GUID
      * @param deleteMethod should the connector use delete or archive?
      * @param templates names and GUIDs of templates
      * @param configurationProperties parameters to further modify the behaviour of the connector
+     * @param fileSystemProperties properties of the file System
      * @param integrationConnector associated connector
-     * @param dataFolderElement Egeria element for this directory
      * @param auditLog logging destination
      */
     public DataFolderMonitorForTarget (String                                    connectorName,
                                        String                                    sourceName,
                                        String                                    pathName,
                                        String                                    catalogTargetGUID,
+                                       String                                    dataFolderGUID,
                                        DeleteMethod                              deleteMethod,
                                        Map<String,String>                        templates,
+                                       FileSystemProperties                      fileSystemProperties,
                                        Map<String, Object>                       configurationProperties,
                                        BasicFilesMonitorIntegrationConnectorBase integrationConnector,
-                                       OpenMetadataRootElement                   dataFolderElement,
                                        AuditLog                                  auditLog)
     {
         super(connectorName,
               sourceName,
               pathName,
               catalogTargetGUID,
+              dataFolderGUID,
               deleteMethod,
               templates,
+              fileSystemProperties,
               configurationProperties,
               integrationConnector,
-              dataFolderElement,
               auditLog);
     }
 
@@ -86,15 +90,12 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                     if (fileChanged.getCanonicalPath().startsWith(directoryToMonitor.directoryFile.getCanonicalPath()))
                     {
                         /*
-                         * The directory matches this directory.
+                         * The directory matches this directory. Refresh the folder element.
                          */
-                        if (directoryToMonitor.dataFolderElement == null)
-                        {
-                            directoryToMonitor.dataFolderElement = integrationConnector.getFolderElement(directoryToMonitor.directoryFile);
-                        }
+                        OpenMetadataRootElement dataFolderElement = super.getDataFolderElement();
 
-                        if ((directoryToMonitor.dataFolderElement != null) &&
-                                (directoryToMonitor.dataFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties))
+                        if ((dataFolderElement != null) &&
+                                (dataFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties))
                         {
                             Date lastRecordedChange   = fileFolderProperties.getStoreUpdateTime();
 
@@ -105,19 +106,16 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
 
                                 properties.setStoreUpdateTime(modifiedTime);
 
-                                if (dataFolderClient.updateAsset(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
+                                if (dataFolderClient.updateAsset(dataFolderElement.getElementHeader().getGUID(),
                                                                  dataFolderClient.getUpdateOptions(true),
                                                                  properties))
                                 {
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
-                                                                    sourceName,
-                                                                    directoryToMonitor.directoryFile.getCanonicalPath(),
-                                                                    modifiedTime.toString(),
-                                                                    fileChanged.getCanonicalPath()));
-                                    }
+                                    auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
+                                                                sourceName,
+                                                                directoryToMonitor.directoryFile.getCanonicalPath(),
+                                                                modifiedTime.toString(),
+                                                                fileChanged.getCanonicalPath()));
                                 }
                             }
                         }
@@ -125,25 +123,14 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        String folderGUID = null;
-
-                        if (directoryToMonitor.dataFolderElement != null)
-                        {
-                            folderGUID = directoryToMonitor.dataFolderElement.getElementHeader().getGUID();
-                        }
-
-                        auditLog.logException(methodName,
-                                              BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
-                                                      error.getClass().getName(),
-                                                      sourceName,
-                                                      folderGUID,
-                                                      directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                      error.getMessage()),
-                                              error);
-
-                    }
+                    auditLog.logException(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  sourceName,
+                                                  directoryToMonitor.dataFolderGUID,
+                                                  directoryToMonitor.directoryFile.getAbsolutePath(),
+                                                  error.getMessage()),
+                                          error);
                 }
             }
             else

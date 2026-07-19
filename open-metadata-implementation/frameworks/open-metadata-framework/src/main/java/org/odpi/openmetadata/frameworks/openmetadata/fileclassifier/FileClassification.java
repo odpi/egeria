@@ -10,9 +10,11 @@ import java.util.Date;
  */
 public class FileClassification
 {
+    private final String  fileSystemName;
     private final String  fileName;
-    private final String  pathName;
+    private final String  canonicalPathName;
     private final String  fileExtension;
+    private final String  fileAddress;
     private final Date    creationTime;
     private final Date    lastModifiedTime;
     private final Date    lastAccessedTime;
@@ -28,9 +30,11 @@ public class FileClassification
     private final long    fileSize;
 
 
-    public FileClassification(String  fileName,
-                              String  pathName,
+    public FileClassification(String  fileSystemName,
+                              String  fileName,
+                              String  canonicalPathName,
                               String  fileExtension,
+                              String  fileAddress,
                               Date    creationTime,
                               Date    lastModifiedTime,
                               Date    lastAccessedTime,
@@ -45,9 +49,11 @@ public class FileClassification
                               String  assetTypeName,
                               long    fileSize)
     {
+        this.fileSystemName             = fileSystemName;
         this.fileName                   = fileName;
-        this.pathName                   = pathName;
+        this.canonicalPathName          = canonicalPathName;
         this.fileExtension              = fileExtension;
+        this.fileAddress                = fileAddress;
         this.creationTime               = creationTime;
         this.lastModifiedTime           = lastModifiedTime;
         this.lastAccessedTime           = lastAccessedTime;
@@ -63,6 +69,37 @@ public class FileClassification
         this.fileSize                   = fileSize;
     }
 
+    /**
+     * Return the unique name of the file asset.  This is the combination of the asset type name, the file system name, and the canonical path name.
+     *
+     * @return string name
+     */
+    public String getQualifiedName()
+    {
+        return assetTypeName + "::" + fileSystemName + ":" + canonicalPathName;
+    }
+
+
+    /**
+     * Return the resource name of the file asset.  This is the combination of the file system name, and the canonical path name.
+     *
+     * @return string name
+     */
+    public String getResourceName()
+    {
+        return fileSystemName + ":" + canonicalPathName;
+    }
+
+
+    /**
+     * Return the name of the filesystem where the file is located.
+     *
+     * @return string name
+     */
+    public String getFileSystemName()
+    {
+        return fileSystemName;
+    }
 
 
     /**
@@ -81,9 +118,9 @@ public class FileClassification
      *
      * @return string name
      */
-    public String getPathName()
+    public String getCanonicalPathName()
     {
-        return pathName;
+        return canonicalPathName;
     }
 
 
@@ -95,6 +132,17 @@ public class FileClassification
     public String getFileExtension()
     {
         return fileExtension;
+    }
+
+
+    /**
+     * Return the network address of the file.
+     *
+     * @return name of the file on the file system
+     */
+    public String getFileAddress()
+    {
+        return fileAddress;
     }
 
 

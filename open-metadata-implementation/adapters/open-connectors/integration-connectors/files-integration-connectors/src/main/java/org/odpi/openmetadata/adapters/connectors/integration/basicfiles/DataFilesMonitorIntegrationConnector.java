@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.io.File;
@@ -26,30 +27,35 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
     /**
      * Creates a monitor for the target.
      *
-     * @param sourceName source of the pathname
-     * @param pathName pathname to the directory
-     * @param catalogTargetGUID optional catalog target GUID
-     * @param deleteMethod should the connector use delete or archive?
-     * @param templates names and GUIDs of templates
+     * @param sourceName              source of the pathname
+     * @param pathName                pathname to the directory
+     * @param catalogTargetGUID       optional catalog target GUID
+     * @param dataFolderGUID          optional data folder GUID
+     * @param deleteMethod            should the connector use delete or archive?
+     * @param templates               names and GUIDs of templates
+     * @param fileSystemProperties    properties of the file system
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      */
-    public DirectoryToMonitor createDirectoryToMonitor(String              sourceName,
-                                                       String              pathName,
-                                                       String              catalogTargetGUID,
-                                                       DeleteMethod        deleteMethod,
-                                                       Map<String,String>  templates,
-                                                       Map<String, Object> configurationProperties) throws ConnectorCheckedException
+    public DirectoryToMonitor createDirectoryToMonitor(String               sourceName,
+                                                       String               pathName,
+                                                       String               catalogTargetGUID,
+                                                       String               dataFolderGUID,
+                                                       DeleteMethod         deleteMethod,
+                                                       Map<String, String>  templates,
+                                                       FileSystemProperties fileSystemProperties,
+                                                       Map<String, Object>  configurationProperties) throws ConnectorCheckedException
     {
         return new DataFilesMonitorForTarget(connectorName,
                                              sourceName,
                                              pathName,
                                              catalogTargetGUID,
+                                             dataFolderGUID,
                                              deleteMethod,
                                              templates,
+                                             fileSystemProperties,
                                              configurationProperties,
                                              this,
-                                             this.getFolderElement(new File(pathName)),
                                              auditLog);
     }
 
@@ -58,14 +64,20 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * Retrieve the Folder element from the open metadata repositories.
      * If the directory does not exist the connector waits for the directory to be created.
      *
-     * @param dataFolderFile the directory to retrieve the folder from
+     * @param dataFolderFile          the directory to retrieve the folder from
+     * @param fileSystemProperties    properties of the file system
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
-    OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
+    OpenMetadataRootElement getFolderElement(File                 dataFolderFile,
+                                             FileSystemProperties fileSystemProperties,
+                                             Map<String, Object>  configurationProperties) throws ConnectorCheckedException
     {
         return super.getFolderElement(dataFolderFile,
                                       DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getAssociatedTypeName(),
-                                      DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getDeployedImplementationType());
+                                      DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getDeployedImplementationType(),
+                                      fileSystemProperties,
+                                      configurationProperties);
     }
 
 
@@ -100,7 +112,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
              */
             try
             {
-                OpenMetadataRootElement folder = this.getFolderElement(directoryToMonitor.directoryFile);
+                OpenMetadataRootElement folder = directoryToMonitor.getDataFolderElement();
 
                 if (folder != null)
                 {
@@ -110,8 +122,8 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     int pageSize  = 100;
 
                     List<OpenMetadataRootElement> cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(),
-                                                                                      startFrom,
-                                                                                      pageSize);
+                                                                                                 startFrom,
+                                                                                                 pageSize);
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
@@ -125,7 +137,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                                     if (! file.exists())
                                     {
-                                        this.deleteFileInCatalog(file, dataFile, methodName);
+                                        assetClient.deleteAsset(dataFile.getElementHeader().getGUID(), assetClient.getDeleteOptions(true));
                                     }
                                 }
                                 else
