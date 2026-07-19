@@ -68,9 +68,8 @@ public class ConnectorContextBase
     protected final boolean                       generateIntegrationReport;
     protected final ConnectorActivityReportWriter connectorActivityReportWriter;
 
-    protected final FileClassifier       fileClassifier;
-    private   final FilesListenerManager fileListenerManager;
-    private final   RequestId            requestId = new RequestId();
+    private final FilesListenerManager fileListenerManager;
+    private final RequestId            requestId = new RequestId();
 
 
     protected final OpenMetadataStore              openMetadataStore;
@@ -694,7 +693,6 @@ public class ConnectorContextBase
                                                                        auditLog,
                                                                        maxPageSize);
 
-        this.fileClassifier      = new FileClassifier(this);
         this.fileListenerManager = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
@@ -1659,11 +1657,16 @@ public class ConnectorContextBase
     /**
      * Return the file classifier that uses reference data to describe a file.
      *
+     * @param fileSystemName      name of the file system
+     * @param canonicalMountPoint name of the canonical mount point
+     * @param localMountPoint     name of the local mount point
      * @return file classifier utility
      */
-    public FileClassifier getFileClassifier()
+    public FileClassifier getFileClassifier(String fileSystemName,
+                                            String canonicalMountPoint,
+                                            String localMountPoint)
     {
-        return fileClassifier;
+        return new FileClassifier(this, fileSystemName, canonicalMountPoint, localMountPoint);
     }
 
 

@@ -11,12 +11,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * TemplateTypeEnum characterises the type of templates supported by an integration connector.  It should be copied
- * by developers of an integration connector to help populate the supportedTemplates property of its provider.
+ * One file or folder template fore each asset type - NOT deployedImplementationType
  */
 public enum FilesTemplateType implements TemplateDefinition
 {
@@ -36,16 +36,6 @@ public enum FilesTemplateType implements TemplateDefinition
                          "372a0379-7060-4c9d-8d84-bc709b31794c",
                          DeployedImplementationType.DATA_FOLDER,
                          PlaceholderProperty.getFolderPlaceholderPropertyTypes(),
-                         null),
-
-
-    FILE_TEMPLATE(DeployedImplementationType.FILE.getDeployedImplementationType(),
-                         "Create a " + DeployedImplementationType.FILE.getAssociatedTypeName() + " asset.",
-                         DeployedImplementationType.FILE.getAssociatedTypeName(),
-                         false,
-                         "ae3067c7-cc72-4a18-88e1-746803c2c86f",
-                         DeployedImplementationType.FILE,
-                         PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                          null),
 
     DATA_FILE_TEMPLATE(DeployedImplementationType.DATA_FILE.getDeployedImplementationType(),
@@ -182,24 +172,6 @@ public enum FilesTemplateType implements TemplateDefinition
                            DeployedImplementationType.KEYSTORE_FILE,
                            PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                            null),
-
-    OMSECRETS_FILE_TEMPLATE(DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getDeployedImplementationType(),
-                           "Create a " + DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getAssociatedTypeName() + " asset.",
-                           DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getAssociatedTypeName(),
-                           false,
-                           "130d819e-e17d-46bf-bfea-d09d862e341f",
-                           DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE,
-                           PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
-                           null),
-
-    PROGRAM_FILE_TEMPLATE(DeployedImplementationType.PROGRAM_FILE.getDeployedImplementationType(),
-                          "Create a " + DeployedImplementationType.PROGRAM_FILE.getAssociatedTypeName() + " asset.",
-                          DeployedImplementationType.PROGRAM_FILE.getAssociatedTypeName(),
-                          false,
-                          "32d27e9c-1fdf-455a-ad2a-42b4d7d99108",
-                          DeployedImplementationType.PROGRAM_FILE,
-                          PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes(),
-                          null),
 
     SOURCE_CODE_FILE_TEMPLATE(DeployedImplementationType.SOURCE_CODE_FILE.getDeployedImplementationType(),
                           "Create a " + DeployedImplementationType.SOURCE_CODE_FILE.getAssociatedTypeName() + " asset.",
@@ -471,6 +443,44 @@ public enum FilesTemplateType implements TemplateDefinition
         }
 
         return templateTypes;
+    }
+
+
+    /**
+     * Return the default template guid for a specific asset type.
+     *
+     * @param assetTypeName asset type name
+     * @return default template guid
+     */
+    public static String getDefaultTemplateGUID(String assetTypeName)
+    {
+        for (FilesTemplateType filesTemplateType : FilesTemplateType.values())
+        {
+            if (assetTypeName.equals(filesTemplateType.typeName))
+            {
+                return filesTemplateType.defaultTemplateGUID;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a map of asset type name to default template guid.
+     *
+     * @return map
+     */
+    public static Map<String, String> getDefaultFileTemplates()
+    {
+        Map<String, String> defaultFileTemplates = new HashMap<>();
+
+        for (FilesTemplateType filesTemplateType : FilesTemplateType.values())
+        {
+            defaultFileTemplates.put(filesTemplateType.typeName, filesTemplateType.defaultTemplateGUID);
+        }
+
+        return defaultFileTemplates;
     }
 
 

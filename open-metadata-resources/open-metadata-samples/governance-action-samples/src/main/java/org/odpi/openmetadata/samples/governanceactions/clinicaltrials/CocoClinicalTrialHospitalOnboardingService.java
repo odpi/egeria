@@ -927,6 +927,9 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 requestParameters.put("publishZones", "data-lake,clinical-trials");
                 requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName(), dataLakeTemplateName);
                 requestParameters.put(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName(), informationSupplyChainQualifiedName);
+                requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_FILE_SYSTEM.getName(), "coco-data-lake");
+                requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_LOCAL_MOUNT_POINT.getName(), "coco-data-lake");
+                requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_CANONICAL_MOUNT_POINT.getName(), "/data-files");
 
                 relationshipProperties = propertyHelper.addStringMapProperty(relationshipProperties,
                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,

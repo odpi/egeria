@@ -22,11 +22,11 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageSet
 {
     /**
-     * BASIC-FILES-INTEGRATION-CONNECTORS-0001 - The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}
+     * The {0} integration connector has been initialized with directoryToMonitor={1}, waitForDirectory={2}, toDoTemplateQualifiedName={3}, incidentReportTemplateQualifiedName={4}, fileSystemName={5}, localMountPoint={6}, canonicalMountPoint={7}
      */
     CONNECTOR_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0001",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector has been initialized with directoryToMonitor={1}, waitForDirectory={2}, toDoTemplateQualifiedName={3} and incidentReportTemplateQualifiedName={4}",
+                            "The {0} integration connector has been initialized with directoryToMonitor={1}, waitForDirectory={2}, toDoTemplateQualifiedName={3}, incidentReportTemplateQualifiedName={4}, fileSystemName={5}, localMountPoint={6}, canonicalMountPoint={7}",
                             "The connector is designed to monitor changes to the content of directories (folders).  The directoryToMonitor is an initial directory to monitor that is supplied in the connector's endpoint.  It is optional, and can be supplemented with catalog targets associated " +
                                     "with the connector.  By default, if any of the directories to monitor do not exist, the connector fails.  The waitForDirectory flag overrides this behaviour, so directories that do not exist are skipped.  " +
                                     "If the toDoTemplateQualifiedName is set, the connector will create ToDos using the named template if there are any problems in cataloguing a file.  " +
@@ -292,6 +292,15 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                          "The {0} connector detected an unknown list name {1} nested in list {2} in secrets collection {3} ({4}); the associated security list element is: {5}",
                          "The connector skips the unknown name in the list and continues processing the list.",
                          "Use the details from the error message to either remove, or define the named list."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0026 - The {0} connector detected that catalog target {1} has a metadataSourceQualifiedName {2} that is either unknown, or not of type FileSystem.  This value should be providing details of the file system where the files are located.
+     */
+    BAD_METADATA_SOURCE("BASIC-FILES-INTEGRATION-CONNECTORS-0026",
+                      AuditLogRecordSeverityLevel.SECURITY,
+                      "The {0} connector detected that catalog target {1} has a metadataSourceQualifiedName {2} that is either unknown, or not of type FileSystem.  This value should be providing details of the file system where the files are located.",
+                      "The connector skips the unknown name continues processing.",
+                      "Update the catalog target properties so it is identifying a correct metadata source."),
     ;
 
     private final String                      logMessageId;

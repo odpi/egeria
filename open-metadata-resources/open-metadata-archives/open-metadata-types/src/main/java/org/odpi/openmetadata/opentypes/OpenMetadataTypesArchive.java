@@ -162,6 +162,7 @@ public class OpenMetadataTypesArchive
         update0013Actions();
         update0019MoreInformation();
         update0021Collections();
+        update0042SoftwareCapabilities();
         update0112Person();
         update0118ActorRoles();
         update0135ActionsForPeople();
@@ -287,9 +288,44 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    private void update0042SoftwareCapabilities()
+    {
+        this.archiveBuilder.addTypeDefPatch(getSoftwareCapabilityPatch());
+    }
+
+    private TypeDefPatch getSoftwareCapabilityPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE_PATH));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 
 
     private void update0112Person()

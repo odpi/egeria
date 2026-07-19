@@ -47,6 +47,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class SoftwareCapabilityProperties extends ReferenceableProperties
 {
+    private String           resourceName                = null;
+    private String           namespacePath               = null;
     private String           deployedImplementationType  = null;
     private DeploymentStatus deploymentStatus            = null;
     private String           userDefinedDeploymentStatus = null;
@@ -75,6 +77,8 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            resourceName                = template.getResourceName();
+            namespacePath               = template.getNamespacePath();
             deployedImplementationType  = template.getDeployedImplementationType();
             deploymentStatus            = template.getDeploymentStatus();
             userDefinedDeploymentStatus = template.getUserDefinedDeploymentStatus();
@@ -83,6 +87,48 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
         }
     }
 
+
+    /**
+     * Return the full name of the resource as it is known in its owning technology.
+     *
+     * @return string
+     */
+    public String getResourceName()
+    {
+        return resourceName;
+    }
+
+    /**
+     * Set up the full name of the resource as it is known in its owning technology.
+     *
+     * @param resourceName string
+     */
+    public void setResourceName(String resourceName)
+    {
+        this.resourceName = resourceName;
+    }
+
+
+    /**
+     * Return the name of the namespace that this type belongs to.
+     *
+     * @return string name
+     */
+    public String getNamespacePath()
+    {
+        return namespacePath;
+    }
+
+
+    /**
+     * Set up the name of the namespace that this type belongs to.
+     *
+     * @param namespacePath string name
+     */
+    public void setNamespacePath(String namespacePath)
+    {
+        this.namespacePath = namespacePath;
+    }
 
     /**
      * Return the status of the content.
@@ -203,7 +249,9 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     public String toString()
     {
         return "SoftwareCapabilityProperties{" +
-                "deployedImplementationType='" + deployedImplementationType + '\'' +
+                "resourceName='" + resourceName + '\'' +
+                ", namespacePath='" + namespacePath + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", deploymentStatus=" + deploymentStatus +
                 ", userDefinedDeploymentStatus='" + userDefinedDeploymentStatus + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
@@ -225,7 +273,9 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SoftwareCapabilityProperties that = (SoftwareCapabilityProperties) objectToCompare;
-        return Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
+        return  Objects.equals(namespacePath, that.namespacePath) &&
+                Objects.equals(resourceName, that.resourceName) &&
+                Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                 deploymentStatus == that.deploymentStatus &&
                 Objects.equals(userDefinedDeploymentStatus, that.userDefinedDeploymentStatus) &&
                 Objects.equals(patchLevel, that.patchLevel) &&
@@ -240,6 +290,6 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deployedImplementationType, deploymentStatus, userDefinedDeploymentStatus, patchLevel, source);
+        return Objects.hash(super.hashCode(), resourceName, namespacePath, deployedImplementationType, deploymentStatus, userDefinedDeploymentStatus, patchLevel, source);
     }
 }

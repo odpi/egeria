@@ -10,16 +10,24 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.Bas
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.ConfigException;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -35,8 +43,6 @@ import java.util.*;
  */
 public abstract class BasicFilesMonitorIntegrationConnectorBase extends IntegrationConnectorBase
 {
-    Map<String, String> defaultTemplates = new HashMap<>();
-
     /**
      * Maintains a list of directories that are the root of the monitoring.
      */
@@ -54,11 +60,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
-
-        for (FilesTemplateType templateType : FilesTemplateType.values())
-        {
-            defaultTemplates.put(templateType.getTemplateName(), templateType.getTemplateGUID());
-        }
 
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
@@ -104,7 +105,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                                                                             endpoint.getNetworkAddress(),
                                                                             null,
                                                                             null,
-                                                                            defaultTemplates,
+                                                                            null,
+                                                                            FilesTemplateType.getDefaultFileTemplates(),
+                                                                            null,
                                                                             configurationProperties);
 
             directoriesToMonitor.add(directoryToMonitor);
@@ -118,46 +121,56 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
      * @param catalogTargetGUID optional catalog target GUID
+     * @param dataFolderGUID optional data folder GUID
      * @param deleteMethod should the connector use delete or archive?
      * @param templates names and GUIDs of templates
+     * @param fileSystemProperties    properties of the file system
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      * @throws ConnectorCheckedException connector problem
      */
-    protected abstract DirectoryToMonitor createDirectoryToMonitor(String              sourceName,
-                                                                   String              pathName,
-                                                                   String              catalogTargetGUID,
-                                                                   DeleteMethod        deleteMethod,
-                                                                   Map<String,String>  templates,
-                                                                   Map<String, Object> configurationProperties) throws ConnectorCheckedException;
+    protected abstract DirectoryToMonitor createDirectoryToMonitor(String               sourceName,
+                                                                   String               pathName,
+                                                                   String               catalogTargetGUID,
+                                                                   String               dataFolderGUID,
+                                                                   DeleteMethod         deleteMethod,
+                                                                   Map<String,String>   templates,
+                                                                   FileSystemProperties fileSystemProperties,
+                                                                   Map<String, Object>  configurationProperties) throws ConnectorCheckedException;
 
 
     /**
-     * Validate the supplied pathname and return a Directory to monitor structure.  Any problems, throw exception.
+     * Validate the supplied pathname and return details of a directory to monitor.  Any problems, throw exception.
      *
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
-     * @param catalogTargetGUID optional catalog target GUID
+     * @param catalogTargetGUID optional catalog target relationship GUID
+     * @param dataFolderGUID optional data folder GUID
      * @param deleteMethod should the connector use delete or archive?
      * @param templates names and GUIDs of templates
+     * @param fileSystemProperties    properties of the file system
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      * @throws ConnectorCheckedException problem with the path name
      */
-    private DirectoryToMonitor checkDirectoryToMonitor(String              sourceName,
-                                                       String              pathName,
-                                                       String              catalogTargetGUID,
-                                                       DeleteMethod        deleteMethod,
-                                                       Map<String,String>  templates,
-                                                       Map<String, Object> configurationProperties) throws ConnectorCheckedException
+    private DirectoryToMonitor checkDirectoryToMonitor(String               sourceName,
+                                                       String               pathName,
+                                                       String               catalogTargetGUID,
+                                                       String               dataFolderGUID,
+                                                       DeleteMethod         deleteMethod,
+                                                       Map<String,String>   templates,
+                                                       FileSystemProperties fileSystemProperties,
+                                                       Map<String, Object>  configurationProperties) throws ConnectorCheckedException
     {
         final String methodName = "checkDirectoryToMonitor";
 
         DirectoryToMonitor directoryToMonitor = createDirectoryToMonitor(sourceName,
                                                                          pathName,
                                                                          catalogTargetGUID,
+                                                                         dataFolderGUID,
                                                                          deleteMethod,
                                                                          templates,
+                                                                         fileSystemProperties,
                                                                          configurationProperties);
 
 
@@ -263,13 +276,10 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                 {
                     directoriesToMonitor.remove(directoryToMonitor);
                 }
+
+                /* Todo - bring the file listening back once we are sure of the thread management
                 else
                 {
-                    if (directoryToMonitor.dataFolderElement == null)
-                    {
-                        directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
-                    }
-
                     if (! directoryToMonitor.isListening)
                     {
                         if (integrationContext.registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null))
@@ -278,6 +288,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                         }
                     }
                 }
+                 */
             }
 
             return new ArrayList<>(directoriesToMonitor);
@@ -288,15 +299,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                                connectorName,
-                                                                                                                                                methodName,
-                                                                                                                                                connectorName,
-                                                                                                                                                error.getMessage()));
-            }
+            auditLog.logMessage(methodName,
+                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                                        connectorName,
+                                                                                                                                        methodName,
+                                                                                                                                        connectorName,
+                                                                                                                                        error.getMessage()));
 
             throw new ConnectorCheckedException(
                     BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
@@ -321,8 +329,15 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * @throws ConnectorCheckedException problem with open metadata or the connector
      * @throws IOException problem resolving the file name
      */
-    void addCatalogTarget(OpenMetadataRootElement catalogTarget) throws ConnectorCheckedException, IOException
+    void addCatalogTarget(OpenMetadataRootElement catalogTarget) throws ConnectorCheckedException,
+                                                                        IOException,
+                                                                        InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        ConnectionCheckedException,
+                                                                        UserNotAuthorizedException
     {
+        final String methodName = "addCatalogTarget";
+
         /*
          * First perform a simple check - does the relationship GUID of the catalog target match one of the directories to monitor?
          */
@@ -345,46 +360,64 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             /*
              * It is the right type of catalog target.  We now need the path name associated with this catalog target.
              */
-            OpenMetadataRootElement fileFolderElement = this.getFolderElement(catalogTarget.getElementHeader().getGUID());
+            Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getElementHeader().getGUID(), auditLog);
 
-            if ((fileFolderElement != null) &&
-                    (fileFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties) &&
-                    (fileFolderProperties.getPathName() != null))
+            if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null) && (connector.getConnection().getEndpoint().getNetworkAddress() != null))
             {
-                /*
-                 * Create a file object to perform the comparison on the absolute path name.
-                 */
-                File pathFile = new File(fileFolderProperties.getPathName());
-
-                for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
-                {
-                    if (directoryToMonitor.directoryFile.getCanonicalPath().equals(pathFile.getCanonicalPath()))
-                    {
-                        directoryToMonitor.catalogTargetGUID = catalogTarget.getRelatedBy().getRelationshipHeader().getGUID();
-
-                        return;
-                    }
-                }
-
-                /*
-                 * No match so add this catalog target.
-                 */
                 try
                 {
                     if (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
                     {
-                        Map<String, String> templates = defaultTemplates;
+                        Map<String, String> templates = FilesTemplateType.getDefaultFileTemplates();
 
                         if (catalogTargetProperties.getTemplates() != null)
                         {
                             templates.putAll(catalogTargetProperties.getTemplates());
                         }
 
+                        FileSystemProperties fileSystemProperties = null;
+                        if (catalogTargetProperties.getMetadataSourceQualifiedName() != null)
+                        {
+                            try
+                            {
+                                ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+                                OpenMetadataRootElement metadataSource = classificationExplorerClient.getRootElementByUniqueName(catalogTargetProperties.getMetadataSourceQualifiedName(),
+                                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                                 classificationExplorerClient.getGetOptions());
+
+                                if ((metadataSource != null) && (metadataSource.getProperties() instanceof FileSystemProperties properties))
+                                {
+                                    fileSystemProperties = properties;
+                                }
+                                else
+                                {
+                                    auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.BAD_METADATA_SOURCE.getMessageDefinition(
+                                                                connectorName,
+                                                                catalogTargetProperties.getCatalogTargetName(),
+                                                                catalogTargetProperties.getMetadataSourceQualifiedName(),
+                                                                methodName));
+                                }
+                            }
+                            catch (Exception error)
+                            {
+                                auditLog.logMessage(methodName,
+                                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(
+                                                            connectorName,
+                                                            error.getClass().getName(),
+                                                            methodName,
+                                                            error.getMessage()));
+                            }
+                        }
+
                         DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(),
-                                                                                        fileFolderProperties.getPathName(),
+                                                                                        connector.getConnection().getEndpoint().getNetworkAddress(),
                                                                                         catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(),
+                                                                                        catalogTarget.getElementHeader().getGUID(),
                                                                                         catalogTargetProperties.getDeleteMethod(),
                                                                                         templates,
+                                                                                        fileSystemProperties,
                                                                                         catalogTargetProperties.getConfigurationProperties());
 
                         directoriesToMonitor.add(directoryToMonitor);
@@ -403,99 +436,102 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * Retrieve the Folder element from the open metadata repositories.
      * If the directory does not exist the connector waits for the directory to be created.
      *
-     * @param dataFolderFile the directory to retrieve the folder from
+     * @param dataFolderFile          the directory to retrieve the folder from
+     * @param fileSystemProperties    properties of the file system
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
-    abstract OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException;
-
+    abstract OpenMetadataRootElement getFolderElement(File                 dataFolderFile,
+                                                      FileSystemProperties fileSystemProperties,
+                                                      Map<String, Object>  configurationProperties) throws ConnectorCheckedException;
 
 
     /**
      * Retrieve the Folder element from the open metadata repositories.
-     * If the directory does not exist the connector waits for the directory to be created.
      *
      * @param dataFolderFile the directory to retrieve the folder from
      * @param assetTypeName name of the asset type to use if the folder is not catalogued
      * @param deployedImplementationType deployed implementation type to use if the folder is not catalogued
+     * @param fileSystemProperties    properties of the file system
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
-    synchronized OpenMetadataRootElement getFolderElement(File   dataFolderFile,
-                                                          String assetTypeName,
-                                                          String deployedImplementationType) throws ConnectorCheckedException
+    synchronized OpenMetadataRootElement getFolderElement(File                 dataFolderFile,
+                                                          String               assetTypeName,
+                                                          String               deployedImplementationType,
+                                                          FileSystemProperties fileSystemProperties,
+                                                          Map<String, Object>  configurationProperties) throws ConnectorCheckedException
     {
-        final String methodName = "getFolderElementByPathName";
+        final String methodName = "getFolderElement";
 
-        if (dataFolderFile.exists())
+        if ((dataFolderFile != null) && (dataFolderFile.exists()))
         {
-            /*
-             * If the folder is the top-level monitoring folder, it may not follow the template's naming conventions.
-             * Use the catalog target element.
-             */
-            for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
-            {
-                if ((directoryToMonitor.directoryFile != null) &&
-                        (directoryToMonitor.dataFolderElement != null) &&
-                        (directoryToMonitor.directoryFile.getAbsolutePath().equals(dataFolderFile.getAbsolutePath())))
-                {
-                    return directoryToMonitor.dataFolderElement;
-                }
-            }
-
             try
             {
-                String      pathName         = dataFolderFile.getCanonicalPath();
-                AssetClient fileFolderClient = integrationContext.getAssetClient(assetTypeName);
+                FileSystemProperties fileSystemPropertiesToUse;
 
-                OpenMetadataRootElement folderElement = fileFolderClient.getAssetByUniqueName(pathName, 
-                                                                                              OpenMetadataProperty.PATH_NAME.name, 
-                                                                                              fileFolderClient.getGetOptions());
-
-                if (folderElement == null)
+                if (fileSystemProperties != null)
                 {
-                    Map<String, String> placeholderProperties = new HashMap<>();
+                    fileSystemPropertiesToUse = new FileSystemProperties(fileSystemProperties);
+                }
+                else
+                {
+                    /*
+                     * The file system info is not supplied in the catalog target, so use the default values.
+                     */
+                    fileSystemPropertiesToUse = new FileSystemProperties();
 
-                    if (integrationContext.getMetadataSourceQualifiedName() != null)
-                    {
-                        placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), integrationContext.getMetadataSourceQualifiedName());
-                    }
-                    else
-                    {
-                        placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), connectorName);
-                    }
-                    placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), dataFolderFile.getCanonicalPath());
-                    placeholderProperties.put(PlaceholderProperty.DIRECTORY_NAME.getName(), dataFolderFile.getName());
-                    placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
-                    placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
-
-                    TemplateOptions templateOptions = new TemplateOptions(fileFolderClient.getMetadataSourceOptions());
-
-                    templateOptions.setAllowRetrieve(true);
-
-                    String folderGUID = fileFolderClient.createAssetFromTemplate(templateOptions,
-                                                                                 defaultTemplates.get(deployedImplementationType),
-                                                                                 null,
-                                                                                 null,
-                                                                                 placeholderProperties,
-                                                                                 null);
-
-                    folderElement = this.getFolderElement(folderGUID);
+                    fileSystemPropertiesToUse.setResourceName(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getExample());
+                    fileSystemPropertiesToUse.setCanonicalMountPoint(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getExample());
+                    fileSystemPropertiesToUse.setLocalMountPoint(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample());
                 }
 
-                return folderElement;
+                fileSystemPropertiesToUse.setResourceName(super.getStringConfigurationProperty(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName(), configurationProperties, fileSystemPropertiesToUse.getResourceName()));
+                fileSystemPropertiesToUse.setCanonicalMountPoint(super.getStringConfigurationProperty(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName(), configurationProperties, fileSystemPropertiesToUse.getCanonicalMountPoint()));
+                fileSystemPropertiesToUse.setLocalMountPoint(super.getStringConfigurationProperty(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName(), configurationProperties, fileSystemPropertiesToUse.getLocalMountPoint()));
+
+                FileClassifier fileClassifier = integrationContext.getFileClassifier(fileSystemPropertiesToUse.getResourceName(), fileSystemPropertiesToUse.getCanonicalMountPoint(), fileSystemPropertiesToUse.getLocalMountPoint());
+
+                FileClassification fileClassification = fileClassifier.classifyFile(dataFolderFile);
+
+                AssetClient fileFolderClient = integrationContext.getAssetClient(assetTypeName);
+
+                Map<String, String> placeholderProperties = new HashMap<>();
+
+                placeholderProperties.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), fileClassification.getFileSystemName());
+                placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), fileClassification.getCanonicalPathName());
+                placeholderProperties.put(PlaceholderProperty.DIRECTORY_ADDRESS.getName(), fileClassification.getFileAddress());
+                placeholderProperties.put(PlaceholderProperty.DIRECTORY_NAME.getName(), fileClassification.getFileName());
+                placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+                placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
+                placeholderProperties.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), deployedImplementationType);
+
+                TemplateOptions templateOptions = new TemplateOptions(fileFolderClient.getMetadataSourceOptions());
+
+                /*
+                 * This option is to return the element if already created.
+                 */
+                templateOptions.setAllowRetrieve(true);
+
+                String folderGUID = fileFolderClient.createAssetFromTemplate(templateOptions,
+                                                                             FilesTemplateType.getDefaultTemplateGUID(assetTypeName),
+                                                                             null,
+                                                                             null,
+                                                                             placeholderProperties,
+                                                                             null);
+
+                return this.getFolderElement(folderGUID);
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
-                                                error.getClass().getName(),
-                                                connectorName,
-                                                methodName,
-                                                dataFolderFile.getName(),
-                                                dataFolderFile.getAbsolutePath(),
-                                                error.getMessage()));
-                }
+                auditLog.logMessage(methodName,
+                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
+                                            error.getClass().getName(),
+                                            connectorName,
+                                            methodName,
+                                            dataFolderFile.getName(),
+                                            dataFolderFile.getAbsolutePath(),
+                                            error.getMessage()));
 
                 throw new FileException(
                         BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
@@ -564,32 +600,25 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * depending on the setting of the allowCatalogDelete configuration property.
      *
      * @param file Java file access object
-     * @param retrievedElement catalogued element
      * @param methodName calling method
      */
-    public void deleteFileInCatalog(File         file,
-                                    OpenMetadataRootElement retrievedElement,
-                                    String       methodName)
+    public void deleteFileInCatalog(File   file,
+                                    String methodName)
     {
         if (this.isActive())
         {
             try
             {
                 AssetClient fileClient = integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
-                OpenMetadataRootElement cataloguedElement = retrievedElement;
-
                 String pathName = file.getCanonicalPath();
 
-                if (cataloguedElement == null)
-                {
-
-                    /*
-                     * Just check that it is not catalogued
-                     */
-                    cataloguedElement = fileClient.getAssetByUniqueName(pathName,
-                                                                        OpenMetadataProperty.PATH_NAME.name,
-                                                                        fileClient.getGetOptions());
-                }
+                /*
+                 * This will through an exception if more than one file is catalogued for the same path name.
+                 * Nothing is done, and the duplicate management process takes over.
+                 */
+                OpenMetadataRootElement cataloguedElement = fileClient.getAssetByUniqueName(pathName,
+                                                                                            OpenMetadataProperty.PATH_NAME.name,
+                                                                                            fileClient.getGetOptions());
 
                 if (cataloguedElement == null)
                 {

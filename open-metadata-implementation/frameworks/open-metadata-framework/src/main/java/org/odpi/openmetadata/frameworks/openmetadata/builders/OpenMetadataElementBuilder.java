@@ -2056,6 +2056,15 @@ public class OpenMetadataElementBuilder
                     }
                     else if (properties instanceof SoftwareCapabilityProperties softwareCapabilityProperties)
                     {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                                             softwareCapabilityProperties.getResourceName());
+
+
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.NAMESPACE_PATH.name,
+                                                                             softwareCapabilityProperties.getNamespacePath());
+
                         if (softwareCapabilityProperties.getDeploymentStatus() != null)
                         {
                             elementProperties = propertyHelper.addEnumProperty(elementProperties,

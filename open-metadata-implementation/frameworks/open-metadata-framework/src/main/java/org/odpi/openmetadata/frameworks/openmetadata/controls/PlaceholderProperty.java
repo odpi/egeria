@@ -124,6 +124,14 @@ public enum PlaceholderProperty
                 "my_asset"),
 
     /**
+     * The technology type for the element.
+     */
+    DEPLOYED_IMPLEMENTATION_TYPE ("deployedImplementationType",
+                   "The technology type for the element.",
+                   DataType.STRING.getDisplayName(),
+                   "CSV File"),
+
+    /**
      * The unique identifier of the home metadata collection for associated elements.
      */
     MANAGED_METADATA_COLLECTION_ID("managedMetadataCollectionId",
@@ -191,9 +199,14 @@ public enum PlaceholderProperty
     ENCRYPTION ("encryption", "Is encryption enabled on this file system? If known, what type of encryption?", DataType.STRING.getDisplayName(), "Not Enabled"),
 
     /**
-     * The full pathname of the file including the directory names, file name and file extension.
+     * The canonical pathname of the directory including the parent directory names.
      */
-    DIRECTORY_PATH_NAME ("directoryPathName", "The full path name of the directory including the parent directory names and optional file system name, if applicable", DataType.STRING.getDisplayName(), "/a/b/myFiles"),
+    DIRECTORY_PATH_NAME ("directoryPathName", "The canonical path name of the directory including the parent directory names.", DataType.STRING.getDisplayName(), "/a/b/myFiles"),
+
+    /**
+     * The path name of the directory used to access it on the file system.
+     */
+    DIRECTORY_ADDRESS ("directoryAddress", "The path name of the directory used to access it on the file system.  This is the value that goes in the asset's endpoint.", DataType.STRING.getDisplayName(), "."),
 
     /**
      * The name of the leaf directory, without its enclosing directories.
@@ -201,9 +214,14 @@ public enum PlaceholderProperty
     DIRECTORY_NAME("directoryName", "The name of the leaf directory, without its enclosing directories.", DataType.STRING.getDisplayName(), "myFiles"),
 
     /**
-     * The full pathname of the file including the directory names, file name and file extension.
+     * The canonical pathname of the file including the directory names, file name, and file extension.
      */
-    FILE_PATH_NAME ("filePathName", "The full path name of the file including the directory names, file name and optional file extension, if applicable.", DataType.STRING.getDisplayName(), "/a/b/myFiles/myFile.txt"),
+    FILE_PATH_NAME ("filePathName", "The canonical path name of the file including the directory names, file name and optional file extension, if applicable.", DataType.STRING.getDisplayName(), "/a/b/myFiles/myFile.txt"),
+
+    /**
+     * The full pathname of the file including the directory names, file name, and file extension.
+     */
+    FILE_ADDRESS ("fileAddress", "The path name of the file used to access it from the file system.   This is the value that goes in the asset's endpoint.", DataType.STRING.getDisplayName(), "./myFile.txt"),
 
     /**
      * The short name of the file with its extension but without the directory names.
@@ -521,8 +539,10 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -543,9 +563,11 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(EMBEDDED_METADATA.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -563,8 +585,10 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(DIRECTORY_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(DIRECTORY_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(DIRECTORY_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -585,9 +609,11 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(PROGRAMMING_LANGUAGE.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
