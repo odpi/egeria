@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">DataAssetTemplateDefinition</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a>&gt;
 implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a></span></div>
-<div class="block">A description of the templates for technology specific data assets.
+<div class="block">A description of the templates for technology-specific data assets.
  The template consists of a DataSet asset, plus a connection, linked
  to the supplied connector type and an endpoint.  Note: this is the template for both
  DataStores and DataSets - the DataSetContent relationship is not set up in the template - this is
@@ -130,15 +130,11 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#FILE_FOLDER_TEMPLATE" class="member-name-link">FILE_FOLDER_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#FILE_TEMPLATE" class="member-name-link">FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#JSON_FILE_TEMPLATE" class="member-name-link">JSON_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#JSON_FILE_TEMPLATE" class="member-name-link">JSON_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#KAFKA_TOPIC_TEMPLATE" class="member-name-link">KAFKA_TOPIC_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#KAFKA_TOPIC_TEMPLATE" class="member-name-link">KAFKA_TOPIC_TEMPLATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#KEYSTORE_FILE_TEMPLATE" class="member-name-link">KEYSTORE_FILE_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#OMSECRETS_FILE_TEMPLATE" class="member-name-link">OMSECRETS_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#KEYSTORE_FILE_TEMPLATE" class="member-name-link">KEYSTORE_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#PARQUET_FILE_TEMPLATE" class="member-name-link">PARQUET_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -146,28 +142,26 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#POSTGRES_SCHEMA_TEMPLATE" class="member-name-link">POSTGRES_SCHEMA_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PROGRAM_FILE_TEMPLATE" class="member-name-link">PROGRAM_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PROPERTIES_FILE_TEMPLATE" class="member-name-link">PROPERTIES_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROPERTIES_FILE_TEMPLATE" class="member-name-link">PROPERTIES_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#RASTER_DATA_FILE_TEMPLATE" class="member-name-link">RASTER_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#RASTER_DATA_FILE_TEMPLATE" class="member-name-link">RASTER_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SCRIPT_FILE_TEMPLATE" class="member-name-link">SCRIPT_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SCRIPT_FILE_TEMPLATE" class="member-name-link">SCRIPT_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SOURCE_CODE_FILE_TEMPLATE" class="member-name-link">SOURCE_CODE_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SOURCE_CODE_FILE_TEMPLATE" class="member-name-link">SOURCE_CODE_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SPREADSHEET_FILE_TEMPLATE" class="member-name-link">SPREADSHEET_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SPREADSHEET_FILE_TEMPLATE" class="member-name-link">SPREADSHEET_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE_TEMPLATE" class="member-name-link">THREE_D_IMAGE_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE_TEMPLATE" class="member-name-link">THREE_D_IMAGE_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#VECTOR_DATA_FILE_TEMPLATE" class="member-name-link">VECTOR_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VECTOR_DATA_FILE_TEMPLATE" class="member-name-link">VECTOR_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#VIDEO_DATA_FILE_TEMPLATE" class="member-name-link">VIDEO_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#VIDEO_DATA_FILE_TEMPLATE" class="member-name-link">VIDEO_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#XML_FILE_TEMPLATE" class="member-name-link">XML_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#XML_FILE_TEMPLATE" class="member-name-link">XML_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#YAML_FILE_TEMPLATE" class="member-name-link">YAML_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#YAML_FILE_TEMPLATE" class="member-name-link">YAML_FILE_TEMPLATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -359,12 +353,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="FILE_TEMPLATE">
-<h3>FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="DATA_FILE_TEMPLATE">
 <h3>DATA_FILE_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">DATA_FILE_TEMPLATE</span></div>
@@ -452,18 +440,6 @@ the order they are declared.</div>
 <section class="detail" id="KEYSTORE_FILE_TEMPLATE">
 <h3>KEYSTORE_FILE_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">KEYSTORE_FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OMSECRETS_FILE_TEMPLATE">
-<h3>OMSECRETS_FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">OMSECRETS_FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROGRAM_FILE_TEMPLATE">
-<h3>PROGRAM_FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">PROGRAM_FILE_TEMPLATE</span></div>
 </section>
 </li>
 <li>

@@ -91,7 +91,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase)" class="member-name-link">FileClassifier</a><wbr>(<a href="../connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;connectorContext)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">FileClassifier</a><wbr>(<a href="../connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;connectorContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileSystemName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;canonicalMountPoint,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMountPoint)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Use the valid values to classify files on request.</div>
 </div>
@@ -142,13 +145,19 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase,java.lang.String,java.lang.String,java.lang.String)">
 <h3>FileClassifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileClassifier</span><wbr><span class="parameters">(<a href="../connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;connectorContext)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileClassifier</span><wbr><span class="parameters">(<a href="../connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;connectorContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileSystemName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;canonicalMountPoint,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMountPoint)</span></div>
 <div class="block">Use the valid values to classify files on request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connectorContext</code> - context being used by the connector.</dd>
+<dd><code>connectorContext</code> - context being used by the connector</dd>
+<dd><code>fileSystemName</code> - name of the file system</dd>
+<dd><code>canonicalMountPoint</code> - name of the canonical mount point</dd>
+<dd><code>localMountPoint</code> - name of the local mount point</dd>
 </dl>
 </section>
 </li>

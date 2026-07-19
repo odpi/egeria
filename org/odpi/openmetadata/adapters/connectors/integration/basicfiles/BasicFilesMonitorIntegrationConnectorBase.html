@@ -142,18 +142,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map)" class="member-name-link">createDirectoryToMonitor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties,java.util.Map)" class="member-name-link">createDirectoryToMonitor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
  <a href="../../../../frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
+ <a href="../../../../frameworks/openmetadata/properties/softwarecapabilities/FileSystemProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">FileSystemProperties</a>&nbsp;fileSystemProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Creates a monitor for the target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteFileInCatalog(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String)" class="member-name-link">deleteFileInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
- <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;retrievedElement,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteFileInCatalog(java.io.File,java.lang.String)" class="member-name-link">deleteFileInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The file no longer exists so this method updates the metadata catalog.</div>
@@ -234,13 +235,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map)">
+<section class="detail" id="createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties,java.util.Map)">
 <h3>createDirectoryToMonitor</h3>
 <div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></span>&nbsp;<span class="element-name">createDirectoryToMonitor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
  <a href="../../../../frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
+ <a href="../../../../frameworks/openmetadata/properties/softwarecapabilities/FileSystemProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">FileSystemProperties</a>&nbsp;fileSystemProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span>
                                                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Creates a monitor for the target.</div>
@@ -249,8 +252,10 @@ loadScripts(document, 'script');</script>
 <dd><code>sourceName</code> - source of the pathname</dd>
 <dd><code>pathName</code> - pathname to the directory</dd>
 <dd><code>catalogTargetGUID</code> - optional catalog target GUID</dd>
+<dd><code>dataFolderGUID</code> - optional data folder GUID</dd>
 <dd><code>deleteMethod</code> - should the connector use delete or archive?</dd>
 <dd><code>templates</code> - names and GUIDs of templates</dd>
+<dd><code>fileSystemProperties</code> - properties of the file system</dd>
 <dd><code>configurationProperties</code> - parameters to further modify the behaviour of the connector.</dd>
 <dt>Returns:</dt>
 <dd>directory to monitor structure</dd>
@@ -260,17 +265,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteFileInCatalog(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String)">
+<section class="detail" id="deleteFileInCatalog(java.io.File,java.lang.String)">
 <h3>deleteFileInCatalog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteFileInCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
- <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;retrievedElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span></div>
 <div class="block">The file no longer exists so this method updates the metadata catalog. This may be a call to delete() or an archive action
  depending on the setting of the allowCatalogDelete configuration property.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>file</code> - Java file access object</dd>
-<dd><code>retrievedElement</code> - catalogued element</dd>
 <dd><code>methodName</code> - calling method</dd>
 </dl>
 </section>

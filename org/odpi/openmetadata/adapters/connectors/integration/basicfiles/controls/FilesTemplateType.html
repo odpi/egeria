@@ -85,8 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">FilesTemplateType</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a>&gt;
 implements <a href="../../../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a></span></div>
-<div class="block">TemplateTypeEnum characterises the type of templates supported by an integration connector.  It should be copied
- by developers of an integration connector to help populate the supportedTemplates property of its provider.</div>
+<div class="block">One file or folder template fore each asset type - NOT deployedImplementationType</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -127,38 +126,32 @@ implements <a href="../../../../../frameworks/openmetadata/controls/TemplateDefi
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#FILE_FOLDER_TEMPLATE" class="member-name-link">FILE_FOLDER_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#FILE_TEMPLATE" class="member-name-link">FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#JSON_FILE_TEMPLATE" class="member-name-link">JSON_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#JSON_FILE_TEMPLATE" class="member-name-link">JSON_FILE_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#KEYSTORE_FILE_TEMPLATE" class="member-name-link">KEYSTORE_FILE_TEMPLATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OMSECRETS_FILE_TEMPLATE" class="member-name-link">OMSECRETS_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#KEYSTORE_FILE_TEMPLATE" class="member-name-link">KEYSTORE_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#PARQUET_FILE_TEMPLATE" class="member-name-link">PARQUET_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROGRAM_FILE_TEMPLATE" class="member-name-link">PROGRAM_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PROPERTIES_FILE_TEMPLATE" class="member-name-link">PROPERTIES_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PROPERTIES_FILE_TEMPLATE" class="member-name-link">PROPERTIES_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#RASTER_DATA_FILE_TEMPLATE" class="member-name-link">RASTER_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#RASTER_DATA_FILE_TEMPLATE" class="member-name-link">RASTER_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SCRIPT_FILE_TEMPLATE" class="member-name-link">SCRIPT_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SCRIPT_FILE_TEMPLATE" class="member-name-link">SCRIPT_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SOURCE_CODE_FILE_TEMPLATE" class="member-name-link">SOURCE_CODE_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SOURCE_CODE_FILE_TEMPLATE" class="member-name-link">SOURCE_CODE_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SPREADSHEET_FILE_TEMPLATE" class="member-name-link">SPREADSHEET_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SPREADSHEET_FILE_TEMPLATE" class="member-name-link">SPREADSHEET_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE_TEMPLATE" class="member-name-link">THREE_D_IMAGE_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#THREE_D_IMAGE_DATA_FILE_TEMPLATE" class="member-name-link">THREE_D_IMAGE_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#VECTOR_DATA_FILE_TEMPLATE" class="member-name-link">VECTOR_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#VECTOR_DATA_FILE_TEMPLATE" class="member-name-link">VECTOR_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#VIDEO_DATA_FILE_TEMPLATE" class="member-name-link">VIDEO_DATA_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VIDEO_DATA_FILE_TEMPLATE" class="member-name-link">VIDEO_DATA_FILE_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#XML_FILE_TEMPLATE" class="member-name-link">XML_FILE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#XML_FILE_TEMPLATE" class="member-name-link">XML_FILE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#YAML_FILE_TEMPLATE" class="member-name-link">YAML_FILE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#YAML_FILE_TEMPLATE" class="member-name-link">YAML_FILE_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -173,6 +166,16 @@ implements <a href="../../../../../frameworks/openmetadata/controls/TemplateDefi
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefaultFileTemplates()" class="member-name-link">getDefaultFileTemplates</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return a map of asset type name to default template guid.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefaultTemplateGUID(java.lang.String)" class="member-name-link">getDefaultTemplateGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the default template guid for a specific asset type.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -287,12 +290,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="FILE_TEMPLATE">
-<h3>FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a></span>&nbsp;<span class="element-name">FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="DATA_FILE_TEMPLATE">
 <h3>DATA_FILE_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a></span>&nbsp;<span class="element-name">DATA_FILE_TEMPLATE</span></div>
@@ -380,18 +377,6 @@ the order they are declared.</div>
 <section class="detail" id="KEYSTORE_FILE_TEMPLATE">
 <h3>KEYSTORE_FILE_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a></span>&nbsp;<span class="element-name">KEYSTORE_FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OMSECRETS_FILE_TEMPLATE">
-<h3>OMSECRETS_FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a></span>&nbsp;<span class="element-name">OMSECRETS_FILE_TEMPLATE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROGRAM_FILE_TEMPLATE">
-<h3>PROGRAM_FILE_TEMPLATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a></span>&nbsp;<span class="element-name">PROGRAM_FILE_TEMPLATE</span></div>
 </section>
 </li>
 <li>
@@ -614,6 +599,30 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of catalog template type</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDefaultTemplateGUID(java.lang.String)">
+<h3>getDefaultTemplateGUID</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDefaultTemplateGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName)</span></div>
+<div class="block">Return the default template guid for a specific asset type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetTypeName</code> - asset type name</dd>
+<dt>Returns:</dt>
+<dd>default template guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDefaultFileTemplates()">
+<h3>getDefaultFileTemplates</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDefaultFileTemplates</span>()</div>
+<div class="block">Return a map of asset type name to default template guid.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>map</dd>
 </dl>
 </section>
 </li>
