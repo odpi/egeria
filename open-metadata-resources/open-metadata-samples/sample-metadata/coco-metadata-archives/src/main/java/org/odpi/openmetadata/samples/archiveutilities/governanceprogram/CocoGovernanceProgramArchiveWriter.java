@@ -35,7 +35,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
     /*
      * This is the header information for the archive.
      */
-    private static final String archiveGUID        = "ac202586-4042-407b-ae51-8096dfda223e";
+    private static final String archiveGUID        = "5b773480-a692-4203-8b17-18d4238e6180";
     private static final String archiveName        = "Coco Pharmaceuticals Governance Program";
     private static final String archiveDescription = "The core definition of Coco Pharmaceuticals governance program.";
 

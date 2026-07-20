@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.SolutionComponent;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoCollectionDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.FacilityDefinition;
 
@@ -31,7 +32,8 @@ public enum SystemDefinition
              null,
              new String[]{"business-systems", "sustainability"},
              100,
-             null),
+             null,
+             CocoCollectionDefinition.PATIENT_TREATMENT_SUBSYSTEM),
 
 
     COCO_PRODUCT_PLANNING("dd424526-24e9-4a10-a575-0700dfb8743a",
@@ -47,7 +49,8 @@ public enum SystemDefinition
                           null,
                           new String[]{"business-systems", "sustainability"},
                           100,
-                          null),
+                          null,
+                          CocoCollectionDefinition.PATIENT_TREATMENT_SUBSYSTEM),
 
     /**
      * procurement01 - Purchasing system for Coco Pharmaceuticals.
@@ -65,7 +68,8 @@ public enum SystemDefinition
                          new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_AMS_HOST},
                          new String[]{"business-systems", "sustainability"},
                          0,
-                         null),
+                         null,
+                         CocoCollectionDefinition.PROCUREMENT_SUBSYSTEM),
 
     /**
      * procurement02 - Local purchasing system for New York Site.
@@ -83,7 +87,8 @@ public enum SystemDefinition
                         new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_NY_HOST},
                         new String[]{"business-systems", "sustainability"},
                         0,
-                        null),
+                        null,
+                        CocoCollectionDefinition.PROCUREMENT_SUBSYSTEM),
 
     /**
      * procurement03 - Local purchasing system for Winchester Factory Site.
@@ -101,7 +106,8 @@ public enum SystemDefinition
                            new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_WINCH_HOST},
                            new String[]{"business-systems", "sustainability"},
                            34,
-                           null),
+                           null,
+                           CocoCollectionDefinition.PROCUREMENT_SUBSYSTEM),
 
     /**
      * procurement04 - Local purchasing system for Austin Factory Site.
@@ -119,7 +125,8 @@ public enum SystemDefinition
                          new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_AUS_HOST},
                          new String[]{"business-systems", "sustainability"},
                          1001,
-                         null),
+                         null,
+                         CocoCollectionDefinition.PROCUREMENT_SUBSYSTEM),
 
     /**
      * procurement05 - Local purchasing system for Edmonton Factory Site.
@@ -137,7 +144,8 @@ public enum SystemDefinition
                         new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_ED_HOST},
                         new String[]{"business-systems"},
                         1501,
-                        null),
+                        null,
+                        CocoCollectionDefinition.PROCUREMENT_SUBSYSTEM),
 
     /**
      * coco-inventory - Inventory for raw materials and products produced across all Coco Pharmaceuticals sites.
@@ -155,7 +163,8 @@ public enum SystemDefinition
                    new HostDefinition[]{HostDefinition.COCO_INVENTORY_HOST},
                    new String[]{"business-systems"},
                    0,
-                   new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY}),
+                   new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY},
+                   CocoCollectionDefinition.WAREHOUSE_SUBSYSTEM),
 
     /**
      * aus-inventory - Inventory for raw materials and products produced across all Coco Pharmaceuticals sites (except Austin).
@@ -173,7 +182,8 @@ public enum SystemDefinition
                   new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
                   new String[]{"business-systems"},
                   0,
-                  new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY}),
+                  new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY},
+                  CocoCollectionDefinition.WAREHOUSE_SUBSYSTEM),
 
     /**
      * coco-hrim - Human Resources Information Manager (HRIM) provides the central management application for employee management including hiring, skills management, recognition and all reasons for termination of employment.
@@ -191,7 +201,8 @@ public enum SystemDefinition
               new HostDefinition[]{HostDefinition.COCO_HRIM_HOST},
               new String[]{"business-systems", "sustainability"},
               0,
-              null),
+              null,
+              CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * cocopages - Employee directory with business partners.
@@ -209,7 +220,8 @@ public enum SystemDefinition
                new HostDefinition[]{HostDefinition.COCO_PAGES_HOST},
                new String[]{"business-systems", "sustainability"},
                0,
-               null),
+               null,
+               CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * sec-admin - Security administration for all access grants to Coco Pharmaceutical systems.
@@ -227,7 +239,8 @@ public enum SystemDefinition
               new HostDefinition[]{HostDefinition.SEC_ADMIN_HOST},
               new String[]{"business-systems", "sustainability"},
               0,
-              null),
+              null,
+              CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * coco-expenses - Employee expense declaration for Coco Pharmaceuticals.
@@ -245,7 +258,8 @@ public enum SystemDefinition
                       null,
                       new String[]{"business-systems"},
                       0,
-                      new SolutionComponent[]{SolutionComponent.EMPLOYEE_EXPENSE_TOOL}),
+                      new SolutionComponent[]{SolutionComponent.EMPLOYEE_EXPENSE_TOOL},
+                      CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * UK payroll - Payroll and UK tax calculations.
@@ -263,7 +277,8 @@ public enum SystemDefinition
                new HostDefinition[]{HostDefinition.UK_PAYROLL_HOST},
                new String[]{"business-systems"},
                0,
-               null),
+               null,
+               CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * Netherlands payroll - Payroll and Dutch tax calculations.
@@ -281,7 +296,8 @@ public enum SystemDefinition
                new HostDefinition[]{HostDefinition.NL_PAYROLL_HOST},
                new String[]{"business-systems"},
                0,
-               null),
+               null,
+               CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
     /**
      * Canadian payroll - Payroll and Canadian tax calculations.
@@ -299,7 +315,8 @@ public enum SystemDefinition
                new HostDefinition[]{HostDefinition.CA_PAYROLL_HOST},
                new String[]{"business-systems"},
                0,
-               null),
+               null,
+               CocoCollectionDefinition.ADMIN_SUBSYSTEM),
 
 
     /**
@@ -318,7 +335,8 @@ public enum SystemDefinition
                  null,
                  new String[]{"business-systems"},
                  0,
-                 new SolutionComponent[]{SolutionComponent.ACCOUNTING_LEDGER}),
+                 new SolutionComponent[]{SolutionComponent.ACCOUNTING_LEDGER},
+                 CocoCollectionDefinition.FINANCE_SUBSYSTEM),
 
 
     /**
@@ -337,7 +355,8 @@ public enum SystemDefinition
                               new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
                               new String[]{"manufacturing-systems"},
                               1000,
-                              null),
+                              null,
+                              CocoCollectionDefinition.MANUFACTURING_SUBSYSTEM),
 
     /**
      * winch-mfg-control - Manufacturing control system for the Winchester factory.
@@ -355,7 +374,8 @@ public enum SystemDefinition
                                 new HostDefinition[]{HostDefinition.WINCH_MANUFACTURING_CONTROL_HOST},
                                 new String[]{"manufacturing-systems"},
                                 1000,
-                                null),
+                                null,
+                                CocoCollectionDefinition.MANUFACTURING_SUBSYSTEM),
 
     /**
      * ed-mfg-control - Manufacturing control system for the Edmonton factory.
@@ -373,7 +393,8 @@ public enum SystemDefinition
                              new HostDefinition[]{HostDefinition.ED_MANUFACTURING_CONTROL_HOST},
                              new String[]{"manufacturing-systems"},
                              1000,
-                             null),
+                             null,
+                             CocoCollectionDefinition.MANUFACTURING_SUBSYSTEM),
 
     /**
      * ed-mfg-control - Manufacturing control system for the Edmonton factory.
@@ -391,7 +412,8 @@ public enum SystemDefinition
                            new HostDefinition[]{HostDefinition.COCO_MFG_PLANNING_AMS_HOST},
                            new String[]{"manufacturing-systems"},
                            1000,
-                           null),
+                           null,
+                           CocoCollectionDefinition.MANUFACTURING_SUBSYSTEM),
 
     /**
      * coco-haz-mat - Coco Pharmaceuticals Hazardous Materials Inventory.
@@ -409,7 +431,8 @@ public enum SystemDefinition
             new HostDefinition[]{HostDefinition.HAZ_MAT_HOST},
             new String[]{"compliance-systems"},
             1000,
-            new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY}),
+            new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY},
+            CocoCollectionDefinition.RESEARCH_SUBSYSTEM),
 
     /**
      * austin-haz-mat - Austin Hazardous Materials Inventory.
@@ -427,7 +450,8 @@ public enum SystemDefinition
                 new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
                 new String[]{"compliance-systems"},
                 5000,
-                new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY}),
+                new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY},
+                CocoCollectionDefinition.RESEARCH_SUBSYSTEM),
 
 
     /**
@@ -446,7 +470,8 @@ public enum SystemDefinition
              new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
              new String[]{"compliance-systems"},
              5000,
-             new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_ODS}),
+             new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_ODS},
+             null),
 
     /**
      * coco-sus-dashboards - Coco Pharmaceuticals Sustainability Dashboards and Reporting.
@@ -464,7 +489,8 @@ public enum SystemDefinition
                         new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
                         new String[]{"compliance-systems"},
                         5000,
-                        new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_DASHBOARDS}),
+                        new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_DASHBOARDS},
+                        null),
 
     /**
      * coco-sus-calculators - Coco Pharmaceuticals Sustainability Coco Pharmaceuticals Sustainability Calculators on Airflow..
@@ -482,7 +508,8 @@ public enum SystemDefinition
                          new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
                          new String[]{"compliance-systems"},
                          5000,
-                         new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_CALCULATORS}),
+                         new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_CALCULATORS},
+                         null),
 
     WINCHESTER_DEPOT_MANAGEMENT("c7b1467a-dea2-4288-95e5-8e1bc3ab2ed3",
                                 "WINCHDEPOT01",
@@ -497,7 +524,8 @@ public enum SystemDefinition
                                 new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_WINCH_HOST},
                                 new String[]{"depot-systems"},
                                 560,
-                                null),
+                                null,
+                                CocoCollectionDefinition.DELIVERY_SUBSYSTEM),
 
     KANSAS_CITY_DEPOT_MANAGEMENT("987df321-d940-4ce5-9ae1-8258736f0445",
                                  "KCDEPOT01",
@@ -512,7 +540,8 @@ public enum SystemDefinition
                                  new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_KC_HOST},
                                  new String[]{"depot-systems"},
                                  560,
-                                 null),
+                                 null,
+                                 CocoCollectionDefinition.DELIVERY_SUBSYSTEM),
 
     EDMONTON_DEPOT_MANAGEMENT("afefd870-5616-4f35-a557-774b88b96bef",
                               "EDDEPOT01",
@@ -527,25 +556,27 @@ public enum SystemDefinition
                               new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_ED_HOST},
                               new String[]{"depot-systems"},
                               560,
-                              null),
+                              null,
+                              CocoCollectionDefinition.DELIVERY_SUBSYSTEM),
 
 
     ;
 
-    private final String               systemGUID;
-    private final String               systemId;
-    private final String               displayName;
-    private final String               description;
-    private final String               userId;
-    private final SystemTypeDefinition systemType;
-    private final String               versionIdentifier;
-    private final PersonDefinition     businessOwner;
-    private final FacilityDefinition   systemLocation;
-    private final String               networkAddress;
-    private final HostDefinition[]     deployedOn;
-    private final String[]             zones;
-    private final long                 loadTime;
-    private final SolutionComponent[]  implementingComponents;
+    private final String                   systemGUID;
+    private final String                   systemId;
+    private final String                   displayName;
+    private final String                   description;
+    private final String                   userId;
+    private final SystemTypeDefinition     systemType;
+    private final String                   versionIdentifier;
+    private final PersonDefinition         businessOwner;
+    private final FacilityDefinition       systemLocation;
+    private final String                   networkAddress;
+    private final HostDefinition[]         deployedOn;
+    private final String[]                 zones;
+    private final long                     loadTime;
+    private final SolutionComponent[]      implementingComponents;
+    private final CocoCollectionDefinition folder;
 
 
     /**
@@ -565,35 +596,37 @@ public enum SystemDefinition
      * @param zones             zone membership
      * @param loadTime          time offset to set creationTime
      */
-    SystemDefinition(String                 systemGUID,
-                     String                 systemId,
-                     String                 displayName,
-                     String                 description,
-                     String                 userId,
-                     SystemTypeDefinition   systemType,
-                     String                 versionIdentifier,
-                     PersonDefinition       businessOwner,
-                     FacilityDefinition     systemLocation,
-                     String                 networkAddress,
-                     HostDefinition[]       deployedOn,
-                     String[]               zones,
-                     long                   loadTime,
-                     SolutionComponent[]    implementingComponents)
+    SystemDefinition(String systemGUID,
+                     String systemId,
+                     String displayName,
+                     String description,
+                     String userId,
+                     SystemTypeDefinition systemType,
+                     String versionIdentifier,
+                     PersonDefinition businessOwner,
+                     FacilityDefinition systemLocation,
+                     String networkAddress,
+                     HostDefinition[] deployedOn,
+                     String[] zones,
+                     long loadTime,
+                     SolutionComponent[] implementingComponents,
+                     CocoCollectionDefinition folder)
     {
-        this.systemGUID = systemGUID;
-        this.systemId = systemId;
-        this.displayName = displayName;
-        this.description = description;
-        this.userId = userId;
-        this.systemType = systemType;
-        this.versionIdentifier = versionIdentifier;
-        this.businessOwner = businessOwner;
-        this.systemLocation = systemLocation;
-        this.networkAddress = networkAddress;
-        this.deployedOn = deployedOn;
-        this.zones = zones;
-        this.loadTime = loadTime;
+        this.systemGUID             = systemGUID;
+        this.systemId               = systemId;
+        this.displayName            = displayName;
+        this.description            = description;
+        this.userId                 = userId;
+        this.systemType             = systemType;
+        this.versionIdentifier      = versionIdentifier;
+        this.businessOwner          = businessOwner;
+        this.systemLocation         = systemLocation;
+        this.networkAddress         = networkAddress;
+        this.deployedOn             = deployedOn;
+        this.zones                  = zones;
+        this.loadTime               = loadTime;
         this.implementingComponents = implementingComponents;
+        this.folder                 = folder;
     }
 
 
@@ -667,7 +700,10 @@ public enum SystemDefinition
      *
      * @return string
      */
-    public String getUserId() { return userId; }
+    public String getUserId()
+    {
+        return userId;
+    }
 
 
     /**
@@ -774,6 +810,16 @@ public enum SystemDefinition
         return implementingComponents;
     }
 
+
+    /**
+     * Return the folder that this system is in.
+     *
+     * @return CocoCollectionDefinition subsystem folder
+     */
+    public CocoCollectionDefinition getFolder()
+    {
+        return folder;
+    }
 
     /**
      * Output of this enum class and main value.
