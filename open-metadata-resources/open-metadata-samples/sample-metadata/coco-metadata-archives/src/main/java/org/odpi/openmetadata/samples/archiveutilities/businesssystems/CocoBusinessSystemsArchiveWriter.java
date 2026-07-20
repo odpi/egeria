@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoGovernanceEnginesArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.SolutionComponent;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 
@@ -56,9 +57,9 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                       new PostgresPackArchiveWriter().getOpenMetadataArchive(),
                       new UnityCatalogPackArchiveWriter().getOpenMetadataArchive(),
                       new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
-                      new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
                       new CocoSustainabilityArchiveWriter().getOpenMetadataArchive(),
-                      new CocoGovernanceEnginesArchiveWriter().getOpenMetadataArchive()});
+                      new CocoGovernanceEnginesArchiveWriter().getOpenMetadataArchive(),
+                      new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive()});
     }
 
 
@@ -142,6 +143,11 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                      extendedProperties,
                                                                      null);
             assert(serverGUID.equals(systemDefinition.getSystemGUID()));
+
+            if (systemDefinition.getFolder() != null)
+            {
+                archiveHelper.addMemberToCollection(systemDefinition.getFolder().getGUID(), systemDefinition.getSystemGUID(), null);
+            }
 
             if (systemDefinition.getSystemType().getSoftwareServerCapabilities() != null)
             {

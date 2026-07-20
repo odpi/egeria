@@ -2032,7 +2032,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                     requestTypeDefinition.getSolutionComponentDescription(),
                                     requestTypeDefinition.getConfiguresComponentGUID(),
                                     requestTypeDefinition.linkToMetadataServerSolutionComponent(),
-                                    requestTypeDefinition.getWorksWithTechnology());
+                                    requestTypeDefinition.getWorksWithTechnology(),
+                                    requestTypeDefinition.getFolder());
             }
         }
     }
@@ -2058,6 +2059,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param worksWithTechnology technology type to link the solution component to
      * @param configuresComponentGUID optional component that it configures
      * @param linkToMetadataServerSolutionComponent should this component link to the open metadata server solution component?
+     * @param folder folder for the digital library
      */
     protected void addRequestType(String                               governanceEngineGUID,
                                   String                               governanceEngineName,
@@ -2075,7 +2077,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                   String                               solutionComponentDescription,
                                   String                               configuresComponentGUID,
                                   boolean                              linkToMetadataServerSolutionComponent,
-                                  DeployedImplementationTypeDefinition worksWithTechnology)
+                                  DeployedImplementationTypeDefinition worksWithTechnology,
+                                  ContentCollectionDefinition          folder)
     {
         archiveHelper.addSupportedGovernanceService(governanceEngineGUID,
                                                     governanceRequestType,
@@ -2095,6 +2098,10 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                      governanceDomainIdentifier,
                                      supportedElementQualifiedName);
 
+        if (folder != null)
+        {
+            archiveHelper.addMemberToCollection(folder.getGUID(), governanceActionTypeGUID, null);
+        }
 
         /*
          * Create a report type and link it to the governance action type.
