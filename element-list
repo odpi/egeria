@@ -65,7 +65,6 @@ org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
-org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.controls
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc

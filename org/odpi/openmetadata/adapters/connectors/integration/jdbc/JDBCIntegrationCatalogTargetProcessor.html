@@ -156,7 +156,8 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;databaseElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Refresh a single database.</div>
+<div class="block">Refresh a single database: connect to it, resolve (or create) its database asset, and then hand off the
+ schema/table/view/column cataloguing to a <code>RelationalDatabaseCataloguer</code>.</div>
 </div>
 </div>
 </div>
@@ -244,11 +245,13 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;databaseElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span>
                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Refresh a single database.</div>
+<div class="block">Refresh a single database: connect to it, resolve (or create) its database asset, and then hand off the
+ schema/table/view/column cataloguing to a <code>RelationalDatabaseCataloguer</code>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>jdbcResourceConnector</code> - connector to the database</dd>
 <dd><code>databaseName</code> - qualified name of the database</dd>
+<dd><code>databaseElement</code> - the already-known database asset, or null if this catalog target is a database server address</dd>
 <dd><code>configurationProperties</code> - configuration properties for the database</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code></dd>
