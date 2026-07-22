@@ -61,9 +61,15 @@ public class SchemaTransfer implements Function<JdbcSchema, OpenMetadataRootElem
             return omasSchema.get();
         }
 
-        omas.createSchema(databaseGuid, schemaProperties);
+        Optional<String> schemaGuid = omas.createSchema(databaseGuid, schemaProperties);
         auditLog.logMessage("Created schema with qualified name " + schemaProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("schema " + schemaProperties.getQualifiedName()));
+
+        if (schemaGuid.isPresent())
+        {
+            return omas.getAssetByGUID(schemaGuid.get());
+        }
+
         return null;
     }
 

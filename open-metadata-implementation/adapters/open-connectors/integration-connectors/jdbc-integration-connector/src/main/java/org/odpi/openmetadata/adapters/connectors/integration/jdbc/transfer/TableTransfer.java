@@ -69,9 +69,15 @@ public class TableTransfer implements Function<JdbcTable, OpenMetadataRootElemen
             return omasTable.get();
         }
 
-        omas.createTable(anchorAsset, parentGuid, tableProperties);
+        Optional<String> tableGuid = omas.createTable(anchorAsset, parentGuid, tableProperties);
         auditLog.logMessage("Created table with qualified name " + tableProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("table " + tableProperties.getQualifiedName()));
+
+        if (tableGuid.isPresent())
+        {
+            return omas.getSchemaAttributeByGUID(tableGuid.get());
+        }
+
         return null;
     }
 

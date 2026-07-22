@@ -64,6 +64,44 @@ public class Omas {
 
 
     /**
+     * Get asset by GUID
+     *
+     * @param guid unique identifier
+     * @return asset element
+     */
+    public OpenMetadataRootElement getAssetByGUID(String guid)
+    {
+        try
+        {
+            return dataAssetClient.getAssetByGUID(guid, dataAssetClient.getGetOptions());
+        }
+        catch (Exception exception)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Get schema attribute by GUID
+     *
+     * @param guid unique identifier
+     * @return schema attribute element
+     */
+    public OpenMetadataRootElement getSchemaAttributeByGUID(String guid)
+    {
+        try
+        {
+            return databaseTableClient.getSchemaAttributeByGUID(guid, databaseTableClient.getGetOptions());
+        }
+        catch (Exception exception)
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Extract the qualified name from the supplied element.
      *
      * @param rootElement element to query
