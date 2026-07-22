@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc;
 
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadata;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadataTransfer;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -13,8 +13,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.RelationalDatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.sql.Connection;
@@ -61,7 +69,6 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
         if (propertyHelper.isTypeOf(super.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RELATIONAL_DATABASE.typeName))
         {
-            String databaseGUID = super.getCatalogTargetElement().getElementHeader().getGUID();
             String databaseName = null;
 
             if (super.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
@@ -71,7 +78,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
             try
             {
-                JDBCResourceConnector assetConnector = (JDBCResourceConnector)super.connectorToTarget;
+                JDBCResourceConnector assetConnector = (JDBCResourceConnector) super.connectorToTarget;
 
                 refreshDatabase(assetConnector,
                                 databaseName,
@@ -97,10 +104,12 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
 
     /**
-     * Refresh a single database.
+     * Refresh a single database: connect to it, resolve (or create) its database asset, and then hand off the
+     * schema/table/view/column cataloguing to a {@link RelationalDatabaseCataloguer}.
      *
      * @param jdbcResourceConnector connector to the database
      * @param databaseName qualified name of the database
+     * @param databaseElement the already-known database asset, or null if this catalog target is a database server address
      * @param configurationProperties configuration properties for the database
      */
     public void refreshDatabase(JDBCResourceConnector   jdbcResourceConnector,
@@ -131,14 +140,8 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                  */
                 databaseMetaData.getCatalogs();
 
-                /*
-                 * Extract the meaningful values from the configuration properties.
-                 */
                 TransferCustomizations transferCustomizations = new TransferCustomizations(configurationProperties);
 
-                /*
-                 * Create the object that does all the work.
-                 */
                 String address = jdbcResourceConnector.getConnection().getEndpoint().getNetworkAddress();
                 String catalog = null;
 
@@ -147,18 +150,26 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                     catalog = configurationProperties.get("catalog").toString();
                 }
 
-                JdbcMetadataTransfer jdbcMetadataTransfer = new JdbcMetadataTransfer(new JdbcMetadata(databaseMetaData),
-                                                                                     integrationContext,
-                                                                                     databaseElement,
-                                                                                     address,
-                                                                                     catalog,
-                                                                                     transferCustomizations,
-                                                                                     auditLog);
+                JdbcMetadata jdbcMetadata = new JdbcMetadata(databaseMetaData);
 
-                /*
-                 * Extract metadata.
-                 */
-                jdbcMetadataTransfer.execute();
+                OpenMetadataRootElement resolvedDatabaseElement = this.catalogDatabase(jdbcMetadata, databaseElement, address, catalog);
+
+                if (resolvedDatabaseElement != null)
+                {
+                    RelationalDatabaseCataloguer cataloguer = new RelationalDatabaseCataloguer(integrationContext,
+                                                                                                jdbcMetadata,
+                                                                                                transferCustomizations,
+                                                                                                catalog,
+                                                                                                connectorName,
+                                                                                                auditLog);
+
+                    cataloguer.catalogDatabaseContents(resolvedDatabaseElement);
+                }
+                else
+                {
+                    auditLog.logMessage("Verifying database metadata transferred. None found. Stopping transfer",
+                                        JDBCIntegrationConnectorAuditCode.EXITING_ON_DATABASE_TRANSFER_FAIL.getMessageDefinition(methodName));
+                }
 
                 auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, databaseName));
             }
@@ -181,6 +192,95 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
             close(connection);
         }
+    }
+
+
+    /**
+     * Resolve the database asset for this catalog target: if it is already known (the catalog target points directly at
+     * a database asset) it is returned as-is; otherwise a database asset is looked up by its deterministic qualified name
+     * and either updated (if found) or created.
+     *
+     * @param jdbcMetadata JDBC metadata access
+     * @param databaseElement the already-known database asset, or null
+     * @param address network address of the database
+     * @param catalog optional display name override
+     * @return the database asset, or null if it could not be resolved
+     */
+    private OpenMetadataRootElement catalogDatabase(JdbcMetadata            jdbcMetadata,
+                                                    OpenMetadataRootElement databaseElement,
+                                                    String                  address,
+                                                    String                  catalog) throws SQLException
+    {
+        if (databaseElement != null)
+        {
+            return databaseElement;
+        }
+
+        final String methodName = "catalogDatabase";
+
+        DatabaseProperties databaseProperties = buildDatabaseProperties(jdbcMetadata, address, catalog);
+
+        AssetClient databaseClient = integrationContext.getAssetClient(OpenMetadataType.DATABASE.typeName);
+
+        try
+        {
+            OpenMetadataRootElement existingDatabase = databaseClient.getAssetByUniqueName(databaseProperties.getQualifiedName(),
+                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                            databaseClient.getGetOptions());
+
+            if (existingDatabase != null)
+            {
+                databaseClient.updateAsset(existingDatabase.getElementHeader().getGUID(),
+                                           databaseClient.getUpdateOptions(false),
+                                           databaseProperties);
+                auditLog.logMessage(methodName,
+                                    JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
+                return existingDatabase;
+            }
+
+            String databaseGUID = databaseClient.createAsset(null, null, databaseProperties, null);
+            auditLog.logMessage(methodName,
+                                JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
+
+            return databaseClient.getAssetByGUID(databaseGUID, databaseClient.getGetOptions());
+        }
+        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
+        {
+            auditLog.logException(methodName,
+                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                                  e);
+            return null;
+        }
+    }
+
+
+    /**
+     * Build the properties for the database asset.
+     *
+     * @param jdbcMetadata JDBC metadata access
+     * @param address network address of the database
+     * @param catalog optional display name override
+     * @return properties
+     */
+    private DatabaseProperties buildDatabaseProperties(JdbcMetadata jdbcMetadata,
+                                                       String       address,
+                                                       String       catalog) throws SQLException
+    {
+        String driverName             = jdbcMetadata.getDriverName();
+        String databaseProductVersion = jdbcMetadata.getDatabaseProductVersion();
+        String databaseProductName    = jdbcMetadata.getDatabaseProductName();
+        String url                    = jdbcMetadata.getUrl();
+
+        RelationalDatabaseProperties databaseProperties = new RelationalDatabaseProperties();
+        databaseProperties.setQualifiedName(integrationContext.getMetadataSourceQualifiedName() + "::" + address);
+        databaseProperties.setDisplayName(StringUtils.isBlank(catalog) ? address : catalog);
+        databaseProperties.setContentStatus(ContentStatus.ACTIVE);
+        databaseProperties.setDatabaseInstance(driverName);
+        databaseProperties.setVersionIdentifier(databaseProductVersion);
+        databaseProperties.setDeployedImplementationType(databaseProductName);
+        databaseProperties.setImportedFrom(url);
+
+        return databaseProperties;
     }
 
 

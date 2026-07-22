@@ -123,7 +123,14 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                              "Stopping execution",
                              "Investigate log for additional details"),
 
-
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0015 - Connector {0} found {1} elements in the metadata access server with a qualified name of {2}; expecting to find at most one
+     */
+    MULTIPLE_ELEMENTS_FOUND("JDBC-INTEGRATION-CONNECTOR-0015",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "Connector {0} found {1} elements in the metadata access server with a qualified name of {2}; expecting to find at most one",
+                            "The connector is unable to determine whether this element already exists, so it is skipping it for this refresh rather than risk creating a duplicate.",
+                            "Investigate why more than one element has this qualified name and remove the duplicates."),
 
     ;
 
