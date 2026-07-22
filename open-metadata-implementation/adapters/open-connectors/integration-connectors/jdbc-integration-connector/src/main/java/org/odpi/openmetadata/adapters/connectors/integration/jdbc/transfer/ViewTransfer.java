@@ -71,9 +71,15 @@ public class ViewTransfer implements Function<JdbcTable, OpenMetadataRootElement
             return omasView.get();
         }
 
-        omas.createView(anchorAsset, parentGuid, viewProperties, calculatedValueProperties);
+        Optional<String> viewGuid = omas.createView(anchorAsset, parentGuid, viewProperties, calculatedValueProperties);
         auditLog.logMessage("Created view with qualified name " + viewProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
+
+        if (viewGuid.isPresent())
+        {
+            return omas.getSchemaAttributeByGUID(viewGuid.get());
+        }
+
         return null;
     }
 

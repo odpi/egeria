@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties;
 
@@ -61,6 +62,18 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey>
 
         String pkColumnGuid = pkColumn.getElementHeader().getGUID();
         String fkColumnGuid = fkColumn.getElementHeader().getGUID();
+
+        if (fkColumn.getForeignKeys() != null)
+        {
+            for (RelatedMetadataElementSummary relationship : fkColumn.getForeignKeys())
+            {
+                if (relationship.getRelatedElement().getElementHeader().getGUID().equals(pkColumnGuid))
+                {
+                    return;
+                }
+            }
+        }
+
         omas.setForeignKey(pkColumnGuid, fkColumnGuid, buildForeignKeyProperties(jdbcForeignKey));
 
         auditLog.logMessage("Foreign key set from column with guid " + pkColumnGuid + " to column with guid " + fkColumnGuid,

@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -283,8 +285,10 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                             properties.setAdditionalProperties(additionalProperties);
 
                             String guid = this.addDataFileToCatalog(fileClassification.getAssetTypeName(),
+                                                                    fileClassification.getFileAddress(),
                                                                     properties,
-                                                                    encodingProperties);
+                                                                    encodingProperties,
+                                                                    new BasicFileStoreProvider().getConnectorType().getGUID());
 
                             if (guid != null)
                             {
@@ -445,17 +449,21 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
     /**
      * Return the unique identifier of a new metadata element describing the file.
      *
-     * @param typeName subtype name for file
+     * @param typeName subtype name for the file asset
+     * @param fileAddress local file path name
      * @param properties basic properties to use
      * @param encodingProperties properties for DataAssetEncoding classification
+     * @param connectorTypeGUID unique identifier for the connector type
      * @return unique identifier (guid)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
     protected String addDataFileToCatalog(String                      typeName,
+                                          String                      fileAddress,
                                           DataFileProperties          properties,
-                                          DataAssetEncodingProperties encodingProperties) throws InvalidParameterException,
+                                          DataAssetEncodingProperties encodingProperties,
+                                          String                      connectorTypeGUID) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
@@ -477,10 +485,51 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
         properties.setTypeName(typeName);
 
-        return fileClient.createAsset(newElementOptions,
-                                      initialClassifications,
-                                      properties,
-                                      null);
+        String fileAssetGUID = fileClient.createAsset(newElementOptions,
+                                                      initialClassifications,
+                                                      properties,
+                                                      null);
+
+        if ((fileAssetGUID != null) && (connectorTypeGUID != null))
+        {
+            ConnectionClient connectionClient = integrationConnector.integrationContext.getConnectionClient();
+
+            ConnectionProperties connectionProperties = new ConnectionProperties();
+
+            NewElementOptions connectionOptions = new NewElementOptions(connectionClient.getMetadataSourceOptions());
+
+            connectionOptions.setIsOwnAnchor(false);
+            connectionOptions.setAnchorGUID(fileAssetGUID);
+            connectionOptions.setParentAtEnd1(true);
+            connectionOptions.setParentGUID(fileAssetGUID);
+            connectionOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+
+            connectionProperties.setQualifiedName(properties.getQualifiedName() + "_connection");
+
+            String connectionGUID = connectionClient.createConnection(connectionOptions, null, connectionProperties, null);
+
+            connectionClient.linkConnectionConnectorType(connectionGUID, connectorTypeGUID, connectionClient.getMakeAnchorOptions(false), null);
+
+            EndpointClient endpointClient = integrationConnector.integrationContext.getEndpointClient();
+
+            EndpointProperties endpointProperties = new EndpointProperties();
+            endpointProperties.setQualifiedName(properties.getQualifiedName() + "_endpoint");
+            endpointProperties.setNetworkAddress(fileAddress);
+
+            NewElementOptions endpointOptions = new NewElementOptions(endpointClient.getMetadataSourceOptions());
+
+            endpointOptions.setIsOwnAnchor(false);
+            endpointOptions.setAnchorGUID(fileAssetGUID);
+            endpointOptions.setParentAtEnd1(true);
+            endpointOptions.setParentGUID(connectionGUID);
+            endpointOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+            endpointClient.createEndpoint(endpointOptions, null, endpointProperties, null);
+
+            return fileAssetGUID;
+        }
+
+        return null;
     }
 
 

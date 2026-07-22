@@ -108,7 +108,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.DIRECTORY_NAME.getPlaceholder(),
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder(),
-                         getFileFolderExtendedProperties(),
+                         getFileFolderExtendedProperties(DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getDeployedImplementationType()),
                          null,
                          null,
                          new BasicFolderProvider().getConnectorType().getGUID(),
@@ -127,7 +127,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.DIRECTORY_NAME.getPlaceholder(),
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder(),
-                         getFileFolderExtendedProperties(),
+                         getFileFolderExtendedProperties(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType()),
                          null,
                          null,
                          new DataFolderProvider().getConnectorType().getGUID(),
@@ -147,7 +147,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        PlaceholderProperty.FILE_NAME.getPlaceholder(),
                        PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                        DeployedImplementationType.DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                       getDataFileExtendedProperties(),
+                       getDataFileExtendedProperties(DeployedImplementationType.DATA_FILE.getDeployedImplementationType()),
                        PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                        null,
                        new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -166,7 +166,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       PlaceholderProperty.FILE_NAME.getPlaceholder(),
                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                       DeployedImplementationType.CSV_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                      getDataFileExtendedProperties(),
+                      getDataFileExtendedProperties(DeployedImplementationType.CSV_FILE.getDeployedImplementationType()),
                       PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                       null,
                       new CSVFileStoreProvider().getConnectorType().getGUID(),
@@ -185,7 +185,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        PlaceholderProperty.FILE_NAME.getPlaceholder(),
                        PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                        DeployedImplementationType.AVRO_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                       getDataFileExtendedProperties(),
+                       getDataFileExtendedProperties(DeployedImplementationType.AVRO_FILE.getDeployedImplementationType()),
                        PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                        null,
                        new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -204,7 +204,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        PlaceholderProperty.FILE_NAME.getPlaceholder(),
                        PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                        DeployedImplementationType.JSON_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                       getDataFileExtendedProperties(),
+                       getDataFileExtendedProperties(DeployedImplementationType.JSON_FILE.getDeployedImplementationType()),
                        PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                        null,
                        new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -223,7 +223,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.FILE_NAME.getPlaceholder(),
                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                           DeployedImplementationType.PARQUET_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                          getDataFileExtendedProperties(),
+                          getDataFileExtendedProperties(DeployedImplementationType.PARQUET_FILE.getDeployedImplementationType()),
                           PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                           null,
                           new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -242,7 +242,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               PlaceholderProperty.FILE_NAME.getPlaceholder(),
                               PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                               DeployedImplementationType.SPREADSHEET_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                              getDataFileExtendedProperties(),
+                              getDataFileExtendedProperties(DeployedImplementationType.SPREADSHEET_FILE.getDeployedImplementationType()),
                               PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                               null,
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -261,7 +261,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       PlaceholderProperty.FILE_NAME.getPlaceholder(),
                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                       DeployedImplementationType.XML_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                      getDataFileExtendedProperties(),
+                      getDataFileExtendedProperties(DeployedImplementationType.XML_FILE.getDeployedImplementationType()),
                       PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                       null,
                       new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -280,7 +280,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       PlaceholderProperty.FILE_NAME.getPlaceholder(),
                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                       DeployedImplementationType.DOCUMENT.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                      getDataFileExtendedProperties(),
+                      getDataFileExtendedProperties(DeployedImplementationType.DOCUMENT.getDeployedImplementationType()),
                       PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                       null,
                       new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -299,7 +299,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.FILE_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              DeployedImplementationType.AUDIO_DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                             getDataFileExtendedProperties(),
+                             getDataFileExtendedProperties(DeployedImplementationType.AUDIO_DATA_FILE.getDeployedImplementationType()),
                              PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                              null,
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -318,7 +318,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.FILE_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              DeployedImplementationType.VIDEO_DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                             getDataFileExtendedProperties(),
+                             getDataFileExtendedProperties(DeployedImplementationType.VIDEO_DATA_FILE.getDeployedImplementationType()),
                              PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                              null,
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -337,7 +337,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                      PlaceholderProperty.FILE_NAME.getPlaceholder(),
                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                      DeployedImplementationType.THREE_D_IMAGE_DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                                     getDataFileExtendedProperties(),
+                                     getDataFileExtendedProperties(DeployedImplementationType.THREE_D_IMAGE_DATA_FILE.getDeployedImplementationType()),
                                      PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                                      null,
                                      new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -356,7 +356,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               PlaceholderProperty.FILE_NAME.getPlaceholder(),
                               PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                               DeployedImplementationType.RASTER_DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                              getDataFileExtendedProperties(),
+                              getDataFileExtendedProperties(DeployedImplementationType.RASTER_DATA_FILE.getDeployedImplementationType()),
                               PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                               null,
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -375,7 +375,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               PlaceholderProperty.FILE_NAME.getPlaceholder(),
                               PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                               DeployedImplementationType.VECTOR_DATA_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                              getDataFileExtendedProperties(),
+                              getDataFileExtendedProperties(DeployedImplementationType.VECTOR_DATA_FILE.getDeployedImplementationType()),
                               PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                               null,
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -394,7 +394,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.FILE_NAME.getPlaceholder(),
                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                           DeployedImplementationType.ARCHIVE_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                          getDataFileExtendedProperties(),
+                          getDataFileExtendedProperties(DeployedImplementationType.ARCHIVE_FILE.getDeployedImplementationType()),
                           PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                           null,
                           new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -413,7 +413,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                            PlaceholderProperty.FILE_NAME.getPlaceholder(),
                            PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                            DeployedImplementationType.KEYSTORE_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                           getDataFileExtendedProperties(),
+                           getDataFileExtendedProperties(DeployedImplementationType.KEYSTORE_FILE.getDeployedImplementationType()),
                            PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                            null,
                            new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -432,7 +432,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               PlaceholderProperty.FILE_NAME.getPlaceholder(),
                               PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                               DeployedImplementationType.SOURCE_CODE_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                              getDataFileExtendedProperties(),
+                              getDataFileExtendedProperties(DeployedImplementationType.SOURCE_CODE_FILE.getDeployedImplementationType()),
                               PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                               PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -451,7 +451,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                         PlaceholderProperty.FILE_NAME.getPlaceholder(),
                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                         DeployedImplementationType.BUILD_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                        getDataFileExtendedProperties(),
+                        getDataFileExtendedProperties(DeployedImplementationType.BUILD_FILE.getDeployedImplementationType()),
                         PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                         PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                         new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -470,7 +470,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.FILE_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              DeployedImplementationType.EXECUTABLE_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                             getDataFileExtendedProperties(),
+                             getDataFileExtendedProperties(DeployedImplementationType.EXECUTABLE_FILE.getDeployedImplementationType()),
                              PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                              PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -489,7 +489,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.FILE_NAME.getPlaceholder(),
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          DeployedImplementationType.SCRIPT_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                         getDataFileExtendedProperties(),
+                         getDataFileExtendedProperties(DeployedImplementationType.SCRIPT_FILE.getDeployedImplementationType()),
                          PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                          PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                          new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -508,7 +508,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.FILE_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              DeployedImplementationType.PROPERTIES_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                             getDataFileExtendedProperties(),
+                             getDataFileExtendedProperties(DeployedImplementationType.PROPERTIES_FILE.getDeployedImplementationType()),
                              PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                              PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -527,7 +527,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.FILE_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              DeployedImplementationType.YAML_FILE.getAssociatedTypeName() + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
-                             getDataFileExtendedProperties(),
+                             getDataFileExtendedProperties(DeployedImplementationType.YAML_FILE.getDeployedImplementationType()),
                              PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                              PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
@@ -540,8 +540,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes(),
                              ContentPackDefinition.FILES_CONTENT_PACK),
-
-
     ;
 
 
@@ -586,13 +584,14 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     /**
      * Build the extended properties for a folder (directory).
      *
-     * @return configuration properties
+     * @param deployedImplementationType the deployed implementation type for this technology
+     * @return extended properties
      */
-    private static Map<String, Object> getFileFolderExtendedProperties()
+    private static Map<String, Object> getFileFolderExtendedProperties(String deployedImplementationType)
     {
         Map<String, Object> extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType);
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
 
@@ -603,13 +602,14 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     /**
      * Build the extended properties for a folder (directory).
      *
-     * @return configuration properties
+     * @param deployedImplementationType the deployed implementation type for this technology
+     * @return extended properties
      */
-    private static Map<String, Object> getDataFileExtendedProperties()
+    private static Map<String, Object> getDataFileExtendedProperties(String deployedImplementationType)
     {
         Map<String, Object> extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType);
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());

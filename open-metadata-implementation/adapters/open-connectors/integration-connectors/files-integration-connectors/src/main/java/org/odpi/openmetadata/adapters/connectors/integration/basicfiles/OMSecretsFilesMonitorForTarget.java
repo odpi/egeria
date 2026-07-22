@@ -4,13 +4,18 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.*;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
@@ -54,6 +59,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
     private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     private final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
+    private final ConnectorBroker                   connectorBroker       = new ConnectorBroker(auditLog);
 
 
     /**
@@ -130,22 +136,32 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
      * Return the unique identifier of a new metadata element describing the file.
      *
      * @param typeName subtype name for file
+     * @param fileAddress local file path name
      * @param properties basic properties to use
      * @param encodingProperties properties for DataAssetEncoding classification
+     * @param connectorTypeGUID unique identifier for the connector type
      * @return unique identifier (guid)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
     protected String addDataFileToCatalog(String                      typeName,
+                                          String                      fileAddress,
                                           DataFileProperties          properties,
-                                          DataAssetEncodingProperties encodingProperties) throws InvalidParameterException,
+                                          DataAssetEncodingProperties encodingProperties,
+                                          String                      connectorTypeGUID) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
+        /*
+         * The default connector type is used to provide general access to the file.
+         * Connectors that need to work with the contents can create another connector.
+         */
         String fileAssetGUID = super.addDataFileToCatalog(OpenMetadataType.ARCHIVE_FILE.typeName,
+                                                          fileAddress,
                                                           properties,
-                                                          null);
+                                                          null,
+                                                          connectorTypeGUID);
 
         if (FileExtension.OM_SECRETS.getFileExtension().equals(properties.getFileExtension()))
         {
@@ -228,26 +244,25 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
 
             if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
             {
-                yamlSecretsFileConnector.start();
-                SecretsStore secretsStore = yamlSecretsFileConnector.getSecretsStore();
+                catalogSecretsStore(fileAssetGUID, yamlSecretsFileConnector);
+            }
+            else if (connector instanceof BasicFileStoreConnector basicFileStoreConnector)
+            {
+                Connection connection = new Connection(basicFileStoreConnector.getConnection());
 
-                if (secretsStore != null)
-                {
-                    for (String secretsCollectionName : secretsStore.getSecretsCollections().keySet())
-                    {
-                        yamlSecretsFileConnector.setSecretsCollectionName(secretsCollectionName);
+                connection.setConnectorType(new YAMLSecretsFileProvider().getConnectorType());
+                Map<String, Object> configurationProperties = new HashMap<>();
 
-                        SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+                /*
+                 * This value must be a non-null string or the connector will not start.
+                 */
+                configurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), "default");
 
-                        if (secretsCollection != null)
-                        {
-                            String secretsCollectionGUID = catalogSecretsCollection(secretsCollectionName,
-                                                                                    secretsCollection,
-                                                                                    fileAssetGUID,
-                                                                                    yamlSecretsFileConnector);
-                        }
-                    }
-                }
+                connection.setConfigurationProperties(configurationProperties);
+
+                YAMLSecretsFileConnector yamlSecretsFileConnector = (YAMLSecretsFileConnector) connectorBroker.getConnector(connection);
+
+                catalogSecretsStore(fileAssetGUID, yamlSecretsFileConnector);
             }
         }
         catch (ClassCastException | RepositoryErrorException | ConnectionCheckedException | ConnectorCheckedException error)
@@ -257,6 +272,45 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                                                    error.getClass().getName(),
                                                                                                                    methodName,
                                                                                                                    error.getMessage()));
+        }
+    }
+
+
+    /**
+     * Catalog the secrets store in the archive file.
+     *
+     * @param fileAssetGUID            unique identifier of the file asset
+     * @param yamlSecretsFileConnector connector that understands the content.
+     * @throws UserNotAuthorizedException security problems
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException   problem with the connector
+     */
+    private void catalogSecretsStore(String                   fileAssetGUID,
+                                     YAMLSecretsFileConnector yamlSecretsFileConnector) throws UserNotAuthorizedException,
+                                                                                               InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               ConnectorCheckedException
+    {
+        yamlSecretsFileConnector.start();
+
+        SecretsStore secretsStore = yamlSecretsFileConnector.getSecretsStore();
+        if (secretsStore != null)
+        {
+            for (String secretsCollectionName : secretsStore.getSecretsCollections().keySet())
+            {
+                yamlSecretsFileConnector.setSecretsCollectionName(secretsCollectionName);
+
+                SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+                if (secretsCollection != null)
+                {
+                    String secretsCollectionGUID = catalogSecretsCollection(secretsCollectionName,
+                                                                            secretsCollection,
+                                                                            fileAssetGUID,
+                                                                            yamlSecretsFileConnector);
+                }
+            }
         }
     }
 

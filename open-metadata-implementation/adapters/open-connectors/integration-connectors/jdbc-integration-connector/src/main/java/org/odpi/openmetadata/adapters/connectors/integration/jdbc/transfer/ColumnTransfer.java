@@ -71,8 +71,8 @@ public class ColumnTransfer implements Function<JdbcColumn, OpenMetadataRootElem
             auditLog.logMessage("Updated column with qualified name " + columnProperties.getQualifiedName(),
                     TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
 
-            // todo covert properties
-            //  this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, omasColumn.get().getElementHeader().getGUID(), omasColumn.get().getElementHeader().getPrimaryKey().getClassificationProperties());
+            this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, omasColumn.get().getElementHeader().getGUID(),
+                    omasColumn.get().getElementHeader().getPrimaryKey() != null ? new PrimaryKeyProperties() : null);
 
             return omasColumn.get();
         }
@@ -81,7 +81,12 @@ public class ColumnTransfer implements Function<JdbcColumn, OpenMetadataRootElem
         auditLog.logMessage("Created column with qualified name " + columnProperties.getQualifiedName(),
                 TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
 
-        columnGuid.ifPresent(s -> this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, s, null));
+        if (columnGuid.isPresent())
+        {
+            this.updateOrRemovePrimaryKey(jdbcPrimaryKeys, jdbcColumn, columnGuid.get(), null);
+
+            return omas.getSchemaAttributeByGUID(columnGuid.get());
+        }
 
         return null;
     }

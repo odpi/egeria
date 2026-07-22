@@ -1410,6 +1410,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         for (ExceptionTypeDefinition exceptionTypeDefinition : ExceptionTypeDefinition.values())
         {
+            archiveHelper.setGUID(exceptionTypeDefinition.getQualifiedName(), exceptionTypeDefinition.getGUID());
+
             String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.EXCEPTION_TYPE.typeName,
                                                                 exceptionTypeDefinition.getQualifiedName(),
                                                                 exceptionTypeDefinition.getIdentifier(),

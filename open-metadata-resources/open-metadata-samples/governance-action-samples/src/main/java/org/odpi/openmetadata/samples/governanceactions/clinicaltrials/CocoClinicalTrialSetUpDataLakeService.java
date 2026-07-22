@@ -64,7 +64,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         String topLevelProjectGUID          = null;
 
         String dataLakeCatalogQualifiedName = null;
-        String dataLakeCatalogQualifiedGUID = null;
+        String dataLakeCatalogGUID = null;
         String dataLakeCatalogName          = null;
         String dataLakeSchemaName           = null;
         String dataLakeSchemaDescription    = "Example clinical trial used for education and testing of governance procedures.";
@@ -122,33 +122,24 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                         }
                         else if (CocoClinicalTrialActionTarget.CATALOG.getName().equals(actionTargetElement.getActionTargetName()))
                         {
-                            dataLakeCatalogQualifiedGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            dataLakeCatalogGUID = actionTargetElement.getTargetElement().getElementGUID();
                             dataLakeCatalogQualifiedName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                                             methodName);
-                            String dataLakeMetadataCollectionId = actionTargetElement.getTargetElement().getOrigin().getHomeMetadataCollectionId();
+                            dataLakeCatalogName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
+                                                                                   OpenMetadataProperty.RESOURCE_NAME.name,
+                                                                                   actionTargetElement.getTargetElement().getElementProperties(),
+                                                                                   methodName);
 
-                            List<OpenMetadataRootElement> externalIdentifiers = governanceContext.getExternalIdClient().getExternalIdsForElement(dataLakeCatalogQualifiedGUID,
-                                                                                                                                                 null);
-                            if (externalIdentifiers != null)
+                            Map<String, String> additionalProperties = propertyHelper.getStringMapFromProperty(actionTargetElement.getActionTargetName(),
+                                                                                                               OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                                               actionTargetElement.getTargetElement().getElementProperties(),
+                                                                                                               methodName);
+
+                            if (additionalProperties != null)
                             {
-                                for (OpenMetadataRootElement externalIdentifier : externalIdentifiers)
-                                {
-                                    if ((externalIdentifier != null) &&
-                                            (externalIdentifier.getElementHeader().getOrigin().getHomeMetadataCollectionId().equals(dataLakeMetadataCollectionId)) &&
-                                            (externalIdentifier.getRelatedBy() != null) &&
-                                            (externalIdentifier.getRelatedBy().getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties))
-                                    {
-                                        if (externalIdLinkProperties.getMappingProperties() != null)
-                                        {
-                                            dataLakeCatalogName = externalIdLinkProperties.getMappingProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
-                                            serverNetworkAddress  = externalIdLinkProperties.getMappingProperties().get(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
-
-                                            break;
-                                        }
-                                    }
-                                }
+                                serverNetworkAddress = additionalProperties.get(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
                             }
                         }
                         else if (CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName().equals(actionTargetElement.getActionTargetName()))
@@ -206,7 +197,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                     (airflowDAGName == null) ||
                     (validatedFilesDataSetName == null) ||
                     (validatedWeeklyFilesTemplateGUID == null) ||
-                    (dataLakeCatalogQualifiedGUID == null) ||
+                    (dataLakeCatalogGUID == null) ||
                     (dataLakeCatalogName == null) ||
                     (serverNetworkAddress == null) ||
                     (lastUpdateConnectorGUID == null) ||
@@ -221,7 +212,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                     dataLakeFileTemplateGUID == null || dataLakeFileTemplateGUID.isBlank() ||
                     genericOnboardingPipelineGUID == null)
             {
-                if (dataLakeCatalogQualifiedGUID == null)
+                if (dataLakeCatalogGUID == null)
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_CATALOG.getMessageDefinition(governanceServiceName, dataLakeCatalogQualifiedName);
                 }
@@ -326,11 +317,11 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Create a schema in Unity Catalog
                  */
-                String ucSchemaGUID = this.createUCSchema(dataLakeCatalogQualifiedGUID,
+                String ucSchemaGUID = this.createUCSchema(dataLakeCatalogGUID,
                                                           dataLakeCatalogQualifiedName,
                                                           schemaTemplateGUID,
                                                           serverNetworkAddress,
-                                                          dataLakeCatalogQualifiedGUID,
+                                                          dataLakeCatalogGUID,
                                                           dataLakeCatalogName,
                                                           dataLakeSchemaName,
                                                           dataLakeSchemaDescription,
@@ -339,7 +330,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Create a volume in Unity Catalog
                  */
-                String ucVolumeAssetGUID = this.createVolume(dataLakeCatalogQualifiedGUID,
+                String ucVolumeAssetGUID = this.createVolume(dataLakeCatalogGUID,
                                                              dataLakeCatalogQualifiedName,
                                                              volumeTemplateGUID,
                                                              serverNetworkAddress,

@@ -87,24 +87,28 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
      * Return the unique identifier of a new metadata element describing the file.
      *
      * @param typeName subtype name for file
+     * @param fileAddress local file path name
      * @param properties basic properties to use
      * @param encodingProperties properties for DataAssetEncoding classification
+     * @param connectorTypeGUID unique identifier for the connector type
      * @return unique identifier (guid)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
     protected String addDataFileToCatalog(String                      typeName,
+                                          String                      fileAddress,
                                           DataFileProperties          properties,
-                                          DataAssetEncodingProperties encodingProperties) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+                                          DataAssetEncodingProperties encodingProperties,
+                                          String                      connectorTypeGUID) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String methodName = "addDataFileToCatalog";
 
         if (FileExtension.OM_ARCHIVE_FILE.getFileExtension().equals(properties.getFileExtension()))
         {
-            ElementProperties replacementProperties = this.updateReplacementProperties(properties.getPathName(),
+            ElementProperties replacementProperties = this.updateReplacementProperties(fileAddress,
                                                                                        null);
 
             String propertyValue = propertyHelper.getStringProperty(connectorName,
@@ -143,9 +147,15 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                 properties.setAdditionalProperties(additionalProperties);
             }
 
+            /*
+             * The default connector type is used to provide general access to the file.
+             * Connectors that need to work with the contents can create another connector.
+             */
             return super.addDataFileToCatalog(OpenMetadataType.ARCHIVE_FILE.typeName,
+                                              fileAddress,
                                               properties,
-                                              null);
+                                              null,
+                                              connectorTypeGUID);
         }
         else
         {

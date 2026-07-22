@@ -357,7 +357,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
                                                       UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
                                                       null,
-                                                      "Unity Catalog Templates",
+                                                      null,
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -393,6 +393,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                         + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
 
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -407,12 +410,12 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                                                       fullName,
                                                       UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
-                                                      "Unity Catalog Templates",
+                                                      null,
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                       ContentStatus.ACTIVE,
-                                                      null,
+                                                      additionalProperties,
                                                       null,
                                                       classifications);
         assert(guid.equals(assetGUID));
@@ -467,7 +470,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       fullName,
                                                       UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                      "Unity Catalog Templates",
+                                                      null,
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -566,7 +569,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       fullName,
                                                       UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                      "Unity Catalog Templates",
+                                                      null,
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -646,7 +649,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder(),
                                                          fullName,
                                                          UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "." + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                         "Unity Catalog Templates",
+                                                         null,
                                                          deployedImplementationType.getDeployedImplementationType(),
                                                          PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -699,7 +702,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder(),
                                                          fullName,
                                                          UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "." + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                         "Unity Catalog Templates",
+                                                         null,
                                                          deployedImplementationType.getDeployedImplementationType(),
                                                          PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -752,7 +755,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
                                                          fullName,
                                                          UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "." + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                                         "Unity Catalog Templates",
+                                                         null,
                                                          deployedImplementationType.getDeployedImplementationType(),
                                                          PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),

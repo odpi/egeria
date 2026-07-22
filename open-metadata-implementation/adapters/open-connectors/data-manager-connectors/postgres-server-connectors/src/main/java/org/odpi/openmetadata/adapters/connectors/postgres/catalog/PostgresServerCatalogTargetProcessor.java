@@ -16,16 +16,18 @@ import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProc
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SoftwareCapabilityClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.DatabaseManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -47,10 +49,10 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 {
     final PropertyHelper propertyHelper = new PropertyHelper();
 
-    List<String> defaultExcludeDatabases = null;
-    List<String> defaultIncludeDatabases = null;
-    String       defaultFriendshipGUID   = null;
-    Map<String, String> defaultTemplates = new HashMap<>();
+    List<String>        defaultExcludeDatabases = null;
+    List<String>        defaultIncludeDatabases = null;
+    String              defaultFriendshipGUID   = null;
+    Map<String, String> defaultTemplates        = new HashMap<>();
 
 
     /**
@@ -117,14 +119,15 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
     @Override
     public void refresh() throws ConnectorCheckedException
     {
-        final String methodName = "integrateCatalogTarget";
+        final String methodName = "refresh";
 
-        if (PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(this.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
+        if (propertyHelper.isTypeOf(this.getCatalogTargetElement().getElementHeader(), PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName()))
         {
-            String databaseServerGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
-            String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, this.getCatalogTargetElement());
             try
             {
+                String                  databaseServerGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
+                OpenMetadataRootElement databaseManager     = this.getDatabaseManager(databaseServerGUID, this.getCatalogTargetElement());
+
                 Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseServerGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
@@ -132,7 +135,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                 assetConnector.start();
 
                 catalogDatabases(databaseServerGUID,
-                                 databaseManagerGUID,
+                                 databaseManager,
                                  this.getTemplates(),
                                  this.getConfigurationProperties(),
                                  assetConnector);
@@ -160,56 +163,42 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Retrieve or recreate the database manager for this PostgreSQL Server.
      *
-     * @param databaseServerGUID unique identifier of the database server
+     * @param databaseServerGUID    unique identifier of the database server
      * @param databaseServerElement unique name of the database server
-     * @return unique identifier of the database manager
+     * @return the database manager
+     * @throws InvalidParameterException  the type name, status, or one of the properties is invalid
+     * @throws PropertyServerException    a problem with the metadata store
+     * @throws UserNotAuthorizedException the connector is not authorized to create this type of element
      */
-    private String getDatabaseManagerGUID(String                  databaseServerGUID,
-                                          OpenMetadataRootElement databaseServerElement)
+    private OpenMetadataRootElement getDatabaseManager(String                  databaseServerGUID,
+                                                       OpenMetadataRootElement databaseServerElement) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        final String methodName = "getDatabaseManagerGUID";
+        SoftwareCapabilityClient softwareCapabilityClient = integrationContext.getSoftwareCapabilityClient(OpenMetadataType.DATABASE_MANAGER.typeName);
 
         String databaseManagerGUID = null;
 
-        try
+        /*
+         * If the database server has a database manager, then use it.
+         */
+        if (databaseServerElement.getCapabilities() != null)
         {
-            OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
-
-            int                        startFrom = 0;
-            RelatedMetadataElementList relatedCapabilities = openMetadataStore.getRelatedMetadataElements(databaseServerGUID,
-                                                                                                           1,
-                                                                                                           OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                           startFrom,
-                                                                                                           integrationContext.getMaxPageSize());
-            while ((relatedCapabilities != null) && (relatedCapabilities.getElementList() != null))
+            for (RelatedMetadataElementSummary relatedCapability : databaseServerElement.getCapabilities())
             {
-                for (RelatedMetadataElement relatedCapability : relatedCapabilities.getElementList())
+                if ((relatedCapability != null) && (propertyHelper.isTypeOf(relatedCapability.getRelatedElement().getElementHeader(), OpenMetadataType.DATABASE_MANAGER.typeName)))
                 {
-                    if (OpenMetadataType.DATABASE_MANAGER.typeName.equals(relatedCapability.getElement().getType().getTypeName()))
-                    {
-                        databaseManagerGUID = relatedCapability.getElement().getElementGUID();
-                        break;
-                    }
+                    databaseManagerGUID = relatedCapability.getRelatedElement().getElementHeader().getGUID();
                 }
-
-                startFrom           = startFrom + integrationContext.getMaxPageSize();
-                relatedCapabilities = openMetadataStore.getRelatedMetadataElements(databaseServerGUID,
-                                                                                    1,
-                                                                                    OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                    startFrom,
-                                                                                    integrationContext.getMaxPageSize());
             }
+        }
 
-            if (databaseManagerGUID == null)
+        /*
+         * No database manager, so need to create one
+         */
+        if (databaseManagerGUID == null)
+        {
+            if (databaseServerElement.getProperties() instanceof SoftwareServerProperties softwareServerProperties)
             {
-                String databaseServerQualifiedName = null;
-
-                if (databaseServerElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
-                {
-                    databaseServerQualifiedName = referenceableProperties.getQualifiedName();
-                }
-
-                NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
+                NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
 
                 newElementOptions.setAnchorGUID(databaseServerGUID);
                 newElementOptions.setIsOwnAnchor(false);
@@ -218,26 +207,19 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                 newElementOptions.setParentAtEnd1(true);
                 newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
-                databaseManagerGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.DATABASE_MANAGER.typeName,
-                                                                                     newElementOptions,
-                                                                                     null,
-                                                                                     new NewElementProperties(propertyHelper.addStringProperty(null,
-                                                                                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                                                databaseServerQualifiedName + ":DBMS")),
-                                                                                     null);
+                SoftwareCapabilityProperties softwareCapabilityProperties = new SoftwareCapabilityProperties();
+                softwareCapabilityProperties.setQualifiedName(softwareServerProperties.getQualifiedName() + ":DBMS");
+                softwareCapabilityProperties.setDisplayName("DBMS for " + softwareServerProperties.getDisplayName());
+                softwareCapabilityProperties.setDescription("The Database Management System (DBMS) provides support for the creation, maintenance, and access to the data stored in the server's databases.");
+
+                databaseManagerGUID = softwareCapabilityClient.createSoftwareCapability(newElementOptions,
+                                                                                        null,
+                                                                                        softwareCapabilityProperties,
+                                                                                        null);
             }
         }
-        catch (Exception exception)
-        {
-            auditLog.logException(methodName,
-                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                  exception);
-        }
 
-        return databaseManagerGUID;
+        return softwareCapabilityClient.getSoftwareCapabilityByGUID(databaseManagerGUID, softwareCapabilityClient.getGetOptions());
     }
 
 
@@ -245,17 +227,17 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
      * Catalog a database retrieved from the requested database server.
      *
      * @param databaseServerGUID unique identifier of the entity representing the PostgreSQL Server
-     * @param databaseManagerGUID name of the associated database manager.
+     * @param databaseManager associated database manager
      * @param configuredTemplates list of templates
      * @param configurationProperties configuration properties
      * @param assetConnector connector to the database server
      * @throws ConnectorCheckedException unrecoverable error
      */
-    private void catalogDatabases(String                databaseServerGUID,
-                                  String                databaseManagerGUID,
-                                  Map<String, String>   configuredTemplates,
-                                  Map<String, Object>   configurationProperties,
-                                  JDBCResourceConnector assetConnector) throws ConnectorCheckedException
+    private void catalogDatabases(String                  databaseServerGUID,
+                                  OpenMetadataRootElement databaseManager,
+                                  Map<String, String>     configuredTemplates,
+                                  Map<String, Object>     configurationProperties,
+                                  JDBCResourceConnector   assetConnector) throws ConnectorCheckedException
     {
         final String methodName = "catalogDatabases";
 
@@ -299,7 +281,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                     {
                         catalogDatabase(databaseName,
                                         databaseServerGUID,
-                                        databaseManagerGUID,
+                                        databaseManager,
                                         templates,
                                         configurationProperties);
                     }
@@ -331,7 +313,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
      *
      * @param databaseName name of the retrieved database
      * @param databaseServerGUID unique identifier of the entity representing the PostgreSQL Server
-     * @param databaseManagerGUID name of the associated database manager
+     * @param databaseManager associated database manager
      * @param templates list of templates
      * @param configurationProperties configuration properties
      *
@@ -339,14 +321,14 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException a problem with the metadata store
      */
-    private   void catalogDatabase(String              databaseName,
-                                   String              databaseServerGUID,
-                                   String              databaseManagerGUID,
-                                   Map<String, String> templates,
-                                   Map<String, Object> configurationProperties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       ConnectorCheckedException
+    private   void catalogDatabase(String                  databaseName,
+                                   String                  databaseServerGUID,
+                                   OpenMetadataRootElement databaseManager,
+                                   Map<String, String>     templates,
+                                   Map<String, Object>     configurationProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           ConnectorCheckedException
     {
         final String methodName = "catalogDatabase";
 
@@ -390,7 +372,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                      databaseElement.getElementGUID(),
                                                                                                      qualifiedName));
         }
-        else
+        else if (databaseManager.getProperties() instanceof DatabaseManagerProperties databaseManagerProperties)
         {
             String databaseGUID = openMetadataStore.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                                                                     databaseServerGUID,
@@ -402,7 +384,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                     null,
                                                                                     null,
                                                                                     placeholderProperties,
-                                                                                    databaseManagerGUID,
+                                                                                    databaseManager.getElementHeader().getGUID(),
                                                                                     OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
                                                                                     serverAssetUseProperties,
                                                                                     true);
@@ -413,7 +395,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
             addCatalogTarget(friendshipConnectorGUID,
                              databaseGUID,
-                             databaseManagerGUID,
+                             databaseManagerProperties.getQualifiedName(),
                              databaseName,
                              templates,
                              configurationProperties);
