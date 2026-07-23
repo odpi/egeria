@@ -305,6 +305,10 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                 archiveHelper.addSubjectAreaHierarchy(subjectAreaMap.get(subjectAreaDefinition.getParent().getSubjectAreaName()),
                                                       subjectAreaGUID);
             }
+            else
+            {
+                archiveHelper.addMemberToCollection(CocoCollectionDefinition.SUBJECT_AREAS.getGUID(), subjectAreaGUID, null);
+            }
         }
     }
 

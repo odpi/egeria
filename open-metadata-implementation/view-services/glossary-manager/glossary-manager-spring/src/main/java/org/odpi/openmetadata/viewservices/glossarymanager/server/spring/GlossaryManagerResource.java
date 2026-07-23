@@ -575,6 +575,180 @@ public class GlossaryManagerResource
 
 
     /**
+     * Classify the glossary term to indicate that it describes a prime word.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-prime-word")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setTermAsPrimeWord",
+            description="Classify the glossary term to indicate that it describes a prime word.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse setTermAsPrimeWord(@PathVariable String                       serverName,
+                                           @PathVariable String                       glossaryTermGUID,
+                                           @RequestBody(required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setTermAsPrimeWord(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the prime word designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-prime-word/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsPrimeWord",
+            description="Remove the prime word designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse clearTermAsPrimeWord(@PathVariable String                    serverName,
+                                             @PathVariable String                    glossaryTermGUID,
+                                             @RequestBody(required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsPrimeWord(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a modifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-modifier")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setTermAsModifier",
+            description="Classify the glossary term to indicate that it describes a modifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse setTermAsModifier(@PathVariable String                       serverName,
+                                          @PathVariable String                       glossaryTermGUID,
+                                          @RequestBody(required = false)
+                                          NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setTermAsModifier(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the modifier designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-modifier/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsModifier",
+            description="Remove the modifier designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse clearTermAsModifier(@PathVariable String                    serverName,
+                                            @PathVariable String                    glossaryTermGUID,
+                                            @RequestBody(required = false)
+                                            DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsModifier(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a class word.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-class-word")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setTermAsClassWord",
+            description="Classify the glossary term to indicate that it describes a class word.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse setTermAsClassWord(@PathVariable String                       serverName,
+                                           @PathVariable String                       glossaryTermGUID,
+                                           @RequestBody(required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setTermAsClassWord(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the class word designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-class-word/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsClassWord",
+            description="Remove the class word designation from the glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse clearTermAsClassWord(@PathVariable String                    serverName,
+                                             @PathVariable String                    glossaryTermGUID,
+                                             @RequestBody(required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsClassWord(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to
