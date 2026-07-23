@@ -609,6 +609,177 @@ Content-Type: application/json
 
 
 ###
+# @name setTermAsPrimeWord
+# Classify the glossary term to indicate that it describes a prime word.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-prime-word
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "PrimeWordProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearTermAsPrimeWord
+# Remove the prime word designation from the glossary term.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-prime-word/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name setTermAsModifier
+# Classify the glossary term to indicate that it describes a modifier.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-modifier
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "ModifierProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearTermAsModifier
+# Remove the modifier designation from the glossary term.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-modifier/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name setTermAsClassWord
+# Classify the glossary term to indicate that it describes a class word.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-class-word
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "ClassWordProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearTermAsClassWord
+# Remove the class word designation from the glossary term.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryTermGUID unique identifier of the metadata element to update
+# @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/is-class-word/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
 # @name setTermAsDataValue
 # Classify the glossary term to indicate that it describes a data value.
 #

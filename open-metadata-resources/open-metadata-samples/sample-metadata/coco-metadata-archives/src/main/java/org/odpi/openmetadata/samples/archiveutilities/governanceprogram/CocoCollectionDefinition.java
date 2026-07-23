@@ -196,6 +196,14 @@ public enum CocoCollectionDefinition
                        "These systems support the administration operations of Coco Pharmaceuticals.",
                        null),
 
+    SUBJECT_AREAS("af13f129-8170-4025-a701-43fb41309a7b",
+                    OpenMetadataType.ROOT_COLLECTION.typeName,
+                    null,
+                    null,
+                    "Subject Areas",
+                    "Subject Areas describe the types of data that are important to Coco Pharmaceuticals.  Each subject area includes glossary terms, data classes, valid value sets and validation rule for data in the subject area.",
+                    null),
+
     ;
 
 

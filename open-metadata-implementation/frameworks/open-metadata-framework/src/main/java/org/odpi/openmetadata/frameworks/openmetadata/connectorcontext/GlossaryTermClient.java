@@ -14,6 +14,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ClassWordProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ModifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PrimeWordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -346,6 +349,120 @@ public class GlossaryTermClient extends ConnectorContextClientBase
                                                                                                UserNotAuthorizedException
     {
         glossaryTermHandler.clearTermAsAbstractConcept(connectorUserId, glossaryTermGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a prime word.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsPrimeWord(String                glossaryTermGUID,
+                                   PrimeWordProperties   properties,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        glossaryTermHandler.setTermAsPrimeWord(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the prime word designation from the glossary term.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsPrimeWord(String                glossaryTermGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        glossaryTermHandler.clearTermAsPrimeWord(connectorUserId, glossaryTermGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a modifier.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsModifier(String                glossaryTermGUID,
+                                  ModifierProperties    properties,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        glossaryTermHandler.setTermAsModifier(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the modifier designation from the glossary term.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsModifier(String                glossaryTermGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        glossaryTermHandler.clearTermAsModifier(connectorUserId, glossaryTermGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a class word.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsClassWord(String                glossaryTermGUID,
+                                   ClassWordProperties   properties,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        glossaryTermHandler.setTermAsClassWord(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the class word designation from the glossary term.
+     *
+     * @param glossaryTermGUID    unique identifier of the term.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsClassWord(String                glossaryTermGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        glossaryTermHandler.clearTermAsClassWord(connectorUserId, glossaryTermGUID, metadataSourceOptions);
     }
 
 
