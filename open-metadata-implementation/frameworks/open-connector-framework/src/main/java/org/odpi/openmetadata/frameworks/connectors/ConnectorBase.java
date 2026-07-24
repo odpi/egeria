@@ -614,7 +614,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
     /* ==========================================================================================================
      * Connectors may need to convert names between different naming conventions.  Standards such as the
-     * Tabular Data Source exchanges names using a canonical format to allow connectors that support different
+     * Tabular Data Source exchange names using a canonical format to allow connectors that support different
      * technologies with their own naming conventions to exchange schema information.
      * The methods below provide mechanisms to convert between standard naming conventions and the canonical format.
      *

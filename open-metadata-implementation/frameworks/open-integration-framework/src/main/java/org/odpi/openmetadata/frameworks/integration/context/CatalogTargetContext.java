@@ -30,7 +30,7 @@ public class CatalogTargetContext extends IntegrationContext
      * @param connectorName name of this connector instance
      * @param connectorUserId userId to use when issuing open metadata requests
      * @param connectorGUID unique identifier of the connector element that describes this connector in the open metadata store(s)
-     * @param generateIntegrationReport should the context generate an integration report?
+     * @param generateIntegrationReport should the context generate integration reports?
      * @param permittedSynchronization enum
      * @param openMetadataClient client to access open metadata store
      * @param openMetadataEventClient client to access open metadata events
