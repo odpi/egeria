@@ -128,6 +128,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new classification to the metadata element.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)" class="member-name-link">countMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="../../../../frameworkservices/omf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a count of the metadata elements that match the supplied criteria.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)" class="member-name-link">countRelationshipsBetweenMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="../../../../frameworkservices/omf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a count of the relationships that match the requested conditions.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataTemplateRequestBody)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
@@ -1375,6 +1389,32 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="countMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)">
+<h3>countMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-conditions/count")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></span>&nbsp;<span class="element-name">countMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/omf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a count of the metadata elements that match the supplied criteria.  This has the same search
+ semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+ themselves.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>requestBody</code> - properties defining the search criteria</dd>
+<dt>Returns:</dt>
+<dd>the number of elements matching the supplied criteria; or
+  InvalidParameterException one of the search parameters are is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)">
 <h3>findRelationshipsBetweenMetadataElements</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-search-conditions")
@@ -1392,6 +1432,32 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - properties defining the search criteria</dd>
 <dt>Returns:</dt>
 <dd>a list of relationships - null means no matching relationships - or
+  InvalidParameterException one of the search parameters are is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)">
+<h3>countRelationshipsBetweenMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-search-conditions/count")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></span>&nbsp;<span class="element-name">countRelationshipsBetweenMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestBody
+ <a href="../../../../frameworkservices/omf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a count of the relationships that match the requested conditions.  This has the same search
+ semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+ rather than the relationships themselves.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>requestBody</code> - properties defining the search criteria</dd>
+<dt>Returns:</dt>
+<dd>the number of relationships matching the supplied criteria; or
   InvalidParameterException one of the search parameters are is invalid
   UserNotAuthorizedException the governance action service is not able to access the elements
   PropertyServerException a problem accessing the metadata store</dd>
