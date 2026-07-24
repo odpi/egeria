@@ -3550,6 +3550,77 @@ public class RepositoryHandler
 
 
     /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), but returns the number of matching entities rather than the entities themselves.  Note that,
+     * unlike findEntities(), the count returned is not passed through validateEntities() - it reflects the raw
+     * repository count, since applying the lineage/duplicate-processing/security filtering that validateEntities()
+     * performs would require fetching every matching entity, which defeats the purpose of an efficient count.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param forLineage not used - accepted for call-site parity with findEntities().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findEntities().
+     * @param effectiveTime not used - accepted for call-site parity with findEntities().
+     * @param methodName calling method
+     * @return the number of entities matching the supplied criteria.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public long countEntities(String                userId,
+                              String                entityTypeGUID,
+                              List<String>          entitySubtypeGUIDs,
+                              SearchProperties      searchProperties,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              String                sequencingProperty,
+                              SequencingOrder       sequencingOrder,
+                              boolean               forLineage,
+                              boolean               forDuplicateProcessing,
+                              Date                  effectiveTime,
+                              String                methodName) throws UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String localMethodName = "countEntities";
+
+        try
+        {
+            return metadataCollection.countEntities(userId,
+                                                    entityTypeGUID,
+                                                    entitySubtypeGUIDs,
+                                                    searchProperties,
+                                                    0,
+                                                    limitResultsByStatus,
+                                                    searchClassifications,
+                                                    asOfTime,
+                                                    sequencingProperty,
+                                                    sequencingOrder,
+                                                    0);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of
      * pages.
      *
@@ -3640,6 +3711,81 @@ public class RepositoryHandler
         }
 
         return null;
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationships(), but returns the number of matching relationships rather than the
+     * relationships themselves.  Note that, unlike findRelationships(), the count returned is not passed through
+     * the RelationshipAccumulator's duplicate-processing filtering, since applying that filtering would require
+     * fetching every matching relationship, which defeats the purpose of an efficient count.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the relationshipTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findRelationships().
+     * @param effectiveTime not used - accepted for call-site parity with findRelationships().
+     * @param methodName calling method
+     * @return the number of relationships matching the supplied criteria.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public long countRelationships(String                userId,
+                                   String                relationshipTypeGUID,
+                                   List<String>          relationshipSubtypeGUIDs,
+                                   List<String>          end1EntityGUIDs,
+                                   List<String>          end2EntityGUIDs,
+                                   EndMatchCriteria      endMatchCriteria,
+                                   SearchProperties      searchProperties,
+                                   List<InstanceStatus>  limitResultsByStatus,
+                                   Date                  asOfTime,
+                                   String                sequencingProperty,
+                                   SequencingOrder       sequencingOrder,
+                                   boolean               forDuplicateProcessing,
+                                   Date                  effectiveTime,
+                                   String                methodName) throws UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String localMethodName = "countRelationships";
+
+        try
+        {
+            return metadataCollection.countRelationships(userId,
+                                                          relationshipTypeGUID,
+                                                          relationshipSubtypeGUIDs,
+                                                          end1EntityGUIDs,
+                                                          end2EntityGUIDs,
+                                                          endMatchCriteria,
+                                                          searchProperties,
+                                                          0,
+                                                          limitResultsByStatus,
+                                                          asOfTime,
+                                                          sequencingProperty,
+                                                          sequencingOrder,
+                                                          0);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return 0L;
     }
 
 

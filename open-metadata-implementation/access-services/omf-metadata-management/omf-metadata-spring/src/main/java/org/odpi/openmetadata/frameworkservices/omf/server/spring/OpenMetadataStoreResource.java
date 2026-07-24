@@ -865,6 +865,37 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of elements matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/by-search-conditions/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="countMetadataElements",
+            description="Return a count of the metadata elements that match the supplied criteria.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omf-metadata-management/"))
+
+    public CountResponse countMetadataElements(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @RequestBody (required = false)
+                                                             FindRequestBody requestBody)
+    {
+        return restAPI.countMetadataElements(serverName, userId, requestBody);
+    }
+
+
+    /**
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
@@ -915,6 +946,36 @@ public class OpenMetadataStoreResource
                                                                                          @RequestBody  FindRelationshipRequestBody requestBody)
     {
         return restAPI.findRelationshipsBetweenMetadataElements(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of relationships matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    @PostMapping(path = "/relationships/by-search-conditions/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="countRelationshipsBetweenMetadataElements",
+            description="Return a count of the relationships that match the requested conditions.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omf-metadata-management/"))
+
+    public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
+                                                                   @PathVariable String          userId,
+                                                                   @RequestBody  FindRelationshipRequestBody requestBody)
+    {
+        return restAPI.countRelationshipsBetweenMetadataElements(serverName, userId, requestBody);
     }
 
 

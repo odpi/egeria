@@ -722,6 +722,58 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage not used - accepted for call-site parity with findMetadataElements().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findMetadataElements().
+     * @param effectiveTime not used - accepted for call-site parity with findMetadataElements().
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countMetadataElements(String                userId,
+                                      String                metadataElementTypeName,
+                                      List<String>          metadataElementSubtypeName,
+                                      SearchProperties      searchProperties,
+                                      List<ElementStatus>   limitResultsByStatus,
+                                      SearchClassifications searchClassifications,
+                                      Date                  asOfTime,
+                                      boolean               forLineage,
+                                      boolean               forDuplicateProcessing,
+                                      Date                  effectiveTime,
+                                      String                methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return super.countEntities(userId,
+                                   metadataElementTypeName,
+                                   metadataElementSubtypeName,
+                                   this.getSearchProperties(searchProperties),
+                                   this.getInstanceStatuses(limitResultsByStatus),
+                                   this.getSearchClassifications(searchClassifications),
+                                   asOfTime,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   effectiveTime,
+                                   methodName);
+    }
+
+
+    /**
      * Convert the omf searchProperties to OMRS searchProperties.
      *
      * @param omfSearchProperties omf searchProperties
@@ -1401,6 +1453,66 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param forLineage not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
+     * @param effectiveTime not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
+     * @param methodName calling method
+     *
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public  long countRelationshipsBetweenMetadataElements(String              userId,
+                                                           String              relationshipTypeName,
+                                                           List<String>        relationshipSubtypeGUIDs,
+                                                           List<String>        end1EntityGUIDs,
+                                                           List<String>        end2EntityGUIDs,
+                                                           EndMatchCriteria    endMatchCriteria,
+                                                           SearchProperties    searchProperties,
+                                                           List<ElementStatus> limitResultsByStatus,
+                                                           Date                asOfTime,
+                                                           boolean             forLineage,
+                                                           boolean             forDuplicateProcessing,
+                                                           Date                effectiveTime,
+                                                           String              methodName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        return this.countAttachmentLinks(userId,
+                                         relationshipTypeName,
+                                         relationshipSubtypeGUIDs,
+                                         end1EntityGUIDs,
+                                         end2EntityGUIDs,
+                                         this.getEndMatchCriteria(endMatchCriteria),
+                                         this.getSearchProperties(searchProperties),
+                                         this.getInstanceStatuses(limitResultsByStatus),
+                                         asOfTime,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
     }
 
 

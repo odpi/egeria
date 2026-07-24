@@ -424,6 +424,53 @@ public class DatabaseStore
 
 
     /**
+     * Count the entities that match the supplied criteria, without fetching and mapping the matching rows.
+     * This query is issued against the entity table and the entity attribute table.
+     *
+     * @param entityQueryBuilder filled with conditions for the where clause for the SQL query
+     * @param classificationQueryBuilder filled with conditions for the where clause for the SQL query
+     * @return count of matching entities
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public long countEntitiesByProperties(QueryBuilder entityQueryBuilder,
+                                          QueryBuilder classificationQueryBuilder) throws RepositoryErrorException
+    {
+        final String methodName = "countEntitiesByProperties";
+
+        String entityGUIDColumn = RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName());
+        String sqlEntityQuery = "select count(distinct " + entityGUIDColumn + ") from " + RepositoryTable.ENTITY.getTableName() + " where " + entityQueryBuilder.getAsOfTimeWhereClause();
+
+        try
+        {
+            if (classificationQueryBuilder == null)
+            {
+                return jdbcResourceConnector.countMatchingRows(jdbcConnection, sqlEntityQuery);
+            }
+            else
+            {
+                String sqlClassificationQuery =
+                        "select " + RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()) +
+                                " from " + RepositoryTable.CLASSIFICATION.getTableName() +
+                                " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
+
+                return jdbcResourceConnector.countMatchingRows(jdbcConnection,
+                                                         sqlEntityQuery + " and " + entityGUIDColumn + " in (" + sqlClassificationQuery + ")");
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
      * This query is issued against the relationship table.
      *
      * @param queryBuilder where clause for the SQL query
@@ -501,6 +548,38 @@ public class DatabaseStore
         }
 
         return null;
+    }
+
+
+    /**
+     * Count the relationships that match the requested conditions, without fetching and mapping the matching rows.
+     * This query is issued against the relationship table and the relationship attribute table.
+     *
+     * @param queryBuilder populated with details of the where clause for the SQL query
+     * @return count of matching relationships
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public long countRelationshipsByProperties(QueryBuilder queryBuilder) throws RepositoryErrorException
+    {
+        final String methodName = "countRelationshipsByProperties";
+
+        String relationshipGUIDColumn = RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.RELATIONSHIP.getTableName());
+        String sqlQuery = "select count(distinct " + relationshipGUIDColumn + ") from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
+
+        try
+        {
+            return jdbcResourceConnector.countMatchingRows(jdbcConnection, sqlQuery);
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
     }
 
 

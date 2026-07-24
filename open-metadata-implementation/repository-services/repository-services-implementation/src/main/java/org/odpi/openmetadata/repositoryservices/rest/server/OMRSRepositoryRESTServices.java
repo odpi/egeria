@@ -1957,6 +1957,93 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Return a count of the entities that match the supplied conditions.  This has the same search semantics as
+     * findEntities()/findEntitiesByHistory(), delegating to the metadata collection's countEntities() method
+     * rather than fetching the matching entities themselves.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody find parameters used to limit the returned results.
+     * @return CountResponse:
+     * the number of entities matching the supplied criteria or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support this optional method or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  CountResponse countEntities(String                      serverName,
+                                        String                      userId,
+                                        EntityHistoricalFindRequest requestBody)
+    {
+        final  String   methodName = "countEntities";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        String                    entityTypeGUID                    = null;
+        List<String>              entitySubtypeGUIDs                = null;
+        SearchProperties          matchProperties                   = null;
+        int                       fromEntityElement                 = 0;
+        List<InstanceStatus>      limitResultsByStatus              = null;
+        SearchClassifications     matchClassifications              = null;
+        Date                      asOfTime                          = null;
+        String                    sequencingProperty                = null;
+        SequencingOrder           sequencingOrder                   = null;
+        int                       pageSize                          = 0;
+
+        CountResponse response = new CountResponse();
+
+        if (requestBody != null)
+        {
+            entityTypeGUID                    = requestBody.getTypeGUID();
+            entitySubtypeGUIDs                = requestBody.getSubtypeGUIDs();
+            matchProperties                   = requestBody.getMatchProperties();
+            fromEntityElement                 = requestBody.getOffset();
+            limitResultsByStatus              = requestBody.getLimitResultsByStatus();
+            matchClassifications              = requestBody.getMatchClassifications();
+            asOfTime                          = requestBody.getAsOfTime();
+            sequencingProperty                = requestBody.getSequencingProperty();
+            sequencingOrder                   = requestBody.getSequencingOrder();
+            pageSize                          = requestBody.getPageSize();
+        }
+
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            long count = metadataCollection.countEntities(userId,
+                                                          entityTypeGUID,
+                                                          entitySubtypeGUIDs,
+                                                          matchProperties,
+                                                          fromEntityElement,
+                                                          limitResultsByStatus,
+                                                          matchClassifications,
+                                                          asOfTime,
+                                                          sequencingProperty,
+                                                          sequencingOrder,
+                                                          pageSize);
+            response.setCount(count);
+        }
+        catch (Throwable error)
+        {
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
      * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
      *
      * @param serverName unique identifier for requested server.
@@ -2905,6 +2992,99 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
 
+        }
+        catch (Throwable error)
+        {
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationships()/findRelationshipsByHistory(), delegating to the metadata collection's
+     * countRelationships() method rather than fetching the matching relationships themselves.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param requestBody find parameters used to limit the returned results.
+     * @return CountResponse:
+     * the number of relationships matching the supplied criteria or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support one of the provided parameters or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  CountResponse countRelationships(String                            serverName,
+                                             String                            userId,
+                                             RelationshipHistoricalFindRequest requestBody)
+    {
+        final  String   methodName = "countRelationships";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        String               relationshipTypeGUID     = null;
+        List<String>         relationshipSubtypeGUIDs = null;
+        List<String>         end1EntityGUIDs          = null;
+        List<String>         end2EntityGUIDs          = null;
+        EndMatchCriteria     endMatchCriteria         = null;
+        SearchProperties     matchProperties          = null;
+        int                  fromRelationshipElement  = 0;
+        List<InstanceStatus> limitResultsByStatus     = null;
+        Date                 asOfTime                 = null;
+        String               sequencingProperty       = null;
+        SequencingOrder      sequencingOrder          = null;
+        int                  pageSize                 = 0;
+
+        CountResponse response = new CountResponse();
+
+        if (requestBody != null)
+        {
+            relationshipTypeGUID              = requestBody.getTypeGUID();
+            relationshipSubtypeGUIDs          = requestBody.getSubtypeGUIDs();
+            end1EntityGUIDs                   = requestBody.getEnd1EntityGUIDs();
+            end2EntityGUIDs                   = requestBody.getEnd2EntityGUIDs();
+            endMatchCriteria                  = requestBody.getEndMatchCriteria();
+            matchProperties                   = requestBody.getMatchProperties();
+            fromRelationshipElement           = requestBody.getOffset();
+            limitResultsByStatus              = requestBody.getLimitResultsByStatus();
+            asOfTime                          = requestBody.getAsOfTime();
+            sequencingProperty                = requestBody.getSequencingProperty();
+            sequencingOrder                   = requestBody.getSequencingOrder();
+            pageSize                          = requestBody.getPageSize();
+        }
+
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            long count = metadataCollection.countRelationships(userId,
+                                                                relationshipTypeGUID,
+                                                                relationshipSubtypeGUIDs,
+                                                                end1EntityGUIDs,
+                                                                end2EntityGUIDs,
+                                                                endMatchCriteria,
+                                                                matchProperties,
+                                                                fromRelationshipElement,
+                                                                limitResultsByStatus,
+                                                                asOfTime,
+                                                                sequencingProperty,
+                                                                sequencingOrder,
+                                                                pageSize);
+            response.setCount(count);
         }
         catch (Throwable error)
         {

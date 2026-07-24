@@ -720,6 +720,63 @@ Content-Type: application/json
 
 
 ###
+# @name countMetadataElements (nested condition)
+# Return a count of the metadata elements that match the supplied criteria.  This has the same search semantics
+# as findMetadataElements() but returns just the number of matching elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "Location",
+  "metadataElementSubtypeNames": [],
+  "searchProperties": {
+     "class" : "SearchProperties",
+     "conditions": [ {
+         "nestedConditions": {
+               "class" : "SearchProperties",
+               "conditions": [
+               {
+                   "property" : "identifier",
+                   "operator": "LIKE",
+                   "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "AMS"
+                   }
+               },
+               {
+                   "property" : "identifier",
+                   "operator": "LIKE",
+                   "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "OFFICE"
+                   }
+               }],
+               "matchCriteria": "ANY"
+         }},
+         {
+             "property" : "displayName",
+             "operator": "LIKE",
+             "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "Cancer"
+                   }
+
+     }],
+     "matchCriteria": "ALL"
+  },
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
 # @name findRelationshipsBetweenMetadataElements
 # Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions
@@ -748,6 +805,37 @@ Content-Type: application/json
   "asOfTime" : "{{$isoTimestamp}}",
   "sequencingOrder": "CREATION_DATE_RECENT",
   "sequencingProperty": ""
+}
+
+
+###
+# @name countRelationshipsBetweenMetadataElements
+# Return a count of the relationships that match the requested conditions.  This has the same search semantics
+# as findRelationshipsBetweenMetadataElements() but returns just the number of matching relationships.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRelationshipRequestBody",
+  "relationshipTypeName": "ResourceList",
+  "searchProperties": {
+            "class" : "SearchProperties",
+               "conditions": [
+               {
+                   "property" : "resourceUse",
+                   "operator": "EQ",
+                   "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "Survey Resource"
+                   }
+               }],
+               "matchCriteria": "ALL"
+         },
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}"
 }
 
 ###

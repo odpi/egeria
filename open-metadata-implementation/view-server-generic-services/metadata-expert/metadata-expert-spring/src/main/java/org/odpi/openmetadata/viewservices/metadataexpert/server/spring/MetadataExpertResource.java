@@ -1031,6 +1031,37 @@ public class MetadataExpertResource
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of elements matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/by-search-conditions/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="countMetadataElements",
+            description="Return a count of the metadata elements that match the supplied criteria.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+
+    public CountResponse countMetadataElements(@PathVariable String          serverName,
+                                               @PathVariable String          urlMarker,
+                                               @RequestBody (required = false)
+                                               FindRequestBody requestBody)
+    {
+        return restAPI.countMetadataElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to
@@ -1055,6 +1086,36 @@ public class MetadataExpertResource
                                                                                          @RequestBody  FindRelationshipRequestBody requestBody)
     {
         return restAPI.findRelationshipsBetweenMetadataElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of relationships matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    @PostMapping(path = "/relationships/by-search-conditions/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="countRelationshipsBetweenMetadataElements",
+            description="Return a count of the relationships that match the requested conditions.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+
+    public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String                      serverName,
+                                                                   @PathVariable String                      urlMarker,
+                                                                   @RequestBody  FindRelationshipRequestBody requestBody)
+    {
+        return restAPI.countRelationshipsBetweenMetadataElements(serverName, urlMarker, requestBody);
     }
 
 

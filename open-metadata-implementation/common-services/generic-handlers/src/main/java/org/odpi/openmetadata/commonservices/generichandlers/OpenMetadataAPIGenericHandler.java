@@ -5766,6 +5766,79 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Return a count of the relationships that match the supplied criteria.  This has the same search semantics
+     * as findAttachmentLinks(), but returns the number of matching relationships rather than the relationships
+     * themselves.  Note that, unlike findAttachmentLinks(), the count returned is not passed through the
+     * per-relationship visibility check, since applying that check would require fetching every matching
+     * relationship, which defeats the purpose of an efficient count.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName type of interest (null means any element type)
+     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage not used - accepted for call-site parity with findAttachmentLinks().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findAttachmentLinks().
+     * @param effectiveTime not used - accepted for call-site parity with findAttachmentLinks().
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countAttachmentLinks(String                userId,
+                                     String                relationshipTypeName,
+                                     List<String>          relationshipSubtypeGUIDs,
+                                     List<String>          end1EntityGUIDs,
+                                     List<String>          end2EntityGUIDs,
+                                     EndMatchCriteria      endMatchCriteria,
+                                     SearchProperties      searchProperties,
+                                     List<InstanceStatus>  limitResultsByStatus,
+                                     Date                  asOfTime,
+                                     boolean               forLineage,
+                                     boolean               forDuplicateProcessing,
+                                     Date                  effectiveTime,
+                                     String                methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            null,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
+        return repositoryHandler.countRelationships(userId,
+                                                     relationshipTypeGUID,
+                                                     relationshipSubtypeGUIDs,
+                                                     end1EntityGUIDs,
+                                                     end2EntityGUIDs,
+                                                     endMatchCriteria,
+                                                     searchProperties,
+                                                     limitResultsByStatus,
+                                                     asOfTime,
+                                                     null,
+                                                     null,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+    }
+
+
+    /**
      * Return the entity for the required relationship attached to a specific entity.  This method assumes the starting entity has
      * a validated anchor
      *
@@ -7657,6 +7730,115 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                          forDuplicateProcessing,
                                          effectiveTime,
                                          methodName);
+    }
+
+
+    /**
+     * Return a count of the entities of the requested type that match the supplied criteria.  This has the same
+     * search semantics as findEntities(), but returns the number of matching entities rather than the entities
+     * themselves.
+     *
+     * @param userId the calling user
+     * @param metadataElementTypeName type of interest (null means any type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage not used - accepted for call-site parity with findEntities().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findEntities().
+     * @param effectiveTime not used - accepted for call-site parity with findEntities().
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countEntities(String                userId,
+                              String                metadataElementTypeName,
+                              List<String>          metadataElementSubtypeNames,
+                              SearchProperties      searchProperties,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              boolean               forLineage,
+                              boolean               forDuplicateProcessing,
+                              Date                  effectiveTime,
+                              String                methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        String typeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+        if (metadataElementTypeName != null)
+        {
+            typeName = metadataElementTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        List<String> subTypeGUIDs = null;
+
+        if (metadataElementSubtypeNames != null)
+        {
+            subTypeGUIDs = new ArrayList<>();
+
+            for (String subTypeName : metadataElementSubtypeNames)
+            {
+                if (subTypeName != null)
+                {
+                    String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
+                                                                                  typeName,
+                                                                                  serviceName,
+                                                                                  methodName,
+                                                                                  repositoryHelper);
+
+                    if (subTypeGUID != null)
+                    {
+                        subTypeGUIDs.add(subTypeGUID);
+                    }
+                }
+            }
+        }
+
+        if ((searchClassifications != null) && (searchClassifications.getConditions() != null))
+        {
+            for (ClassificationCondition classificationCondition : searchClassifications.getConditions())
+            {
+                if (classificationCondition != null)
+                {
+                    invalidParameterHandler.validateTypeDefName(classificationCondition.getName(),
+                                                                null,
+                                                                serviceName,
+                                                                methodName,
+                                                                repositoryHelper);
+
+                }
+            }
+        }
+
+        return repositoryHandler.countEntities(userId,
+                                               typeGUID,
+                                               subTypeGUIDs,
+                                               searchProperties,
+                                               limitResultsByStatus,
+                                               searchClassifications,
+                                               asOfTime,
+                                               null,
+                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
     }
 
 

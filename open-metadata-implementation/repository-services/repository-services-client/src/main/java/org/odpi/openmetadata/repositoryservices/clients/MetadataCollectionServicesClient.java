@@ -1598,6 +1598,88 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), delegating to a single REST operation that returns a count rather than the matching
+     * entities themselves.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement not used - the count is not affected by paging.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param pageSize not used - the count is not affected by paging.
+     * @return the number of entities matching the supplied criteria.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public long countEntities(String                    userId,
+                              String                    entityTypeGUID,
+                              List<String>              entitySubtypeGUIDs,
+                              SearchProperties          matchProperties,
+                              int                       fromEntityElement,
+                              List<InstanceStatus>      limitResultsByStatus,
+                              SearchClassifications     matchClassifications,
+                              Date                      asOfTime,
+                              String                    sequencingProperty,
+                              SequencingOrder           sequencingOrder,
+                              int                       pageSize) throws InvalidParameterException,
+                                                                         RepositoryErrorException,
+                                                                         TypeErrorException,
+                                                                         PropertyErrorException,
+                                                                         PagingErrorException,
+                                                                         FunctionNotSupportedException,
+                                                                         UserNotAuthorizedException
+    {
+        final String       methodName = "countEntities";
+        final String       operationSpecificURL  = "instances/entities/count";
+
+        EntityHistoricalFindRequest findRequestParameters = new EntityHistoricalFindRequest();
+
+        findRequestParameters.setTypeGUID(entityTypeGUID);
+        findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+        findRequestParameters.setMatchProperties(matchProperties);
+        findRequestParameters.setAsOfTime(asOfTime);
+        findRequestParameters.setOffset(fromEntityElement);
+        findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+        findRequestParameters.setMatchClassifications(matchClassifications);
+        findRequestParameters.setSequencingOrder(sequencingOrder);
+        findRequestParameters.setSequencingProperty(sequencingProperty);
+        findRequestParameters.setPageSize(pageSize);
+
+        CountResponse restResult = this.callCountPostRESTCall(methodName,
+                restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                findRequestParameters,
+                userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getCount();
+    }
+
+
+    /**
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
@@ -2232,6 +2314,96 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationships();
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationships(), delegating to a single REST operation that returns a count rather than
+     * the matching relationships themselves.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement not used - the count is not affected by paging.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param pageSize not used - the count is not affected by paging.
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  long countRelationships(String                    userId,
+                                    String                    relationshipTypeGUID,
+                                    List<String>              relationshipSubtypeGUIDs,
+                                    List<String>              end1EntityGUIDs,
+                                    List<String>              end2EntityGUIDs,
+                                    EndMatchCriteria          endMatchCriteria,
+                                    SearchProperties          matchProperties,
+                                    int                       fromRelationshipElement,
+                                    List<InstanceStatus>      limitResultsByStatus,
+                                    Date                      asOfTime,
+                                    String                    sequencingProperty,
+                                    SequencingOrder           sequencingOrder,
+                                    int                       pageSize) throws InvalidParameterException,
+                                                                               TypeErrorException,
+                                                                               RepositoryErrorException,
+                                                                               PropertyErrorException,
+                                                                               PagingErrorException,
+                                                                               FunctionNotSupportedException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName  = "countRelationships";
+        final String operationSpecificURL = "instances/relationships/count";
+
+        RelationshipHistoricalFindRequest findRequestParameters = new RelationshipHistoricalFindRequest();
+
+        findRequestParameters.setTypeGUID(relationshipTypeGUID);
+        findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+        findRequestParameters.setEnd1EntityGUIDs(end1EntityGUIDs);
+        findRequestParameters.setEnd2EntityGUIDs(end2EntityGUIDs);
+        findRequestParameters.setEndMatchCriteria(endMatchCriteria);
+        findRequestParameters.setMatchProperties(matchProperties);
+        findRequestParameters.setAsOfTime(asOfTime);
+        findRequestParameters.setOffset(fromRelationshipElement);
+        findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
+        findRequestParameters.setSequencingOrder(sequencingOrder);
+        findRequestParameters.setSequencingProperty(sequencingProperty);
+        findRequestParameters.setPageSize(pageSize);
+
+        CountResponse restResult = this.callCountPostRESTCall(methodName,
+                restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                findRequestParameters,
+                userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getCount();
     }
 
 
@@ -5617,6 +5789,29 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     {
         return this.callPostRESTCall(methodName,
                                      RelationshipListResponse.class,
+                                     operationSpecificURL,
+                                     requestBody,
+                                     params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a CountResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return CountResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private CountResponse callCountPostRESTCall(String    methodName,
+                                                String    operationSpecificURL,
+                                                Object    requestBody,
+                                                Object... params) throws RepositoryErrorException
+    {
+        return this.callPostRESTCall(methodName,
+                                     CountResponse.class,
                                      operationSpecificURL,
                                      requestBody,
                                      params);

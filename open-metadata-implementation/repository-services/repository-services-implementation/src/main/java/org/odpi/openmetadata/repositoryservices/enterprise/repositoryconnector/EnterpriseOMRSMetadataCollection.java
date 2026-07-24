@@ -1559,6 +1559,110 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), fanning the request out to every repository in the cohort and summing the counts returned.
+     * Unlike findEntities(), this does not deduplicate reference copies of the same entity held by more than one
+     * repository in the cohort - doing so would require fetching every matching entity's GUID, which defeats the
+     * purpose of an efficient count.  The returned count may therefore be an over-count when reference copies are
+     * in use.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement not used - the count is not affected by paging.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param pageSize not used - the count is not affected by paging.
+     * @return the number of entities matching the supplied criteria.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public long countEntities(String                userId,
+                              String                entityTypeGUID,
+                              List<String>          entitySubtypeGUIDs,
+                              SearchProperties      searchProperties,
+                              int                   fromEntityElement,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              String                sequencingProperty,
+                              SequencingOrder       sequencingOrder,
+                              int                   pageSize) throws InvalidParameterException,
+                                                                     RepositoryErrorException,
+                                                                     TypeErrorException,
+                                                                     PropertyErrorException,
+                                                                     PagingErrorException,
+                                                                     FunctionNotSupportedException,
+                                                                     UserNotAuthorizedException
+    {
+        final String  methodName = "countEntities";
+
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              entitySubtypeGUIDs,
+                                              searchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              searchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl     federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        CountEntitiesExecutor executor          = new CountEntitiesExecutor(userId,
+                                                                             entityTypeGUID,
+                                                                             entitySubtypeGUIDs,
+                                                                             searchProperties,
+                                                                             fromEntityElement,
+                                                                             limitResultsByStatus,
+                                                                             searchClassifications,
+                                                                             asOfTime,
+                                                                             sequencingProperty,
+                                                                             sequencingOrder,
+                                                                             pageSize,
+                                                                             localMetadataCollectionId,
+                                                                             auditLog,
+                                                                             repositoryValidator,
+                                                                             methodName);
+
+        /*
+         * Ready to process the request.  Every repository in the cohort is visited so their counts can be summed.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getResults();
+    }
+
+
+    /**
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
@@ -2123,6 +2227,120 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         federationControl.executeCommand(executor);
 
         return executor.getResults(enterpriseParentConnector);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search semantics
+     * as findRelationships(), fanning the request out to every repository in the cohort and summing the counts
+     * returned.  Unlike findRelationships(), this does not deduplicate reference copies of the same relationship
+     * held by more than one repository in the cohort - doing so would require fetching every matching
+     * relationship's GUID, which defeats the purpose of an efficient count.  The returned count may therefore be
+     * an over-count when reference copies are in use.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement not used - the count is not affected by paging.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param pageSize not used - the count is not affected by paging.
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  long countRelationships(String               userId,
+                                    String               relationshipTypeGUID,
+                                    List<String>         relationshipSubtypeGUIDs,
+                                    List<String>         end1EntityGUIDs,
+                                    List<String>         end2EntityGUIDs,
+                                    EndMatchCriteria     endMatchCriteria,
+                                    SearchProperties     matchProperties,
+                                    int                  fromRelationshipElement,
+                                    List<InstanceStatus> limitResultsByStatus,
+                                    Date                 asOfTime,
+                                    String               sequencingProperty,
+                                    SequencingOrder      sequencingOrder,
+                                    int                  pageSize) throws InvalidParameterException,
+                                                                          TypeErrorException,
+                                                                          RepositoryErrorException,
+                                                                          PropertyErrorException,
+                                                                          PagingErrorException,
+                                                                          FunctionNotSupportedException,
+                                                                          UserNotAuthorizedException
+    {
+        final String  methodName = "countRelationships";
+
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   end1EntityGUIDs,
+                                                   end2EntityGUIDs,
+                                                   endMatchCriteria,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl          federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        CountRelationshipsExecutor executor          = new CountRelationshipsExecutor(userId,
+                                                                                       relationshipTypeGUID,
+                                                                                       relationshipSubtypeGUIDs,
+                                                                                       end1EntityGUIDs,
+                                                                                       end2EntityGUIDs,
+                                                                                       endMatchCriteria,
+                                                                                       matchProperties,
+                                                                                       fromRelationshipElement,
+                                                                                       limitResultsByStatus,
+                                                                                       asOfTime,
+                                                                                       sequencingProperty,
+                                                                                       sequencingOrder,
+                                                                                       pageSize,
+                                                                                       localMetadataCollectionId,
+                                                                                       auditLog,
+                                                                                       repositoryValidator,
+                                                                                       methodName);
+
+        /*
+         * Ready to process the request.  Every repository in the cohort is visited so their counts can be summed.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getResults();
     }
 
 
