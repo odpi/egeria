@@ -344,6 +344,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG;
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
+
+        Map<String,String>   additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -362,7 +366,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                       ContentStatus.ACTIVE,
-                                                      null,
+                                                      additionalProperties,
                                                       null,
                                                       classifications);
         assert(guid.equals(assetGUID));
@@ -446,6 +450,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + "::"
                                                                         + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
+
         String connectorTypeGUID = new DataFolderProvider().getConnectorType().getGUID();
 
         Map<String, Object>  extendedProperties   = new HashMap<>();
@@ -475,7 +483,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                       ContentStatus.ACTIVE,
-                                                      null,
+                                                      additionalProperties,
                                                       extendedProperties,
                                                       classifications);
         assert(guid.equals(assetGUID));
@@ -545,6 +553,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                               qualifiedName              = deployedImplementationType.getDeployedImplementationType() + "::"
                                                                         + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
 
         Map<String, String>  facetProperties      = new HashMap<>();
         List<Classification> classifications      = new ArrayList<>();
@@ -574,7 +584,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                       ContentStatus.ACTIVE,
-                                                      null,
+                                                      additionalProperties,
                                                       null,
                                                       classifications);
         assert(guid.equals(assetGUID));
@@ -592,7 +602,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            fullName + "_storageLocation",
                                                            PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                            "Location of files for table " + fullName,
-                                                           null,
+                                                           additionalProperties,
                                                            folderProperties,
                                                            classifications);
 
@@ -635,6 +645,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                         + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
 
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
+
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -656,7 +670,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          null,
                                                          null,
                                                          ActivityStatus.APPROVED,
-                                                         null,
+                                                         additionalProperties,
                                                          null,
                                                          classifications);
         assert(guid.equals(assetGUID));
@@ -688,6 +702,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                 + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                 + fullName;
 
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
+
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -709,7 +727,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          null,
                                                          null,
                                                          ActivityStatus.APPROVED,
-                                                         null,
+                                                         additionalProperties,
                                                          null,
                                                          classifications);
         assert(guid.equals(assetGUID));
@@ -741,6 +759,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                 + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                 + fullName + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder();
 
+        Map<String,String> additionalProperties = new HashMap<>();
+        additionalProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder());
+
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -762,7 +783,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                          null,
                                                          null,
                                                          ActivityStatus.APPROVED,
-                                                         null,
+                                                         additionalProperties,
                                                          null,
                                                          classifications);
         assert(guid.equals(assetGUID));

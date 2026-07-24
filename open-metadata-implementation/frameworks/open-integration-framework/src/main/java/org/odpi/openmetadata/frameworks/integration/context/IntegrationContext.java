@@ -69,7 +69,7 @@ public class IntegrationContext extends ConnectorContextBase
      * @param connectorName             name of connector from config
      * @param connectorUserId           userId for the connector
      * @param connectorGUID             unique identifier of the integration connector entity (maybe null)
-     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param generateIntegrationReport should the connector generate integration reports?
      * @param permittedSynchronization  enum
      * @param openMetadataClient        client to access open metadata store
      * @param openMetadataEventClient   client to access open metadata events
@@ -531,5 +531,205 @@ public class IntegrationContext extends ConnectorContextBase
     public long getMinMinutesBetweenRefresh()
     {
         return minMinutesBetweenRefresh;
+    }
+
+
+    /* ==========================================================================================================
+     * Connectors may need to convert names between different naming conventions.  Standards such as the
+     * Tabular Data Source exchange names using a canonical format to allow connectors that support different
+     * technologies with their own naming conventions to exchange schema information.
+     * The methods below provide mechanisms to convert between standard naming conventions and the canonical format.
+     *
+     * The canonical format has a space between each word, and the first character in each word is capitalized -
+     * eg "My Table Name".
+     *
+     * Snake case is all lower case with underscores between the words - eg "my_table_name".
+     *
+     * Camel case has the spaces removed from the canonical format.
+     * The first character of the first word is lower case; the first character of
+     * subsequent works is upper case - eg myTableName.
+     *
+     * Kebab case is like snake case but uses dashes rather than underscores = eg "my-table-name".
+     *
+     * Pascal case is like camel case except that the first character of the first word is also upper case - eg "MyTableName".
+     */
+
+    /**
+     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * the words.
+     *
+     * @param name string to convert
+     * @return converted string
+     */
+    public String fromCanonicalToSnakeCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        return name.replace(' ', '_').toLowerCase();
+    }
+
+
+    /**
+     * Return the supplied name in a canonical format used for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromSnakeToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder converted = new StringBuilder();
+        boolean convertNext = true;
+
+        for (Character ch : name.toCharArray())
+        {
+            if (ch.equals('_'))
+            {
+                ch = ' ';
+                convertNext = true; // next letter should be in upper case
+            }
+            else if (convertNext)
+            {
+                ch = Character.toTitleCase(ch);
+                convertNext = false;
+            }
+            else
+            {
+                ch = Character.toLowerCase(ch);
+            }
+
+            converted.append(ch);
+        }
+
+        return converted.toString();
+    }
+
+
+    /**
+     * Return the camel case form of a canonical name.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromCanonicalToCamelCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        String newName = name.replaceAll("\\s", "");
+
+        return Character.toLowerCase(newName.charAt(0)) + newName.substring(1);
+    }
+
+
+    /**
+     * Return the canonical form of a name in camel case.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromCamelToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] c = name.toCharArray();
+
+        for (char value : c)
+        {
+            /*
+             * Skip space characters
+             */
+            if (! Character.isSpaceChar(value))
+            {
+                if (stringBuilder.isEmpty())
+                {
+                    /*
+                     * Make sure first character is lower case
+                     */
+                    stringBuilder.append(Character.toLowerCase(value));
+                }
+                else
+                {
+                    stringBuilder.append(value);
+                }
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+
+
+    /**
+     * Convert a canonical name to a name in kebab case.  Kebab case is all in lower case with dashes between
+     * the words.
+     *
+     * @param name string to convert
+     * @return converted string
+     */
+    public String fromCanonicalToKebabCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        return name.replace(' ', '-').toLowerCase();
+    }
+
+
+    /**
+     * Return the supplied name in a canonical format used for this data source.
+     * Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromKebabToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder converted = new StringBuilder();
+        boolean convertNext = true;
+
+        for (Character ch : name.toCharArray())
+        {
+            if (ch.equals('-'))
+            {
+                ch = ' ';
+                convertNext = true; // next letter should be in upper case
+            }
+            else if (convertNext)
+            {
+                ch = Character.toTitleCase(ch);
+                convertNext = false;
+            }
+            else
+            {
+                ch = Character.toLowerCase(ch);
+            }
+
+            converted.append(ch);
+        }
+
+        return converted.toString();
     }
 }

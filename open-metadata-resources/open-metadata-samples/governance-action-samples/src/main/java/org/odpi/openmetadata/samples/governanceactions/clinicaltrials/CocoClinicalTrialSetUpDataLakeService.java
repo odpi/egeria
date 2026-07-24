@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameter;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -275,6 +276,11 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName());
+                }
+                if (serverNetworkAddress == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
                 }
                 if (hospitalOnboardingProcessGUID == null)
                 {
