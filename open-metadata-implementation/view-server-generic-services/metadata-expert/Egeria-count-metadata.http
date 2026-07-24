@@ -1,0 +1,87 @@
+# Egeria-count-metadata
+# Sample requests exercising the countMetadataElements and countRelationshipsBetweenMetadataElements operations
+# of the Metadata Expert API.  These return the number of matching elements/relationships rather than the
+# elements/relationships themselves.
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+
+###
+# @name countGlossaryTerms
+# Count the number of GlossaryTerm entities in the metadata repository.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "GlossaryTerm"
+}
+
+
+###
+# @name countExceptionRelationships
+# Count the number of Exception relationships in the metadata repository.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRelationshipRequestBody",
+  "relationshipTypeName": "Exception"
+}
+
+
+###
+# @name countDigitalProductZoneMembers
+# Count the number of entities classified with ZoneMembership where the zoneMembership property includes
+# "digital-product".  Notice that although zoneMembership is an array, the leaf value being searched for is
+# expressed as a primitive.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "matchClassifications": {
+    "class" : "SearchClassifications",
+    "conditions" : [
+      {
+        "class" : "ClassificationCondition",
+        "name" : "ZoneMembership",
+        "searchProperties" : {
+          "class" : "SearchProperties",
+          "conditions": [ {
+            "property" : "zoneMembership",
+            "operator": "EQ",
+            "value": {
+              "class" : "PrimitiveTypePropertyValue",
+              "typeName" : "string",
+              "primitiveValue" : "digital-products"
+            }}],
+          "matchCriteria": "ANY"
+        }
+      }
+    ],
+    "matchCriteria": "ANY"
+  }
+}

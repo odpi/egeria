@@ -1157,6 +1157,50 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param userId caller's userId
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param matchClassifications Optional list of classifications to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return the number of elements matching the supplied criteria.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    @Override
+    public long countMetadataElements(String                userId,
+                                     SearchProperties      searchProperties,
+                                     SearchClassifications matchClassifications,
+                                     QueryOptions          queryOptions) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName = "countMetadataElements";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-conditions/count";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        FindRequestBody requestBody = new FindRequestBody(queryOptions);
+
+        requestBody.setSearchProperties(searchProperties);
+        requestBody.setMatchClassifications(matchClassifications);
+
+        CountResponse restResult = restClient.callCountPostRESTCall(methodName,
+                                                                    urlTemplate,
+                                                                    requestBody,
+                                                                    serverName,
+                                                                    userId);
+
+        return restResult.getCount();
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param userId caller's userId
@@ -1208,6 +1252,63 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                   userId);
 
         return restResult.getRelationshipList();
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return the number of relationships matching the supplied criteria.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    @Override
+    public long countRelationshipsBetweenMetadataElements(String           userId,
+                                                          String           relationshipTypeName,
+                                                          List<String>     relationshipSubtypeGUIDs,
+                                                          List<String>     end1EntityGUIDs,
+                                                          List<String>     end2EntityGUIDs,
+                                                          EndMatchCriteria endMatchCriteria,
+                                                          SearchProperties searchProperties,
+                                                          QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        final String methodName = "countRelationshipsBetweenMetadataElements";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/relationships/by-search-conditions/count";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        FindRelationshipRequestBody requestBody = new FindRelationshipRequestBody(queryOptions);
+
+        requestBody.setRelationshipTypeName(relationshipTypeName);
+        requestBody.setRelationshipSubtypeGUIDs(relationshipSubtypeGUIDs);
+        requestBody.setSearchProperties(searchProperties);
+        requestBody.setEnd1EntityGUIDs(end1EntityGUIDs);
+        requestBody.setEnd2EntityGUIDs(end2EntityGUIDs);
+        requestBody.setEndMatchCriteria(endMatchCriteria);
+
+        CountResponse restResult = restClient.callCountPostRESTCall(methodName,
+                                                                    urlTemplate,
+                                                                    requestBody,
+                                                                    serverName,
+                                                                    userId);
+
+        return restResult.getCount();
     }
 
 

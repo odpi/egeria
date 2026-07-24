@@ -523,6 +523,55 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
+     * Retrieve the number of rows that would be returned by the supplied SQL query (which should be a
+     * "SELECT COUNT(...) FROM ... WHERE ..." style command).  This allows a caller to reuse a WHERE clause built
+     * for a row-fetching query, without fetching and materializing every matching row.
+     *
+     * @param jdbcConnection connection to use
+     * @param sqlCommand the full "SELECT COUNT(...)" SQL command to execute
+     * @return number of rows matching the supplied SQL command
+     * @throws PropertyServerException there was a problem calling the database
+     */
+    public long countMatchingRows(java.sql.Connection  jdbcConnection,
+                                  String               sqlCommand) throws PropertyServerException
+    {
+        final String methodName = "countMatchingRows";
+
+        log.debug(sqlCommand);
+
+        long rowCount = 0L;
+
+        try
+        {
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+            {
+                rowCount = resultSet.getLong(1); // Get the count from the first column
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        }
+        catch (SQLException sqlException)
+        {
+            this.rollbackAfterException(jdbcConnection, sqlException);
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
+
+        return rowCount;
+    }
+
+
+    /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
      * @param jdbcConnection connection to use

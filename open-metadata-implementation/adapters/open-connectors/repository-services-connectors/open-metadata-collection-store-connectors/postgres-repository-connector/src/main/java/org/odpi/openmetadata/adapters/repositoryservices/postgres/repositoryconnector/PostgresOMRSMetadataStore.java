@@ -411,6 +411,64 @@ class PostgresOMRSMetadataStore
 
 
     /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), but issues an efficient database COUNT query rather than fetching and mapping every
+     * matching row.
+     *
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @return count of entities matching the supplied criteria.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     */
+    long countEntities(String                    entityTypeGUID,
+                       List<String>              entitySubtypeGUIDs,
+                       SearchProperties          matchProperties,
+                       List<InstanceStatus>      limitResultsByStatus,
+                       SearchClassifications     matchClassifications,
+                       Date                      asOfTime) throws RepositoryErrorException
+    {
+        final String entityTypeGUIDParameterName = "entityTypeGUID";
+        final String entitySubtypeGUIDsParameterName = "entitySubtypeGUIDs";
+
+        QueryBuilder entityQueryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                           RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                           repositoryHelper,
+                                                           repositoryName);
+        QueryBuilder classificationQueryBuilder = null;
+
+        entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, entitySubtypeGUIDsParameterName);
+        entityQueryBuilder.setSearchProperties(matchProperties);
+        entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
+        entityQueryBuilder.setAsOfTime(asOfTime);
+
+        if (matchClassifications != null)
+        {
+            classificationQueryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                          repositoryHelper,
+                                                          repositoryName);
+
+            classificationQueryBuilder.setSearchClassifications(matchClassifications);
+            classificationQueryBuilder.setAsOfTime(asOfTime);
+        }
+
+        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
+        long count = databaseStore.countEntitiesByProperties(entityQueryBuilder, classificationQueryBuilder);
+        databaseStore.disconnect();
+
+        return count;
+    }
+
+
+    /**
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
@@ -711,6 +769,59 @@ class PostgresOMRSMetadataStore
         databaseStore.disconnect();
 
         return getRelationshipsFromMappers(storedRelationships);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search semantics
+     * as findRelationships(), but issues an efficient database COUNT query rather than fetching and mapping every
+     * matching row.
+     *
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @return count of relationships matching the supplied criteria.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     */
+    long countRelationships(String                    relationshipTypeGUID,
+                            List<String>              relationshipSubtypeGUIDs,
+                            List<String>              end1EntityGUIDs,
+                            List<String>              end2EntityGUIDs,
+                            EndMatchCriteria          endMatchCriteria,
+                            SearchProperties          matchProperties,
+                            List<InstanceStatus>      limitResultsByStatus,
+                            Date                      asOfTime) throws RepositoryErrorException
+    {
+        final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
+        final String relationshipSubtypeGUIDsParameterName = "relationshipSubtypeGUIDs";
+
+        QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                     repositoryHelper,
+                                                     repositoryName);
+
+        queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, relationshipSubtypeGUIDsParameterName);
+        queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria);
+        queryBuilder.setSearchProperties(matchProperties);
+        queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
+        queryBuilder.setAsOfTime(asOfTime);
+
+        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
+        long count = databaseStore.countRelationshipsByProperties(queryBuilder);
+        databaseStore.disconnect();
+
+        return count;
     }
 
 

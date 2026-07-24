@@ -722,6 +722,37 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
+     * Return a count of the entities that match the supplied conditions.  This has the same search semantics as
+     * findEntities()/findEntitiesByHistory(), returning the number of matching entities rather than the entities
+     * themselves.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return CountResponse:
+     * the number of entities matching the supplied criteria or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support this optional method or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entities/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public  CountResponse countEntities(@PathVariable String                      serverName,
+                                        @PathVariable String                      userId,
+                                        @RequestBody  EntityHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.countEntities(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
@@ -1095,6 +1126,37 @@ public class EnterpriseRepositoryServicesResource
                                                                 @RequestBody  RelationshipHistoricalFindRequest findRequestParameters)
     {
         return restAPI.findRelationshipsByHistory(serverName, userId, findRequestParameters);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationships()/findRelationshipsByHistory(), returning the number of matching
+     * relationships rather than the relationships themselves.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return CountResponse:
+     * the number of relationships matching the supplied criteria or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support one of the provided parameters or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/relationships/count")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public  CountResponse countRelationships(@PathVariable String                            serverName,
+                                             @PathVariable String                            userId,
+                                             @RequestBody  RelationshipHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.countRelationships(serverName, userId, findRequestParameters);
     }
 
 

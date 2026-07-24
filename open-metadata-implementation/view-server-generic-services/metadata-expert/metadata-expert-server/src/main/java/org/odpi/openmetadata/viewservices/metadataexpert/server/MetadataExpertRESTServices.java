@@ -1782,6 +1782,63 @@ public class MetadataExpertRESTServices extends TokenController
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of elements matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    public CountResponse countMetadataElements(String          serverName,
+                                               String          urlMarker,
+                                               FindRequestBody requestBody)
+    {
+        final String methodName = "countMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        AuditLog      auditLog = null;
+        CountResponse response = new CountResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+                response.setCount(handler.countMetadataElements(userId,
+                                                                 requestBody.getSearchProperties(),
+                                                                 requestBody.getMatchClassifications(),
+                                                                 requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to
@@ -1824,6 +1881,67 @@ public class MetadataExpertRESTServices extends TokenController
                                                                                               requestBody.getEndMatchCriteria(),
                                                                                               requestBody.getSearchProperties(),
                                                                                               requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of relationships matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    public CountResponse countRelationshipsBetweenMetadataElements(String                      serverName,
+                                                                   String                      urlMarker,
+                                                                   FindRelationshipRequestBody requestBody)
+    {
+        final String methodName = "countRelationshipsBetweenMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        AuditLog      auditLog = null;
+        CountResponse response = new CountResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+                response.setCount(handler.countRelationshipsBetweenMetadataElements(userId,
+                                                                                    requestBody.getRelationshipTypeName(),
+                                                                                    requestBody.getRelationshipSubtypeGUIDs(),
+                                                                                    requestBody.getEnd1EntityGUIDs(),
+                                                                                    requestBody.getEnd2EntityGUIDs(),
+                                                                                    requestBody.getEndMatchCriteria(),
+                                                                                    requestBody.getSearchProperties(),
+                                                                                    requestBody));
             }
             else
             {

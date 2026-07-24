@@ -2030,6 +2030,66 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of elements matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    public CountResponse countMetadataElements(String          serverName,
+                                               String          userId,
+                                               FindRequestBody requestBody)
+    {
+        final String methodName = "countMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        CountResponse response = new CountResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setCount(handler.countMetadataElements(userId,
+                                                                requestBody.getMetadataElementTypeName(),
+                                                                requestBody.getMetadataElementSubtypeNames(),
+                                                                requestBody.getSearchProperties(),
+                                                                requestBody.getLimitResultsByStatus(),
+                                                                requestBody.getMatchClassifications(),
+                                                                requestBody.getAsOfTime(),
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
@@ -2331,6 +2391,68 @@ public class OpenMetadataStoreRESTServices
                 }
 
                 response.setRelationshipList(relationshipList);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search
+     * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
+     * rather than the relationships themselves.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody properties defining the search criteria
+     *
+     * @return the number of relationships matching the supplied criteria; or
+     *  InvalidParameterException one of the search parameters are is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException a problem accessing the metadata store
+     */
+    public CountResponse countRelationshipsBetweenMetadataElements(String                      serverName,
+                                                                   String                      userId,
+                                                                   FindRelationshipRequestBody requestBody)
+    {
+        final String methodName = "countRelationshipsBetweenMetadataElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog      auditLog = null;
+        CountResponse response = new CountResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setCount(handler.countRelationshipsBetweenMetadataElements(userId,
+                                                                                    requestBody.getRelationshipTypeName(),
+                                                                                    requestBody.getRelationshipSubtypeGUIDs(),
+                                                                                    requestBody.getEnd1EntityGUIDs(),
+                                                                                    requestBody.getEnd2EntityGUIDs(),
+                                                                                    requestBody.getEndMatchCriteria(),
+                                                                                    requestBody.getSearchProperties(),
+                                                                                    requestBody.getLimitResultsByStatus(),
+                                                                                    requestBody.getAsOfTime(),
+                                                                                    requestBody.getForLineage(),
+                                                                                    requestBody.getForDuplicateProcessing(),
+                                                                                    requestBody.getEffectiveTime(),
+                                                                                    methodName));
             }
             else
             {
