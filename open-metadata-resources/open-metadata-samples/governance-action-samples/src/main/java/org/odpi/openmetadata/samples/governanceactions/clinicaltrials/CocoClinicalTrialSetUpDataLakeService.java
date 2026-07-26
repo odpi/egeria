@@ -568,8 +568,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                 String  volumeName,
                                 String  description,
                                 String  dataLakePathName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         final String methodName = "createVolume";
         final String parameterName = "externalSourceGUID";
@@ -602,7 +602,9 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), volumeName);
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), dataLakePathName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), "/mnt/" + dataLakePathName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.LOCAL_STORAGE_LOCATION.getName(), dataLakePathName);
+        placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), "/deployments/" + dataLakePathName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), "EXTERNAL");
 
         OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();

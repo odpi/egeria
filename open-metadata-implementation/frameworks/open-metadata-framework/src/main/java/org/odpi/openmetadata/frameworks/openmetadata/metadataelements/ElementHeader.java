@@ -64,6 +64,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       userAccountProfile       = null;
     private ElementClassification       projectClassification    = null;
     private List<ElementClassification> collectionKinds          = null;
+    private List<ElementClassification> glossaryTermKinds        = null;
     private List<ElementClassification> locationKinds            = null;
     private List<ElementClassification> projectKinds             = null;
     private List<ElementClassification> otherClassifications     = null;
@@ -118,6 +119,7 @@ public class ElementHeader extends ElementControlHeader
             this.securityTags             = template.getSecurityTags();
             this.projectClassification    = template.getProjectClassification();
             this.collectionKinds          = template.getCollectionKinds();
+            this.glossaryTermKinds        = template.getGlossaryTermKinds();
             this.locationKinds            = template.getLocationKinds();
             this.projectKinds             = template.getProjectKinds();
             this.otherClassifications     = template.getOtherClassifications();
@@ -801,6 +803,27 @@ public class ElementHeader extends ElementControlHeader
         this.collectionKinds = collectionKinds;
     }
 
+    /**
+     * Return the classifications associated with glossary terms.
+     *
+     * @return list of classifications
+     */
+    public List<ElementClassification> getGlossaryTermKinds()
+    {
+        return locationKinds;
+    }
+
+
+    /**
+     * Set up the classifications associated with glossary terms.
+     *
+     * @param glossaryTermKinds list of classifications
+     */
+    public void setGlossaryTermKinds(List<ElementClassification> glossaryTermKinds)
+    {
+        this.glossaryTermKinds = glossaryTermKinds;
+    }
+
 
     /**
      * Return the classifications associated with locations.
@@ -907,6 +930,7 @@ public class ElementHeader extends ElementControlHeader
                 ", userAccountProfile=" + userAccountProfile +
                 ", projectClassification=" + projectClassification +
                 ", collectionRoles=" + collectionKinds +
+                ", glossaryTermRoles=" + glossaryTermKinds +
                 ", locationRoles=" + locationKinds +
                 ", projectRoles=" + projectKinds +
                 ", otherClassifications=" + otherClassifications +
@@ -957,6 +981,7 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(userAccountProfile, that.userAccountProfile) &&
                 Objects.equals(projectClassification, that.projectClassification) &&
                 Objects.equals(collectionKinds, that.collectionKinds) &&
+                Objects.equals(glossaryTermKinds, that.glossaryTermKinds) &&
                 Objects.equals(locationKinds, that.locationKinds) &&
                 Objects.equals(projectKinds, that.projectKinds) &&
                 Objects.equals(otherClassifications, that.otherClassifications);
@@ -979,6 +1004,6 @@ public class ElementHeader extends ElementControlHeader
                             knownDuplicate, consolidateDuplicate,
                             securityTags, securityListMembership, userAccountProfile,
                             projectClassification,
-                            collectionKinds, locationKinds, projectKinds, otherClassifications);
+                            collectionKinds, glossaryTermKinds, locationKinds, projectKinds, otherClassifications);
     }
 }

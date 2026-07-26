@@ -1,4 +1,7 @@
 # Egeria-coco-data-hub
+# This file creates a data hub with information from the file system, postgress database and unity catalog.
+# To set up, create a directory under plaform called coco-data-lake.  Then run though Egeria-test-catalog-processes.http
+# to create the assets we need.
 
 @baseURL=https://localhost:7443
 @viewServer=view-server
@@ -62,10 +65,121 @@ Content-Type: application/json
 }
 
 
+
 ###
 # =====================================================================================================================
-# Work with servers.
+# Add data stores
 # https://egeria-project.org/types/00040-Software-Servers/
+
+###
+# @name get coco-data-lake ByName
+# Returns the list of assets with a particular name.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "coco-data-lake",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "metadataElementTypeName": "FileFolder",
+  "graphQueryDepth" : 0
+}
+
+> {% client.global.set("cocoDataLakeGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name addToCollection
+# Add coco data lake to a collection.  The request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{cocoDataHubGUID}}/members/{{cocoDataLakeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "Holds files for clinical trials",
+    "createdBy": "Liskov"
+  }
+}
+
+###
+# @name get cocoPharma ByName
+# Returns the list of assets with a particular name.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "coco_pharma",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "metadataElementTypeName": "RelationalDatabase",
+  "graphQueryDepth" : 0
+}
+
+> {% client.global.set("cocoPharmaGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name addToCollection
+# Add coco data lake to a collection.  The request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{cocoDataHubGUID}}/members/{{cocoPharmaGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "Holds shared databases",
+    "createdBy": "Liskov"
+  }
+}
+
+###
+# @name get Unity catalog clinical-trials catalog ByName
+# Returns the list of assets with a particular name.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "clinical_trials",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "metadataElementTypeName": "Database",
+  "graphQueryDepth" : 0
+}
+
+> {% client.global.set("clinicalTrialsGUID", response.body.elements[0].elementHeader.guid); %}
+
+
+###
+# @name addToCollection
+# Add coco data lake to a collection.  The request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{cocoDataHubGUID}}/members/{{clinicalTrialsGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "Holds shared databases",
+    "createdBy": "Liskov"
+  }
+}
+
+###
+# =====================================================================================================================
+# Refresh Liskov connector
 
 ###
 # @name getServersByName
@@ -93,3 +207,6 @@ Content-Type: application/json
   "class" : "NameRequestBody",
   "name" : "DataHubManager"
 }
+
+
+

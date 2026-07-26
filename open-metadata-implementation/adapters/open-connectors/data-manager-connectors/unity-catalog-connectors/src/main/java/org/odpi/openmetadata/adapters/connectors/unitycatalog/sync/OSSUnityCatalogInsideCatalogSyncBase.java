@@ -716,7 +716,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param storageLocation storage location from UC
      * @return pathname
      */
-    protected String getPathNameFromStorageLocation(String storageLocation)
+    protected String getCleanStorageLocation(String storageLocation)
     {
         if (storageLocation != null)
         {

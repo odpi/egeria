@@ -481,6 +481,7 @@ public class PropertyHelper
             List<ElementClassification> executionPoints            = new ArrayList<>();
             List<ElementClassification> duplicateClassifications   = new ArrayList<>();
             List<ElementClassification> collectionRoles            = new ArrayList<>();
+            List<ElementClassification> glossaryTermRoles          = new ArrayList<>();
             List<ElementClassification> locationRoles              = new ArrayList<>();
             List<ElementClassification> projectRoles               = new ArrayList<>();
             List<ElementClassification> otherClassifications       = new ArrayList<>();
@@ -621,6 +622,16 @@ public class PropertyHelper
                     {
                         projectRoles.add(this.getElementClassification(attachedClassification));
                     }
+                    else if ((this.isTypeOf(attachedClassification, OpenMetadataType.DATA_VALUE_MEANING_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.PRIME_WORD_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.MODIFIER_CLASSIFICATION.typeName)) ||
+                            (this.isTypeOf(attachedClassification, OpenMetadataType.CLASS_WORD_CLASSIFICATION.typeName)))
+                    {
+                        glossaryTermRoles.add(this.getElementClassification(attachedClassification));
+                    }
                     else if ((this.isTypeOf(attachedClassification, OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName)) ||
                              (this.isTypeOf(attachedClassification, OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName)) ||
                              (this.isTypeOf(attachedClassification, OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName)) ||
@@ -648,6 +659,11 @@ public class PropertyHelper
             if (! collectionRoles.isEmpty())
             {
                 elementHeader.setCollectionKinds(collectionRoles);
+            }
+
+            if (! glossaryTermRoles.isEmpty())
+            {
+                elementHeader.setGlossaryTermKinds(glossaryTermRoles);
             }
 
             if (! locationRoles.isEmpty())

@@ -131,6 +131,15 @@ public enum UnityCatalogConfigurationProperty
                           false),
 
     /**
+     * The mount point of the file system for the Unity Catalog (UC) server.
+     */
+    UNITY_MOUNT_POINT ("unityMountPoint",
+                         "The mount point of the file system for the Unity Catalog (UC) server.",
+                         "string",
+                         "/mnt",
+                         false),
+
+    /**
      * The name of the catalog being described.
      */
     CATALOG_NAME(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),

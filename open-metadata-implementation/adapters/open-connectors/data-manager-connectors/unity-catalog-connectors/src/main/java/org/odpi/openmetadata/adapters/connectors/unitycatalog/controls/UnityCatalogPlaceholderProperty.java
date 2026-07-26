@@ -73,6 +73,12 @@ public enum UnityCatalogPlaceholderProperty
     STORAGE_LOCATION ("ucStorageLocation", "The location where the data associated with this element in Unity Catalog is stored.", DataType.STRING.getDisplayName(), "a/b/c"),
 
     /**
+     * The location where the data associated with this element in Open Metadata is stored.
+     */
+    LOCAL_STORAGE_LOCATION ("localStorageLocation", "The location where the data associated with this element in Open Metadata is stored.", DataType.STRING.getDisplayName(), "a/b/c"),
+
+
+    /**
      * The name of a table within a schema and catalog in Unity Catalog (UC).
      */
     TABLE_NAME ("ucTableName", "The name of a table within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getDisplayName(), "my_table"),
@@ -328,7 +334,9 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(VOLUME_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholderType());
+        placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.LOCAL_STORAGE_LOCATION.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getPlaceholderType());
 
         return placeholderPropertyTypes;

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
@@ -16,6 +17,7 @@ import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.RelatedElementsIterator;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -40,6 +42,15 @@ import java.util.Map;
  */
 public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsideCatalogSyncBase
 {
+    /*
+     * Default values for the file system name and mount point.
+     */
+    protected String fileSystemName = FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getExample();
+    protected String localMountPoint = FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample();
+    protected String canonicalMountPoint = FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getExample();
+    protected String unityMountPoint = UnityCatalogConfigurationProperty.UNITY_MOUNT_POINT.getExample();
+
+
     /**
      * Set up the volume synchronizer.
      *
@@ -91,6 +102,30 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
               excludeNames,
               includeNames,
               auditLog);
+
+
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName()) != null)
+            {
+                fileSystemName = configurationProperties.get(FileSystemConfigurationProperty.FILE_SYSTEM_NAME.getName()).toString();
+            }
+
+            if (configurationProperties.get(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName()) != null)
+            {
+                localMountPoint = configurationProperties.get(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName()).toString();
+            }
+
+            if (configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()) != null)
+            {
+                canonicalMountPoint = configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()).toString();
+            }
+
+            if (configurationProperties.get(UnityCatalogConfigurationProperty.UNITY_MOUNT_POINT.getName()) != null)
+            {
+                unityMountPoint = configurationProperties.get(UnityCatalogConfigurationProperty.UNITY_MOUNT_POINT.getName()).toString();
+            }
+        }
     }
 
 
@@ -286,10 +321,6 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         final String parentLinkTypeName = OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName;
         final boolean parentAtEnd1 = true;
 
-        ElementProperties replacementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.PATH_NAME.name,
-                                                                                   super.getPathNameFromStorageLocation(volumeInfo.getStorage_location()));
-
         TemplateOptions templateOptions = new TemplateOptions(assetClient.getMetadataSourceOptions());
 
         templateOptions.setAnchorGUID(schemaGUID);
@@ -303,7 +334,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         String ucVolumeGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
                                                                            templateOptions,
                                                                            templateGUID,
-                                                                           replacementProperties,
+                                                                           null,
                                                                            null,
                                                                            this.getPlaceholderProperties(volumeInfo),
                                                                            null);
@@ -457,6 +488,16 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      */
     private Map<String, String> getPlaceholderProperties(VolumeInfo info)
     {
+        String directoryPathName    = "";
+        String localStorageLocation = "";
+        String ucStorageLocation = super.getCleanStorageLocation(info.getStorage_location());
+
+        if (ucStorageLocation != null)
+        {
+            directoryPathName = ucStorageLocation.replace(unityMountPoint, canonicalMountPoint);
+            localStorageLocation = ucStorageLocation.replace(unityMountPoint, localMountPoint);
+        }
+
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), ucServerEndpoint);
@@ -465,6 +506,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), info.getName());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), info.getComment());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+        placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), directoryPathName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.LOCAL_STORAGE_LOCATION.getName(), localStorageLocation);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), info.getStorage_location());
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), info.getVolume_type());
 
@@ -495,7 +538,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.PATH_NAME.name,
-                                                             getPathNameFromStorageLocation(info.getStorage_location()));
+                                                             getCleanStorageLocation(info.getStorage_location()));
 
        // elementProperties = propertyHelper.addStringMapProperty(elementProperties,
        //                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
