@@ -55,7 +55,8 @@ Content-Type: application/json
   "processQualifiedName": "FileDirectory::CreateAsCatalogTargetGovernanceActionProcess",
   "requestParameters" : {
     "fileSystemName" : null,
-    "directoryPathName" : "./coco-data-lake",
+    "directoryPathName" : "/deployments/coco-data-lake",
+    "directoryAddress" : "./coco-data-lake",
     "directoryName" : "coco-data-lake",
     "versionIdentifier" : "1.0",
     "description" : "Files in the Coco Pharmaceuticals Data Lake.",

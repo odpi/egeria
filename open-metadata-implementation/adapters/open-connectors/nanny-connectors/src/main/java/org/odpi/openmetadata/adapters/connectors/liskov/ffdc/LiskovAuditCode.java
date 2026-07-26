@@ -69,20 +69,20 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                  "No action is required.  This message is for monitoring the set up of the data hub data dictionary."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field {1} ({2}) for data hub {3} ({4})
      */
     NEW_DATA_FIELD("LISKOV-DATA-HUB-MANAGER-0014",
                         AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector has created a new data field for data hub {1} ({2})",
+                        "The {0} integration connector has created a new data field {1} ({2}) for data hub {3} ({4})",
                         "The connector has created a data field for a data hub's data dictionary.",
                         "No action is required.  This message is for monitoring the set up of the data hub's data fields."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0015 - The {0} integration connector is refreshing data dictionary for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0015 - The {0} integration connector is refreshing dthe ata dictionary for data hub {1} ({2})
      */
     REFRESHING_DATA_HUB("LISKOV-DATA-HUB-MANAGER-0015",
                  AuditLogRecordSeverityLevel.INFO,
-                 "The {0} integration connector is refreshing data dictionary for data hub {1} ({2})",
+                 "The {0} integration connector is refreshing the data dictionary for data hub {1} ({2})",
                  "The connector is initiating its refreshing of a data hub .",
                  "No action is required.  This message is for monitoring the activity of the data hub management."),
 
@@ -103,6 +103,25 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                               "The {0} integration connector is retrieving known data dictionary definitions for data hub {1} ({2})",
                               "The connector is initiating its retrieving the contents of the data dictionary for a data hub.",
                               "No action is required.  This message is for monitoring the progress of the data hub management refresh."),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0018 - The {0} integration connector has created a new data structure {1} ({2}) for data hub {3} ({4})
+     */
+    NEW_DATA_STRUCTURE("LISKOV-DATA-HUB-MANAGER-0018",
+                   AuditLogRecordSeverityLevel.INFO,
+                   "The {0} integration connector has created a new data structure {1} ({2}) for data hub {3} ({4})",
+                   "The connector has created a data structure for a data hub's data dictionary.",
+                   "No action is required.  This message is for monitoring the set up of the data hub's data structures."),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data hub {4} ({5})
+     */
+    REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0016",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data hub {4} ({5})",
+                        "The connector is initiating its refreshing of a data hub.",
+                        "No action is required.  This message is for monitoring the activity of the data hub management."),
+
     ;
 
     private final String                      logMessageId;

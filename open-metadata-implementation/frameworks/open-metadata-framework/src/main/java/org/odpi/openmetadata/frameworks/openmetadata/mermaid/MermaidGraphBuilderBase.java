@@ -438,6 +438,22 @@ public class MermaidGraphBuilderBase
                 }
             }
 
+            if (elementHeader.getLocationKinds() != null)
+            {
+                for (ElementClassification classification : elementHeader.getCollectionKinds())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
+            if (elementHeader.getGlossaryTermKinds() != null)
+            {
+                for (ElementClassification classification : elementHeader.getCollectionKinds())
+                {
+                    addClassificationToGraph(elementHeader.getGUID(), classification);
+                }
+            }
+
             if (elementHeader.getProjectKinds() != null)
             {
                 for (ElementClassification classification : elementHeader.getProjectKinds())

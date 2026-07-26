@@ -52,7 +52,7 @@ The Wedgwood Data Provisioner is a [Governance Action Service](https://egeria-pr
 
 ## Liskov Data Hub Manager
 
-In tribute to [Barbara Liskov](https://en.wikipedia.org/wiki/Barbara_Liskov)
+In recognition of the data abstraction work by [Barbara Liskov](https://en.wikipedia.org/wiki/Barbara_Liskov)
 
 The Liskov data hub manager maintains the data dictionary for a data hub.  A data hub is a specialized collection whose members are data stores.  These data stores are related in some way and provide a data-oriented service to other systems or teams for their projects.  The Data Hub Manager monitors the schema of theses data stores and maintains a data dictionary of the data fields and structures they contain.  The data fields identify similar data in different data stores.
 

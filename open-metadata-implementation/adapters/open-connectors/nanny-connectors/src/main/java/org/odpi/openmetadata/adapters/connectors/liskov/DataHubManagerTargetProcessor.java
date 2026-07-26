@@ -17,19 +17,24 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataHubProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -82,12 +87,10 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
         try
         {
             /*
-             * These are lookup tables for data fields and data structures found in the data hub.
+             * This is a lookup table for data fields and data structures found in the data hub.
              * They are used to match schema attributes to the data fields.
              */
-            Map<String, String>     dataFields     = new HashMap<>();
-            Map<String, String>     dataStructures = new HashMap<>();
-
+            Map<String, Set<String>> dataStructures = new HashMap<>();
 
             OpenMetadataRootElement dataHubElement = this.getCatalogTargetElement();
 
@@ -159,86 +162,25 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
                                                                                                                 dataHubGUID));
 
                     /*
-                     * Extract the existing data fields.
+                     * Extract the existing data fields into the common collection folders.
+                     * The owner of the data hub may add new organizing folders to the data dictionary,
+                     * but these 2 special folders are always used for new elements.
                      */
-                    String dataFieldsFolderGUID = null;
-                    String dataStructureFolderGUID = null;
+                    CollectionFolderProperties collectionFolderProperties = new CollectionFolderProperties();
 
-                    if (dataDictionary.getCollectionMembers() != null)
-                    {
-                        for (RelatedMetadataElementSummary member : dataHubElement.getCollectionMembers())
-                        {
-                            if (member != null)
-                            {
-                                if (member.getRelatedElement().getProperties() instanceof CollectionFolderProperties collectionFolderProperties)
-                                {
-                                    if (collectionFolderProperties.getQualifiedName().equals(dataHubProperties.getQualifiedName() + "_DataFields"))
-                                    {
-                                        dataFieldsFolderGUID = member.getRelatedElement().getElementHeader().getGUID();
-                                    }
-                                    else if (collectionFolderProperties.getQualifiedName().equals(dataHubProperties.getQualifiedName() + "_DataStructures"))
-                                    {
-                                        dataStructureFolderGUID = member.getRelatedElement().getElementHeader().getGUID();
-                                    }
-                                }
+                    collectionFolderProperties.setQualifiedName(OpenMetadataType.COLLECTION_FOLDER.typeName + "::" + dataHubGUID + "_DataFields");
+                    collectionFolderProperties.setDisplayName("Data Fields");
+                    collectionFolderProperties.setDescription("Data fields found in the " + dataHubProperties.getDisplayName() + " data hub.");
 
-                                retrieveDataDictionaryElements(member, dataFields, dataStructures);
-                            }
-                        }
-                    }
+                    String dataFieldsFolderGUID = getCollectionFolder(dataHubGUID, dataDictionaryGUID, collectionFolderProperties);
 
-                    boolean refreshDataDictionary = false;
-                    if (dataFieldsFolderGUID == null)
-                    {
-                        CollectionFolderProperties collectionFolderProperties = new CollectionFolderProperties();
+                    collectionFolderProperties = new CollectionFolderProperties();
 
-                        collectionFolderProperties.setQualifiedName(dataHubProperties.getQualifiedName() + "_DataFields");
-                        collectionFolderProperties.setDisplayName("Data Fields");
-                        collectionFolderProperties.setDescription("Data fields found in the data hub.");
+                    collectionFolderProperties.setQualifiedName(OpenMetadataType.COLLECTION_FOLDER.typeName + "::" + dataHubGUID + "::DataStructures");
+                    collectionFolderProperties.setDisplayName("Data Structures");
+                    collectionFolderProperties.setDescription("Data structures found in the " + dataHubProperties.getDisplayName() + " data hub.");
 
-                        NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
-
-                        newElementOptions.setIsOwnAnchor(false);
-                        newElementOptions.setAnchorGUID(dataHubGUID);
-                        newElementOptions.setParentGUID(dataDictionaryGUID);
-                        newElementOptions.setParentAtEnd1(true);
-                        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-
-                        dataFieldsFolderGUID = collectionClient.createCollection(newElementOptions,
-                                                                               null,
-                                                                               collectionFolderProperties,
-                                                                               null);
-                        refreshDataDictionary = true;
-                    }
-
-
-                    if (dataStructureFolderGUID == null)
-                    {
-                        CollectionFolderProperties collectionFolderProperties = new CollectionFolderProperties();
-
-                        collectionFolderProperties.setQualifiedName(dataHubProperties.getQualifiedName() + "_DataStructures");
-                        collectionFolderProperties.setDisplayName("Data Structures");
-                        collectionFolderProperties.setDescription("Data structures found in the data hub.");
-
-                        NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
-
-                        newElementOptions.setIsOwnAnchor(false);
-                        newElementOptions.setAnchorGUID(dataHubGUID);
-                        newElementOptions.setParentGUID(dataDictionaryGUID);
-                        newElementOptions.setParentAtEnd1(true);
-                        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-
-                        dataStructureFolderGUID = collectionClient.createCollection(newElementOptions,
-                                                                                   null,
-                                                                                    collectionFolderProperties,
-                                                                                   null);
-                        refreshDataDictionary = true;
-                    }
-
-                    if (refreshDataDictionary)
-                    {
-                        dataDictionary = collectionClient.getCollectionByGUID(dataDictionaryGUID, collectionClient.getGetOptions());
-                    }
+                    String dataStructureFolderGUID = getCollectionFolder(dataHubGUID, dataDictionaryGUID, collectionFolderProperties);
 
                     /*
                      * Process the members of the data hub
@@ -256,7 +198,7 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
                                                                                                                                dataHubProperties.getDisplayName(),
                                                                                                                                dataHubGUID));
 
-                                refreshDataStore(dataDictionary, dataFieldsFolderGUID, dataStructureFolderGUID, member.getRelatedElement().getElementHeader().getGUID(), dataHubGUID, dataFields, dataStructures);
+                                refreshDataStore(dataFieldsFolderGUID, dataStructureFolderGUID, member.getRelatedElement().getElementHeader().getGUID(), dataHubGUID, dataHubProperties.getQualifiedName(), dataStructures);
                             }
                         }
                     }
@@ -283,6 +225,49 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
         }
     }
 
+    /**
+     * Retrieves or creates a new DataField based on the provided properties within a specified DataHub and its collection.
+     *
+     * @param dataHubGUID Unique identifier of the DataHub where the DataField resides or will be created.
+     * @param dataDictionaryGUID unique identifier from the data dictionary.
+     * @param collectionFolderProperties The properties of the DataField to retrieve or create.
+     *
+     * @return The unique identifier (GUID) of the retrieved or newly created DataField.
+     *
+     * @throws UserNotAuthorizedException If the user is not authorized to perform the operation.
+     * @throws InvalidParameterException If any of the provided parameters are invalid.
+     * @throws PropertyServerException If there is an error with the metadata server while performing the operation.
+     */
+    private String getCollectionFolder(String                     dataHubGUID,
+                                       String                     dataDictionaryGUID,
+                                       CollectionFolderProperties collectionFolderProperties) throws UserNotAuthorizedException,
+                                                                                                     InvalidParameterException,
+                                                                                                     PropertyServerException
+    {
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+        CollectionClient collectionClient   = integrationContext.getCollectionClient();
+
+        String collectionGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(collectionFolderProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        if (collectionGUID != null)
+        {
+            collectionClient.updateCollection(collectionGUID, collectionClient.getUpdateOptions(true), collectionFolderProperties);
+        }
+        else
+        {
+            NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(dataHubGUID);
+            newElementOptions.setParentGUID(dataDictionaryGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+            collectionGUID = collectionClient.createCollection(newElementOptions, null, collectionFolderProperties, null);
+        }
+
+        return collectionGUID;
+    }
 
     /**
      * Loads the existing content of the data dictionary into the supplied maps to use when refreshing each data store.
@@ -292,13 +277,13 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
      * @param dataStructures map of data structures
      * @throws InvalidParameterException  the parameters are invalid
      * @throws PropertyServerException    problem accessing the property server
-     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
     private void retrieveDataDictionaryElements(RelatedMetadataElementSummary member,
-                                                Map<String, String> dataFields,
-                                                Map<String, String> dataStructures) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+                                                Map<String, String>           dataFields,
+                                                Map<String, Set<String>>      dataStructures) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
         if ((member != null) && (member.getRelatedElement().getProperties() instanceof ReferenceableProperties dataDictionaryElementProperties))
         {
@@ -308,7 +293,20 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
             }
             else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_STRUCTURE.typeName))
             {
-                dataStructures.put(dataDictionaryElementProperties.getQualifiedName(), member.getRelatedElement().getElementHeader().getGUID());
+                Set<String> dataFieldMembers = new HashSet<>();
+
+                if ((member instanceof RelatedMetadataHierarchySummary hierarchyMember) && (hierarchyMember.getNestedElements() != null))
+                {
+                    for (RelatedMetadataElementSummary nestedDataField : hierarchyMember.getNestedElements())
+                    {
+                        if ((nestedDataField != null) && (propertyHelper.isTypeOf(nestedDataField.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_FIELD.typeName)))
+                        {
+                            dataFieldMembers.add(nestedDataField.getRelatedElement().getElementHeader().getGUID());
+                        }
+                    }
+                }
+
+                dataStructures.put(dataDictionaryElementProperties.getQualifiedName(), dataFieldMembers);
             }
             else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.COLLECTION_FOLDER.typeName))
             {
@@ -339,21 +337,19 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
      * interacts with the OpenMetadata framework to retrieve and process the data store's associated schema
      * and other attributes necessary for the refresh operation.
      *
-     * @param dataDictionaryElement       Root element of the data dictionary providing contextual information for the data store.
      * @param dataFieldsFolderGUID        Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID    Globally unique identifier (GUID) for the folder containing data structures.
      * @param dataStoreGUID               Globally unique identifier (GUID) of the data store to be refreshed.
+     * @param dataHubQualifiedName        Globally unique name of the data hub associated with the data store.
      * @param dataHubGUID                 Globally unique identifier (GUID) of the data hub associated with the data store.
-     * @param dataFields                  Map of identifiers for data fields used during the refresh process.
-     * @param dataStructures              Map of identifiers for data structures used during the refresh process.
+     * @param dataStructures              Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
      */
-    private void refreshDataStore(OpenMetadataRootElement dataDictionaryElement,
-                                  String                  dataFieldsFolderGUID,
-                                  String                  dataStructuresFolderGUID,
-                                  String                  dataStoreGUID,
-                                  String                  dataHubGUID,
-                                  Map<String, String>     dataFields,
-                                  Map<String, String>     dataStructures)
+    private void refreshDataStore(String                   dataFieldsFolderGUID,
+                                  String                   dataStructuresFolderGUID,
+                                  String                   dataStoreGUID,
+                                  String                   dataHubGUID,
+                                  String                   dataHubQualifiedName,
+                                  Map<String, Set<String>> dataStructures)
     {
         String methodName = "refreshDataStore(" + dataStoreGUID + ")";
 
@@ -363,23 +359,23 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
 
             OpenMetadataRootElement dataStoreElement = assetClient.getAssetByGUID(dataStoreGUID, assetClient.getGetOptions());
 
-            if ((dataStoreElement != null) && (dataStoreElement.getSchemaType() != null))
+            if (dataStoreElement != null)
             {
                 if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.FILE_FOLDER.typeName))
                 {
-                    refreshFileFolder(dataDictionaryElement, dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataFields, dataStructures);
+                    refreshFileFolder(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataHubQualifiedName, dataStructures);
                 }
                 else if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.CSV_FILE.typeName))
                 {
-                    refreshCSVFile(dataDictionaryElement, dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataFields, dataStructures);
+                    refreshCSVFile(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataHubQualifiedName, dataStructures);
                 }
                 else if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.DATABASE.typeName))
                 {
-                    refreshRelationalDatabase(dataDictionaryElement, dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataFields, dataStructures);
+                    refreshRelationalDatabase(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataHubQualifiedName, dataStructures);
                 }
                 else if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName))
                 {
-                    refreshRelationalDatabaseSchema(dataDictionaryElement, dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataFields, dataStructures);
+                    refreshRelationalDatabaseSchema(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataHubGUID, dataHubQualifiedName, dataStructures);
                 }
             }
         }
@@ -399,23 +395,46 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
      * Refreshes the metadata for a file folder based on the provided parameters. This method hunts for files
      * containing tabular data sets withing the folder structure.
      *
-     * @param dataDictionaryElement       Root element of the data dictionary providing contextual information for the data store.
      * @param dataFieldsFolderGUID        Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID    Globally unique identifier (GUID) for the folder containing data structures.
      * @param dataStoreElement            The data store to be refreshed.
      * @param dataHubGUID                 Globally unique identifier (GUID) of the data hub associated with the data store.
-     * @param dataFields                  Map of identifiers for data fields used during the refresh process.
-     * @param dataStructures              Map of identifiers for data structures used during the refresh process.
+     * @param dataHubQualifiedName        Globally unique name of the data hub associated with the data store.
+     * @param dataStructures              Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void refreshFileFolder(OpenMetadataRootElement dataDictionaryElement,
-                                   String                  dataFieldsFolderGUID,
-                                   String                  dataStructuresFolderGUID,
-                                   OpenMetadataRootElement dataStoreElement,
-                                   String                  dataHubGUID,
-                                   Map<String, String>     dataFields,
-                                   Map<String, String>     dataStructures)
+    private void refreshFileFolder(String                   dataFieldsFolderGUID,
+                                   String                   dataStructuresFolderGUID,
+                                   OpenMetadataRootElement  dataStoreElement,
+                                   String                   dataHubGUID,
+                                   String                   dataHubQualifiedName,
+                                   Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
-        String methodName = "refreshFileFolder(" + dataStoreElement.getElementHeader().getGUID() + ")";
+        if (dataStoreElement.getProperties() instanceof FileFolderProperties fileFolderProperties)
+        {
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.CSV_FILE.typeName);
+
+            int startFrom = 0;
+            SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
+
+            List<OpenMetadataRootElement> csvFiles = classificationExplorerClient.findRootElements(fileFolderProperties.getPathName(), searchOptions);
+
+            while (csvFiles != null)
+            {
+                for (OpenMetadataRootElement csvFile : csvFiles)
+                {
+                    refreshCSVFile(dataFieldsFolderGUID, dataStructuresFolderGUID, csvFile, dataHubGUID, dataHubQualifiedName, dataStructures);
+                }
+
+                startFrom += classificationExplorerClient.getMaxPagingSize();
+                searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
+                csvFiles = classificationExplorerClient.findRootElements(fileFolderProperties.getPathName(), searchOptions);
+            }
+        }
     }
 
 
@@ -423,23 +442,46 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
      * Refreshes the metadata for a CSV File based on the provided parameters. This method extracts the data structure and
      * data fields in a CSV File asset.
      *
-     * @param dataDictionaryElement       Root element of the data dictionary providing contextual information for the data store.
      * @param dataFieldsFolderGUID        Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID    Globally unique identifier (GUID) for the folder containing data structures.
      * @param dataStoreElement            The data store to be refreshed.
      * @param dataHubGUID                 Globally unique identifier (GUID) of the data hub associated with the data store.
-     * @param dataFields                  Map of identifiers for data fields used during the refresh process.
-     * @param dataStructures              Map of identifiers for data structures used during the refresh process.
+     * @param dataHubQualifiedName        Globally unique name of the data hub associated with the data store.
+     * @param dataStructures              Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void refreshCSVFile(OpenMetadataRootElement dataDictionaryElement,
-                                String                  dataFieldsFolderGUID,
-                                String                  dataStructuresFolderGUID,
-                                OpenMetadataRootElement dataStoreElement,
-                                String                  dataHubGUID,
-                                Map<String, String>     dataFields,
-                                Map<String, String>     dataStructures)
+    private void refreshCSVFile(String                   dataFieldsFolderGUID,
+                                String                   dataStructuresFolderGUID,
+                                OpenMetadataRootElement  dataStoreElement,
+                                String                   dataHubGUID,
+                                String                   dataHubQualifiedName,
+                                Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         String methodName = "refreshCSVFile(" + dataStoreElement.getElementHeader().getGUID() + ")";
+
+        if (dataStoreElement.getProperties() instanceof CSVFileProperties csvFileProperties)
+        {
+            auditLog.logMessage(methodName,
+                                LiskovAuditCode.REFRESHING_CSV_FILE.getMessageDefinition(connectorName,
+                                                                                         csvFileProperties.getFileName(),
+                                                                                         dataStoreElement.getElementHeader().getGUID()));
+
+            if ((dataStoreElement.getSchemaType() instanceof RelatedMetadataHierarchySummary schemaType) && (schemaType.getNestedElements() != null))
+            {
+                refreshDataStructure(dataFieldsFolderGUID,
+                                     dataStructuresFolderGUID,
+                                     dataStoreElement.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                                     csvFileProperties.getFileName(),
+                                     schemaType.getNestedElements(),
+                                     dataHubGUID,
+                                     dataHubQualifiedName,
+                                     dataStructures);
+            }
+        }
     }
 
 
@@ -447,55 +489,233 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
      * Refreshes the metadata for a Relational Database based on the provided parameters. This method extracts the data structure and
      * data fields for each database schema attached to the data store.
      *
-     * @param dataDictionaryElement    Root element of the data dictionary providing contextual information for the data store.
      * @param dataFieldsFolderGUID     Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID Globally unique identifier (GUID) for the folder containing data structures.
      * @param dataStoreElement         The data store to be refreshed.
      * @param dataHubGUID              Globally unique identifier (GUID) of the data hub associated with the data store.
-     * @param dataFields               Map of identifiers for data fields used during the refresh process.
-     * @param dataStructures           Map of identifiers for data structures used during the refresh process.
+     * @param dataHubQualifiedName     Globally unique name of the data hub associated with the data store.
+     * @param dataStructures           Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void refreshRelationalDatabase(OpenMetadataRootElement dataDictionaryElement,
-                                           String                  dataFieldsFolderGUID,
-                                           String                  dataStructuresFolderGUID,
-                                           OpenMetadataRootElement dataStoreElement,
-                                           String                  dataHubGUID,
-                                           Map<String, String>     dataFields,
-                                           Map<String, String>     dataStructures)
+    private void refreshRelationalDatabase(String                   dataFieldsFolderGUID,
+                                           String                   dataStructuresFolderGUID,
+                                           OpenMetadataRootElement  dataStoreElement,
+                                           String                   dataHubGUID,
+                                           String                   dataHubQualifiedName,
+                                           Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
-        String methodName = "refreshRelationalDatabase(" + dataStoreElement.getElementHeader().getGUID() + ")";
-    }
+        if (dataStoreElement.getSupportedDataSets() != null)
+        {
+            for (RelatedMetadataElementSummary dataSet : dataStoreElement.getSupportedDataSets())
+            {
+                if (propertyHelper.isTypeOf(dataSet.getRelatedElement().getElementHeader(), OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName))
+                {
+                    ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
 
+                    OpenMetadataRootElement databaseSchema = classificationExplorerClient.getRootElementByGUID(dataSet.getRelatedElement().getElementHeader().getGUID(), classificationExplorerClient.getGetOptions());
+
+                    if (databaseSchema != null)
+                    {
+                        refreshRelationalDatabaseSchema(dataFieldsFolderGUID, dataStructuresFolderGUID, databaseSchema, dataHubGUID, dataHubQualifiedName, dataStructures);
+                    }
+                }
+            }
+        }
+    }
 
 
     /**
      * Refreshes the metadata for a Relational Database Schema based on the provided parameters. This method extracts the data structure and
      * data fields for each database table attached to the data store.
      *
-     * @param dataDictionaryElement    Root element of the data dictionary providing contextual information for the data store.
      * @param dataFieldsFolderGUID     Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID Globally unique identifier (GUID) for the folder containing data structures.
      * @param dataStoreElement         The data store to be refreshed.
      * @param dataHubGUID              Globally unique identifier (GUID) of the data hub associated with the data store.
-     * @param dataFields               Map of identifiers for data fields used during the refresh process.
-     * @param dataStructures           Map of identifiers for data structures used during the refresh process.
+     * @param dataHubQualifiedName     Globally unique name of the data hub associated with the data store.
+     * @param dataStructures              Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void refreshRelationalDatabaseSchema(OpenMetadataRootElement dataDictionaryElement,
-                                                 String                  dataFieldsFolderGUID,
-                                                 String                  dataStructuresFolderGUID,
-                                                 OpenMetadataRootElement dataStoreElement,
-                                                 String                  dataHubGUID,
-                                                 Map<String, String>     dataFields,
-                                                 Map<String, String>     dataStructures)
+    private void refreshRelationalDatabaseSchema(String                   dataFieldsFolderGUID,
+                                                 String                   dataStructuresFolderGUID,
+                                                 OpenMetadataRootElement  dataStoreElement,
+                                                 String                   dataHubGUID,
+                                                 String                   dataHubQualifiedName,
+                                                 Map<String, Set<String>> dataStructures) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        String methodName = "refreshRelationalDatabaseSchema(" + dataStoreElement.getElementHeader().getGUID() + ")";
-
-
+        if ((dataStoreElement.getProperties() instanceof DeployedDatabaseSchemaProperties databaseSchemaProperties) &&
+                (dataStoreElement.getSchemaType() instanceof RelatedMetadataHierarchySummary schemaType) &&
+                (schemaType.getNestedElements() != null))
+        {
+            refreshDataStructure(dataFieldsFolderGUID,
+                                 dataStructuresFolderGUID,
+                                 dataStoreElement.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                                 databaseSchemaProperties.getDisplayName(),
+                                 schemaType.getNestedElements(),
+                                 dataHubGUID,
+                                 dataHubQualifiedName,
+                                 dataStructures);
+        }
     }
 
 
+    /**
+     * Refreshes the metadata for a Relational Database Schema based on the provided parameters. This method extracts the data structure and
+     * data fields for each database table attached to the data store.
+     *
+     * @param dataFieldsFolderGUID     Globally unique identifier (GUID) for the folder containing data fields.
+     * @param dataStructuresFolderGUID Globally unique identifier (GUID) for the folder containing data structures.
+     * @param schemaGUID               unique identifier of the schema being refreshed.
+     * @param schemaName               display name of the schema being refreshed.
+     * @param schemaAttributes         list of schema attributes.
+     * @param dataHubGUID              Globally unique identifier (GUID) of the data hub associated with the data store.
+     * @param dataHubQualifiedName     Globally unique name of the data hub associated with the data store.
+     * @param dataStructures           Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void refreshDataStructure(String                              dataFieldsFolderGUID,
+                                      String                              dataStructuresFolderGUID,
+                                      String                              schemaGUID,
+                                      String                              schemaName,
+                                      List<RelatedMetadataElementSummary> schemaAttributes,
+                                      String                              dataHubGUID,
+                                      String                              dataHubQualifiedName,
+                                      Map<String, Set<String>>            dataStructures) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        Set<String> dataFieldGUIDs = new HashSet<>();
 
+        /*
+         * Process all the data fields.
+         */
+        for (RelatedMetadataElementSummary schemaAttribute : schemaAttributes)
+        {
+            if ((schemaAttribute != null) && (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties))
+            {
+                String dataFieldName = normalizeName(schemaAttributeProperties.getDisplayName());
+
+                DataFieldProperties dataFieldProperties = new DataFieldProperties();
+
+                dataFieldProperties.setQualifiedName(OpenMetadataType.DATA_FIELD.typeName + "::" + dataHubGUID + "::" + dataFieldName);
+                dataFieldProperties.setDisplayName(dataFieldName);
+                dataFieldProperties.setDescription(schemaAttributeProperties.getDescription());
+
+                if ((schemaAttribute.getRelatedElement().getElementHeader().getSchemaType() != null) && (schemaAttribute.getRelatedElement().getElementHeader().getSchemaType().getClassificationProperties() instanceof TypeEmbeddedAttributeProperties typeEmbeddedAttributeProperties))
+                {
+                    dataFieldProperties.setDataType(typeEmbeddedAttributeProperties.getDataType());
+                }
+                else
+                {
+                    dataFieldProperties.setDataType(DataType.STRING.getDisplayName());
+                }
+
+                dataFieldProperties.setLength(schemaAttributeProperties.getLength());
+                dataFieldProperties.setPrecision(schemaAttributeProperties.getPrecision());
+
+                dataFieldGUIDs.add(getDataField(dataHubGUID,
+                                                dataHubQualifiedName,
+                                                schemaAttribute.getRelatedElement().getElementHeader().getGUID(),
+                                                dataFieldsFolderGUID,
+                                                dataFieldProperties));
+            }
+        }
+
+        String dataStructureGUID = this.getMatchingDataStructure(dataFieldGUIDs, dataStructures);
+
+        if (dataStructureGUID == null)
+        {
+            String dataStructureName = normalizeName(schemaName);
+
+            DataStructureProperties dataStructureProperties = new DataStructureProperties();
+
+            dataStructureProperties.setQualifiedName(OpenMetadataType.DATA_STRUCTURE.typeName + "::" + dataHubGUID + "::" + dataStructureName);
+            dataStructureProperties.setDisplayName(normalizeName(schemaName));
+            dataStructureProperties.setDescription("Data structure for " + schemaName + " in the data hub " + dataHubQualifiedName);
+
+            dataStructureGUID = getDataStructure(dataHubGUID,
+                                                 dataHubQualifiedName,
+                                                 schemaGUID,
+                                                 dataStructuresFolderGUID,
+                                                 dataStructureProperties);
+
+            dataStructures.put(dataStructureGUID, dataFieldGUIDs);
+
+            DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
+
+            for (String dataFieldGUID : dataFieldGUIDs)
+            {
+                dataStructureClient.linkMemberDataField(dataStructureGUID, dataFieldGUID, dataStructureClient.getMakeAnchorOptions(false), null);
+            }
+        }
+    }
+
+
+    /**
+     * Return the GUID of the matching data structure. This method is used to ensure that the data structure is only created once.
+     *
+     * @param dataFields     data fields
+     * @param dataStructures data structures
+     * @return data structure GUID
+     */
+    private String getMatchingDataStructure(Set<String> dataFields,
+                                            Map<String, Set<String>> dataStructures)
+    {
+        for (String dataStructureGUID : dataStructures.keySet())
+        {
+            if (dataFields.equals(dataStructures.get(dataStructureGUID)))
+            {
+                return dataStructureGUID;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Normalizes the provided name by converting it to canonical case.
+     *
+     * @param name the name to be normalized
+     * @return the normalized name
+     */
+    private String normalizeName(String name)
+    {
+        //return name.replaceAll("[^a-zA-Z0-9]", "_");
+        /*
+         * Conversion is step-by=step to make it easier to check in the debugger.
+         */
+        String uncameledName = integrationContext.fromCamelToCanonicalCase(name);
+        String unkebabedName = integrationContext.fromKebabToCanonicalCase(uncameledName);
+        return integrationContext.fromCanonicalToSnakeCase(unkebabedName);
+    }
+
+
+    /**
+     * Retrieves or creates a new DataField based on the provided properties within a specified DataHub and its collection.
+     *
+     * @param dataHubGUID Unique identifier of the DataHub where the DataField resides or will be created.
+     * @param dataHubQualifiedName Qualified name of the DataHub where the DataField resides or will be created.
+     * @param schemaGUID unique identifier from the data store's schema.
+     * @param dataFieldsCollectionGUID Unique identifier of the DataFields collection where the DataField resides or will be created.
+     * @param dataFieldProperties The properties of the DataField to retrieve or create.
+     *
+     * @return The unique identifier (GUID) of the retrieved or newly created DataField.
+     *
+     * @throws UserNotAuthorizedException If the user is not authorized to perform the operation.
+     * @throws InvalidParameterException If any of the provided parameters are invalid.
+     * @throws PropertyServerException If there is an error with the metadata server while performing the operation.
+     */
     private String getDataField(String              dataHubGUID,
+                                String              dataHubQualifiedName,
+                                String              schemaGUID,
                                 String              dataFieldsCollectionGUID,
                                 DataFieldProperties dataFieldProperties) throws UserNotAuthorizedException,
                                                                                 InvalidParameterException,
@@ -510,13 +730,94 @@ public class DataHubManagerTargetProcessor extends CatalogTargetProcessorBase
 
         if (dataFieldGUID != null)
         {
-            return dataFieldGUID;
+            dataFieldClient.updateDataField(dataFieldGUID, dataFieldClient.getUpdateOptions(true), dataFieldProperties);
+        }
+        else
+        {
+            NewElementOptions newElementOptions = new NewElementOptions(dataFieldClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(dataHubGUID);
+            newElementOptions.setParentGUID(dataFieldsCollectionGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+            dataFieldGUID = dataFieldClient.createDataField(newElementOptions, null, dataFieldProperties, null);
+
+            auditLog.logMessage(methodName,
+                                LiskovAuditCode.NEW_DATA_FIELD.getMessageDefinition(connectorName,
+                                                                                    dataFieldProperties.getDisplayName(),
+                                                                                    dataFieldGUID,
+                                                                                    dataHubQualifiedName,
+                                                                                    dataHubGUID));
         }
 
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
-        NewElementOptions newElementOptions = new NewElementOptions(dataFieldClient.getMetadataSourceOptions());
-        //return dataFieldClient.createDataField(newElementOptions)
+        governanceDefinitionClient.linkDesignToImplementation(dataFieldGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), null);
 
-        return null;
+        return dataFieldGUID;
+    }
+
+
+    /**
+     * Retrieves or creates a new DataStructure based on the provided properties within a specified DataHub and its collection.
+     *
+     * @param dataHubGUID Unique identifier of the DataHub where the DataStructure resides or will be created.
+     * @param dataHubQualifiedName Qualified name of the DataHub where the DataStructure resides or will be created.
+     * @param schemaGUID unique identifier from the data store's schema.
+     * @param dataStructuresCollectionGUID Unique identifier of the DataStructures collection where the DataStructure resides or will be created.
+     * @param dataStructuresProperties The properties of the DataStructure to retrieve or create.
+     *
+     * @return The unique identifier (GUID) of the retrieved or newly created DataStructure.
+     *
+     * @throws UserNotAuthorizedException If the user is not authorized to perform the operation.
+     * @throws InvalidParameterException If any of the provided parameters are invalid.
+     * @throws PropertyServerException If there is an error with the metadata server while performing the operation.
+     */
+    private String getDataStructure(String                  dataHubGUID,
+                                    String                  dataHubQualifiedName,
+                                    String                  schemaGUID,
+                                    String                  dataStructuresCollectionGUID,
+                                    DataStructureProperties dataStructuresProperties) throws UserNotAuthorizedException,
+                                                                                             InvalidParameterException,
+                                                                                             PropertyServerException
+    {
+        String methodName = "getDataStructure(" + dataStructuresProperties.getQualifiedName() + ")";
+
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+        DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
+
+        String dataStructureGUID = openMetadataStore.getMetadataElementGUIDByUniqueName(dataStructuresProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        if (dataStructureGUID != null)
+        {
+            dataStructureClient.updateDataStructure(dataStructureGUID, dataStructureClient.getUpdateOptions(true), dataStructuresProperties);
+        }
+        else
+        {
+            NewElementOptions newElementOptions = new NewElementOptions(dataStructureClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(dataHubGUID);
+            newElementOptions.setParentGUID(dataStructuresCollectionGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+            dataStructureGUID = dataStructureClient.createDataStructure(newElementOptions, null, dataStructuresProperties, null);
+
+            auditLog.logMessage(methodName,
+                                LiskovAuditCode.NEW_DATA_STRUCTURE.getMessageDefinition(connectorName,
+                                                                                        dataStructuresProperties.getDisplayName(),
+                                                                                        dataStructureGUID,
+                                                                                        dataHubQualifiedName,
+                                                                                        dataHubGUID));
+        }
+
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+        governanceDefinitionClient.linkDesignToImplementation(dataStructureGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), null);
+
+        return dataStructureGUID;
     }
 }

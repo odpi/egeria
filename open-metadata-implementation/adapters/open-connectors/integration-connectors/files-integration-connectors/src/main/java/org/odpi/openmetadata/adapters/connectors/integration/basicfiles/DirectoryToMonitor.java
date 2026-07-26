@@ -166,7 +166,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
             if (configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()) != null)
             {
-                localMountPoint = configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()).toString();
+                canonicalMountPoint = configurationProperties.get(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName()).toString();
             }
 
             if (configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()) != null)

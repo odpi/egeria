@@ -456,11 +456,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         String connectorTypeGUID = new DataFolderProvider().getConnectorType().getGUID();
 
-        Map<String, Object>  extendedProperties   = new HashMap<>();
         Map<String, String>  facetProperties      = new HashMap<>();
         List<Classification> classifications      = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
 
         facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), UnityCatalogPlaceholderProperty.VOLUME_TYPE.getPlaceholder());
         facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
@@ -476,15 +474,14 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       qualifiedName,
                                                       UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder(),
                                                       fullName,
-                                                      UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
-                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder(),
                                                       null,
                                                       deployedImplementationType.getDeployedImplementationType(),
                                                       PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                       ContentStatus.ACTIVE,
                                                       additionalProperties,
-                                                      extendedProperties,
+                                                      null,
                                                       classifications);
         assert(guid.equals(assetGUID));
 
@@ -505,7 +502,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                         qualifiedName + "::Endpoint",
                                                         fullName + " endpoint",
                                                         null,
-                                                        UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder(),
+                                                        UnityCatalogPlaceholderProperty.LOCAL_STORAGE_LOCATION.getPlaceholder(),
                                                         null,
                                                         null);
 
