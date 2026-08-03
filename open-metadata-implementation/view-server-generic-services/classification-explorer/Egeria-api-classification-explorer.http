@@ -1507,6 +1507,77 @@ Content-Type: application/json
 }
 
 
+###
+#==================================================
+# MoreInformation
+#==================================================
+
+@resourceGUID=add guid here
+
+###
+# @name addMoreInformationToElement
+# Link a resource to an element using the MoreInformation relationship.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the metadata element to link
+# @param resourceGUID identifier of the resource to link
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException guid or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/more-information/{{resourceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties": {
+      "class" : "MoreInformationProperties",
+      "label" : "Guiding question",
+      "description" : "Add description here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name removeMoreInformationFromElement
+
+# Remove the MoreInformation relationship between a resource and an element.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the metadata element to update
+# @param resourceGUID identifier of the resource to link
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException guid or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/more-information/{{resourceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 
 ###
 #==================================================

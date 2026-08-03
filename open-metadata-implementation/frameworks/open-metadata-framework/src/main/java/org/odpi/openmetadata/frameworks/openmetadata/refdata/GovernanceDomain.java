@@ -35,7 +35,7 @@ public enum GovernanceDomain implements OpenMetadataRefData
     /**
      * The governance domain is not specified.
      */
-    UNCLASSIFIED         (0,"8aace3ca-1db4-4927-ad45-9766770a92c4", "Unclassified",         "The governance domain is not specified because the element is relevant to all domains.", true),
+    UNCLASSIFIED         (0,"8aace3ca-1db4-4927-ad45-9766770a92c4", "All Domains",           "The governance domain is not specified because the element is relevant to all domains.", true),
 
     /**
      * The data (information) governance domain.

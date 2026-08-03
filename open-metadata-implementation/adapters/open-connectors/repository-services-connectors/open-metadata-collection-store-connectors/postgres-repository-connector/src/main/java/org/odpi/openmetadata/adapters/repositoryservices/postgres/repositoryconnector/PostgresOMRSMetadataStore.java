@@ -461,7 +461,7 @@ class PostgresOMRSMetadataStore
         }
 
         DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        long count = databaseStore.countEntitiesByProperties(entityQueryBuilder, classificationQueryBuilder);
+        long count = databaseStore.countEntitiesByProperties(entityQueryBuilder, classificationQueryBuilder, localMetadataCollectionId);
         databaseStore.disconnect();
 
         return count;
@@ -818,7 +818,7 @@ class PostgresOMRSMetadataStore
         queryBuilder.setAsOfTime(asOfTime);
 
         DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        long count = databaseStore.countRelationshipsByProperties(queryBuilder);
+        long count = databaseStore.countRelationshipsByProperties(queryBuilder, localMetadataCollectionId);
         databaseStore.disconnect();
 
         return count;

@@ -111,6 +111,33 @@ public class QueryBuilder
         return " ";
     }
 
+
+    /**
+     * Derive a SQL fragment that restricts a count query to only the instances that the named repository is
+     * responsible for counting: those it homes itself (metadataCollectionId matches) and those it has been
+     * assigned to count on behalf of a non-cohort provenance (replicatedBy matches).  This avoids double-counting
+     * instances that are replicated across more than one member of a cohort when a federated count sums the
+     * results from each repository.
+     * <br><br>
+     * This method must only be called when building the WHERE clause for the countEntities()/countRelationships()
+     * queries - it is deliberately kept separate from getAsOfTimeWhereClause() (used by every other query,
+     * including findEntities()/findRelationships()) so that every other query continues to return every stored
+     * matching instance, including replicas, for federation to deduplicate by GUID.
+     *
+     * @param localMetadataCollectionId unique identifier of the repository issuing the count query
+     * @return fragment of SQL
+     */
+    public String getLocalMetadataCollectionClause(String localMetadataCollectionId)
+    {
+        if (localMetadataCollectionId != null)
+        {
+            return " and (" + RepositoryColumn.METADATA_COLLECTION_GUID.getColumnName() + " = '" + escapePropertyValue(localMetadataCollectionId) +
+                    "' or " + RepositoryColumn.REPLICATED_BY.getColumnName() + " = '" + escapePropertyValue(localMetadataCollectionId) + "')";
+        }
+
+        return " ";
+    }
+
     /**
      * Set up the Java regular expression used to match against any of the String property values
      * within instances of the specified type(s).

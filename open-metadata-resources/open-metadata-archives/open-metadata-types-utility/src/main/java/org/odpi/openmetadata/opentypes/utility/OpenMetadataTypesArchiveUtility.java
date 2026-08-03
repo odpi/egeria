@@ -20,8 +20,15 @@ public class OpenMetadataTypesArchiveUtility
      */
     public static void main(String[] args)
     {
-        OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
-
-        archiveWriter.writeOpenMetadataTypesArchive("content-packs");
+        try
+        {
+            OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
+            archiveWriter.writeOpenMetadataTypesArchive("content-packs");
+        }
+        catch (Exception error)
+        {
+            System.err.println("Exception: " + error);
+            System.exit(-1);
+        }
     }
 }
