@@ -343,7 +343,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDataClassDefinition(String                        userId,
+    public void linkDataValueDefinition(String                        userId,
                                         String                        dataDefinitionGUID,
                                         String                        dataClassGUID,
                                         MakeAnchorOptions             makeAnchorOptions,
@@ -351,7 +351,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        final String methodName = "linkDataClassDefinition";
+        final String methodName = "linkDataValueDefinition";
         final String end1GUIDParameterName = "dataDefinitionGUID";
         final String end2GUIDParameterName = "dataClassGUID";
 
@@ -379,14 +379,14 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachDataClassDefinition(String        userId,
+    public void detachDataValueDefinition(String        userId,
                                           String        dataDefinitionGUID,
                                           String        dataClassGUID,
                                           DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        final String methodName = "detachDataClassDefinition";
+        final String methodName = "detachDataValueDefinition";
 
         final String end1GUIDParameterName = "dataDefinitionGUID";
         final String end2GUIDParameterName = "dataClassGUID";
@@ -425,7 +425,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                                                                    UserNotAuthorizedException
     {
         final String methodName = "linkSemanticDefinition";
-        final String end1GUIDParameterName = "parentDataClassGUID";
+        final String end1GUIDParameterName = "dataDefinitionGUID";
         final String end2GUIDParameterName = "glossaryTermGUID";
 
         propertyHelper.validateUserId(userId, methodName);

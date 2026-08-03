@@ -429,16 +429,24 @@ public class DatabaseStore
      *
      * @param entityQueryBuilder filled with conditions for the where clause for the SQL query
      * @param classificationQueryBuilder filled with conditions for the where clause for the SQL query
+     * @param localMetadataCollectionId unique identifier of this repository's metadata collection - the count is
+     *                                  restricted to the entities that this repository is responsible for
+     *                                  counting (those it homes, plus any it is replicatedBy for) so that a
+     *                                  federated count does not double-count entities replicated across more
+     *                                  than one member of a cohort.  This restriction applies only to this count
+     *                                  query - findEntities() continues to return every stored replica.
      * @return count of matching entities
      * @throws RepositoryErrorException problem communicating with the database
      */
     public long countEntitiesByProperties(QueryBuilder entityQueryBuilder,
-                                          QueryBuilder classificationQueryBuilder) throws RepositoryErrorException
+                                          QueryBuilder classificationQueryBuilder,
+                                          String       localMetadataCollectionId) throws RepositoryErrorException
     {
         final String methodName = "countEntitiesByProperties";
 
         String entityGUIDColumn = RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName());
-        String sqlEntityQuery = "select count(distinct " + entityGUIDColumn + ") from " + RepositoryTable.ENTITY.getTableName() + " where " + entityQueryBuilder.getAsOfTimeWhereClause();
+        String sqlEntityQuery = "select count(distinct " + entityGUIDColumn + ") from " + RepositoryTable.ENTITY.getTableName() + " where " +
+                entityQueryBuilder.getAsOfTimeWhereClause() + entityQueryBuilder.getLocalMetadataCollectionClause(localMetadataCollectionId);
 
         try
         {
@@ -556,15 +564,24 @@ public class DatabaseStore
      * This query is issued against the relationship table and the relationship attribute table.
      *
      * @param queryBuilder populated with details of the where clause for the SQL query
+     * @param localMetadataCollectionId unique identifier of this repository's metadata collection - the count is
+     *                                  restricted to the relationships that this repository is responsible for
+     *                                  counting (those it homes, plus any it is replicatedBy for) so that a
+     *                                  federated count does not double-count relationships replicated across
+     *                                  more than one member of a cohort.  This restriction applies only to this
+     *                                  count query - findRelationships() continues to return every stored
+     *                                  replica.
      * @return count of matching relationships
      * @throws RepositoryErrorException problem communicating with the database
      */
-    public long countRelationshipsByProperties(QueryBuilder queryBuilder) throws RepositoryErrorException
+    public long countRelationshipsByProperties(QueryBuilder queryBuilder,
+                                               String       localMetadataCollectionId) throws RepositoryErrorException
     {
         final String methodName = "countRelationshipsByProperties";
 
         String relationshipGUIDColumn = RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.RELATIONSHIP.getTableName());
-        String sqlQuery = "select count(distinct " + relationshipGUIDColumn + ") from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
+        String sqlQuery = "select count(distinct " + relationshipGUIDColumn + ") from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " +
+                queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getLocalMetadataCollectionClause(localMetadataCollectionId);
 
         try
         {

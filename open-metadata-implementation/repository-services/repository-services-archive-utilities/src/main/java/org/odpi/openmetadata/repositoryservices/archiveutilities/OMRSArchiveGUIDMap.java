@@ -29,6 +29,7 @@ public class OMRSArchiveGUIDMap
 
     private final String              guidMapFileName;
     private       Map<String, String> idToGUIDMap;
+    private final Map<String, String> originalIdToGUIDMap;
     private final Map<String, String> usedIdToGUIDMap = new HashMap<>();
 
 
@@ -42,6 +43,8 @@ public class OMRSArchiveGUIDMap
         this.guidMapFileName = guidMapFileName;
 
         this.loadGUIDs();
+
+        this.originalIdToGUIDMap = new HashMap<>(idToGUIDMap);
     }
 
 
@@ -129,9 +132,41 @@ public class OMRSArchiveGUIDMap
      */
     public void  saveGUIDs()
     {
+        if (! idToGUIDMap.equals(originalIdToGUIDMap))
+        {
+            System.out.println("New GUIDs in: " + guidMapFileName);
+
+            for (String id : idToGUIDMap.keySet())
+            {
+                if (! originalIdToGUIDMap.containsKey(id))
+                {
+                    System.out.println("New GUID: " + id + " = " + idToGUIDMap.get(id));
+                }
+                else if (! idToGUIDMap.get(id).equals(originalIdToGUIDMap.get(id)))
+                {
+                    System.out.println("Changed GUID: " + id + " = " + idToGUIDMap.get(id));
+                    System.exit(-1);
+                }
+            }
+
+            System.out.println("Deleted GUIDs from: " + guidMapFileName);
+
+            for (String id : originalIdToGUIDMap.keySet())
+            {
+                if (! idToGUIDMap.containsKey(id))
+                {
+                    System.out.println("Deleted GUID: " + id);
+                }
+            }
+        }
+        else
+        {
+            System.out.println("No changed GUIDs in: " + guidMapFileName);
+        }
+
         System.out.println("Writing to Id File: " + guidMapFileName);
 
-        File         idFile = new File(guidMapFileName);
+        File idFile = new File(guidMapFileName);
 
         try
         {
