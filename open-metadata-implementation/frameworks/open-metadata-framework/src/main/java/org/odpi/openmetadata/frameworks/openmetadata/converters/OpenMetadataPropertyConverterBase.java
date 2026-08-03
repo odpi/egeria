@@ -16395,6 +16395,10 @@ public class OpenMetadataPropertyConverterBase
                                 {
                                     beanProperties = new JournalEntryProperties();
                                 }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTE.typeName))
+                                {
+                                    beanProperties = new NoteProperties();
+                                }
                                 else
                                 {
                                     beanProperties = new NotificationProperties();

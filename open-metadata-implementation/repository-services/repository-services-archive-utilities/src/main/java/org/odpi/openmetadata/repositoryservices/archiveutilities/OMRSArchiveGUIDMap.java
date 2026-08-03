@@ -126,12 +126,23 @@ public class OMRSArchiveGUIDMap
         return guid;
     }
 
+    /**
+     * Record that a GUID has changed.
+     *
+     * @param originalGUID
+     * @param newGUID
+     */
+    record ChangedGUID(String originalGUID, String newGUID)
+    {
+    }
 
     /**
      * Save the map to a file
      */
     public void  saveGUIDs()
     {
+        Map<String, ChangedGUID> changedGUIDMap = new HashMap<>();
+
         if (! idToGUIDMap.equals(originalIdToGUIDMap))
         {
             System.out.println("New GUIDs in: " + guidMapFileName);
@@ -144,8 +155,7 @@ public class OMRSArchiveGUIDMap
                 }
                 else if (! idToGUIDMap.get(id).equals(originalIdToGUIDMap.get(id)))
                 {
-                    System.out.println("Changed GUID: " + id + " = " + idToGUIDMap.get(id));
-                    System.exit(-1);
+                    changedGUIDMap.put(id, new ChangedGUID(originalIdToGUIDMap.get(id), idToGUIDMap.get(id)));
                 }
             }
 
@@ -162,6 +172,17 @@ public class OMRSArchiveGUIDMap
         else
         {
             System.out.println("No changed GUIDs in: " + guidMapFileName);
+        }
+
+        if (! changedGUIDMap.isEmpty())
+        {
+            System.out.println("Changed GUIDs from: " + guidMapFileName);
+            for (ChangedGUID changedGUID : changedGUIDMap.values())
+            {
+                System.out.println("Changed GUID: " + changedGUID.originalGUID + " = " + changedGUID.newGUID);
+            }
+
+            System.exit(-1);
         }
 
         System.out.println("Writing to Id File: " + guidMapFileName);

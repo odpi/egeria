@@ -26,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ActivityEntryProperties.class, name = "ActivityEntryProperties"),
         @JsonSubTypes.Type(value = BlogEntryProperties.class, name = "BlogEntryProperties"),
         @JsonSubTypes.Type(value = JournalEntryProperties.class, name = "JournalEntryProperties"),
+        @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
 })
 public class NotificationProperties extends ActionProperties
 {

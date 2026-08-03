@@ -804,23 +804,6 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                     "A software server that supports databases.",
                     OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
 
-
-    /**
-     * A software server that supports databases.
-     */
-    POSTGRES_SERVER("ff7c8d09-9813-453e-9895-7a2b0a6b0be3",
-                    "PostgreSQL Server",
-                    DeployedImplementationType.DATABASE_SERVER,
-                    OpenMetadataType.SOFTWARE_SERVER.typeName,
-                    null,
-                    "PostgreSQL is an advanced open source relational database.",
-                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS,
-                    "b2a1f014-d00e-4956-bbad-0ae1d5498841",
-                    SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
-                    "POSTGRESQL-SERVER",
-                    null),
-
-
     /**
      * A software server that supports the exchange of data.
      */

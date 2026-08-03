@@ -167,6 +167,7 @@ public class OpenMetadataTypesArchive
         update0118ActorRoles();
         update0135ActionsForPeople();
         add0145Perspectives();
+        update0160NotelLogs();
         update0340Dictionary();
         update0395SupplementaryProperties();
         update0405GovernanceDrivers();
@@ -726,6 +727,21 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0160NotelLogs()
+    {
+        this.archiveBuilder.addEntityDef(getNoteEntity());
+    }
+
+    private EntityDef getNoteEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTE,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName));
     }
 
     /*
