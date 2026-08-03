@@ -142,6 +142,11 @@ public class OMRSArchiveGUIDMap
                 {
                     System.out.println("New GUID: " + id + " = " + idToGUIDMap.get(id));
                 }
+                else if (! idToGUIDMap.get(id).equals(originalIdToGUIDMap.get(id)))
+                {
+                    System.out.println("Changed GUID: " + id + " = " + idToGUIDMap.get(id));
+                    System.exit(-1);
+                }
             }
 
             System.out.println("Deleted GUIDs from: " + guidMapFileName);
