@@ -437,7 +437,7 @@ Content-Type: application/json
 {
    "class" : "NewClassificationRequestBody",
    "properties" : {
-       "class" : "RetentionClassificationProperties",
+       "class" : "RetentionProperties",
        "retentionBasis" : 0,
        "status" : 0,
        "confidence" : 0,

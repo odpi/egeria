@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConfidentialityProperties.class, name = "ConfidentialityProperties"),
                 @JsonSubTypes.Type(value = ConfidenceProperties.class, name = "ConfidenceProperties"),
                 @JsonSubTypes.Type(value = ImpactProperties.class, name = "ImpactProperties"),
-                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionClassificationProperties"),
+                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionProperties.class"),
         })
 public class GovernedDataClassificationBase extends ClassificationBeanProperties
 {
