@@ -75,14 +75,14 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * A database server running the PostgreSQL software.
      */
-    POSTGRESQL_SERVER("d3ea92d0-c53b-4cc8-84d8-764648323d26",
+    POSTGRESQL_SERVER("ff7c8d09-9813-453e-9895-7a2b0a6b0be3",
                       "PostgreSQL Server",
                       DeployedImplementationType.DATABASE_SERVER,
                       OpenMetadataType.SOFTWARE_SERVER.typeName,
                       null,
-                      "A database server running the PostgreSQL software.",
+                      "A database server running the PostgreSQL software. PostgreSQL is an advanced open source relational database.PostgreSQL is an advanced open source relational database.",
                       "https://www.postgresql.org/",
-                      "8cdd96c6-1493-411c-99f7-7f5589ae858d",
+                      "b2a1f014-d00e-4956-bbad-0ae1d5498841",
                       SolutionComponentType.SOFTWARE_SERVICE.getSolutionComponentType(),
                       "POSTGRESQL-SERVER"),
 

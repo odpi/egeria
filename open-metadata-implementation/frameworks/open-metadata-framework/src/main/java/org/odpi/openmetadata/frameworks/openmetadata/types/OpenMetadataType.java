@@ -1978,6 +1978,16 @@ public enum OpenMetadataType
              NoteLogProperties.class),
 
     /**
+     * A description or opinion relating to an element.
+     */
+    NOTE("391f73ff-c184-41b6-8620-310b4284039f",
+             "Note",
+             OpenMetadataWikiPages.MODEL_0160_NOTES,
+             "7e3b261e-23d4-455a-b213-546a3cc2961b",
+             "A description or opinion relating to an element.",
+             NoteProperties.class),
+
+    /**
      * Links a note log to an item.
      */
     ATTACHED_NOTE_LOG_RELATIONSHIP("4f798c0c-6769-4a2d-b489-d2714d89e0a4",

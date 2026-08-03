@@ -1528,6 +1528,11 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                  false,
                                                                  additionalProperties);
 
+        if ((deployedImplementationType.getGUID() != null) && (! validValueGUID.equals(deployedImplementationType.getGUID())))
+        {
+            System.out.println("WARNING: GUID mismatch for " + qualifiedName + " - expected " + deployedImplementationType.getGUID() + " but got " + validValueGUID);
+        }
+
         /*
          * DeployedImplementationTypes may have a parent type.
          */
