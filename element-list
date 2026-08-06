@@ -90,6 +90,11 @@ org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadata
 org.odpi.openmetadata.adapters.connectors.liskov
 org.odpi.openmetadata.adapters.connectors.liskov.ffdc
 org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc
+org.odpi.openmetadata.adapters.connectors.mssql.catalog
+org.odpi.openmetadata.adapters.connectors.mssql.controls
+org.odpi.openmetadata.adapters.connectors.mssql.ffdc
+org.odpi.openmetadata.adapters.connectors.mssql.survey
+org.odpi.openmetadata.adapters.connectors.mssql.utilities
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
@@ -213,6 +218,7 @@ org.odpi.openmetadata.contentpacks.core.core
 org.odpi.openmetadata.contentpacks.core.digitalproducts
 org.odpi.openmetadata.contentpacks.core.egeria
 org.odpi.openmetadata.contentpacks.core.files
+org.odpi.openmetadata.contentpacks.core.mssql
 org.odpi.openmetadata.contentpacks.core.openlineage
 org.odpi.openmetadata.contentpacks.core.organizationinsight
 org.odpi.openmetadata.contentpacks.core.postgres

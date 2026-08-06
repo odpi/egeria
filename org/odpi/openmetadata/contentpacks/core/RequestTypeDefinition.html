@@ -138,6 +138,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">catalog-apache-kafka-server</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_MSSQL_DATABASE" class="member-name-link">CATALOG_MSSQL_DATABASE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">catalog-mssql-database</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_MSSQL_SERVER" class="member-name-link">CATALOG_MSSQL_SERVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">catalog-mssql-server</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CATALOG_OMAG_SERVER_PLATFORM" class="member-name-link">CATALOG_OMAG_SERVER_PLATFORM</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">catalog-omag-server-platform</div>
@@ -189,6 +197,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#CREATE_KAFKA_TOPIC" class="member-name-link">CREATE_KAFKA_TOPIC</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">create-kafka-topic</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CREATE_MSSQL_DB" class="member-name-link">CREATE_MSSQL_DB</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">create-mssql-database</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CREATE_MSSQL_SERVER" class="member-name-link">CREATE_MSSQL_SERVER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">create-mssql-server</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#CREATE_OMAG_SERVER_PLATFORM" class="member-name-link">CREATE_OMAG_SERVER_PLATFORM</a></code></div>
 <div class="col-last odd-row-color">
@@ -245,6 +261,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#DELETE_KAFKA_TOPIC" class="member-name-link">DELETE_KAFKA_TOPIC</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">delete-kafka-topic</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DELETE_MSSQL_DB" class="member-name-link">DELETE_MSSQL_DB</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">delete-mssql-database</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DELETE_MSSQL_SERVER" class="member-name-link">DELETE_MSSQL_SERVER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">delete-mssql-server</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DELETE_OMAG_SERVER_PLATFORM" class="member-name-link">DELETE_OMAG_SERVER_PLATFORM</a></code></div>
 <div class="col-last odd-row-color">
@@ -345,6 +369,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code><a href="#SURVEY_KAFKA_SERVER" class="member-name-link">SURVEY_KAFKA_SERVER</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">survey-kafka-server</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SURVEY_MSSQL_DATABASE" class="member-name-link">SURVEY_MSSQL_DATABASE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">survey-mssql-database</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SURVEY_MSSQL_SERVER" class="member-name-link">SURVEY_MSSQL_SERVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">survey-mssql-server</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SURVEY_POSTGRES_DATABASE" class="member-name-link">SURVEY_POSTGRES_DATABASE</a></code></div>
 <div class="col-last even-row-color">
@@ -767,6 +799,20 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SURVEY_MSSQL_SERVER">
+<h3>SURVEY_MSSQL_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">SURVEY_MSSQL_SERVER</span></div>
+<div class="block">survey-mssql-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEY_MSSQL_DATABASE">
+<h3>SURVEY_MSSQL_DATABASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">SURVEY_MSSQL_DATABASE</span></div>
+<div class="block">survey-mssql-database</div>
+</section>
+</li>
+<li>
 <section class="detail" id="CREATE_FILE_FOLDER">
 <h3>CREATE_FILE_FOLDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_FILE_FOLDER</span></div>
@@ -988,6 +1034,48 @@ the order they are declared.</div>
 <h3>CATALOG_POSTGRES_DATABASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_POSTGRES_DATABASE</span></div>
 <div class="block">catalog-postgres-database</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_MSSQL_SERVER">
+<h3>CREATE_MSSQL_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_MSSQL_SERVER</span></div>
+<div class="block">create-mssql-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DELETE_MSSQL_SERVER">
+<h3>DELETE_MSSQL_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">DELETE_MSSQL_SERVER</span></div>
+<div class="block">delete-mssql-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_MSSQL_SERVER">
+<h3>CATALOG_MSSQL_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_MSSQL_SERVER</span></div>
+<div class="block">catalog-mssql-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_MSSQL_DB">
+<h3>CREATE_MSSQL_DB</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_MSSQL_DB</span></div>
+<div class="block">create-mssql-database</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DELETE_MSSQL_DB">
+<h3>DELETE_MSSQL_DB</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">DELETE_MSSQL_DB</span></div>
+<div class="block">delete-mssql-database</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_MSSQL_DATABASE">
+<h3>CATALOG_MSSQL_DATABASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_MSSQL_DATABASE</span></div>
+<div class="block">catalog-mssql-database</div>
 </section>
 </li>
 <li>
