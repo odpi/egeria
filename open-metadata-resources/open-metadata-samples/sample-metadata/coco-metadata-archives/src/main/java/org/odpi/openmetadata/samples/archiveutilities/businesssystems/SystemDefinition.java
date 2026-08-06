@@ -208,7 +208,7 @@ public enum SystemDefinition
      * cocopages - Employee directory with business partners.
      */
     COCO_PAGES("a47906f0-67f0-46ed-890d-85cb049ffa60",
-               "ocopages",
+               "cocopages",
                "CocoPages",
                "Employee directory with business partners.",
                "cocopagesnpa",

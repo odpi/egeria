@@ -1,0 +1,112 @@
+# Microsoft SQL Server enablement demo
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/garygeeke/servers/active-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/MSSQLContentPack.omarchive
+
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "MSSQLServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1433",
+    "serverName" : "LocalMSSQL1",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "versionIdentifier" : "1.0",
+    "description" : "Microsoft SQL Server in egeria-workspaces."
+  }
+}
+
+
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "MSSQLServer:CreateAndCatalogGovernanceActionProcess",
+  "requestParameters" : {
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1433",
+    "serverName" : "LocalMSSQL1",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "versionIdentifier" : "1.0",
+    "description" : "Microsoft SQL Server in egeria-workspaces."
+  }
+}
+
+###
+# @name getTechnologyTypeDetail (Microsoft SQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Microsoft SQL Server"
+}
+
+
+###
+# @name getTechnologyTypeDetail (Microsoft SQL Server Database)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Microsoft SQL Server Relational Database"
+}
+
+
+
+###
+# @name getTechnologyTypeElements (Microsoft SQL Server Database)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Microsoft SQL Server Relational Database"
+}
+
+###

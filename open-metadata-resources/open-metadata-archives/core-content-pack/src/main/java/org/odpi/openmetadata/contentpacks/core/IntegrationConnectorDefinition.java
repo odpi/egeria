@@ -10,7 +10,10 @@ import org.odpi.openmetadata.adapters.connectors.babbage.BabbageAnalyticalEngine
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -200,6 +203,29 @@ public enum IntegrationConnectorDefinition
                                null,
                                null,
                                ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+
+    MSSQL_SERVER_CATALOGUER("d34a538f-36ff-4ded-8203-1c3e8f440967",
+                            "MSSQLServerIntegrationConnector",
+                            "Catalogs the databases found in Microsoft SQL Servers attached as catalog targets.",
+                            MSSQLServerIntegrationProvider.class.getName(),
+                            "MSSQLServerCataloguer",
+                            "mssqlcatnpa",
+                            null,
+                            null,
+                            null,
+                            getMSSQLServerConfigProperties(),
+                            60,
+                            new DeployedImplementationTypeDefinition[]{MSSQLDeployedImplementationType.MSSQL_SERVER},
+                            "7054dd4f-129f-41e1-b0fd-3e0537ae6b7e",
+                            "Microsoft SQL Server Cataloguer",
+                            "Maintains the open metadata elements that represent the databases in a Microsoft SQL Server.  Hands off the cataloguing of the schemas, tables and columns of each database to the generic JDBC Database Cataloguer.",
+                            true,
+                            null,
+                            null,
+                            null,
+                            null,
+                            ContentPackDefinition.MSSQL_CONTENT_PACK),
 
 
     APACHE_ATLAS_EXCHANGE("5721627a-2dd4-4f95-a274-6cfb128edb97",
@@ -538,6 +564,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the Microsoft SQL Server Cataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getMSSQLServerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(MSSQLConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
 
         return configurationProperties;
     }

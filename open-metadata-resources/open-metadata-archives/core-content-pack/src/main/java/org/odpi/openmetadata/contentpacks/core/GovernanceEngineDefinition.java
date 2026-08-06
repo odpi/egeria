@@ -102,6 +102,29 @@ public enum GovernanceEngineDefinition
 
 
     /**
+     * Provides surveys on Microsoft SQL Servers.
+     */
+    MSSQL_SURVEY_ENGINE("d263ad17-3251-4010-bceb-9a1e6651334c",
+                        "MSSQLSurvey",
+                        "Microsoft SQL Server Survey Engine",
+                        "Provides specialist surveys on Microsoft SQL Servers.",
+                        "mssqlsurveyengine",
+                        OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * Provides specialist governance services on Microsoft SQL Servers.
+     */
+    MSSQL_GOVERNANCE_ENGINE("820ab73f-34ea-4213-a221-469519ad48ae",
+                            "MSSQLGovernance",
+                            "Microsoft SQL Server Governance Engine",
+                            "Provides specialist governance services to Microsoft SQL Servers.",
+                            "mssqlgovernanceengine",
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+
+    /**
      * Provides surveys on Apache Atlas Servers.
      */
     ATLAS_SURVEY_ENGINE("af1b89b3-c579-4ad3-b649-a007121566a0",

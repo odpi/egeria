@@ -5,6 +5,7 @@ package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -743,6 +744,48 @@ public enum RequestTypeDefinition
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
+     * survey-mssql-server
+     */
+    SURVEY_MSSQL_SERVER("survey-mssql-server",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.MSSQL_SURVEY_ENGINE,
+                        GovernanceServiceDefinition.MSSQL_SERVER_SURVEY,
+                        "009ade35-33d5-4ff7-b4c9-ef3ba09f7c9f",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                        MSSQLDeployedImplementationType.MSSQL_SERVER.getQualifiedName(),
+                        "4efca160-7272-4899-864e-6d082ee442be",
+                        "Survey a Microsoft SQL Server",
+                        "Create a survey report of the databases found in a requested Microsoft SQL Server.",
+                        MSSQLDeployedImplementationType.MSSQL_SERVER,
+                        null,
+                        true,
+                        ContentCollectionDefinition.SURVEY_ACTIONS,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * survey-mssql-database
+     */
+    SURVEY_MSSQL_DATABASE("survey-mssql-database",
+                          null,
+                          null,
+                          null,
+                          GovernanceEngineDefinition.MSSQL_SURVEY_ENGINE,
+                          GovernanceServiceDefinition.MSSQL_DATABASE_SURVEY,
+                          "f915fa3c-24ad-4d12-a5a3-cd3c9a447ec4",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE.getQualifiedName(),
+                          "5c1768c9-b55e-401f-a406-ad01467c8fc0",
+                          "Survey Microsoft SQL Server Database",
+                          "Create a survey report of the schemas, tables and columns found in a requested Microsoft SQL Server Database.",
+                          MSSQLDeployedImplementationType.MSSQL_SERVER,
+                          null,
+                          true,
+                          ContentCollectionDefinition.SURVEY_ACTIONS,
+                          ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
      * create-file-folder
      */
     CREATE_FILE_FOLDER("create-file-folder",
@@ -1346,6 +1389,120 @@ public enum RequestTypeDefinition
                               false,
                               ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                               ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * create-mssql-server
+     */
+    CREATE_MSSQL_SERVER("create-mssql-server",
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.MSSQL_SERVER_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CREATE_ASSET,
+                        "7b9f329b-55cd-4914-be9c-eeb21d1271d8",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                        MSSQLDeployedImplementationType.MSSQL_SERVER.getQualifiedName(),
+                        "100535e1-90a0-497d-8f2a-430f2481c161",
+                        "Create Microsoft SQL Server asset in Open Metadata",
+                        "Create an asset that represents the server.",
+                        ContentCollectionDefinition.CREATE_ACTIONS,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * delete-mssql-server
+     */
+    DELETE_MSSQL_SERVER("delete-mssql-server",
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.MSSQL_SERVER_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.DELETE_ASSET,
+                        "a05bece3-3fba-4d3d-9836-46c4fec35c8c",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                        MSSQLDeployedImplementationType.MSSQL_SERVER.getQualifiedName(),
+                        "36d5b51f-5505-4a12-b61f-f7b769c3de23",
+                        "Delete Microsoft SQL Server from Open Metadata",
+                        "Delete asset from the metadata repository.",
+                        ContentCollectionDefinition.DELETE_ACTIONS,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * catalog-mssql-server
+     */
+    CATALOG_MSSQL_SERVER("catalog-mssql-server",
+                         null,
+                         null,
+                         getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.MSSQL_SERVER_CATALOGUER.getGUID()),
+                         GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                         "90c63e62-ad51-4457-904c-d8bc1613a3ca",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         MSSQLDeployedImplementationType.MSSQL_SERVER.getQualifiedName(),
+                         "5a842b20-ace2-425c-91d8-3fb14e92d992",
+                         "Configure Microsoft SQL Server Cataloguer",
+                         "Link the Microsoft SQL Server asset to the Microsoft SQL Server cataloguer.",
+                         null,
+                         IntegrationConnectorDefinition.MSSQL_SERVER_CATALOGUER.getSolutionComponentGUID(),
+                         false,
+                         ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                         ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * create-mssql-database
+     */
+    CREATE_MSSQL_DB("create-mssql-database",
+                    null,
+                    getManageAssetRequestParameters(DataAssetTemplateDefinition.MSSQL_DATABASE_TEMPLATE.getTemplateGUID()),
+                    null,
+                    GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                    GovernanceServiceDefinition.CREATE_ASSET,
+                    "80e676cc-e1f1-4040-9b78-e8be8085cfad",
+                    GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                    MSSQLDeployedImplementationType.MSSQL_DATABASE.getQualifiedName(),
+                    "4470bc7f-2b98-49d4-96fe-9f9d2b89650c",
+                    "Create Microsoft SQL Server Database from Open Metadata",
+                    "Create an open metadata element that represents a Microsoft SQL Server database using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the database and the connection.  The schemas, tables and columns are not cataloged by this component.",
+                    ContentCollectionDefinition.CREATE_ACTIONS,
+                    ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * delete-mssql-database
+     */
+    DELETE_MSSQL_DB("delete-mssql-database",
+                    null,
+                    getManageAssetRequestParameters(DataAssetTemplateDefinition.MSSQL_DATABASE_TEMPLATE.getTemplateGUID()),
+                    null,
+                    GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                    GovernanceServiceDefinition.DELETE_ASSET,
+                    "bb13577c-54a1-4c7e-95e2-f8a9747a9d91",
+                    GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                    MSSQLDeployedImplementationType.MSSQL_DATABASE.getQualifiedName(),
+                    "14e2d369-9d7a-43b4-9b18-b8227f891a76",
+                    "Delete Microsoft SQL Server Database from Open Metadata",
+                    "Locate and delete the open metadata element that represents the Microsoft SQL Server database described in the request.  The real database on the Microsoft SQL Server (if any) is unaffected by this component.",
+                    ContentCollectionDefinition.DELETE_ACTIONS,
+                    ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * catalog-mssql-database
+     */
+    CATALOG_MSSQL_DATABASE("catalog-mssql-database",
+                           null,
+                           null,
+                           getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                           GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                           GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                           "72cfc770-612f-4f19-9e99-7474df30b66b",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                           MSSQLDeployedImplementationType.MSSQL_DATABASE.getQualifiedName(),
+                           "abaee504-eb4e-4b73-b3b0-e946979adf9b",
+                           "Configure Microsoft SQL Server Database Cataloguer",
+                           "Link the Microsoft SQL Server database asset to the Microsoft SQL Server Database cataloguer.",
+                           null,
+                           IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                           false,
+                           ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                           ContentPackDefinition.MSSQL_CONTENT_PACK),
 
     /**
      * create-postgres-schema

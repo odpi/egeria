@@ -9,6 +9,7 @@ import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.digitalproducts.ProductPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.mssql.MSSQLPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.openlineage.OpenLineageArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.organizationinsight.OrganizationInsightArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
@@ -52,6 +53,9 @@ public class CorePacksArchivesWriter
 
             PostgresPackArchiveWriter postgresPackArchiveWriter = new PostgresPackArchiveWriter();
             postgresPackArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            MSSQLPackArchiveWriter mssqlPackArchiveWriter = new MSSQLPackArchiveWriter();
+            mssqlPackArchiveWriter.writeOpenMetadataArchive(folderName);
 
             ProductPackArchiveWriter productPackArchiveWriter = new ProductPackArchiveWriter();
             productPackArchiveWriter.writeOpenMetadataArchive(folderName);

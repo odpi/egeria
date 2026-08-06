@@ -98,6 +98,15 @@ public enum IntegrationGroupDefinition
                   "Dynamic integration group supporting integration connectors connecting to Unity Catalog (UC).",
                   ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
+    /**
+     * Dynamic integration group supporting integration connectors connecting to Microsoft SQL Servers.
+     */
+    MSSQL("19809fd0-2cd6-47b6-a8bb-0df884c01b1f",
+                 "Egeria:IntegrationGroup:MSSQL",
+                 "MSSQLIntegrationGroup",
+                 "Dynamic integration group supporting integration connectors connecting to Microsoft SQL Servers.",
+                 ContentPackDefinition.MSSQL_CONTENT_PACK),
+
             ;
 
     private final String                guid;

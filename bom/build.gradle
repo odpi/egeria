@@ -83,6 +83,7 @@ ext {
     ossVersion = '4.16.0'
     //      TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
+    mssqlVersion = '12.8.1.jre11'
     plexusVersion = '4.0.2'
     postgresVersion = '42.7.8' // already there
     nettyVersion = '4.2.7.Final'
@@ -144,6 +145,7 @@ dependencies {
         api("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
         //api("com.google.guava:guava:${guavaVersion}")
+        api("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
         api("com.sleepycat:je:${sleepycatVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
