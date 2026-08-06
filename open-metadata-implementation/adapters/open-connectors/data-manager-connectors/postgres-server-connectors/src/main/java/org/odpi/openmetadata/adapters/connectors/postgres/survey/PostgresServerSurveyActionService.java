@@ -181,7 +181,18 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection databaseConnectionDetails =
                     new org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection(serverConnector.getConnection());
 
-            databaseConnectionDetails.getEndpoint().setNetworkAddress(databaseSpecificURL);
+            /*
+             * The Connection copy constructor only takes a shallow copy of the endpoint, so mutating
+             * databaseConnectionDetails.getEndpoint() in place would also corrupt the endpoint shared with
+             * serverConnector's own connection - and every survey after the first would then be built from an
+             * already-substituted URL instead of the original server URL.  Taking an explicit copy of the
+             * endpoint avoids that.
+             */
+            org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint databaseEndpoint =
+                    new org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint(databaseConnectionDetails.getEndpoint());
+
+            databaseEndpoint.setNetworkAddress(databaseSpecificURL);
+            databaseConnectionDetails.setEndpoint(databaseEndpoint);
 
             ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 

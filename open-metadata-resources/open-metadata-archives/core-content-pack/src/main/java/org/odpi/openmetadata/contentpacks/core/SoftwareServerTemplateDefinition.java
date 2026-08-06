@@ -10,6 +10,9 @@ import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplement
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
@@ -57,6 +60,26 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                              null,
                              PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    MSSQL_SERVER_TEMPLATE(MSSQLTemplateType.MSSQL_SERVER_TEMPLATE.getTemplateGUID(),
+                          MSSQLDeployedImplementationType.MSSQL_SERVER,
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE_MANAGER,
+                          "Database Management System (DBMS)",
+                          PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                          null,
+                          new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                          "jdbc:sqlserver://" +
+                                  PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                          null,
+                          PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                          SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                          new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                          PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                          null,
+                          MSSQLPlaceholderProperty.getMSSQLServerPlaceholderPropertyTypes(),
+                          ContentPackDefinition.MSSQL_CONTENT_PACK),
 
     APACHE_ATLAS_TEMPLATE("fe6dce45-a978-4417-ab55-17f05b8bcea7",
                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER,

@@ -1,0 +1,38 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.adapters.connectors.mssql.catalog;
+
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTarget;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
+
+/**
+ * MSSQLServerIntegrationProvider is the OCF connector provider for the Microsoft SQL Server database server integration connector.
+ */
+public class MSSQLServerIntegrationProvider extends IntegrationConnectorProvider
+{
+    /**
+     * Class of the connector.
+     */
+    private static final String connectorClassName = "org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationConnector";
+
+    /**
+     * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific connector implementation.
+     * Most of the work of this connector provider is handled by the base class.
+     */
+    public MSSQLServerIntegrationProvider()
+    {
+        super(EgeriaOpenConnectorDefinition.MSSQL_SERVER_INTEGRATION_CONNECTOR,
+              connectorClassName,
+              MSSQLConfigurationProperty.getMSSQLServerIntegrationConnectorNames());
+
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{MSSQLDeployedImplementationType.MSSQL_SERVER});
+        super.catalogTargets = MSSQLTarget.getMSSQLServerCatalogTargetTypes();
+        super.supportedConfigurationProperties = MSSQLConfigurationProperty.getMSSQLServerConfigurationPropertyTypes();
+    }
+}

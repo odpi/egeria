@@ -6,5 +6,6 @@
 The data manager connectors work with data management platforms that
 use metadata to describe and control access to data.
 
+* [Microsoft SQL Server Connectors](mssql-server-connectors) provides specialist connectors for working with Microsoft SQL Servers and their databases.
 * [PostgreSQL Server Connectors](postgres-server-connectors) provides specialist connectors for working with PostgreSQL Servers and their databases.
 * [Unity Catalog (UC)](unity-catalog-connectors) provides specialist connectors for working with Unity Catalog.

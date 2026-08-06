@@ -157,7 +157,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
          * The default connector type is used to provide general access to the file.
          * Connectors that need to work with the contents can create another connector.
          */
-        String fileAssetGUID = super.addDataFileToCatalog(OpenMetadataType.ARCHIVE_FILE.typeName,
+        String fileAssetGUID = super.addDataFileToCatalog(OpenMetadataType.KEY_STORE_FILE.typeName,
                                                           fileAddress,
                                                           properties,
                                                           null,

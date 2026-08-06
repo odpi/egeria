@@ -95,6 +95,14 @@ public enum ContentPackDefinition
                                       "OrganizationInsightContentPack",
                                       "Monitoring, analysis, and capture of insight into organization activity and effectiveness.",
                                       "OrganizationInsightContentPack.omarchive"),
+
+    /**
+     * Reference data, templates, connectors, and governance services for working with a Microsoft SQL Server.
+     */
+    MSSQL_CONTENT_PACK("97c61fb6-01ed-4661-9537-67e3f61b1f48",
+                       "MSSQLContentPack",
+                       "Reference data, templates, connectors, and governance services for working with a Microsoft SQL Server. Egeria's content pack for Microsoft SQL Server provides templates for Microsoft SQL Server services and databases along with function to survey the contents of Microsoft SQL Server databases and catalog their schemas.",
+                       "MSSQLContentPack.omarchive"),
     ;
 
     private final String   archiveGUID;
