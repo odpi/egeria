@@ -105,32 +105,36 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ADDITIONAL_CONNECTION_PROPERTIES" class="member-name-link">ADDITIONAL_CONNECTION_PROPERTIES</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Additional properties passed straight through to the JDBC driver on every connection.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provides a name to use in messages about the database.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_SCHEMA" class="member-name-link">DATABASE_SCHEMA</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DATABASE_SCHEMA" class="member-name-link">DATABASE_SCHEMA</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name of the database schema used to store the data.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_URL" class="member-name-link">DATABASE_URL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATABASE_URL" class="member-name-link">DATABASE_URL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Connection string for the database where the schema is located.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#JDBC_CONNECTION_TIMEOUT" class="member-name-link">JDBC_CONNECTION_TIMEOUT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#JDBC_CONNECTION_TIMEOUT" class="member-name-link">JDBC_CONNECTION_TIMEOUT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#JDBC_DRIVER_MANAGER_CLASS_NAME" class="member-name-link">JDBC_DRIVER_MANAGER_CLASS_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#JDBC_DRIVER_MANAGER_CLASS_NAME" class="member-name-link">JDBC_DRIVER_MANAGER_CLASS_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">An optional configuration property that causes the named class to be loaded and registered as a driver.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SECRETS_COLLECTION_NAME" class="member-name-link">SECRETS_COLLECTION_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SECRETS_COLLECTION_NAME" class="member-name-link">SECRETS_COLLECTION_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name of the secrets collection within the secrets store to use for login credentials.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SECRETS_STORE" class="member-name-link">SECRETS_STORE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SECRETS_STORE" class="member-name-link">SECRETS_STORE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The file name of the secrets store containing the log on credentials to access the database.</div>
 </div>
 </div>
@@ -292,6 +296,15 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_CONNECTION_TIMEOUT</span></div>
 <div class="block">Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.
  The default value is 0 which means use the system default timeout, if any; otherwise it means no timeout.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ADDITIONAL_CONNECTION_PROPERTIES">
+<h3>ADDITIONAL_CONNECTION_PROPERTIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">ADDITIONAL_CONNECTION_PROPERTIES</span></div>
+<div class="block">Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's
+ driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without
+ it they are silently omitted.</div>
 </section>
 </li>
 </ul>
