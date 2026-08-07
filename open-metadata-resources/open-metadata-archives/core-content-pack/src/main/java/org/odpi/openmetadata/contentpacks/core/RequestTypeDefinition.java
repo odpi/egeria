@@ -6,6 +6,7 @@ package org.odpi.openmetadata.contentpacks.core;
 import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -786,6 +787,48 @@ public enum RequestTypeDefinition
                           ContentPackDefinition.MSSQL_CONTENT_PACK),
 
     /**
+     * survey-oracle-server
+     */
+    SURVEY_ORACLE_SERVER("survey-oracle-server",
+                         null,
+                         null,
+                         null,
+                         GovernanceEngineDefinition.ORACLE_SURVEY_ENGINE,
+                         GovernanceServiceDefinition.ORACLE_SERVER_SURVEY,
+                         "60ceade6-cadc-45af-b6b4-42ec5fe41334",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         OracleDeployedImplementationType.ORACLE_SERVER.getQualifiedName(),
+                         "c08e01cb-93e3-49cc-8fd0-672c72746f02",
+                         "Survey an Oracle Database Server",
+                         "Create a survey report of the pluggable databases found in a requested Oracle Database Server.",
+                         OracleDeployedImplementationType.ORACLE_SERVER,
+                         null,
+                         true,
+                         ContentCollectionDefinition.SURVEY_ACTIONS,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * survey-oracle-database
+     */
+    SURVEY_ORACLE_DATABASE("survey-oracle-database",
+                           null,
+                           null,
+                           null,
+                           GovernanceEngineDefinition.ORACLE_SURVEY_ENGINE,
+                           GovernanceServiceDefinition.ORACLE_DATABASE_SURVEY,
+                           "a6e8ffe6-c149-476d-b9e2-c7591298e81d",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                           OracleDeployedImplementationType.ORACLE_DATABASE.getQualifiedName(),
+                           "723cdcdd-2951-42f0-b6d6-335a9f02e9b6",
+                           "Survey Oracle Pluggable Database",
+                           "Create a survey report of the schemas, tables and columns found in a requested Oracle pluggable database.",
+                           OracleDeployedImplementationType.ORACLE_SERVER,
+                           null,
+                           true,
+                           ContentCollectionDefinition.SURVEY_ACTIONS,
+                           ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
      * create-file-folder
      */
     CREATE_FILE_FOLDER("create-file-folder",
@@ -1503,6 +1546,120 @@ public enum RequestTypeDefinition
                            false,
                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                            ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * create-oracle-server
+     */
+    CREATE_ORACLE_SERVER("create-oracle-server",
+                         null,
+                         getManageAssetRequestParameters(SoftwareServerTemplateDefinition.ORACLE_SERVER_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CREATE_ASSET,
+                         "5a00ad8d-341f-4100-99dc-fb75224337f9",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         OracleDeployedImplementationType.ORACLE_SERVER.getQualifiedName(),
+                         "b141bae4-8a27-4165-a4ed-20792a1e2814",
+                         "Create Oracle Database Server asset in Open Metadata",
+                         "Create an asset that represents the server.",
+                         ContentCollectionDefinition.CREATE_ACTIONS,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * delete-oracle-server
+     */
+    DELETE_ORACLE_SERVER("delete-oracle-server",
+                         null,
+                         getManageAssetRequestParameters(SoftwareServerTemplateDefinition.ORACLE_SERVER_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.DELETE_ASSET,
+                         "6f0fa1d1-24bb-4da1-ba1e-2d98ffc1c191",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         OracleDeployedImplementationType.ORACLE_SERVER.getQualifiedName(),
+                         "54659978-5c1a-4888-8a35-2a753bf5859c",
+                         "Delete Oracle Database Server from Open Metadata",
+                         "Delete asset from the metadata repository.",
+                         ContentCollectionDefinition.DELETE_ACTIONS,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * catalog-oracle-server
+     */
+    CATALOG_ORACLE_SERVER("catalog-oracle-server",
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.ORACLE_SERVER_CATALOGUER.getGUID()),
+                          GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "ff947ba4-cda7-4a79-a9e4-7beb4abeddb6",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          OracleDeployedImplementationType.ORACLE_SERVER.getQualifiedName(),
+                          "934f2655-8e4b-471a-930f-9261f3bec67e",
+                          "Configure Oracle Database Server Cataloguer",
+                          "Link the Oracle Database Server asset to the Oracle Database Server cataloguer.",
+                          null,
+                          IntegrationConnectorDefinition.ORACLE_SERVER_CATALOGUER.getSolutionComponentGUID(),
+                          false,
+                          ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                          ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * create-oracle-database
+     */
+    CREATE_ORACLE_DB("create-oracle-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.ORACLE_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.CREATE_ASSET,
+                     "a99e9d85-b949-40dc-b8b0-fefdbb995d1a",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     OracleDeployedImplementationType.ORACLE_DATABASE.getQualifiedName(),
+                     "8f0a13dc-9e09-421a-acaa-e2c0d5def0de",
+                     "Create Oracle Pluggable Database from Open Metadata",
+                     "Create an open metadata element that represents an Oracle pluggable database using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the database and the connection.  The schemas, tables and columns are not cataloged by this component.",
+                     ContentCollectionDefinition.CREATE_ACTIONS,
+                     ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * delete-oracle-database
+     */
+    DELETE_ORACLE_DB("delete-oracle-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.ORACLE_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.DELETE_ASSET,
+                     "a219e805-e827-42ce-bd31-f20274b1120e",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     OracleDeployedImplementationType.ORACLE_DATABASE.getQualifiedName(),
+                     "d50d0601-bab4-4a4a-bcc3-52c59d899b8f",
+                     "Delete Oracle Pluggable Database from Open Metadata",
+                     "Locate and delete the open metadata element that represents the Oracle pluggable database described in the request.  The real pluggable database on the Oracle Database Server (if any) is unaffected by this component.",
+                     ContentCollectionDefinition.DELETE_ACTIONS,
+                     ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * catalog-oracle-database
+     */
+    CATALOG_ORACLE_DATABASE("catalog-oracle-database",
+                            null,
+                            null,
+                            getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                            GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                            "404a914b-a386-436c-9aa2-bf033c8ae925",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                            OracleDeployedImplementationType.ORACLE_DATABASE.getQualifiedName(),
+                            "73b92b06-d6a6-4b53-9356-2cb2aec61ae1",
+                            "Configure Oracle Pluggable Database Cataloguer",
+                            "Link the Oracle pluggable database asset to the Oracle Pluggable Database cataloguer.",
+                            null,
+                            IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                            false,
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                            ContentPackDefinition.ORACLE_CONTENT_PACK),
 
     /**
      * create-postgres-schema

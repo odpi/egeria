@@ -16,6 +16,10 @@ import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateTyp
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OraclePlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleTemplateType;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
@@ -80,6 +84,29 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           null,
                           MSSQLPlaceholderProperty.getMSSQLServerPlaceholderPropertyTypes(),
                           ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    ORACLE_SERVER_TEMPLATE(OracleTemplateType.ORACLE_SERVER_TEMPLATE.getTemplateGUID(),
+                           OracleDeployedImplementationType.ORACLE_SERVER,
+                           OracleDeployedImplementationType.ORACLE_DATABASE_MANAGER,
+                           "Database Management System (DBMS)",
+                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                           null,
+                           new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                           "jdbc:oracle:thin:@//" +
+                                   PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                   OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                           Map.of(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
+                                  Map.of("remarksReporting", "true",
+                                         "oracle.jdbc.timezoneAsRegion", "false")),
+                           PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                           null,
+                           OraclePlaceholderProperty.getOracleServerPlaceholderPropertyTypes(),
+                           ContentPackDefinition.ORACLE_CONTENT_PACK),
 
     APACHE_ATLAS_TEMPLATE("fe6dce45-a978-4417-ab55-17f05b8bcea7",
                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER,

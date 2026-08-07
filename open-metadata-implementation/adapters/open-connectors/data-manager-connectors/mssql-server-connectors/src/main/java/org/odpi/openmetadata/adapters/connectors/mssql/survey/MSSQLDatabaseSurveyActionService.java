@@ -45,7 +45,7 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
             /*
              * The asset should have a special connector for databases.  If the connector is wrong the cast will fail.
              */
-            connector = super.performCheckAssetAnalysisStep(JDBCResourceConnector.class, OpenMetadataType.SOFTWARE_SERVER.typeName);
+            connector = super.performCheckAssetAnalysisStep(JDBCResourceConnector.class, OpenMetadataType.RELATIONAL_DATABASE.typeName);
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
             assetConnector.start();
 

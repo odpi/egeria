@@ -9,6 +9,9 @@ import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OraclePlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
@@ -55,7 +58,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                "jdbc:postgresql://" +
                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                               null,
+                               Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder()),
                                PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -99,7 +102,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                             "jdbc:sqlserver://" +
                                     PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                     PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                            null,
+                            Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder()),
                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                             SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                             new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -107,6 +110,30 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                             null,
                             MSSQLPlaceholderProperty.getMSSQLDatabasePlaceholderPropertyTypes(),
                             ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    ORACLE_DATABASE_TEMPLATE(OracleTemplateType.ORACLE_DATABASE_TEMPLATE.getTemplateGUID(),
+                             OracleDeployedImplementationType.ORACLE_DATABASE,
+                             OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             OraclePlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
+                             OracleDeployedImplementationType.ORACLE_DATABASE.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             null,
+                             null,
+                             null,
+                             new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                             "jdbc:oracle:thin:@//" +
+                                     PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                     PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                    JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
+                                    Map.of("remarksReporting", "true",
+                                           "oracle.jdbc.timezoneAsRegion", "false")),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                             SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                             new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                             PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                             null,
+                             OraclePlaceholderProperty.getOracleDatabasePlaceholderPropertyTypes(),
+                             ContentPackDefinition.ORACLE_CONTENT_PACK),
 
     KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,

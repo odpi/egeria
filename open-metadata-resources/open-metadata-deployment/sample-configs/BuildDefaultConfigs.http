@@ -256,6 +256,14 @@ POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open
 Authorization: Bearer {{token}}
 Content-Type: text/plain
 
+content-packs/OracleContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
 content-packs/OpenLineageContentPack.omarchive
 
 ###
@@ -614,6 +622,28 @@ Content-Type: application/json
     },
     {
       "class": "EngineConfig",
+      "engineId": "11b4e590-cd3e-4d1b-89d9-978ab615ad6a",
+      "engineQualifiedName": "OracleSurvey",
+      "engineUserId": "oraclesurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "3b3771fb-6472-4bde-a993-d9584f02db68",
+      "engineQualifiedName": "OracleGovernance",
+      "engineUserId": "oraclegovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
       "engineId": "9b7a1da6-7882-41c7-b838-0e297787972f",
       "engineQualifiedName": "ApacheAtlasSurvey",
       "engineUserId": "apacheatlassurveyengine",
@@ -887,6 +917,15 @@ Content-Type: application/json
         "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
         "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:MSSQL"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Oracle"
     },
     {
         "class": "IntegrationGroupConfig",

@@ -21,6 +21,8 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLServerSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.oracle.survey.OracleDatabaseSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.oracle.survey.OracleServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.LovelaceKarmaPointAwardsServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
@@ -320,6 +322,29 @@ public enum GovernanceServiceDefinition
                           ResourceUse.SURVEY_RESOURCE,
                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                           ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+
+    /**
+     * Oracle Database Server Survey Service
+     */
+    ORACLE_SERVER_SURVEY("ac28e9cc-2861-4a14-a988-db2391668d95",
+                         "oracle-server-survey-service",
+                         "Oracle Database Server Survey Service",
+                         new OracleServerSurveyActionProvider(),
+                         ResourceUse.SURVEY_RESOURCE,
+                         DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * Oracle Pluggable Database Survey Service
+     */
+    ORACLE_DATABASE_SURVEY("7ef66429-02a7-444c-8da2-6e1a17c98b69",
+                           "oracle-database-survey-service",
+                           "Oracle Pluggable Database Survey Service",
+                           new OracleDatabaseSurveyActionProvider(),
+                           ResourceUse.SURVEY_RESOURCE,
+                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                           ContentPackDefinition.ORACLE_CONTENT_PACK),
 
 
     /**

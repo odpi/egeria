@@ -16,6 +16,12 @@ import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholder
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OraclePlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleTemplateType;
+import org.odpi.openmetadata.adapters.connectors.oracle.tabulardatasource.OracleTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.oracle.tabulardatasource.OracleTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
@@ -139,6 +145,55 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
                                                MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
                                                ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+
+    ORACLE_TABULAR_DATA_SET_TEMPLATE(OracleTemplateType.ORACLE_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
+                                     OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET,
+                                     OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                     PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                     OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                     null,
+                                     "relational",
+                                     "SQL",
+                                     new OracleTabularDataSetProvider().getConnectorType().getGUID(),
+                                     getOracleDataSetConfigurationProperties(),
+                                     new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                     "jdbc:oracle:thin:@//" +
+                                             PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                             PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                             OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                     getOracleSchemaConfigurationProperties(),
+                                     PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                     SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                     new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                     PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                     OracleTemplateType.ORACLE_TABULAR_DATA_SET_TEMPLATE.getReplacementAttributes(),
+                                     OracleTemplateType.ORACLE_TABULAR_DATA_SET_TEMPLATE.getPlaceholders(),
+                                     ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE(OracleTemplateType.ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getTemplateGUID(),
+                                                OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET_COLLECTION,
+                                                OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                null,
+                                                "relational",
+                                                "SQL",
+                                                new OracleTabularDataSetCollectionProvider().getConnectorType().getGUID(),
+                                                getOracleDataSetCollectionConfigurationProperties(),
+                                                new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                                "jdbc:oracle:thin:@//" +
+                                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                                        OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                                getOracleSchemaConfigurationProperties(),
+                                                PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                                SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                                PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                                OracleTemplateType.ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
+                                                OracleTemplateType.ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
+                                                ContentPackDefinition.ORACLE_CONTENT_PACK),
 
 
     CSV_TABULAR_DATA_SET_TEMPLATE(CSVFileTemplateType.CSV_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
@@ -270,6 +325,65 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
 
         configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder());
         configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for an Oracle Database tabular data set collection.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getOracleDataSetCollectionConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(OracleConfigurationProperty.SCHEMA_NAME.getName(), OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(OracleConfigurationProperty.SCHEMA_DESCRIPTION.getName(), OraclePlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for an Oracle Database tabular data set.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getOracleDataSetConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(OracleConfigurationProperty.SCHEMA_NAME.getName(), OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(OracleConfigurationProperty.SCHEMA_DESCRIPTION.getName(), OraclePlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+        configurationProperties.put(OracleConfigurationProperty.TABLE_NAME.getName(), OraclePlaceholderProperty.TABLE_NAME.getPlaceholder());
+        configurationProperties.put(OracleConfigurationProperty.TABLE_DESCRIPTION.getName(), OraclePlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the connection configuration properties documenting the pluggable database (PDB)/schema an Oracle
+     * tabular data set connection targets, plus the additionalConnectionProperties Oracle's JDBC driver needs to
+     * retrieve table/column comments via DatabaseMetaData (remarksReporting=true) and to avoid timezone
+     * conversion errors (oracle.jdbc.timezoneAsRegion=false).  Oracle has no "currentSchema=" JDBC URL parameter
+     * either, so - like the Microsoft SQL Server template - the database/schema values are not consumed by
+     * JDBCResourceConnector itself from these properties, but are still recorded on the connection for
+     * documentation.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getOracleSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
+                                    Map.of("remarksReporting", "true",
+                                           "oracle.jdbc.timezoneAsRegion", "false"));
 
         return configurationProperties;
     }

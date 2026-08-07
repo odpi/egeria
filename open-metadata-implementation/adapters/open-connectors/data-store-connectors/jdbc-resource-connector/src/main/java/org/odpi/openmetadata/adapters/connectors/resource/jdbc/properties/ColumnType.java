@@ -10,24 +10,30 @@ import java.sql.Types;
  */
 public enum ColumnType
 {
-    STRING(Types.VARCHAR, "text", "nvarchar(max)"),
-    DATE(Types.TIMESTAMP, "timestamp(6) without time zone", "datetime2(6)"),
-    LONG(Types.BIGINT, "bigint", "bigint"),
-    INT(Types.INTEGER, "integer", "int"),
-    BOOLEAN(Types.BOOLEAN, "boolean", "bit")
+    STRING(Types.VARCHAR, "text", "nvarchar(max)", "VARCHAR2(4000)"),
+    DATE(Types.TIMESTAMP, "timestamp(6) without time zone", "datetime2(6)", "TIMESTAMP(6)"),
+    LONG(Types.BIGINT, "bigint", "bigint", "NUMBER(19)"),
+    INT(Types.INTEGER, "integer", "int", "NUMBER(10)"),
+    /*
+     * Oracle 23c introduced a native BOOLEAN column type, but NUMBER(1) is used here instead so that the
+     * generated DDL also works against older, still widely deployed Oracle versions (eg 19c).
+     */
+    BOOLEAN(Types.BOOLEAN, "boolean", "bit", "NUMBER(1)")
     ;
 
 
     private final int jdbcType;
     private final String postgresType;
     private final String mssqlType;
+    private final String oracleType;
 
 
-    ColumnType(int jdbcType, String postgresType, String mssqlType)
+    ColumnType(int jdbcType, String postgresType, String mssqlType, String oracleType)
     {
         this.jdbcType     = jdbcType;
         this.postgresType = postgresType;
         this.mssqlType    = mssqlType;
+        this.oracleType   = oracleType;
     }
 
 
@@ -61,5 +67,16 @@ public enum ColumnType
     public String getMssqlType()
     {
         return mssqlType;
+    }
+
+
+    /**
+     * Return the Oracle Database type used when defining tables.
+     *
+     * @return string
+     */
+    public String getOracleType()
+    {
+        return oracleType;
     }
 }

@@ -103,6 +103,14 @@ public enum ContentPackDefinition
                        "MSSQLContentPack",
                        "Reference data, templates, connectors, and governance services for working with a Microsoft SQL Server. Egeria's content pack for Microsoft SQL Server provides templates for Microsoft SQL Server services and databases along with function to survey the contents of Microsoft SQL Server databases and catalog their schemas.",
                        "MSSQLContentPack.omarchive"),
+
+    /**
+     * Reference data, templates, connectors, and governance services for working with an Oracle Database Server.
+     */
+    ORACLE_CONTENT_PACK("259bde48-2363-4463-9477-0a80734668d7",
+                        "OracleContentPack",
+                        "Reference data, templates, connectors, and governance services for working with an Oracle Database Server. Egeria's content pack for Oracle Database provides templates for Oracle Database servers and pluggable databases along with function to survey the contents of Oracle pluggable databases and catalog their schemas.",
+                        "OracleContentPack.omarchive"),
     ;
 
     private final String   archiveGUID;
