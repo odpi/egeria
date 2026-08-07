@@ -54,6 +54,13 @@ public enum JDBCConfigurationProperty
      */
     JDBC_CONNECTION_TIMEOUT("jdbcConnectionTimeout", "Sets the maximum time in seconds that this data source will wait while attempting to connect to a database. The default value is 0 which means use the system default timeout, if any; otherwise it means no timeout.", DataType.INT.getDisplayName(), "10"),
 
+    /**
+     * Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's
+     * driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without
+     * it they are silently omitted.
+     */
+    ADDITIONAL_CONNECTION_PROPERTIES("additionalConnectionProperties", "Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without it they are silently omitted.", DataType.MAP_STRING_STRING.getDisplayName(), "{\"remarksReporting\": \"true\"}"),
+
 
     ;
 

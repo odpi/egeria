@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * JDBCResourceConnector provides a resource connector to work with JDBC Databases.  The JDBC interface works using
@@ -39,6 +40,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     private String                          jdbcDatabaseName   = null;
     private String                          jdbcDatabaseURL    = null;
     private JDBCConnectorAsDataSource       jdbcDataSource     = null;
+    private final Properties                jdbcConnectionProperties = new Properties();
 
 
     private static final Logger log = LoggerFactory.getLogger(JDBCResourceConnector.class);
@@ -157,6 +159,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                                                         methodName);
                 }
             }
+
+            JDBCConnectionPropertiesUtil.addAdditionalConnectionProperties(configurationProperties.get(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName()),
+                                                                           jdbcConnectionProperties);
         }
 
         jdbcDataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
@@ -1072,16 +1077,16 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
                 if ((jdbcConnection == null) || (jdbcConnection.isClosed()))
                 {
-                    if ((connectionBean.getUserId() == null) || (connectionBean.getClearPassword() == null))
+                    Properties connectionProperties = new Properties();
+                    connectionProperties.putAll(jdbcConnectionProperties);
+
+                    if ((connectionBean.getUserId() != null) && (connectionBean.getClearPassword() != null))
                     {
-                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress());
+                        connectionProperties.setProperty("user", connectionBean.getUserId());
+                        connectionProperties.setProperty("password", connectionBean.getClearPassword());
                     }
-                    else
-                    {
-                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(),
-                                                                     connectionBean.getUserId(),
-                                                                     connectionBean.getClearPassword());
-                    }
+
+                    jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), connectionProperties);
 
                     jdbcConnection.setAutoCommit(false);
 
@@ -1135,7 +1140,12 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
             try
             {
-                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), username, password);
+                Properties connectionProperties = new Properties();
+                connectionProperties.putAll(jdbcConnectionProperties);
+                connectionProperties.setProperty("user", username);
+                connectionProperties.setProperty("password", password);
+
+                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), connectionProperties);
 
                 if (auditLog != null)
                 {
