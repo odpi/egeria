@@ -19,6 +19,8 @@ import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptio
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLDatabaseSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.LovelaceKarmaPointAwardsServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
@@ -295,6 +297,29 @@ public enum GovernanceServiceDefinition
                              ResourceUse.SURVEY_RESOURCE,
                              DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+
+    /**
+     * Microsoft SQL Server Survey Service
+     */
+    MSSQL_SERVER_SURVEY("8434da81-fec6-4cf1-87b1-a50de0d5a634",
+                        "mssql-server-survey-service",
+                        "Microsoft SQL Server Survey Service",
+                        new MSSQLServerSurveyActionProvider(),
+                        ResourceUse.SURVEY_RESOURCE,
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * Microsoft SQL Server Database Survey Service
+     */
+    MSSQL_DATABASE_SURVEY("e06490fc-590c-4b47-96e1-413dca1e2f2a",
+                          "mssql-database-survey-service",
+                          "Microsoft SQL Server Database Survey Service",
+                          new MSSQLDatabaseSurveyActionProvider(),
+                          ResourceUse.SURVEY_RESOURCE,
+                          DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                          ContentPackDefinition.MSSQL_CONTENT_PACK),
 
 
     /**

@@ -637,7 +637,7 @@ Content-Type: application/json
 
 # @name getInformationSupplyChainsByName
 # Returns the list of information supply chains with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

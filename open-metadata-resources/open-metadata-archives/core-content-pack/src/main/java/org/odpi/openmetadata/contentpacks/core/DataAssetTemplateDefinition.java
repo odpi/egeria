@@ -6,6 +6,9 @@ package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
@@ -44,7 +47,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
                                PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
-                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                null,
                                null,
                                null,
@@ -65,7 +68,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                              null,
                              null,
                              null,
@@ -83,6 +86,27 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    MSSQL_DATABASE_TEMPLATE(MSSQLTemplateType.MSSQL_DATABASE_TEMPLATE.getTemplateGUID(),
+                            MSSQLDeployedImplementationType.MSSQL_DATABASE,
+                            MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                            MSSQLPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
+                            MSSQLDeployedImplementationType.MSSQL_DATABASE.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                            null,
+                            null,
+                            null,
+                            new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                            "jdbc:sqlserver://" +
+                                    PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                    PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                            null,
+                            PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                            SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                            new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                            PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                            null,
+                            MSSQLPlaceholderProperty.getMSSQLDatabasePlaceholderPropertyTypes(),
+                            ContentPackDefinition.MSSQL_CONTENT_PACK),
 
     KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,
