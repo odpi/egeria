@@ -10,22 +10,24 @@ import java.sql.Types;
  */
 public enum ColumnType
 {
-    STRING(Types.VARCHAR, "text"),
-    DATE(Types.TIMESTAMP, "timestamp(6) without time zone"),
-    LONG(Types.BIGINT, "bigint"),
-    INT(Types.INTEGER, "integer"),
-    BOOLEAN(Types.BOOLEAN, "boolean")
+    STRING(Types.VARCHAR, "text", "nvarchar(max)"),
+    DATE(Types.TIMESTAMP, "timestamp(6) without time zone", "datetime2(6)"),
+    LONG(Types.BIGINT, "bigint", "bigint"),
+    INT(Types.INTEGER, "integer", "int"),
+    BOOLEAN(Types.BOOLEAN, "boolean", "bit")
     ;
 
 
     private final int jdbcType;
     private final String postgresType;
+    private final String mssqlType;
 
 
-    ColumnType(int jdbcType, String postgresType)
+    ColumnType(int jdbcType, String postgresType, String mssqlType)
     {
         this.jdbcType     = jdbcType;
         this.postgresType = postgresType;
+        this.mssqlType    = mssqlType;
     }
 
 
@@ -48,5 +50,16 @@ public enum ColumnType
     public String getPostgresType()
     {
         return postgresType;
+    }
+
+
+    /**
+     * Return the Microsoft SQL Server (T-SQL) type used when defining tables.
+     *
+     * @return string
+     */
+    public String getMssqlType()
+    {
+        return mssqlType;
     }
 }

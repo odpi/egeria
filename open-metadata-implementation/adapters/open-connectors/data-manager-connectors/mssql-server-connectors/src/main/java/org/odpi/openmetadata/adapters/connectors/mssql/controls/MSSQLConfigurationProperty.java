@@ -69,6 +69,44 @@ public enum MSSQLConfigurationProperty
                        true),
 
     /**
+     * The name of the database schema being catalogued.
+     */
+    SCHEMA_NAME (PlaceholderProperty.SCHEMA_NAME.getName(),
+                 PlaceholderProperty.SCHEMA_NAME.getDescription(),
+                 PlaceholderProperty.SCHEMA_NAME.getDataType(),
+                 PlaceholderProperty.SCHEMA_NAME.getExample(),
+                 true),
+
+    /**
+     * The description of the database schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION(PlaceholderProperty.DESCRIPTION.getName(),
+                       PlaceholderProperty.DESCRIPTION.getDescription(),
+                       PlaceholderProperty.DESCRIPTION.getDataType(),
+                       PlaceholderProperty.DESCRIPTION.getExample(),
+                       true),
+
+    /**
+     * The name of the database table being catalogued.
+     */
+    TABLE_NAME (PlaceholderProperty.TABLE_NAME.getName(),
+                PlaceholderProperty.TABLE_NAME.getDescription(),
+                PlaceholderProperty.TABLE_NAME.getDataType(),
+                PlaceholderProperty.TABLE_NAME.getExample(),
+                true),
+
+
+    /**
+     * The description of the database table being catalogued.
+     */
+    TABLE_DESCRIPTION (PlaceholderProperty.TABLE_DESCRIPTION.getName(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDescription(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDataType(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getExample(),
+                       true),
+
+
+    /**
      * Provides a list of database names that should not be catalogued.
      */
     EXCLUDE_DATABASE_LIST ("excludeDatabaseList",
@@ -224,6 +262,43 @@ public enum MSSQLConfigurationProperty
         configurationPropertyTypes.add(MSSQLConfigurationProperty.DATABASE_USER_ID.getConfigurationPropertyType());
         configurationPropertyTypes.add(MSSQLConfigurationProperty.DATABASE_PASSWORD.getConfigurationPropertyType());
         configurationPropertyTypes.add(MSSQLConfigurationProperty.FRIENDSHIP_GUID.getConfigurationPropertyType());
+
+        return configurationPropertyTypes;
+    }
+
+
+
+    /**
+     * Get recognizedConfigurationProperties for the Microsoft SQL Server tabular data source resource connector.
+     *
+     * @return list of property names
+     */
+    public static List<String> getMSSQLTabularDataSourceConfigPropertyNames()
+    {
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.SCHEMA_NAME.getName());
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.SCHEMA_DESCRIPTION.getName());
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.TABLE_NAME.getName());
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.TABLE_DESCRIPTION.getName());
+
+        return recognizedConfigurationProperties;
+    }
+
+
+    /**
+     * Retrieve the defined configuration properties for the Microsoft SQL Server tabular data source connector
+     *
+     * @return list of configuration property types
+     */
+    public static List<ConfigurationPropertyType> getMSSQLTabularDataSourceConfigurationPropertyTypes()
+    {
+        List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
+
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.SCHEMA_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.SCHEMA_DESCRIPTION.getConfigurationPropertyType());
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }

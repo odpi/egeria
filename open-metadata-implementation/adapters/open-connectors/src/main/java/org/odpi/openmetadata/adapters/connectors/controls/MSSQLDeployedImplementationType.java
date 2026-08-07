@@ -59,6 +59,34 @@ public enum MSSQLDeployedImplementationType implements DeployedImplementationTyp
                 "MSSQL-SERVER"),
 
     /**
+     * A database table hosted on a Microsoft SQL Server that has the tabular data set interface.
+     */
+    MSSQL_TABULAR_DATA_SET("81d38562-0323-4c20-b475-33901b57a48b",
+                           "Microsoft SQL Server Tabular Data Set",
+                           DeployedImplementationType.TABULAR_DATA_SET,
+                           OpenMetadataType.TABULAR_DATA_SET.typeName,
+                           null,
+                           "A database table hosted on a Microsoft SQL Server that has the tabular data set interface.",
+                           "https://www.microsoft.com/en-us/sql-server/",
+                           "df68f69b-c451-47fd-ad12-a7180c47f1ee",
+                           SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
+                           "MSSQL-TABULAR-DATA-SET"),
+
+    /**
+     * A database schema hosted on a Microsoft SQL Server that has the tabular data set collection interface.
+     */
+    MSSQL_TABULAR_DATA_SET_COLLECTION("9cbbc30c-a2a4-4fd9-978a-43bc939fcb72",
+                                      "Microsoft SQL Server Tabular Data Set Collection",
+                                      DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                      OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                      null,
+                                      "A database schema hosted on a Microsoft SQL Server that has the tabular data set collection interface.",
+                                      "https://www.microsoft.com/en-us/sql-server/",
+                                      "ce332084-5775-4ae9-b8cb-ec9ce13a2cb9",
+                                      SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
+                                      "MSSQL-TABULAR-DATA-SET-COLLECTION"),
+
+    /**
      * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
      */
     MSSQL_DATABASE_MANAGER("23c40c64-4715-44c0-8877-0b4935e8a416",

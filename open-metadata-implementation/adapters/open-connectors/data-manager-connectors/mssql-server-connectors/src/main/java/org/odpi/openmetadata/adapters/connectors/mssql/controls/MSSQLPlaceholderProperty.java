@@ -48,6 +48,27 @@ public enum MSSQLPlaceholderProperty
                        "string",
                        "myDatabase"),
 
+
+    /**
+     * The name of the schema being catalogued.
+     */
+    SCHEMA_NAME ("schemaName", "The name of the database schema being catalogued.", "string", "MyServer.schema"),
+
+    /**
+     * The description of the schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION ("schemaDescription", "The description of the database schema being catalogued.", "string", null),
+
+    /**
+     * The name of the database table being catalogued.
+     */
+    TABLE_NAME ("tableName", "The name of the database table being catalogued.", "string", "my_table"),
+
+    /**
+     * The description of the table being catalogued.
+     */
+    TABLE_DESCRIPTION ("tableDescription", "The description of the database table being catalogued.", "string", null),
+
     ;
 
     public final String name;
@@ -168,6 +189,54 @@ public enum MSSQLPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(MSSQLPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getMSSQLSchemaPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getMSSQLTablePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.TABLE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MSSQLPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 

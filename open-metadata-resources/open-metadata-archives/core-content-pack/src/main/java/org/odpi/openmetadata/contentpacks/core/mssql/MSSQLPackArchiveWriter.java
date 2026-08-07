@@ -5,6 +5,8 @@ package org.odpi.openmetadata.contentpacks.core.mssql;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
+import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetProvider;
 import org.odpi.openmetadata.contentpacks.core.ContentPackDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationGroupDefinition;
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
@@ -57,10 +59,17 @@ public class MSSQLPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(new MSSQLServerIntegrationProvider());
 
         /*
+         * Set up the connector types for resource connectors introduced by this content pack
+         */
+        archiveHelper.addConnectorType(new MSSQLTabularDataSetProvider());
+        archiveHelper.addConnectorType(new MSSQLTabularDataSetCollectionProvider());
+
+        /*
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
+        this.addTabularDataSetCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
 
         /*
          * Create the default integration group.

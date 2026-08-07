@@ -4,18 +4,25 @@
 package org.odpi.openmetadata.contentpacks.core;
 
 
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileTemplateType;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
+import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource.MSSQLTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -83,6 +90,55 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                   PostgreSQLTemplateType.POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
                                                   PostgreSQLTemplateType.POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
                                                   ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+
+    MSSQL_TABULAR_DATA_SET_TEMPLATE(MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
+                                    MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET,
+                                    MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                    PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                    MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                    null,
+                                    "relational",
+                                    "SQL",
+                                    new MSSQLTabularDataSetProvider().getConnectorType().getGUID(),
+                                    getMSSQLDataSetConfigurationProperties(),
+                                    new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                    "jdbc:sqlserver://" +
+                                            PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                            PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" +
+                                            MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                    getMSSQLSchemaConfigurationProperties(),
+                                    PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                    SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                    new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                    PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                    MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_TEMPLATE.getReplacementAttributes(),
+                                    MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_TEMPLATE.getPlaceholders(),
+                                    ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE(MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getTemplateGUID(),
+                                               MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET_COLLECTION,
+                                               MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                               PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                               MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                               null,
+                                               "relational",
+                                               "SQL",
+                                               new MSSQLTabularDataSetCollectionProvider().getConnectorType().getGUID(),
+                                               getMSSQLDataSetCollectionConfigurationProperties(),
+                                               new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                               "jdbc:sqlserver://" +
+                                                       PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                       PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" +
+                                                       MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                               getMSSQLSchemaConfigurationProperties(),
+                                               PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                               SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                               new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                               PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                               MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
+                                               MSSQLTemplateType.MSSQL_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
+                                               ContentPackDefinition.MSSQL_CONTENT_PACK),
 
 
     CSV_TABULAR_DATA_SET_TEMPLATE(CSVFileTemplateType.CSV_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
@@ -161,6 +217,59 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
         configurationProperties.put(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getName(), PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
         configurationProperties.put(PostgresConfigurationProperty.TABLE_NAME.getName(), PostgresPlaceholderProperty.TABLE_NAME.getPlaceholder());
         configurationProperties.put(PostgresConfigurationProperty.TABLE_DESCRIPTION.getName(), PostgresPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for a Microsoft SQL Server tabular data set collection.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getMSSQLDataSetCollectionConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(MSSQLConfigurationProperty.SCHEMA_NAME.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(MSSQLConfigurationProperty.SCHEMA_DESCRIPTION.getName(), MSSQLPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for a Microsoft SQL Server tabular data set.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getMSSQLDataSetConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(MSSQLConfigurationProperty.SCHEMA_NAME.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(MSSQLConfigurationProperty.SCHEMA_DESCRIPTION.getName(), MSSQLPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+        configurationProperties.put(MSSQLConfigurationProperty.TABLE_NAME.getName(), MSSQLPlaceholderProperty.TABLE_NAME.getPlaceholder());
+        configurationProperties.put(MSSQLConfigurationProperty.TABLE_DESCRIPTION.getName(), MSSQLPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the connection configuration properties documenting the database/schema a Microsoft SQL Server
+     * tabular data set connection targets.  Microsoft SQL Server has no "currentSchema=" JDBC URL parameter, so -
+     * unlike PostgreSQL - these are not consumed by JDBCResourceConnector itself, but are still recorded on the
+     * connection for documentation, matching the PostgreSQL template's pattern.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getMSSQLSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
 
         return configurationProperties;
     }
