@@ -137,9 +137,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The number of the port to use to connect to the database server.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_DESCRIPTION" class="member-name-link">SCHEMA_DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the database schema being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The name of the database schema being catalogued.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The name of the database server being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_DESCRIPTION" class="member-name-link">TABLE_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The description of the database table being catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The name of the database table being catalogued.</div>
 </div>
 </div>
 </section>
@@ -216,6 +232,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLServerIntegrationConnectorNames()" class="member-name-link">getMSSQLServerIntegrationConnectorNames</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Get recognizedConfigurationProperties for the Microsoft SQL Server Integration connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLTabularDataSourceConfigPropertyNames()" class="member-name-link">getMSSQLTabularDataSourceConfigPropertyNames</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the Microsoft SQL Server tabular data source resource connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLTabularDataSourceConfigurationPropertyTypes()" class="member-name-link">getMSSQLTabularDataSourceConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the Microsoft SQL Server tabular data source connector</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
@@ -303,6 +329,34 @@ the order they are declared.</div>
 <h3>DATABASE_PASSWORD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLConfigurationProperty</a></span>&nbsp;<span class="element-name">DATABASE_PASSWORD</span></div>
 <div class="block">The password to store in the clearPassword attribute of the connection.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_NAME">
+<h3>SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLConfigurationProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
+<div class="block">The name of the database schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_DESCRIPTION">
+<h3>SCHEMA_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLConfigurationProperty</a></span>&nbsp;<span class="element-name">SCHEMA_DESCRIPTION</span></div>
+<div class="block">The description of the database schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_NAME">
+<h3>TABLE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLConfigurationProperty</a></span>&nbsp;<span class="element-name">TABLE_NAME</span></div>
+<div class="block">The name of the database table being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_DESCRIPTION">
+<h3>TABLE_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLConfigurationProperty</a></span>&nbsp;<span class="element-name">TABLE_DESCRIPTION</span></div>
+<div class="block">The description of the database table being catalogued.</div>
 </section>
 </li>
 <li>
@@ -475,6 +529,28 @@ not permitted.)</div>
 <h3>getMSSQLServerConfigurationPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLServerConfigurationPropertyTypes</span>()</div>
 <div class="block">Retrieve the defined configuration properties for the Microsoft SQL Server integration connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMSSQLTabularDataSourceConfigPropertyNames()">
+<h3>getMSSQLTabularDataSourceConfigPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLTabularDataSourceConfigPropertyNames</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the Microsoft SQL Server tabular data source resource connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMSSQLTabularDataSourceConfigurationPropertyTypes()">
+<h3>getMSSQLTabularDataSourceConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLTabularDataSourceConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the Microsoft SQL Server tabular data source connector</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of configuration property types</dd>

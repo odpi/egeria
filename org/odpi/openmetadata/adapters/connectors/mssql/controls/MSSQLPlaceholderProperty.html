@@ -122,6 +122,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The userId to store in the userId attribute of the connection.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_DESCRIPTION" class="member-name-link">SCHEMA_DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the schema being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The name of the schema being catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABLE_DESCRIPTION" class="member-name-link">TABLE_DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the table being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The name of the database table being catalogued.</div>
+</div>
 </div>
 </section>
 </li>
@@ -181,7 +197,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all the defined placeholder properties</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLServerPlaceholderPropertyTypes()" class="member-name-link">getMSSQLServerPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLSchemaPlaceholderPropertyTypes()" class="member-name-link">getMSSQLSchemaPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLServerPlaceholderPropertyTypes()" class="member-name-link">getMSSQLServerPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMSSQLTablePlaceholderPropertyTypes()" class="member-name-link">getMSSQLTablePlaceholderPropertyTypes</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve all the defined placeholder properties</div>
 </div>
@@ -262,6 +288,34 @@ the order they are declared.</div>
 <h3>DATABASE_PASSWORD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATABASE_PASSWORD</span></div>
 <div class="block">The password to store in the clearPassword attribute of the connection.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_NAME">
+<h3>SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
+<div class="block">The name of the schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_DESCRIPTION">
+<h3>SCHEMA_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_DESCRIPTION</span></div>
+<div class="block">The description of the schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_NAME">
+<h3>TABLE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLPlaceholderProperty</a></span>&nbsp;<span class="element-name">TABLE_NAME</span></div>
+<div class="block">The name of the database table being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_DESCRIPTION">
+<h3>TABLE_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mssql.controls">MSSQLPlaceholderProperty</a></span>&nbsp;<span class="element-name">TABLE_DESCRIPTION</span></div>
+<div class="block">The description of the table being catalogued.</div>
 </section>
 </li>
 </ul>
@@ -405,6 +459,28 @@ not permitted.)</div>
 <section class="detail" id="getMSSQLDatabasePlaceholderPropertyTypes()">
 <h3>getMSSQLDatabasePlaceholderPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLDatabasePlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMSSQLSchemaPlaceholderPropertyTypes()">
+<h3>getMSSQLSchemaPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLSchemaPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMSSQLTablePlaceholderPropertyTypes()">
+<h3>getMSSQLTablePlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMSSQLTablePlaceholderPropertyTypes</span>()</div>
 <div class="block">Retrieve all the defined placeholder properties</div>
 <dl class="notes">
 <dt>Returns:</dt>

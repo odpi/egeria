@@ -94,6 +94,7 @@ org.odpi.openmetadata.adapters.connectors.mssql.catalog
 org.odpi.openmetadata.adapters.connectors.mssql.controls
 org.odpi.openmetadata.adapters.connectors.mssql.ffdc
 org.odpi.openmetadata.adapters.connectors.mssql.survey
+org.odpi.openmetadata.adapters.connectors.mssql.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.mssql.utilities
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
@@ -107,6 +108,7 @@ org.odpi.openmetadata.adapters.connectors.reports.ffdc
 org.odpi.openmetadata.adapters.connectors.reports.surveyreport
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.mssql
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers
