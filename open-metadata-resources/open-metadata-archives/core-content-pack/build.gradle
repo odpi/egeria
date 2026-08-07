@@ -57,6 +57,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:mssql-server-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:oracle-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')

@@ -125,6 +125,29 @@ public enum GovernanceEngineDefinition
 
 
     /**
+     * Provides surveys on Oracle Database Servers.
+     */
+    ORACLE_SURVEY_ENGINE("6cb53b00-6cdb-4583-aa3e-bd2acbff65c5",
+                         "OracleSurvey",
+                         "Oracle Database Server Survey Engine",
+                         "Provides specialist surveys on Oracle Database Servers.",
+                         "oraclesurveyengine",
+                         OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * Provides specialist governance services on Oracle Database Servers.
+     */
+    ORACLE_GOVERNANCE_ENGINE("47289ba3-ef70-41f9-bfa4-376f8521071a",
+                             "OracleGovernance",
+                             "Oracle Database Server Governance Engine",
+                             "Provides specialist governance services to Oracle Database Servers.",
+                             "oraclegovernanceengine",
+                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                             ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+
+    /**
      * Provides surveys on Apache Atlas Servers.
      */
     ATLAS_SURVEY_ENGINE("af1b89b3-c579-4ad3-b649-a007121566a0",

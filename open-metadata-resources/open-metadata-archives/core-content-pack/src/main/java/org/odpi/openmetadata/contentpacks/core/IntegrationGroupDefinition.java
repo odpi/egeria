@@ -107,6 +107,15 @@ public enum IntegrationGroupDefinition
                  "Dynamic integration group supporting integration connectors connecting to Microsoft SQL Servers.",
                  ContentPackDefinition.MSSQL_CONTENT_PACK),
 
+    /**
+     * Dynamic integration group supporting integration connectors connecting to Oracle Database Servers.
+     */
+    ORACLE("c57a0953-d656-4181-b180-d55cc2665388",
+                 "Egeria:IntegrationGroup:Oracle",
+                 "OracleIntegrationGroup",
+                 "Dynamic integration group supporting integration connectors connecting to Oracle Database Servers.",
+                 ContentPackDefinition.ORACLE_CONTENT_PACK),
+
             ;
 
     private final String                guid;

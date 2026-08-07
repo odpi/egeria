@@ -496,10 +496,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
-            List<Classification> classifications = new ArrayList<>();
-
-            classifications.add(this.getAnchorClassification(null, deployedImplementationType, OpenMetadataType.ASSET.typeName, null, methodName));
-
+            /*
+             * addProcessAsset() adds its own, correctly-anchored (self-anchored, using the entity's real type
+             * name) Anchors classification.  A second Anchors classification used to be built here and passed in
+             * alongside it - using deployedImplementationType (a human-readable display value such as
+             * "Survey Action Service") as the anchorTypeName, which is not a valid open metadata type name -
+             * resulting in every governance service asset carrying two conflicting Anchors classifications.
+             */
             String serviceGUID = super.addProcessAsset(assetTypeName,
                                                        qualifiedName,
                                                        displayName,
@@ -514,7 +517,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                        ActivityStatus.APPROVED,
                                                        additionalProperties,
                                                        null,
-                                                       classifications);
+                                                       null);
 
             if (serviceGUID != null)
             {

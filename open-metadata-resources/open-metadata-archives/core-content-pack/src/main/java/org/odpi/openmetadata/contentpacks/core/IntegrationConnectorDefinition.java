@@ -14,6 +14,9 @@ import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplement
 import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.oracle.catalog.OracleServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
@@ -226,6 +229,29 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+
+    ORACLE_SERVER_CATALOGUER("64cc2ff9-beab-4624-b90a-b7299eba7231",
+                             "OracleServerIntegrationConnector",
+                             "Catalogs the pluggable databases found in Oracle Database Servers attached as catalog targets.",
+                             OracleServerIntegrationProvider.class.getName(),
+                             "OracleServerCataloguer",
+                             "oraclecatnpa",
+                             null,
+                             null,
+                             null,
+                             getOracleServerConfigProperties(),
+                             60,
+                             new DeployedImplementationTypeDefinition[]{OracleDeployedImplementationType.ORACLE_SERVER},
+                             "9483efdb-ab28-436e-959b-04e4442f940a",
+                             "Oracle Database Server Cataloguer",
+                             "Maintains the open metadata elements that represent the pluggable databases in an Oracle Database Server.  Hands off the cataloguing of the schemas, tables and columns of each pluggable database to the generic JDBC Database Cataloguer.",
+                             true,
+                             null,
+                             null,
+                             null,
+                             null,
+                             ContentPackDefinition.ORACLE_CONTENT_PACK),
 
 
     APACHE_ATLAS_EXCHANGE("5721627a-2dd4-4f95-a274-6cfb128edb97",
@@ -578,6 +604,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(MSSQLConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the Oracle Database Server Cataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getOracleServerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(OracleConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
 
         return configurationProperties;
     }
