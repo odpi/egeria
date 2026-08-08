@@ -111,6 +111,14 @@ public enum ContentPackDefinition
                         "OracleContentPack",
                         "Reference data, templates, connectors, and governance services for working with an Oracle Database Server. Egeria's content pack for Oracle Database provides templates for Oracle Database servers and pluggable databases along with function to survey the contents of Oracle pluggable databases and catalog their schemas.",
                         "OracleContentPack.omarchive"),
+
+    /**
+     * Reference data, templates, connectors, and governance services for working with an IBM Db2 for Linux, UNIX and Windows Server.
+     */
+    DB2LUW_CONTENT_PACK("e959ce42-46f6-445b-a05f-11cbe15f73e0",
+                        "DB2LUWContentPack",
+                        "Reference data, templates, connectors, and governance services for working with an IBM Db2 for Linux, UNIX and Windows (LUW / UDB) Server. Egeria's content pack for Db2 for Linux, UNIX and Windows provides templates for Db2 servers and databases along with function to survey the contents of Db2 databases and catalog their schemas.",
+                        "DB2LUWContentPack.omarchive"),
     ;
 
     private final String   archiveGUID;

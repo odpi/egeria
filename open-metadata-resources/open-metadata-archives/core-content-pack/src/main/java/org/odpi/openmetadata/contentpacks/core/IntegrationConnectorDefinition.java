@@ -12,6 +12,9 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecret
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.db2luw.catalog.DB2LUWServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
@@ -252,6 +255,29 @@ public enum IntegrationConnectorDefinition
                              null,
                              null,
                              ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+
+    DB2LUW_SERVER_CATALOGUER("5e573a72-eed3-47a9-bf1f-8d31a1c493bd",
+                             "DB2LUWServerIntegrationConnector",
+                             "Catalogs the databases found in Db2 for Linux, UNIX and Windows Servers attached as catalog targets.",
+                             DB2LUWServerIntegrationProvider.class.getName(),
+                             "DB2LUWServerCataloguer",
+                             "db2luwcatnpa",
+                             null,
+                             null,
+                             null,
+                             getDB2LUWServerConfigProperties(),
+                             60,
+                             new DeployedImplementationTypeDefinition[]{DB2LUWDeployedImplementationType.DB2LUW_SERVER},
+                             "9be0d341-3764-4f0e-9d6c-e6875c71118e",
+                             "Db2 for Linux, UNIX and Windows Server Cataloguer",
+                             "Maintains the open metadata elements that represent the databases in a Db2 for Linux, UNIX and Windows Server.  Hands off the cataloguing of the schemas, tables and columns of each database to the generic JDBC Database Cataloguer.",
+                             true,
+                             null,
+                             null,
+                             null,
+                             null,
+                             ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
 
     APACHE_ATLAS_EXCHANGE("5721627a-2dd4-4f95-a274-6cfb128edb97",
@@ -618,6 +644,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(OracleConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the Db2 for Linux, UNIX and Windows Server Cataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getDB2LUWServerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(DB2LUWConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
 
         return configurationProperties;
     }

@@ -6,7 +6,10 @@ package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
+import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWTemplateType;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
@@ -134,6 +137,27 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              OraclePlaceholderProperty.getOracleDatabasePlaceholderPropertyTypes(),
                              ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    DB2LUW_DATABASE_TEMPLATE(DB2LUWTemplateType.DB2LUW_DATABASE_TEMPLATE.getTemplateGUID(),
+                             DB2LUWDeployedImplementationType.DB2LUW_DATABASE,
+                             DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             DB2LUWPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
+                             DB2LUWDeployedImplementationType.DB2LUW_DATABASE.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             null,
+                             null,
+                             null,
+                             new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                             "jdbc:db2://" +
+                                     PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                     PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder()),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                             SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                             new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                             PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                             null,
+                             DB2LUWPlaceholderProperty.getDB2LUWDatabasePlaceholderPropertyTypes(),
+                             ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
     KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,

@@ -148,6 +148,29 @@ public enum GovernanceEngineDefinition
 
 
     /**
+     * Provides surveys on Db2 for Linux, UNIX and Windows Servers.
+     */
+    DB2LUW_SURVEY_ENGINE("30db1c90-6217-43f2-b9ba-4c07671f7363",
+                         "DB2LUWSurvey",
+                         "Db2 for Linux, UNIX and Windows Server Survey Engine",
+                         "Provides specialist surveys on Db2 for Linux, UNIX and Windows Servers.",
+                         "db2luwsurveyengine",
+                         OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * Provides specialist governance services on Db2 for Linux, UNIX and Windows Servers.
+     */
+    DB2LUW_GOVERNANCE_ENGINE("72f8589d-c8e3-42da-b5f6-3ee7b56ee4fa",
+                             "DB2LUWGovernance",
+                             "Db2 for Linux, UNIX and Windows Server Governance Engine",
+                             "Provides specialist governance services to Db2 for Linux, UNIX and Windows Servers.",
+                             "db2luwgovernanceengine",
+                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                             ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+
+    /**
      * Provides surveys on Apache Atlas Servers.
      */
     ATLAS_SURVEY_ENGINE("af1b89b3-c579-4ad3-b649-a007121566a0",

@@ -41,6 +41,7 @@ ext {
     commonstextVersion = '1.11.0'
 
     commonscliVersion = '1.9.0'
+    db2JdbcVersion = '12.1.5.0'
     elasticsearchVersion = '8.7.1'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
@@ -146,6 +147,7 @@ dependencies {
         api("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
         //api("com.google.guava:guava:${guavaVersion}")
+        api("com.ibm.db2:jcc:${db2JdbcVersion}")
         api("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
         api("com.oracle.database.jdbc:ojdbc11:${oracleJdbcVersion}")
         api("com.sleepycat:je:${sleepycatVersion}")

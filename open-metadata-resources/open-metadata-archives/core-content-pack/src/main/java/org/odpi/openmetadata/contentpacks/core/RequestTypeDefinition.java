@@ -5,6 +5,7 @@ package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
@@ -827,6 +828,48 @@ public enum RequestTypeDefinition
                            true,
                            ContentCollectionDefinition.SURVEY_ACTIONS,
                            ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * survey-db2luw-server
+     */
+    SURVEY_DB2LUW_SERVER("survey-db2luw-server",
+                         null,
+                         null,
+                         null,
+                         GovernanceEngineDefinition.DB2LUW_SURVEY_ENGINE,
+                         GovernanceServiceDefinition.DB2LUW_SERVER_SURVEY,
+                         "b72fb853-f48c-486b-b5e7-ebb0761825fc",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DB2LUWDeployedImplementationType.DB2LUW_SERVER.getQualifiedName(),
+                         "4035c4a8-f6af-4e65-8a25-57a6aaa6d740",
+                         "Survey a Db2 for Linux, UNIX and Windows Server",
+                         "Create a survey report of the databases found in a requested Db2 for Linux, UNIX and Windows Server.",
+                         DB2LUWDeployedImplementationType.DB2LUW_SERVER,
+                         null,
+                         true,
+                         ContentCollectionDefinition.SURVEY_ACTIONS,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * survey-db2luw-database
+     */
+    SURVEY_DB2LUW_DATABASE("survey-db2luw-database",
+                           null,
+                           null,
+                           null,
+                           GovernanceEngineDefinition.DB2LUW_SURVEY_ENGINE,
+                           GovernanceServiceDefinition.DB2LUW_DATABASE_SURVEY,
+                           "1398cb7b-fb3a-460d-be47-9028726e9a9b",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE.getQualifiedName(),
+                           "4c44867f-0aca-4e23-aaca-8d6d50e3baf6",
+                           "Survey Db2 for Linux, UNIX and Windows Database",
+                           "Create a survey report of the schemas, tables and columns found in a requested Db2 for Linux, UNIX and Windows database.",
+                           DB2LUWDeployedImplementationType.DB2LUW_SERVER,
+                           null,
+                           true,
+                           ContentCollectionDefinition.SURVEY_ACTIONS,
+                           ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
     /**
      * create-file-folder
@@ -1660,6 +1703,120 @@ public enum RequestTypeDefinition
                             false,
                             ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * create-db2luw-server
+     */
+    CREATE_DB2LUW_SERVER("create-db2luw-server",
+                         null,
+                         getManageAssetRequestParameters(SoftwareServerTemplateDefinition.DB2LUW_SERVER_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CREATE_ASSET,
+                         "2b6b2a1a-1ff2-4658-994b-9796f6339307",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DB2LUWDeployedImplementationType.DB2LUW_SERVER.getQualifiedName(),
+                         "61a99c0e-becf-4abb-8053-ea89fbac3e1d",
+                         "Create Db2 for Linux, UNIX and Windows Server asset in Open Metadata",
+                         "Create an asset that represents the server.",
+                         ContentCollectionDefinition.CREATE_ACTIONS,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * delete-db2luw-server
+     */
+    DELETE_DB2LUW_SERVER("delete-db2luw-server",
+                         null,
+                         getManageAssetRequestParameters(SoftwareServerTemplateDefinition.DB2LUW_SERVER_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.DELETE_ASSET,
+                         "f695f8d1-8dd2-40c9-ae03-4da84e41716a",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DB2LUWDeployedImplementationType.DB2LUW_SERVER.getQualifiedName(),
+                         "6cece9ac-6b6b-478f-83e1-40ab2e48b030",
+                         "Delete Db2 for Linux, UNIX and Windows Server from Open Metadata",
+                         "Delete asset from the metadata repository.",
+                         ContentCollectionDefinition.DELETE_ACTIONS,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * catalog-db2luw-server
+     */
+    CATALOG_DB2LUW_SERVER("catalog-db2luw-server",
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.DB2LUW_SERVER_CATALOGUER.getGUID()),
+                          GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "cbecbcf2-f0ef-49cf-9611-00edea53b92a",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          DB2LUWDeployedImplementationType.DB2LUW_SERVER.getQualifiedName(),
+                          "d44251ec-ad6b-4eae-933f-8d3f3a138d78",
+                          "Configure Db2 for Linux, UNIX and Windows Server Cataloguer",
+                          "Link the Db2 for Linux, UNIX and Windows Server asset to the Db2 for Linux, UNIX and Windows Server cataloguer.",
+                          null,
+                          IntegrationConnectorDefinition.DB2LUW_SERVER_CATALOGUER.getSolutionComponentGUID(),
+                          false,
+                          ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                          ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * create-db2luw-database
+     */
+    CREATE_DB2LUW_DB("create-db2luw-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.DB2LUW_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.CREATE_ASSET,
+                     "1ae47726-ec62-4d21-9bb9-f581a70e0664",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     DB2LUWDeployedImplementationType.DB2LUW_DATABASE.getQualifiedName(),
+                     "de47221a-2a14-46eb-a403-f563ee4275d8",
+                     "Create Db2 for Linux, UNIX and Windows Database from Open Metadata",
+                     "Create an open metadata element that represents a Db2 for Linux, UNIX and Windows database using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the database and the connection.  The schemas, tables and columns are not cataloged by this component.",
+                     ContentCollectionDefinition.CREATE_ACTIONS,
+                     ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * delete-db2luw-database
+     */
+    DELETE_DB2LUW_DB("delete-db2luw-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.DB2LUW_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.DELETE_ASSET,
+                     "c538a503-9fba-4780-9982-2a1e18ac3785",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     DB2LUWDeployedImplementationType.DB2LUW_DATABASE.getQualifiedName(),
+                     "46ad7ad7-45df-4d2f-8475-6a3bfcda2f61",
+                     "Delete Db2 for Linux, UNIX and Windows Database from Open Metadata",
+                     "Locate and delete the open metadata element that represents the Db2 for Linux, UNIX and Windows database described in the request.  The real database on the Db2 for Linux, UNIX and Windows Server (if any) is unaffected by this component.",
+                     ContentCollectionDefinition.DELETE_ACTIONS,
+                     ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * catalog-db2luw-database
+     */
+    CATALOG_DB2LUW_DATABASE("catalog-db2luw-database",
+                            null,
+                            null,
+                            getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                            GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                            "cf6c8f8c-0d21-4114-8587-59a652bacd31",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                            DB2LUWDeployedImplementationType.DB2LUW_DATABASE.getQualifiedName(),
+                            "74c7579e-9541-4052-a0ea-7fe280bd3a3a",
+                            "Configure Db2 for Linux, UNIX and Windows Database Cataloguer",
+                            "Link the Db2 for Linux, UNIX and Windows database asset to the Db2 for Linux, UNIX and Windows Database cataloguer.",
+                            null,
+                            IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                            false,
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                            ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
     /**
      * create-postgres-schema
