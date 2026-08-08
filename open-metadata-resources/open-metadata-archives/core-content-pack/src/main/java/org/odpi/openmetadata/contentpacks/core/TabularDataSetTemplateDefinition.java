@@ -11,6 +11,12 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDat
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileTemplateType;
+import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWTemplateType;
+import org.odpi.openmetadata.adapters.connectors.db2luw.tabulardatasource.DB2LUWTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.db2luw.tabulardatasource.DB2LUWTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
@@ -194,6 +200,55 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                 OracleTemplateType.ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
                                                 OracleTemplateType.ORACLE_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
                                                 ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+
+    DB2LUW_TABULAR_DATA_SET_TEMPLATE(DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
+                                     DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET,
+                                     DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                     PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                     DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.TABLE_NAME.getPlaceholder(),
+                                     null,
+                                     "relational",
+                                     "SQL",
+                                     new DB2LUWTabularDataSetProvider().getConnectorType().getGUID(),
+                                     getDB2LUWDataSetConfigurationProperties(),
+                                     new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                     "jdbc:db2://" +
+                                             PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                             PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                             DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                     getDB2LUWSchemaConfigurationProperties(),
+                                     PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                     SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                     new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                     PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                     DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_TEMPLATE.getReplacementAttributes(),
+                                     DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_TEMPLATE.getPlaceholders(),
+                                     ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    DB2LUW_TABULAR_DATA_SET_COLLECTION_TEMPLATE(DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getTemplateGUID(),
+                                                DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET_COLLECTION,
+                                                DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                                null,
+                                                "relational",
+                                                "SQL",
+                                                new DB2LUWTabularDataSetCollectionProvider().getConnectorType().getGUID(),
+                                                getDB2LUWDataSetCollectionConfigurationProperties(),
+                                                new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                                                "jdbc:db2://" +
+                                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                                        DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                                getDB2LUWSchemaConfigurationProperties(),
+                                                PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                                SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                                PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                                                DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
+                                                DB2LUWTemplateType.DB2LUW_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
+                                                ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
 
     CSV_TABULAR_DATA_SET_TEMPLATE(CSVFileTemplateType.CSV_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
@@ -384,6 +439,57 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
         configurationProperties.put(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
                                     Map.of("remarksReporting", "true",
                                            "oracle.jdbc.timezoneAsRegion", "false"));
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for a Db2 for Linux, UNIX and Windows tabular data set collection.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getDB2LUWDataSetCollectionConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(DB2LUWConfigurationProperty.SCHEMA_NAME.getName(), DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(DB2LUWConfigurationProperty.SCHEMA_DESCRIPTION.getName(), DB2LUWPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for a Db2 for Linux, UNIX and Windows tabular data set.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getDB2LUWDataSetConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(DB2LUWConfigurationProperty.SCHEMA_NAME.getName(), DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(DB2LUWConfigurationProperty.SCHEMA_DESCRIPTION.getName(), DB2LUWPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
+        configurationProperties.put(DB2LUWConfigurationProperty.TABLE_NAME.getName(), DB2LUWPlaceholderProperty.TABLE_NAME.getPlaceholder());
+        configurationProperties.put(DB2LUWConfigurationProperty.TABLE_DESCRIPTION.getName(), DB2LUWPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the connection configuration properties documenting the database/schema a Db2 for Linux, UNIX and
+     * Windows tabular data set connection targets.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getDB2LUWSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
 
         return configurationProperties;
     }

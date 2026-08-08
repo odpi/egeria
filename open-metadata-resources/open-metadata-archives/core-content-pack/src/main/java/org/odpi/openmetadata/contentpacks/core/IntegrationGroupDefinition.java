@@ -116,6 +116,15 @@ public enum IntegrationGroupDefinition
                  "Dynamic integration group supporting integration connectors connecting to Oracle Database Servers.",
                  ContentPackDefinition.ORACLE_CONTENT_PACK),
 
+    /**
+     * Dynamic integration group supporting integration connectors connecting to Db2 for Linux, UNIX and Windows Servers.
+     */
+    DB2LUW("a24a5cfa-d85e-449c-a2e1-3a37d61c41a1",
+                 "Egeria:IntegrationGroup:DB2LUW",
+                 "DB2LUWIntegrationGroup",
+                 "Dynamic integration group supporting integration connectors connecting to Db2 for Linux, UNIX and Windows Servers.",
+                 ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
             ;
 
     private final String                guid;

@@ -10,7 +10,10 @@ import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplement
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
+import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWTemplateType;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
@@ -107,6 +110,27 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                            null,
                            OraclePlaceholderProperty.getOracleServerPlaceholderPropertyTypes(),
                            ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    DB2LUW_SERVER_TEMPLATE(DB2LUWTemplateType.DB2LUW_SERVER_TEMPLATE.getTemplateGUID(),
+                           DB2LUWDeployedImplementationType.DB2LUW_SERVER,
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE_MANAGER,
+                           "Database Management System (DBMS)",
+                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                           null,
+                           new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                           "jdbc:db2://" +
+                                   PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                   DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                           Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder()),
+                           PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                           null,
+                           DB2LUWPlaceholderProperty.getDB2LUWServerPlaceholderPropertyTypes(),
+                           ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
     APACHE_ATLAS_TEMPLATE("fe6dce45-a978-4417-ab55-17f05b8bcea7",
                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER,

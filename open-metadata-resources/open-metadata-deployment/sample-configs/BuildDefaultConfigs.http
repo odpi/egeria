@@ -264,6 +264,14 @@ POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open
 Authorization: Bearer {{token}}
 Content-Type: text/plain
 
+content-packs/DB2LUWContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
 content-packs/OpenLineageContentPack.omarchive
 
 ###
@@ -644,6 +652,28 @@ Content-Type: application/json
     },
     {
       "class": "EngineConfig",
+      "engineId": "c9942409-dc51-4c9a-8c10-cef6472bad1f",
+      "engineQualifiedName": "DB2LUWSurvey",
+      "engineUserId": "db2luwsurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "2620f5cc-67d2-43b6-a715-a79f06dd1ee4",
+      "engineQualifiedName": "DB2LUWGovernance",
+      "engineUserId": "db2luwgovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
       "engineId": "9b7a1da6-7882-41c7-b838-0e297787972f",
       "engineQualifiedName": "ApacheAtlasSurvey",
       "engineUserId": "apacheatlassurveyengine",
@@ -926,6 +956,15 @@ Content-Type: application/json
         "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
         "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Oracle"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DB2LUW"
     },
     {
         "class": "IntegrationGroupConfig",

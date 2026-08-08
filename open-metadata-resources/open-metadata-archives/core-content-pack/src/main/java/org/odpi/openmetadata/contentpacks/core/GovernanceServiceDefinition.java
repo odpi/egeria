@@ -19,6 +19,8 @@ import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptio
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.db2luw.survey.DB2LUWDatabaseSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.db2luw.survey.DB2LUWServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.oracle.survey.OracleDatabaseSurveyActionProvider;
@@ -345,6 +347,29 @@ public enum GovernanceServiceDefinition
                            ResourceUse.SURVEY_RESOURCE,
                            DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                            ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+
+    /**
+     * Db2 for Linux, UNIX and Windows Server Survey Service
+     */
+    DB2LUW_SERVER_SURVEY("2e88b091-cf61-4fd2-9daf-90847f82bc7e",
+                         "db2luw-server-survey-service",
+                         "Db2 for Linux, UNIX and Windows Server Survey Service",
+                         new DB2LUWServerSurveyActionProvider(),
+                         ResourceUse.SURVEY_RESOURCE,
+                         DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * Db2 for Linux, UNIX and Windows Database Survey Service
+     */
+    DB2LUW_DATABASE_SURVEY("6f43d06e-3c06-4f22-b09f-95203c248a10",
+                           "db2luw-database-survey-service",
+                           "Db2 for Linux, UNIX and Windows Database Survey Service",
+                           new DB2LUWDatabaseSurveyActionProvider(),
+                           ResourceUse.SURVEY_RESOURCE,
+                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                           ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
 
     /**
