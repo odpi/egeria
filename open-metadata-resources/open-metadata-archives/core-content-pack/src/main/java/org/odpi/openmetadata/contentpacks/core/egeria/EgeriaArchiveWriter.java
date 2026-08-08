@@ -218,8 +218,7 @@ public class EgeriaArchiveWriter extends ContentPackBaseArchiveWriter
          * Create Egeria's integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.EGERIA_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.EGERIA_CONTENT_PACK,
-                                       IntegrationGroupDefinition.EGERIA);
+        super.addIntegrationConnectors(ContentPackDefinition.EGERIA_CONTENT_PACK);
 
         /*
          * Add catalog templates

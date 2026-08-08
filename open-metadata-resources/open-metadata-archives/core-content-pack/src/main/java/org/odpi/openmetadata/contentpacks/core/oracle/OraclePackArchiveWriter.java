@@ -75,8 +75,7 @@ public class OraclePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.ORACLE_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.ORACLE_CONTENT_PACK,
-                                       IntegrationGroupDefinition.ORACLE);
+        super.addIntegrationConnectors(ContentPackDefinition.ORACLE_CONTENT_PACK);
 
         /*
          * Create the default governance engines

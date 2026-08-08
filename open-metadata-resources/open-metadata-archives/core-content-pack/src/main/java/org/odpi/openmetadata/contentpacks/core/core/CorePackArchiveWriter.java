@@ -732,7 +732,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * Add the integration connectors to the default integration group
          */
-        super.addIntegrationConnectors(ContentPackDefinition.CORE_CONTENT_PACK, IntegrationGroupDefinition.DEFAULT);
+        super.addIntegrationConnectors(ContentPackDefinition.CORE_CONTENT_PACK);
 
         /*
          * Create the default governance engines

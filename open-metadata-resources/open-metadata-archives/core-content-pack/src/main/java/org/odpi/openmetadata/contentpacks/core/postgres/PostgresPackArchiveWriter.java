@@ -77,8 +77,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.POSTGRES_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.POSTGRES_CONTENT_PACK,
-                                       IntegrationGroupDefinition.POSTGRES);
+        super.addIntegrationConnectors(ContentPackDefinition.POSTGRES_CONTENT_PACK);
 
         /*
          * Create the default governance engines

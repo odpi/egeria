@@ -904,6 +904,15 @@ Content-Type: application/json
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
       "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
       "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Database"
+    },
+    {
+      "class": "IntegrationGroupConfig",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName" : "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
       "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Files"
     },
     {
@@ -914,15 +923,6 @@ Content-Type: application/json
       "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
       "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
       "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenLineage"
-    },
-    {
-      "class": "IntegrationGroupConfig",
-      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
-      "omagserverName" : "active-metadata-store",
-      "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
-      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
-      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Egeria"
     },
     {
         "class": "IntegrationGroupConfig",
@@ -950,15 +950,6 @@ Content-Type: application/json
         "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
         "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
-    },
-    {
-        "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
-        "omagserverName" : "active-metadata-store",
-        "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
-        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
-        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
     },
     {
         "class": "IntegrationGroupConfig",
@@ -1013,16 +1004,149 @@ Content-Type: application/json
         "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
         "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
-    },
-    {
-        "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
-        "omagserverName" : "active-metadata-store",
-        "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
-        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
-        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Jacquard"
     }
+]
+
+###
+# ---------------------------------------
+# Integration Daemon: nanny-daemon
+#
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A server that runs integration connectors that is monitoring open metadata and building analytics and new definitions from the catalogued assets and releated elements.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "nannynpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+
+###
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/event-bus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "producer":
+  {
+    "bootstrap.servers":"~{kafkaEndpoint}~"
+  },
+  "consumer":
+  {
+    "bootstrap.servers":"~{kafkaEndpoint}~"
+  }
+}
+
+###
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"]
+
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/security/connection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "networkAddress" : "~{userDirectorySecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+
+
+###
+# Set up the qualified name of the integration group that this server supports and the location of the
+# metadata access store active-metadata-store
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/integration-groups/configuration/all
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Egeria"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Jacquard"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Babbage"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Liskov"
+  }
 ]
 
 ###

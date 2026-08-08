@@ -74,11 +74,39 @@ public enum IntegrationGroupDefinition
     /**
      * Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.
      */
-    AUTO_PRODUCT_MANAGER("4a99a249-8ec4-43a5-9157-4bff67619962",
-                         "Egeria:IntegrationGroup:Jacquard",
-                         "JacquardIntegrationGroup",
-                         "Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.",
-                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+    JACQUARD("4a99a249-8ec4-43a5-9157-4bff67619962",
+             "Egeria:IntegrationGroup:Jacquard",
+             "JacquardIntegrationGroup",
+             "Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.",
+             ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
+    /**
+     * Dynamic integration group supporting integration connectors that calculate and store analytics in open metadata.
+     */
+    BABBAGE("4d7b67c1-5328-46ef-89c0-2de24037b639",
+             "Egeria:IntegrationGroup:Babbage",
+             "BabbageIntegrationGroup",
+             "Dynamic integration group supporting integration connectors that calculate and store analytics in open metadata.",
+             ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    /**
+     * Dynamic integration group supporting integration connectors managing Data Hubs.
+     */
+    LISKOV("c7f37f8d-af7a-433d-86f8-153dae9577fd",
+             "Egeria:IntegrationGroup:Liskov",
+             "LiskovIntegrationGroup",
+             "Dynamic integration group supporting integration connectors managing Data Hubs.",
+             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Dynamic integration group supporting integration connectors managing databases through JDBC.
+     */
+    DATABASE("966ebe01-8fd0-4f8d-8ff7-ce1e30e29b25",
+           "Egeria:IntegrationGroup:Database",
+           "DatabaseIntegrationGroup",
+           "Dynamic integration group supporting integration connectors managing databases through JDBC.",
+           ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Dynamic integration group supporting integration connectors connecting to PostgreSQL Servers.

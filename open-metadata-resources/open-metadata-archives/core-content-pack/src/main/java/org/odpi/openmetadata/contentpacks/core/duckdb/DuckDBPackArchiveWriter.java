@@ -79,8 +79,7 @@ public class DuckDBPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.DUCKDB_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.DUCKDB_CONTENT_PACK,
-                                       IntegrationGroupDefinition.DUCKDB);
+        super.addIntegrationConnectors(ContentPackDefinition.DUCKDB_CONTENT_PACK);
 
         /*
          * Create the default governance engines

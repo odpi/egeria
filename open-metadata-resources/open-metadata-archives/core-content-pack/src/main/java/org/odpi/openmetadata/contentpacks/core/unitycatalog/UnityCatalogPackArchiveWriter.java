@@ -103,7 +103,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK, IntegrationGroupDefinition.UNITY_CATALOG);
+        super.addIntegrationConnectors(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
 
         /*
          * Create the default governance engines
