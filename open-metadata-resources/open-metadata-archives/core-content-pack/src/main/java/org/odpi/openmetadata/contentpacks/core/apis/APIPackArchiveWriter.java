@@ -48,7 +48,7 @@ public class APIPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.APIS_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.APIS_CONTENT_PACK, IntegrationGroupDefinition.APIS);
+        super.addIntegrationConnectors(ContentPackDefinition.APIS_CONTENT_PACK);
 
         /*
          * Create the default governance engines

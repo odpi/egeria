@@ -82,7 +82,7 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK, IntegrationGroupDefinition.APACHE_KAFKA);
+        super.addIntegrationConnectors(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK);
 
         /*
          * Create the default governance engines

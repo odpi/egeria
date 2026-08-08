@@ -50,8 +50,7 @@ public class OpenLineageArchiveWriter extends ContentPackBaseArchiveWriter
          * Create Egeria's integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK,
-                                       IntegrationGroupDefinition.OPEN_LINEAGE);
+        super.addIntegrationConnectors(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
 
         /*
          * Create the default governance engines

@@ -78,6 +78,7 @@ public enum IntegrationConnectorDefinition
                            null,
                            null,
                            null,
+                           IntegrationGroupDefinition.FILES,
                            ContentPackDefinition.FILES_CONTENT_PACK),
 
     CONTENT_PACK_CATALOGUER("6bb2181e-7724-4515-ba3c-877cded55980",
@@ -100,6 +101,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
+                            IntegrationGroupDefinition.FILES,
                             ContentPackDefinition.FILES_CONTENT_PACK),
 
     SECRETS_STORE_CATALOGUER("75e55161-4633-49f4-9358-77b6810aa2d1",
@@ -122,6 +124,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
+                             IntegrationGroupDefinition.FILES,
                             ContentPackDefinition.FILES_CONTENT_PACK),
 
     GENERAL_FOLDER_CATALOGUER("1b98cdac-dd0a-4621-93db-99ef5a1098bc",
@@ -144,6 +147,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
+                              IntegrationGroupDefinition.FILES,
                               ContentPackDefinition.FILES_CONTENT_PACK),
 
     MAINTAIN_LAST_UPDATE_CATALOGUER("fd26f07c-ae44-4bc5-b457-37b43112224f",
@@ -166,6 +170,7 @@ public enum IntegrationConnectorDefinition
                                     null,
                                     null,
                                     null,
+                                    IntegrationGroupDefinition.FILES,
                                     ContentPackDefinition.FILES_CONTENT_PACK),
 
     JDBC_CATALOGUER("70dcd0b7-9f06-48ad-ad44-ae4d7a7762aa",
@@ -188,6 +193,7 @@ public enum IntegrationConnectorDefinition
                     null,
                     null,
                     null,
+                    IntegrationGroupDefinition.DATABASE,
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
 
@@ -211,6 +217,7 @@ public enum IntegrationConnectorDefinition
                                null,
                                null,
                                null,
+                               IntegrationGroupDefinition.POSTGRES,
                                ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
 
@@ -234,6 +241,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
+                            IntegrationGroupDefinition.MSSQL,
                             ContentPackDefinition.MSSQL_CONTENT_PACK),
 
 
@@ -257,6 +265,7 @@ public enum IntegrationConnectorDefinition
                              null,
                              null,
                              null,
+                             IntegrationGroupDefinition.ORACLE,
                              ContentPackDefinition.ORACLE_CONTENT_PACK),
 
 
@@ -280,6 +289,7 @@ public enum IntegrationConnectorDefinition
                              null,
                              null,
                              null,
+                             IntegrationGroupDefinition.DB2LUW,
                              ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
 
@@ -303,6 +313,7 @@ public enum IntegrationConnectorDefinition
                                null,
                                null,
                                null,
+                               IntegrationGroupDefinition.DUCKDB,
                                ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
 
@@ -326,6 +337,7 @@ public enum IntegrationConnectorDefinition
                           null,
                           null,
                           null,
+                          IntegrationGroupDefinition.APACHE_ATLAS,
                           ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     KAFKA_SERVER_CATALOGUER("fa1f711c-0b34-4b57-8e6e-16162b132b0c",
@@ -348,6 +360,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
+                            IntegrationGroupDefinition.APACHE_KAFKA,
                             ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     API_CATALOGUER("b89d9a5a-2ea6-49bc-a4fc-e7df9f3ca93e",
@@ -370,6 +383,7 @@ public enum IntegrationConnectorDefinition
                    null,
                    null,
                    null,
+                   IntegrationGroupDefinition.APIS,
                    ContentPackDefinition.APIS_CONTENT_PACK),
 
     UC_CATALOG_CATALOGUER("74dde22f-2249-4ea3-af2b-b39e73f79b81",
@@ -392,6 +406,7 @@ public enum IntegrationConnectorDefinition
                           null,
                           null,
                           null,
+                          IntegrationGroupDefinition.UNITY_CATALOG,
                           ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     UC_SERVER_CATALOGUER("06d068d9-9e08-4e67-8c59-073bbf1013af",
@@ -414,6 +429,7 @@ public enum IntegrationConnectorDefinition
                          null,
                          null,
                          null,
+                         IntegrationGroupDefinition.UNITY_CATALOG,
                          ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     OMAG_SERVER_PLATFORM_CATALOGUER("dee84e6e-7a96-4975-86c1-152fb3ab759b",
@@ -436,6 +452,7 @@ public enum IntegrationConnectorDefinition
                                     SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                                     new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                                     "secrets/egeria-servers.omsecrets",
+                                    IntegrationGroupDefinition.EGERIA,
                                     ContentPackDefinition.EGERIA_CONTENT_PACK),
 
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
@@ -460,6 +477,7 @@ public enum IntegrationConnectorDefinition
                                null,
                                null,
                                null,
+                               IntegrationGroupDefinition.OPEN_LINEAGE,
                                ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     OPEN_LINEAGE_FILE_PUBLISHER("6271b678-7d22-4cdf-87b1-45b366beaf4e",
@@ -483,6 +501,7 @@ public enum IntegrationConnectorDefinition
                                 null,
                                 null,
                                 null,
+                                IntegrationGroupDefinition.OPEN_LINEAGE,
                                 ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     OPEN_LINEAGE_GA_PUBLISHER("206f8faf-04da-4b6f-8280-eeee3943afeb",
@@ -505,6 +524,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
+                              IntegrationGroupDefinition.OPEN_LINEAGE,
                               ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     OPEN_LINEAGE_CATALOGUER("3347ac71-8dd2-403a-bc16-75a71be64bd7",
@@ -527,6 +547,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
+                            IntegrationGroupDefinition.OPEN_LINEAGE,
                             ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     OPEN_LINEAGE_KAFKA_LISTENER("980b989c-de78-4e6a-a58d-51049d7381bf",
@@ -549,6 +570,7 @@ public enum IntegrationConnectorDefinition
                                 null,
                                 null,
                                 null,
+                                IntegrationGroupDefinition.OPEN_LINEAGE,
                                 ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     PRODUCT_HARVESTER("8a3d91da-05a0-49ca-83e0-77f5c48bdf0c",
@@ -571,6 +593,7 @@ public enum IntegrationConnectorDefinition
                       SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                       new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                       "secrets/egeria-servers.omsecrets",
+                      IntegrationGroupDefinition.JACQUARD,
                       ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     BABBAGE_ANALYTICAL_ENGINE("a2c281e0-3c8d-4621-bb4d-8f6dff756d1a",
@@ -593,6 +616,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
+                              IntegrationGroupDefinition.BABBAGE,
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
     LISKOV_DATA_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
@@ -615,6 +639,7 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               null,
+                              IntegrationGroupDefinition.LISKOV,
                               ContentPackDefinition.CORE_CONTENT_PACK),
     ;
 
@@ -752,6 +777,7 @@ public enum IntegrationConnectorDefinition
     private final String                                 secretsStorePurpose;
     private final String                                 secretsStoreConnectorTypeGUID;
     private final String                                 secretsStoreFileName;
+    private final IntegrationGroupDefinition             integrationGroupDefinition;
     private final ContentPackDefinition                  contentPackDefinition;
 
 
@@ -799,6 +825,7 @@ public enum IntegrationConnectorDefinition
                                    String                                 secretsStorePurpose,
                                    String                                 secretsStoreConnectorTypeGUID,
                                    String                                 secretsStoreFileName,
+                                   IntegrationGroupDefinition             integrationGroupDefinition,
                                    ContentPackDefinition                  contentPackDefinition)
     {
         this.guid                                  = guid;
@@ -821,6 +848,7 @@ public enum IntegrationConnectorDefinition
         this.secretsStorePurpose                   = secretsStorePurpose;
         this.secretsStoreConnectorTypeGUID         = secretsStoreConnectorTypeGUID;
         this.secretsStoreFileName                  = secretsStoreFileName;
+        this.integrationGroupDefinition            = integrationGroupDefinition;
         this.contentPackDefinition                 = contentPackDefinition;
     }
 
@@ -839,12 +867,11 @@ public enum IntegrationConnectorDefinition
     /**
      * Return the unique name of the integration connector.
      *
-     * @param integrationGroupQualifiedName qualified name of the associated integration group
      * @return string
      */
-    public String getQualifiedName(String integrationGroupQualifiedName)
+    public String getQualifiedName()
     {
-        return integrationGroupQualifiedName + "::" + displayName;
+        return integrationGroupDefinition.getQualifiedName() + "::" + displayName;
     }
 
 
@@ -1069,6 +1096,17 @@ public enum IntegrationConnectorDefinition
     public String getSecretsStoreFileName()
     {
         return secretsStoreFileName;
+    }
+
+
+    /**
+     * Return the integration group definition.
+     *
+     * @return integration group definition
+     */
+    public IntegrationGroupDefinition getIntegrationGroupDefinition()
+    {
+        return integrationGroupDefinition;
     }
 
 

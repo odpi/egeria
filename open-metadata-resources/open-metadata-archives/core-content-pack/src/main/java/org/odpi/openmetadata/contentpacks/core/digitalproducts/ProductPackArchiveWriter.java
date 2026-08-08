@@ -45,8 +45,7 @@ public class ProductPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.PRODUCTS_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.PRODUCTS_CONTENT_PACK,
-                                       IntegrationGroupDefinition.AUTO_PRODUCT_MANAGER);
+        super.addIntegrationConnectors(ContentPackDefinition.PRODUCTS_CONTENT_PACK);
 
         /*
          * Create the default governance engines

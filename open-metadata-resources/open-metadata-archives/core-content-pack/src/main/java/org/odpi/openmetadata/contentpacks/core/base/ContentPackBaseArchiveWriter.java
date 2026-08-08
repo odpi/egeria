@@ -1749,21 +1749,21 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * Add the integration connectors for the content pack.
      *
      * @param contentPackDefinition content pack being processed
-     * @param integrationGroupDefinition integration group
      */
-    protected void addIntegrationConnectors(ContentPackDefinition      contentPackDefinition,
-                                            IntegrationGroupDefinition integrationGroupDefinition)
+    protected void addIntegrationConnectors(ContentPackDefinition  contentPackDefinition)
     {
         for (IntegrationConnectorDefinition integrationConnectorDefinition : IntegrationConnectorDefinition.values())
         {
             if (contentPackDefinition.equals(integrationConnectorDefinition.getContentPackDefinition()))
             {
-                String connectorQualifiedName = integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName());
+                IntegrationGroupDefinition integrationGroupDefinition = integrationConnectorDefinition.getIntegrationGroupDefinition();
+
+                String connectorQualifiedName = integrationConnectorDefinition.getQualifiedName();
                 archiveHelper.setGUID(connectorQualifiedName, integrationConnectorDefinition.getGUID());
 
                 String guid = archiveHelper.addIntegrationConnector(integrationConnectorDefinition.getConnectorProviderClassName(),
                                                                     integrationConnectorDefinition.getConfigurationProperties(),
-                                                                    integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()),
+                                                                    integrationConnectorDefinition.getQualifiedName(),
                                                                     integrationConnectorDefinition.getDisplayName(),
                                                                     integrationConnectorDefinition.getDescription(),
                                                                     integrationConnectorDefinition.getConnectorUserId(),
@@ -1791,7 +1791,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                  */
                 archiveHelper.addITProfile(integrationConnectorDefinition.getGUID(),
                                            integrationConnectorDefinition.getConnectorUserId(),
-                                           integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()) + ":ActorProfile",
+                                           integrationConnectorDefinition.getQualifiedName() + ":ActorProfile",
                                            integrationConnectorDefinition.getConnectorName(),
                                            integrationConnectorDefinition.getDescription(),
                                            null);

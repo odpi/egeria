@@ -75,8 +75,7 @@ public class DB2LUWPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.DB2LUW_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.DB2LUW_CONTENT_PACK,
-                                       IntegrationGroupDefinition.DB2LUW);
+        super.addIntegrationConnectors(ContentPackDefinition.DB2LUW_CONTENT_PACK);
 
         /*
          * Create the default governance engines

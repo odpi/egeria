@@ -75,8 +75,7 @@ public class MSSQLPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.MSSQL_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.MSSQL_CONTENT_PACK,
-                                       IntegrationGroupDefinition.MSSQL);
+        super.addIntegrationConnectors(ContentPackDefinition.MSSQL_CONTENT_PACK);
 
         /*
          * Create the default governance engines
