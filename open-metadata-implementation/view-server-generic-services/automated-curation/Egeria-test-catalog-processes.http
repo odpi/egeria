@@ -225,3 +225,280 @@ Content-Type: application/json
   "class" : "NameRequestBody",
   "name" : "JDBCDatabaseCataloguer"
 }
+
+
+###
+# =====================================================================================================================
+# Catalog Microsoft SQL Server
+#
+
+###
+# @name initiate Catalog Microsoft SQL Server GovernanceActionProcess
+# The parameters passed here are for a Microsoft SQL Server instance - update host/port/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "MSSQLServer::CreateAsCatalogTargetGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalMSSQL1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1433",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "MSSQL Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Microsoft SQL Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("msProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{msProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=5
+Authorization: Bearer {{token}}
+
+
+###
+# @name refreshConnectors (Microsoft SQL Server)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "MSSQLServerCataloguer"
+}
+
+
+###
+# @name refreshConnectors (Microsoft SQL Server database)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "JDBCDatabaseCataloguer"
+}
+
+
+###
+# =====================================================================================================================
+# Catalog Oracle Database Server
+#
+
+###
+# @name initiate Catalog Oracle Database Server GovernanceActionProcess
+# The parameters passed here are for an Oracle Database Server instance - update host/port/database/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "OracleServer::CreateAsCatalogTargetGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalOracle1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1521",
+    "databaseName" : "FREEPDB1",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "Oracle Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Oracle Database Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("oracleProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{oracleProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=5
+Authorization: Bearer {{token}}
+
+
+###
+# @name refreshConnectors (Oracle Database Server)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "OracleServerCataloguer"
+}
+
+
+###
+# @name refreshConnectors (Oracle pluggable database)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "JDBCDatabaseCataloguer"
+}
+
+
+###
+# =====================================================================================================================
+# Catalog Db2 for Linux, UNIX and Windows Server
+#
+
+###
+# @name initiate Catalog Db2 for Linux, UNIX and Windows Server GovernanceActionProcess
+# The parameters passed here are for a Db2 for Linux, UNIX and Windows (LUW) Server instance - update host/port/database/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "DB2LUWServer::CreateAsCatalogTargetGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalDB2LUW1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "50000",
+    "databaseName" : "TESTDB",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "DB2LUW Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Db2 for Linux, UNIX and Windows Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("db2luwProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{db2luwProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=5
+Authorization: Bearer {{token}}
+
+
+###
+# @name refreshConnectors (Db2 for Linux, UNIX and Windows Server)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "DB2LUWServerCataloguer"
+}
+
+
+###
+# @name refreshConnectors (Db2 for Linux, UNIX and Windows database)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "JDBCDatabaseCataloguer"
+}
+
+
+###
+# =====================================================================================================================
+# Catalog DuckDB Database
+#
+
+###
+# @name initiate Catalog DuckDB Database GovernanceActionProcess
+# DuckDB is embedded/file-based - there is no server tier, so this catalogs a single ".duckdb" file directly.
+# Update databasePath for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "DuckDBDatabase::CreateAsCatalogTargetGovernanceActionProcess",
+  "requestParameters" : {
+    "databasePath" : "/tmp/duckdb_test/egeria_test.duckdb",
+    "databaseName" : "EgeriaTestDuckDB",
+    "databaseDescription" : "DuckDB embedded database.",
+    "versionIdentifier" : "1.0",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "PostgreSQL Server Secret"
+  }
+}
+
+> {% client.global.set("duckdbProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{duckdbProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=5
+Authorization: Bearer {{token}}
+
+
+###
+# @name refreshConnectors (DuckDB database)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+# DuckDB does not persist ATTACH-ed data sources between sessions - if attachStatements are configured on the catalog
+# target's configuration properties, run this refresh a second time after the JDBC refresh below has completed, so
+# that federation discovery sees the databases/views the friendship connector has now catalogued.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "DuckDBDatabaseCataloguer"
+}
+
+
+###
+# @name refreshConnectors (DuckDB native schema/tables/columns)
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{integrationDaemonGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "JDBCDatabaseCataloguer"
+}

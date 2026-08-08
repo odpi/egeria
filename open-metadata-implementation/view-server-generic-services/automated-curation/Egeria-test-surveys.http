@@ -44,6 +44,157 @@ Content-Type: application/json
 }
 
 ###
+# =====================================================================================================================
+# Run the Microsoft SQL Server survey
+#
+
+###
+# @name initiate Microsoft SQL Server Survey GovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+# The parameters passed here are for a Microsoft SQL Server instance - update host/port/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "MSSQLServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalMSSQL1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1433",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "MSSQL Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Microsoft SQL Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("msSurveyProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{msSurveyProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# Run the Oracle Database Server survey
+#
+
+###
+# @name initiate Oracle Database Server Survey GovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+# The parameters passed here are for an Oracle Database Server instance - update host/port/database/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "OracleServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalOracle1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "1521",
+    "databaseName" : "FREEPDB1",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "Oracle Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Oracle Database Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("oracleSurveyProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{oracleSurveyProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# Run the Db2 for Linux, UNIX and Windows Server survey
+#
+
+###
+# @name initiate Db2 for Linux, UNIX and Windows Server Survey GovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+# The parameters passed here are for a Db2 for Linux, UNIX and Windows (LUW) Server instance - update host/port/database/secrets for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "DB2LUWServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "serverName" : "LocalDB2LUW1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "50000",
+    "databaseName" : "TESTDB",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "DB2LUW Server Secret",
+    "versionIdentifier" : "1.0",
+    "description" : "Db2 for Linux, UNIX and Windows Server in egeria-workspaces."
+  }
+}
+
+> {% client.global.set("db2luwSurveyProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{db2luwSurveyProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# Run the DuckDB Database survey
+#
+
+###
+# @name initiate DuckDB Database Survey GovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+# DuckDB is embedded/file-based - there is no server tier, so this surveys a single ".duckdb" file directly, including
+# its federation relationships (databases ATTACH-ed to it, and views that scan external files such as CSV/Parquet).
+# Update databasePath for your own environment.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "DuckDBDatabase:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "databasePath" : "/tmp/duckdb_test/egeria_test.duckdb",
+    "databaseName" : "EgeriaTestDuckDB",
+    "databaseDescription" : "DuckDB embedded database.",
+    "versionIdentifier" : "1.0",
+    "secretsStorePathName" : "secrets/integration.omsecrets",
+    "secretsCollectionName" : "PostgreSQL Server Secret"
+  }
+}
+
+> {% client.global.set("duckdbSurveyProcessGUID", response.body.guid); %}
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{duckdbSurveyProcessGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
 
 @engineActionGUID=add guid here
 

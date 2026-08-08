@@ -10,6 +10,9 @@ import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplemen
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWTemplateType;
+import org.odpi.openmetadata.adapters.connectors.controls.DuckDBDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBTemplateType;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
@@ -158,6 +161,25 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              DB2LUWPlaceholderProperty.getDB2LUWDatabasePlaceholderPropertyTypes(),
                              ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    DUCKDB_DATABASE_TEMPLATE(DuckDBTemplateType.DUCKDB_DATABASE_TEMPLATE.getTemplateGUID(),
+                             DuckDBDeployedImplementationType.DUCKDB_DATABASE,
+                             DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             DuckDBPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
+                             DuckDBDeployedImplementationType.DUCKDB_DATABASE.getDeployedImplementationType() + "::" + DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholder(),
+                             null,
+                             null,
+                             null,
+                             new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                             "jdbc:duckdb:" + DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholder(),
+                             Map.of(JDBCConfigurationProperty.DATABASE_NAME.getName(), DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholder()),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                             SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                             new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                             PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                             null,
+                             DuckDBPlaceholderProperty.getDuckDBDatabasePlaceholderPropertyTypes(),
+                             ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
     KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,

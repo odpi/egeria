@@ -6,6 +6,7 @@ package org.odpi.openmetadata.contentpacks.core;
 import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.DuckDBDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
@@ -870,6 +871,27 @@ public enum RequestTypeDefinition
                            true,
                            ContentCollectionDefinition.SURVEY_ACTIONS,
                            ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * survey-duckdb-database
+     */
+    SURVEY_DUCKDB_DATABASE("survey-duckdb-database",
+                           null,
+                           null,
+                           null,
+                           GovernanceEngineDefinition.DUCKDB_SURVEY_ENGINE,
+                           GovernanceServiceDefinition.DUCKDB_DATABASE_SURVEY,
+                           "30c4ccf9-6dfe-40fe-97a8-e980aa5e0a91",
+                           GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE.getQualifiedName(),
+                           "c5b64d56-b99c-442c-a8f2-3c3b34ad65ab",
+                           "Survey DuckDB Database",
+                           "Create a survey report of the schemas, tables and columns found in a requested DuckDB database.",
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE,
+                           null,
+                           true,
+                           ContentCollectionDefinition.SURVEY_ACTIONS,
+                           ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
     /**
      * create-file-folder
@@ -1817,6 +1839,63 @@ public enum RequestTypeDefinition
                             false,
                             ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * create-duckdb-database
+     */
+    CREATE_DUCKDB_DB("create-duckdb-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.DUCKDB_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.CREATE_ASSET,
+                     "c8ffb226-2df3-4851-8906-8a9d74a4851f",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     DuckDBDeployedImplementationType.DUCKDB_DATABASE.getQualifiedName(),
+                     "6c55cc8f-ac57-4536-94a3-9b4351d59e7b",
+                     "Create DuckDB Database from Open Metadata",
+                     "Create an open metadata element that represents a DuckDB database using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the database and the connection.  The schemas, tables and columns are not cataloged by this component.",
+                     ContentCollectionDefinition.CREATE_ACTIONS,
+                     ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    /**
+     * delete-duckdb-database
+     */
+    DELETE_DUCKDB_DB("delete-duckdb-database",
+                     null,
+                     getManageAssetRequestParameters(DataAssetTemplateDefinition.DUCKDB_DATABASE_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.DELETE_ASSET,
+                     "11661a43-a15c-48b0-afd9-d5fa1447d1b2",
+                     GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                     DuckDBDeployedImplementationType.DUCKDB_DATABASE.getQualifiedName(),
+                     "b66e4a73-8067-4c69-b698-50c31d1e8777",
+                     "Delete DuckDB Database from Open Metadata",
+                     "Locate and delete the open metadata element that represents the DuckDB database described in the request.  The real database file (if any) is unaffected by this component.",
+                     ContentCollectionDefinition.DELETE_ACTIONS,
+                     ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    /**
+     * catalog-duckdb-database
+     */
+    CATALOG_DUCKDB_DATABASE("catalog-duckdb-database",
+                            null,
+                            null,
+                            getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.DUCKDB_DATABASE_CATALOGUER.getGUID()),
+                            GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                            "7a43ad58-ddda-4bc2-98e9-6e996e7f4e81",
+                            GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                            DuckDBDeployedImplementationType.DUCKDB_DATABASE.getQualifiedName(),
+                            "a9813c07-f5d5-45c9-9b99-15293b2dc1d9",
+                            "Configure DuckDB Database Cataloguer",
+                            "Link the DuckDB database asset to the DuckDB Database cataloguer.",
+                            null,
+                            IntegrationConnectorDefinition.DUCKDB_DATABASE_CATALOGUER.getSolutionComponentGUID(),
+                            false,
+                            ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                            ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
     /**
      * create-postgres-schema

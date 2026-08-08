@@ -15,6 +15,9 @@ import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.catalog.DB2LUWServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.controls.DuckDBDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.duckdb.catalog.DuckDBDatabaseIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.catalog.MSSQLServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
@@ -278,6 +281,29 @@ public enum IntegrationConnectorDefinition
                              null,
                              null,
                              ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+
+    DUCKDB_DATABASE_CATALOGUER("ecbd4f92-6376-49ee-abf5-244cd76dd211",
+                               "DuckDBDatabaseIntegrationConnector",
+                               "Catalogs the schema, tables and columns of a DuckDB database attached as a catalog target.",
+                               DuckDBDatabaseIntegrationProvider.class.getName(),
+                               "DuckDBDatabaseCataloguer",
+                               "duckdbcatnpa",
+                               null,
+                               null,
+                               null,
+                               getDuckDBDatabaseConfigProperties(),
+                               60,
+                               new DeployedImplementationTypeDefinition[]{DuckDBDeployedImplementationType.DUCKDB_DATABASE},
+                               "7d4f5272-30c6-46c5-b7af-7c7f7fb882c6",
+                               "DuckDB Database Cataloguer",
+                               "Maintains the open metadata elements that represent a DuckDB database.  Hands off the cataloguing of the schemas, tables and columns of the database to the generic JDBC Database Cataloguer.",
+                               true,
+                               null,
+                               null,
+                               null,
+                               null,
+                               ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
 
     APACHE_ATLAS_EXCHANGE("5721627a-2dd4-4f95-a274-6cfb128edb97",
@@ -658,6 +684,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(DB2LUWConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the DuckDB Database Cataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getDuckDBDatabaseConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(DuckDBConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
 
         return configurationProperties;
     }

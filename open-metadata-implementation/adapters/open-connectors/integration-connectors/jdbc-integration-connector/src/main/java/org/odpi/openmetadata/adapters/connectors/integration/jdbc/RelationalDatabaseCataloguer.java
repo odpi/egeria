@@ -308,7 +308,10 @@ class RelationalDatabaseCataloguer
 
     /**
      * Create or update every table and view found directly under the given parent (a database or a schema), catalog
-     * the columns of each table, and delete any table/view that is no longer present.
+     * the columns of each table and view, and delete any table/view that is no longer present.  A view's columns
+     * are catalogued the same way a table's are, except that both the view itself and each of its columns also
+     * receive the CalculatedValue classification, since a view's data is not physically stored - it is calculated/
+     * derived from its underlying query every time it is read.
      *
      * @param anchorAsset the database asset (tables and views always anchor to the database, even when nested under a schema)
      * @param parentQualifiedName qualified name of the parent (database or schema)
@@ -343,7 +346,7 @@ class RelationalDatabaseCataloguer
 
             if (tableGUID != null)
             {
-                catalogColumns(anchorAsset, tableGUID, qualifiedName, jdbcTable.getTableName(), jdbcSchemaName);
+                catalogColumns(anchorAsset, tableGUID, qualifiedName, jdbcTable.getTableName(), jdbcSchemaName, false);
             }
         }
 
@@ -357,7 +360,12 @@ class RelationalDatabaseCataloguer
             String qualifiedName = parentQualifiedName + "::" + jdbcView.getTableName();
             processedQualifiedNames.add(qualifiedName);
 
-            getOrCreateView(jdbcView, anchorAsset, schemaTypeGUID, qualifiedName);
+            String viewGUID = getOrCreateView(jdbcView, anchorAsset, schemaTypeGUID, qualifiedName);
+
+            if (viewGUID != null)
+            {
+                catalogColumns(anchorAsset, viewGUID, qualifiedName, jdbcView.getTableName(), jdbcSchemaName, true);
+            }
         }
 
         deleteStaleTablesAndViews(schemaTypeGUID, processedQualifiedNames);
@@ -487,10 +495,11 @@ class RelationalDatabaseCataloguer
 
 
     /**
-     * Look up a view by its deterministic qualified name and either update it (if found) or create it. Views do not
-     * have their columns catalogued separately (matching the existing behaviour of this connector).
+     * Look up a view by its deterministic qualified name and either update it (if found) or create it.
+     *
+     * @return guid of the (matched or newly created) view, or null if the lookup was ambiguous or the create failed
      */
-    private void getOrCreateView(JdbcTable jdbcView, OpenMetadataRootElement anchorAsset, String schemaTypeGUID, String qualifiedName)
+    private String getOrCreateView(JdbcTable jdbcView, OpenMetadataRootElement anchorAsset, String schemaTypeGUID, String qualifiedName)
     {
         RelationalTableProperties viewProperties = buildTableProperties(jdbcView, qualifiedName);
 
@@ -498,21 +507,20 @@ class RelationalDatabaseCataloguer
 
         if (lookup.abort)
         {
-            return;
+            return null;
         }
 
         if (lookup.element != null)
         {
             updateView(lookup.element.getElementHeader().getGUID(), viewProperties);
+            return lookup.element.getElementHeader().getGUID();
         }
-        else
-        {
-            createView(anchorAsset, schemaTypeGUID, viewProperties);
-        }
+
+        return createView(anchorAsset, schemaTypeGUID, viewProperties);
     }
 
 
-    private void createView(OpenMetadataRootElement anchorAsset, String schemaTypeGUID, RelationalTableProperties viewProperties)
+    private String createView(OpenMetadataRootElement anchorAsset, String schemaTypeGUID, RelationalTableProperties viewProperties)
     {
         final String methodName = "createView";
 
@@ -535,14 +543,16 @@ class RelationalDatabaseCataloguer
             Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
             initialClassifications.put(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, null);
 
-            databaseViewClient.createSchemaAttribute(newElementOptions, initialClassifications, viewProperties, attributeForSchemaProperties);
+            String viewGUID = databaseViewClient.createSchemaAttribute(newElementOptions, initialClassifications, viewProperties, attributeForSchemaProperties);
             auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
+            return viewGUID;
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
             auditLog.logException(methodName,
                                   JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
                                   e);
+            return null;
         }
     }
 
@@ -639,14 +649,19 @@ class RelationalDatabaseCataloguer
      * ================================================================================================== */
 
     /**
-     * Create or update every column of a table, set/remove primary key classifications, and delete any column that
-     * is no longer present.
+     * Create or update every column of a table or view, set/remove primary key classifications, and delete any
+     * column that is no longer present.
+     *
+     * @param isView true when tableGUID/tableQualifiedName/tableName refer to a view rather than a table - each of
+     *               its columns is given the CalculatedValue classification at creation time, since its value is
+     *               not physically stored, matching the classification already applied to the view itself
      */
     private void catalogColumns(OpenMetadataRootElement anchorAsset,
                                 String                   tableGUID,
                                 String                   tableQualifiedName,
                                 String                   tableName,
-                                String                   jdbcSchemaName) throws SQLException
+                                String                   jdbcSchemaName,
+                                boolean                  isView) throws SQLException
     {
         List<JdbcPrimaryKey> jdbcPrimaryKeys = jdbcMetadata.getPrimaryKeys(catalogName, jdbcSchemaName, tableName);
 
@@ -662,7 +677,7 @@ class RelationalDatabaseCataloguer
             String qualifiedName = tableQualifiedName + "::" + jdbcColumn.getColumnName();
             processedQualifiedNames.add(qualifiedName);
 
-            getOrCreateColumn(jdbcColumn, anchorAsset, tableGUID, qualifiedName, jdbcPrimaryKeys);
+            getOrCreateColumn(jdbcColumn, anchorAsset, tableGUID, qualifiedName, jdbcPrimaryKeys, isView);
         }
 
         deleteStaleColumns(tableGUID, processedQualifiedNames);
@@ -677,7 +692,8 @@ class RelationalDatabaseCataloguer
                                    OpenMetadataRootElement  anchorAsset,
                                    String                   tableGUID,
                                    String                   qualifiedName,
-                                   List<JdbcPrimaryKey>     jdbcPrimaryKeys)
+                                   List<JdbcPrimaryKey>     jdbcPrimaryKeys,
+                                   boolean                  isView)
     {
         RelationalColumnProperties columnProperties = buildColumnProperties(jdbcColumn, qualifiedName);
 
@@ -697,7 +713,7 @@ class RelationalDatabaseCataloguer
         }
         else
         {
-            String columnGUID = createColumn(anchorAsset, tableGUID, columnProperties);
+            String columnGUID = createColumn(anchorAsset, tableGUID, columnProperties, isView);
 
             if (columnGUID != null)
             {
@@ -707,7 +723,7 @@ class RelationalDatabaseCataloguer
     }
 
 
-    private String createColumn(OpenMetadataRootElement anchorAsset, String tableGUID, RelationalColumnProperties columnProperties)
+    private String createColumn(OpenMetadataRootElement anchorAsset, String tableGUID, RelationalColumnProperties columnProperties, boolean isView)
     {
         final String methodName = "createColumn";
 
@@ -725,7 +741,17 @@ class RelationalDatabaseCataloguer
             nestedSchemaAttributeProperties.setMaxCardinality(1);
             nestedSchemaAttributeProperties.setMinCardinality(1);
 
-            String columnGUID = databaseColumnClient.createSchemaAttribute(newElementOptions, null, columnProperties, nestedSchemaAttributeProperties);
+            Map<String, ClassificationProperties> initialClassifications = null;
+
+            if (isView)
+            {
+                // Matches the CalculatedValue classification already applied to the view itself (see createView) -
+                // a view's column value is not physically stored, it is calculated/derived every time it is read.
+                initialClassifications = new HashMap<>();
+                initialClassifications.put(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, null);
+            }
+
+            String columnGUID = databaseColumnClient.createSchemaAttribute(newElementOptions, initialClassifications, columnProperties, nestedSchemaAttributeProperties);
             auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
             return columnGUID;
         }

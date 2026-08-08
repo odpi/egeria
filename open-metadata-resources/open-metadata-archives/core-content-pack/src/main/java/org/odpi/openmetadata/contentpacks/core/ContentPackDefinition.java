@@ -119,6 +119,14 @@ public enum ContentPackDefinition
                         "DB2LUWContentPack",
                         "Reference data, templates, connectors, and governance services for working with an IBM Db2 for Linux, UNIX and Windows (LUW / UDB) Server. Egeria's content pack for Db2 for Linux, UNIX and Windows provides templates for Db2 servers and databases along with function to survey the contents of Db2 databases and catalog their schemas.",
                         "DB2LUWContentPack.omarchive"),
+
+    /**
+     * Reference data, templates, connectors, and governance services for working with a DuckDB database.
+     */
+    DUCKDB_CONTENT_PACK("41445a34-7648-4e30-b3df-9e5312a10a50",
+                        "DuckDBContentPack",
+                        "Reference data, templates, connectors, and governance services for working with a DuckDB database. Egeria's content pack for DuckDB provides a template for DuckDB databases along with function to survey the contents of a DuckDB database - including its attached and federated data sources - and catalog its schemas.",
+                        "DuckDBContentPack.omarchive"),
     ;
 
     private final String   archiveGUID;

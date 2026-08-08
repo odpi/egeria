@@ -171,6 +171,29 @@ public enum GovernanceEngineDefinition
 
 
     /**
+     * Provides surveys on DuckDB databases.
+     */
+    DUCKDB_SURVEY_ENGINE("95cecd7a-c9f9-4d94-8ee2-fff85943ee4b",
+                         "DuckDBSurvey",
+                         "DuckDB Survey Engine",
+                         "Provides specialist surveys on DuckDB databases.",
+                         "duckdbsurveyengine",
+                         OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                         ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    /**
+     * Provides specialist governance services on DuckDB databases.
+     */
+    DUCKDB_GOVERNANCE_ENGINE("63c71fad-c7ea-4781-9ef6-0bcb2d169ace",
+                             "DuckDBGovernance",
+                             "DuckDB Governance Engine",
+                             "Provides specialist governance services to DuckDB databases.",
+                             "duckdbgovernanceengine",
+                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                             ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+
+    /**
      * Provides surveys on Apache Atlas Servers.
      */
     ATLAS_SURVEY_ENGINE("af1b89b3-c579-4ad3-b649-a007121566a0",

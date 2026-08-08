@@ -125,6 +125,15 @@ public enum IntegrationGroupDefinition
                  "Dynamic integration group supporting integration connectors connecting to Db2 for Linux, UNIX and Windows Servers.",
                  ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
+    /**
+     * Dynamic integration group supporting integration connectors connecting to DuckDB databases.
+     */
+    DUCKDB("26c4ebab-564b-490b-a05b-6b11574957dc",
+                 "Egeria:IntegrationGroup:DuckDB",
+                 "DuckDBIntegrationGroup",
+                 "Dynamic integration group supporting integration connectors connecting to DuckDB databases.",
+                 ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
             ;
 
     private final String                guid;
