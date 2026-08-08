@@ -42,6 +42,7 @@ ext {
 
     commonscliVersion = '1.9.0'
     db2JdbcVersion = '12.1.5.0'
+    duckdbJdbcVersion = '1.5.5.1'
     elasticsearchVersion = '8.7.1'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
@@ -203,6 +204,7 @@ dependencies {
     //    api("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
    //     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
         api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
+        api("org.duckdb:duckdb_jdbc:${duckdbJdbcVersion}")
     //    api("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
     //    api("org.janusgraph:janusgraph-core:${janusVersion}")
     //    api("org.janusgraph:janusgraph-inmemory:${janusVersion}")

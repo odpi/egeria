@@ -272,6 +272,14 @@ POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open
 Authorization: Bearer {{token}}
 Content-Type: text/plain
 
+content-packs/DuckDBContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
 content-packs/OpenLineageContentPack.omarchive
 
 ###
@@ -674,6 +682,28 @@ Content-Type: application/json
     },
     {
       "class": "EngineConfig",
+      "engineId": "95cecd7a-c9f9-4d94-8ee2-fff85943ee4b",
+      "engineQualifiedName": "DuckDBSurvey",
+      "engineUserId": "duckdbsurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "63c71fad-c7ea-4781-9ef6-0bcb2d169ace",
+      "engineQualifiedName": "DuckDBGovernance",
+      "engineUserId": "duckdbgovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
       "engineId": "9b7a1da6-7882-41c7-b838-0e297787972f",
       "engineQualifiedName": "ApacheAtlasSurvey",
       "engineUserId": "apacheatlassurveyengine",
@@ -965,6 +995,15 @@ Content-Type: application/json
         "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
         "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DB2LUW"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DuckDB"
     },
     {
         "class": "IntegrationGroupConfig",

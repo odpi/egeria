@@ -11,6 +11,7 @@ import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.mssql.MSSQLPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.db2luw.DB2LUWPackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.duckdb.DuckDBPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.oracle.OraclePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.openlineage.OpenLineageArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.organizationinsight.OrganizationInsightArchiveWriter;
@@ -64,6 +65,9 @@ public class CorePacksArchivesWriter
 
             DB2LUWPackArchiveWriter db2luwPackArchiveWriter = new DB2LUWPackArchiveWriter();
             db2luwPackArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            DuckDBPackArchiveWriter duckDBPackArchiveWriter = new DuckDBPackArchiveWriter();
+            duckDBPackArchiveWriter.writeOpenMetadataArchive(folderName);
 
             ProductPackArchiveWriter productPackArchiveWriter = new ProductPackArchiveWriter();
             productPackArchiveWriter.writeOpenMetadataArchive(folderName);
