@@ -36,6 +36,11 @@ org.odpi.openmetadata.adapters.connectors.db2luw.ffdc
 org.odpi.openmetadata.adapters.connectors.db2luw.survey
 org.odpi.openmetadata.adapters.connectors.db2luw.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.db2luw.utilities
+org.odpi.openmetadata.adapters.connectors.duckdb.catalog
+org.odpi.openmetadata.adapters.connectors.duckdb.controls
+org.odpi.openmetadata.adapters.connectors.duckdb.ffdc
+org.odpi.openmetadata.adapters.connectors.duckdb.survey
+org.odpi.openmetadata.adapters.connectors.duckdb.utilities
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary
@@ -233,6 +238,7 @@ org.odpi.openmetadata.contentpacks.core.base
 org.odpi.openmetadata.contentpacks.core.core
 org.odpi.openmetadata.contentpacks.core.db2luw
 org.odpi.openmetadata.contentpacks.core.digitalproducts
+org.odpi.openmetadata.contentpacks.core.duckdb
 org.odpi.openmetadata.contentpacks.core.egeria
 org.odpi.openmetadata.contentpacks.core.files
 org.odpi.openmetadata.contentpacks.core.mssql
