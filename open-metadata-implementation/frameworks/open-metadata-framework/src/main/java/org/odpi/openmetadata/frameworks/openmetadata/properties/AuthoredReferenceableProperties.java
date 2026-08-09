@@ -200,7 +200,7 @@ public class AuthoredReferenceableProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AuthoredReferenceableProperties that = (AuthoredReferenceableProperties) objectToCompare;
-        return  authors == that.authors &&
+        return  Objects.equals(authors, that.authors) &&
                 contentStatus == that.contentStatus &&
                 Objects.equals(userDefinedContentStatus, that.userDefinedContentStatus);
     }
