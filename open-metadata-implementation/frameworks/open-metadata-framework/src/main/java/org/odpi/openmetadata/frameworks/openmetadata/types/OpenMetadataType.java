@@ -553,16 +553,6 @@ public enum OpenMetadataType
                     HomeCollectionProperties.class),
 
     /**
-     * Defines that a collection is a set of results from an activity, query, ...
-     */
-    RESULTS_SET_COLLECTION("3947f08d-7412-4022-81fc-344a20dfbb26",
-                           "ResultsSet",
-                           OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                           "883529d0-f230-4fd1-93d3-13820090f320",
-                           "Defines that a collection is a set of results from an activity, query, ...",
-                           ResultsSetProperties.class),
-
-    /**
      * Defines that a collection is a set of external references such as external data/model sources, links to media, or cited documents.
      */
     REFERENCE_LIST_COLLECTION("f78e6fd3-0e76-42b4-9404-67dc458708ba",
@@ -6188,6 +6178,33 @@ public enum OpenMetadataType
                                                "Relationship identifying the flow between segments in an information supply chain.",
                                                InformationSupplyChainLinkProperties.class),
 
+    /**
+     * Defines that a collection is a set of results from an activity, query, ...
+     */
+    RESULTS_SET("3947f08d-7412-4022-81fc-344a20dfbb26",
+                "ResultsSet",
+                OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
+                "883529d0-f230-4fd1-93d3-13820090f320",
+                "Defines that a collection is a set of results from an activity, query, ...",
+                ResultsSetProperties.class),
+
+    /**
+     * A DataSet that provides the definition of a RESTful query to Egeria that returns Open Metadata Elements.
+     */
+    SAVED_QUERY("7888e2b6-602d-4fea-9642-e97e001fd647",
+                "SavedQuery",
+                OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
+                "4fb8468e-f871-4bc4-99b6-e2c845ac5604",
+                "A DataSet that provides the definition of a RESTful query to Egeria that returns Open Metadata Elements."),
+
+    /**
+     * Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query.
+     */
+    SMART_QUERY_RELATIONSHIP("36616b8f-d561-4c43-9ef4-6b1412a356a5",
+                "SmartQuery",
+                OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
+                "35198506-606c-44b3-91cc-4b30027327d7",
+                "Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query."),
 
     /**
      * Description of a well-defined capability within a solution.

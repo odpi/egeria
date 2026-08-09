@@ -3276,7 +3276,7 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getResultsSet()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RESULTS_SET_COLLECTION,
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RESULTS_SET,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
