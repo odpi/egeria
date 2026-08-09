@@ -919,7 +919,7 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.DATA_HUB;
         }
-        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RESULTS_SET_COLLECTION.typeName))
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RESULTS_SET.typeName))
         {
             return VisualStyle.RESULTS_SET;
         }

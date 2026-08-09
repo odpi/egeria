@@ -182,6 +182,7 @@ public class OpenMetadataTypesArchive
         update0534RelationalSchemas();
         update0595DesignPatterns();
         add0705DataSharing();
+        add0725SmartCollections();
         update0735SolutionPortsAndWires();
     }
 
@@ -1611,6 +1612,91 @@ public class OpenMetadataTypesArchive
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SHARING_REQUEST,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName));
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0725SmartCollections()
+    {
+        this.archiveBuilder.addTypeDefPatch(getResultsSetPatch());
+        this.archiveBuilder.addEntityDef(getSavedQuery());
+        this.archiveBuilder.addRelationshipDef(getSmartQueryRelationship());
+    }
+
+    private TypeDefPatch getResultsSetPatch()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RESULTS_SET.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CREATED_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+
+    }
+
+    private EntityDef getSavedQuery()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SAVED_QUERY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+    }
+
+
+    private RelationshipDef getSmartQueryRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SMART_QUERY_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "resultsStoredIn";
+        final String                     end1AttributeDescription     = "Destination for the results of the smart query.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.RESULTS_SET.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "populatedUsingQuery";
+        final String                     end2AttributeDescription     = "This is the query that is determining the results set members.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SAVED_QUERY.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
 
 

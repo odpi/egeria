@@ -15213,7 +15213,7 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new RecentAccessProperties();
                         }
-                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RESULTS_SET_COLLECTION.typeName))
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RESULTS_SET.typeName))
                         {
                             beanProperties = new ResultsSetProperties();
                         }

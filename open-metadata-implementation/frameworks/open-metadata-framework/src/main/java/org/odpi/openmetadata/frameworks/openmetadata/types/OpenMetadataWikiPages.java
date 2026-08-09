@@ -763,6 +763,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0720_INFORMATION_SUPPLY_CHAINS    = "https://egeria-project.org/types/7/0720-Information-Supply-Chains/";
 
     /**
+     * <a href="https://egeria-project.org/types/7/0725-Smart-Collections/">...</a>
+     */
+    public static final String MODEL_0725_SMART_COLLECTIONS    = "https://egeria-project.org/types/7/0725-Smart-Collections/";
+
+    /**
      * <a href="https://egeria-project.org/types/7/0730-Solution-Components/">...</a>
      */
     public static final String MODEL_0730_SOLUTION_COMPONENTS          = "https://egeria-project.org/types/7/0730-Solution-Components/";

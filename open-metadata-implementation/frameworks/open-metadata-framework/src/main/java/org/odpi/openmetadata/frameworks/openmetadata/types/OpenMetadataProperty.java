@@ -2574,6 +2574,16 @@ public enum OpenMetadataProperty
     QUERY_TYPE("queryType", DataType.STRING, DataType.STRING.getDisplayName(), "Type of query used to extract data.", "SQL", "58d5990e-8afa-49fd-8364-db53ccc1dfd8"),
 
     /**
+     * The REST URL used to issue the query.
+     */
+    QUERY_URL("queryURL", DataType.STRING, DataType.STRING.getDisplayName(), "The REST URL used to issue the query.", "https://localhost:9443}/servers/qs-view-server/api/open-metadata/metadata-expert/metadata-elements/by-search-string", "b84982f4-34da-4493-91ec-b4fc9ac2c9e8"),
+
+    /**
+     * The REST request body used to issue the query.
+     */
+    QUERY_REQUEST_BODY("queryRequestBody", DataType.STRING, DataType.STRING.getDisplayName(), "The REST request body used to issue the query.", "{\"class\" : \"SearchStringRequestBody\", \"searchString\" : \"put search string here\"}", "ce08b116-5c2e-4799-bfab-51ad734806b1"),
+
+    /**
      * Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.
      */
     DOMAIN_IDENTIFIER("domainIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.", "0", "f76e01aa-6f89-4214-b79f-f2c2a87d261b"),

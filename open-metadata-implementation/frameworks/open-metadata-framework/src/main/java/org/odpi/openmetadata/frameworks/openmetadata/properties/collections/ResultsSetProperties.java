@@ -26,7 +26,7 @@ public class ResultsSetProperties extends CollectionProperties
     public ResultsSetProperties()
     {
         super();
-        super.typeName = OpenMetadataType.RESULTS_SET_COLLECTION.typeName;
+        super.typeName = OpenMetadataType.RESULTS_SET.typeName;
     }
 
 
@@ -49,7 +49,7 @@ public class ResultsSetProperties extends CollectionProperties
     public ResultsSetProperties(CollectionProperties template)
     {
         super(template);
-        super.typeName = OpenMetadataType.RESULTS_SET_COLLECTION.typeName;
+        super.typeName = OpenMetadataType.RESULTS_SET.typeName;
     }
 
 
