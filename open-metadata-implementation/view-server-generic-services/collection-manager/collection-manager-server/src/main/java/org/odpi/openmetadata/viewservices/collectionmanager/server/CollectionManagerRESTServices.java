@@ -844,6 +844,134 @@ public class CollectionManagerRESTServices extends TokenController
     }
 
 
+    /**
+     * Connect a results set to the saved query that determines its membership using the SmartQuery relationship (0725).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param resultsSetGUID unique identifier of the results set
+     * @param savedQueryGUID unique identifier of the saved query that determines the results set's membership
+     * @param requestBody  description of how the saved query is used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse attachSmartQuery(String                     serverName,
+                                         String                     urlMarker,
+                                         String                     resultsSetGUID,
+                                         String                     savedQueryGUID,
+                                         NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "attachSmartQuery";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SmartQueryProperties properties)
+                {
+                    handler.attachSmartQuery(userId,
+                                             resultsSetGUID,
+                                             savedQueryGUID,
+                                             requestBody,
+                                             properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.attachSmartQuery(userId,
+                                             resultsSetGUID,
+                                             savedQueryGUID,
+                                             requestBody,
+                                             null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SmartQueryProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.attachSmartQuery(userId,
+                                         resultsSetGUID,
+                                         savedQueryGUID,
+                                         new MakeAnchorOptions(),
+                                         null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a results set from the saved query that determines its membership.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param resultsSetGUID unique identifier of the results set.
+     * @param savedQueryGUID unique identifier of the saved query that determines the results set's membership.
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachSmartQuery(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        resultsSetGUID,
+                                         String                        savedQueryGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSmartQuery";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSmartQuery(userId, resultsSetGUID, savedQueryGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
 
     /**
      * Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).

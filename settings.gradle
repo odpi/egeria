@@ -66,6 +66,7 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:smart-collections-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')

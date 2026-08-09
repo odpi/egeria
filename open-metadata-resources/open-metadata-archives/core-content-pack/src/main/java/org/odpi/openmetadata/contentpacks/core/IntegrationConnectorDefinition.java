@@ -33,6 +33,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMArchiv
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.integration.smartcollections.SmartCollectionsIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.JacquardIntegrationConnectorProvider;
@@ -640,6 +641,29 @@ public enum IntegrationConnectorDefinition
                               null,
                               null,
                               IntegrationGroupDefinition.LISKOV,
+                              ContentPackDefinition.CORE_CONTENT_PACK),
+
+    SMART_COLLECTIONS_MEMBERSHIP_MANAGER("217bd925-b50d-4596-9ade-1d7a940e8874",
+                              "SmartCollectionsIntegrationConnector",
+                              "Maintains the membership of Results Set collections by running their attached saved query and linking/unlinking members to match the results.",
+                              SmartCollectionsIntegrationConnectorProvider.class.getName(),
+                              "SmartCollectionsMembershipManager",
+                              "smartcnpa",
+                              null,
+                              null,
+                              null,
+                              null,
+                              30,
+                              null,
+                              "204af0dc-1e8c-4050-aad9-c565f5bdcf72",
+                              "Smart Collections Membership Manager",
+                              "Maintains the membership of Results Set collections linked as catalog targets by navigating to their Saved Query, issuing its query and linking/unlinking members to match the elements returned.",
+                              true,
+                              "EgeriaServers",
+                              SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                              new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                              "secrets/egeria-servers.omsecrets",
+                              IntegrationGroupDefinition.SMART_COLLECTIONS,
                               ContentPackDefinition.CORE_CONTENT_PACK),
     ;
 

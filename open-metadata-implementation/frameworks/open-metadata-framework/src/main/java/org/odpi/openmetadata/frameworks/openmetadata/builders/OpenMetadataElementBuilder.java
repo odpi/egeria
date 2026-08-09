@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ResultsSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
@@ -527,6 +528,15 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                             OpenMetadataProperty.EMBEDDED_METADATA.name,
                                                                                             mediaCollectionProperties.getEmbeddedMetadata());
+                                }
+                                else if (properties instanceof SavedQueryProperties savedQueryProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.QUERY_URL.name,
+                                                                                         savedQueryProperties.getQueryURL());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.QUERY_REQUEST_BODY.name,
+                                                                                         savedQueryProperties.getQueryRequestBody());
                                 }
                                 else if (properties instanceof MetadataCollectionProperties metadataCollectionProperties)
                                 {
@@ -1055,6 +1065,22 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.PURPOSE.name,
                                                                                  collectionProperties.getPurpose());
+
+                            if (collectionProperties instanceof ResultsSetProperties resultsSetProperties)
+                            {
+                                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                   OpenMetadataProperty.CREATED_TIME.name,
+                                                                                   resultsSetProperties.getCreatedTime());
+                                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                   OpenMetadataProperty.START_TIME.name,
+                                                                                   resultsSetProperties.getStartTime());
+                                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                   OpenMetadataProperty.COMPLETION_TIME.name,
+                                                                                   resultsSetProperties.getCompletionTime());
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.COMPLETION_MESSAGE.name,
+                                                                                     resultsSetProperties.getCompletionMessage());
+                            }
 
                             if (collectionProperties instanceof AgreementProperties)
                             {

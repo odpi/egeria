@@ -593,6 +593,77 @@ public class CollectionHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Connect a results set to the saved query that determines its membership using the SmartQuery relationship (0725).
+     *
+     * @param userId            userId of the user making the request
+     * @param resultsSetGUID    unique identifier of the results set
+     * @param savedQueryGUID    unique identifier of the saved query that determines the results set's membership
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the saved query is used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachSmartQuery(String               userId,
+                                 String               resultsSetGUID,
+                                 String               savedQueryGUID,
+                                 MakeAnchorOptions    makeAnchorOptions,
+                                 SmartQueryProperties properties) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName                  = "attachSmartQuery";
+        final String resultsSetGUIDParameterName  = "resultsSetGUID";
+        final String savedQueryGUIDParameterName  = "savedQueryGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(resultsSetGUID, resultsSetGUIDParameterName, methodName);
+        propertyHelper.validateGUID(savedQueryGUID, savedQueryGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName,
+                                                        resultsSetGUID,
+                                                        savedQueryGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Detach a results set from the saved query that determines its membership.
+     *
+     * @param userId         userId of the user making the request.
+     * @param resultsSetGUID unique identifier of the results set.
+     * @param savedQueryGUID unique identifier of the saved query that determines the results set's membership.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSmartQuery(String        userId,
+                                 String        resultsSetGUID,
+                                 String        savedQueryGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String methodName                  = "detachSmartQuery";
+        final String resultsSetGUIDParameterName  = "resultsSetGUID";
+        final String savedQueryGUIDParameterName  = "savedQueryGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(resultsSetGUID, resultsSetGUIDParameterName, methodName);
+        propertyHelper.validateGUID(savedQueryGUID, savedQueryGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName,
+                                                        resultsSetGUID,
+                                                        savedQueryGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
      * Connect an actor to a skill set collection.
      *
      * @param userId            userId of the user making the request

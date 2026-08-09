@@ -162,6 +162,15 @@ public enum IntegrationGroupDefinition
                  "Dynamic integration group supporting integration connectors connecting to DuckDB databases.",
                  ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
+    /**
+     * Dynamic integration group supporting integration connectors that maintain the membership of smart collections based on saved queries.
+     */
+    SMART_COLLECTIONS("9c9ecd5f-cec6-41c9-a12d-407bfe4aba99",
+                 "Egeria:IntegrationGroup:SmartCollections",
+                 "SmartCollectionsIntegrationGroup",
+                 "Dynamic integration group supporting integration connectors that maintain the membership of smart collections based on saved queries.",
+                 ContentPackDefinition.CORE_CONTENT_PACK),
+
             ;
 
     private final String                guid;
