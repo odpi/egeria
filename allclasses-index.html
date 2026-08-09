@@ -12610,7 +12610,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/ResultsSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">ResultsSetProperties</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">ResultsSetProperties is a java bean used to classify a collection.</div>
+<div class="block">ResultsSetProperties is a java bean used to represent a collection whose membership is maintained by a connector,
+ typically as the results of running a query.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">RetentionBasis</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
@@ -13222,6 +13223,32 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/repositoryservices/auditlogstore/slf4j/SLF4JAuditLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j">SLF4JAuditLogStoreProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">SLF4JAuditLogStoreProvider is the OCF connector provider for the SLF4J audit log store destination.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/ffdc/SmartCollectionsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections.ffdc">SmartCollectionsAuditCode</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="block">The SmartCollectionsAuditCode is used to define the message content for the Audit Log.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/controls/SmartCollectionsCatalogTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections.controls">SmartCollectionsCatalogTarget</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="block">SmartCollectionsCatalogTarget characterises the type of element that the Smart Collections Integration Connector works with.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/SmartCollectionsCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections">SmartCollectionsCatalogTargetProcessor</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">SmartCollectionsCatalogTargetProcessor maintains the membership of a single Results Set collection linked as a catalog target.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/ffdc/SmartCollectionsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections.ffdc">SmartCollectionsErrorCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="block">The SmartCollectionsErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+ the Smart Collections integration connector.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/SmartCollectionsIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections">SmartCollectionsIntegrationConnector</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">SmartCollectionsIntegrationConnector maintains the membership of Results Set collections that are linked as catalog targets.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/smartcollections/SmartCollectionsIntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.smartcollections">SmartCollectionsIntegrationConnectorProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">SmartCollectionsIntegrationConnectorProvider is the connector provider for the Smart Collections Integration Connector that
+ maintains the membership of results set collections based on their saved query.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/SmartQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">SmartQueryProperties</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">

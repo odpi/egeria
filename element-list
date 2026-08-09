@@ -85,6 +85,9 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.smartcollections
+org.odpi.openmetadata.adapters.connectors.integration.smartcollections.controls
+org.odpi.openmetadata.adapters.connectors.integration.smartcollections.ffdc
 org.odpi.openmetadata.adapters.connectors.jacquard
 org.odpi.openmetadata.adapters.connectors.jacquard.ffdc
 org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog
