@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QuerySchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -32,6 +34,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = RelationalDBSchemaTypeProperties.class, name = "RelationalDBSchemaTypeProperties"),
         @JsonSubTypes.Type(value = RelationalDBSchemaTypeListProperties.class, name = "RelationalDBSchemaTypeListProperties"),
         @JsonSubTypes.Type(value = EventTypeProperties.class, name = "EventTypeProperties"),
+        @JsonSubTypes.Type(value = DocumentSchemaTypeProperties.class, name = "DocumentSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = ObjectSchemaTypeProperties.class, name = "ObjectSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = GraphSchemaTypeProperties.class, name = "GraphSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = DisplayDataSchemaTypeProperties.class, name = "DisplayDataSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = QuerySchemaTypeProperties.class, name = "QuerySchemaTypeProperties"),
               })
 public class RootSchemaTypeProperties extends ComplexSchemaTypeProperties
 {

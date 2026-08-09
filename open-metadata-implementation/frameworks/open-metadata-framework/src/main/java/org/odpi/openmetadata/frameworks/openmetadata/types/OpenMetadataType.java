@@ -45,6 +45,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationSnippetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
@@ -59,6 +60,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.Resour
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
@@ -742,7 +744,8 @@ public enum OpenMetadataType
                        "OperatingPlatform",
                        OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                        "b1dc416d-7750-4ec5-88ce-b5125ebf4497",
-                       "Characteristics of the operating system in use within a host."),
+                       "Characteristics of the operating system in use within a host.",
+                       OperatingPlatformProperties.class),
 
     /**
      * Identifies the operating platform installed on the IT Infrastructure asset.
@@ -751,7 +754,8 @@ public enum OpenMetadataType
                                         "OperatingPlatformUse",
                                         OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                                         "8030885a-6639-40a6-8b02-277553ab6041",
-                                        "Identifies the operating platform installed on the IT Infrastructure asset."),
+                                        "Identifies the operating platform installed on the IT Infrastructure asset.",
+                                        OperatingPlatformUseProperties.class),
 
     /**
      * Shows the software packages being used within a digital resource.
@@ -760,7 +764,8 @@ public enum OpenMetadataType
                                              "SoftwarePackageDependency",
                                              OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                                              "3e483839-d163-49b5-9c63-9f47ece44af9",
-                                             "Shows the software packages being used within a digital resource."),
+                                             "Shows the software packages being used within a digital resource.",
+                                             SoftwarePackageDependencyProperties.class),
 
     /**
      * A collection of runnable software components.
@@ -779,7 +784,8 @@ public enum OpenMetadataType
                                              "OperatingPlatformManifest",
                                              OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                                              "7f9da435-57dd-41ac-a57a-a8a0a2993358",
-                                             "Defines the base software installed on the operating platform."),
+                                             "Defines the base software installed on the operating platform.",
+                                             OperatingPlatformManifestProperties.class),
 
     /**
      * Identifies a collection of software packages.
@@ -788,7 +794,8 @@ public enum OpenMetadataType
                                              "SoftwarePackageManifest",
                                              OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                                              "6c6fc06b-73c7-46b1-8e4e-068559f04bac",
-                                             "Identifies a collection of software packages."),
+                                             "Identifies a collection of software packages.",
+                                             SoftwarePackageManifestProperties.class),
 
     /**
      * Named IT infrastructure system that supports multiple software platforms and servers.
@@ -828,7 +835,8 @@ public enum OpenMetadataType
                                      "HostClusterMember",
                                      OpenMetadataWikiPages.MODEL_0035_HOSTS,
                                      "0381865a-4230-4689-ba10-7f8d511bc3b0",
-                                     "Identifies a host as a member of a host cluster."),
+                                     "Identifies a host as a member of a host cluster.",
+                                     HostClusterMemberProperties.class),
 
     /**
      * A computer that is hosting software directly on its operating system.
@@ -868,7 +876,8 @@ public enum OpenMetadataType
                    "StorageVolume",
                    OpenMetadataWikiPages.MODEL_0036_STORAGE,
                    "d644ca65-53a6-40c1-9925-4c7c55d138d9",
-                   "A persistent storage volume."),
+                   "A persistent storage volume.",
+                   StorageVolumeProperties.class),
 
     /**
      * Links infrastructure to a persistent storage volume.
@@ -877,7 +886,8 @@ public enum OpenMetadataType
                                   "AttachedStorage",
                                   OpenMetadataWikiPages.MODEL_0036_STORAGE,
                                   "380e749e-a406-4359-89b4-e6a96646819c",
-                                  "Links infrastructure to a persistent storage volume."),
+                                  "Links infrastructure to a persistent storage volume.",
+                                  AttachedStorageProperties.class),
 
     /**
      * Software services packaged as an operating system process to support a runtime environment for a virtual software server.
@@ -1651,7 +1661,8 @@ public enum OpenMetadataType
                                 "ProjectKind",
                                 OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                 "bac56f15-e51f-4b53-9b95-a49fd1b2aa0f",
-                                "A superclass for the project classifications that identify the role that the project is playing."),
+                                "A superclass for the project classifications that identify the role that the project is playing.",
+                                ProjectKindProperties.class),
 
     /**
      * A long-term strategic initiative that is implemented through multiple related projects.
@@ -2106,7 +2117,8 @@ public enum OpenMetadataType
                            "StoredOn",
                            OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                            "78f5613c-0a98-440c-a589-d4550e7fe72e",
-                           "Links a data store to a persistent storage volume."),
+                           "Links a data store to a persistent storage volume.",
+                           StoredOnProperties.class),
 
     /**
      * Identifies the scope of the data stored in the digital resource(s).
@@ -4700,7 +4712,8 @@ public enum OpenMetadataType
                            "ImplementationSnippet",
                            OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
                            "1c085070-8d26-4488-b973-f46a4c49498d",
-                           "A concrete implementation example for a schema element."),
+                           "A concrete implementation example for a schema element.",
+                           ImplementationSnippetProperties.class),
 
 
     /**
@@ -4883,7 +4896,8 @@ public enum OpenMetadataType
                          "DocumentSchemaType",
                          OpenMetadataWikiPages.MODEL_0531_DOCUMENT_SCHEMAS,
                          "6db7db38-4622-479a-a35e-ef65818eaa7a",
-                         "A schema type for a structured document."),
+                         "A schema type for a structured document.",
+                         DocumentSchemaTypeProperties.class),
 
     /**
      * A schema attribute for a structured document.
@@ -4892,7 +4906,8 @@ public enum OpenMetadataType
                               "DocumentSchemaAttribute",
                               OpenMetadataWikiPages.MODEL_0531_DOCUMENT_SCHEMAS,
                               "41040ff7-1114-471a-948d-ea93fcf57773",
-                              "A schema attribute for a structured document."),
+                              "A schema attribute for a structured document.",
+                              DocumentSchemaAttributeProperties.class),
 
     /**
      * A schema root for an object.
@@ -4901,7 +4916,8 @@ public enum OpenMetadataType
                        "ObjectSchemaType",
                        OpenMetadataWikiPages.MODEL_0532_OBJECT_SCHEMAS,
                        "9e4f83bed-5ff0-4665-9fea-9cf435a14698",
-                       "A schema root for an object."),
+                       "A schema root for an object.",
+                       ObjectSchemaTypeProperties.class),
 
     /**
      * An attribute in an object schema type.
@@ -4910,7 +4926,8 @@ public enum OpenMetadataType
                      "ObjectAttribute",
                      OpenMetadataWikiPages.MODEL_0532_OBJECT_SCHEMAS,
                      "4c55dd4f-d28d-4074-b946-5776b966cc18",
-                     "An attribute in an object schema type."),
+                     "An attribute in an object schema type.",
+                     ObjectAttributeProperties.class),
 
     /**
      * A schema type for a graph data structure.
@@ -4919,7 +4936,8 @@ public enum OpenMetadataType
                       "GraphSchemaType",
                       OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
                       "f5200884-ff02-4f25-bf3b-2f7ca24a074d",
-                      "A schema type for a graph data structure."),
+                      "A schema type for a graph data structure.",
+                      GraphSchemaTypeProperties.class),
 
     /**
      * A schema attribute for a node in a graph data structure.
@@ -4928,7 +4946,8 @@ public enum OpenMetadataType
                  "GraphVertex",
                  OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
                  "f5a74d2d-7d8e-4e42-9187-7e10d0979256",
-                 "A schema attribute for a node in a graph data structure."),
+                 "A schema attribute for a node in a graph data structure.",
+                 GraphVertexProperties.class),
 
     /**
      * A schema attribute for a relationship in graph data structure.
@@ -4937,7 +4956,8 @@ public enum OpenMetadataType
                "GraphEdge",
                OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
                "b39112b8-e22d-4510-9420-1ef72f84b8e9",
-               "A schema attribute for a relationship in graph data structure."),
+               "A schema attribute for a relationship in graph data structure.",
+               GraphEdgeProperties.class),
 
     /**
      * A link between a graph edge and a vertex.   Each edge should have two of these relationships.
@@ -4985,7 +5005,8 @@ public enum OpenMetadataType
                           "RelationalTableType",
                           OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                           "079d4ea2-4441-403e-95fe-ffdc5c3350f5",
-                          "A table type for a relational database."),
+                          "A table type for a relational database.",
+                          RelationalTableTypeProperties.class),
 
     /**
      * A table within a relational database schema type.
@@ -5155,7 +5176,8 @@ public enum OpenMetadataType
                              "DisplayDataSchemaType",
                              OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                              "87506009-60b9-4eda-9f5d-3697191b27a1",
-                             "A structure describing data that is to be displayed."),
+                             "A structure describing data that is to be displayed.",
+                             DisplayDataSchemaTypeProperties.class),
 
     /**
      * A grouping of display data fields (and nested containers) for a report, form or similar data display asset.
@@ -5164,7 +5186,8 @@ public enum OpenMetadataType
                            "DisplayDataContainer",
                            OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                            "e8d17c1e-c354-4c5f-a82e-38c8330b4e5b",
-                           "A grouping of display data fields (and nested containers) for a report, form or similar data display asset."),
+                           "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.",
+                           DisplayDataContainerProperties.class),
 
     /**
      * A data display field.
@@ -5173,7 +5196,8 @@ public enum OpenMetadataType
                        "DisplayDataField",
                        OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                        "052d7f6d-2ebd-43b9-9573-0677bb743ee3",
-                       "A data display field."),
+                       "A data display field.",
+                       DisplayDataFieldProperties.class),
 
     /**
      * A structure describing data that being queried and formatted to support a user display or report.
@@ -5182,7 +5206,8 @@ public enum OpenMetadataType
                       "QuerySchemaType",
                       OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                       "ba7d043d-6a3f-48be-abd2-16f8e3ea5172",
-                      "A structure describing data that being queried and formatted to support a user display or report."),
+                      "A structure describing data that being queried and formatted to support a user display or report.",
+                      QuerySchemaTypeProperties.class),
 
     /**
      * A grouping of display data fields (and nested containers) for a query.
@@ -5191,7 +5216,8 @@ public enum OpenMetadataType
                          "QueryDataContainer",
                          OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                          "4ac83b37-c556-446f-bebd-13c448a45d3e",
-                         "A grouping of display data fields (and nested containers) for a query."),
+                         "A grouping of display data fields (and nested containers) for a query.",
+                         QueryDataContainerProperties.class),
 
     /**
      * A data field that is returned by a query.
@@ -5200,7 +5226,8 @@ public enum OpenMetadataType
                      "QueryDataField",
                      OpenMetadataWikiPages.MODEL_0537_DISPLAY_SCHEMAS,
                      "adf6f8ea-d5df-463f-af6e-6744c93522e3",
-                     "A data field that is returned by a query."),
+                     "A data field that is returned by a query.",
+                     QueryDataFieldProperties.class),
 
     /**
      * A specification for a data value.
@@ -5431,7 +5458,8 @@ public enum OpenMetadataType
                                      "InstanceMetadata",
                                      OpenMetadataWikiPages.MODEL_0550_INSTANCE_METADATA,
                                      "2045991b-e043-42b7-9424-a0b81d1b29ff",
-                                     "Defines a data field that contains metadata for the row/record/object."),
+                                     "Defines a data field that contains metadata for the row/record/object.",
+                                     InstanceMetadataProperties.class),
 
     /**
      * An abstract, but well-formed representation of a concept, activity, architecture or other design element.
@@ -5460,7 +5488,8 @@ public enum OpenMetadataType
                                       "MetamodelInstance",
                                       OpenMetadataWikiPages.MODEL_0570_METAMODELS,
                                       "ea796922-2a2c-411f-af5c-b60e9963d320",
-                                      "Identifies the element from a metadata model that this element embodies."),
+                                      "Identifies the element from a metadata model that this element embodies.",
+                                      MetamodelInstanceProperties.class),
 
     /**
      * An abstract, but well-formed representation of a concept.
@@ -6195,7 +6224,8 @@ public enum OpenMetadataType
                 "SavedQuery",
                 OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
                 "4fb8468e-f871-4bc4-99b6-e2c845ac5604",
-                "A DataSet that provides the definition of a RESTful query to Egeria that returns Open Metadata Elements."),
+                "A DataSet that provides the definition of a RESTful query to Egeria that returns Open Metadata Elements.",
+                SavedQueryProperties.class),
 
     /**
      * Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query.
@@ -6204,7 +6234,8 @@ public enum OpenMetadataType
                 "SmartQuery",
                 OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
                 "35198506-606c-44b3-91cc-4b30027327d7",
-                "Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query."),
+                "Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query.",
+                SmartQueryProperties.class),
 
     /**
      * Description of a well-defined capability within a solution.

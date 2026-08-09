@@ -167,6 +167,30 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setProvidesStorageFor(super.getRelatedElements(OpenMetadataType.ATTACHED_STORAGE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ATTACHED_STORAGE_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setStoredOn(super.getRelatedElements(OpenMetadataType.STORED_ON_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setManagesStorageFor(super.getRelatedElements(OpenMetadataType.STORED_ON_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.STORED_ON_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setInstalledOn(super.getRelatedElements(OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setOperatingPlatforms(super.getRelatedElements(OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setIncludesSoftwarePackages(super.getRelatedElements(OpenMetadataType.OPERATING_PLATFORM_MANIFEST_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setPackagedInOperatingPlatforms(super.getRelatedElements(OpenMetadataType.OPERATING_PLATFORM_MANIFEST_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.OPERATING_PLATFORM_MANIFEST_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setDependsOnSoftwarePackages(super.getRelatedElements(OpenMetadataType.SOFTWARE_PACKAGE_DEPENDENCY_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setRunningWithAsset(super.getRelatedElements(OpenMetadataType.SOFTWARE_PACKAGE_DEPENDENCY_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.SOFTWARE_PACKAGE_DEPENDENCY_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setManagedHosts(super.getRelatedElements(OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setHostCluster(super.getRelatedElements(OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setPopulatedUsingQuery(super.getRelatedElements(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setResultsStoredIn(super.getRelatedElements(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName);
+
             attributedMetadataElement.setCapabilityConsumedAssets(super.getRelatedElements(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setConsumedByCapabilities(super.getRelatedElements(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);

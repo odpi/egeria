@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SkillProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.OperatingPlatformProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
@@ -52,6 +53,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
         @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
         @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
+        @JsonSubTypes.Type(value = OperatingPlatformProperties.class, name = "OperatingPlatformProperties"),
         @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
         @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
         @JsonSubTypes.Type(value = SkillProperties.class, name = "SkillProperties"),
@@ -198,7 +200,7 @@ public class AuthoredReferenceableProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AuthoredReferenceableProperties that = (AuthoredReferenceableProperties) objectToCompare;
-        return  authors == that.authors &&
+        return  Objects.equals(authors, that.authors) &&
                 contentStatus == that.contentStatus &&
                 Objects.equals(userDefinedContentStatus, that.userDefinedContentStatus);
     }

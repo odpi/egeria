@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.StoredOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.SmartQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
@@ -119,9 +121,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaTypeDefinitionProperties.class, name = "SchemaTypeDefinitionProperties"),
                 @JsonSubTypes.Type(value = SecretsCollectionSecurityListProperties.class, name = "SecretsCollectionSecurityListProperties"),
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
+                @JsonSubTypes.Type(value = SmartQueryProperties.class, name = "SmartQueryProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
                 @JsonSubTypes.Type(value = SpecializedDesignPatternProperties.class, name = "SpecializedDesignPatternProperties"),
+                @JsonSubTypes.Type(value = StoredOnProperties.class, name = "StoredOnProperties"),
                 @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = UserAccountProperties.class, name = "UserAccountProperties"),
         })

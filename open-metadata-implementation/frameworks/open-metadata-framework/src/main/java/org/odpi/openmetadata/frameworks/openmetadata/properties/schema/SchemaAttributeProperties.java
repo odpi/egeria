@@ -7,6 +7,10 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataContainerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataContainerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -31,6 +35,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RelationalTableProperties.class, name = "RelationalTableProperties"),
                 @JsonSubTypes.Type(value = EventSchemaAttributeProperties.class, name = "EventSchemaAttributeProperties"),
                 @JsonSubTypes.Type(value = APIParameterProperties.class, name = "APIParameterProperties"),
+                @JsonSubTypes.Type(value = DocumentSchemaAttributeProperties.class, name = "DocumentSchemaAttributeProperties"),
+                @JsonSubTypes.Type(value = ObjectAttributeProperties.class, name = "ObjectAttributeProperties"),
+                @JsonSubTypes.Type(value = GraphVertexProperties.class, name = "GraphVertexProperties"),
+                @JsonSubTypes.Type(value = GraphEdgeProperties.class, name = "GraphEdgeProperties"),
+                @JsonSubTypes.Type(value = DisplayDataContainerProperties.class, name = "DisplayDataContainerProperties"),
+                @JsonSubTypes.Type(value = DisplayDataFieldProperties.class, name = "DisplayDataFieldProperties"),
+                @JsonSubTypes.Type(value = QueryDataContainerProperties.class, name = "QueryDataContainerProperties"),
+                @JsonSubTypes.Type(value = QueryDataFieldProperties.class, name = "QueryDataFieldProperties"),
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {

@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.util.*;
 
@@ -182,6 +183,13 @@ public class OpenMetadataTypeTest
     {
         setUpTypeMaps();
 
+        /*
+         * A SoftAssert is used here (rather than the usual fail-fast assertXXX calls) so that a single test
+         * run reports every mapping problem it finds across all the types, instead of stopping at the first
+         * one.  This makes it practical to fix a batch of bean/builder/converter mistakes in one pass.
+         */
+        SoftAssert softAssert = new SoftAssert();
+
         int typeCount = 0;
         int beanCount = 0;
 
@@ -191,10 +199,7 @@ public class OpenMetadataTypeTest
 
             TypeDef currentTypeDef = typeMap.get(openMetadataType.typeName);
 
-            if (currentTypeDef == null)
-            {
-                System.out.println("Missing typeDef for " + openMetadataType.typeName);
-            }
+            softAssert.assertNotNull(currentTypeDef, "Missing typeDef for " + openMetadataType.typeName);
 
             if (openMetadataType.beanClass != null)
             {
@@ -205,7 +210,7 @@ public class OpenMetadataTypeTest
                  */
                 String[] classNameParts = openMetadataType.beanClass.getName().split("\\.");
 
-                assertEquals(openMetadataType.typeName + "Properties", classNameParts[classNameParts.length - 1], "Bad bean class name");
+                softAssert.assertEquals(openMetadataType.typeName + "Properties", classNameParts[classNameParts.length - 1], "Bad bean class name for " + openMetadataType.typeName);
 
                 /*
                  * Check that the type name is set in the bean.
@@ -216,12 +221,10 @@ public class OpenMetadataTypeTest
 
                     if (beanInstance instanceof OpenMetadataRootProperties openMetadataRootProperties)
                     {
-                        assertEquals(openMetadataType.typeName, openMetadataRootProperties.getTypeName(), "Bad entity bean type name");
+                        softAssert.assertEquals(openMetadataType.typeName, openMetadataRootProperties.getTypeName(), "Bad entity bean type name");
 
                         if (currentTypeDef != null)
                         {
-                            System.out.println("Checking properties for " + openMetadataType.typeName);
-
                             ElementProperties elementProperties = this.getElementPropertiesForType(openMetadataType);
 
                             OpenMetadataElement openMetadataElement = new OpenMetadataElement();
@@ -231,22 +234,20 @@ public class OpenMetadataTypeTest
 
                             OpenMetadataRootProperties newBeanProperties = propertyConverter.getBeanProperties(openMetadataElement);
 
+                            softAssert.assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad entity bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
 
-                            assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad entity bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
-
-                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
+                            softAssert.assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
 
                             ElementProperties returnedElementProperties = elementBuilder.getElementProperties(newBeanProperties);
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned element properties for " + openMetadataType.typeName);
-                                assertNull(elementProperties, "Null returned element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                             else if (elementProperties != null)
                             {
                                 openMetadataElement.setElementProperties(returnedElementProperties);
-                                assertEquals(newBeanProperties, propertyConverter.getBeanProperties(openMetadataElement));
+                                softAssert.assertEquals(newBeanProperties, propertyConverter.getBeanProperties(openMetadataElement), "Round-tripped entity bean properties do not match for " + openMetadataType.typeName);
                             }
 
                             OpenMetadataRootProperties mappedBeanProperties = this.testJackson(newBeanProperties);
@@ -255,19 +256,16 @@ public class OpenMetadataTypeTest
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
-                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no mapped element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                         }
                     }
                     else if (beanInstance instanceof RelationshipBeanProperties relationshipBeanProperties)
                     {
-                        assertEquals(openMetadataType.typeName, relationshipBeanProperties.getTypeName(), "Bad relationship bean type name " + openMetadataType.typeName);
+                        softAssert.assertEquals(openMetadataType.typeName, relationshipBeanProperties.getTypeName(), "Bad relationship bean type name " + openMetadataType.typeName);
 
                         if (currentTypeDef != null)
                         {
-                            System.out.println("Checking properties for " + openMetadataType.typeName);
-
                             ElementProperties elementProperties = this.getElementPropertiesForType(openMetadataType);
 
                             ElementControlHeader relationshipHeader = new ElementControlHeader();
@@ -275,20 +273,19 @@ public class OpenMetadataTypeTest
 
                             RelationshipBeanProperties newBeanProperties = propertyConverter.getRelationshipProperties(relationshipHeader, elementProperties);
 
-                            assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad relationship bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
+                            softAssert.assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad relationship bean class name returned: " + newBeanProperties.getClass().getName() + " expected: "  + beanInstance.getClass().getName());
 
-                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
+                            softAssert.assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
 
                             ElementProperties returnedElementProperties = relationshipBuilder.getElementProperties(newBeanProperties);
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned element properties for " + openMetadataType.typeName);
-                                assertNull(returnedElementProperties, "Null returned element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                             else if (elementProperties != null)
                             {
-                                assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties));
+                                softAssert.assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties), "Round-tripped relationship bean properties do not match for " + openMetadataType.typeName);
                             }
 
                             RelationshipBeanProperties mappedBeanProperties = this.testJackson(newBeanProperties);
@@ -297,23 +294,20 @@ public class OpenMetadataTypeTest
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
-                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no mapped element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                             else if (elementProperties != null)
                             {
-                                assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties));
+                                softAssert.assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties), "Round-tripped mapped relationship bean properties do not match for " + openMetadataType.typeName);
                             }
                         }
                     }
                     else if (beanInstance instanceof ClassificationBeanProperties classificationBeanProperties)
                     {
-                        assertEquals(openMetadataType.typeName, classificationBeanProperties.getTypeName(), "Bad classification bean type name");
+                        softAssert.assertEquals(openMetadataType.typeName, classificationBeanProperties.getTypeName(), "Bad classification bean type name");
 
                         if (currentTypeDef != null)
                         {
-                            System.out.println("Checking properties for " + openMetadataType.typeName);
-
                             ElementProperties elementProperties = this.getElementPropertiesForType(openMetadataType);
 
                             AttachedClassification attachedClassification = new AttachedClassification();
@@ -323,21 +317,20 @@ public class OpenMetadataTypeTest
 
                             ClassificationBeanProperties newBeanProperties = propertyConverter.getClassificationProperties(attachedClassification);
 
-                            assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName());
+                            softAssert.assertEquals(newBeanProperties.getClass().getName(), beanInstance.getClass().getName(), "Bad classification bean class name returned for " + openMetadataType.typeName);
 
-                            assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
+                            softAssert.assertNull(newBeanProperties.getExtendedProperties(), "Unexpected extended properties found for " + openMetadataType.typeName);
 
                             ElementProperties returnedElementProperties = classificationBuilder.getElementProperties(newBeanProperties);
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned element properties for " + openMetadataType.typeName);
-                                assertNull(elementProperties, "Null returned element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                             else if (elementProperties != null)
                             {
                                 attachedClassification.setClassificationProperties(returnedElementProperties);
-                                assertEquals(newBeanProperties, propertyConverter.getClassificationProperties(attachedClassification));
+                                softAssert.assertEquals(newBeanProperties, propertyConverter.getClassificationProperties(attachedClassification), "Round-tripped classification bean properties do not match for " + openMetadataType.typeName);
                             }
 
                             ClassificationBeanProperties mappedBeanProperties = this.testJackson(newBeanProperties);
@@ -346,8 +339,7 @@ public class OpenMetadataTypeTest
 
                             if (returnedElementProperties == null)
                             {
-                                System.out.println("Null returned mapped element properties for " + openMetadataType.typeName);
-                                assertNull(returnedElementProperties, "Null returned mapped element properties for " + openMetadataType.typeName);
+                                softAssert.assertNull(elementProperties, "Builder returned no mapped element properties for " + openMetadataType.typeName + " even though the type has defined properties - the builder is probably missing a case for this bean class");
                             }
                         }
                     }
@@ -355,11 +347,11 @@ public class OpenMetadataTypeTest
                     /*
                      * Check that the toString has the right class name in it
                      */
-                    assertTrue(beanInstance.toString().contains(openMetadataType.typeName), "Bad toString");
+                    softAssert.assertTrue(beanInstance.toString().contains(openMetadataType.typeName), "Bad toString for " + openMetadataType.typeName);
                 }
                 catch (Exception error)
                 {
-                    fail("Unable to create instance", error);
+                    softAssert.fail("Unable to create instance of " + openMetadataType.beanClass.getName() + " for " + openMetadataType.typeName, error);
                 }
             }
             else
@@ -368,10 +360,10 @@ public class OpenMetadataTypeTest
             }
         }
 
-
-
         System.out.println("Open Metadata Type Count: " + typeCount);
         System.out.println("Open Metadata Bean Count: " + beanCount);
+
+        softAssert.assertAll();
     }
 
 
