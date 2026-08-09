@@ -396,6 +396,18 @@ public class OpenMetadataClassificationBuilder
                                                                      OpenMetadataProperty.POSTAL_ADDRESS.name,
                                                                      fixedLocationProperties.getPostalAddress());
             }
+            else if (properties instanceof InstanceMetadataProperties instanceMetadataProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.INSTANCE_METADATA_TYPE_NAME.name,
+                                                                     instanceMetadataProperties.getInstanceMetadataTypeName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     instanceMetadataProperties.getDescription());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        instanceMetadataProperties.getAdditionalProperties());
+            }
             else if (properties instanceof GovernedDataClassificationBase governedDataClassificationBase)
             {
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
@@ -575,6 +587,12 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                         OpenMetadataProperty.ARCHIVE_PROPERTIES.name,
                                                                         mementoProperties.getArchiveProperties());
+            }
+            else if (properties instanceof MetamodelInstanceProperties metamodelInstanceProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.METAMODEL_ELEMENT_GUID.name,
+                                                                     metamodelInstanceProperties.getMetamodelElementGUID());
             }
             else if (properties instanceof MeteringLogProperties meteringLogProperties)
             {

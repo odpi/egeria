@@ -11,6 +11,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationSnippetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.OperatingPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.StorageVolumeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
@@ -47,6 +50,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
@@ -173,6 +177,38 @@ public class OpenMetadataElementBuilder
                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                             OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                             referenceableProperties.getAdditionalProperties());
+
+                    if (properties instanceof ImplementationSnippetProperties implementationSnippetProperties)
+                    {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.SNIPPET.name,
+                                                                             implementationSnippetProperties.getSnippet());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name,
+                                                                             implementationSnippetProperties.getImplementationLanguage());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.USAGE.name,
+                                                                             implementationSnippetProperties.getUsage());
+                    }
+
+                    if (properties instanceof StorageVolumeProperties storageVolumeProperties)
+                    {
+                        elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                           OpenMetadataProperty.STORAGE_CAPACITY.name,
+                                                                           storageVolumeProperties.getStorageCapacity());
+
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.UNITS.name,
+                                                                             storageVolumeProperties.getUnits());
+
+                        elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                           OpenMetadataProperty.RELATIVE_UNCERTAINTY.name,
+                                                                           storageVolumeProperties.getRelativeUncertainty());
+
+                        elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                           OpenMetadataProperty.ABSOLUTE_UNCERTAINTY.name,
+                                                                           storageVolumeProperties.getAbsoluteUncertainty());
+                    }
 
                     if (properties instanceof ActorProperties)
                     {
@@ -691,6 +727,25 @@ public class OpenMetadataElementBuilder
                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                                   OpenMetadataProperty.AUTHORS.name,
                                                                                   authoredReferenceableProperties.getAuthors());
+
+                        if (properties instanceof OperatingPlatformProperties operatingPlatformProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.OPERATING_SYSTEM.name,
+                                                                                 operatingPlatformProperties.getOperatingSystem());
+
+                            if (operatingPlatformProperties.getByteOrdering() != null)
+                            {
+                                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                                   OpenMetadataProperty.BYTE_ORDERING.name,
+                                                                                   ByteOrdering.getOpenTypeName(),
+                                                                                   operatingPlatformProperties.getByteOrdering().name());
+                            }
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.name,
+                                                                                 operatingPlatformProperties.getOperatingSystemPatchLevel());
+                        }
 
                         if (properties instanceof AnnotationProperties annotationProperties)
                         {
@@ -1782,6 +1837,13 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.PARAMETER_TYPE.name,
                                                                                          apiParameterProperties.getParameterType());
+                                }
+
+                                if (properties instanceof DisplayDataFieldProperties displayDataFieldProperties)
+                                {
+                                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                          OpenMetadataProperty.INPUT_FIELD.name,
+                                                                                          displayDataFieldProperties.getInputField());
                                 }
                             }
                         }

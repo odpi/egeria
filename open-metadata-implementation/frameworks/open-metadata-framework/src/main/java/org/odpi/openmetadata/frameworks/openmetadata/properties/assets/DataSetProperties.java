@@ -37,6 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MediaCollectionProperties.class, name = "MediaCollectionProperties"),
                 @JsonSubTypes.Type(value = MetadataCollectionProperties.class, name = "MetadataCollectionProperties"),
                 @JsonSubTypes.Type(value = ReportProperties.class, name = "ReportProperties"),
+                @JsonSubTypes.Type(value = SavedQueryProperties.class, name = "SavedQueryProperties"),
                 @JsonSubTypes.Type(value = SecretsCollectionProperties.class, name = "SecretsCollectionProperties"),
                 @JsonSubTypes.Type(value = TabularDataSetProperties.class, name = "TabularDataSetProperties"),
                 @JsonSubTypes.Type(value = TabularDataSetCollectionProperties.class, name = "TabularDataSetCollectionProperties"),

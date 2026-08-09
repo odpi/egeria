@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactDetailsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.StorageVolumeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Conn
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationSnippetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
@@ -55,6 +57,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ContributionRecordProperties.class, name = "ContributionRecordProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = ExternalIdProperties.class, name = "ExternalIdProperties"),
+                @JsonSubTypes.Type(value = ImplementationSnippetProperties.class, name = "ImplementationSnippetProperties"),
                 @JsonSubTypes.Type(value = InformalTagProperties.class, name = "InformalTagProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
                 @JsonSubTypes.Type(value = MetadataRepositoryCohortProperties.class, name = "MetadataRepositoryCohortProperties"),
@@ -62,6 +65,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = PropertyFacetProperties.class, name = "PropertyFacetProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
+                @JsonSubTypes.Type(value = StorageVolumeProperties.class, name = "StorageVolumeProperties"),
         })
 public class ReferenceableProperties extends OpenMetadataRootProperties
 {

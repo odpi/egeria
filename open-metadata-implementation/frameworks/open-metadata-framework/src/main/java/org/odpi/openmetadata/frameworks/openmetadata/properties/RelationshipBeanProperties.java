@@ -9,8 +9,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SampleDat
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SourcedFromProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.AttachedStorageProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.HostClusterMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.OperatingPlatformManifestProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.OperatingPlatformUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwarePackageDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
@@ -95,6 +100,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AttachedNoteLogProperties.class, name = "AttachedNoteLogProperties"),
                 @JsonSubTypes.Type(value = AttachedNoteLogEntryProperties.class, name = "AttachedNoteLogEntryProperties"),
                 @JsonSubTypes.Type(value = AttachedRatingProperties.class, name = "AttachedRatingProperties"),
+                @JsonSubTypes.Type(value = AttachedStorageProperties.class, name = "AttachedStorageProperties"),
                 @JsonSubTypes.Type(value = AttachedTagProperties.class, name = "AttachedTagProperties"),
                 @JsonSubTypes.Type(value = CapabilityAssetUseProperties.class, name = "CapabilityAssetUseProperties"),
                 @JsonSubTypes.Type(value = CatalogTargetProperties.class, name = "CatalogTargetProperties"),
@@ -124,6 +130,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceActionProcessFlowProperties.class, name = "GovernanceActionProcessFlowProperties"),
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),
+                @JsonSubTypes.Type(value = HostClusterMemberProperties.class, name = "HostClusterMemberProperties"),
                 @JsonSubTypes.Type(value = ImpactedResourceProperties.class, name = "ImpactedResourceProperties"),
                 @JsonSubTypes.Type(value = IsAConceptBeadProperties.class, name = "IsAConceptBeadProperties"),
                 @JsonSubTypes.Type(value = ITInfrastructureProfileProperties.class, name = "ITInfrastructureProfileProperties"),
@@ -139,6 +146,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MetadataCohortPeerProperties.class, name = "MetadataCohortPeerProperties"),
                 @JsonSubTypes.Type(value = NestedFileProperties.class, name = "NestedFileProperties"),
                 @JsonSubTypes.Type(value = NextGovernanceActionProcessStepProperties.class, name = "NextGovernanceActionProcessStepProperties"),
+                @JsonSubTypes.Type(value = OperatingPlatformManifestProperties.class, name = "OperatingPlatformManifestProperties"),
+                @JsonSubTypes.Type(value = OperatingPlatformUseProperties.class, name = "OperatingPlatformUseProperties"),
                 @JsonSubTypes.Type(value = PartOfRelationshipProperties.class, name = "PartOfRelationshipProperties"),
                 @JsonSubTypes.Type(value = PeerDuplicateLinkProperties.class, name = "PeerDuplicateLinkProperties"),
                 @JsonSubTypes.Type(value = PortDelegationProperties.class, name = "PortDelegationProperties"),
@@ -160,6 +169,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SearchKeywordLinkProperties.class, name = "SearchKeywordLinkProperties"),
                 @JsonSubTypes.Type(value = SemanticAssignmentProperties.class, name = "SemanticAssignmentProperties"),
                 @JsonSubTypes.Type(value = ServerEndpointProperties.class, name = "ServerEndpointProperties"),
+                @JsonSubTypes.Type(value = SoftwarePackageDependencyProperties.class, name = "SoftwarePackageDependencyProperties"),
                 @JsonSubTypes.Type(value = SourcedFromProperties.class, name = "SourcedFromProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyAssignmentProperties.class, name = "SpecificationPropertyAssignmentProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
