@@ -6527,6 +6527,50 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the queryURL property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return string url or null
+     */
+    protected String removeQueryURL(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeQueryURL";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.QUERY_URL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the queryRequestBody property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeQueryRequestBody(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeQueryRequestBody";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.QUERY_REQUEST_BODY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the memberRole property from the supplied element properties.
      *
      * @param elementProperties properties from relationship
@@ -15466,6 +15510,11 @@ public class OpenMetadataPropertyConverterBase
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RESULTS_SET.typeName))
                         {
                             beanProperties = new ResultsSetProperties();
+
+                            ((ResultsSetProperties)beanProperties).setCreatedTime(this.removeCreatedTime(elementProperties));
+                            ((ResultsSetProperties)beanProperties).setStartTime(this.removeStartTime(elementProperties));
+                            ((ResultsSetProperties)beanProperties).setCompletionTime(this.removeCompletionTime(elementProperties));
+                            ((ResultsSetProperties)beanProperties).setCompletionMessage(this.removeCompletionMessage(elementProperties));
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ROOT_COLLECTION.typeName))
                         {
@@ -16430,6 +16479,9 @@ public class OpenMetadataPropertyConverterBase
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SAVED_QUERY.typeName))
                             {
                                 beanProperties = new SavedQueryProperties();
+
+                                ((SavedQueryProperties)beanProperties).setQueryURL(this.removeQueryURL(elementProperties));
+                                ((SavedQueryProperties)beanProperties).setQueryRequestBody(this.removeQueryRequestBody(elementProperties));
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECRETS_COLLECTION.typeName))
                             {

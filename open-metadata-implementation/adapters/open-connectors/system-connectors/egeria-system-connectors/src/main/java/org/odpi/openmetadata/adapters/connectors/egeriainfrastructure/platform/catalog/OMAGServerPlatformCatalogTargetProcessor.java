@@ -1260,6 +1260,16 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                               false);
 
         /*
+         * The template's connection has a "serverName" configuration property that is meant to be replaced with this
+         * server's own name via the SERVER_NAME placeholder.  However, that placeholder sits inside the connection's
+         * configurationProperties map, and placeholder substitution for template clones only rewrites top-level string
+         * properties - it does not recurse into map property values.  Left alone, every server cloned from this
+         * template ends up sharing whatever "serverName" value the template last resolved to, rather than its own.
+         * This explicitly corrects the newly created connection's configurationProperties as a workaround.
+         */
+        fixConnectionServerName(serverGUID, omagServerProperties.getServerName());
+
+        /*
          * Allow this connector to override values from the template.
          */
         updateServer(omagServerProperties, platformProperties, serverGUID, null);
@@ -1348,6 +1358,51 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
 
         return serverGUID;
+    }
+
+
+    /**
+     * Correct the "serverName" configuration property on the connection attached to a newly catalogued server.
+     * This works around the template engine not substituting placeholders inside map property values - see the
+     * comment at the call site in catalogServer() for the full explanation.
+     *
+     * @param serverGUID unique identifier of the server just created from the template
+     * @param serverName this server's own name
+     * @throws InvalidParameterException  invalid parameter
+     * @throws PropertyServerException    no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void fixConnectionServerName(String serverGUID,
+                                         String serverName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+        OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+
+        if ((serverElement != null) && (serverElement.getConnections() != null))
+        {
+            for (RelatedMetadataElementSummary connectionSummary : serverElement.getConnections())
+            {
+                if ((connectionSummary != null) && (propertyHelper.isTypeOf(connectionSummary.getRelatedElement().getElementHeader(), OpenMetadataType.CONNECTION.typeName)))
+                {
+                    String connectionGUID = connectionSummary.getRelatedElement().getElementHeader().getGUID();
+
+                    Map<String, Object> configurationProperties = new HashMap<>();
+
+                    configurationProperties.put(PlaceholderProperty.SERVER_NAME.getName(), serverName);
+
+                    ConnectionProperties connectionProperties = new ConnectionProperties();
+
+                    connectionProperties.setConfigurationProperties(configurationProperties);
+
+                    ConnectionClient connectionClient = integrationContext.getConnectionClient();
+
+                    connectionClient.updateConnection(connectionGUID, connectionClient.getUpdateOptions(true), connectionProperties);
+                }
+            }
+        }
     }
 
 

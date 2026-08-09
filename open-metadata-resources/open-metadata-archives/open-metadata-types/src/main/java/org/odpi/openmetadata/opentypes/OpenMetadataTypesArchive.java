@@ -1654,8 +1654,20 @@ public class OpenMetadataTypesArchive
 
     private EntityDef getSavedQuery()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SAVED_QUERY,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SAVED_QUERY,
+                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_URL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_REQUEST_BODY));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

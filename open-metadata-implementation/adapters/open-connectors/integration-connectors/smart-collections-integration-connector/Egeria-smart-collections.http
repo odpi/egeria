@@ -1,0 +1,165 @@
+# Egeria-smart-collections
+# Demonstrates the Smart Collections Integration Connector.  It creates a Results Set collection and a Saved Query
+# asset, links them together with a SmartQuery relationship, attaches the results set to the Smart Collections
+# Integration Connector as a catalog target, and then asks the connector to refresh.  Once the refresh has run, the
+# results set's membership will match the elements returned by the saved query, and its createdTime/startTime/
+# completionTime/completionMessage properties will have been updated.
+# https://egeria-project.org/concepts/collection
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Step 1: Create the Results Set collection.  Its membership will be maintained by the Smart Collections Integration
+# Connector, based on the saved query linked to it in step 3.
+# https://egeria-project.org/concepts/collection
+
+# @name createResultsSet
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "ResultsSetProperties",
+    "qualifiedName": "ResultsSet::IntegrationConnectors",
+    "displayName" : "Integration Connectors Results Set",
+    "description" : "Membership is maintained by the Smart Collections Integration Connector from the attached saved query."
+  }
+}
+
+> {% client.global.set("resultsSetGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Step 2: Create the Saved Query asset that defines the REST call used to work out the results set's membership.
+# This example searches the open metadata ecosystem for integration connectors.
+# https://egeria-project.org/concepts/asset
+
+# @name createSavedQuery
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "SavedQueryProperties",
+    "qualifiedName": "SavedQuery::IntegrationConnectors",
+    "displayName" : "Find Integration Connectors",
+    "description" : "Searches the open metadata ecosystem for integration connector elements.",
+    "queryURL" : "https://localhost:7443/servers/view-server/api/open-metadata/metadata-expert/metadata-elements/by-search-string",
+    "queryRequestBody" : "{\"class\":\"SearchStringRequestBody\",\"searchString\":\"Integration\",\"startsWith\":false,\"endsWith\":false,\"ignoreCase\":true,\"metadataElementTypeName\":\"IntegrationConnector\"}"
+  }
+}
+
+> {% client.global.set("savedQueryGUID", response.body.guid); %}
+
+
+###
+# =====================================================================================================================
+# Step 3: Link the results set to the saved query using the new attachSmartQuery operation (SmartQuery relationship, 0725).
+
+# @name attachSmartQuery
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/results-sets/{{resultsSetGUID}}/smart-query/{{savedQueryGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SmartQueryProperties",
+    "label": "Membership query",
+    "description": "Determines the membership of the results set."
+  }
+}
+
+
+###
+# =====================================================================================================================
+# Step 4: Attach the results set to the Smart Collections Integration Connector as a catalog target.  The connector's
+# GUID is fixed by its registration in the core content pack (see IntegrationConnectorDefinition.
+# SMART_COLLECTIONS_MEMBERSHIP_MANAGER).  The catalog target name matches the one recognized by the connector
+# (SmartCollectionsCatalogTarget.CATALOG_TARGET).
+# https://egeria-project.org/concepts/integration-connector/
+
+@integrationConnectorGUID=217bd925-b50d-4596-9ade-1d7a940e8874
+
+###
+# @name addCatalogTarget
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{resultsSetGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "CatalogTargetProperties",
+    "catalogTargetName" : "resultsSetToMaintain"
+  }
+}
+
+
+###
+# =====================================================================================================================
+# Step 5: Ask the nanny-daemon integration daemon to refresh the connector.  This calls the integration daemon
+# directly (rather than routing through runtime-manager by server GUID) since the platform cataloguer's catalogued
+# Connection for an integration daemon can point at the wrong daemon when more than one is configured - see
+# https://egeria-project.org/concepts/integration-daemon/
+
+# @name refreshConnectors
+POST {{baseURL}}/servers/nanny-daemon/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "SmartCollectionsMembershipManager"
+}
+
+
+###
+# =====================================================================================================================
+# Step 6: Check the outcome.  The results set's createdTime/startTime/completionTime/completionMessage properties
+# should now be set, and its members should match the elements returned by the saved query.
+
+# @name getResultsSet
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{resultsSetGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody"
+}
+
+
+###
+# @name getResultsSetMembers
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{resultsSetGUID}}/members
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody"
+}

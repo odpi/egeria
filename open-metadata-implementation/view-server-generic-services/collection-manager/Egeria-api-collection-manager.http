@@ -1192,6 +1192,49 @@ Content-Type: application/json
 
 ###
 
+@resultsSetGUID=add guid here
+@savedQueryGUID=add guid here
+
+
+###
+# @name attachSmartQuery
+# Connect a results set to the saved query that determines its membership using the SmartQuery relationship (0725).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/results-sets/{{resultsSetGUID}}/smart-query/{{savedQueryGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SmartQueryProperties",
+    "label": "Add label here",
+    "description": "Add description here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSmartQuery
+# Detach a results set from the saved query that determines its membership.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/results-sets/{{resultsSetGUID}}/smart-query/{{savedQueryGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
 @skillSetGUID=add guid here
 
 

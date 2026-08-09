@@ -1146,6 +1146,15 @@ Content-Type: application/json
     "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
     "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Liskov"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:SmartCollections"
   }
 ]
 

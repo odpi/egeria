@@ -692,6 +692,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
+    SMART_COLLECTIONS_INTEGRATION_CONNECTOR(572,
+                                          "2f90ca32-e639-43cb-813b-a55b3900cb7a",
+                                          "Egeria::IntegrationConnector::SmartCollections",
+                                          "Maintain the membership of a smart collection",
+                                          "Maintains the membership of a Results Set collection by running the query attached to it via a Saved Query and linking/unlinking members to match the elements returned.",
+                                          "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/smart-collections-integration-connector",
+                                          "org.odpi.openmetadata.adapters.connectors.integration.smartcollections.SmartCollectionsIntegrationConnectorProvider",
+                                          ComponentDevelopmentStatus.STABLE,
+                                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                          DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     CSV_TABULAR_DATA_SET_COLLECTION_CONNECTOR(362,
                                               "32c25bc2-e0bf-4d78-87ab-ed3c5aead169",
                                               "Egeria::ResourceConnector::TabularDataSetCollection::CSVFile",

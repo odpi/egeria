@@ -475,6 +475,71 @@ public class CollectionManagerResource
 
 
     /**
+     * Connect a results set to the saved query that determines its membership using the SmartQuery relationship (0725).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param resultsSetGUID unique identifier of the results set
+     * @param savedQueryGUID unique identifier of the saved query that determines the results set's membership
+     * @param requestBody  description of how the saved query is used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/results-sets/{resultsSetGUID}/smart-query/{savedQueryGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="attachSmartQuery",
+            description="Connect a results set to the saved query that determines its membership using the SmartQuery relationship (0725).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse attachSmartQuery(@PathVariable String                     serverName,
+                                         @PathVariable String                     urlMarker,
+                                         @PathVariable String                     resultsSetGUID,
+                                         @PathVariable String                     savedQueryGUID,
+                                         @RequestBody(required = false)
+                                             NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.attachSmartQuery(serverName, urlMarker, resultsSetGUID, savedQueryGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a results set from the saved query that determines its membership.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param resultsSetGUID unique identifier of the results set.
+     * @param savedQueryGUID unique identifier of the saved query that determines the results set's membership.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/results-sets/{resultsSetGUID}/smart-query/{savedQueryGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSmartQuery",
+            description="Detach a results set from the saved query that determines its membership, connected via the SmartQuery relationship (0725).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse detachSmartQuery(@PathVariable String                    serverName,
+                                         @PathVariable String                    urlMarker,
+                                         @PathVariable String                    resultsSetGUID,
+                                         @PathVariable String                    savedQueryGUID,
+                                         @RequestBody(required = false)
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSmartQuery(serverName, urlMarker, resultsSetGUID, savedQueryGUID, requestBody);
+    }
+
+
+    /**
      * Connect an existing skill set collection to an actor using the AssociatedSkillSet relationship (0145).
      *
      * @param serverName         name of called server
