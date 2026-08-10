@@ -87,6 +87,18 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                   "The connector is disconnecting.",
                                   "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
+    NEW_DEPLOYED_API("OPEN-API-INTEGRATION-CONNECTOR-0010",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector created a new DeployedAPI asset {1} ({2}) for the Open API Specification retrieved from URL {3}",
+                                  "The connector has catalogued a new DeployedAPI asset to represent the API described by this specification.",
+                                  "No specific action is required.  This message confirms that a new API has been catalogued."),
+
+    NEW_API_OPERATION("OPEN-API-INTEGRATION-CONNECTOR-0011",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector created a new APIOperation {1} ({2}) for path {3} and command {4} under DeployedAPI {5}",
+                                  "The connector has catalogued a new APIOperation schema type to represent this path/command combination from the Open API Specification.",
+                                  "No specific action is required.  This message confirms that a new API operation has been catalogued."),
+
 
     MISSING_TEMPLATE("OPEN-API-INTEGRATION-CONNECTOR-0015",
                      AuditLogRecordSeverityLevel.ERROR,

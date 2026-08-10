@@ -29,6 +29,8 @@ public class OpenAPISpecification
     private List<OpenAPIServer>                        servers      = null;
     private List<OpenAPITag>                           tags         = null;
     private Map<String, Map<String, OpenAPIOperation>> paths        = null;
+    private OpenAPIComponents                          components   = null;
+    private List<Map<String, List<String>>>            security     = null;
 
     public OpenAPISpecification()
     {
@@ -102,6 +104,31 @@ public class OpenAPISpecification
         this.paths = paths;
     }
 
+
+    public OpenAPIComponents getComponents()
+    {
+        return components;
+    }
+
+
+    public void setComponents(OpenAPIComponents components)
+    {
+        this.components = components;
+    }
+
+
+    public List<Map<String, List<String>>> getSecurity()
+    {
+        return security;
+    }
+
+
+    public void setSecurity(List<Map<String, List<String>>> security)
+    {
+        this.security = security;
+    }
+
+
     @Override
     public String toString()
     {
@@ -112,6 +139,8 @@ public class OpenAPISpecification
                 ", servers=" + servers +
                 ", tags=" + tags +
                 ", paths=" + paths +
+                ", components=" + components +
+                ", security=" + security +
                 '}';
     }
 
@@ -121,12 +150,12 @@ public class OpenAPISpecification
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OpenAPISpecification that = (OpenAPISpecification) objectToCompare;
-        return Objects.equals(openapi, that.openapi) && Objects.equals(externalDocs, that.externalDocs) && Objects.equals(info, that.info) && Objects.equals(servers, that.servers) && Objects.equals(tags, that.tags) && Objects.equals(paths, that.paths);
+        return Objects.equals(openapi, that.openapi) && Objects.equals(externalDocs, that.externalDocs) && Objects.equals(info, that.info) && Objects.equals(servers, that.servers) && Objects.equals(tags, that.tags) && Objects.equals(paths, that.paths) && Objects.equals(components, that.components) && Objects.equals(security, that.security);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(openapi, externalDocs, info, servers, tags, paths);
+        return Objects.hash(openapi, externalDocs, info, servers, tags, paths, components, security);
     }
 }

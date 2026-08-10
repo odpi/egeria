@@ -19,11 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenAPIComponents
 {
-    private Map<String, OpenAPISchema>      schemas       = null;
-    private Map<String, OpenAPIResponse>    responses     = null;
-    private Map<String, OpenAPIParameter>   parameters    = null;
-    private Map<String, OpenAPIRequestBody> requestBodies = null;
-    private Map<String, Object>             extensions    = null;
+    private Map<String, OpenAPISchema>         schemas         = null;
+    private Map<String, OpenAPIResponse>       responses       = null;
+    private Map<String, OpenAPIParameter>      parameters      = null;
+    private Map<String, OpenAPIRequestBody>    requestBodies   = null;
+    private Map<String, OpenAPISecurityScheme> securitySchemes = null;
+    private Map<String, Object>                extensions      = null;
 
 
     public OpenAPIComponents()
@@ -82,6 +83,18 @@ public class OpenAPIComponents
     }
 
 
+    public Map<String, OpenAPISecurityScheme> getSecuritySchemes()
+    {
+        return securitySchemes;
+    }
+
+
+    public void setSecuritySchemes(Map<String, OpenAPISecurityScheme> securitySchemes)
+    {
+        this.securitySchemes = securitySchemes;
+    }
+
+
     public Map<String, Object> getExtensions()
     {
         return extensions;
@@ -102,6 +115,7 @@ public class OpenAPIComponents
                        ", responses=" + responses +
                        ", parameters=" + parameters +
                        ", requestBodies=" + requestBodies +
+                       ", securitySchemes=" + securitySchemes +
                        ", extensions=" + extensions +
                        '}';
     }

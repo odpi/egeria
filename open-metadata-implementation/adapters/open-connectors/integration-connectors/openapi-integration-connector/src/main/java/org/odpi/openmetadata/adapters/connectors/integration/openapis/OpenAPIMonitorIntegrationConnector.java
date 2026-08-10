@@ -6,7 +6,13 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIMediaType;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIParameter;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIRequestBody;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIResponse;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISchema;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISecurityScheme;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISpecification;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPITag;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -15,6 +21,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.EndpointClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
@@ -24,23 +31,48 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIHeaderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIRequestProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIResponseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.APIParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * OpenAPIMonitorIntegrationConnector provides common methods for the connectors in this module.
+ * OpenAPIMonitorIntegrationConnector builds an open metadata representation of the open API specifications published
+ * by the servers it is monitoring.  For each API specification it catalogues a DeployedAPI asset linked to the
+ * server's Endpoint, an APISchemaType describing the API, an APIOperation for each path/command combination, and
+ * the request, response and header structures for each operation, built out of APIParameterList and APIParameter
+ * schema elements.  See <a href="https://egeria-project.org/concepts/schema/">...</a> for more information on schema types and
+ * schema attributes.
  */
 public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
 {
     private static final String urlMarker = "http";
+
+    private static final String REQUEST_BODY_NAME = "Request Body";
+    private static final String SECURITY_GROUP_NAME = "Security";
+    private static final String HEADERS_GROUP_NAME = "Headers";
 
     private String templateQualifiedName = null;
     private String targetRootURL = null;
@@ -322,84 +354,10 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                     if (openAPIJSON != null)
                     {
                         OpenAPISpecification openAPISpecification = OBJECT_READER.readValue(openAPIJSON, OpenAPISpecification.class);
-                        String               title = "<Untitled>";
 
                         if (openAPISpecification != null)
                         {
-                            if (auditLog != null)
-                            {
-                                if (openAPISpecification.getInfo() != null)
-                                {
-                                    title = openAPISpecification.getInfo().getTitle();
-                                }
-
-                                auditLog.logMessage(methodName,
-                                                    OpenAPIIntegrationConnectorAuditCode.RETRIEVED_OPEN_API_SPEC.getMessageDefinition(connectorName,
-                                                                                                                                      url,
-                                                                                                                                      title));
-                            }
-
-                            /*
-                             * all the discovered APIs are added to the server's endpoint.
-                             */
-                            String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
-
-                            if (endpointGUID != null)
-                            {
-                                /*
-                                 * Each API/Operation discovered is added to the map as it is added to the catalog.
-                                 * This is used to create the summary audit log message - and as
-                                 * lookup for the apiGUID/apiOperationGUID when adding detail elements.
-                                 */
-                                Map<String, String> apiGUIDMap          = new HashMap<>(); /* map from API (Tag) name to GUID */
-                                Map<String, String> apiOperationGUIDMap = new HashMap<>(); /* map from API (Path/Operation) name to GUID */
-
-                                if (openAPISpecification.getTags() != null)
-                                {
-                                    for (OpenAPITag tag : openAPISpecification.getTags())
-                                    {
-                                        String apiGUID = getAPIGUID(url, endpointGUID, tag);
-
-                                        if (apiGUID != null)
-                                        {
-                                            apiGUIDMap.put(tag.getName(), apiGUID);
-                                        }
-                                    }
-                                }
-
-                                if (openAPISpecification.getPaths() != null)
-                                {
-                                    Map<String, Map<String, OpenAPIOperation>> paths = openAPISpecification.getPaths();
-
-                                    for (String pathName : paths.keySet())
-                                    {
-                                        Map<String, OpenAPIOperation> pathDescription = paths.get(pathName);
-
-                                        if (pathDescription != null)
-                                        {
-                                            for (String command : pathDescription.keySet())
-                                            {
-                                                String apiOperationGUID;
-                                                String apiOperationQualifiedName = command.toUpperCase() + " " + pathName;
-                                                apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.get(command));
-
-                                                if (apiOperationGUID == null)
-                                                {
-                                                    apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                super.logRecord(methodName,
-                                                OpenAPIIntegrationConnectorAuditCode.CATALOGUED_OPEN_API_SPEC.getMessageDefinition(connectorName,
-                                                                                                                                   url,
-                                                                                                                                   title,
-                                                                                                                                   endpointGUID,
-                                                                                                                                   Integer.toString(apiGUIDMap.size()),
-                                                                                                                                   Integer.toString(apiOperationGUIDMap.size())));
-                            }
+                            catalogAPISpecification(url, openAPISpecification, methodName);
                         }
                     }
                 }
@@ -414,6 +372,92 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                 }
             }
         }
+    }
+
+
+    /**
+     * Catalog the whole open API specification retrieved from a single server: its DeployedAPI asset, its
+     * APISchemaType, and an APIOperation (with request/response/header structure) for every path/command
+     * combination it defines.
+     *
+     * @param url URL of the API
+     * @param openAPISpecification the parsed open API specification
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private void catalogAPISpecification(String                url,
+                                         OpenAPISpecification  openAPISpecification,
+                                         String                methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        String title = "<Untitled>";
+
+        if (openAPISpecification.getInfo() != null)
+        {
+            title = openAPISpecification.getInfo().getTitle();
+        }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OpenAPIIntegrationConnectorAuditCode.RETRIEVED_OPEN_API_SPEC.getMessageDefinition(connectorName,
+                                                                                                                  url,
+                                                                                                                  title));
+        }
+
+        String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
+
+        if (endpointGUID == null)
+        {
+            return;
+        }
+
+        String apiQualifiedName = "DeployedAPI:" + url;
+        String apiGUID          = this.getAPIGUID(url, apiQualifiedName, endpointGUID, openAPISpecification);
+
+        if (apiGUID == null)
+        {
+            return;
+        }
+
+        String apiSchemaTypeGUID = this.getAPISchemaTypeGUID(apiGUID, apiQualifiedName);
+
+        int operationCount = 0;
+
+        if (openAPISpecification.getPaths() != null)
+        {
+            Map<String, Map<String, OpenAPIOperation>> paths = openAPISpecification.getPaths();
+
+            for (String pathName : paths.keySet())
+            {
+                Map<String, OpenAPIOperation> pathDescription = paths.get(pathName);
+
+                if (pathDescription != null)
+                {
+                    for (String command : pathDescription.keySet())
+                    {
+                        OpenAPIOperation operation = pathDescription.get(command);
+
+                        if (operation != null)
+                        {
+                            this.catalogOperation(apiSchemaTypeGUID, apiGUID, apiQualifiedName, pathName, command, operation, openAPISpecification);
+                            operationCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        super.logRecord(methodName,
+                        OpenAPIIntegrationConnectorAuditCode.CATALOGUED_OPEN_API_SPEC.getMessageDefinition(connectorName,
+                                                                                                           url,
+                                                                                                           title,
+                                                                                                           apiGUID,
+                                                                                                           Integer.toString(1),
+                                                                                                           Integer.toString(operationCount)));
     }
 
 
@@ -490,147 +534,1120 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
 
     /**
-     * Create a new API element if one does not already exist in the open metadata catalog.  The GUID of the API element is
-     * returned, but it is the responsibility of the caller to add it to the apiGUIDMap if needed.
+     * Return the DeployedAPI's GUID for this API specification - it may create a catalog entry if it does not exist.
+     * There is one DeployedAPI asset per API specification (ie per server monitored), linked to its Endpoint via the
+     * APIEndpoint relationship, and self-anchored (the DeployedAPI asset, and everything catalogued beneath it, is
+     * anchored to itself).
      *
      * @param url URL of the API
-     * @param endpointGUID unique identifier for endpoint element that the API should be connected to
-     * @param tag API identifiers from the openAPI spec
-     * @return unique identifier of the metadata element for the API element
+     * @param apiQualifiedName unique name to use for the DeployedAPI asset
+     * @param endpointGUID unique identifier for endpoint element that the API should be attached to
+     * @param openAPISpecification descriptive information from the open API spec
+     * @return unique identifier of the metadata element for the DeployedAPI element
      * @throws InvalidParameterException one of the parameters is not correct
      * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
      * @throws PropertyServerException there is an issue with one of the open metadata repositories
      */
-    private String getAPIGUID(String     url,
-                              String     endpointGUID,
-                              OpenAPITag tag) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    private String getAPIGUID(String               url,
+                              String               apiQualifiedName,
+                              String               endpointGUID,
+                              OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        String apiGUID = null;
+        AssetClient apiClient = myContext.getAssetClient(OpenMetadataType.DEPLOYED_API.typeName);
 
-        if (tag.getName() != null)
+        String apiGUID = this.findExistingAsset(apiClient, apiQualifiedName);
+
+        if (apiGUID == null)
         {
-            String apiQualifiedName = "DeployedAPI:" + tag.getName() + "(" + url + ")";
+            DeployedAPIProperties properties = new DeployedAPIProperties();
 
-            AssetClient apiClient = myContext.getAssetClient(OpenMetadataType.DEPLOYED_API.typeName);
+            properties.setQualifiedName(apiQualifiedName);
 
-            List<OpenMetadataRootElement> apiElements = apiClient.getAssetsByName(apiQualifiedName, apiClient.getQueryOptions());
-
-            if (apiElements != null)
+            if (openAPISpecification.getInfo() != null)
             {
-                for (OpenMetadataRootElement apiElement : apiElements)
+                properties.setDisplayName(openAPISpecification.getInfo().getTitle());
+                properties.setDescription(openAPISpecification.getInfo().getDescription());
+                properties.setVersionIdentifier(openAPISpecification.getInfo().getVersion());
+            }
+
+            if (openAPISpecification.getTags() != null)
+            {
+                Map<String, String> additionalProperties = new HashMap<>();
+                StringBuilder        tagNames = new StringBuilder();
+
+                for (OpenAPITag tag : openAPISpecification.getTags())
                 {
-                    if ((apiElement != null) && (apiElement.getProperties() instanceof AssetProperties assetProperties))
+                    if ((tag != null) && (tag.getName() != null))
                     {
-                        if (apiQualifiedName.equals(assetProperties.getQualifiedName()))
+                        if (! tagNames.isEmpty())
                         {
-                            apiGUID = apiElement.getElementHeader().getGUID();
+                            tagNames.append(", ");
                         }
+
+                        tagNames.append(tag.getName());
                     }
+                }
+
+                if (! tagNames.isEmpty())
+                {
+                    additionalProperties.put("tags", tagNames.toString());
+                    properties.setAdditionalProperties(additionalProperties);
                 }
             }
 
-            if (apiGUID == null)
+            NewElementOptions newElementOptions = new NewElementOptions(apiClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setParentGUID(endpointGUID);
+            newElementOptions.setParentAtEnd1(false);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName);
+
+            apiGUID = apiClient.createAsset(newElementOptions, null, properties, null);
+
+            if (auditLog != null)
             {
-                DeployedAPIProperties properties = new DeployedAPIProperties();
-
-                properties.setQualifiedName(apiQualifiedName);
-                properties.setDisplayName(tag.getName());
-                properties.setDescription(tag.getDescription());
-
-                NewElementOptions newElementOptions = new NewElementOptions(apiClient.getMetadataSourceOptions());
-
-                newElementOptions.setAnchorGUID(endpointGUID);
-                newElementOptions.setIsOwnAnchor(false);
-                newElementOptions.setParentGUID(endpointGUID);
-                newElementOptions.setParentAtEnd1(false);
-                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName);
-
-                apiGUID = apiClient.createAsset(newElementOptions, null, properties, null);
+                auditLog.logMessage("getAPIGUID",
+                                    OpenAPIIntegrationConnectorAuditCode.NEW_DEPLOYED_API.getMessageDefinition(connectorName,
+                                                                                                                apiQualifiedName,
+                                                                                                                apiGUID,
+                                                                                                                url));
             }
-
-            /*
-             * The connector could be enhanced here to update the API element in the values differ between the API specification and the
-             * catalog.
-             */
         }
+
+        /*
+         * The connector could be enhanced here to update the API element if the values differ between the API specification and the
+         * catalog.
+         */
 
         return apiGUID;
     }
 
 
     /**
-     * Catalog an API operation if not already catalogued.  The GUID is returned but the caller is responsible for adding the new GUID to
-     * the apiGUIDMap.
+     * Return the APISchemaType's GUID for this API - it may create a catalog entry if it does not exist.  The
+     * APISchemaType is anchored to the DeployedAPI asset and linked to it via the Schema relationship.
      *
-     * @param apiGUIDMap map of known guids
-     * @param apiOperationQualifiedName unique name for the API operation in the open metadata catalog.
-     * @param operation operation extracted from the open metadata specification.
+     * @param apiGUID unique identifier for the DeployedAPI asset
+     * @param apiQualifiedName unique name of the DeployedAPI asset
+     * @return unique identifier of the metadata element for the APISchemaType element
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String getAPISchemaTypeGUID(String apiGUID,
+                                        String apiQualifiedName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        SchemaTypeClient schemaTypeClient       = myContext.getSchemaTypeClient(OpenMetadataType.API_SCHEMA_TYPE.typeName);
+        String           apiSchemaTypeQualifiedName = apiQualifiedName + "::Schema";
+        String           apiSchemaTypeGUID      = this.findExistingSchemaType(schemaTypeClient, apiSchemaTypeQualifiedName);
+
+        if (apiSchemaTypeGUID == null)
+        {
+            APISchemaTypeProperties properties = new APISchemaTypeProperties();
+
+            properties.setQualifiedName(apiSchemaTypeQualifiedName);
+            properties.setDisplayName("Schema");
+
+            NewElementOptions newElementOptions = new NewElementOptions(schemaTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(apiGUID);
+
+            apiSchemaTypeGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, null);
+
+            schemaTypeClient.linkSchema(apiGUID, apiSchemaTypeGUID, schemaTypeClient.getMakeAnchorOptions(false), new SchemaProperties());
+        }
+
+        return apiSchemaTypeGUID;
+    }
+
+
+    /**
+     * Catalog a single API operation (one path/command combination) and its request, response and header structure.
+     *
+     * @param apiSchemaTypeGUID unique identifier of the API's schema type
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param apiQualifiedName unique name of the DeployedAPI asset
+     * @param pathName full path for this operation
+     * @param command HTTP command (eg get, post) for this operation
+     * @param operation the parsed details of this operation
+     * @param openAPISpecification the parsed open API specification (for resolving $ref schemas)
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private void catalogOperation(String               apiSchemaTypeGUID,
+                                  String               apiGUID,
+                                  String               apiQualifiedName,
+                                  String               pathName,
+                                  String               command,
+                                  OpenAPIOperation     operation,
+                                  OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        String apiOperationQualifiedName = apiQualifiedName + "::" + command.toUpperCase() + " " + pathName;
+
+        String apiOperationGUID = this.getAPIOperationGUID(apiSchemaTypeGUID, apiGUID, apiOperationQualifiedName, pathName, command, operation);
+
+        this.catalogRequest(apiOperationGUID, apiGUID, apiOperationQualifiedName, operation, openAPISpecification);
+        this.catalogResponses(apiOperationGUID, apiGUID, apiOperationQualifiedName, operation, openAPISpecification);
+        this.catalogHeaders(apiOperationGUID, apiGUID, apiOperationQualifiedName, operation, openAPISpecification);
+    }
+
+
+    /**
+     * Catalog an API operation if not already catalogued.
+     *
+     * @param apiSchemaTypeGUID unique identifier of the parent APISchemaType
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param apiOperationQualifiedName unique name for the API operation in the open metadata catalog
+     * @param pathName full path for this operation
+     * @param command HTTP command (eg get, post) for this operation
+     * @param operation operation extracted from the open metadata specification
      * @return unique identifier of the API operation in the open metadata catalog
      * @throws InvalidParameterException one of the parameters is not correct
      * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
      * @throws PropertyServerException there is an issue with one of the open metadata repositories
      */
-    private String getAPIOperationGUID(Map<String, String> apiGUIDMap,
-                                       String              apiOperationQualifiedName,
-                                       OpenAPIOperation    operation) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    private String getAPIOperationGUID(String           apiSchemaTypeGUID,
+                                       String           apiGUID,
+                                       String           apiOperationQualifiedName,
+                                       String           pathName,
+                                       String           command,
+                                       OpenAPIOperation operation) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        String apiOperationGUID = null;
-        String apiGUID          = null;
+        SchemaTypeClient schemaTypeClient  = myContext.getSchemaTypeClient(OpenMetadataType.API_OPERATION.typeName);
+        String           apiOperationGUID = this.findExistingSchemaType(schemaTypeClient, apiOperationQualifiedName);
 
-        List<String> tags = operation.getTags();
-
-        if (tags != null)
+        if (apiOperationGUID == null)
         {
-            for (String tag : tags)
-            {
-                /*
-                 * The API operation has already been retrieved from the catalog and its GUID is known.
-                 */
-                apiGUID = apiGUIDMap.get(tag);
-            }
-        }
+            APIOperationProperties properties = new APIOperationProperties();
 
-        if (apiGUID != null)
-        {
-            /*
-             * The GUID is not known -  It may have been catalogued in a previous run of this connector - or not yet catalogued.  The retrieve
-             * should return all elements with the same qualified name - there should be only one.  This code could be enhanced to validate that
-             * when there are duplicates, they are logged and the selected one is the one created by this process.
-             */
-            SchemaTypeClient              apiOperationClient   = myContext.getSchemaTypeClient(OpenMetadataType.API_OPERATION.typeName);
-            List<OpenMetadataRootElement> apiOperationElements = apiOperationClient.getSchemaTypesByName(apiOperationQualifiedName, apiOperationClient.getQueryOptions());
+            properties.setQualifiedName(apiOperationQualifiedName);
+            properties.setPath(pathName);
+            properties.setCommand(command.toUpperCase());
 
-            if (apiOperationElements != null)
+            String displayName = operation.getOperationId();
+
+            if (displayName == null)
             {
-                for (OpenMetadataRootElement apiOperationElement : apiOperationElements)
-                {
-                    if ((apiOperationElement.getProperties() instanceof APIOperationProperties apiOperationProperties) && (apiOperationQualifiedName.equals(apiOperationProperties.getQualifiedName())))
-                    {
-                        apiOperationGUID = apiOperationElement.getElementHeader().getGUID();
-                    }
-                }
+                displayName = command.toUpperCase() + " " + pathName;
             }
 
-            if (apiOperationGUID == null)
-            {
-                /*
-                 * Catalog the API Operation
-                 */
-                APIOperationProperties properties = new APIOperationProperties();
+            properties.setDisplayName(displayName);
 
-                properties.setQualifiedName(apiOperationQualifiedName);
-                properties.setDisplayName(operation.getOperationId());
-                properties.setDescription(operation.getDescription());
-                // todo create schema type and add operation
-                //apiOperationGUID = apiOperationClient.createSchemaType(apiGUID, properties);
+            String description = operation.getDescription();
+
+            if (description == null)
+            {
+                description = operation.getSummary();
+            }
+
+            properties.setDescription(description);
+
+            Map<String, String> additionalProperties = new HashMap<>();
+
+            if (operation.getSummary() != null)
+            {
+                additionalProperties.put("summary", operation.getSummary());
+            }
+
+            if (operation.isDeprecated())
+            {
+                additionalProperties.put("deprecated", "true");
+            }
+
+            if (operation.getTags() != null)
+            {
+                additionalProperties.put("tags", String.join(", ", operation.getTags()));
+            }
+
+            if (! additionalProperties.isEmpty())
+            {
+                properties.setAdditionalProperties(additionalProperties);
+            }
+
+            NewElementOptions newElementOptions = new NewElementOptions(schemaTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(apiGUID);
+            newElementOptions.setParentGUID(apiSchemaTypeGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName);
+
+            apiOperationGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, new APIOperationsProperties());
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage("getAPIOperationGUID",
+                                    OpenAPIIntegrationConnectorAuditCode.NEW_API_OPERATION.getMessageDefinition(connectorName,
+                                                                                                                 apiOperationQualifiedName,
+                                                                                                                 apiOperationGUID,
+                                                                                                                 pathName,
+                                                                                                                 command.toUpperCase(),
+                                                                                                                 apiGUID));
             }
         }
 
         return apiOperationGUID;
+    }
+
+
+    /**
+     * Catalog the request structure for an operation: the URL parameters and/or the request body.  An
+     * APIParameterList is only created if there is something to catalog.
+     *
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param apiOperationQualifiedName unique name of the API operation
+     * @param operation the parsed details of this operation
+     * @param openAPISpecification the parsed open API specification (for resolving $ref schemas)
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private void catalogRequest(String               apiOperationGUID,
+                                String               apiGUID,
+                                String               apiOperationQualifiedName,
+                                OpenAPIOperation     operation,
+                                OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        List<OpenAPIParameter> urlParameters = new ArrayList<>();
+
+        if (operation.getParameters() != null)
+        {
+            for (OpenAPIParameter parameter : operation.getParameters())
+            {
+                if ((parameter != null) && (! "header".equals(parameter.getIn())))
+                {
+                    urlParameters.add(parameter);
+                }
+            }
+        }
+
+        OpenAPIRequestBody requestBody = operation.getRequestBody();
+
+        if (urlParameters.isEmpty() && (requestBody == null))
+        {
+            return;
+        }
+
+        String requestListQualifiedName = apiOperationQualifiedName + "::Request";
+        String requestListGUID = this.getOrCreateAPIParameterList(apiOperationGUID,
+                                                                   OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                   apiGUID,
+                                                                   requestListQualifiedName,
+                                                                   "Request");
+
+        int position = 0;
+
+        for (OpenAPIParameter parameter : urlParameters)
+        {
+            this.createSchemaAttribute(requestListGUID,
+                                       true,
+                                       apiGUID,
+                                       requestListQualifiedName + "::" + parameter.getName(),
+                                       parameter.getName(),
+                                       parameter.getDescription(),
+                                       parameter.getSchema(),
+                                       APIParameterType.REQUEST_PARAMETER,
+                                       ! parameter.isRequired(),
+                                       position,
+                                       openAPISpecification,
+                                       new HashSet<>());
+            position++;
+        }
+
+        if (requestBody != null)
+        {
+            OpenAPISchema bodySchema = this.getPreferredContentSchema(requestBody.getContent());
+
+            this.createSchemaAttribute(requestListGUID,
+                                       true,
+                                       apiGUID,
+                                       requestListQualifiedName + "::" + REQUEST_BODY_NAME,
+                                       REQUEST_BODY_NAME,
+                                       requestBody.getDescription(),
+                                       bodySchema,
+                                       APIParameterType.REQUEST_BODY,
+                                       ! requestBody.isRequired(),
+                                       position,
+                                       openAPISpecification,
+                                       new HashSet<>());
+        }
+    }
+
+
+    /**
+     * Catalog the response structure for an operation: one APIParameter per status code, each with a nested
+     * structure matching its response body.  An APIParameterList is only created if there is a response to catalog.
+     *
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param apiOperationQualifiedName unique name of the API operation
+     * @param operation the parsed details of this operation
+     * @param openAPISpecification the parsed open API specification (for resolving $ref schemas)
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private void catalogResponses(String               apiOperationGUID,
+                                  String               apiGUID,
+                                  String               apiOperationQualifiedName,
+                                  OpenAPIOperation     operation,
+                                  OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        if ((operation.getResponses() == null) || (operation.getResponses().isEmpty()))
+        {
+            return;
+        }
+
+        String responseListQualifiedName = apiOperationQualifiedName + "::Response";
+        String responseListGUID = this.getOrCreateAPIParameterList(apiOperationGUID,
+                                                                    OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
+                                                                    apiGUID,
+                                                                    responseListQualifiedName,
+                                                                    "Response");
+
+        int position = 0;
+
+        for (String statusCode : operation.getResponses().keySet())
+        {
+            OpenAPIResponse response = operation.getResponses().get(statusCode);
+
+            if (response != null)
+            {
+                OpenAPISchema bodySchema = this.getPreferredContentSchema(response.getContent());
+
+                this.createSchemaAttribute(responseListGUID,
+                                           true,
+                                           apiGUID,
+                                           responseListQualifiedName + "::" + statusCode,
+                                           statusCode,
+                                           response.getDescription(),
+                                           bodySchema,
+                                           APIParameterType.RESPONSE_STATUS,
+                                           true,
+                                           position,
+                                           openAPISpecification,
+                                           new HashSet<>());
+                position++;
+            }
+        }
+    }
+
+
+    /**
+     * Catalog the header structure for an operation: header parameters and/or security requirements.  An
+     * APIParameterList is only created if there is header information to catalog.
+     *
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param apiOperationQualifiedName unique name of the API operation
+     * @param operation the parsed details of this operation
+     * @param openAPISpecification the parsed open API specification (for resolving $ref schemas and global security)
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private void catalogHeaders(String               apiOperationGUID,
+                                String               apiGUID,
+                                String               apiOperationQualifiedName,
+                                OpenAPIOperation     operation,
+                                OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        List<OpenAPIParameter> headerParameters = new ArrayList<>();
+
+        if (operation.getParameters() != null)
+        {
+            for (OpenAPIParameter parameter : operation.getParameters())
+            {
+                if ((parameter != null) && ("header".equals(parameter.getIn())))
+                {
+                    headerParameters.add(parameter);
+                }
+            }
+        }
+
+        List<Map<String, List<String>>> security = operation.getSecurity();
+
+        if (security == null)
+        {
+            security = openAPISpecification.getSecurity();
+        }
+
+        Map<String, OpenAPISecurityScheme> securitySchemes = null;
+
+        if ((openAPISpecification.getComponents() != null) && (openAPISpecification.getComponents().getSecuritySchemes() != null))
+        {
+            securitySchemes = openAPISpecification.getComponents().getSecuritySchemes();
+        }
+
+        boolean hasSecurity = (security != null) && (! security.isEmpty()) && (securitySchemes != null);
+
+        if (headerParameters.isEmpty() && (! hasSecurity))
+        {
+            return;
+        }
+
+        String headerListQualifiedName = apiOperationQualifiedName + "::Header";
+        String headerListGUID = this.getOrCreateAPIParameterList(apiOperationGUID,
+                                                                  OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                                  apiGUID,
+                                                                  headerListQualifiedName,
+                                                                  "Header");
+
+        int position = 0;
+
+        if (! headerParameters.isEmpty())
+        {
+            String headersGroupQualifiedName = headerListQualifiedName + "::" + HEADERS_GROUP_NAME;
+            String headersGroupGUID = this.createGroupAPIParameter(headerListGUID, apiGUID, headersGroupQualifiedName, HEADERS_GROUP_NAME, position);
+
+            int childPosition = 0;
+
+            for (OpenAPIParameter parameter : headerParameters)
+            {
+                this.createSchemaAttribute(headersGroupGUID,
+                                           false,
+                                           apiGUID,
+                                           headersGroupQualifiedName + "::" + parameter.getName(),
+                                           parameter.getName(),
+                                           parameter.getDescription(),
+                                           parameter.getSchema(),
+                                           APIParameterType.SECURITY_HEADER,
+                                           ! parameter.isRequired(),
+                                           childPosition,
+                                           openAPISpecification,
+                                           new HashSet<>());
+                childPosition++;
+            }
+
+            position++;
+        }
+
+        if (hasSecurity)
+        {
+            String securityGroupQualifiedName = headerListQualifiedName + "::" + SECURITY_GROUP_NAME;
+            String securityGroupGUID = this.createGroupAPIParameter(headerListGUID, apiGUID, securityGroupQualifiedName, SECURITY_GROUP_NAME, position);
+
+            int childPosition = 0;
+
+            Set<String> schemeNamesUsed = new HashSet<>();
+
+            for (Map<String, List<String>> securityRequirement : security)
+            {
+                if (securityRequirement != null)
+                {
+                    for (String schemeName : securityRequirement.keySet())
+                    {
+                        if ((schemeName != null) && (! schemeNamesUsed.contains(schemeName)))
+                        {
+                            schemeNamesUsed.add(schemeName);
+
+                            OpenAPISecurityScheme scheme = securitySchemes.get(schemeName);
+                            OpenAPISchema         schemeSchema = this.buildSecuritySchemeSchema(scheme);
+
+                            this.createSchemaAttribute(securityGroupGUID,
+                                                       false,
+                                                       apiGUID,
+                                                       securityGroupQualifiedName + "::" + schemeName,
+                                                       schemeName,
+                                                       (scheme != null) ? scheme.getDescription() : null,
+                                                       schemeSchema,
+                                                       APIParameterType.SECURITY_HEADER,
+                                                       false,
+                                                       childPosition,
+                                                       openAPISpecification,
+                                                       new HashSet<>());
+                            childPosition++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Build a synthetic schema describing a named security scheme, so it can be catalogued through the same
+     * schema-attribute logic used for real schema-backed parameters.
+     *
+     * @param scheme security scheme details, or null if not known
+     * @return synthetic schema
+     */
+    private OpenAPISchema buildSecuritySchemeSchema(OpenAPISecurityScheme scheme)
+    {
+        OpenAPISchema schema = new OpenAPISchema();
+
+        schema.setType("string");
+
+        if (scheme != null)
+        {
+            StringBuilder description = new StringBuilder();
+
+            if (scheme.getType() != null)
+            {
+                description.append(scheme.getType());
+            }
+
+            if (scheme.getScheme() != null)
+            {
+                if (! description.isEmpty())
+                {
+                    description.append(" - ");
+                }
+
+                description.append(scheme.getScheme());
+            }
+
+            if (scheme.getBearerFormat() != null)
+            {
+                description.append(" (").append(scheme.getBearerFormat()).append(")");
+            }
+
+            if (! description.isEmpty())
+            {
+                schema.setDescription(description.toString());
+            }
+        }
+
+        return schema;
+    }
+
+
+    /**
+     * Retrieve or create the APIParameterList used for an operation's request, response or header structure.
+     *
+     * @param apiOperationGUID unique identifier of the parent API operation
+     * @param parentRelationshipTypeName relationship type linking the operation to this parameter list (APIRequest, APIResponse or APIHeader)
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param qualifiedName unique name for the parameter list
+     * @param displayName display name for the parameter list
+     * @return unique identifier of the APIParameterList
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String getOrCreateAPIParameterList(String apiOperationGUID,
+                                               String parentRelationshipTypeName,
+                                               String apiGUID,
+                                               String qualifiedName,
+                                               String displayName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        SchemaTypeClient schemaTypeClient = myContext.getSchemaTypeClient(OpenMetadataType.API_PARAMETER_LIST.typeName);
+        String           listGUID = this.findExistingSchemaType(schemaTypeClient, qualifiedName);
+
+        if (listGUID == null)
+        {
+            APIParameterListProperties properties = new APIParameterListProperties();
+
+            properties.setQualifiedName(qualifiedName);
+            properties.setDisplayName(displayName);
+
+            NewElementOptions newElementOptions = new NewElementOptions(schemaTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(apiGUID);
+            newElementOptions.setParentGUID(apiOperationGUID);
+            newElementOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
+
+            RelationshipPropertiesForList relationshipProperties = new RelationshipPropertiesForList(parentRelationshipTypeName);
+
+            listGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, relationshipProperties.get());
+        }
+
+        return listGUID;
+    }
+
+
+    /**
+     * Small helper to select the correct empty relationship properties bean for the parent relationship used when
+     * creating an APIParameterList, since each of APIRequest, APIResponse and APIHeader has its own properties class.
+     */
+    private static class RelationshipPropertiesForList
+    {
+        private final String relationshipTypeName;
+
+        RelationshipPropertiesForList(String relationshipTypeName)
+        {
+            this.relationshipTypeName = relationshipTypeName;
+        }
+
+        org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties get()
+        {
+            if (OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName.equals(relationshipTypeName))
+            {
+                return new APIResponseProperties();
+            }
+            else if (OpenMetadataType.API_HEADER_RELATIONSHIP.typeName.equals(relationshipTypeName))
+            {
+                return new APIHeaderProperties();
+            }
+
+            return new APIRequestProperties();
+        }
+    }
+
+
+    /**
+     * Create a struct APIParameter that groups a set of related nested parameters together (eg "Security" or
+     * "Headers"), where there is no underlying open API schema to describe the group itself.
+     *
+     * @param parentListGUID unique identifier of the parent APIParameterList
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param qualifiedName unique name for the group parameter
+     * @param displayName display name for the group parameter
+     * @param position position of this parameter amongst its siblings
+     * @return unique identifier of the group APIParameter
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String createGroupAPIParameter(String parentListGUID,
+                                           String apiGUID,
+                                           String qualifiedName,
+                                           String displayName,
+                                           int    position) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient(OpenMetadataType.API_PARAMETER.typeName);
+        String                groupGUID = this.findExistingSchemaAttribute(schemaAttributeClient, qualifiedName);
+
+        if (groupGUID != null)
+        {
+            return groupGUID;
+        }
+
+        APIParameterProperties properties = new APIParameterProperties();
+
+        properties.setQualifiedName(qualifiedName);
+        properties.setDisplayName(displayName);
+        properties.setParameterType(APIParameterType.SECURITY_HEADER.getDisplayName());
+
+        TypeEmbeddedAttributeProperties classification = new TypeEmbeddedAttributeProperties();
+
+        classification.setSchemaTypeName(OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName);
+
+        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, classification);
+
+        NewElementOptions newElementOptions = new NewElementOptions(schemaAttributeClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(apiGUID);
+
+        groupGUID = schemaAttributeClient.createSchemaAttribute(newElementOptions, initialClassifications, properties, null);
+
+        /*
+         * linkAttributeForSchema always creates an AttributeForSchema relationship regardless of the properties
+         * bean class supplied - its parameter type is NestedSchemaAttributeProperties only because that class
+         * happens to share the same position/cardinality base properties (PartOfRelationshipProperties) needed here.
+         */
+        NestedSchemaAttributeProperties relationshipProperties = new NestedSchemaAttributeProperties();
+
+        relationshipProperties.setPosition(position);
+
+        schemaAttributeClient.linkAttributeForSchema(parentListGUID, groupGUID, schemaAttributeClient.getMakeAnchorOptions(false), relationshipProperties);
+
+        return groupGUID;
+    }
+
+
+    /**
+     * Create (if not already catalogued) an APIParameter schema attribute for a single value - a URL parameter, a
+     * request/response body, a status code, a header or security scheme, or a field nested inside one of those
+     * structures - and recurse to catalogue its own nested structure, if it has one.
+     *
+     * @param parentGUID unique identifier of the parent element (an APIParameterList schema type, or another APIParameter)
+     * @param parentIsSchemaType true if the parent is an APIParameterList (link via AttributeForSchema), false if it is
+     *                           another APIParameter (link via NestedSchemaAttribute)
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param qualifiedName unique name for this parameter
+     * @param displayName display name for this parameter
+     * @param description description for this parameter
+     * @param schema the open API schema describing this parameter's type and structure - may be null
+     * @param parameterType which part of the API schema this parameter is a part of
+     * @param isNullable whether this parameter is optional
+     * @param position position of this parameter amongst its siblings
+     * @param openAPISpecification the parsed open API specification (for resolving $ref schemas)
+     * @param visitedRefs $ref values already being expanded in this branch of the recursion, to avoid infinite loops on circular schemas
+     * @return unique identifier of the APIParameter
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String createSchemaAttribute(String               parentGUID,
+                                         boolean              parentIsSchemaType,
+                                         String               apiGUID,
+                                         String               qualifiedName,
+                                         String               displayName,
+                                         String               description,
+                                         OpenAPISchema        schema,
+                                         APIParameterType     parameterType,
+                                         boolean              isNullable,
+                                         int                  position,
+                                         OpenAPISpecification openAPISpecification,
+                                         Set<String>          visitedRefs) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient(OpenMetadataType.API_PARAMETER.typeName);
+        String                existingGUID = this.findExistingSchemaAttribute(schemaAttributeClient, qualifiedName);
+
+        if (existingGUID != null)
+        {
+            return existingGUID;
+        }
+
+        String        ref = (schema != null) ? schema.get$ref() : null;
+        OpenAPISchema resolvedSchema = this.resolveSchema(schema, openAPISpecification);
+
+        APIParameterProperties properties = new APIParameterProperties();
+
+        properties.setQualifiedName(qualifiedName);
+        properties.setDisplayName(displayName);
+        properties.setParameterType(parameterType.getDisplayName());
+        properties.setIsNullable(isNullable);
+
+        if (description != null)
+        {
+            properties.setDescription(description);
+        }
+        else if (resolvedSchema != null)
+        {
+            properties.setDescription(resolvedSchema.getDescription());
+        }
+
+        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, this.buildTypeEmbeddedAttribute(resolvedSchema));
+
+        NewElementOptions newElementOptions = new NewElementOptions(schemaAttributeClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(apiGUID);
+
+        String newGUID = schemaAttributeClient.createSchemaAttribute(newElementOptions, initialClassifications, properties, null);
+
+        if (parentIsSchemaType)
+        {
+            /*
+             * linkAttributeForSchema always creates an AttributeForSchema relationship regardless of the properties
+             * bean class supplied - its parameter type is NestedSchemaAttributeProperties only because that class
+             * happens to share the same position/cardinality base properties (PartOfRelationshipProperties) needed here.
+             */
+            NestedSchemaAttributeProperties relationshipProperties = new NestedSchemaAttributeProperties();
+
+            relationshipProperties.setPosition(position);
+
+            if ((resolvedSchema != null) && ("array".equals(resolvedSchema.getType())))
+            {
+                relationshipProperties.setMaxCardinality(-1);
+            }
+
+            schemaAttributeClient.linkAttributeForSchema(parentGUID, newGUID, schemaAttributeClient.getMakeAnchorOptions(false), relationshipProperties);
+        }
+        else
+        {
+            NestedSchemaAttributeProperties relationshipProperties = new NestedSchemaAttributeProperties();
+
+            relationshipProperties.setPosition(position);
+
+            if ((resolvedSchema != null) && ("array".equals(resolvedSchema.getType())))
+            {
+                relationshipProperties.setMaxCardinality(-1);
+            }
+
+            schemaAttributeClient.linkNestedSchemaAttribute(parentGUID, newGUID, schemaAttributeClient.getMakeAnchorOptions(false), relationshipProperties);
+        }
+
+        /*
+         * Recurse into the structure of the schema (its own properties, or the properties of its array element
+         * type) to catalogue any nested fields.  A $ref is tracked while it is being expanded so that a circular
+         * schema does not send this recursion into an infinite loop.
+         */
+        boolean addedRef = false;
+
+        if ((ref != null) && (! visitedRefs.contains(ref)))
+        {
+            visitedRefs.add(ref);
+            addedRef = true;
+        }
+        else if ((ref != null) && (visitedRefs.contains(ref)))
+        {
+            resolvedSchema = null;
+        }
+
+        if (resolvedSchema != null)
+        {
+            OpenAPISchema structureSchema = resolvedSchema;
+
+            if ("array".equals(resolvedSchema.getType()) && (resolvedSchema.getItems() != null))
+            {
+                structureSchema = this.resolveSchema(resolvedSchema.getItems(), openAPISpecification);
+            }
+
+            if ((structureSchema != null) && (structureSchema.getProperties() != null))
+            {
+                int childPosition = 0;
+
+                for (String fieldName : structureSchema.getProperties().keySet())
+                {
+                    OpenAPISchema fieldSchema = structureSchema.getProperties().get(fieldName);
+                    boolean       fieldRequired = (structureSchema.getRequired() != null) && (structureSchema.getRequired().contains(fieldName));
+
+                    this.createSchemaAttribute(newGUID,
+                                               false,
+                                               apiGUID,
+                                               qualifiedName + "::" + fieldName,
+                                               fieldName,
+                                               null,
+                                               fieldSchema,
+                                               APIParameterType.NESTED_ATTRIBUTE,
+                                               ! fieldRequired,
+                                               childPosition,
+                                               openAPISpecification,
+                                               visitedRefs);
+                    childPosition++;
+                }
+            }
+        }
+
+        if (addedRef)
+        {
+            visitedRefs.remove(ref);
+        }
+
+        return newGUID;
+    }
+
+
+    /**
+     * Build the TypeEmbeddedAttribute classification that captures the type of a schema attribute.  Struct types
+     * (objects) and arrays of objects only carry the schemaTypeName; primitive types also carry the data type and,
+     * where present, the format as the encoding standard.
+     *
+     * @param schema the resolved open API schema describing this attribute's type - may be null if not known
+     * @return classification properties
+     */
+    private TypeEmbeddedAttributeProperties buildTypeEmbeddedAttribute(OpenAPISchema schema)
+    {
+        TypeEmbeddedAttributeProperties classification = new TypeEmbeddedAttributeProperties();
+
+        OpenAPISchema effectiveSchema = schema;
+
+        if ((effectiveSchema != null) && ("array".equals(effectiveSchema.getType())))
+        {
+            effectiveSchema = effectiveSchema.getItems();
+        }
+
+        if ((effectiveSchema == null) || ("object".equals(effectiveSchema.getType())) || (effectiveSchema.getProperties() != null))
+        {
+            classification.setSchemaTypeName(OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName);
+        }
+        else
+        {
+            classification.setSchemaTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+            classification.setDataType(effectiveSchema.getType());
+            classification.setEncodingStandard(effectiveSchema.getFormat());
+        }
+
+        return classification;
+    }
+
+
+    /**
+     * Resolve a $ref found in a schema to the schema it points to in the specification's components.  If the
+     * schema has no $ref, or the reference cannot be resolved, the original schema is returned unchanged.
+     *
+     * @param schema schema that may contain a $ref
+     * @param openAPISpecification the parsed open API specification
+     * @return resolved schema
+     */
+    private OpenAPISchema resolveSchema(OpenAPISchema        schema,
+                                        OpenAPISpecification openAPISpecification)
+    {
+        if (schema == null)
+        {
+            return null;
+        }
+
+        if ((schema.get$ref() != null) &&
+                (openAPISpecification.getComponents() != null) &&
+                (openAPISpecification.getComponents().getSchemas() != null))
+        {
+            String ref = schema.get$ref();
+            int    lastSlash = ref.lastIndexOf('/');
+            String refName = (lastSlash >= 0) ? ref.substring(lastSlash + 1) : ref;
+
+            OpenAPISchema referencedSchema = openAPISpecification.getComponents().getSchemas().get(refName);
+
+            if (referencedSchema != null)
+            {
+                return referencedSchema;
+            }
+        }
+
+        return schema;
+    }
+
+
+    /**
+     * Select the schema to use for a request/response body from its content map, preferring application/json if
+     * present, otherwise using the first content type found.
+     *
+     * @param content map of content-type to media type description
+     * @return schema, or null if there is no content
+     */
+    private OpenAPISchema getPreferredContentSchema(Map<String, OpenAPIMediaType> content)
+    {
+        if (content == null)
+        {
+            return null;
+        }
+
+        OpenAPIMediaType preferredMediaType = content.get("application/json");
+
+        if (preferredMediaType == null)
+        {
+            for (OpenAPIMediaType mediaType : content.values())
+            {
+                if (mediaType != null)
+                {
+                    preferredMediaType = mediaType;
+                    break;
+                }
+            }
+        }
+
+        if (preferredMediaType != null)
+        {
+            return preferredMediaType.getSchema();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Find an existing asset with the requested qualified name.
+     *
+     * @param assetClient client to search with
+     * @param qualifiedName unique name to search for
+     * @return GUID of the matching asset, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String findExistingAsset(AssetClient assetClient,
+                                     String      qualifiedName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(qualifiedName, assetClient.getQueryOptions());
+
+        if (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof AssetProperties assetProperties))
+                {
+                    if (qualifiedName.equals(assetProperties.getQualifiedName()))
+                    {
+                        return element.getElementHeader().getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Find an existing schema type with the requested qualified name.
+     *
+     * @param schemaTypeClient client to search with
+     * @param qualifiedName unique name to search for
+     * @return GUID of the matching schema type, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String findExistingSchemaType(SchemaTypeClient schemaTypeClient,
+                                          String           qualifiedName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, schemaTypeClient.getQueryOptions());
+
+        if (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof SchemaTypeProperties schemaTypeProperties))
+                {
+                    if (qualifiedName.equals(schemaTypeProperties.getQualifiedName()))
+                    {
+                        return element.getElementHeader().getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Find an existing schema attribute with the requested qualified name.
+     *
+     * @param schemaAttributeClient client to search with
+     * @param qualifiedName unique name to search for
+     * @return GUID of the matching schema attribute, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String findExistingSchemaAttribute(SchemaAttributeClient schemaAttributeClient,
+                                               String                qualifiedName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, schemaAttributeClient.getQueryOptions());
+
+        if (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties schemaAttributeProperties))
+                {
+                    if (qualifiedName.equals(schemaAttributeProperties.getQualifiedName()))
+                    {
+                        return element.getElementHeader().getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
 

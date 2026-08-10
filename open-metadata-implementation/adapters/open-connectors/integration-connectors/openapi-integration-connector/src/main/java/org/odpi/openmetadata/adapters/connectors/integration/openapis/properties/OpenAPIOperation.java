@@ -31,6 +31,7 @@ public class OpenAPIOperation
     private boolean                      deprecated   = false;
     private List<OpenAPIServer>          servers      = null;
     private Map<String, Object>          extensions   = null;
+    private List<Map<String, List<String>>> security  = null;
 
     public OpenAPIOperation()
     {
@@ -170,6 +171,18 @@ public class OpenAPIOperation
     }
 
 
+    public List<Map<String, List<String>>> getSecurity()
+    {
+        return security;
+    }
+
+
+    public void setSecurity(List<Map<String, List<String>>> security)
+    {
+        this.security = security;
+    }
+
+
     @Override
     public String toString()
     {
@@ -185,6 +198,7 @@ public class OpenAPIOperation
                        ", deprecated=" + deprecated +
                        ", servers=" + servers +
                        ", extensions=" + extensions +
+                       ", security=" + security +
                        '}';
     }
 }

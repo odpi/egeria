@@ -180,14 +180,14 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * Add the valid metadata values used in the projectPhase property of the Project entity.
          */
-        for (ProjectPhase projectStatus : ProjectPhase.values())
+        for (ProjectPhase projectPhase : ProjectPhase.values())
         {
-            this.addValidMetadataValue(projectStatus.getName(),
-                                       projectStatus.getDescription(),
+            this.addValidMetadataValue(projectPhase.getName(),
+                                       projectPhase.getDescription(),
                                        OpenMetadataProperty.PROJECT_PHASE.name,
                                        null,
                                        null,
-                                       projectStatus.getName());
+                                       projectPhase.getName());
         }
 
 
@@ -202,6 +202,19 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                        OpenMetadataType.ACTION.typeName,
                                        null,
                                        actionType.getDisplayName());
+        }
+
+        /*
+         * Add the valid metadata values used in the parameterType property of the APIParameter schema attribute.
+         */
+        for (APIParameterType apiParameterType : APIParameterType.values())
+        {
+            this.addValidMetadataValue(apiParameterType.getDisplayName(),
+                                       apiParameterType.getDescription(),
+                                       OpenMetadataProperty.PARAMETER_TYPE.name,
+                                       OpenMetadataType.API_PARAMETER.typeName,
+                                       null,
+                                       apiParameterType.getDisplayName());
         }
 
         for (ConfidenceLevel confidenceLevel : ConfidenceLevel.values())
