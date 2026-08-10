@@ -759,16 +759,33 @@ public class OpenMetadataAPIGenericBuilder
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
                     {
-                        arrayPropertyValue.setArrayValues(this.replacePropertiesWithPlaceholders(arrayPropertyValue.getArrayValues(),
-                                                                                                 placeholderProperties));
+                        /*
+                         * A new ArrayPropertyValue is created here rather than updating arrayPropertyValue in place.
+                         * arrayPropertyValue may be a reference to the same, shared instance held by the template
+                         * entity (InstanceProperties' copy constructor only shallow-copies property value objects),
+                         * so mutating it directly would permanently corrupt the template's own stored array values
+                         * with this specific instantiation's substituted values - visible as every subsequent clone
+                         * of the template inheriting this instantiation's values instead of having its own
+                         * placeholders substituted.
+                         */
+                        ArrayPropertyValue newArrayPropertyValue = new ArrayPropertyValue(arrayPropertyValue);
 
-                        newTemplateProperties.setProperty(propertyName, arrayPropertyValue);
+                        newArrayPropertyValue.setArrayValues(this.replacePropertiesWithPlaceholders(arrayPropertyValue.getArrayValues(),
+                                                                                                     placeholderProperties));
+
+                        newTemplateProperties.setProperty(propertyName, newArrayPropertyValue);
                     }
                     else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                     {
-                        mapPropertyValue.setMapValues(this.replacePropertiesWithPlaceholders(mapPropertyValue.getMapValues(),
-                                                                                             placeholderProperties));
-                        newTemplateProperties.setProperty(propertyName, mapPropertyValue);
+                        /*
+                         * See the comment above for ArrayPropertyValue - the same reasoning applies here to avoid
+                         * mutating a map property value that may be shared with the template entity itself.
+                         */
+                        MapPropertyValue newMapPropertyValue = new MapPropertyValue(mapPropertyValue);
+
+                        newMapPropertyValue.setMapValues(this.replacePropertiesWithPlaceholders(mapPropertyValue.getMapValues(),
+                                                                                                 placeholderProperties));
+                        newTemplateProperties.setProperty(propertyName, newMapPropertyValue);
                     }
                 }
 
