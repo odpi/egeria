@@ -215,7 +215,11 @@ loadScripts(document, 'script');</script>
 <h3>getGovernanceEngineHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span>&nbsp;<span class="element-name">getGovernanceEngineHandler</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;governanceEngine)</span></div>
 <div class="block">Return the governance engine handler for a specific governance engine name if known.
- If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned</div>
+ If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned.
+ The lookup/creation of the handler is deliberately performed outside of the object's synchronized lock:
+ creating a handler involves an outbound REST call to retrieve the governance engine definition, and holding
+ the lock across that call would block every other caller of this map (including event processing) for the
+ duration of the call.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>governanceEngine</code> - engine to lookup</dd>

@@ -89,7 +89,12 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenAPIMonitorIntegrationConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a>
 implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></span></div>
-<div class="block">OpenAPIMonitorIntegrationConnector provides common methods for the connectors in this module.</div>
+<div class="block">OpenAPIMonitorIntegrationConnector builds an open metadata representation of the open API specifications published
+ by the servers it is monitoring.  For each API specification it catalogues a DeployedAPI asset linked to the
+ server's Endpoint, an APISchemaType describing the API, an APIOperation for each path/command combination, and
+ the request, response and header structures for each operation, built out of APIParameterList and APIParameter
+ schema elements.  See <a href="https://egeria-project.org/concepts/schema/">...</a> for more information on schema types and
+ schema attributes.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
