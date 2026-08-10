@@ -86,16 +86,25 @@ public class GovernanceEngineMap
 
     /**
      * Return the governance engine handler for a specific governance engine name if known.
-     * If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned
+     * If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned.
+     * The lookup/creation of the handler is deliberately performed outside of the object's synchronized lock:
+     * creating a handler involves an outbound REST call to retrieve the governance engine definition, and holding
+     * the lock across that call would block every other caller of this map (including event processing) for the
+     * duration of the call.
      *
      * @param governanceEngine engine to lookup
      * @return handler or null
      */
-    public synchronized GovernanceEngineHandler getGovernanceEngineHandler(EngineConfig governanceEngine)
+    public GovernanceEngineHandler getGovernanceEngineHandler(EngineConfig governanceEngine)
     {
         final String methodName = "getGovernanceEngineHandler(name)";
 
-        GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
+        GovernanceEngineHandlerProperties engineHandlerProperties;
+
+        synchronized (this)
+        {
+            engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
+        }
 
         if (engineHandlerProperties != null)
         {
@@ -138,6 +147,11 @@ public class GovernanceEngineMap
 
     /**
      * Create a governance engine handler for a specific governance engine and add it to the governance engine properties.
+     * The handler construction is deliberately performed outside of the object's synchronized lock (it does not touch
+     * the map); only the initial lookup and the final save of the new handler are synchronized.  This means two
+     * threads racing to create a handler for the same, newly-defined governance engine may both build one - the
+     * second write wins - which is an acceptable, rare cost given this previously blocked every other caller of the
+     * map (including event processing) for the duration of the handler's construction.
      *
      * @param governanceEngineElement governance engine element retrieved from the open metadata repositories.
      * @return governance engine handler
@@ -153,7 +167,12 @@ public class GovernanceEngineMap
             /*
              * The engine exists in open metadata - find out what type of engine this is.
              */
-            GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
+            GovernanceEngineHandlerProperties engineHandlerProperties;
+
+            synchronized (this)
+            {
+                engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
+            }
 
             if (engineHandlerProperties != null)
             {
@@ -191,8 +210,11 @@ public class GovernanceEngineMap
                     /*
                      * Save the engine handler.
                      */
-                    engineHandlerProperties.setGovernanceEngineHandler(governanceEngineHandler,
-                                                                       governanceEngineTypeName);
+                    synchronized (this)
+                    {
+                        engineHandlerProperties.setGovernanceEngineHandler(governanceEngineHandler,
+                                                                           governanceEngineTypeName);
+                    }
                 }
             }
         }

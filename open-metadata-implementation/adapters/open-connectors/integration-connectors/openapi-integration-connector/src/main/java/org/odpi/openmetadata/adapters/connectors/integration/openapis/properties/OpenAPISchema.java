@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis.propertie
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -13,25 +14,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OpenAPISchema describes the type of a parameter.
+ * OpenAPISchema describes the type of a parameter.  For an "object" type, properties describes its fields; for an
+ * "array" type, items describes the type of its elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenAPISchema
 {
-    private String              name         = null;
-    private String              title        = null;
-    private List<String>        required     = null;
-    private String              type         = null;
-    private String              description  = null;
-    private String              format       = null;
-    private boolean             nullable     = false;
-    private boolean             readOnly     = false;
-    private boolean             writeOnly    = false;
-    private boolean             deprecated   = false;
-    private OpenAPIExternalDocs externalDocs = null;
-    private Map<String, Object> extensions   = null;
+    private String                     name         = null;
+    private String                     title        = null;
+    private List<String>               required     = null;
+    private String                     type         = null;
+    private String                     description  = null;
+    private String                     format       = null;
+    private boolean                    nullable     = false;
+    private boolean                    readOnly     = false;
+    private boolean                    writeOnly    = false;
+    private boolean                    deprecated   = false;
+    private OpenAPIExternalDocs        externalDocs = null;
+    private Map<String, Object>        extensions   = null;
+    private Map<String, OpenAPISchema> properties   = null;
+    private OpenAPISchema              items        = null;
+    private List<Object>               enumValues   = null;
 
     private String              $ref         = null;
 
@@ -197,6 +202,44 @@ public class OpenAPISchema
     }
 
 
+    public Map<String, OpenAPISchema> getProperties()
+    {
+        return properties;
+    }
+
+
+    public void setProperties(Map<String, OpenAPISchema> properties)
+    {
+        this.properties = properties;
+    }
+
+
+    public OpenAPISchema getItems()
+    {
+        return items;
+    }
+
+
+    public void setItems(OpenAPISchema items)
+    {
+        this.items = items;
+    }
+
+
+    @JsonProperty("enum")
+    public List<Object> getEnumValues()
+    {
+        return enumValues;
+    }
+
+
+    @JsonProperty("enum")
+    public void setEnumValues(List<Object> enumValues)
+    {
+        this.enumValues = enumValues;
+    }
+
+
     @Override
     public String toString()
     {
@@ -213,6 +256,9 @@ public class OpenAPISchema
                        ", deprecated=" + deprecated +
                        ", externalDocs=" + externalDocs +
                        ", extensions=" + extensions +
+                       ", properties=" + properties +
+                       ", items=" + items +
+                       ", enumValues=" + enumValues +
                        ", $ref='" + $ref + '\'' +
                        '}';
     }

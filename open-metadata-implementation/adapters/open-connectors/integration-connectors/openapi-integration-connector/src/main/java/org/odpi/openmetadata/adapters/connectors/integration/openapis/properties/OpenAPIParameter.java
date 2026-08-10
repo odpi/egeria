@@ -23,6 +23,7 @@ public class OpenAPIParameter
     private boolean required        = true;
     private boolean deprecated      = false;
     private boolean allowEmptyValue = false;
+    private OpenAPISchema schema   = null;
     private String  $ref            = null;
 
 
@@ -115,6 +116,18 @@ public class OpenAPIParameter
     }
 
 
+    public OpenAPISchema getSchema()
+    {
+        return schema;
+    }
+
+
+    public void setSchema(OpenAPISchema schema)
+    {
+        this.schema = schema;
+    }
+
+
     @Override
     public String toString()
     {
@@ -125,6 +138,7 @@ public class OpenAPIParameter
                        ", required=" + required +
                        ", deprecated=" + deprecated +
                        ", allowEmptyValue=" + allowEmptyValue +
+                       ", schema=" + schema +
                        ", $ref='" + $ref + '\'' +
                        '}';
     }
