@@ -6,6 +6,10 @@
 
 The Design Model Archives provide utilities for loading common/standard design models from third parties.
 
+The [design-model-archive-base](design-model-archive-base) module provides the `DesignModelArchiveBuilder` base
+class used to create the open metadata compliant instances for content typically found in a common/standard
+design model, such as a concept model.
+
 The [OWL Canonical Glossary model](glossary-canonical-model/docs/owlcanonicalglossarymodel/README.md) provides the ability to
 create an Egeria Archive from a Canonical Glossary defined using [OWL](https://www.w3.org/OWL/).
 This is an experimental archive builder using a restricted dialect of OWL.  There is an example in `test/resources`.

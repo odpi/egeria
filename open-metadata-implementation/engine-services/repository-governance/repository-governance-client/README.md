@@ -4,8 +4,8 @@
 # Repository Governance Engine Services Client
 
 The repository governance engine services client module contains the client
-implementation of the calls to the archive engine
-that request that a particular archive service is run.
+implementation of the calls to the repository governance engine
+that request that a particular repository governance service (such as an archive service) is run.
 
 
 ----

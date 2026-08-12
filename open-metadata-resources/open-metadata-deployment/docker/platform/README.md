@@ -65,7 +65,7 @@ bash-4.4$
 ```
 ### Persisting data
 
-By default, any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.](Docker docs).
+By default, any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [Docker docs](https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.).
 
 Egeria saves all data when running to the `data` directory. In the docker image this is at `/deployments/platform/data`
 

@@ -16,6 +16,8 @@ for a particular type of governance server.
 
 * **[engine-host-services](engine-host-services)** - running governance engines.
 
+See the [docs](docs) for guidance on designing and implementing a new governance server.
+
 
 ----
 Return to [open-metadata-implementation](..).

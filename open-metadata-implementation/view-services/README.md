@@ -16,10 +16,6 @@ The view services are as follows:
 
   The Asset Catalog OMVS provides search and query capabilities for tools and applications to support an asset catalog function. It supports search requests for assets with specific characteristics and returns summaries of the matching assets, plus methods to allow drill-down into the details of a specific asset to related metadata.
 
-* **[Automated Curation](automated-curation)** - run governance actions.
-
-  The Automated Curation OMVS provides search and query capabilities for technology types and then the ability to run associated governance actions.
-
 * **[Community Matters](community-matters)** - manage digital communities.
 
   The Community Matters OMVS is a REST API designed to support user interfaces (UIs) for building and supporting digital communities.

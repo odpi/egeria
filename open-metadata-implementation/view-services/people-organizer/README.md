@@ -23,7 +23,9 @@ The People Organizer API supports the following key features:
 * [Personal Profile Concept](https://egeria-project.org/concepts/personal-profile/)
 * [Team Concept](https://egeria-project.org/concepts/team/)
 
-Sample requests for the REST API can be found in `Egeria-api-people-organizer.http`.
+Sample requests for the REST API can be found in [Egeria-api-people-organizer.http](Egeria-api-people-organizer.http).
+Further examples of setting up peer networks can be found in
+[Egeria-coco-peer-networks.http](Egeria-coco-peer-networks.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -4,7 +4,7 @@
 # Engine Host Services with Spring
 
 The Engine Host Services with Spring module uses Spring to implement a REST API wrapper
-for the [asset-analysis-server](../engine-host-services-server) module.
+for the [engine-host-services-server](../engine-host-services-server) module.
 
 ----
 * Return to [module overview](..)

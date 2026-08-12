@@ -31,7 +31,7 @@ The server also provides a REST API to retrieve the results.  This REST API is c
 by the client.
 
 * **[open-metadata-conformance-suite-spring](../open-metadata-conformance-suite-spring)** - uses
-[Spring](../../developer-resources/Spring.md) to provide the REST endpoints for the server's REST API.
+Spring to provide the REST endpoints for the server's REST API.
 This is separated to allow another REST framework to be used for the server.
 
 

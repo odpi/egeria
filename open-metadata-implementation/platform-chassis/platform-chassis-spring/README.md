@@ -9,7 +9,7 @@ and Governance (OMAG) Servers in the
 [OMAG Server Platform](https://egeria-project.org/concepts/omag-server).  
 
 The **platform-chassis-spring** module is an implementation of the
-platform chassis written using [Spring Boot](../../../developer-resources/Spring.md).
+platform chassis written using [Spring Boot](https://egeria-project.org/guides/contributor/runtime/#spring).
 Its **main()** method is located in a Java class called **OMAGServerPlatform**.
 
 When the OMAGServerPlatform is first started, all of its REST APIs
@@ -35,24 +35,28 @@ server in the OMAGServerPlatform many times over multiple platform restarts.
 A detailed description of the internals of the OMAGServerPlatform during server start up
 is available [here](https://egeria-project.org/concepts/omag-server-platform).
 
-## Maven build profiles
-Default maven build will include **full-platform** profile, with all access service 
-and view server functionality. Please be aware this behavior might be subject of a future change.
-Default behavior might be change with **-DadminChassisOnly** option which will disable **full-platform** profile.
+## Gradle build option
 
-By running 
+By default, the Gradle build includes the full platform, with the
+[view server generic services](../../view-server-generic-services), [view services](../../view-services),
+[engine services](../../engine-services), [repository services](../../repository-services),
+[access services](../../access-services) and [governance server services](../../governance-server-services),
+along with the [Open Metadata Conformance Suite](../../../open-metadata-conformance-suite), all included as
+runtime dependencies.  Please be aware this behavior might be subject of a future change.
+This default behavior can be changed with the **adminChassisOnly** project property, which excludes all of
+these runtime dependencies.
+
+By running
 ```
-mvn clean install -DadminChassisOnly
+./gradlew build -PadminChassisOnly
 ```
  the platform-chassis-spring will contain only the following services:
- * Administration Services - Operational
- * Administration Services - Platform Configuration
- * Administration Services - Server Configuration
+ * Administration Services
  * Server Operations
  * Platform Services
- 
- In this case, for any extra functionality, such as desired access services or view server, 
- use [ **loader.path** spring-boot functionality ](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-executable-jar-format.html#executable-jar-property-launcher-features).
+
+ In this case, for any extra functionality, such as the desired access services, engine services or view
+ services, use [ **loader.path** spring-boot functionality ](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-executable-jar-format.html#executable-jar-property-launcher-features).
  
  
 ## Application properties
@@ -90,18 +94,15 @@ When the **OMAGServerPlatform** class is called, Spring Boot does a component sc
 services that are in Java packages stemming from `org.odpi.openmetadata.*`
 and that are visible to this module.
 
-To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
-to the **pom.xml** file for **platform-chassis-spring** and it will be picked up in the component scan.
+To make a new Java package visible to **OMAGServerPlatform**, add its **spring** project as a runtime
+dependency to the **build.gradle** file for **platform-chassis-spring** and it will be picked up in the
+component scan.
 
-For example, this is the snippet of XML in the pom.xml file that adds the
-[Asset Owner OMAS](https://egeria-project.org/services/omas/asset-owner/overview/) services
-to the OMAG server platform.
+For example, this is the line in build.gradle that adds the
+[Action Author OMVS](../../view-services/action-author) services to the OMAG server platform.
 
-```xml
-<dependency>
-    <groupId>org.odpi.egeria</groupId>
-    <artifactId>asset-owner-spring</artifactId>
-</dependency>
+```groovy
+runtimeOnly project(':open-metadata-implementation:view-services:action-author:action-author-spring')
 ```
 
 ## Swagger

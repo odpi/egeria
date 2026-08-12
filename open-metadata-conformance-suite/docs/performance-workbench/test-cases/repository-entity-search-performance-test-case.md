@@ -1,1 +1,0 @@
-../profiles/entity-search/README.md

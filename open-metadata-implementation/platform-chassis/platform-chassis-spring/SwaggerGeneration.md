@@ -4,77 +4,32 @@
 # Swagger API Documentation
 
 The [OMAG Server Platform](https://egeria-project.org/concepts/omag-server)
-supports the Swagger API for all of its REST 
+supports the OpenAPI/Swagger API documentation for all of its REST APIs.
 
-## SpringFox Usage
+## SpringDoc Usage
 
-[SpringFox](http://springfox.github.io/springfox/) is used to generate the swagger.json at runtime for the APIs that are deployed.  
+[springdoc-openapi](https://springdoc.org/) is used to generate the OpenAPI description at runtime for the
+APIs that are deployed, along with a Swagger UI page to browse them.
 
-### Maven dependencies
+### Gradle dependency
 
-The following maven dependencies are added for the pieces needed for runtime display of the API.
+The following runtime dependency in the `build.gradle` file for **platform-chassis-spring** adds OpenAPI 3
+generation and the Swagger UI, automatically scanning the deployed spring controllers - no additional
+configuration bean is needed.
 
-#### SpringFox for Swagger 2 API 
-
-This is configured using instructions from the 
-[Springfox Swagger UI](http://springfox.github.io/springfox/docs/current/#springfox-swagger-ui) documentation.
-
-The following dependency allows for Swagger 2 generation from existing spring controllers.
-
-```xml
-<!-- Spring Fox for Swagger API documentation generation -->
-<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger2</artifactId>
-    <version>2.9.2</version>
-</dependency>
+```groovy
+runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
 ```
-
-#### SpringFox for Swagger UI
-
-The following dependency allows for the Swagger UI to display the default generated API documentation.
-
-```xml
-<!-- Spring Fox Swagger UI dependency for presentation of generated swagger.json -->
-<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger-ui</artifactId>
-    <version>2.7.0</version>
-</dependency>
-```
-
-### Code Additions
-
-The following code was added to parse/enable the scanning for REST APIs in spring controllers. 
-
-```java
-@Bean
-public Docket egeriaAPI()
-{
-    return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.any())
-            .build();
-}
-```
-
-#### Customization
-
-You can customize the endpoints/paths that are to be described by following the 
-[Configuring SpringFox](http://springfox.github.io/springfox/docs/current/#configuring-springfox) documentation.
 
 ## Endpoints produced
 
-The following endpoints are produced in the OMAG Server Platform. 
+The following endpoints are produced in the OMAG Server Platform.
 
-| Endpoint                                  | Module Dependency    | Description                                                                |
-|-------------------------------------------|----------------------|----------------------------------------------------------------------------|
-| /v2/api-docs                              | springfox-swagger2   | The primary endpoint to retrieve the swagger.json that describes the API.  |
-| /swagger-resources                        | springfox-swagger2   | The endpoint describing what is produced by springfox for swagger.         |
-| /swagger-ui.html                          | springfox-swagger-ui | The page that gives a visual swagger presentation of the APIs discovered.  |
-| /swagger-resources/configuration/ui       | springfox-swagger-ui | The configuration/management API endpoint for the Swagger UI application.  |
-| /swagger-resources/configuration/security | springfox-swagger-ui | The security management API endpoint for the Swagger UI application.       |
+| Endpoint               | Description                                                       |
+|-------------------------|--------------------------------------------------------------------|
+| /v3/api-docs             | The primary endpoint to retrieve the OpenAPI description that describes the API. |
+| /swagger-ui.html         | Redirects to the Swagger UI page that gives a visual presentation of the APIs discovered. |
+| /swagger-ui/index.html   | The Swagger UI page that gives a visual presentation of the APIs discovered. |
 
 
 

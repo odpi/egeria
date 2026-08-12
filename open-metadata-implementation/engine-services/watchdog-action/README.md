@@ -7,8 +7,8 @@
 
 The Watchdog Action Open Metadata Engine services provide support for
 [watchdog action engines](https://egeria-project.org/concepts/watchdog-action-engine/)
-that are part of the [Open Watchdog Service (OWF)](https://egeria-project.org/frameworks/owf/overview/).
-An watchdog action engine hosts the services that monitor for specification situations/events and issue notifications/actions to subscribers.
+that are part of the [Watchdog Action Framework (OWF)](https://egeria-project.org/frameworks/owf/overview/).
+A watchdog action engine hosts the services that monitor for specific situations/events and issue notifications/actions to subscribers.
 
 The Watchdog Action OMES is capable of hosting one or more
 [watchdog action engines](https://egeria-project.org/concepts/watchdog-action-engine/)

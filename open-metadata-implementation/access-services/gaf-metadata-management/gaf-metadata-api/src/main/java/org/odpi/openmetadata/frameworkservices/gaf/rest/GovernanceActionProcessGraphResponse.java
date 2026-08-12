@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The response structure used on the Open Survey Framework (OGF)
+ * The response structure used on the Open Governance Framework (OGF)
  * API calls that returns a GovernanceActionProcessGraph element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

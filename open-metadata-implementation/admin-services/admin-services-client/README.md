@@ -6,16 +6,21 @@
 The administration services client module contains the client
 implementations of the administration services.
 
-The clients are organized by server type.
-There are clients for the following server types.  Others will
-follow as new server types mature.
+`OMAGServerConfigurationClient` provides the configuration calls common to all types of
+[OMAG Server](https://egeria-project.org/concepts/omag-server), and `OMAGServerPlatformConfigurationClient`
+provides the calls for configuring the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform)
+itself.  The remaining clients are organized by server type, extending the common client with the
+configuration calls specific to that type of server:
 
- * Metadata Server
- * Metadata Access Point
- * Repository Proxy
- * Conformance Test Server
- * Discovery Server
- * Stewardship Server
+ * `CohortMemberConfigurationClient` - extended by `ConformanceTestServerConfigurationClient`,
+   `RepositoryProxyConfigurationClient` and `MetadataAccessServerConfigurationClient` (which is itself extended
+   by `MetadataAccessPointConfigurationClient` and `MetadataAccessStoreConfigurationClient`).
+ * `GovernanceServerConfigurationClient` - extended by `EngineHostConfigurationClient` and
+   `IntegrationDaemonConfigurationClient`.
+ * `ViewServerConfigurationClient`
+
+`ConfigurationManagementClient` issues calls to an OMAG Server Platform that manages configuration for OMAG
+Servers, including storing, retrieving and deploying configuration between platforms.
 
 
 Return to [Admin Services](..).

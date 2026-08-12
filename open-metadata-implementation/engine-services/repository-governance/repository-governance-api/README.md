@@ -5,7 +5,7 @@
 
 The repository governance engine services API provides the property structures and
 REST structures used to drive 
-archive engines running inside an
+[repository governance engines](https://egeria-project.org/concepts/repository-governance-engine) running inside an
 [engine host server](https://egeria-project.org/concepts/engine-host).
 
 

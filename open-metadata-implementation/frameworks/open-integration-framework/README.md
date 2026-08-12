@@ -34,6 +34,12 @@ The *PermittedSynchronization* enumeration can be used to limit the activities o
 
 The context manager is responsible for setting up the integration context for the integration connector.
 
+## Open Lineage event support
+
+The `openlineage` package provides the bean classes for the [Open Lineage](https://openlineage.io/) event model
+(jobs, runs, data sets and their facets), along with `OpenLineageListenerManager` and `OpenLineageEventListener`
+for integration connectors that need to receive and process Open Lineage events.
+
 ----
 Return to [frameworks](..).
 

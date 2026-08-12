@@ -72,11 +72,11 @@ repository that supports the open metadata standards.
 [OMAG Servers](https://egeria-project.org/concepts/omag-server/) on either the OMAG Server Platform or 
 OMAG Server Runtime.
 
-* **[user-interfaces](user-interfaces)** - basic user interfaces to demonstrate the power of the open
-metadata and governance capabilities.
-
 * **[user-security](user-security)** - modules to enable token-based authentication/authorization for the 
 OMAG Server Platform and OMAG Server Runtime.
+
+* **[view-server-generic-services](view-server-generic-services)** - the view server generic services provide services that
+  are available in all view servers, independent of which view services are configured.  They run in a view server on the OMAG Server Platform.
 
 * **[view-services](view-services)** - the view services provide domain-specific services for data tools, engines
   and platforms that are maintaining and retrieving metadata.  These services run in a view server on the OMAG Server Platform.

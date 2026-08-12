@@ -1,9 +1,16 @@
-# IBM Db2 for Linux, UNIX and Windows (LUW) Database Server Survey Action Service
+# Db2 for Linux, UNIX and Windows (LUW) Server Connectors
 
-Surveys the databases, their schemas, tables and columns, found in an IBM Db2 for Linux, UNIX and Windows (LUW)
-server.  Db2 for LUW was formerly known as Db2 UDB (Universal Database) - this connector suite covers that
+Connectors that catalog and survey an IBM Db2 for Linux, UNIX and Windows (LUW) database server and its databases.
+Db2 for LUW was formerly known as Db2 UDB (Universal Database) - this connector suite covers that
 distributed/open-systems implementation of Db2, not the Db2 for z/OS mainframe implementation, which has a
 different system catalog and is out of scope here.
+
+* The **DB2LUWServerIntegrationConnector** catalogs the databases hosted by a Db2 LUW server, creating the
+  corresponding data assets, server capabilities and connections.  A friendship connector (typically the
+  [JDBC Integration Connector](../../integration-connectors/jdbc-integration-connector)) can be attached to
+  catalog inside each database - its schemas, tables and columns.
+* The **DB2LUWDatabaseSurveyActionService** and **DB2LUWServerSurveyActionService** survey the databases, schemas,
+  tables and columns found in a Db2 LUW server, extracting statistics via `DB2LUWDatabaseStatsExtractor`.
 
 Its Jar file includes the IBM Data Server Driver for JDBC and SQLJ (`jcc`) client driver.
 

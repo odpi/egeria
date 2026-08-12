@@ -24,7 +24,9 @@ The Reference Data API supports the following key features:
 * [Valid Value Concept](https://egeria-project.org/concepts/valid-value-definition/)
 * [Reference Data Management](https://egeria-project.org/features/reference-data-management/overview)
 
-Sample requests for the REST API can be found in `Egeria-api-reference-data.http`.
+Sample requests for the REST API can be found in [Egeria-api-reference-data.http](Egeria-api-reference-data.http).
+Further examples of creating reference data sets can be found in
+[Egeria-coco-sales-territories.http](Egeria-coco-sales-territories.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

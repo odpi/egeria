@@ -1,6 +1,13 @@
-# Microsoft SQL Server Database Server Survey Action Service
+# Microsoft SQL Server Connectors
 
-Surveys the databases, their tables and columns, found in a Microsoft SQL Server database server.
+Connectors that catalog and survey a Microsoft SQL Server database server and its databases.
+
+* The **MSSQLServerIntegrationConnector** catalogs the databases hosted by a SQL Server, creating the
+  corresponding data assets, server capabilities and connections.  A friendship connector (typically the
+  [JDBC Integration Connector](../../integration-connectors/jdbc-integration-connector)) can be attached to
+  catalog inside each database - its schemas, tables and columns.
+* The **MSSQLDatabaseSurveyActionService** and **MSSQLServerSurveyActionService** survey the databases, tables
+  and columns found in a Microsoft SQL Server, extracting statistics via `MSSQLDatabaseStatsExtractor`.
 
 Its Jar file includes the Microsoft SQL Server (mssql-jdbc) client driver.
 

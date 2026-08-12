@@ -3,17 +3,19 @@
 
 ![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
-# Open Metadata Metadata Access Services
+# OMF Metadata Management
 
-The **Open Metadata Metadata Access Services** supports the implementation of a [governance program](../governance-program)
-by providing the metadata services for running **[governance engines](https://egeria-project.org/concepts/governance-engine)**.
+**OMF Metadata Management** provides the generic open metadata store services used by the
+[Open Metadata Framework (OMF)](../../frameworks/open-metadata-framework) - creating, searching for, updating and
+deleting open metadata elements, classifications and relationships, along with the associated out topic events
+that notify listeners of metadata changes.
 
 * [Documentation](https://egeria-project.org/services/omf-metadata-management)
 
 
 ## Design Information
 
-The module structure for the Open Metadata Metadata Access Services is as follows:
+The module structure for OMF Metadata Management is as follows:
 
 * [omf-metadata-client](omf-metadata-client) supports the client library.
 * [omf-metadata-api](omf-metadata-api) supports the common Java classes that are used both by the client and the server.

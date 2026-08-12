@@ -13,7 +13,7 @@ the [Open Connector Framework (OCF)](../../frameworks/open-connector-framework).
 
 ## Internal design detail
 
-There are five modules in its implementation:
+There are four modules in its implementation:
 
 * **[ocf-metadata-api](ocf-metadata-api)** - for common classes used both by the client and the server.
 * **[ocf-metadata-client](ocf-metadata-client)** - for embedding in client-side OMASs
@@ -22,7 +22,7 @@ There are five modules in its implementation:
 
 
 ----
-* Return to [Common Services](..)
+* Return to [access-services](..)
 
 
 ----

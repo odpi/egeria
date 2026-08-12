@@ -1,25 +1,27 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# The Basic Files Integration Connectors
+# The CSV Lineage Import Integration Connector
 
-The basic files integration connectors monitor changes in a file directory (folder) and updates the open metadata
-repository/repositories to reflect the changes to both the files and folders underneath it.
+The **CSVLineageImporterConnector** loads lineage relationships between existing open metadata elements from a CSV file.
 
-The **DataFilesMonitorIntegrationConnector** maintains a DataFile asset for each file in the directory (or any subdirectory).
-When a new file is created, a new DataFile asset is created.  If a file is modified, the lastModified property
-of the corresponding DataFile asset is updated.  When a file is deleted, its corresponding DataFile asset is also deleted.
+Each row of the CSV file describes one relationship to create between two elements that are already catalogued in
+open metadata:
 
-The **DataFolderMonitorIntegrationConnector** maintains a DataFolder asset for the directory.  The files and directories
-underneath it are assumed to be elements/records in the DataFolder asset and so each time there is a change to the
-files and directories under the monitored directory, it results in an update to the lastModified property
-of the corresponding DataFolder asset.
+* the type and unique instance name of the first element,
+* the type and unique instance name of the second element,
+* the orientation of the relationship (which element is at end 1 and which is at end 2), and
+* optionally, a mode value.
 
+The connector maps the short type codes used in the CSV file (for example `LIB`, `CMP`, `TB2`, `ENT`) to open metadata
+type names (`Collection`, `DisplayDataSchemaType`, `RelationalTable`, `Port`, and so on), looks up each element by its
+qualified name, and creates the corresponding open metadata relationship if it does not already exist.
 
 ## Deployment and configuration
 
-The basic files integration connectors are included in the main Egeria assembly.
-They run in the integration daemon.
+The connector uses the [CSV File Store Connector](../../data-store-connectors/file-connectors/csv-file-connector) to
+read its input file, identified by the endpoint's network address on the connector's connection.
+It runs in the integration daemon.
 
 
 ----

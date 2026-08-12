@@ -6,6 +6,8 @@
 The system connectors are resource connectors that interact with systems.
 
 * [Apache Atlas Connectors](apache-atlas-connectors) support various types of connectors that work with Apache Atlas.
+* [Apache Kafka Connectors](apache-kafka-connectors) monitor an Apache Kafka server and catalog its topics.
+* [Egeria System Connectors](egeria-system-connectors) are used to work with Egeria itself.
 
 
 

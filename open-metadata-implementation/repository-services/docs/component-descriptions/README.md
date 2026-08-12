@@ -34,6 +34,8 @@ This may be the OMRS Topic for a cohort, or the OMRS Topic used by the Open Meta
 * **[Enterprise Connector Manager](enterprise-connector-manager.md)** - Manages the list of open metadata repositories
 that the Enterprise OMRS Repository Connector should call to retrieve an enterprise view of the metadata collections
 supported by these repositories.
+* **[Enterprise Topic Listener](enterprise-topic-listener.md)** - Receives events from the open metadata repository
+cohorts that this server is registered with and distributes them to the Open Metadata Access Services (OMASs).
 * **[Enterprise Repository Connector](enterprise-repository-connector.md)** - Supports federated queries.
   * Enterprise OMRS Connector Provider - The OCF Connector Provider factory for the Enterprise OMRS Repository Connector.
   * Enterprise OMRS Repository Connector - Implements the OMRS Repository Connector interface that supports enterprise
@@ -51,6 +53,7 @@ supported by these repositories.
 (TypeDefs) that are used for validating of TypeDefs from other open metadata repositories and creation of new open metadata instances (entities and relationships).
 * **[Local OMRS Instance Event Processor](local-repository-instance-event-processor.md)** - Processes inbound Instance Events on behalf of the local repository.
 These events may come from one of the connected open metadata repository cohorts or the OMRS Archive Manager.
+* **[Local Repository TypeDef Event Processor](local-repository-typedef-event-processor.md)** - Processes inbound TypeDef Events on behalf of the local repository.
 * **[OMRS REST Repository Services](omrs-rest-services.md)** - Implements the server-side of the In-memory OMRS Repository Connector.
 * **[OMRS REST Repository Connector](rest-repository-connector.md)** - Implements the OMRS Repository Connector
 interface that supports metadata access to a remote open metadata repository service via the OMRS Repository REST API.

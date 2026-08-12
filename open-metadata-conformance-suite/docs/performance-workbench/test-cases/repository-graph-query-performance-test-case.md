@@ -1,1 +1,0 @@
-../profiles/graph-queries/README.md

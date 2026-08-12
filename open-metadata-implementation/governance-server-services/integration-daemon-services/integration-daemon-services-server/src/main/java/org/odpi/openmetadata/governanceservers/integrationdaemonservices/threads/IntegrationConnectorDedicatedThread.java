@@ -13,7 +13,8 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * IntegrationConnectorDedicatedThread is the thread that runs a connector that issues
+ * IntegrationConnectorDedicatedThread is the thread that runs a connector that issues blocking calls, so that its
+ * engage() method does not tie up the shared refresh thread pool used by other integration connectors.
  */
 public class IntegrationConnectorDedicatedThread implements Runnable
 {

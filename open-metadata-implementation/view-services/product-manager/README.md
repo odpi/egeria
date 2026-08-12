@@ -20,7 +20,7 @@ The Product Manager API supports the following key features:
 * [Product Manager API Overview](https://egeria-project.org/services/omvs/product-manager/overview/)
 * [Digital Product Concept](https://egeria-project.org/concepts/digital-product/)
 
-Sample requests for the REST API can be found in `Egeria-api-product-manager.http`.
+Sample requests for the REST API can be found in [Egeria-api-product-manager.http](Egeria-api-product-manager.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

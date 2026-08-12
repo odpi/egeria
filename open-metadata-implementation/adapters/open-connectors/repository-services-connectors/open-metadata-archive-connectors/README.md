@@ -6,11 +6,12 @@
 The open metadata archive connectors support connectors that can
 read and write [open metadata archives](../../../../../open-metadata-resources/open-metadata-archives).
 
-Egeria provides a single implementation of
-this type of connector:
+Egeria provides two implementations of this type of connector:
 
 * **[open-metadata-archive-file-connector](open-metadata-archive-file-connector)** - connector stores an
 open metadata archive as a JSON file.
+* **[open-metadata-archive-directory-connector](open-metadata-archive-directory-connector)** - connector stores an
+open metadata archive as an organized collection of JSON files within a single directory.
 
 
 

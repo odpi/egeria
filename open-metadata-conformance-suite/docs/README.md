@@ -60,11 +60,10 @@ tests.
 The `maxSearchResults` parameter controls the sizing of the tests: both the number of instances
 the tests will attempt to create to carry out its tests and how extensive the search-based tests are.
 
-An example collection of configuration calls for Postman can be found in
-[Egeria-CTS-RepositoryWorkbench](../../open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-CTS-RepositoryWorkbench.postman_collection.json).
-
-Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
-go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+An example collection of configuration calls can be found in
+[postgres-cts-configure.http](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector/postgres-cts-configure.http),
+with a matching set of calls for retrieving the results in
+[postgres-cts-results.http](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector/postgres-cts-results.http).
  
 The OMAG Server also supports a REST API for querying the results of running
 the conformance suite tests.  These commands include:

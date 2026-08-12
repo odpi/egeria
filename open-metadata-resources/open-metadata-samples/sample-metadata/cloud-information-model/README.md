@@ -30,5 +30,11 @@ The `cloud-information-model.jsonld` that is part of this repository is derived 
 
 The original file is [model.jsonld](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/refs/heads/master/dist/model.jsonld).  The Egeria community have kept the format of the contents exactly the same.  The changes made correct typos in field names and comments.
 
+----
+* Return to [sample metadata](..)
+
+----
+License: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0),
+Copyright Contributors to the Egeria Project.
 
 

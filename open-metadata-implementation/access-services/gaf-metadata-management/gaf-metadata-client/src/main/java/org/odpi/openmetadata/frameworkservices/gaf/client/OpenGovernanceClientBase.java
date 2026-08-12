@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OpenGovernanceClientBase provides common governance services that originate in the Open Survey Framework (OGF).
+ * OpenGovernanceClientBase provides common governance services that originate in the Open Governance Framework (OGF).
  * This includes the ability to define and execute governance action processes as well as manage duplicates.
  */
 public class OpenGovernanceClientBase extends OpenGovernanceClient

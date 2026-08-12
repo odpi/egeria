@@ -28,9 +28,10 @@ The Valid Metadata API provides the following capabilities:
 
 Sample REST API requests can be found in:
 - [Egeria-api-valid-metadata.http](Egeria-api-valid-metadata.http)
-- [Egeria-valid-metadata-lists.http](Egeria-valid-metadata-lists.http)
+- [Egeria-coco-valid-metadata-lists.http](Egeria-coco-valid-metadata-lists.http)
 - [Egeria-valid-type-lists.http](Egeria-valid-type-lists.http)
 - [Egeria-specification-properties.http](Egeria-specification-properties.http)
+- [Egeria-surveys.http](Egeria-surveys.http)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

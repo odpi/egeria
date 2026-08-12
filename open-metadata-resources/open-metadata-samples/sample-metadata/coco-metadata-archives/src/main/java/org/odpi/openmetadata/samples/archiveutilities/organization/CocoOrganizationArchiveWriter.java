@@ -21,7 +21,8 @@ import java.util.Map;
 
 /**
  * CocoOrganizationArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals
- * featured persona.  This includes the definition of the organizations they work with and
+ * featured persona.  This includes the definition of the organizations they work with and their people,
+ * departments, job roles and work locations.
  */
 public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 {

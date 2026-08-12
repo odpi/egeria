@@ -1,17 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Asset Analysis Engine Services Client
+# Engine Host Services Client
 
-The asset analysis engine services client module contains the client
-implementation of the calls to the discovery engine
-that request that a particular
-[open discovery service](../../../frameworks/open-discovery-framework/docs/discovery-service.md)
-is run against an Asset.
-
-It also supports the ability to query the status of such a discovery request and
-retrieve the resulting 
-[discovery analysis report](../../../frameworks/open-discovery-framework/docs/discovery-analysis-report.md).
+The **EngineHostClient** provides the client-side library for calling a governance engine hosted by
+an [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.  It retrieves a summary of a
+named governance engine, or of all the governance engines hosted by the server.
 
 ----
 * Return to [module overview](..)

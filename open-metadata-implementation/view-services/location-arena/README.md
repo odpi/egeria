@@ -22,7 +22,7 @@ The Location Arena API supports the following key features:
 * [Location Arena API Overview](https://egeria-project.org/services/omvs/location-arena/overview/)
 * [Location Concept](https://egeria-project.org/concepts/location/)
 
-Sample requests for the REST API can be found in `Egeria-api-location-arena.http`.
+Sample requests for the REST API can be found in [Egeria-api-location-arena.http](Egeria-api-location-arena.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

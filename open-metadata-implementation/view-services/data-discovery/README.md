@@ -23,7 +23,7 @@ The Data Discovery API supports the following key concepts:
 * [Data Discovery API Overview](https://egeria-project.org/services/omvs/data-discovery/overview/)
 * [Survey Reports and Annotation Concepts](https://egeria-project.org/concepts/survey-report/)
 
-Sample requests for the REST API can be found in `Egeria-api-data-discovery.http`.
+Sample requests for the REST API can be found in [Egeria-api-data-discovery.http](Egeria-api-data-discovery.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

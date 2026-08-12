@@ -26,6 +26,7 @@ import java.util.*;
  * the type of the governance engine handler is unknown.  Retrieval of a governance engine definition may be
  * triggered by an event, or by a refresh sweep of the metadata.  Therefore, it is possible that two threads
  * are responding to the creation of a new governance engine definition.  Hence, the synchronized methods
+ * on this class are needed to protect the maps from concurrent update.
  */
 public class GovernanceEngineMap
 {

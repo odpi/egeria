@@ -24,7 +24,7 @@ The Digital Business API supports the following key features:
 * [Digital Business API Overview](https://egeria-project.org/services/omvs/digital-business/overview/)
 * [Business Capability Concept](https://egeria-project.org/concepts/business-capability/)
 
-Sample requests for the REST API can be found in `Egeria-api-digital-business.http`.
+Sample requests for the REST API can be found in [Egeria-api-digital-business.http](Egeria-api-digital-business.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

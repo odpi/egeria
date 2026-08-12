@@ -24,9 +24,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.*;
 
 /**
- * ZonePublisherGovernanceActionConnector sets the supplied governance zone names into the assets supplied as action targets.
- * If there is at least one asset, their zones are updated, and the output guard is set to zone-assigned.
- * If no Assets are passed as action targets the output guard is no-targets-detected.
+ * RetentionClassifierGovernanceActionConnector sets a Retention classification on the elements supplied as action
+ * targets, recording the retention basis, status and (optionally) the time to archive and time to delete.
+ * If there is at least one action target, the output guard is set to classification-assigned.
+ * If no action targets are passed the output guard is no-targets-detected.
  */
 public class RetentionClassifierGovernanceActionConnector extends GeneralGovernanceActionService
 {

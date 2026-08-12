@@ -29,12 +29,16 @@ Administration code should be lightweight and integrated into the OMAG administr
 Your service itself, and the interfaces and base classes it relies on, should be part of their own code
 module. To clarify, the modules used in the examples below illustrate this separation.
 
+> **Note:** the worked example below is based on the Data Engine Proxy Services, which have since been retired
+> from the Egeria codebase.  The design steps and concepts remain valid; the class and module names are kept for
+> illustration but no longer resolve to source code in this repository.
+
 ## 1. Define the interface to which connectors need to adhere
 
 Start by defining the methods underlying technologies need to provide for your service to operate.
 
-For example, the [Data Engine Proxy Services](../../data-engine-proxy-services) need to receive information
-about the processing activities data engines carry out. Therefore, the [DataEngineInterface](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineInterface.java)
+For example, the `Data Engine Proxy Services` need to receive information
+about the processing activities data engines carry out. Therefore, the `DataEngineInterface`
 defines methods for retrieving changed processes, lineage mappings, ports and schema types from an underlying data
 engine.
 
@@ -55,9 +59,9 @@ service to configure this connectivity:
     Framework, this will be a generic [connection](../../../frameworks/open-connector-framework/docs/concepts/connection.md)
     object.
 
-For example, the Data Engine Proxy Services define administrative REST API endpoints in [DataEngineProxyResource](../../../admin-services/admin-services-spring/src/main/java/org/odpi/openmetadata/adminservices/spring/DataEngineProxyResource.java).
+For example, the Data Engine Proxy Services define administrative REST API endpoints in `DataEngineProxyResource`.
 There are endpoints for both storing the configuration and deleting the configuration. Also note the use of the
-[DataEngineProxyConfig](../../../admin-services/admin-services-api/src/main/java/org/odpi/openmetadata/adminservices/configuration/properties/DataEngineProxyConfig.java)
+`DataEngineProxyConfig`
 object. This object defines the configuration needed for the Data Engine Proxy Services: a server name and URL to the
 Data Engine OMAS as well as a generic connection object to the data engine itself.
 
@@ -79,7 +83,7 @@ that is more specific to (in our example) data engines. The answer is two-fold:
 ### Storing the configuration
 
 Finally, note that all admin services REST API endpoint methods call into methods that persist the configuration
-details into a server configuration document (via [OMAGServerDataEngineProxyService](../../../admin-services/admin-services-server/src/main/java/org/odpi/openmetadata/adminservices/OMAGServerDataEngineProxyService.java)
+details into a server configuration document (via `OMAGServerDataEngineProxyService`
 in our example). As a result, there is no need to reconfigure the services each time the server restarts.
 
 Persisting the configuration requires a few more steps:
@@ -100,18 +104,18 @@ underlying technology. Next, we need to actually access that underlying technolo
 service.
 
 Define a class that implements your services' functionality. Continuing our previous example for the Data Engine Proxy
-Services, the implementation is in [DataEngineProxyOperationalServices](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/admin/DataEngineProxyOperationalServices.java).
+Services, the implementation is in `DataEngineProxyOperationalServices`.
 Typically you should implement an initialize method that:
 
 - Receives the services-specific configuration object described in (2) above.
 - Instantiates a _connector_ to connect to the underlying technology using a _connector broker_ and the connection
     object from the configuration.
     
-Read through the `initialize` method code of [DataEngineProxyOperationalServices](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/admin/DataEngineProxyOperationalServices.java)
+Read through the `initialize` method code of `DataEngineProxyOperationalServices`
 and you will see the creation of the:
 
 - Data engine OMAS client, using the server name and URL from the configuration object (approximately line 130-140).
-- Data engine connector, as an instance of the abstract [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
+- Data engine connector, as an instance of the abstract `DataEngineConnectorBase`
     class (approximately line 150-170). Note that a `ConnectorBroker` is used on the generic connection object (from
     the configuration object) to create the data engine connector. The _connector broker_ gives us a _connector_ to a
     real data engine based on the configuration parameters defined in the _connection_.
@@ -124,12 +128,12 @@ Furthermore, the server-side code is in the same parent module as the client-sid
 ## 4. Run your service's operations on those connector instances
 
 We can implement the functionality of our service itself in the remainder of the operational services class
-([DataEngineProxyOperationalServices](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/admin/DataEngineProxyOperationalServices.java)
-and the threaded [DataEngineProxyService](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyService.java)
+(`DataEngineProxyOperationalServices`
+and the threaded `DataEngineProxyService`
 it runs in our example).
 
-Note that the implementation of the operational services (in particular within [DataEngineProxyService](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyService.java))
-is entirely defined using the general methods defined in our interface (the [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
+Note that the implementation of the operational services (in particular within `DataEngineProxyService`)
+is entirely defined using the general methods defined in our interface (the `DataEngineConnectorBase`
 class in our example). As a result, it is not tightly-coupled to any specific underlying technology. However, since we
 obtain a real data engine connector from the connector broker, the functionality will actually execute against the data
 engine itself.
@@ -147,11 +151,11 @@ our operational services class(es) will never actually be called by Egeria itsel
 
 Bind your service through the following two steps:
 
-- Add a class member, getter and setter for your operational service to [OMAGOperationalServicesInstance](../../../admin-services/admin-services-server/src/main/java/org/odpi/openmetadata/adminservices/OMAGOperationalServicesInstance.java).
+- Add a class member, getter and setter for your operational service to `OMAGOperationalServicesInstance`.
     In our example, the class member is `operationalDataEngineProxyServices`, an instance of
-    [DataEngineProxyOperationalServices](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/admin/DataEngineProxyOperationalServices.java).
+    `DataEngineProxyOperationalServices`.
 - Implement the service configuration retrieval, service instantiation, and service initialization of your operational
-    service in [OMAGServerOperationalServices](../../../admin-services/admin-services-server/src/main/java/org/odpi/openmetadata/adminservices/OMAGServerOperationalServices.java).
+    service in `OMAGServerOperationalServices`.
     In our example these occur around line 160, 550, and 560 respectively for the data engine proxy services.
 
 The OMAG admin services (`admin-services`) contain the code that needs to be enhanced. This creates a dependency on

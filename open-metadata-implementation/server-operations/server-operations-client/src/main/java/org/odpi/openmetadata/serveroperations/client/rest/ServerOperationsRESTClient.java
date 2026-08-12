@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 /**
- * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * ServerOperationsRESTClient is responsible for issuing calls to the Server Operations REST APIs.
  */
 public class ServerOperationsRESTClient extends FFDCRESTClient
 {

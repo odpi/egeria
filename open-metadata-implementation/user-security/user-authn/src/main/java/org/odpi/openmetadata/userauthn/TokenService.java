@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Token service generate
+ * Token service generates JWT bearer tokens for authenticated users.
  */
 @Service
 public class TokenService
