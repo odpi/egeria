@@ -57,7 +57,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the UC server asset
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -73,7 +75,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     public OSSUnityCatalogInsideCatalogSyncVolumes(String                           connectorName,
                                                    IntegrationContext               context,
                                                    String                           catalogTargetName,
+                                                   String                           serverGUID,
                                                    String                           catalogGUID,
+                                                   String                           metadataCollectionGUID,
                                                    String                           catalogName,
                                                    Map<String, String>              ucFullNameToEgeriaGUID,
                                                    PermittedSynchronization         targetPermittedSynchronization,
@@ -89,7 +93,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         super(connectorName,
               context,
               catalogTargetName,
+              serverGUID,
               catalogGUID,
+              metadataCollectionGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -325,7 +331,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID));
 
         templateOptions.setParentGUID(schemaGUID);
         templateOptions.setParentAtEnd1(parentAtEnd1);
@@ -340,6 +346,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                            null);
 
         super.addExternalIdentifier(ucVolumeGUID,
+                                    schemaGUID,
                                     volumeInfo,
                                     volumeInfo.getSchema_name(),
                                     UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
@@ -402,6 +409,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        super.getParentGUIDFromMember(memberElement),
                                         volumeInfo,
                                         volumeInfo.getSchema_name(),
                                         UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),

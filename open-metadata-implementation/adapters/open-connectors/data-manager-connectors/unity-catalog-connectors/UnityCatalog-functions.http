@@ -1,6 +1,6 @@
 
-#@ucURL=http://localhost:8080
-@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8087
+#@ucURL=http://localhost:8187
 
 ###
 # @name list functions
@@ -8,6 +8,8 @@ GET {{ucURL}}/api/2.1/unity-catalog/functions?catalog_name=unity&schema_name=def
 
 ###
 # @name create function
+# Unlike catalogs/schemas/volumes/tables, the function properties must be nested inside a "function_info"
+# wrapper - this is CreateFunctionRequest, not a flat CreateFunction.
 POST {{ucURL}}/api/2.1/unity-catalog/functions
 Content-Type: application/json
 
@@ -15,24 +17,44 @@ Content-Type: application/json
   "function_info" :
   {
     "name": "createWisdom",
-    "catalog_name" : "test",
-    "schema_name" : "test4schema1",
-    "comment": "Test catalog4 function 1",
+    "catalog_name" : "unity",
+    "schema_name" : "default",
+    "comment": "Test function 1",
+    "input_params": {
+      "parameters": [
+        {
+          "name": "topic",
+          "type_text": "string",
+          "type_json": "{\"name\":\"topic\",\"type\":\"string\",\"nullable\":false,\"metadata\":{}}",
+          "type_name": "STRING",
+          "position": 0,
+          "parameter_mode": "IN",
+          "parameter_type": "PARAM"
+        }
+      ]
+    },
+    "data_type": "STRING",
+    "full_data_type": "STRING",
+    "routine_body": "EXTERNAL",
+    "routine_definition": "return \"wisdom about \" + topic;",
     "parameter_style" : "S",
-    "routine_body" : "EXTERNAL",
-    "external_language" : "Java",
-    "security_type" : "DEFINER"
+    "is_deterministic": true,
+    "sql_data_access": "NO_SQL",
+    "is_null_call": false,
+    "security_type" : "DEFINER",
+    "specific_name": "createWisdom",
+    "external_language" : "Java"
   }
 }
 
 ###
 # @name get function
-GET {{ucURL}}/api/2.1/unity-catalog/functions/test.test4schema1.createWisdom
+GET {{ucURL}}/api/2.1/unity-catalog/functions/unity.default.createWisdom
 Content-Type: application/json
 
 
 ###
 # @name delete function
-DELETE {{ucURL}}/api/2.1/unity-catalog/functions/test.test4schema1.createWisdom
+DELETE {{ucURL}}/api/2.1/unity-catalog/functions/unity.default.createWisdom
 Content-Type: application/json
 

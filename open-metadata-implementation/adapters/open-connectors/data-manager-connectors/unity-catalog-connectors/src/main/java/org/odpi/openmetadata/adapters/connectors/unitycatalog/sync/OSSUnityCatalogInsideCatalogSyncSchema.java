@@ -24,7 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the UC server asset
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param metadataSourceQualifiedName name of the metadata collection for this server
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -67,7 +69,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     public OSSUnityCatalogInsideCatalogSyncSchema(String                           connectorName,
                                                   IntegrationContext               context,
                                                   String                           catalogTargetName,
+                                                  String                           serverGUID,
                                                   String                           catalogGUID,
+                                                  String                           metadataCollectionGUID,
                                                   String                           metadataSourceQualifiedName,
                                                   Map<String, String>              ucFullNameToEgeriaGUID,
                                                   PermittedSynchronization         targetPermittedSynchronization,
@@ -83,7 +87,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         super(connectorName,
               context,
               catalogTargetName,
+              serverGUID,
               catalogGUID,
+              metadataCollectionGUID,
               metadataSourceQualifiedName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -218,7 +224,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                        connectorName,
                                                                        parentGUID,
                                                                        parentRelationshipTypeName,
-                                                                       2,
+                                                                       1,
                                                                        deployedImplementationType.getAssociatedTypeName(),
                                                                        context,
                                                                        targetPermittedSynchronization,
@@ -240,7 +246,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     OSSUnityCatalogInsideCatalogSyncVolumes syncVolumes = new OSSUnityCatalogInsideCatalogSyncVolumes(connectorName,
                                                                                                                       context,
                                                                                                                       catalogTargetName,
+                                                                                                                      serverGUID,
                                                                                                                       catalogGUID,
+                                                                                                                      metadataCollectionGUID,
                                                                                                                       metadataCollectionQualifiedName,
                                                                                                                       ucFullNameToEgeriaGUID,
                                                                                                                       targetPermittedSynchronization,
@@ -259,7 +267,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     OSSUnityCatalogInsideCatalogSyncTables syncTables = new OSSUnityCatalogInsideCatalogSyncTables(connectorName,
                                                                                                                    context,
                                                                                                                    catalogTargetName,
+                                                                                                                   serverGUID,
                                                                                                                    catalogGUID,
+                                                                                                                   metadataCollectionGUID,
                                                                                                                    metadataCollectionQualifiedName,
                                                                                                                    ucFullNameToEgeriaGUID,
                                                                                                                    targetPermittedSynchronization,
@@ -278,7 +288,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     OSSUnityCatalogInsideCatalogSyncFunctions syncFunctions = new OSSUnityCatalogInsideCatalogSyncFunctions(connectorName,
                                                                                                                             context,
                                                                                                                             catalogTargetName,
+                                                                                                                            serverGUID,
                                                                                                                             catalogGUID,
+                                                                                                                            metadataCollectionGUID,
                                                                                                                             metadataCollectionQualifiedName,
                                                                                                                             ucFullNameToEgeriaGUID,
                                                                                                                             targetPermittedSynchronization,
@@ -297,7 +309,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     OSSUnityCatalogInsideCatalogSyncRegisteredModels syncRegisteredModels = new OSSUnityCatalogInsideCatalogSyncRegisteredModels(connectorName,
                                                                                                                                                  context,
                                                                                                                                                  catalogTargetName,
+                                                                                                                                                 serverGUID,
                                                                                                                                                  catalogGUID,
+                                                                                                                                                 metadataCollectionGUID,
                                                                                                                                                  metadataCollectionQualifiedName,
                                                                                                                                                  ucFullNameToEgeriaGUID,
                                                                                                                                                  targetPermittedSynchronization,
@@ -426,10 +440,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         templateOptions.setAnchorGUID(catalogGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(Arrays.asList(serverGUID, catalogGUID, UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
 
         templateOptions.setParentGUID(parentGUID);
-        templateOptions.setParentAtEnd1(false);
+        templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
         String ucSchemaGUID = assetClient.createAssetFromTemplate(templateOptions,
@@ -442,6 +456,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         super.addPropertyFacet(ucSchemaGUID, qualifiedName, schemaInfo, null);
 
         super.addExternalIdentifier(ucSchemaGUID,
+                                    catalogGUID,
                                     schemaInfo,
                                     schemaInfo.getName(),
                                     PlaceholderProperty.SCHEMA_NAME.getName(),
@@ -503,6 +518,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        catalogGUID,
                                         schemaInfo,
                                         schemaInfo.getName(),
                                         PlaceholderProperty.SCHEMA_NAME.getName(),

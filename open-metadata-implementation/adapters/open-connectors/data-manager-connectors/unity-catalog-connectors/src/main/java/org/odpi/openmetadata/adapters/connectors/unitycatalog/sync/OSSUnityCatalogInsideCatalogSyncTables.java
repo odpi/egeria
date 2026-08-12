@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.RelatedElementsIterator;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -25,9 +27,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.VirtualRelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -45,7 +52,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the UC server asset
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -62,7 +71,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     public OSSUnityCatalogInsideCatalogSyncTables(String                           connectorName,
                                                   IntegrationContext               context,
                                                   String                           catalogTargetName,
+                                                  String                           serverGUID,
                                                   String                           catalogGUID,
+                                                  String                           metadataCollectionGUID,
                                                   String                           catalogName,
                                                   Map<String, String>              ucFullNameToEgeriaGUID,
                                                   PermittedSynchronization         targetPermittedSynchronization,
@@ -78,7 +89,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         super(connectorName,
               context,
               catalogTargetName,
+              serverGUID,
               catalogGUID,
+              metadataCollectionGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -292,7 +305,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID));
 
         templateOptions.setParentGUID(schemaGUID);
         templateOptions.setParentAtEnd1(true);
@@ -307,6 +320,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                           null);
 
         super.addExternalIdentifier(ucTableGUID,
+                                    schemaGUID,
                                     tableInfo,
                                     tableInfo.getSchema_name(),
                                     UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
@@ -314,7 +328,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                     tableInfo.getTable_id(),
                                     PermittedSynchronization.FROM_THIRD_PARTY);
 
-        this.createSchemaAttributesForUCTable(ucTableGUID, tableInfo);
+        this.createSchemaAttributesForUCTable(schemaGUID, ucTableGUID, tableInfo);
 
         ucFullNameToEgeriaGUID.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), ucTableGUID);
     }
@@ -342,7 +356,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                 updateOptions,
                                 this.getAssetProperties(tableInfo));
 
-        this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
+        this.updateSchemaAttributesForUCTable(super.getParentGUIDFromMember(memberElement), memberElement, tableInfo);
 
         externalIdClient.confirmSynchronization(memberElement.getElement(),
                                                 tableInfo.getTable_id());
@@ -376,6 +390,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        super.getParentGUIDFromMember(memberElement),
                                         tableInfo,
                                         tableInfo.getSchema_name(),
                                         UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
@@ -589,6 +604,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     /**
      * Create the schema attributes in open metadata reflect the columns from UC.
      *
+     * @param schemaGUID unique identifier of the table's schema in open metadata
      * @param tableGUID unique identifier of the newly created table in open metadata
      * @param tableInfo details about the table to add to the schema attributes
      *
@@ -596,50 +612,114 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @throws PropertyServerException open metadata repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
-    private void createSchemaAttributesForUCTable(String        tableGUID,
-                                                  TableInfo     tableInfo) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    private void createSchemaAttributesForUCTable(String    schemaGUID,
+                                                  String    tableGUID,
+                                                  TableInfo tableInfo) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        final String methodName = "createSchemaAttributesForUCTable";
+        if (tableInfo.getColumns() == null)
+        {
+            return;
+        }
 
-        ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName()) + "_rootSchemaType");
+        String tableQualifiedName = super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
-        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+        SchemaTypeClient schemaTypeClient = context.getSchemaTypeClient(OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName);
 
-        newElementOptions.setExternalSourceGUID(catalogGUID);
-        newElementOptions.setExternalSourceName(metadataCollectionQualifiedName);
+        SchemaTypeProperties schemaTypeProperties = new SchemaTypeProperties();
 
-        newElementOptions.setAnchorGUID(tableGUID);
-        newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        schemaTypeProperties.setTypeName(OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName);
+        schemaTypeProperties.setQualifiedName(tableQualifiedName + "_rootSchemaType");
+        schemaTypeProperties.setDisplayName(tableInfo.getName() + " schema");
 
-        newElementOptions.setParentGUID(tableGUID);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName( OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+        NewElementOptions schemaTypeOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
-        /*
-         * Create the root schema type.
-         */
-        openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
-                                                       newElementOptions,
-                                                       null,
-                                                       new NewElementProperties(properties),
-                                                       null);
+        schemaTypeOptions.setAnchorGUID(tableGUID);
+        schemaTypeOptions.setIsOwnAnchor(false);
+        schemaTypeOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, tableGUID));
+        schemaTypeOptions.setParentGUID(tableGUID);
+        schemaTypeOptions.setParentAtEnd1(true);
+        schemaTypeOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
-                                                                            methodName,
-                                                                            tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
-                                                                            ucServerEndpoint));
+        String schemaTypeGUID = schemaTypeClient.createSchemaType(schemaTypeOptions, null, schemaTypeProperties, null);
+
+        SchemaAttributeClient columnClient = context.getSchemaAttributeClient(OpenMetadataType.RELATIONAL_COLUMN.typeName);
+
+        for (ColumnInfo columnInfo : tableInfo.getColumns())
+        {
+            if (columnInfo != null)
+            {
+                this.createColumn(schemaGUID, tableGUID, schemaTypeGUID, columnClient, tableQualifiedName, columnInfo);
+            }
+        }
     }
 
 
     /**
-     * Create the schema attributes in open metadata reflect the columns from UC.
+     * Create a single RelationalColumn schema attribute under a table's RelationalTableType.
      *
+     * @param schemaGUID unique identifier of the table's schema in open metadata
+     * @param tableGUID unique identifier of the table in open metadata
+     * @param schemaTypeGUID unique identifier of the table's RelationalTableType
+     * @param columnClient client for creating RelationalColumn schema attributes
+     * @param tableQualifiedName qualified name of the owning table
+     * @param columnInfo column details from UC
+     *
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException open metadata repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    private void createColumn(String                schemaGUID,
+                              String                tableGUID,
+                              String                schemaTypeGUID,
+                              SchemaAttributeClient columnClient,
+                              String                tableQualifiedName,
+                              ColumnInfo            columnInfo) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        RelationalColumnProperties columnProperties = new RelationalColumnProperties();
+
+        columnProperties.setQualifiedName(tableQualifiedName + "::" + columnInfo.getName());
+        columnProperties.setDisplayName(columnInfo.getName());
+        columnProperties.setDescription(columnInfo.getComment());
+        columnProperties.setIsNullable(columnInfo.isNullable());
+
+        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+        if (columnInfo.getType_name() != null)
+        {
+            TypeEmbeddedAttributeProperties typeEmbeddedAttributeProperties = new TypeEmbeddedAttributeProperties();
+
+            typeEmbeddedAttributeProperties.setSchemaTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+            typeEmbeddedAttributeProperties.setDataType(columnInfo.getType_name());
+
+            initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, typeEmbeddedAttributeProperties);
+        }
+
+        NewElementOptions columnOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+        columnOptions.setAnchorGUID(tableGUID);
+        columnOptions.setIsOwnAnchor(false);
+        columnOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, tableGUID));
+        columnOptions.setParentGUID(schemaTypeGUID);
+        columnOptions.setParentAtEnd1(true);
+        columnOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+        AttributeForSchemaProperties relationshipProperties = new AttributeForSchemaProperties();
+
+        relationshipProperties.setPosition(columnInfo.getPosition());
+
+        columnClient.createSchemaAttribute(columnOptions, initialClassifications, columnProperties, relationshipProperties);
+    }
+
+
+    /**
+     * Update the schema attributes in open metadata to reflect the columns from UC, creating any that are
+     * missing and updating the properties of any that already exist.
+     *
+     * @param schemaGUID unique identifier of the table's schema in open metadata
      * @param memberElement details of the table in open metadata
      * @param tableInfo details about the table to add to the schema attributes
      *
@@ -647,17 +727,55 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @throws PropertyServerException open metadata repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
-    private void updateSchemaAttributesForUCTable(MemberElement memberElement,
+    private void updateSchemaAttributesForUCTable(String        schemaGUID,
+                                                  MemberElement memberElement,
                                                   TableInfo     tableInfo) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "updateSchemaAttributesForUCTable";
+        if (tableInfo.getColumns() == null)
+        {
+            return;
+        }
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
-                                                                            methodName,
-                                                                            tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
-                                                                            ucServerEndpoint));
+        String tableGUID          = memberElement.getElement().getElementHeader().getGUID();
+        String tableQualifiedName = super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
+
+        SchemaTypeClient schemaTypeClient = context.getSchemaTypeClient(OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName);
+
+        String schemaTypeGUID = super.findExistingSchemaType(schemaTypeClient, tableQualifiedName + "_rootSchemaType");
+
+        if (schemaTypeGUID == null)
+        {
+            this.createSchemaAttributesForUCTable(schemaGUID, tableGUID, tableInfo);
+            return;
+        }
+
+        SchemaAttributeClient columnClient = context.getSchemaAttributeClient(OpenMetadataType.RELATIONAL_COLUMN.typeName);
+
+        for (ColumnInfo columnInfo : tableInfo.getColumns())
+        {
+            if (columnInfo != null)
+            {
+                String columnQualifiedName = tableQualifiedName + "::" + columnInfo.getName();
+                String columnGUID          = super.findExistingSchemaAttribute(columnClient, columnQualifiedName);
+
+                if (columnGUID == null)
+                {
+                    this.createColumn(schemaGUID, tableGUID, schemaTypeGUID, columnClient, tableQualifiedName, columnInfo);
+                }
+                else
+                {
+                    RelationalColumnProperties columnProperties = new RelationalColumnProperties();
+
+                    columnProperties.setQualifiedName(columnQualifiedName);
+                    columnProperties.setDisplayName(columnInfo.getName());
+                    columnProperties.setDescription(columnInfo.getComment());
+                    columnProperties.setIsNullable(columnInfo.isNullable());
+
+                    columnClient.updateSchemaAttribute(columnGUID, columnClient.getUpdateOptions(true), columnProperties);
+                }
+            }
+        }
     }
 }

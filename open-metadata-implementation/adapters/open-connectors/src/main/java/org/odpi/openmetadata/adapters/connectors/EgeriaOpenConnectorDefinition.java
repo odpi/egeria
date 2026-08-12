@@ -501,8 +501,8 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                         "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/data-manager-connectors/unity-catalog-connectors",
                                                         "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider",
                                                         ComponentDevelopmentStatus.STABLE,
-                                                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                                                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
     OSS_UNITY_CATALOG_INSIDE_CATALOG_SYNC_INTEGRATION_CONNECTOR(354,
                                                                 "7767df9a-9d2f-49e1-bf61-8b3f88b11fd0",

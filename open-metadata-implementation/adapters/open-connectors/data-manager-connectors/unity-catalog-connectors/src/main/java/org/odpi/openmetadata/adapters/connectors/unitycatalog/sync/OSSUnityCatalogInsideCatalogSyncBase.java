@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ExternalIdClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.PropertyFacetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
@@ -28,13 +30,18 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.ReferenceableFacetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -48,8 +55,10 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
     protected final String                                 connectorName;
     protected final IntegrationContext                     context;
+    protected final String                                 serverGUID;
     protected final String                                 catalogGUID;
     protected final String                                 catalogTypeName = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName();
+    protected final String                                 metadataCollectionGUID;
     protected final String                                 metadataCollectionQualifiedName;
     protected final String                                 catalogTargetName;
     protected final PermittedSynchronization               targetPermittedSynchronization;
@@ -82,7 +91,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the Unity Catalog server asset that everything catalogued from it is scoped to
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID the managedMetadataCollectionId of the metadata collection for this UC server
      * @param metadataCollectionQualifiedName name of the metadata collection for this UC server
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -101,7 +112,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     public OSSUnityCatalogInsideCatalogSyncBase(String                                 connectorName,
                                                 IntegrationContext                     context,
                                                 String                                 catalogTargetName,
+                                                String                                 serverGUID,
                                                 String                                 catalogGUID,
+                                                String                                 metadataCollectionGUID,
                                                 String                                 metadataCollectionQualifiedName,
                                                 Map<String, String>                    ucFullNameToEgeriaGUID,
                                                 PermittedSynchronization               targetPermittedSynchronization,
@@ -121,7 +134,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.connectorName                   = connectorName;
         this.context                         = context;
         this.catalogTargetName               = catalogTargetName;
+        this.serverGUID                      = serverGUID;
         this.catalogGUID                     = catalogGUID;
+        this.metadataCollectionGUID          = metadataCollectionGUID;
         this.metadataCollectionQualifiedName = metadataCollectionQualifiedName;
         this.ucFullNameToEgeriaGUID          = ucFullNameToEgeriaGUID;
         this.targetPermittedSynchronization  = targetPermittedSynchronization;
@@ -143,6 +158,18 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.externalIdClient    = context.getExternalIdClient();
         this.propertyFacetClient = context.getPropertyFacetClient();
         this.assetClient         = context.getAssetClient(entityTypeName);
+
+        /*
+         * All elements created by this connector (and its siblings) are from the same metadata collection,
+         * so this is set up centrally here rather than by each caller individually.
+         */
+        if (metadataCollectionGUID != null)
+        {
+            this.assetClient.setExternalSource(metadataCollectionGUID, metadataCollectionQualifiedName);
+            this.propertyFacetClient.setExternalSource(metadataCollectionGUID, metadataCollectionQualifiedName);
+            this.externalIdClient.setExternalSource(metadataCollectionGUID, metadataCollectionQualifiedName);
+            this.openMetadataStore.setExternalSource(metadataCollectionGUID, metadataCollectionQualifiedName);
+        }
 
         if (templates != null)
         {
@@ -288,6 +315,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * Add a new external identifier to an existing open metadata element.
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param parentGUID unique identifier of the immediate parent of openMetadataElementGUID (eg the catalog for a
+     *                   schema, the schema for a table/volume/function/model, or the server for the catalog itself)
      * @param ucElement values from Unity Catalog element
      * @param schemaName name of the schema
      * @param elementName element type (from UC)
@@ -298,6 +327,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @throws PropertyServerException    problem accessing the property server
      */
     public void addExternalIdentifier(String                   openMetadataElementGUID,
+                                      String                   parentGUID,
                                       ElementBase              ucElement,
                                       String                   schemaName,
                                       String                   elementName,
@@ -317,9 +347,125 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                                         instanceSynchronizationDirection);
 
         externalIdClient.createExternalId(openMetadataElementGUID,
-                                          Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()),
+                                          this.buildAnchorScopeGUIDs(parentGUID),
                                           externalIdLinkProperties,
                                           externalIdProperties);
+    }
+
+
+    /**
+     * Build the anchorScopeGUIDs list used throughout this connector for elements catalogued from Unity Catalog:
+     * the Unity Catalog server asset, the catalog the element belongs to, any additional ancestors between the
+     * catalog and the element (for example the schema, and the table/function for a column or parameter), and
+     * the technology-type GUID for the OSS Unity Catalog server product.  Nulls and duplicates are removed since
+     * not every element has all of these ancestors (for example, the catalog itself has no separate catalogGUID
+     * or ancestor GUIDs distinct from the server).
+     *
+     * @param ancestorGUIDs unique identifiers of the ancestors of the element being scoped, nearest first - eg
+     *                      (schemaGUID) for a table/volume/function/model, or (schemaGUID, assetGUID) for a
+     *                      column/parameter nested under a table/function.  May be omitted or contain nulls.
+     * @return de-duplicated, non-null list of anchor scope GUIDs
+     */
+    protected List<String> buildAnchorScopeGUIDs(String... ancestorGUIDs)
+    {
+        Set<String> anchorScopeGUIDs = new LinkedHashSet<>();
+
+        if (serverGUID != null)
+        {
+            anchorScopeGUIDs.add(serverGUID);
+        }
+
+        if (catalogGUID != null)
+        {
+            anchorScopeGUIDs.add(catalogGUID);
+        }
+
+        if (ancestorGUIDs != null)
+        {
+            for (String ancestorGUID : ancestorGUIDs)
+            {
+                if (ancestorGUID != null)
+                {
+                    anchorScopeGUIDs.add(ancestorGUID);
+                }
+            }
+        }
+
+        anchorScopeGUIDs.add(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID());
+
+        return new ArrayList<>(anchorScopeGUIDs);
+    }
+
+
+    /**
+     * Find an existing schema type with the requested qualified name.  Used to make schema cataloguing (for
+     * example table columns, or API parameters) idempotent across repeated refreshes.
+     *
+     * @param schemaTypeClient client to search with
+     * @param qualifiedName unique name to search for
+     * @return GUID of the matching schema type, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    protected String findExistingSchemaType(SchemaTypeClient schemaTypeClient,
+                                            String           qualifiedName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, schemaTypeClient.getQueryOptions());
+
+        if (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof SchemaTypeProperties schemaTypeProperties))
+                {
+                    if (qualifiedName.equals(schemaTypeProperties.getQualifiedName()))
+                    {
+                        return element.getElementHeader().getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Find an existing schema attribute with the requested qualified name.  Used to make schema cataloguing (for
+     * example table columns, or API parameters) idempotent across repeated refreshes.
+     *
+     * @param schemaAttributeClient client to search with
+     * @param qualifiedName unique name to search for
+     * @return GUID of the matching schema attribute, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    protected String findExistingSchemaAttribute(SchemaAttributeClient schemaAttributeClient,
+                                                 String                qualifiedName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, schemaAttributeClient.getQueryOptions());
+
+        if (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties))
+                {
+                    if (qualifiedName.equals(schemaAttributeProperties.getQualifiedName()))
+                    {
+                        return element.getElementHeader().getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -429,11 +575,33 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         referenceableFacetProperties.setSource(PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE);
 
-        propertyFacetClient.addPropertyFacetToElement(parentGUID,
-                                                      propertyFacetClient.getMetadataSourceOptions(),
-                                                      null,
-                                                      propertyFacetProperties,
-                                                      referenceableFacetProperties);
+        String propertyFacetGUID = propertyFacetClient.addPropertyFacetToElement(parentGUID,
+                                                                                  propertyFacetClient.getMetadataSourceOptions(),
+                                                                                  null,
+                                                                                  propertyFacetProperties,
+                                                                                  referenceableFacetProperties);
+
+        /*
+         * Link the new property facet back to the metadata collection that owns it, so that it can be found from
+         * the metadata collection in the same way as an ExternalId (ExternalIdClient does this automatically for
+         * ExternalIds, but there is no equivalent automatic behaviour for PropertyFacets, so it is done explicitly
+         * here).
+         */
+        if ((propertyFacetGUID != null) && (metadataCollectionGUID != null))
+        {
+            OpenMetadataElement metadataCollectionElement = openMetadataStore.getMetadataElementByUniqueName(metadataCollectionGUID,
+                                                                                                              OpenMetadataProperty.MANAGED_METADATA_COLLECTION_ID.name);
+
+            if (metadataCollectionElement != null)
+            {
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                                propertyFacetGUID,
+                                                                metadataCollectionElement.getElementGUID(),
+                                                                null,
+                                                                null,
+                                                                null);
+            }
+        }
     }
 
 
@@ -580,6 +748,27 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                methodName,
                                memberElement.getElement());
         // unreachable
+        return null;
+    }
+
+
+    /**
+     * Extract the GUID of the immediate parent of an element from its Anchors classification.  This is used
+     * when pushing an element created directly in open metadata out to Unity Catalog, where the only way to
+     * discover its parent (eg the schema for a table/volume/function/model) is via its anchor.
+     *
+     * @param memberElement element from Egeria
+     * @return parent GUID, or null if the element is not anchored
+     */
+    protected String getParentGUIDFromMember(MemberElement memberElement)
+    {
+        if ((memberElement.getElement() != null) &&
+                (memberElement.getElement().getElementHeader().getAnchor() != null) &&
+                (memberElement.getElement().getElementHeader().getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
+        {
+            return anchorsProperties.getAnchorGUID();
+        }
+
         return null;
     }
 

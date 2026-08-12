@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.RelatedElementsIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
@@ -26,8 +27,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.NamespaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
@@ -35,7 +37,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +51,12 @@ import java.util.Map;
 public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatalogSyncBase
 {
     private final String friendshipConnectorGUID;
-    private final String metadataCollectionGUID;
     private final String metadataCollectionName;
     private final String dataAccessManagerGUID;
 
     private final String ucServerGUID;
+
+    private final CollectionClient collectionClient;
 
 
 
@@ -99,13 +103,15 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         super(connectorName,
               context,
               catalogTargetName,
+              ucServerElement.getElementHeader().getGUID(),
               null,
+              metadataCollectionGUID,
               metadataCollectionName,
               new HashMap<>(),
               targetPermittedSynchronization,
               ucConnector,
               ucServerEndpoint,
-              OpenMetadataType.DATABASE.typeName,
+              OpenMetadataType.NAMESPACE_COLLECTION.typeName,
               UnityCatalogDeployedImplementationType.OSS_UC_CATALOG,
               templates,
               configurationProperties,
@@ -115,18 +121,11 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         this.ucServerGUID = ucServerElement.getElementHeader().getGUID();
         this.friendshipConnectorGUID = friendshipConnectorGUID;
-        this.metadataCollectionGUID = metadataCollectionGUID;
         this.metadataCollectionName = metadataCollectionName;
         this.dataAccessManagerGUID = dataAccessManagerGUID;
 
-        /*
-         * The server synchronization connector may not have been set up with the metadata collection identifiers,
-         * so they are set up explicitly.
-         */
-        this.assetClient.setExternalSource(metadataCollectionGUID, metadataCollectionName);
-        this.propertyFacetClient.setExternalSource(metadataCollectionGUID, metadataCollectionName);
-        this.externalIdClient.setExternalSource(metadataCollectionGUID, metadataCollectionName);
-        this.openMetadataStore.setExternalSource(metadataCollectionGUID, metadataCollectionName);
+        this.collectionClient = context.getCollectionClient(OpenMetadataType.NAMESPACE_COLLECTION.typeName);
+        this.collectionClient.setExternalSource(metadataCollectionGUID, metadataCollectionName);
     }
 
 
@@ -170,67 +169,61 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
             if ((nextElement != null) &&
                     (nextElement.getElement() != null) &&
                     (propertyHelper.isTypeOf(nextElement.getElement().getElementHeader(), UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName())) &&
-                    (nextElement.getElement().getProperties() instanceof DatabaseProperties databaseProperties))
+                    (nextElement.getElement().getProperties() instanceof CollectionProperties collectionProperties))
             {
-                /*
-                 * Check that this is a UC Catalog.
-                 */
-                if (UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType().equals(databaseProperties.getDeployedImplementationType()))
+                CatalogInfo catalogInfo = null;
+                String      catalogName = collectionProperties.getDisplayName();
+
+                if (context.elementShouldBeCatalogued(catalogName, excludeNames, includeNames))
                 {
-                    CatalogInfo catalogInfo = null;
-                    String      catalogName = databaseProperties.getResourceName();
-
-                    if (context.elementShouldBeCatalogued(catalogName, excludeNames, includeNames))
+                    try
                     {
-                        try
-                        {
-                            catalogInfo = ucConnector.getCatalog(catalogName);
-                        }
-                        catch (Exception missing)
-                        {
-                            // this is not necessarily an error
-                        }
-
-                        MemberAction memberAction = MemberAction.NO_ACTION;
-                        if (catalogInfo == null)
-                        {
-                            memberAction = nextElement.getMemberAction(null, null);
-                        }
-                        else if (noMismatchInExternalIdentifier(catalogInfo.getId(), nextElement))
-                        {
-                            memberAction = nextElement.getMemberAction(this.getDateFromLong(catalogInfo.getCreated_at()), this.getDateFromLong(catalogInfo.getUpdated_at()));
-                        }
-
-                        this.takeAction(memberAction, nextElement, catalogInfo, parentGUID, parentRelationshipTypeName, relationshipProperties);
+                        catalogInfo = ucConnector.getCatalog(catalogName);
                     }
-                    else if (friendshipConnectorGUID != null)
+                    catch (Exception missing)
                     {
-                        AssetClient assetClient = context.getAssetClient();
+                        // this is not necessarily an error
+                    }
 
-                        /*
-                         * Check that there is no catalog target set up for this catalog since it should not be catalogued.
-                         */
-                        int startingFrom = 0;
-                        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
-                                                                                                     assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
-                        while (catalogTargets != null)
+                    MemberAction memberAction = MemberAction.NO_ACTION;
+                    if (catalogInfo == null)
+                    {
+                        memberAction = nextElement.getMemberAction(null, null);
+                    }
+                    else if (noMismatchInExternalIdentifier(catalogInfo.getId(), nextElement))
+                    {
+                        memberAction = nextElement.getMemberAction(this.getDateFromLong(catalogInfo.getCreated_at()), this.getDateFromLong(catalogInfo.getUpdated_at()));
+                    }
+
+                    this.takeAction(memberAction, nextElement, catalogInfo, parentGUID, parentRelationshipTypeName, relationshipProperties);
+                }
+                else if (friendshipConnectorGUID != null)
+                {
+                    AssetClient assetClient = context.getAssetClient();
+
+                    /*
+                     * Check that there is no catalog target set up for this catalog since it should not be catalogued.
+                     */
+                    int startingFrom = 0;
+                    List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
+                                                                                                 assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
+                    while (catalogTargets != null)
+                    {
+                        for (OpenMetadataRootElement catalogTarget : catalogTargets)
                         {
-                            for (OpenMetadataRootElement catalogTarget : catalogTargets)
+                            if ((catalogTarget != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
                             {
-                                if ((catalogTarget != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
+                                if (catalogName.equals(catalogTargetProperties.getCatalogTargetName()))
                                 {
-                                    if (catalogName.equals(catalogTargetProperties.getCatalogTargetName()))
-                                    {
-                                        assetClient.removeCatalogTarget(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(), assetClient.getDeleteOptions(false));
-                                    }
+                                    assetClient.removeCatalogTarget(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(), assetClient.getDeleteOptions(false));
                                 }
                             }
-
-                            startingFrom = startingFrom + context.getMaxPageSize();
-
-                            catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
-                                                                           assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
                         }
+
+                        startingFrom = startingFrom + context.getMaxPageSize();
+
+                        catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
+                                                                       assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
                     }
                 }
             }
@@ -348,24 +341,25 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         templateOptions.setAnchorGUID(ucServerGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(Arrays.asList(ucServerGUID, UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
 
         templateOptions.setParentGUID(parentGUID);
         templateOptions.setParentAtEnd1(true);
         templateOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
 
-        ucCatalogGUID = assetClient.createAssetFromTemplate(templateOptions,
-                                                            templateGUID,
-                                                            this.getReplacementProperties(qualifiedName, catalogInfo),
-                                                            null,
-                                                            this.getPlaceholderProperties(catalogInfo),
-                                                            relationshipProperties);
+        ucCatalogGUID = collectionClient.createCollectionFromTemplate(templateOptions,
+                                                                       templateGUID,
+                                                                       this.getReplacementProperties(qualifiedName, catalogInfo),
+                                                                       null,
+                                                                       this.getPlaceholderProperties(catalogInfo),
+                                                                       relationshipProperties);
 
         ucFullNameToEgeriaGUID.put(catalogInfo.getName(), ucCatalogGUID);
 
         super.addPropertyFacet(ucCatalogGUID, qualifiedName, catalogInfo, null);
 
         super.addExternalIdentifier(ucCatalogGUID,
+                                    ucServerGUID,
                                     catalogInfo,
                                     null,
                                     UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
@@ -394,7 +388,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
     {
         String egeriaCatalogGUID = memberElement.getElement().getElementHeader().getGUID();
 
-        UpdateOptions updateOptions = new UpdateOptions(assetClient.getUpdateOptions(true));
+        UpdateOptions updateOptions = new UpdateOptions(collectionClient.getUpdateOptions(true));
 
         openMetadataStore.updateMetadataElementInStore(egeriaCatalogGUID,
                                                        updateOptions,
@@ -425,6 +419,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        ucServerGUID,
                                         catalogInfo,
                                         null,
                                         UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
@@ -508,12 +503,11 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      */
     private ReferenceableProperties getReplacementProperties(CatalogInfo info)
     {
-        DatabaseProperties catalogProperties = new DatabaseProperties();
+        NamespaceProperties catalogProperties = new NamespaceProperties();
 
         catalogProperties.setDisplayName(info.getName());
         catalogProperties.setDescription(info.getComment());
         catalogProperties.setContentStatus(ContentStatus.ACTIVE);
-        catalogProperties.setDeployedImplementationType(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
 
         // catalogProperties.setAdditionalProperties(info.getProperties());
 
@@ -538,10 +532,6 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              info.getComment());
-
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                             UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
 
        // elementProperties = propertyHelper.addStringMapProperty(elementProperties,
        //                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
