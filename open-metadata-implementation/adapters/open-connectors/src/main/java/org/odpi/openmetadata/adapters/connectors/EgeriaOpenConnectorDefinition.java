@@ -1330,6 +1330,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
+    JDK_REST_API_CONNECTOR(573,
+                           "9b2f4e9e-1f8c-4e3d-8f4b-2c6a2a2c9a1e",
+                           "Egeria::ResourceConnector::JDKRESTAPI",
+                           "JDK REST API Client Connector",
+                           "Connector that calls the REST API of a remote server using the JDK's native java.net.http.HttpClient.",
+                           "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/rest-client-connectors/jdk-rest-client-connector",
+                           "org.odpi.openmetadata.adapters.connectors.restclients.jdk.JDKRESTClientConnectorProvider",
+                           ComponentDevelopmentStatus.STABLE,
+                           DeployedImplementationType.REST_API.getAssociatedTypeName(),
+                           DeployedImplementationType.REST_API.getDeployedImplementationType()),
+
     ;
 
 

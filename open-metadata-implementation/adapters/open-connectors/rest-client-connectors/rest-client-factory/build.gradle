@@ -10,7 +10,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
-    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
