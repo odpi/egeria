@@ -6,12 +6,6 @@
 The **repository-governance-server** module contains the server-side
 implementation of the engine services that hosts one or more repository governance engines.
 
-It is shown in figure 1:
-
-![Figure 1](../../docs/engine-services-repository-governance-server-side.png)
-> **Figure 1:** Structure of the repository governance engine services running in an engine host
-
-
 ----
 * Return to [module overview](..)
 

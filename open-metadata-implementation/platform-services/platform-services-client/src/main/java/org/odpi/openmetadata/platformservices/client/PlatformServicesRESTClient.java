@@ -24,7 +24,8 @@ import java.util.Map;
 
 
 /**
- * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * PlatformServicesRESTClient is responsible for issuing calls to the OMAG Server Platform's platform services
+ * REST APIs.
  */
 class PlatformServicesRESTClient extends FFDCRESTClient
 {

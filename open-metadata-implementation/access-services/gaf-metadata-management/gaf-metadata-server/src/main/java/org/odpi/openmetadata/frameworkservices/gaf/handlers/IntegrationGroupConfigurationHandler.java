@@ -32,8 +32,9 @@ import java.util.List;
 
 
 /**
- * GovernanceConfigurationHandler provides the open metadata server side implementation of
- * GovernanceConfigurationServer which is part of the Open Governance Framework (ODF).
+ * IntegrationGroupConfigurationHandler provides the open metadata server side implementation of
+ * the configuration of integration groups and their integration connectors, which is part of the
+ * Open Governance Framework (OGF).
  */
 public class IntegrationGroupConfigurationHandler
 {

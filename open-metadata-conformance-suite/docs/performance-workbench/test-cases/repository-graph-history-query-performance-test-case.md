@@ -1,1 +1,0 @@
-../profiles/graph-history-queries/README.md

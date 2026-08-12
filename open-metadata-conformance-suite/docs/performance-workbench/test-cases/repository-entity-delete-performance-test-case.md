@@ -1,1 +1,0 @@
-../profiles/entity-delete/README.md

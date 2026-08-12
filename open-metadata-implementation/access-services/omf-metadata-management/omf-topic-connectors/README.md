@@ -4,7 +4,7 @@
 # OMF Topic Connectors
 
 The OMF Topic connectors are the interfaces of the
-connectors supported by the Open Metadata Metadata Access Services.
+connectors supported by OMF Metadata Management.
 
 There are two connectors, one for the client
 and one for the server, that are used to exchange events

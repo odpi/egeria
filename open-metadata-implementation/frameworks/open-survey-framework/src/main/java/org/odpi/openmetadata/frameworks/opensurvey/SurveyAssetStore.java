@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * SurveyAssetStore defines the interface to a connector broker backed by an open metadata repository that returns
  * information about the Asset that a survey action service is to analyze.  It is built around the Open Connector
- * Framework (OCF) services and Open Survey Framework (OGF).
+ * Framework (OCF) services and Open Survey Framework (OSF).
  */
 public class SurveyAssetStore
 {

@@ -44,9 +44,8 @@ There are five types of Governance Action Services.  Each type of service suppor
 * **Provisioning Governance Service** - performs an action that makes a new resource available
   along with the appropriate open metadata.
 
-These are often used in conjunction with the
-[Open Discovery Services](https://egeria-project.org/concepts/open-discovery-service)
-from the [Open Discovery Framework (ODF)](https://egeria-project.org/frameworks/odf/overview).
+These are often used in conjunction with the survey action services
+from the [Open Survey Framework (OSF)](../open-survey-framework).
 Collectively they are called the **Governance Services** and they
 can be linked together into [governance action processes](https://egeria-project.org/concepts/governance-action-process).
 
@@ -67,7 +66,7 @@ Open Metadata Access Services (OMASs).
 A governance action service is passed a context as it is started.
 This provides access to the request type and associated parameters used to
 invoke the governance action service, along with a client to access open metadata through
-the [Governance Engine OMAS](../../access-services/governance-engine).
+the [GAF Metadata Management Service](../../access-services/gaf-metadata-management).
 
 ![Figure 1](docs/governance-context.png)
 > **Figure 1:** Structure of the governance context 
@@ -92,7 +91,7 @@ governance action service that should be invoked along with
 ![Figure 2](docs/governance-action-engine-definitions.png)
 > **Figure 2:** Structure of a governance engine definition
 
-These definitions are created through the [Governance Engine OMAS](../../access-services/governance-engine)
+These definitions are created through the [GAF Metadata Management Service](../../access-services/gaf-metadata-management)
 and are stored in the open metadata repositories.
 
 
@@ -105,7 +104,7 @@ The engine services run in dedicated OMAG Server called the **Engine Host**.
 Instructions for configuring the engine services in the Engine Host
 are found in the [Administration Guide](https://egeria-project.org/guides/admin/server).
 
-The [Governance Engine OMAS](../../access-services/governance-engine)
+The [GAF Metadata Management Service](../../access-services/gaf-metadata-management)
 provides the services for:
 
 * setting up the definitions of a [governance action engine](https://egeria-project.org/concepts/governance-action-engine).

@@ -23,7 +23,9 @@ The Community Matters API supports the following key features:
 * [Community Matters API Overview](https://egeria-project.org/services/omvs/community-matters/overview/)
 * [Community Concept](https://egeria-project.org/concepts/community/)
 
-Sample requests for the REST API can be found in `Egeria-api-community-matters.http`.
+Sample requests for the REST API can be found in [Egeria-api-community-matters.http](Egeria-api-community-matters.http).
+Further examples of exploring communities can be found in
+[Egeria-jacquard-communities.http](Egeria-jacquard-communities.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

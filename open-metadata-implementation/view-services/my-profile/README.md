@@ -25,7 +25,7 @@ The My Profile API supports the following key features:
 * [Personal Profile Concept](https://egeria-project.org/concepts/personal-profile/)
 * [Action Concept](https://egeria-project.org/concepts/action/)
 
-Sample requests for the REST API can be found in `Egeria-api-my-profile.http`.
+Sample requests for the REST API can be found in [Egeria-api-my-profile.http](Egeria-api-my-profile.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

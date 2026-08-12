@@ -18,6 +18,9 @@ The open connectors are grouped as follows:
 * **[configuration-store-connectors](configuration-store-connectors)** contains the connectors that manage
 the open metadata configuration.
 
+* **[data-manager-connectors](data-manager-connectors)** work with data management platforms that
+use metadata to describe and control access to data, such as Microsoft SQL Server, PostgreSQL and Unity Catalog.
+
 * **[data-store-connectors](data-store-connectors)** contains OCF connectors to data stores on different
 data platforms.
 
@@ -32,11 +35,21 @@ and repository-service-connectors.
 assessing and acting on governance issues detected in the metadata ecosystem.
 These connectors support the [OPEN Governance Framework (GAF)](../../frameworks/open-governance-framework).
 
+* **[lovelace-insights](lovelace-insights)** provides the watchdog services that monitor the changing
+open metadata ecosystem and add classifications that summarise the existing state of the metadata.
+
 * **[metadata-security-connectors](metadata-security-connectors)** manage the 
 authorization of requests to Egeria's services.
 
 * **[integration-connectors](integration-connectors)** contains governance actions for assessing and acting on
 governance issues detected in the metadata ecosystem.
+
+* **[nanny-connectors](nanny-connectors)** support the observation, analysis and improvement of an existing
+metadata catalog deployment, assembling digital products that represent collections of reference data and insights
+based on the content of the open metadata repositories.
+
+* **[report-generating-connectors](report-generating-connectors)** are governance action services that create
+and publish reports on different types of elements.
 
 * **[repository-services-connectors](repository-services-connectors)** contains connector implementations for
 each type of connector supported by the Open Metadata Repository Services (OMRS).

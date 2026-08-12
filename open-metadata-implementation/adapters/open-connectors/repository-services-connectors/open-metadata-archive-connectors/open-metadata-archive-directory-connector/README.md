@@ -3,7 +3,7 @@
 
 ![Released](../../../../../../images/egeria-content-status-released.png#pagewidth)
 
-# Open Metadata Archive File Connector
+# Open Metadata Archive Directory Connector
 
 The open metadata archive directory connector stores an
 open metadata archive as an organized collection of JSON files

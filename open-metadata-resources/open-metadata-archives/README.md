@@ -31,6 +31,10 @@ This is to reduce the chance that new types developed by a third party have name
 There is also a utility to create the archive file for these open metadata types.
 The find out more about the Open Metadata Types [click here](https://egeria-project.org/types).
 
+* [Open Metadata Types Utility](open-metadata-types-utility) - a utility to write the open metadata types in
+JSON format to a file, so they can be loaded into a server that is not using the standard Egeria libraries
+that automatically load the open metadata types at server startup.
+
 * [Core Content Pack](core-content-pack) - provides utilities for building the
 open metadata archives containing reference information information about one or more connectors that
 follow the [Open Connector Framework (OCF)](../../open-metadata-implementation/frameworks/open-connector-framework).

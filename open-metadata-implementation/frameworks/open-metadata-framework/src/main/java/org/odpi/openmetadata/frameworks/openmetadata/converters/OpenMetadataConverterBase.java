@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * OpenMetadataConverterBase provides the generic methods for the bean converters used to provide translation between
- * specific API beans and the Open Metadata services beans from the Open Survey Framework (OGF).
+ * specific API beans and the Open Metadata services beans from the Open Metadata Framework (OMF).
  * Generic classes have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing an Open Metadata API bean.

@@ -29,7 +29,10 @@ These definitions can also be linked to certification types to guide automated d
 * [Data Value Specification Concept](https://egeria-project.org/concepts/data-value-specification)
 * [Data Specification Concept](https://egeria-project.org/concepts/data-specification)
 
-Sample requests for the REST API can be found in `Egeria-api-data-designer.http`.
+Sample requests for the REST API can be found in [Egeria-api-data-designer.http](Egeria-api-data-designer.http).
+Further examples of creating data specifications and exploring data dictionaries can be found in
+[Egeria-coco-create-data-spec.http](Egeria-coco-create-data-spec.http) and
+[Egeria-jacquard-data-design.http](Egeria-jacquard-data-design.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -18,19 +18,18 @@ The utilities that load metadata into a repository are as follows:
 
 * [Simple Catalogs](simple-catalogs) provides four archives that are each loaded into their own metadata server
   that are in turn connected together using an open metadata repository connector.
-  
-* [Coco Pharmaceuticals Business Systems](coco-business-systems) provides a catalog of the business systems and the lineage between
-them and the load of their data into the data lake.  This archive simulates the
-type of metadata expected from an ETL tool suite.  It is intended for
-**cocoMDS5** in the open metadata labs.
 
-* [Coco Pharmaceuticals Governance Program](coco-governance-program) provides the
-governance definitions that drive Coco Pharmaceuticals' governance program.
-This is intended for **cocoMDS2** in the open metadata labs.
+* [Coco Pharmaceuticals Metadata Archives](coco-metadata-archives) provides the 7 archives used in the Coco
+  Pharmaceuticals labs and demos, including the organization's profiles and teams, its governance program
+  definitions, its business systems catalog and lineage (intended for **cocoMDS5**), and its sustainability
+  initiative definitions.
 
-* [Coco Pharmaceuticals IT Infrastructure](coco-it-infrastructure) provides the
-description of Coco Pharmaceuticals IT infrastructure.
-This is also intended for **cocoMDS2** in the open metadata labs.
+* [Big Glossaries](big-glossaries) creates 10 glossaries of 10,000 unique terms each in their own archive
+  file, used for testing that a deployment environment has enough resources to manage a large repository.
+
+* [Cloud Information Model](cloud-information-model) builds the Cloud Information Model open metadata
+  archive from its `jsonld` model, describing a glossary, data dictionary and concept model for the
+  properties, data fields and objects in the [Cloud Information Model](https://github.com/cloudinformationmodel/cloudinformationmodel).
 
 
 ----

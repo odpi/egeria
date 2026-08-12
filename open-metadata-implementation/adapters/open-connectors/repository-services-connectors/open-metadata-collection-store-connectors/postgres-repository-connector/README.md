@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-![InDevelopment](../../../images/egeria-content-status-in-development.png#pagewidth)
+![InDevelopment](../../../../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # PostgreSQL Repository Connector
 

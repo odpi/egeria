@@ -28,8 +28,9 @@ the resulting knowledge:
 * [Subject Area API Overview](https://egeria-project.org/services/omvs/subject-area/overview/)
 * [Subject Area Concept](https://egeria-project.org/concepts/subject-area/)
 
-Sample requests for the REST API can be found in `Egeria-api-subject-area.http`.
-Additional samples for working with subject area collections can be found in `Egeria-coco-subject-areas.http`.
+Sample requests for the REST API can be found in [Egeria-api-subject-area.http](Egeria-api-subject-area.http).
+Additional samples for working with subject area collections can be found in
+[Egeria-coco-subject-areas.http](Egeria-coco-subject-areas.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

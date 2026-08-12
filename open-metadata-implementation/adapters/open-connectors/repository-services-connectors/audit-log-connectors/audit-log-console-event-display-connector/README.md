@@ -14,5 +14,8 @@ outputs the event content as part of displaying the message.
 
 
 ----
+Return to [audit-log-connectors](..)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the Egeria project.

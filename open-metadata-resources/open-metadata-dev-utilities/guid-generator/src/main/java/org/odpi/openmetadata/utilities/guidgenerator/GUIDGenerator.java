@@ -5,7 +5,7 @@ package org.odpi.openmetadata.utilities.guidgenerator;
 import java.util.*;
 
 /**
- * ServerOps provides a utility for starting and stopping servers on an OMAG Server Platform.
+ * GUIDGenerator provides a utility that prints out a batch of newly generated UUIDs.
  */
 public class GUIDGenerator
 {

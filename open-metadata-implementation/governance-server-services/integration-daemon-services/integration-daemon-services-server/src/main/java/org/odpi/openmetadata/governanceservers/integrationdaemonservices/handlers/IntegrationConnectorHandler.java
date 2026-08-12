@@ -32,8 +32,8 @@ import java.util.Map;
 
 
 /**
- * IntegrationConnectorReport provides information on the operation of a single connector within an integration
- * service.
+ * IntegrationConnectorHandler manages the lifecycle and periodic refresh of a single integration connector running
+ * within an integration daemon, and maintains the IntegrationConnectorReport that describes its current status.
  */
 public class IntegrationConnectorHandler
 {

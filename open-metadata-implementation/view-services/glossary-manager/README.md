@@ -27,7 +27,7 @@ The Glossary Manager API supports the following key features:
 * [Glossary Concept](https://egeria-project.org/concepts/glossary/)
 * [Glossary Term Concept](https://egeria-project.org/concepts/glossary-term/)
 
-Sample requests for the REST API can be found in `Egeria-api-glossary-manager.http`.
+Sample requests for the REST API can be found in [Egeria-api-glossary-manager.http](Egeria-api-glossary-manager.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

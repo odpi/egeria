@@ -3,7 +3,7 @@
 
 # Watchdog Action Engine with Spring
 
-The asset analysis engine with Spring module uses Spring to implement a REST API wrapper
+The watchdog action engine with Spring module uses Spring to implement a REST API wrapper
 for the [watchdog-action-server](../watchdog-action-server) module.
 
 ----

@@ -3,8 +3,7 @@
 
 # Governance Program Open Metadata Access Service (OMAS) Client Samples
 
-These samples shows how to call the
-[Governance Program OMAS's](../../../../open-metadata-implementation/access-services/governance-program) clients.
+These samples shows how to call the Governance Program OMAS's clients.
 There is a sample for each of the Governance Program OMAS's interfaces.
 
 * **[Governance Leadership](governance-leadership-sample)** shows how to set up and manage Governance Officer appointments.

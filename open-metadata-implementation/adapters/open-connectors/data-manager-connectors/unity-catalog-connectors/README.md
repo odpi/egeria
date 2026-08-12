@@ -46,7 +46,7 @@ The *Unity Catalog OSS Synchronization Connector* is an [integration connector](
 Its work is scoped by the metadata collection that represents Unity Catalog.  This is identified by the *metadataSourceQualifiedName* property in the connector's configuration.
 It performs two passes each time it is called.
 
-![Connector Operation](sync-server-connector.svg)
+![Connector Operation](docs/sync-server-connector.svg)
 
 ## OSS Unity Catalog (UC) Inside a Catalog Synchronizing Connector
 

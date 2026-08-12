@@ -5,7 +5,8 @@
 
 The Open Metadata Repository Services (OMRS) APIs contains the 
 [connector interfaces](../docs/component-descriptions/connectors) and
-[event structures](../docs/event-descriptions) for the repository services.
+[event structures](../docs/event-descriptions) for the repository services, along with the property beans,
+audit log message definitions, exceptions and REST API request/response structures that they use.
 
 ----
 * Return to [repository-services](..)

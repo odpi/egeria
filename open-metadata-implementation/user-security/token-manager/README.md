@@ -8,7 +8,7 @@ The token manager handles the capturing of the authorization headers onto thread
 The headers saved are listed in the `authn.header.name.list` property in `application.properties`.
 
 ----
-Return to [open-metadata-implementation](..).
+Return to [user-security](..).
 
 
 ----

@@ -24,7 +24,9 @@ The Project Manager API supports the following key features:
 * [Project Manager API Overview](https://egeria-project.org/services/omvs/project-manager/overview/)
 * [Project Concept](https://egeria-project.org/concepts/project/)
 
-Sample requests for the REST API can be found in `Egeria-api-project-manager.http`.
+Sample requests for the REST API can be found in [Egeria-api-project-manager.http](Egeria-api-project-manager.http).
+Further examples of setting up sustainability projects can be found in
+[Egeria-coco-sustainability-projects.http](Egeria-coco-sustainability-projects.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

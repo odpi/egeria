@@ -7,8 +7,8 @@
 
 The Survey Action Open Metadata Engine services provide support for
 [survey action engines](https://egeria-project.org/concepts/survey-action-engine/)
-that are part of the [Open Discovery Service (ODF)](https://egeria-project.org/frameworks/odf/overview/).
-An survey action engine hosts [automated metadata discovery](https://egeria-project.org/features/discovery-and-stewardship/overview/).
+that are part of the [Open Survey Framework (OSF)](https://egeria-project.org/frameworks/osf/overview/).
+A survey action engine hosts [automated metadata discovery](https://egeria-project.org/features/discovery-and-stewardship/overview/).
 
 The Survey Action OMES is capable of hosting one or more
 [survey action engines](https://egeria-project.org/concepts/survey-action-engine/)

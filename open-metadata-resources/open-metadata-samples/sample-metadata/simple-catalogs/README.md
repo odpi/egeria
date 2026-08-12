@@ -19,7 +19,7 @@ connected together through a cohort.  The servers can be queried through scripts
 
 ----
 
-* Return to sample metadata
+* Return to [sample metadata](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -3,9 +3,10 @@
 
 ![TechPreview](../../../../../../images/egeria-content-status-tech-preview.png#pagewidth)
   
-# Audit Log JDBC Database Connector
+# Audit Log PostgreSQL Connector
 
-The audit log JDBC connector writes audit log records as rows in a JDBC database.
+The audit log PostgreSQL connector supports a PostgreSQL database schema that stores the data from the
+audit log records of one or more servers.
 
 
 

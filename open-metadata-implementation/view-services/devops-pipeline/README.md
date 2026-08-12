@@ -9,6 +9,8 @@ The Devops Pipeline OMVS is a REST API designed to support user interfaces (UIs)
 
 Link to documentation: [https://egeria-project.org/services/omvs/devops-pipeline/overview/](https://egeria-project.org/services/omvs/devops-pipeline/overview/)
 
+Sample REST API requests can be found in [Egeria-api-devops-pipeline.http](Egeria-api-devops-pipeline.http).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the Egeria project.

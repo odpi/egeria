@@ -10,8 +10,6 @@ of events it is interested in processing.  When a matching event occurs, it is p
 which is able to process it, by for example initiating a process or attaching a notification to an actor.
 
 Watchdog action services can be passed request parameters and action targets, just like other governance services.
-If one of the 
-
 
 More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/owf/overview/).
 

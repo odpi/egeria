@@ -22,7 +22,7 @@ Key features of this service include:
 * [Governance Action Concept](https://egeria-project.org/concepts/governance-action/)
 * [Integration Daemon Concept](https://egeria-project.org/concepts/integration-daemon/)
 
-Sample REST API requests can be found in `Egeria-api-automated-curation.http`.
+Sample REST API requests can be found in [Egeria-api-automated-curation.http](Egeria-api-automated-curation.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

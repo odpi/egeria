@@ -25,7 +25,9 @@ The Asset Catalog API supports the following key features:
 * [Asset Concept](https://egeria-project.org/concepts/asset/)
 * [Lineage Management](https://egeria-project.org/features/lineage-management/overview/)
 
-Sample requests for the REST API can be found in `Egeria-api-asset-catalog.http`.
+Sample requests for the REST API can be found in [Egeria-api-asset-catalog.http](Egeria-api-asset-catalog.http).
+Further examples of exploring asset lineage can be found in
+[Egeria-coco-asset-lineage-examples.http](Egeria-coco-asset-lineage-examples.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

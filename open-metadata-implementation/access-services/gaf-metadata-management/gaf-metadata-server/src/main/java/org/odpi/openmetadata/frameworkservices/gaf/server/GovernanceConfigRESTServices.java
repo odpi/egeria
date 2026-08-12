@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The GovernanceConfigRESTServices provides the server-side implementation of the configuration services
- * from the Open Governance Framework (ODF).  These services configure governance engines and governance services.
+ * from the Open Governance Framework (OGF).  These services configure governance engines and governance services.
  */
 public class GovernanceConfigRESTServices
 {

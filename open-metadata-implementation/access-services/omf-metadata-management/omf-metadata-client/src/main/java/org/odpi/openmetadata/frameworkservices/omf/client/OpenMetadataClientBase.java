@@ -26,7 +26,7 @@ import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import java.util.*;
 
 /**
- * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Open Survey Framework (OGF)
+ * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Open Metadata Framework (OMF)
  * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
  * The interface supports search, maintenance of metadata elements, classifications and relationships plus the ability to raise incident reports
  * and todos along with the ability to work with metadata valid values and translations.

@@ -1,1 +1,0 @@
-../profiles/entity-purge/README.md

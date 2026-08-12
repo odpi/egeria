@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * The OpenGovernanceRESTServices provides the server-side implementation of the services used by the governance
  * engine as it is managing requests to execute open governance services in the governance server.
- * These services align with the interface definitions from the Open Survey Framework (OGF).
+ * These services align with the interface definitions from the Open Governance Framework (OGF).
  */
 public class OpenGovernanceRESTServices
 {

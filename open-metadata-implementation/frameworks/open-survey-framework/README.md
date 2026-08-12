@@ -16,6 +16,9 @@ for the surveyor components (called open survey services) to:
 * Record the results of the analysis in the open metadata repository and attach it to the
   asset's metadata for later processing.
 
+Survey action services can also be chained together into a `SequentialSurveyPipeline`, run in turn by a single
+`SurveyActionPipelineConnector`.
+
 More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/osf/overview/).
 
 

@@ -47,5 +47,8 @@ There are 7 archives used in the Coco Pharmaceuticals labs and demos:
 * [Egeria Metadata Access Stores](https://egeria-project.org/egeria-docs/concepts/metadata-access-store/)
 
 ----
+* Return to [sample metadata](..)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

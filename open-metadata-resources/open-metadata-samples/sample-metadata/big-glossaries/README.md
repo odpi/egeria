@@ -27,7 +27,7 @@ The utility is easily extended to create more terms per glossary, or create addi
 
 ----
 
-* Return to sample metadata
+* Return to [sample metadata](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

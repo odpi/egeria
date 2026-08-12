@@ -8,7 +8,7 @@ Figure 1 shows the external APIs for the OMRS.
 ![Figure 1: OMRS System Context Diagram](omrs-system-context-diagram.png#pagewidth)
 > Figure 1: OMRS System Context Diagram
 
-On the left hand side is the **[administration interface](../../governance-servers/README.md)** supported by the OMAG server.
+On the left hand side is the **[administration interface](../../governance-server-services/README.md)** supported by the OMAG server.
 This is where configuration is passed to the OMRS, and status and other
 relevant information is made available to the OMAG Administration Services.
 
@@ -132,7 +132,9 @@ other subsystems are active or not.
 
 Follow the links for more details of 
 these **[subsystems](subsystem-descriptions/README.md)**
-and **[components](component-descriptions/README.md)** within.
+and **[components](component-descriptions/README.md)** within, along with the
+**[events](event-descriptions/README.md)** exchanged between cohort members and the
+**[exceptions](exception-descriptions/README.md)** raised by the OMRS.
 
 ----
 

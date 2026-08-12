@@ -3,7 +3,7 @@
 
 # Survey Action Engine with Spring
 
-The asset analysis engine with Spring module uses Spring to implement a REST API wrapper
+The survey action engine with Spring module uses Spring to implement a REST API wrapper
 for the [survey-action-server](../survey-action-server) module.
 
 ----

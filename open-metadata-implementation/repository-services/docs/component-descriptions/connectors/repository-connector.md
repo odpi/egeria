@@ -52,18 +52,6 @@ small-scale environments where metadata is being managed remotely and cached loc
 It has native support for the open metadata types an instances
 and so runs in a [metadata access store](https://egeria-project.org/concepts/metadata-access-store).
 
-* **[Graph OMRS Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)** -
-This connector is provides a high functioning open metadata repository implementation
-built on JanusGraph.
-It also has native support for the open metadata types an instances
-and so runs in a [metadata access store](https://egeria-project.org/concepts/metadata-access-store).
-
-* **[XTDB OMRS Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/xtdb-repository-connector)** -
-  This connector is provides a high functioning open metadata repository implementation
-  built on XTDB.
-  It also has native support for the open metadata types an instances
-  and so runs in a [metadata access store](https://egeria-project.org/concepts/metadata-access-store).
-
 * **[Postgres OMRS Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector)** -
   This connector is provides a high functioning open metadata repository implementation
   built on PostgreSQL.

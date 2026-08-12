@@ -22,7 +22,7 @@ The Product Catalog API supports the following key features:
 * [Digital Product Concept](https://egeria-project.org/concepts/digital-product/)
 * [Digital Subscription Concept](https://egeria-project.org/concepts/digital-subscription/)
 
-Sample requests for the REST API can be found in `Egeria-api-product-catalog.http`.
+Sample requests for the REST API can be found in [Egeria-api-product-catalog.http](Egeria-api-product-catalog.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

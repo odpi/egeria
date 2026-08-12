@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CreateSubscriptionGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
+ * CreateAssetGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
  */
 public class CreateAssetGovernanceActionConnector extends GeneralGovernanceActionService
 {

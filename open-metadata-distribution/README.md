@@ -7,7 +7,7 @@ The **[OMAG Server Platform Assembly](omag-server-platform)** assembles the libr
 
 This assembly is used in Egeria's standard Docker container that is published to [DockerHub](https://hub.docker.com/r/odpi/egeria-platform) and [Quay.io](https://quay.io/repository/odpi/egeria-platform?tab=tags&tag=latest).
 
-There is also a docker script so you can tailor the assembly and build your own docker image.
+There is also a docker script, so you can tailor the assembly and build your own docker image.
 
 
 

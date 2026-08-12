@@ -21,7 +21,11 @@ The Notification Manager API supports the following key features:
 * [Notification Manager API Overview](https://egeria-project.org/services/omvs/notification-manager/overview/)
 * [Notification Type Concept](https://egeria-project.org/concepts/notification-type/)
 
-Sample requests for the REST API can be found in `Egeria-api-notification-manager.http`.
+Sample requests for the REST API can be found in [Egeria-api-notification-manager.http](Egeria-api-notification-manager.http).
+Further examples covering notification types and actions, and subscription requests and processes, can be found in
+[Egeria-notification-types-and-actions.http](Egeria-notification-types-and-actions.http),
+[Egeria-baudot-create-subscription.http](Egeria-baudot-create-subscription.http) and
+[Egeria-baudot-subscription-processes.http](Egeria-baudot-subscription-processes.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

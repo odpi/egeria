@@ -34,7 +34,10 @@ The Solution Architect API supports the definition and display of these elements
 * [Information Supply Chain Concept](https://egeria-project.org/concepts/information-supply-chain)
 * [Design Pattern Concept](https://egeria-project.org/concepts/design-pattern)
 
-Sample requests for the REST API can be found in `Egeria-api-solution-architect.http`.
+Sample requests for the REST API can be found in [Egeria-api-solution-architect.http](Egeria-api-solution-architect.http).
+Further examples of exploring solution blueprints and information supply chains can be found in
+[Egeria-jacquard-solution-blueprints.http](Egeria-jacquard-solution-blueprints.http) and
+[Egeria-coco-information-supply-chains.http](Egeria-coco-information-supply-chains.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

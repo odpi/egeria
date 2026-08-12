@@ -4,7 +4,7 @@
 # GAF Topic Connectors
 
 The GAF Topic connectors are the interfaces of the
-connectors supported by the Open Governance Access Services.
+connectors supported by GAF Metadata Management.
 
 There are two connectors, one for the client
 and one for the server, that are used to exchange events
@@ -19,7 +19,7 @@ The server interface is an event sending interface.
 
 
 ----
-Return to the [omf-metadata-management](..) module.
+Return to the [gaf-metadata-management](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

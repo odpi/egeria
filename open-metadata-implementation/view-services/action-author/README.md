@@ -22,7 +22,7 @@ action determines which action(s) run next. The choreographed sequence of action
 * [Governance Action Type Concept](https://egeria-project.org/concepts/governance-action-type)
 * [Governance Action Process Concept](https://egeria-project.org/concepts/governance-action-process)
 
-Sample requests for the REST API can be found in `Egeria-api-action-author.http`.
+Sample requests for the REST API can be found in [Egeria-api-action-author.http](Egeria-api-action-author.http).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

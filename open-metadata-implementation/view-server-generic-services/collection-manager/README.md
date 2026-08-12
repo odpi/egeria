@@ -16,6 +16,8 @@ The Collection Manager OMVS enables the caller to manage collections of assets a
     * **Digital Products**: Managing collections representing digital products and their deployment status.
     * **Agreements**: Linking actors and items to agreements, including support for external contract references.
     * **Skill Sets**: Associating required skill sets with actors and other elements.
+    * **Smart Collections**: Connecting a results set collection to a saved query using the *SmartQuery*
+      relationship, so that its membership is maintained automatically from the query results.
 * **Collection Classification**: Applying classifications like *Editing*, *Scoping*, or *Staging* to collections to indicate their purpose and lifecycle state.
 * **Data Descriptions**: Linking data descriptions to collections to provide context on the data being managed.
 
