@@ -12,18 +12,31 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.iterator.*;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIRequestProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIResponseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.APIParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +52,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the UC server asset
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -56,7 +71,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     public OSSUnityCatalogInsideCatalogSyncFunctions(String                           connectorName,
                                                      IntegrationContext               context,
                                                      String                           catalogTargetName,
+                                                     String                           serverGUID,
                                                      String                           catalogGUID,
+                                                     String                           metadataCollectionGUID,
                                                      String                           catalogName,
                                                      Map<String, String>              ucFullNameToEgeriaGUID,
                                                      PermittedSynchronization         targetPermittedSynchronization,
@@ -72,7 +89,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         super(connectorName,
               context,
               catalogTargetName,
+              serverGUID,
               catalogGUID,
+              metadataCollectionGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -285,7 +304,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID));
 
         templateOptions.setParentGUID(schemaGUID);
         templateOptions.setParentAtEnd1(parentAtEnd1);
@@ -300,6 +319,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                                     null);
 
         super.addExternalIdentifier(ucFunctionGUID,
+                                    schemaGUID,
                                     functionInfo,
                                     functionInfo.getSchema_name(),
                                     UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
@@ -307,7 +327,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                     functionInfo.getFunction_id(),
                                     PermittedSynchronization.FROM_THIRD_PARTY);
 
-        this.createSchemaAttributesForUCFunction(ucFunctionGUID, functionInfo);
+        this.getOrCreateSchemaAttributesForUCFunction(schemaGUID, ucFunctionGUID, functionInfo);
 
         ucFullNameToEgeriaGUID.put(functionInfo.getFull_name(), ucFunctionGUID);
     }
@@ -335,7 +355,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                        updateOptions,
                                                        this.getElementProperties(functionInfo));
 
-        this.updateSchemaAttributesForUCFunction(memberElement, functionInfo);
+        this.getOrCreateSchemaAttributesForUCFunction(super.getParentGUIDFromMember(memberElement), egeriaFunctionGUID, functionInfo);
 
         externalIdClient.confirmSynchronization(memberElement.getElement(),
                                                 functionInfo.getFunction_id());
@@ -369,6 +389,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        super.getParentGUIDFromMember(memberElement),
                                         functionInfo,
                                         functionInfo.getSchema_name(),
                                         UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
@@ -504,75 +525,213 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     }
 
     /**
-     * Create the schema attributes in open metadata reflect the columns from UC.
+     * Create (or, on a later refresh, find and reuse) the API schema for a UC function: an APISchemaType holding
+     * a single APIOperation (representing invoking the function), with an APIParameterList of APIParameters for
+     * the input parameters and, if the function returns a structured result, a second APIParameterList of
+     * APIParameters for the return parameters.  This follows the same schema pattern used by the Open API
+     * Cataloguer for DeployedAPI assets.
      *
-     * @param functionGUID unique identifier of the newly created function in open metadata
+     * @param schemaGUID unique identifier of the function's schema in open metadata
+     * @param functionGUID unique identifier of the function in open metadata
      * @param functionInfo details about the function to add to the schema attributes
      *
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException open metadata repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
-    private void createSchemaAttributesForUCFunction(String           functionGUID,
-                                                     FunctionInfo     functionInfo) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    private void getOrCreateSchemaAttributesForUCFunction(String       schemaGUID,
+                                                          String       functionGUID,
+                                                          FunctionInfo functionInfo) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
-        final String methodName = "createSchemaAttributesForUCFunction";
+        String functionQualifiedName      = super.getQualifiedName(functionInfo.getFull_name());
+        String apiSchemaTypeQualifiedName = functionQualifiedName + "_rootSchemaType";
 
-        ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        super.getQualifiedName(functionInfo.getFull_name()) + "_rootSchemaType");
+        SchemaTypeClient schemaTypeClient = context.getSchemaTypeClient(OpenMetadataType.API_SCHEMA_TYPE.typeName);
+
+        String apiSchemaTypeGUID = super.findExistingSchemaType(schemaTypeClient, apiSchemaTypeQualifiedName);
+
+        if (apiSchemaTypeGUID == null)
+        {
+            APISchemaTypeProperties apiSchemaTypeProperties = new APISchemaTypeProperties();
+
+            apiSchemaTypeProperties.setQualifiedName(apiSchemaTypeQualifiedName);
+            apiSchemaTypeProperties.setDisplayName(functionInfo.getName() + " schema");
+
+            NewElementOptions apiSchemaTypeOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+            apiSchemaTypeOptions.setAnchorGUID(functionGUID);
+            apiSchemaTypeOptions.setIsOwnAnchor(false);
+            apiSchemaTypeOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, functionGUID));
+            apiSchemaTypeOptions.setParentGUID(functionGUID);
+            apiSchemaTypeOptions.setParentAtEnd1(true);
+            apiSchemaTypeOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+            apiSchemaTypeGUID = schemaTypeClient.createSchemaType(apiSchemaTypeOptions, null, apiSchemaTypeProperties, null);
+        }
 
         /*
-         * Create the root schema type.
+         * A UC function is represented as a single operation - invoking the function.
          */
+        String apiOperationQualifiedName = functionQualifiedName + "_invoke";
 
-        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+        SchemaTypeClient operationClient = context.getSchemaTypeClient(OpenMetadataType.API_OPERATION.typeName);
 
-        newElementOptions.setAnchorGUID(functionGUID);
-        newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        String apiOperationGUID = super.findExistingSchemaType(operationClient, apiOperationQualifiedName);
 
-        newElementOptions.setParentGUID(functionGUID);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+        if (apiOperationGUID == null)
+        {
+            APIOperationProperties apiOperationProperties = new APIOperationProperties();
 
-        openMetadataStore.createMetadataElementInStore(OpenMetadataType.API_SCHEMA_TYPE.typeName,
-                                                       newElementOptions,
-                                                       null,
-                                                       new NewElementProperties(properties),
-                                                       null);
+            apiOperationProperties.setQualifiedName(apiOperationQualifiedName);
+            apiOperationProperties.setDisplayName(functionInfo.getName());
+            apiOperationProperties.setDescription(functionInfo.getComment());
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
-                                                                            methodName,
-                                                                            functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
-                                                                            ucServerEndpoint));
+            NewElementOptions apiOperationOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+            apiOperationOptions.setAnchorGUID(functionGUID);
+            apiOperationOptions.setIsOwnAnchor(false);
+            apiOperationOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, functionGUID));
+            apiOperationOptions.setParentGUID(apiSchemaTypeGUID);
+            apiOperationOptions.setParentAtEnd1(true);
+            apiOperationOptions.setParentRelationshipTypeName(OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName);
+
+            apiOperationGUID = operationClient.createSchemaType(apiOperationOptions, null, apiOperationProperties, new APIOperationsProperties());
+        }
+
+        SchemaAttributeClient parameterClient = context.getSchemaAttributeClient(OpenMetadataType.API_PARAMETER.typeName);
+
+        if ((functionInfo.getInput_params() != null) && (functionInfo.getInput_params().getParameters() != null))
+        {
+            this.getOrCreateParameterList(schemaGUID,
+                                          functionGUID,
+                                          apiOperationGUID,
+                                          apiOperationQualifiedName + "_request",
+                                          OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                          new APIRequestProperties(),
+                                          APIParameterType.REQUEST_BODY,
+                                          parameterClient,
+                                          functionInfo.getInput_params().getParameters());
+        }
+
+        if ((functionInfo.getReturn_params() != null) && (functionInfo.getReturn_params().getParameters() != null))
+        {
+            this.getOrCreateParameterList(schemaGUID,
+                                          functionGUID,
+                                          apiOperationGUID,
+                                          apiOperationQualifiedName + "_response",
+                                          OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
+                                          new APIResponseProperties(),
+                                          APIParameterType.RESPONSE_BODY,
+                                          parameterClient,
+                                          functionInfo.getReturn_params().getParameters());
+        }
     }
 
 
     /**
-     * Create the schema attributes in open metadata reflect the columns from UC.
+     * Create (or, on a later refresh, find and reuse) an APIParameterList under a function's APIOperation, and
+     * create/update its APIParameter children.
      *
-     * @param memberElement details of the function in open metadata
-     * @param functionInfo details about the function to add to the schema attributes
+     * @param schemaGUID unique identifier of the function's schema in open metadata
+     * @param functionGUID unique identifier of the function in open metadata
+     * @param apiOperationGUID unique identifier of the function's APIOperation
+     * @param listQualifiedName qualified name for the parameter list
+     * @param parentRelationshipTypeName relationship type linking the list to the operation (request/response)
+     * @param parentRelationshipProperties relationship properties bean matching parentRelationshipTypeName
+     * @param parameterType classification of the parameters in this list (request body/response body)
+     * @param parameterClient client for creating/updating APIParameter schema attributes
+     * @param parameters parameter details from UC
      *
      * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException open metadata repository error or problem communicating with UC
+     * @throws PropertyServerException open metadata repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    private void updateSchemaAttributesForUCFunction(MemberElement memberElement,
-                                                     FunctionInfo  functionInfo) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    private void getOrCreateParameterList(String                      schemaGUID,
+                                          String                      functionGUID,
+                                          String                      apiOperationGUID,
+                                          String                      listQualifiedName,
+                                          String                      parentRelationshipTypeName,
+                                          RelationshipProperties      parentRelationshipProperties,
+                                          APIParameterType            parameterType,
+                                          SchemaAttributeClient       parameterClient,
+                                          List<FunctionParameterInfo> parameters) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
-        final String methodName = "updateSchemaAttributesForUCFunction";
+        SchemaTypeClient listClient = context.getSchemaTypeClient(OpenMetadataType.API_PARAMETER_LIST.typeName);
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
-                                                                            methodName,
-                                                                            functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
-                                                                            ucServerEndpoint));
+        String listGUID = super.findExistingSchemaType(listClient, listQualifiedName);
+
+        if (listGUID == null)
+        {
+            APIParameterListProperties listProperties = new APIParameterListProperties();
+
+            listProperties.setQualifiedName(listQualifiedName);
+            listProperties.setDisplayName(listQualifiedName);
+            listProperties.setRequired(true);
+
+            NewElementOptions listOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+            listOptions.setAnchorGUID(functionGUID);
+            listOptions.setIsOwnAnchor(false);
+            listOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, functionGUID));
+            listOptions.setParentGUID(apiOperationGUID);
+            listOptions.setParentAtEnd1(true);
+            listOptions.setParentRelationshipTypeName(parentRelationshipTypeName);
+
+            listGUID = listClient.createSchemaType(listOptions, null, listProperties, parentRelationshipProperties);
+        }
+
+        for (FunctionParameterInfo parameterInfo : parameters)
+        {
+            if (parameterInfo != null)
+            {
+                String parameterQualifiedName = listQualifiedName + "::" + parameterInfo.getName();
+                String parameterGUID          = super.findExistingSchemaAttribute(parameterClient, parameterQualifiedName);
+
+                APIParameterProperties parameterProperties = new APIParameterProperties();
+
+                parameterProperties.setQualifiedName(parameterQualifiedName);
+                parameterProperties.setDisplayName(parameterInfo.getName());
+                parameterProperties.setDescription(parameterInfo.getComment());
+                parameterProperties.setParameterType(parameterType.getDisplayName());
+
+                if (parameterGUID == null)
+                {
+                    Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+                    if (parameterInfo.getType_name() != null)
+                    {
+                        TypeEmbeddedAttributeProperties typeEmbeddedAttributeProperties = new TypeEmbeddedAttributeProperties();
+
+                        typeEmbeddedAttributeProperties.setSchemaTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+                        typeEmbeddedAttributeProperties.setDataType(parameterInfo.getType_name());
+
+                        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, typeEmbeddedAttributeProperties);
+                    }
+
+                    NewElementOptions parameterOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+                    parameterOptions.setAnchorGUID(functionGUID);
+                    parameterOptions.setIsOwnAnchor(false);
+                    parameterOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID, functionGUID));
+                    parameterOptions.setParentGUID(listGUID);
+                    parameterOptions.setParentAtEnd1(true);
+                    parameterOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+                    AttributeForSchemaProperties relationshipProperties = new AttributeForSchemaProperties();
+
+                    relationshipProperties.setPosition(parameterInfo.getPosition());
+
+                    parameterClient.createSchemaAttribute(parameterOptions, initialClassifications, parameterProperties, relationshipProperties);
+                }
+                else
+                {
+                    parameterClient.updateSchemaAttribute(parameterGUID, parameterClient.getUpdateOptions(true), parameterProperties);
+                }
+            }
+        }
     }
 }

@@ -69,6 +69,8 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
     {
         super.start();
 
+        this.setUpMetadataSource();
+
         this.defaultExcludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
                                                                              this.getConfigurationProperties());
         this.defaultIncludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
@@ -108,6 +110,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                 {
                     String catalogName = this.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()).toString();
                     String catalogGUID = this.getConfigurationProperties().get(OpenMetadataProperty.GUID.name).toString();
+                    String serverGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
 
                     String ucServerEndpoint = this.getNetworkAddress();
 
@@ -115,8 +118,10 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
 
                     ucFullNameToEgeriaGUID.put(catalogName, this.getCatalogTargetElement().getElementHeader().getGUID());
 
-                    this.refreshCatalog(catalogName,
+                    this.refreshCatalog(serverGUID,
+                                        catalogName,
                                         catalogGUID,
+                                        metadataCollectionGUID,
                                         integrationContext.getMetadataSourceQualifiedName(),
                                         ucFullNameToEgeriaGUID,
                                         integrationContext.getPermittedSynchronization(),
@@ -154,8 +159,10 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
     /**
      * Synchronize a catalog.
      *
+     * @param serverGUID guid of the UC server asset
      * @param catalogName the catalog target name
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param metadataSourceQualifiedName name of the metadata collection for this server
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -164,8 +171,10 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
      */
-    private void refreshCatalog(String                           catalogName,
+    private void refreshCatalog(String                           serverGUID,
+                                String                           catalogName,
                                 String                           catalogGUID,
+                                String                           metadataCollectionGUID,
                                 String                           metadataSourceQualifiedName,
                                 Map<String, String>              ucFullNameToEgeriaGUID,
                                 PermittedSynchronization         targetPermittedSynchronization,
@@ -188,7 +197,9 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
             OSSUnityCatalogInsideCatalogSyncSchema syncSchema = new OSSUnityCatalogInsideCatalogSyncSchema(connectorName,
                                                                                                            integrationContext,
                                                                                                            catalogName,
+                                                                                                           serverGUID,
                                                                                                            catalogGUID,
+                                                                                                           metadataCollectionGUID,
                                                                                                            metadataSourceQualifiedName,
                                                                                                            ucFullNameToEgeriaGUID,
                                                                                                            targetPermittedSynchronization,
@@ -201,7 +212,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                                                                                                            auditLog);
 
             Map<String, String> requestNameToGUIDMap = syncSchema.refresh(catalogGUID,
-                                                                          OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                          OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                           null);
 
             if (requestNameToGUIDMap != null)
@@ -210,7 +221,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
             }
 
             requestNameToGUIDMap = syncSchema.refreshChildren(catalogGUID,
-                                                              OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                              OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                               null);
 
             if (requestNameToGUIDMap != null)

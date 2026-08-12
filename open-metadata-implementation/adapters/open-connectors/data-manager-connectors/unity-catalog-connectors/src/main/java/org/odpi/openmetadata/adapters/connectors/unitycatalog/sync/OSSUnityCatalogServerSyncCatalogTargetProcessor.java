@@ -14,12 +14,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -216,12 +216,12 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                                                                                                     defaultIncludeCatalogs,
                                                                                                     auditLog);
 
-                CapabilityAssetUseProperties capabilityAssetUseProperties = new CapabilityAssetUseProperties();
-                capabilityAssetUseProperties.setUseType(CapabilityAssetUseType.OWNS);
+                ResourceListProperties resourceListProperties = new ResourceListProperties();
+                resourceListProperties.setResourceUse(ResourceUse.CATALOG_RESOURCE.getResourceUse());
 
                 syncCatalog.refresh(dataAccessManagerGUID,
-                                    OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
-                                    capabilityAssetUseProperties);
+                                    OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                    resourceListProperties);
             }
             catch (Exception exception)
             {
@@ -312,7 +312,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
 
                 if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
                     (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
-                    (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DATABASE.typeName)) &&
+                    (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.NAMESPACE_COLLECTION.typeName)) &&
                         (homeMetadataCollectionId.equals(integrationContext.getMetadataSourceGUID())))
                 {
                     OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
@@ -332,12 +332,12 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                                                                                                         defaultIncludeCatalogs,
                                                                                                         auditLog);
 
-                    CapabilityAssetUseProperties capabilityAssetUseProperties = new CapabilityAssetUseProperties();
-                    capabilityAssetUseProperties.setUseType(CapabilityAssetUseType.OWNS);
+                    ResourceListProperties resourceListProperties = new ResourceListProperties();
+                    resourceListProperties.setResourceUse(ResourceUse.CATALOG_RESOURCE.getResourceUse());
 
                     syncCatalog.refresh(dataAccessManagerGUID,
-                                        OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
-                                        capabilityAssetUseProperties);
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                        resourceListProperties);
                 }
             }
             catch (Exception exception)

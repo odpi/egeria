@@ -104,7 +104,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
     OSS_UC_CATALOG("3175a489-d2ce-4cbf-a971-e39a8d7192fe",
                    "Unity Catalog Catalog",
                    null,
-                   OpenMetadataType.DATABASE.typeName,
+                   OpenMetadataType.NAMESPACE_COLLECTION.typeName,
                    null,
                    "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
                    "https://github.com/unitycatalog/unitycatalog",

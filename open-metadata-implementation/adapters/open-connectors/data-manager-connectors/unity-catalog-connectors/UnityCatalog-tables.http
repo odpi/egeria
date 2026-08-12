@@ -1,6 +1,6 @@
 
-@ucURL=http://localhost:8080
-#@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8087
+#@ucURL=http://localhost:8187
 
 ###
 # @name list tables
@@ -8,31 +8,46 @@ GET {{ucURL}}/api/2.1/unity-catalog/tables?catalog_name=unity&schema_name=defaul
 
 ###
 # @name create table
+# The request body is the flat CreateTable schema - it is not wrapped, unlike CreateFunctionRequest.
 POST {{ucURL}}/api/2.1/unity-catalog/tables
 Content-Type: application/json
 
 {
-  "table_info" :
-  {
-    "name": "bookOfKnowledge",
-    "catalog_name" : "test",
-    "schema_name" : "test4schema1",
-    "comment": "Useful data",
-    "parameter_style" : "S",
-    "routine_body" : "EXTERNAL",
-    "external_language" : "Java",
-    "security_type" : "DEFINER"
-  }
+  "name": "bookOfKnowledge",
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "comment": "Useful data",
+  "table_type": "EXTERNAL",
+  "data_source_format": "DELTA",
+  "columns": [
+    {
+      "name": "id",
+      "type_text": "int",
+      "type_json": "{\"name\":\"id\",\"type\":\"integer\",\"nullable\":false,\"metadata\":{}}",
+      "type_name": "INT",
+      "position": 0,
+      "nullable": false
+    },
+    {
+      "name": "title",
+      "type_text": "string",
+      "type_json": "{\"name\":\"title\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}}",
+      "type_name": "STRING",
+      "position": 1,
+      "nullable": true
+    }
+  ],
+  "storage_location": "/tmp/uc-test/bookOfKnowledge"
 }
 
 ###
 # @name get table
-GET {{ucURL}}/api/2.1/unity-catalog/tables/test.test4schema1.createWisdom
+GET {{ucURL}}/api/2.1/unity-catalog/tables/unity.default.bookOfKnowledge
 Content-Type: application/json
 
 
 ###
 # @name delete table
-DELETE {{ucURL}}/api/2.1/unity-catalog/tables/test.test4schema1.createWisdom
+DELETE {{ucURL}}/api/2.1/unity-catalog/tables/unity.default.bookOfKnowledge
 Content-Type: application/json
 

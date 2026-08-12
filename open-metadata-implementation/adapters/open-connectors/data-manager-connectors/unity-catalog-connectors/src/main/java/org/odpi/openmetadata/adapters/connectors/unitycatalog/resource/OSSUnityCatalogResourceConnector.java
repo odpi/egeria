@@ -441,7 +441,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     public List<SchemaInfo> listSchemas(String catalogName) throws PropertyServerException
     {
         final String methodName = "listSchemas";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/schemas?catalog_name={1}";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/schemas?catalog_name={0}";
 
         ListSchemasResponse response = callGetRESTCall(methodName,
                                                        ListSchemasResponse.class,
@@ -620,7 +620,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                         String schemaName) throws PropertyServerException
     {
         final String methodName = "listVolumes";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/volumes?catalog_name={1}&schema_name={2}";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/volumes?catalog_name={0}&schema_name={1}";
 
         ListVolumesResponse response = callGetRESTCall(methodName,
                                                        ListVolumesResponse.class,
@@ -804,7 +804,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                       String schemaName) throws PropertyServerException
     {
         final String methodName = "listTables";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/tables?catalog_name={1}&schema_name={2}";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/tables?catalog_name={0}&schema_name={1}";
 
         ListTablesResponse response = callGetRESTCall(methodName,
                                                       ListTablesResponse.class,
@@ -840,10 +840,14 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         final String methodName = "createFunction";
         final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions";
 
+        CreateFunctionRequestBody requestBody = new CreateFunctionRequestBody();
+
+        requestBody.setFunction_info(functionProperties);
+
         return callPostRESTCallNoParams(methodName,
                                         FunctionInfo.class,
                                         urlTemplate,
-                                        functionProperties);
+                                        requestBody);
     }
 
 
@@ -896,7 +900,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                             String schemaName) throws PropertyServerException
     {
         final String methodName = "listFunction";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions?catalog_name={1}&schema_name={2}";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions?catalog_name={0}&schema_name={1}";
 
         ListFunctionsResponse response = callGetRESTCall(methodName,
                                                          ListFunctionsResponse.class,
@@ -995,7 +999,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
      */
     public RegisteredModelInfo getRegisteredModel(String fullName) throws PropertyServerException
     {
-        final String methodName = "getVolume";
+        final String methodName = "getRegisteredModel";
         final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}";
 
         return callGetRESTCall(methodName,
@@ -1017,7 +1021,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                                           String schemaName) throws PropertyServerException
     {
         final String methodName = "listRegisteredModel";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models?catalog_name={1}&schema_name={2}";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models?catalog_name={0}&schema_name={1}";
 
         ListRegisteredModelsResponse response = callGetRESTCall(methodName,
                                                                 ListRegisteredModelsResponse.class,
@@ -1119,7 +1123,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     public ModelVersionInfo getModelVersion(String fullName,
                                             long   version) throws PropertyServerException
     {
-        final String methodName = "getVolume";
+        final String methodName = "getModelVersion";
         final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions/{1}";
 
         return callGetRESTCall(methodName,
@@ -1203,6 +1207,35 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                            urlTemplate,
                            fullName,
                            version);
+    }
+
+
+    /**
+     * Finalize a model version once its files have been uploaded to its storage location, so that it
+     * becomes read-only and available for use.
+     *
+     * @param fullName fullName of the model
+     * @param version version to work with
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public ModelVersionInfo finalizeModelVersion(String fullName,
+                                                 long   version) throws PropertyServerException
+    {
+        final String methodName  = "finalizeModelVersion";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions/{1}/finalize";
+
+        FinalizeModelVersionRequestBody requestBody = new FinalizeModelVersionRequestBody();
+
+        requestBody.setFull_name(fullName);
+        requestBody.setVersion(version);
+
+        return callPatchRESTCall(methodName,
+                                 ModelVersionInfo.class,
+                                 urlTemplate,
+                                 requestBody,
+                                 fullName,
+                                 version);
     }
 
 

@@ -288,8 +288,8 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
         templateOptions.setIsOwnAnchor(false);
         templateOptions.setAnchorScopeGUIDs(Collections.singletonList(catalogGUID));
         templateOptions.setParentGUID(catalogGUID);
-        templateOptions.setParentAtEnd1(true);
-        templateOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
+        templateOptions.setParentAtEnd1(false);
+        templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
 
         return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                                                                                           templateOptions,

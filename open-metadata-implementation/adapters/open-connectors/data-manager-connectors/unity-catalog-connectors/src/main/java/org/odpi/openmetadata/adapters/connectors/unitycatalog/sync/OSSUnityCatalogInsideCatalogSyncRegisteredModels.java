@@ -40,7 +40,9 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param serverGUID guid of the UC server asset
      * @param catalogGUID guid of the catalog
+     * @param metadataCollectionGUID guid of the metadata collection for this server
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -57,7 +59,9 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
     public OSSUnityCatalogInsideCatalogSyncRegisteredModels(String                           connectorName,
                                                             IntegrationContext               context,
                                                             String                           catalogTargetName,
+                                                            String                           serverGUID,
                                                             String                           catalogGUID,
+                                                            String                           metadataCollectionGUID,
                                                             String                           catalogName,
                                                             Map<String, String>              ucFullNameToEgeriaGUID,
                                                             PermittedSynchronization         targetPermittedSynchronization,
@@ -73,7 +77,9 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
         super(connectorName,
               context,
               catalogTargetName,
+              serverGUID,
               catalogGUID,
+              metadataCollectionGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -289,7 +295,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         templateOptions.setAnchorGUID(schemaGUID);
         templateOptions.setIsOwnAnchor(false);
-        templateOptions.setAnchorScopeGUIDs(Collections.singletonList(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID()));
+        templateOptions.setAnchorScopeGUIDs(super.buildAnchorScopeGUIDs(schemaGUID));
 
         templateOptions.setParentGUID(schemaGUID);
         templateOptions.setParentAtEnd1(parentAtEnd1);
@@ -304,6 +310,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                                           null);
 
         super.addExternalIdentifier(ucModelGUID,
+                                    schemaGUID,
                                     modelInfo,
                                     modelInfo.getSchema_name(),
                                     UnityCatalogPlaceholderProperty.MODEL_NAME.getName(),
@@ -364,6 +371,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
         if (memberElement.getExternalIdentifier() == null)
         {
             super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        super.getParentGUIDFromMember(memberElement),
                                         modelInfo,
                                         modelInfo.getSchema_name(),
                                         UnityCatalogPlaceholderProperty.MODEL_NAME.getName(),

@@ -1,6 +1,6 @@
 
-@ucURL=http://localhost:8080
-#ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8087
+#@ucURL=http://localhost:8187
 
 ###
 # @name list registered models
@@ -8,6 +8,10 @@ GET {{ucURL}}/api/2.1/unity-catalog/models?catalog_name=unity&schema_name=defaul
 
 ###
 # @name create registered model
+# NOTE: this fails with "Neither catalog nor schema has managed location configured." unless the target
+# catalog or schema has a managed storage root configured (registered models are always stored under the
+# catalog/schema's managed location - unlike volumes/tables, an explicit storage_location on the request
+# does not bypass this requirement).
 POST {{ucURL}}/api/2.1/unity-catalog/models
 Content-Type: application/json
 
@@ -56,7 +60,7 @@ Content-Type: application/json
 
 ###
 # @name list model versions
-GET {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions?max_results=10
 Content-Type: application/json
 
 

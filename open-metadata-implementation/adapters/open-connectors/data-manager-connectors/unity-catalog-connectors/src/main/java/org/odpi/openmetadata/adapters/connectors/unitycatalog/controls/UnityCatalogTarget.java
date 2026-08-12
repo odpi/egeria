@@ -4,14 +4,13 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * TargetEnum characterises the type of third party technology supported by a collection of connectors.
+ * TargetEnum characterizes the type of third-party technology supported by a collection of connectors.
  * This enables the capability of these connectors to be correctly matched to the resources and elements
  * that they work with.
  */
@@ -28,12 +27,6 @@ public enum UnityCatalogTarget
                                  org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
                                  org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                  null),
-
-    UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDescription(),
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
-                                   null),
 
     ;
 
@@ -157,7 +150,6 @@ public enum UnityCatalogTarget
         List<CatalogTargetType> catalogTargetTypes = new ArrayList<>();
 
         catalogTargetTypes.add(UNITY_CATALOG_SERVER_TARGET.getCatalogTargetType());
-        catalogTargetTypes.add(UNITY_CATALOG_CONNECTOR_TARGET.getCatalogTargetType());
 
         return catalogTargetTypes;
     }
