@@ -84,7 +84,8 @@ loadScripts(document, 'script');</script>
  the metadata access server.  So, unless the engine definition is linked explicitly to an engine service,
  the type of the governance engine handler is unknown.  Retrieval of a governance engine definition may be
  triggered by an event, or by a refresh sweep of the metadata.  Therefore, it is possible that two threads
- are responding to the creation of a new governance engine definition.  Hence, the synchronized methods</div>
+ are responding to the creation of a new governance engine definition.  Hence, the synchronized methods
+ on this class are needed to protect the maps from concurrent update.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

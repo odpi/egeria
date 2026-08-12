@@ -83,7 +83,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationConnectorDedicatedThread</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></span></div>
-<div class="block">IntegrationConnectorDedicatedThread is the thread that runs a connector that issues</div>
+<div class="block">IntegrationConnectorDedicatedThread is the thread that runs a connector that issues blocking calls, so that its
+ engage() method does not tie up the shared refresh thread pool used by other integration connectors.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

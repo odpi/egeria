@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li>Related Packages&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,9 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads</span></div>
+<section class="package-description" id="package-description">
+<div class="block">Provides the background thread implementations used by Integration Daemon Services.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -75,7 +78,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="IntegrationConnectorDedicatedThread.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads">IntegrationConnectorDedicatedThread</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">IntegrationConnectorDedicatedThread is the thread that runs a connector that issues</div>
+<div class="block">IntegrationConnectorDedicatedThread is the thread that runs a connector that issues blocking calls, so that its
+ engage() method does not tie up the shared refresh thread pool used by other integration connectors.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="IntegrationConnectorRefreshThread.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads">IntegrationConnectorRefreshThread</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
