@@ -51,6 +51,14 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
             "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
             "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+
+    /**
+     * CLIENT-SIDE-REST-API-CONNECTOR-503-004 - REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}
+     */
+    UNSUCCESSFUL_HTTP_RESPONSE(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-004 ",
+            "REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}",
+            "The remote server rejected the request, or was not able to process it, before returning a body of the expected type.",
+            "Review the HTTP status and response body to determine the cause of the error, correct the request and retry."),
     ;
 
 

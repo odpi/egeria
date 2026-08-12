@@ -85,6 +85,6 @@ test {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter'
+    mainClassName = 'org.odpi.openmetadata.contentpacks.core.CorePacksArchivesWriter'
     archiveClassifier = 'jar-with-dependencies'
 }

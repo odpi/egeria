@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.restclients.factory;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
-import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.restclients.jdk.JDKRESTClientConnectorProvider;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -60,7 +60,7 @@ public class RESTClientFactory
                                                                                    localServerSecretsStoreCollection,
                                                                                    localServerSecretsStorePurpose);
 
-        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, secretsConnection);
+        this.clientConnection = this.getRESTClientConnection(serverName, serverPlatformURLRoot, secretsConnection);
         this.auditLog = auditLog;
     }
 
@@ -87,13 +87,13 @@ public class RESTClientFactory
                                                                                  InstantiationException,
                                                                                  IllegalAccessException
     {
-        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, secretsStoreConnectorMap);
+        this.clientConnection = this.getRESTClientConnection(serverName, serverPlatformURLRoot, secretsStoreConnectorMap);
         this.auditLog = auditLog;
     }
 
 
     /**
-     * Return the connection object for a Spring based REST Client.  This connection object is built up from
+     * Return the connection object for the REST Client.  This connection object is built up from
      * information from the caller.
      *
      * @param serverName name of the OMAG Server to call
@@ -106,7 +106,7 @@ public class RESTClientFactory
      * @throws InstantiationException  Unable to work with the connector provider class
      * @throws IllegalAccessException  Unable to work with the connector provider class
      */
-    private Connection getSpringRESTClientConnection(String                             serverName,
+    private Connection getRESTClientConnection(String                             serverName,
                                                      String                             serverPlatformURLRoot,
                                                      Map<String, SecretsStoreConnector> secretsStoreConnectorMap) throws ClassNotFoundException,
                                                                                                                          InvocationTargetException,
@@ -151,7 +151,7 @@ public class RESTClientFactory
         endpoint.setQualifiedName(serverName);
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(Connection.getConnectorType(SpringRESTClientConnectorProvider.class.getName()));
+        connection.setConnectorType(Connection.getConnectorType(JDKRESTClientConnectorProvider.class.getName()));
         connection.setQualifiedName(endpoint.getNetworkAddress());
 
         return connection;
@@ -159,7 +159,7 @@ public class RESTClientFactory
 
 
     /**
-     * Return the connection object for a Spring based REST Client.  This connection object is built up from
+     * Return the connection object for the REST Client.  This connection object is built up from
      * information from the caller.
      *
      * @param serverName name of the OMAG Server to call
@@ -172,7 +172,7 @@ public class RESTClientFactory
      * @throws InstantiationException  Unable to work with the connector provider class
      * @throws IllegalAccessException  Unable to work with the connector provider class
      */
-    private Connection getSpringRESTClientConnection(String             serverName,
+    private Connection getRESTClientConnection(String             serverName,
                                                      String             serverPlatformURLRoot,
                                                      EmbeddedConnection secretsStoreConnector) throws ClassNotFoundException,
                                                                                                       InvocationTargetException,
@@ -206,7 +206,7 @@ public class RESTClientFactory
         endpoint.setQualifiedName(serverName);
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(Connection.getConnectorType(SpringRESTClientConnectorProvider.class.getName()));
+        connection.setConnectorType(Connection.getConnectorType(JDKRESTClientConnectorProvider.class.getName()));
         connection.setQualifiedName(endpoint.getNetworkAddress());
 
         return connection;

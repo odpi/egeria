@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc.NameC
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.*;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
-import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
@@ -21,7 +20,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyValue;
-import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.*;
 
@@ -1889,7 +1887,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         }
         catch (PropertyServerException error)
         {
-            if (error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            if (isConflictResponse(error))
             {
                 throw new NameConflictException(ApacheAtlasErrorCode.TERM_ALREADY_EXISTS.getMessageDefinition(term.getName()),
                                                 this.getClass().getName(),
@@ -1980,7 +1978,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         }
         catch (PropertyServerException error)
         {
-            if (error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            if (isConflictResponse(error))
             {
                 throw new NameConflictException(ApacheAtlasErrorCode.CATEGORY_ALREADY_EXISTS.getMessageDefinition(category.getName()),
                                                 this.getClass().getName(),
@@ -2117,68 +2115,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     }
 
     /**
-     * Issue a GET REST call that returns a response object. It's working only with {@link SpringRESTClientConnector}
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param responseType class of the response object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private    <T> T callGetRESTCall(String                        methodName,
-                                     ParameterizedTypeReference<T> responseType,
-                                     String                        urlTemplate,
-                                     Object...                     params) throws PropertyServerException
-    {
-        try
-        {
-            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
-            return clientConnector.callGetRESTCall(methodName, responseType, urlTemplate, params);
-        }
-        catch (Exception error)
-        {
-            logRESTCallException(methodName, true, error);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a response object. It's working only with {@link SpringRESTClientConnector}
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param responseType class of the response object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private    <T> T callNoLogGetRESTCall(String                        methodName,
-                                          ParameterizedTypeReference<T> responseType,
-                                          String                        urlTemplate,
-                                          Object...                     params) throws PropertyServerException
-    {
-        try
-        {
-            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
-            return clientConnector.callGetRESTCall(methodName, responseType, urlTemplate, params);
-        }
-        catch (Exception error)
-        {
-            logRESTCallException(methodName, false, error);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
      * complex parameters.
      *
@@ -2298,7 +2234,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
             /*
              * Avoid logging error to the audit log if this is just a name conflict
              */
-            if (! error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            if (! isConflictResponse(error))
             {
                 logRESTCallException(methodName, true, error);
             }
@@ -2347,39 +2283,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     }
 
     /**
-     * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
-     * complex parameters. It's working only with {@link SpringRESTClientConnector}
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param responseType class of the response for generic object.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private    <T> T callPostRESTCall(String                        methodName,
-                                      ParameterizedTypeReference<T> responseType,
-                                      String                        urlTemplate,
-                                      Object                        requestBody,
-                                      Object...                     params) throws PropertyServerException
-    {
-        try
-        {
-            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
-            return clientConnector.callPostRESTCall(methodName, responseType, urlTemplate, requestBody, params);
-        }
-        catch (Exception error)
-        {
-            logRESTCallException(methodName, true, error);
-        }
-
-        return null;
-    }
-
-    /**
      * Issue a PUT REST call that returns a response object.  This is typically an update.
      *
      * @param <T> return type
@@ -2409,40 +2312,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
         return null;
     }
-
-    /**
-     * Issue a PUT REST call that returns a response object.  This is typically an update.
-     * It's working only with {@link SpringRESTClientConnector}
-     *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param responseType class of the response for generic object.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private    <T> T callPutRESTCall(String                        methodName,
-                                     ParameterizedTypeReference<T> responseType,
-                                     String                        urlTemplate,
-                                     Object                        requestBody,
-                                     Object...                     params) throws PropertyServerException
-    {
-        try
-        {
-            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
-            return clientConnector.callPutRESTCall(methodName, responseType, urlTemplate, requestBody, params);
-        }
-        catch (Exception error)
-        {
-            logRESTCallException(methodName, true, error);
-        }
-
-        return null;
-    }
-
 
     /**
      * Issue a Delete REST call that returns a response object.
@@ -2497,32 +2366,24 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
 
     /**
-     * Issue a Delete REST call that returns a response object.
+     * Determine whether the underlying REST call failed because Apache Atlas returned an HTTP 409 Conflict
+     * (typically because the term/category name is already in use).  The wording of the message depends on
+     * which RESTClientConnector implementation is in use, since each reports the failure differently.
      *
-     * @param <T> return type
-     * @param methodName  name of the method being called.
-     * @param responseType class of the response for generic object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @param error resulting exception from the REST call
+     * @return true if the failure was an HTTP 409 Conflict from the remote server
      */
-    private    <T> T callDeleteRESTCall(String                        methodName,
-                                        ParameterizedTypeReference<T> responseType,
-                                        String                        urlTemplate, Object... params) throws PropertyServerException
+    private boolean isConflictResponse(Exception error)
     {
-        try
+        String errorMessage = error.getMessage();
+
+        if (errorMessage == null)
         {
-            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
-            return clientConnector.callDeleteRESTCall(methodName, responseType, urlTemplate, null, params);
-        }
-        catch (Exception error)
-        {
-            logRESTCallException(methodName, true, error);
+            return false;
         }
 
-        return null;
+        return errorMessage.contains("org.springframework.web.client.HttpClientErrorException$Conflict") ||
+               errorMessage.contains("unsuccessful HTTP status 409");
     }
 
 
