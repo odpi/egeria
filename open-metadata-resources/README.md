@@ -13,7 +13,7 @@ deployment configurations of Egeria and other integrated technology.
 
 * **[open-metadata-dev-utilities](open-metadata-dev-utilities)** - the developer utilities provide client programs
 that help developers work with different features of the
-[OMAG Server Platform](https://egeria-project.org/concepts/omag-server-runtime/).
+[OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/).
 
 * **[open-metadata-reports](open-metadata-reports)** - the open metadata reports extract information from the
 OMAG Server Platform and the open metadata repositories.

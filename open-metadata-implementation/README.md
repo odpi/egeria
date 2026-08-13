@@ -56,7 +56,7 @@ implementation.
 specialist services that support the different types of governance servers that can run in the OMAG Server Platform.
 
 * **[platform-services](platform-services)** - the platform services provides the APIs for configuring the 
-[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-runtime/)
+[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform/)
 and discovering information about the [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that it is hosting.
 
 * **[platform-chassis](platform-chassis)** - the platform chassis is the base component for the 

@@ -34,6 +34,11 @@ TRUSTSTORE=EgeriaCA.p12
 KEYPASS=egeria
 STOREPASS=egeria
 
+# Validity period for the server/client certs issued by the intermediate CA below.  Kept a little short of the
+# intermediate CA's own expiry (currently 2032-03-13) so leaf certs never outlive their issuer; adjust if the
+# CAs are ever regenerated with CA_CLEAN.
+CERT_DAYS=2030
+
 # The tools will be creating a few directories for handling the CAs to useful to keep these here
 export iCA=EgeriaIntermediateCA
 export rootCA=EgeriaRootCA
@@ -41,7 +46,9 @@ export rootCA=EgeriaRootCA
 CA_CHAIN=EgeriaCAChain
 
 # Used in openssl.cnf for the subjectAltName where needed - export to environment
-export SAN="DNS:localhost"
+# Includes host.docker.internal so platforms running in Docker containers can be reached
+# by other containers (eg engine-host, integration-daemon) addressing the platform via that name
+export SAN="DNS:localhost,DNS:host.docker.internal,IP:127.0.0.1"
 
 # Cleanup directories from old runs (this will DELETE all your CAs!!)
 # ONLY run these if you want to start afresh
@@ -127,7 +134,7 @@ for cert in ${SERVERCERTS}; do
   openssl req -new -batch -passin pass:${KEYPASS} -key ${FNAME}.key.pem \
     -out ${FNAME}.csr.pem -days 825 -subj '/C=US/ST=CA/O=LFAIData/CN='${cert} \
     -config ./openssl.cnf
-  openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions server_cert -notext -days 375 \
+  openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions server_cert -notext -days ${CERT_DAYS} \
     -config ./openssl.cnf -batch -passin pass:${KEYPASS}
   # We include the full chain in the .p12 archive
   cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem >tmp.pem
@@ -146,7 +153,7 @@ for cert in ${CLIENTCERTS}; do
   openssl req -batch -new -passin pass:${KEYPASS} -key ${FNAME}.key.pem \
     -out ${FNAME}.csr.pem -days 825 -subj '/C=US/ST=CA/O=LFAIData/CN='${cert} \
     -config ./openssl.cnf
-  openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions client_cert -notext -days 375 \
+  openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions client_cert -notext -days ${CERT_DAYS} \
     -config ./openssl.cnf -batch -passin pass:${KEYPASS}
   cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem >tmp.pem
   openssl pkcs12 -export -in ${FNAME}.cert.pem -CAfile tmp.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \

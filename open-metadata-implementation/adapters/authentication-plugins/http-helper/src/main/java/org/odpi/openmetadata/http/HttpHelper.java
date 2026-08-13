@@ -22,12 +22,31 @@ public class HttpHelper
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
     /**
+     * Records whether noStrictSSL() has been called, for callers (such as HTTP client implementations that
+     * do not honour HttpsURLConnection's static defaults) that need to independently disable hostname
+     * verification.
+     */
+    private static volatile boolean strictSSL = true;
+
+    /**
+     * Reports whether strict SSL checking is still in force, ie whether noStrictSSL() has not been called.
+     *
+     * @return true if certificates and hostnames are still being validated
+     */
+    public static boolean isStrictSSL()
+    {
+        return strictSSL;
+    }
+
+    /**
      * Allows the use of self-signed certificates on https connections.
      * The client will trust the server no matter which certificate is sent.
      */
     public static void noStrictSSL(){
 
         LOGGER.warn("Strict SSL is set to false! Invalid certificates will be accepted for connection!");
+
+        strictSSL = false;
 
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[] {

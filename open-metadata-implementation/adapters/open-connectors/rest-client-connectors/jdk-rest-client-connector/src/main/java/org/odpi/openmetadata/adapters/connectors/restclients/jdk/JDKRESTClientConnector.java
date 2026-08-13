@@ -17,15 +17,22 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
@@ -66,10 +73,64 @@ public class JDKRESTClientConnector extends RESTClientConnector
 
         objectMapper.findAndRegisterModules();
 
-        httpClient = HttpClient.newBuilder()
-                                .connectTimeout(Duration.ofSeconds(30))
-                                .followRedirects(HttpClient.Redirect.NORMAL)
-                                .build();
+        HttpClient.Builder httpClientBuilder = HttpClient.newBuilder()
+                                                           .connectTimeout(Duration.ofSeconds(30))
+                                                           .followRedirects(HttpClient.Redirect.NORMAL);
+
+        if (! HttpHelper.isStrictSSL())
+        {
+            /*
+             * java.net.http.HttpClient does not consult HttpsURLConnection's static defaultSSLSocketFactory or
+             * defaultHostnameVerifier (those only apply to the legacy HttpsURLConnection stack), so strict.ssl=false
+             * has to be applied directly here: an explicit trust-all SSLContext, plus SSLParameters with hostname
+             * verification switched off (there is no dedicated hostnameVerifier() builder method on this client).
+             */
+            httpClientBuilder.sslContext(createTrustAllSSLContext());
+
+            SSLParameters sslParameters = new SSLParameters();
+            sslParameters.setEndpointIdentificationAlgorithm(null);
+            httpClientBuilder.sslParameters(sslParameters);
+        }
+
+        httpClient = httpClientBuilder.build();
+    }
+
+
+    /**
+     * Build an SSLContext that trusts any certificate chain presented by the server, for use when strict SSL
+     * checking has been switched off (-Dstrict.ssl=false or the strict.ssl=false configuration property).
+     *
+     * @return SSLContext that trusts all certificates
+     */
+    private static SSLContext createTrustAllSSLContext()
+    {
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager()
+                {
+                    public X509Certificate[] getAcceptedIssuers()
+                    {
+                        return new X509Certificate[0];
+                    }
+                    public void checkClientTrusted(X509Certificate[] certs, String authType)
+                    {
+                    }
+                    public void checkServerTrusted(X509Certificate[] certs, String authType)
+                    {
+                    }
+                }
+        };
+
+        try
+        {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            return sslContext;
+        }
+        catch (GeneralSecurityException error)
+        {
+            log.error("Unable to configure trust-all SSLContext for strict.ssl=false", error);
+            throw new IllegalStateException("Unable to configure trust-all SSLContext for strict.ssl=false", error);
+        }
     }
 
 
@@ -441,6 +502,15 @@ public class JDKRESTClientConnector extends RESTClientConnector
         if ((responseBody == null) || responseBody.isEmpty() || (returnClass == null))
         {
             return null;
+        }
+
+        /*
+         * REST APIs that return a plain String (eg the platform origin API) write it as unquoted text/plain,
+         * not JSON, so it must be returned as-is rather than parsed by Jackson.
+         */
+        if (returnClass == String.class)
+        {
+            return returnClass.cast(responseBody);
         }
 
         return objectMapper.readValue(responseBody, returnClass);
