@@ -30,7 +30,7 @@ demonstrate the ability to handle various workloads and also
 a performance benchmark test.
 
 Each workbench defines a set of profiles that a technology can support.  Within each profile are a list of requirements,
-some are mandatory and some are required.  If the technology passes all of the mandatory requirements defined in the
+some are mandatory and some are required.  If the technology passes all the mandatory requirements defined in the
 profiles then it is considered compliant.  Extra credit is then given to supporting the optional requirements.
 The aim of the mandatory requirements is to ensure the technology can *do no harm* to the other technologies it
 is sharing metadata with.

@@ -22,7 +22,7 @@ default_crl_days  = 30
 default_md        = sha256
 name_opt          = ca_default
 cert_opt          = ca_default
-default_days      = 375
+default_days      = 2030
 preserve          = no
 policy            = ${ENV::CA_POLICY}
 
