@@ -107,14 +107,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSL()" class="member-name-link">noStrictSSL</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isStrictSSL()" class="member-name-link">isStrictSSL</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Allows the use of self-signed certificates on https connections.</div>
+<div class="block">Reports whether strict SSL checking is still in force, ie whether noStrictSSL() has not been called.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSLIfConfigured()" class="member-name-link">noStrictSSLIfConfigured</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSL()" class="member-name-link">noStrictSSL</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Allows the use of self-signed certificates on https connections.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSLIfConfigured()" class="member-name-link">noStrictSSLIfConfigured</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Allows using self-signed certificates https connections.</div>
 </div>
 </div>
@@ -148,6 +153,17 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="isStrictSSL()">
+<h3>isStrictSSL</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isStrictSSL</span>()</div>
+<div class="block">Reports whether strict SSL checking is still in force, ie whether noStrictSSL() has not been called.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if certificates and hostnames are still being validated</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="noStrictSSL()">
 <h3>noStrictSSL</h3>
