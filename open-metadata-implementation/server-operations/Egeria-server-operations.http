@@ -57,7 +57,7 @@ content-packs/CocoComboArchive.omarchive
 ###
 # @name Load open metadata archive connection
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/instance/open-metadata-archives/connection
+POST {{baseURL}}/open-metadata/server-operations/servers/{{server}}/instance/open-metadata-archives/connection
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

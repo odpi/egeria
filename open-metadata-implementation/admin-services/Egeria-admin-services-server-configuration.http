@@ -183,7 +183,7 @@ Content-Type: application/json
 # @name Add file audit log destination (for Error and Exception)
 # Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/atlas-exchange/audit-log-destinations/files
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/files
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -499,25 +499,10 @@ POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohor
 Authorization: Bearer {{token}}
 
 ###
-# @name Add cohort configuration with topic structure
-# Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request.
-POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS
-Authorization: Bearer {{token}}
-
-###
 # @name Get cohort configuration
 # Retrieve the configuration used to connect to an Open Metadata Repository Cohort.
 GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}
 Authorization: Bearer {{token}}
-
-###
-# @name Override single cohort topic name
-# Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
-POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-cp.cohort.cocoCohort
 
 ###
 # @name Override registration cohort topic name
@@ -541,21 +526,21 @@ cp.cohort.{{cohort}}.types
 # @name Override instances cohort topic name
 # Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
 POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances
-CAuthorization: Bearer {{token}}
-ontent-Type: text/plain
+Authorization: Bearer {{token}}
+Content-Type: text/plain
 
 cp.cohort.{{cohort}}.instances
 
 ###
 # @name Get single cohort topic name
 # Return the name of the topic used by the requested cohort.
-GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-names
 Authorization: Bearer {{token}}
 
 ###
 # @name Get dedicated cohort topic names
 # Return the name of the topic used by the requested cohort.
-GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-names
 Authorization: Bearer {{token}}
 
 ###

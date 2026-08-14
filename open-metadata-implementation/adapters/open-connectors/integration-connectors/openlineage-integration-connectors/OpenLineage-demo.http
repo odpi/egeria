@@ -164,7 +164,8 @@ Content-Type: application/json
 ###
 # @name Refresh Integration Connector (UnityCatalogServerSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -185,7 +186,8 @@ Content-Type: application/json
 ###
 # @name Refresh Integration Connector (UnityCatalogInsideCatalogSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -412,7 +414,8 @@ Content-Type: application/json
 ###
 # @name Refresh Integration Connector (UnityCatalogServerSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -465,7 +468,8 @@ Content-Type: application/json
 # @name deleteMetadataElement
 # Delete a specific metadata element.
 
-POST {{baseURL}}/servers/active-metadata-store/open-metadata/access-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
+POST {{baseURL}}/servers/active-metadata-store/open-metadata/access-services/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
