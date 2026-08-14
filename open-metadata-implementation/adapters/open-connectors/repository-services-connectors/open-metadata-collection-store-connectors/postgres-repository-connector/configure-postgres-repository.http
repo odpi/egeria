@@ -8,16 +8,33 @@
 @localMetadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
 # ---------------------------------------------
 # Metadata Assess Store: postgres-metadata-store
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/server-user-id?id=postgresenpa
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/server-user-id?id=postgresenpa
+Authorization: Bearer {{token}}
 
 ###
 # Set up the description of this server.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/server-description
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/server-description
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 A metadata store that uses a postgreSQL-backed repository
@@ -28,7 +45,8 @@ A metadata store that uses a postgreSQL-backed repository
 # @name Add JDBC audit log destination
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_postgres_metadata_store"
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_postgres_metadata_store"
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ["Error", "Exception", "Activity", "Action"]
@@ -38,7 +56,8 @@ Content-Type: application/json
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/local-repository/mode/postgres-repository
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -52,7 +71,8 @@ Content-Type: application/json
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Set local metadata collection id
 # Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/local-repository/metadata-collection-id
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/local-repository/metadata-collection-id
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 {{localMetadataCollectionId}}
@@ -61,7 +81,8 @@ Content-Type: text/plain
 ###
 # Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
 # application.properties file using the `platform.placeholder.variables` property.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/event-bus
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/event-bus
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -78,7 +99,8 @@ Content-Type: application/json
 
 ###
 # Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/access-services
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/access-services
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -87,7 +109,8 @@ Content-Type: application/json
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/SimpleCatalogV1.omarchive
@@ -95,7 +118,8 @@ content-packs/SimpleCatalogV1.omarchive
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CoreContentPack.omarchive
@@ -103,7 +127,8 @@ content-packs/CoreContentPack.omarchive
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
@@ -112,14 +137,16 @@ content-packs/CocoComboArchive.omarchive
 ###
 # @name start server
 # Restart the postgres-metadata-store server on the OMAG Server Platform.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/postgres-metadata-store/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/postgres-metadata-store/instance
+Authorization: Bearer {{token}}
 
 
 
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/SimpleCatalogV1.omarchive
@@ -130,7 +157,8 @@ content-packs/SimpleCatalogV1.omarchive
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/SimpleCatalogV2.omarchive
@@ -141,7 +169,8 @@ content-packs/SimpleCatalogV2.omarchive
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/SimpleCatalogV3.omarchive
@@ -149,7 +178,8 @@ content-packs/SimpleCatalogV3.omarchive
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
@@ -157,11 +187,11 @@ content-packs/CocoComboArchive.omarchive
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CoreContentPack.omarchive
 
 
 ###
-

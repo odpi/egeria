@@ -153,6 +153,7 @@ Authorization: Bearer {{token}}
 # @name Start server - using supplied configuration
 # Activate a server on the OMAG Server Platform.  Use the configuration document passed on the request. This configuration document is saved to the configuration document store and then the server is started.
 POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/instance
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

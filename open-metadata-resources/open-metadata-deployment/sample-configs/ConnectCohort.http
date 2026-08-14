@@ -63,6 +63,7 @@ Content-Type: text/plain
 ###
 # Add the server to the cohort.
 POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 
 ###
@@ -90,6 +91,7 @@ fdf8de25-b213-4fa4-95d5-c9eb91e60b21
 ###
 # Add the server to the cohort.
 POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 
 ###

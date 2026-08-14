@@ -26,22 +26,22 @@ Content-Type: application/json
 
 ###
 # @name get metadata collection Id
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-collection-id
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-collection-id
 Authorization: Bearer {{token}}
 
 ###
 # @name Get types
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/all
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/all
 Authorization: Bearer {{token}}
 
 ###
 # @name Get TypeDef By Name
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/typedef/name/Asset
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/typedef/name/Asset
 Authorization: Bearer {{token}}
 
 ###
 # @name Get AttributeTypeDef By Name
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/attribute-typedef/name/GovernanceActionStatus
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/attribute-typedef/name/GovernanceActionStatus
 Authorization: Bearer {{token}}
 
 ###
@@ -52,21 +52,21 @@ Authorization: Bearer {{token}}
 ###
 # @name Is Entity Known
 # The isEntityKnown requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
-GET {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}/existence
+POST {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}/existence
 Authorization: Bearer {{token}}
 
 
 ###
 # @name Get Entity Detail
 # The getEntityDetail requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
-GET {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}
+POST {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}
 Authorization: Bearer {{token}}
 
 
 ###
 # @name Get Entity Summary
 # The getEntitySummary requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
-GET {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}/summary
+POST {{baseURL}}/servers/postgres-metadata-store/open-metadata/repository-services/users/{{user}}/instances/entity/{{entityGUID}}/summary
 Authorization: Bearer {{token}}
 
 ###
@@ -120,7 +120,7 @@ Content-Type: application/json
 ###
 # @name Get Relationship
 # The getRelationship requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/{{relationshipGUID}}
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/{{relationshipGUID}}
 Authorization: Bearer {{token}}
 
 ###

@@ -116,7 +116,7 @@ Content-Type: application/json
 ###
 # @name getAllRelatedMetadataElements
 # Retrieve the metadata elements connected to the supplied element.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/any-type?
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/any-type?
     startingAtEnd=0&
     startFrom=0&
     pageSize=0
@@ -126,7 +126,7 @@ Authorization: Bearer {{token}}
 ###
 # @name getRelatedMetadataElements
 # Retrieve the metadata elements connected to the supplied element via a specific relationship type.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/type/{{relationshipTypeName}}?
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/type/{{relationshipTypeName}}?
     startingAtEnd=0&
     startFrom=0&
     pageSize=0
@@ -143,7 +143,7 @@ Authorization: Bearer {{token}}
 ###
 # @name getAllMetadataElementRelationships
 # Retrieve the relationships linking the supplied elements.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}?
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}?
     startFrom=0&
     pageSize=0
 Authorization: Bearer {{token}}
@@ -152,7 +152,7 @@ Authorization: Bearer {{token}}
 ###
 # @name getMetadataElementRelationships
 # Retrieve the relationships linking the supplied elements via a specific type of relationship.
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-type/{{relationshipTypeName}}/to-elements/{{metadataElementAtEnd2GUID}}?
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-type/{{relationshipTypeName}}/to-elements/{{metadataElementAtEnd2GUID}}?
     startFrom=0&
     pageSize=0
 Authorization: Bearer {{token}}

@@ -1,10 +1,24 @@
 # Egeria-open-metadata-store - requests for creating/updating/deleting metadata
 
 @serverName=active-metadata-store
-@serviceURLMarker=asset-owner
 @userId=erinoverview
 
 @elementGUID=44c05d48-1c99-4298-8740-6318345b7af5
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{userId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 
 ###
@@ -13,7 +27,8 @@
 # The type name is optional but can be used to change the type name of the element that is created.  Typically this
 # would be a sub-type of the template's type to be sure that all of the properties and relationships are valid.
 # The example below uses a template from the CocoComboArchive.omarchive open metadata archive.
-POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/from-template
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/from-template
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -40,7 +55,8 @@ Content-Type: application/json
 # The type name is optional but can be used to change the type name of the element that is created.  Typically this
 # would be a sub-type of the template's type to be sure that all of the properties and relationships are valid.
 # The example below uses a template from the CocoComboArchive.omarchive open metadata archive.
-POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/from-template?allowRetrieve=true
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/from-template?allowRetrieve=true
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -64,25 +80,32 @@ Content-Type: application/json
 
 ###
 
-relationshipGUID=add guid here
+@relationshipGUID=add guid here
 
 ###
 # @name getMetadataElementByGUID
 # Retrieve a specific metadata element.
 
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
 # @name getMetadataElementHistory
-# Retrieve a specific metadata element.
+# Retrieve the history of a specific metadata element.
 
-GET {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}/history
+Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "HistoryRequestBody"
+}
 
 ###
 # @name deleteMetadataElement
 # Delete a specific metadata element.
 
-POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementGUID}}/delete
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}/delete
+Authorization: Bearer {{token}}
 Content-Type: application/json

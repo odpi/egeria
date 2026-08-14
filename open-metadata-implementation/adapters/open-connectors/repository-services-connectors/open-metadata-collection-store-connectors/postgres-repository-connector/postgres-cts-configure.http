@@ -16,18 +16,34 @@
 
 @cohort=ctsCohort
 
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 ###
 # @name Set cSuite server's user Id
 # Set up the user Id that this server should use on open metadata requests.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/server-user-id?
+POST {{baseURL}}/open-metadata/admin-services/servers/{{ctsServer}}/server-user-id?
     id={{ctsUserId}}
+Authorization: Bearer {{token}}
 
 ###
 # @name Set up event bus to connect to cohort topics
 # Set up the common properties needed to call your event bus.  These properties are passed in the request body.
 # This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/event-bus
+POST {{baseURL}}/open-metadata/admin-services/servers/{{ctsServer}}/event-bus
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
@@ -45,12 +61,14 @@ Content-Type: application/json
 ###
 # @name Enable access to the cohort (CTS Server)
 # Request registration to a cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/cohorts/{{cohort}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{ctsServer}}/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 ###
 # @name Configure the test of an open metadata repository
 # Activate the repository workbench tests to validate the behaviour of a specific repository.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/repository-workbench/repositories
+POST {{baseURL}}/open-metadata/admin-services/servers/{{ctsServer}}/conformance-suite-workbenches/repository-workbench/repositories
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -64,7 +82,8 @@ Content-Type: application/json
 ###
 # @name Configure the test of an open metadata server platform
 # Activate the repository workbench tests to validate the behaviour of a specific server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/platform-workbench/platforms
+POST {{baseURL}}/open-metadata/admin-services/servers/{{ctsServer}}/conformance-suite-workbenches/platform-workbench/platforms
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -75,7 +94,8 @@ Content-Type: application/json
 ###
 # @name Start conformance suite using config
 # Activate open metadata conformance suite services.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ctsServer}}/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{ctsServer}}/instance
+Authorization: Bearer {{token}}
 
 
 
@@ -85,11 +105,13 @@ POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-pl
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/server-user-id?id=tutnpa
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/server-user-id?id=tutnpa
+Authorization: Bearer {{token}}
 
 ###
 # Set up the description of this server.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/server-description
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/server-description
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 A metadata store that uses a postgreSQL-backed repository
@@ -98,7 +120,8 @@ A metadata store that uses a postgreSQL-backed repository
 ###
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/local-repository/mode/postgres-repository
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -111,7 +134,8 @@ Content-Type: application/json
 ###
 # @name Set local metadata collection id
 # Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/local-repository/metadata-collection-id
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/local-repository/metadata-collection-id
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 {{localMatadataCollectionId}}
@@ -120,7 +144,8 @@ Content-Type: text/plain
 ###
 # Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
 # application.properties file using the `platform.placeholder.variables` property.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/event-bus
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/event-bus
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -138,13 +163,15 @@ Content-Type: application/json
 ###
 # @name Enable access to the cohort (TUT Server)
 # Request registration to a cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/cohorts/{{cohort}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{tutServer}}/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 
 ###
 # @name start server
 # Restart the postgres-metadata-store server on the OMAG Server Platform.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{tutServer}}/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{tutServer}}/instance
+Authorization: Bearer {{token}}
 
 
 ###

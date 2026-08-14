@@ -25,7 +25,8 @@ Content-Type: application/json
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/garygeeke/servers/active-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/active-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/PostgresContentPack.omarchive

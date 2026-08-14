@@ -27,17 +27,17 @@ Content-Type: application/json
 
 ###
 # @name get metadata collection Id
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/metadata-collection-id
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/metadata-collection-id
 Authorization: Bearer {{token}}
 
 ###
 # @name Get types
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/all
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/all
 Authorization: Bearer {{token}}
 
 ###
 # @name Get Entity Detail
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}
 Authorization: Bearer {{token}}
 ###
 
@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 ###
 # @name Get Relationship
 # The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/relationship/{{guid}}
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/relationship/{{guid}}
 Authorization: Bearer {{token}}
 
 ###
@@ -80,12 +80,12 @@ Content-Type: application/json
 
 ###
 # @name Get TypeDef By Name
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/typedef/name/Asset
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/typedef/name/Asset
 Authorization: Bearer {{token}}
 
 ###
 # @name Get AttributeTypeDef By Name
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/attribute-typedef/name/GovernanceActionStatus
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/attribute-typedef/name/GovernanceActionStatus
 Authorization: Bearer {{token}}
 
 ###
