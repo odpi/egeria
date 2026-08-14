@@ -493,7 +493,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
      * Set up the information supply chain for this clinical trial.
      *
      * @param clinicalTrialId identifier for the clinical trial
-     * @param clinicalTrialName display name for hte clinical trial
+     * @param clinicalTrialName display name for the clinical trial
      * @param clinicalTrialProjectGUID project for the clinical trial
      * @param informationSupplyChainTemplateGUID template for the information supply chain
      * @return information supply chain element

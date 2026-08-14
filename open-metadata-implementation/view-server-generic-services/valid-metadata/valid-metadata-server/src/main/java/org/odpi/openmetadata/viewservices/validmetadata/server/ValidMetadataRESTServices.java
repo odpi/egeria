@@ -11,7 +11,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SpecificationPropertyHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
@@ -1474,6 +1476,134 @@ public class ValidMetadataRESTServices extends TokenController
         return response;
     }
 
+
+
+    /**
+     * Link an element to a valid value that represents one of its specification properties.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param referenceableGUID unique identifier of the element to link
+     * @param validValueDefinitionGUID unique identifier of the valid value definition representing the specification property
+     * @param requestBody properties for the relationship and correlators - request body is optional
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSpecificationProperty(String                     serverName,
+                                                  String                     urlMarker,
+                                                  String                     referenceableGUID,
+                                                  String                     validValueDefinitionGUID,
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSpecificationProperty";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ValidValueDefinitionHandler handler = instanceHandler.getValidValueDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SpecificationPropertyAssignmentProperties properties)
+                {
+                    handler.linkSpecificationProperty(userId,
+                                                      referenceableGUID,
+                                                      validValueDefinitionGUID,
+                                                      requestBody,
+                                                      properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSpecificationProperty(userId,
+                                                      referenceableGUID,
+                                                      validValueDefinitionGUID,
+                                                      requestBody,
+                                                      null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SpecificationPropertyAssignmentProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkSpecificationProperty(userId,
+                                                  referenceableGUID,
+                                                  validValueDefinitionGUID,
+                                                  null,
+                                                  null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Unlink an element from a valid value that represents one of its specification properties.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param referenceableGUID unique identifier of the element to unlink
+     * @param validValueDefinitionGUID unique identifier of the valid value definition representing the specification property
+     * @param requestBody correlators - request body is optional
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSpecificationProperty(String                        serverName,
+                                                    String                        urlMarker,
+                                                    String                        referenceableGUID,
+                                                    String                        validValueDefinitionGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSpecificationProperty";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ValidValueDefinitionHandler handler = instanceHandler.getValidValueDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSpecificationProperty(userId, referenceableGUID, validValueDefinitionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 
 
     /**

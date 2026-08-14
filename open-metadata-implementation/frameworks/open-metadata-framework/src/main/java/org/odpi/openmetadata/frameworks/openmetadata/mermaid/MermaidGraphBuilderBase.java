@@ -915,7 +915,7 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.FOLIO_COLLECTION;
         }
-        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_HUB.typeName))
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DATA_SHARING_HUB.typeName))
         {
             return VisualStyle.DATA_HUB;
         }

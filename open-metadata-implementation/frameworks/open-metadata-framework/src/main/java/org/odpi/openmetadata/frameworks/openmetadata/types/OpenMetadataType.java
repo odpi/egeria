@@ -352,6 +352,16 @@ public enum OpenMetadataType
                        ExternalReferenceProperties.class),
 
     /**
+     * A link to an externally published standard.
+     */
+    EXTERNAL_STANDARD("b8e2299b-fadb-4f94-8035-fc74dcb76711",
+                       "ExternalStandard",
+                       OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                       "fd1f668a-6bec-40d2-9e30-3fc9ef3384c2",
+                       "A link to an externally published standard.",
+                       ExternalStandardProperties.class),
+
+    /**
      * A link to the source code used to build the implementation of the linked element.
      */
     EXTERNAL_SOURCE_CODE("2f0c5b22-b66f-44a1-b008-74c71fb45bc0",
@@ -594,6 +604,16 @@ public enum OpenMetadataType
                               "2ee49f29-da72-490f-a6c4-e7525516e6f0",
                               "Defines a list of activities such as ToDos, Tasks, etc...",
                               WorkItemListProperties.class),
+
+    /**
+     * Defines a list of elements that are being worked on by a process or by a group of people.
+     */
+    WORKING_SET_COLLECTION("2964faac-2716-4b77-ae20-4793391357e6",
+                              "WorkingSet",
+                              OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                              "415dd715-9013-421e-8fc3-5429449e8024",
+                              "Defines a list of elements that are being worked on by a process or by a group of people.",
+                              WorkingSetProperties.class),
 
     /**
      * Defines a list of elements that are grouped under a particular namespace.
@@ -6010,24 +6030,24 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
     /**
-     * The DataHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.
+     * The DataSharingHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.
      */
-    DATA_HUB("563b3b2c-74f8-428e-8f0c-d0ea1d229294",
-                    "DataHub",
-                    OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
-                    "3f24933c-94b1-40de-b908-2328a0e28b2f",
-                    "The DataHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.",
-                    DataHubProperties.class),
+    DATA_SHARING_HUB("563b3b2c-74f8-428e-8f0c-d0ea1d229294",
+                     "DataSharingHub",
+                     OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
+                     "3f24933c-94b1-40de-b908-2328a0e28b2f",
+                     "The DataSharingHub entity describes a collection of data assets that are available for sharing, as long as the requester satisfies the requirements laid down by the data owner.",
+                     DataSharingHubProperties.class),
 
     /**
      * The DataSharingRequest entity describes a request for data sharing.  It is used to track the status of the request and gather the details of the request (such as the requested data specification) and the data sharing agreement and related resources.
      */
     DATA_SHARING_REQUEST("36c2fe16-9e55-44d2-9951-90f34571bd3a",
-             "DataSharingRequest",
-             OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
-             "e1134630-341a-4c82-9136-01fbe5d90b9c",
-             "The DataSharingRequest entity describes a request for data sharing.  It is used to track the status of the request and gather the details of the request (such as the requested data specification) and the data sharing agreement and related resources.",
-             DataSharingRequestProperties.class),
+                         "DataSharingRequest",
+                         OpenMetadataWikiPages.MODEL_0705_DATA_SHARING,
+                         "e1134630-341a-4c82-9136-01fbe5d90b9c",
+                         "The DataSharingRequest entity describes a request for data sharing.  It is used to track the status of the request and gather the details of the request (such as the requested data specification) and the data sharing agreement and related resources.",
+                         DataSharingRequestProperties.class),
 
     /**
      * Relationship identifying dependencies between digital products.
@@ -6166,15 +6186,25 @@ public enum OpenMetadataType
 
 
     /**
-     * Describes a function, capability or skill set.
+     * Describes a function, capability, or skill set.
      */
     BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
                         "BusinessCapability",
                         OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
                         "102f73be-7baf-4a10-997e-41e6eb42d66b",
-                        "Describes a function, capability or skill set.",
+                        "Describes a function, capability, or skill set.",
                         BusinessCapabilityProperties.class),
 
+
+    /**
+     * Describes the accounting codes associated with an element.  These codes are used to track the financial aspects of the element. Some organization have complex accounting structures and so the *AccountingCodes* classification has multiple options for expressing one or more codes.
+     */
+    ACCOUNTING_CODES_CLASSIFICATION("c01da3a5-0c1c-4667-8237-9e3b3daa7b19",
+                                    "AccountingCodes",
+                                    OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
+                                    "44927598-835b-4eb0-a578-8bd049465344",
+                                    "Describes the accounting codes associated with an element.  These codes are used to track the financial aspects of the element. Some organization have complex accounting structures and so the *AccountingCodes* classification has multiple options for expressing one or more codes.",
+                                    AccountingCodesProperties.class),
 
     /**
      * Describes the dependency relationship between business capabilities.

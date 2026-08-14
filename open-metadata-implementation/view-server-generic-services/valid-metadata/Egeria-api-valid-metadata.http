@@ -606,6 +606,48 @@ Content-Type: application/json
 }
 
 ###
+
+@validValueDefinitionGUID=add guid here
+
+###
+# @name linkSpecificationProperty
+# Link an element to a valid value that represents one of its specification properties. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{{elementGUID}}/specification-properties/{{validValueDefinitionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class" : "SpecificationPropertyAssignmentProperties",
+    "propertyName" : "add property name here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachSpecificationProperty
+# Unlink an element from a valid value that represents one of its specification properties. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{{elementGUID}}/specification-properties/{{validValueDefinitionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
 # @name findSpecificationProperty
 # Return the list of specification properties containing the supplied string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-search-string

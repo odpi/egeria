@@ -366,7 +366,7 @@ public class OpenMetadataAPIGenericBuilder
                 /*
                  * The anchor classification from the template is skipped because the new entity may have a
                  * different anchor.  The anchor classification is therefore set up explicitly. The Template
-                 * classification is also skipped because hte new element will not be a template because the
+                 * classification is also skipped because the new element will not be a template because the
                  * placeholders have been resolved.
                  */
                 if ((templateClassification != null) &&

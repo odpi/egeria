@@ -96,7 +96,7 @@ public enum IntegrationGroupDefinition
     LISKOV("c7f37f8d-af7a-433d-86f8-153dae9577fd",
              "Egeria:IntegrationGroup:Liskov",
              "LiskovIntegrationGroup",
-             "Dynamic integration group supporting integration connectors managing Data Hubs.",
+             "Dynamic integration group supporting integration connectors managing Data Sharing Hubs.",
              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**

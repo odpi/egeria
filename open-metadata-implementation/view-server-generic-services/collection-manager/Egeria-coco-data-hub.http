@@ -1,5 +1,5 @@
 # Egeria-coco-data-hub
-# This file creates a data hub with information from the file system, postgress database and unity catalog.
+# This file creates a data sharing hub with information from the file system, postgress database and unity catalog.
 # To set up, create a directory under plaform called coco-data-lake.  Then run though Egeria-test-catalog-processes.http
 # to create the assets we need.
 
@@ -40,8 +40,8 @@ Content-Type: application/json
   "class" : "NewElementRequestBody",
   "isOwnAnchor" : true,
   "properties": {
-    "class" : "DataHubProperties",
-    "qualifiedName": "CocoPharma::DataHub::coco-data-hub",
+    "class" : "DataSharingHubProperties",
+    "qualifiedName": "CocoPharma::DataSharingHub::coco-data-hub",
     "identifier" : "coco-data-hub",
     "displayName" : "coco-data-hub"
   }
@@ -205,7 +205,7 @@ Content-Type: application/json
 
 {
   "class" : "NameRequestBody",
-  "name" : "DataHubManager"
+  "name" : "DataSharingHubManager"
 }
 
 

@@ -978,6 +978,72 @@ public class ValidMetadataOMVSResource
 
 
     /**
+     * Link an element to a valid value that represents one of its specification properties. Request body is optional.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param referenceableGUID unique identifier of the element to link
+     * @param validValueDefinitionGUID unique identifier of the valid value definition representing the specification property
+     * @param requestBody properties for the relationship and correlators
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{referenceableGUID}/specification-properties/{validValueDefinitionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSpecificationProperty",
+            description="Link an element to a valid value that represents one of its specification properties.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public VoidResponse linkSpecificationProperty(@PathVariable String                 serverName,
+                                                  @PathVariable String                 urlMarker,
+                                                  @PathVariable String                 referenceableGUID,
+                                                  @PathVariable String                 validValueDefinitionGUID,
+                                                  @RequestBody(required = false)
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSpecificationProperty(serverName, urlMarker, referenceableGUID, validValueDefinitionGUID, requestBody);
+    }
+
+
+    /**
+     * Unlink an element from a valid value that represents one of its specification properties. Request body is optional.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param referenceableGUID unique identifier of the element to unlink
+     * @param validValueDefinitionGUID unique identifier of the valid value definition representing the specification property
+     * @param requestBody correlators
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{referenceableGUID}/specification-properties/{validValueDefinitionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSpecificationProperty",
+            description="Unlink an element from a valid value that represents one of its specification properties.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public VoidResponse detachSpecificationProperty(@PathVariable String                        serverName,
+                                                    @PathVariable String                        urlMarker,
+                                                    @PathVariable String                        referenceableGUID,
+                                                    @PathVariable String                        validValueDefinitionGUID,
+                                                    @RequestBody(required = false)
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSpecificationProperty(serverName, urlMarker, referenceableGUID, validValueDefinitionGUID, requestBody);
+    }
+
+
+    /**
      * Return the list of specification properties containing the supplied string.
      *
      * @param serverName name of the server instances for this request.

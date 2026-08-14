@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AccountingCodesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessSignificantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -54,6 +55,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AbstractConceptProperties.class, name = "AbstractConceptProperties"),
+                @JsonSubTypes.Type(value = AccountingCodesProperties.class, name = "AccountingCodesProperties"),
                 @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
                 @JsonSubTypes.Type(value = AnchorsProperties.class, name = "AnchorsProperties"),
                 @JsonSubTypes.Type(value = AuditLogProperties.class, name = "AuditLogProperties"),

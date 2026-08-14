@@ -37,7 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
                 @JsonSubTypes.Type(value = ContextEventCollectionProperties.class, name = "ContextEventCollectionProperties"),
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
-                @JsonSubTypes.Type(value = DataHubProperties.class, name = "DataHubProperties"),
+                @JsonSubTypes.Type(value = DataSharingHubProperties.class, name = "DataSharingHubProperties"),
                 @JsonSubTypes.Type(value = DataProcessingActionProperties.class, name = "DataProcessingActionProperties"),
                 @JsonSubTypes.Type(value = DataProcessingDescriptionProperties.class, name = "DataProcessingDescriptionProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
@@ -60,6 +60,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SkillSetProperties.class, name = "SkillSetProperties"),
                 @JsonSubTypes.Type(value = SoftwareArchiveProperties.class, name = "SoftwareArchiveProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaProperties.class, name = "SubjectAreaProperties"),
+                @JsonSubTypes.Type(value = WorkingSetProperties.class, name = "WorkingSetProperties"),
                 @JsonSubTypes.Type(value = WorkItemListProperties.class, name = "WorkItemListProperties"),
         })
 public class CollectionProperties extends AuthoredReferenceableProperties

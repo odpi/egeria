@@ -139,6 +139,26 @@ public enum OpenMetadataProperty
     INSTANCE_METADATA_TYPE_NAME("instanceMetadataTypeName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the metadata data type extracted from an instance.", "JPEG", "7c5a7e83-2709-4789-b014-d23082a659bd"),
 
     /**
+     * An identifier used to tie an element to an account or budget.
+     */
+    DISPOSITION("disposition", DataType.STRING, DataType.STRING.getDisplayName(), "An identifier used to defined the state or status of an element.", null, "8118107c-c88e-420c-b385-f5f1c288049f"),
+
+    /**
+     * An identifier used to tie an element to an account or budget.
+     */
+    ACCOUNTING_CODE("accountingCode", DataType.STRING, DataType.STRING.getDisplayName(), "An identifier used to tie an element to an account or budget.", null, "80ca668d-30ee-4cdc-afdc-c3272cb68603"),
+
+    /**
+     * A list of accounting codes used to tie an element to multiple accounts or budgets.
+     */
+    ACCOUNTING_CODE_LIST("accountingCodeList", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "A list of accounting codes used to tie an element to multiple accounts or budgets.", null, "37cdbc18-7caf-4231-a25a-2f3cb81552cd"),
+
+    /**
+     * A map of names to accounting codes used to tie an element to multiple accounts or budgets
+     */
+    ACCOUNTING_CODE_MAP("accountingCodeMap", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "A map of names to accounting codes used to tie an element to multiple accounts or budgets.", null, "76721a98-3cfb-4a18-aa15-cc21f290d9b2"),
+
+    /**
      * Timestamp when the archive occurred or was detected.
      */
     ARCHIVE_DATE("archiveDate", DataType.DATE, DataType.DATE.getDisplayName(), "Timestamp when the archive occurred or was detected.", null, "5235c1b1-fa03-4d17-80e2-7826242dfc75"),

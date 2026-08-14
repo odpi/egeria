@@ -570,6 +570,10 @@ public class PropertyHelper
                     {
                         elementHeader.setSecurityTags(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.ACCOUNTING_CODES_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setAccountingCodes(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName))
                     {
                         elementHeader.setUserAccountProfile(this.getElementClassification(attachedClassification));

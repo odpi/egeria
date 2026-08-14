@@ -332,7 +332,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES("SERVER-OPS-0029",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The OMAG server {0} is activating generic view services that are not configured; these view services can only be called using a urlMarker of a configured service",
-                                  "The system is initializing any of the generic view services that are not configured.  These services can only be used if called using a urlMarker from one of hte configured services.",
+                                  "The system is initializing any of the generic view services that are not configured.  These services can only be used if called using a urlMarker from one of the configured services.",
                                   "Check whether these view services should be properly configured."),
 
     /**

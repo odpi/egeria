@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ScopingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AccountingCodesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessSignificantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -133,7 +134,25 @@ public class OpenMetadataClassificationBuilder
         {
             ElementProperties elementProperties = null;
 
-            if (properties instanceof ActivityDescriptionProperties activityDescriptionProperties)
+            if (properties instanceof AccountingCodesProperties accountingCodesProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.ACCOUNTING_CODE.name,
+                                                                     accountingCodesProperties.getAccountingCode());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     accountingCodesProperties.getDescription());
+
+                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                          OpenMetadataProperty.ACCOUNTING_CODE_LIST.name,
+                                                                          accountingCodesProperties.getAccountingCodeList());
+
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ACCOUNTING_CODE_MAP.name,
+                                                                        accountingCodesProperties.getAccountingCodeMap());
+            }
+            else if (properties instanceof ActivityDescriptionProperties activityDescriptionProperties)
             {
                 if (activityDescriptionProperties.getActivityType() != null)
                 {

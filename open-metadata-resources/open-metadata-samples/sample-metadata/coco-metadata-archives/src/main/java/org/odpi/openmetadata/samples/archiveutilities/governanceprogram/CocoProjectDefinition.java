@@ -64,7 +64,7 @@ public enum CocoProjectDefinition implements ProjectDefinition
                                 """
                                         Personalized medicine is going to require a lot of data to be shared between different business units. This project is focused on developing a data sharing mechanism that can be used by the different business units to share data with each other.
                                         
-                                        The main concept is to build a data hub that contains data platforms hosting authoritative data.  The business unit systems are connected directly to the data hub to send/receive the data they need.
+                                        The main concept is to build a data sharing hub that contains data platforms hosting authoritative data.  The business unit systems are connected directly to the data sharing hub to send/receive the data they need.
                                         """,
                                 "https://egeria-project.org/practices/coco-pharmaceuticals/scenarios/defining-new-systems-architecture/overview/",
                                 true,
@@ -83,9 +83,9 @@ public enum CocoProjectDefinition implements ProjectDefinition
     DATA_HUB_DEFINITION("Project::Coco Data Hub Definition",
                         "CDH-DEFINITION",
                         "Coco Data Hub Definition",
-                        "Creating the definition of the data hub to support the clinical trials and sustainability information supply chains.",
+                        "Creating the definition of the data sharing hub to support the clinical trials and sustainability information supply chains.",
                         """
-                                This project creates the definition of the data hub ans adds the data stores needed to support the clinical trials and sustainability information supply chain.
+                                This project creates the definition of the data sharing hub and adds the data stores needed to support the clinical trials and sustainability information supply chain.
                                 """,
                         "https://egeria-project.org/practices/coco-pharmaceuticals/scenarios/defining-new-systems-architecture/overview/",
                         false,
