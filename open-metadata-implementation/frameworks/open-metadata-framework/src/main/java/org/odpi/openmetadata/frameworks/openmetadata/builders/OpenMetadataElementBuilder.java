@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ResultsSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.WorkingSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
@@ -1201,6 +1202,12 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                                   OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                                   subjectAreaProperties.getDomainIdentifier());
+                            }
+                            else if (collectionProperties instanceof WorkingSetProperties workingSetProperties)
+                            {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.DISPOSITION.name,
+                                                                                     workingSetProperties.getDisposition());
                             }
                         }
                         else if (properties instanceof DataValueSpecificationProperties dataValueSpecificationProperties)

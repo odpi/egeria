@@ -29,6 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ExternalDataSourceProperties.class, name = "ExternalDataSourceProperties"),
                 @JsonSubTypes.Type(value = ExternalModelSourceProperties.class, name = "ExternalModelSourceProperties"),
                 @JsonSubTypes.Type(value = ExternalSourceCodeProperties.class, name = "ExternalSourceCodeProperties"),
+                @JsonSubTypes.Type(value = ExternalStandardProperties.class, name = "ExternalStandardProperties"),
                 @JsonSubTypes.Type(value = RelatedMediaProperties.class, name = "RelatedMediaProperties"),
         })
 public class ExternalReferenceProperties extends AuthoredReferenceableProperties

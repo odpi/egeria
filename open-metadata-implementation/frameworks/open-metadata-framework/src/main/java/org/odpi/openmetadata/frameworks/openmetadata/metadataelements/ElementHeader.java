@@ -60,6 +60,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       knownDuplicate           = null;
     private ElementClassification       consolidateDuplicate     = null;
     private ElementClassification       securityTags             = null;
+    private ElementClassification       accountingCodes          = null;
     private ElementClassification       securityListMembership   = null;
     private ElementClassification       userAccountProfile       = null;
     private ElementClassification       projectClassification    = null;
@@ -117,6 +118,7 @@ public class ElementHeader extends ElementControlHeader
             this.securityListMembership   = template.getSecurityListMembership();
             this.userAccountProfile       = template.getUserAccountProfile();
             this.securityTags             = template.getSecurityTags();
+            this.accountingCodes          = template.getAccountingCodes();
             this.projectClassification    = template.getProjectClassification();
             this.collectionKinds          = template.getCollectionKinds();
             this.glossaryTermKinds        = template.getGlossaryTermKinds();
@@ -673,6 +675,28 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the AccountingCodes classification - attached to any referenceable metadata element.
+     *
+     * @return classification
+     */
+    public ElementClassification getAccountingCodes()
+    {
+        return accountingCodes;
+    }
+
+
+    /**
+     * Set up the AccountingCodes classification - attached to any referenceable metadata element.
+     *
+     * @param accountingCodes classification
+     */
+    public void setAccountingCodes(ElementClassification accountingCodes)
+    {
+        this.accountingCodes = accountingCodes;
+    }
+
+
+    /**
      * Return the SecurityListMembership classification - only attached to a user identity entity.
      *
      * @return classification
@@ -926,6 +950,7 @@ public class ElementHeader extends ElementControlHeader
                 ", knownDuplicate=" + knownDuplicate +
                 ", consolidateDuplicate=" + consolidateDuplicate +
                 ", securityTags=" + securityTags +
+                ", accountingCodes=" + accountingCodes +
                 ", securityListMembership=" + securityListMembership +
                 ", userAccountProfile=" + userAccountProfile +
                 ", projectClassification=" + projectClassification +
@@ -977,6 +1002,7 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(knownDuplicate, that.knownDuplicate) &&
                 Objects.equals(consolidateDuplicate, that.consolidateDuplicate) &&
                 Objects.equals(securityTags, that.securityTags) &&
+                Objects.equals(accountingCodes, that.accountingCodes) &&
                 Objects.equals(securityListMembership, that.securityListMembership) &&
                 Objects.equals(userAccountProfile, that.userAccountProfile) &&
                 Objects.equals(projectClassification, that.projectClassification) &&
@@ -1002,7 +1028,7 @@ public class ElementHeader extends ElementControlHeader
                             dataScope, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
                             knownDuplicate, consolidateDuplicate,
-                            securityTags, securityListMembership, userAccountProfile,
+                            securityTags, accountingCodes, securityListMembership, userAccountProfile,
                             projectClassification,
                             collectionKinds, glossaryTermKinds, locationKinds, projectKinds, otherClassifications);
     }

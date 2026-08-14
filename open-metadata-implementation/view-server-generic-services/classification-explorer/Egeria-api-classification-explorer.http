@@ -589,6 +589,64 @@ Content-Type: application/json
     }
 }
 
+
+###
+#==================================================
+# Accounting Codes
+#==================================================
+
+
+
+###
+# @name addAccountingCodes
+# Add the accounting codes for an element.
+#
+# Accounting Codes: https://egeria-project.org/types/7/0715-Digital-Business/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/accounting-codes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "AccountingCodesProperties",
+       "accountingCode" : "Add accounting code here",
+       "description" : "Add description here",
+       "accountingCodeList" : [ "Code1", "Code2" ],
+       "accountingCodeMap" : {
+           "name1" : "code1",
+           "name2" : "code2"
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearAccountingCodes
+# Remove the accounting codes classification from an element.
+#
+# Accounting Codes: https://egeria-project.org/types/7/0715-Digital-Business/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/accounting-codes/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
 ###
 #==================================================
 # Ownership

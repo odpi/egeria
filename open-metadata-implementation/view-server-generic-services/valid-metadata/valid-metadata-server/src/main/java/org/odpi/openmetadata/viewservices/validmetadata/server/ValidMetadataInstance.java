@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SpecificationPropertyHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
      */
     private final ViewServiceClientMap<ValidMetadataValueHandler>     validMetadataValueHandlerMap;
     private final ViewServiceClientMap<SpecificationPropertyHandler>  specificationPropertyHandlerMap;
+    private final ViewServiceClientMap<ValidValueDefinitionHandler>   validValueDefinitionHandlerMap;
     private final ViewServiceClientMap<EgeriaOpenMetadataStoreClient> openMetadataHandlerMap;
 
     /**
@@ -68,6 +70,14 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                        maxPageSize);
 
         this.specificationPropertyHandlerMap = new ViewServiceClientMap<>(SpecificationPropertyHandler.class,
+                                                                          serverName,
+                                                                          auditLog,
+                                                                          activeViewServices,
+                                                                          myDescription.getViewServiceFullName(),
+                                                                          myDescription.getViewServiceURLMarker(),
+                                                                          maxPageSize);
+
+        this.validValueDefinitionHandlerMap = new ViewServiceClientMap<>(ValidValueDefinitionHandler.class,
                                                                           serverName,
                                                                           auditLog,
                                                                           activeViewServices,
@@ -117,6 +127,24 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                                                   PropertyServerException
     {
         return specificationPropertyHandlerMap.getClient(urlMarker, methodName);
+    }
+
+
+
+    /**
+     * Return the valid value definition handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public ValidValueDefinitionHandler getValidValueDefinitionHandler(String urlMarker,
+                                                                       String methodName) throws InvalidParameterException,
+                                                                                                 PropertyServerException
+    {
+        return validValueDefinitionHandlerMap.getClient(urlMarker, methodName);
     }
 
 

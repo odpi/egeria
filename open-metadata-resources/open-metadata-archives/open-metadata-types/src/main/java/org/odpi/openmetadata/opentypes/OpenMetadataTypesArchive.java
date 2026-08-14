@@ -160,6 +160,7 @@ public class OpenMetadataTypesArchive
         addDataLineageRelationships();
         update0010BaseModel();
         update0013Actions();
+        update0014ExternalReferences();
         update0019MoreInformation();
         update0021Collections();
         update0042SoftwareCapabilities();
@@ -183,6 +184,7 @@ public class OpenMetadataTypesArchive
         update0595DesignPatterns();
         add0705DataSharing();
         add0725SmartCollections();
+        update0715DigitallBusiness();
         update0735SolutionPortsAndWires();
     }
 
@@ -245,15 +247,50 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0014ExternalReferences()
+    {
+        this.archiveBuilder.addEntityDef(getExternalStandardEntity());
+    }
+
+
+
+    private EntityDef getExternalStandardEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_STANDARD,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0021Collections()
     {
         this.archiveBuilder.addEntityDef(getITSubsystemEntity());
+        this.archiveBuilder.addEntityDef(getWorkingSet());
     }
 
     private EntityDef getITSubsystemEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.IT_SUBSYSTEM,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
+    private EntityDef getWorkingSet()
+    {
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(OpenMetadataType.WORKING_SET_COLLECTION,
+                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPOSITION));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
     /*
@@ -1598,13 +1635,13 @@ public class OpenMetadataTypesArchive
 
     private void add0705DataSharing()
     {
-        this.archiveBuilder.addEntityDef(getDataHubCollection());
+        this.archiveBuilder.addEntityDef(getDataSharingHubCollection());
         this.archiveBuilder.addEntityDef(getDataSharingRequestCollection());
     }
 
-    private EntityDef getDataHubCollection()
+    private EntityDef getDataSharingHubCollection()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_HUB,
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SHARING_HUB,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
@@ -1710,7 +1747,38 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
+
+    private void update0715DigitallBusiness()
+    {
+        this.archiveBuilder.addClassificationDef(getAccountingCodesClassification());
+    }
+
+
+    private ClassificationDef getAccountingCodesClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ACCOUNTING_CODES_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACCOUNTING_CODE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACCOUNTING_CODE_LIST));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACCOUNTING_CODE_MAP));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

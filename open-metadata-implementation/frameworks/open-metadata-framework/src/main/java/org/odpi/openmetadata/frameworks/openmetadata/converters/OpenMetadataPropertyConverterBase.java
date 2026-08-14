@@ -3951,6 +3951,94 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract the accountingCode property from the supplied element properties.
+     *
+     * @param elementProperties properties from classification
+     * @return string or null
+     */
+    protected String removeAccountingCode(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAccountingCode";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                         OpenMetadataProperty.ACCOUNTING_CODE.name,
+                                                         elementProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the accountingCodeList property from the supplied element properties.
+     *
+     * @param elementProperties properties from classification
+     * @return string list or null
+     */
+    protected List<String> removeAccountingCodeList(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAccountingCodeList";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                         OpenMetadataProperty.ACCOUNTING_CODE_LIST.name,
+                                                         elementProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the accountingCodeMap property from the supplied element properties.
+     *
+     * @param elementProperties properties from classification
+     * @return string map or null
+     */
+    protected Map<String, String> removeAccountingCodeMap(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAccountingCodeMap";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.ACCOUNTING_CODE_MAP.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the disposition property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeDisposition(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDisposition";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                         OpenMetadataProperty.DISPOSITION.name,
+                                                         elementProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the karmaPoints property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -12904,6 +12992,15 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new AbstractConceptProperties();
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.ACCOUNTING_CODES_CLASSIFICATION.typeName))
+            {
+                beanProperties = new AccountingCodesProperties();
+
+                ((AccountingCodesProperties)beanProperties).setAccountingCode(this.removeAccountingCode(elementProperties));
+                ((AccountingCodesProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
+                ((AccountingCodesProperties)beanProperties).setAccountingCodeList(this.removeAccountingCodeList(elementProperties));
+                ((AccountingCodesProperties)beanProperties).setAccountingCodeMap(this.removeAccountingCodeMap(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName))
             {
                 beanProperties = new ActivityDescriptionProperties();
@@ -15391,9 +15488,9 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new ContextEventCollectionProperties();
                         }
-                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_HUB.typeName))
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SHARING_HUB.typeName))
                         {
-                            beanProperties = new DataHubProperties();
+                            beanProperties = new DataSharingHubProperties();
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SPEC_COLLECTION.typeName))
                         {
@@ -15561,6 +15658,12 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new WorkItemListProperties();
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.WORKING_SET_COLLECTION.typeName))
+                        {
+                            beanProperties = new WorkingSetProperties();
+
+                            ((WorkingSetProperties)beanProperties).setDisposition(this.removeDisposition(elementProperties));
+                        }
                         else
                         {
                             beanProperties = new CollectionProperties();
@@ -15718,6 +15821,10 @@ public class OpenMetadataPropertyConverterBase
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_SOURCE_CODE.typeName))
                         {
                             beanProperties = new ExternalSourceCodeProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_STANDARD.typeName))
+                        {
+                            beanProperties = new ExternalStandardProperties();
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RELATED_MEDIA.typeName))
                         {

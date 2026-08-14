@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AccountingCodesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -1442,6 +1443,46 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
                                                                                       PropertyServerException
     {
         stewardshipManagementHandler.clearSecurityTags(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Add the accounting codes for an element.
+     *
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param properties details of the accounting codes
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addAccountingCodes(String                     elementGUID,
+                                    AccountingCodesProperties properties,
+                                    MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        stewardshipManagementHandler.addAccountingCodes(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the accounting codes classification from an element.
+     *
+     * @param elementGUID element where the accounting codes need to be removed.
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void clearAccountingCodes(String                elementGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        stewardshipManagementHandler.clearAccountingCodes(connectorUserId, elementGUID, metadataSourceOptions);
     }
 
 

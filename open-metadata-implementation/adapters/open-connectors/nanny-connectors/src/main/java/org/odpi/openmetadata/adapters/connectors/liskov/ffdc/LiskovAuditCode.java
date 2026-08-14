@@ -31,96 +31,96 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0009 - The {0} integration connector has stopped its monitoring of data hubs from server {1} on platform {2} and is shutting down
+     * LISKOV-DATA-HUB-MANAGER-0009 - The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down
      */
     CONNECTOR_STOPPING("LISKOV-DATA-HUB-MANAGER-0009",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector has stopped its monitoring of data hubs from server {1} on platform {2} and is shutting down",
+                       "The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0011 - The {0} integration connector is starting its monitoring of data hubs from server {1} on platform {2}
+     * LISKOV-DATA-HUB-MANAGER-0011 - The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}
      */
     STARTING_CONNECTOR("LISKOV-DATA-HUB-MANAGER-0011",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector is starting its monitoring of data hubs from server {1} on platform {2}",
-                       "The connector is initializing its monitoring of the data hubs connected as Catalog Targets.",
-                       "Monitor the data dictionaries for these data hubs are being maintained successfully."),
+                       "The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}",
+                       "The connector is initializing its monitoring of the data sharing hubs connected as Catalog Targets.",
+                       "Monitor the data dictionaries for these data sharing hubs are being maintained successfully."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0012 - The {0} integration connector has created a new catalog target for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0012 - The {0} integration connector has created a new catalog target for data sharing hub {1} ({2})
      */
     NEW_DATA_HUB("LISKOV-DATA-HUB-MANAGER-0012",
                  AuditLogRecordSeverityLevel.INFO,
-                 "The {0} integration connector has created a new catalog target for data hub {1} ({2})",
-                 "The connector is initiating its management of a new data hub .",
-                 "No action is required.  This message is for monitoring the set up of the data hub management."),
+                 "The {0} integration connector has created a new catalog target for data sharing hub {1} ({2})",
+                 "The connector is initiating its management of a new data sharing hub .",
+                 "No action is required.  This message is for monitoring the set up of the data sharing hub management."),
 
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0013 - The {0} integration connector has created a new data dictionary for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0013 - The {0} integration connector has created a new data dictionary for data sharing hub {1} ({2})
      */
     NEW_DATA_DICTIONARY("LISKOV-DATA-HUB-MANAGER-0013",
                  AuditLogRecordSeverityLevel.INFO,
-                 "The {0} integration connector has created a new data dictionary for data hub {1} ({2})",
-                 "The connector has created a data dictionary for a new data hub.",
-                 "No action is required.  This message is for monitoring the set up of the data hub data dictionary."),
+                 "The {0} integration connector has created a new data dictionary for data sharing hub {1} ({2})",
+                 "The connector has created a data dictionary for a new data sharing hub.",
+                 "No action is required.  This message is for monitoring the set up of the data sharing hub data dictionary."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field {1} ({2}) for data hub {3} ({4})
+     * LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field {1} ({2}) for data sharing hub {3} ({4})
      */
     NEW_DATA_FIELD("LISKOV-DATA-HUB-MANAGER-0014",
                         AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector has created a new data field {1} ({2}) for data hub {3} ({4})",
-                        "The connector has created a data field for a data hub's data dictionary.",
-                        "No action is required.  This message is for monitoring the set up of the data hub's data fields."),
+                        "The {0} integration connector has created a new data field {1} ({2}) for data sharing hub {3} ({4})",
+                        "The connector has created a data field for a data sharing hub's data dictionary.",
+                        "No action is required.  This message is for monitoring the set up of the data sharing hub's data fields."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0015 - The {0} integration connector is refreshing dthe ata dictionary for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0015 - The {0} integration connector is refreshing dthe ata dictionary for data sharing hub {1} ({2})
      */
     REFRESHING_DATA_HUB("LISKOV-DATA-HUB-MANAGER-0015",
                  AuditLogRecordSeverityLevel.INFO,
-                 "The {0} integration connector is refreshing the data dictionary for data hub {1} ({2})",
-                 "The connector is initiating its refreshing of a data hub .",
-                 "No action is required.  This message is for monitoring the activity of the data hub management."),
+                 "The {0} integration connector is refreshing the data dictionary for data sharing hub {1} ({2})",
+                 "The connector is initiating its refreshing of a data sharing hub .",
+                 "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0016 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data hub {4} ({5})
+     * LISKOV-DATA-HUB-MANAGER-0016 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})
      */
     REFRESHING_DATA_HUB_STORE("LISKOV-DATA-HUB-MANAGER-0016",
                               AuditLogRecordSeverityLevel.INFO,
-                              "The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data hub {4} ({5})",
-                              "The connector is initiating its refreshing of a data hub.",
-                              "No action is required.  This message is for monitoring the activity of the data hub management."),
+                              "The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})",
+                              "The connector is initiating its refreshing of a data sharing hub.",
+                              "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0017 - The {0} integration connector is retrieving known data dictionary definitions for data hub {1} ({2})
+     * LISKOV-DATA-HUB-MANAGER-0017 - The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2})
      */
     RETRIEVING_DATA_FIELDS("LISKOV-DATA-HUB-MANAGER-0017",
                               AuditLogRecordSeverityLevel.INFO,
-                              "The {0} integration connector is retrieving known data dictionary definitions for data hub {1} ({2})",
-                              "The connector is initiating its retrieving the contents of the data dictionary for a data hub.",
-                              "No action is required.  This message is for monitoring the progress of the data hub management refresh."),
+                              "The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2})",
+                              "The connector is initiating its retrieving the contents of the data dictionary for a data sharing hub.",
+                              "No action is required.  This message is for monitoring the progress of the data sharing hub management refresh."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0018 - The {0} integration connector has created a new data structure {1} ({2}) for data hub {3} ({4})
+     * LISKOV-DATA-HUB-MANAGER-0018 - The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4})
      */
     NEW_DATA_STRUCTURE("LISKOV-DATA-HUB-MANAGER-0018",
                    AuditLogRecordSeverityLevel.INFO,
-                   "The {0} integration connector has created a new data structure {1} ({2}) for data hub {3} ({4})",
-                   "The connector has created a data structure for a data hub's data dictionary.",
-                   "No action is required.  This message is for monitoring the set up of the data hub's data structures."),
+                   "The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4})",
+                   "The connector has created a data structure for a data sharing hub's data dictionary.",
+                   "No action is required.  This message is for monitoring the set up of the data sharing hub's data structures."),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data hub {4} ({5})
+     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})
      */
     REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0016",
                         AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data hub {4} ({5})",
-                        "The connector is initiating its refreshing of a data hub.",
-                        "No action is required.  This message is for monitoring the activity of the data hub management."),
+                        "The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data sharing hub {4} ({5})",
+                        "The connector is initiating its refreshing of a data sharing hub.",
+                        "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
 
     ;
 

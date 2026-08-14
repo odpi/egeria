@@ -8,7 +8,7 @@ The audit log connectors supports different destinations for audit log messages.
 * **[audit-log-console-connector](audit-log-console-connector)** - supports the output of audit log records to stdout.
 
 * **[event-display-audit-log-connector](audit-log-console-event-display-connector)** - an implementation of an Audit
-Log Destination Connector that displays the contents of event added ans additionalInformation in EVENT audit log record.
+Log Destination Connector that displays the contents of event added and additionalInformation in EVENT audit log record.
 Change the format or add additional information.
 
 * **[audit-log-file-connector](audit-log-file-connector)** - supports a directory of JSON files that each contain an audit log record.

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplem
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.liskov.DataHubManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.catalog.DB2LUWServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
@@ -620,28 +620,28 @@ public enum IntegrationConnectorDefinition
                               IntegrationGroupDefinition.BABBAGE,
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
-    LISKOV_DATA_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
-                              "LiskovDataHubManagerIntegrationConnector",
-                              "Manages the content of the data dictionary for a data hub.",
-                              DataHubManagerProvider.class.getName(),
-                              "DataHubManager",
-                              "datahubnpa",
-                              null,
-                              null,
-                              null,
-                              null,
-                              60*24, // 24 hours
-                              null,
-                              "805026d3-d873-4f11-ab44-5477862aadcf",
-                              "Data Hub Manager",
-                              "Builds a data dictionary for a data hub by scavenging information from the data hub stores.  This includes schema information and the survey reports.",
-                              true,
-                              null,
-                              null,
-                              null,
-                              null,
-                              IntegrationGroupDefinition.LISKOV,
-                              ContentPackDefinition.CORE_CONTENT_PACK),
+    LISKOV_DATA_SHARING_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
+                                    "LiskovDataSharingHubManagerIntegrationConnector",
+                                    "Manages the content of the data dictionary for a data sharing hub.",
+                                    DataSharingHubManagerProvider.class.getName(),
+                                    "DataSharingHubManager",
+                                    "liskovnpa",
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    60*24, // 24 hours
+                                    null,
+                                    "805026d3-d873-4f11-ab44-5477862aadcf",
+                                    "Data Sharing Hub Manager",
+                                    "Builds a data dictionary for a data sharing hub by scavenging information from the data sharing hub stores.  This includes schema information and the survey reports.",
+                                    true,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    IntegrationGroupDefinition.LISKOV,
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     SMART_COLLECTIONS_MEMBERSHIP_MANAGER("217bd925-b50d-4596-9ade-1d7a940e8874",
                               "SmartCollectionsIntegrationConnector",

@@ -429,7 +429,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                          "Failed to retrieve active engine actions.  The exception was {0} with error message {1}",
                          "The engine host cannot retrieve the active engine actions from the metadata access server as part of its regular scan for work.",
                          "Review the error messages and resolve the cause of the problem.  Once resolved, the engine host should retry its scan as part of its normal refresh processing. " +
-                                      "However, if the problem was in hte engine host, you may need to restart it to clear the problem."),
+                                      "However, if the problem was in the engine host, you may need to restart it to clear the problem."),
 
     /**
      * ENGINE-HOST-SERVICES-0036 - Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}

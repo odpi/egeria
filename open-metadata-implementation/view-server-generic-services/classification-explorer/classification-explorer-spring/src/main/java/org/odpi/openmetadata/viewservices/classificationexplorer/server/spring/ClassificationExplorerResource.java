@@ -286,7 +286,7 @@ public class ClassificationExplorerResource
 
 
     /**
-     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * Remove the confidentiality classification from the element.  This normally occurs when the organization has lost track of the level of
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
@@ -722,6 +722,68 @@ public class ClassificationExplorerResource
                                           DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearSecurityTags(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Add the accounting codes for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody accounting code(s) for the element
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/accounting-codes")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addAccountingCodes",
+            description="Add the accounting codes for an element.",
+            externalDocs=@ExternalDocumentation(description="Accounting Codes",
+                    url="https://egeria-project.org/types/7/0715-Digital-Business/"))
+
+    public VoidResponse addAccountingCodes(@PathVariable String                    serverName,
+                                           @PathVariable String                    urlMarker,
+                                           @PathVariable String                    elementGUID,
+                                           @RequestBody  (required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addAccountingCodes(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the accounting codes classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/accounting-codes/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAccountingCodes",
+            description="Clear the accounting codes for an element.",
+            externalDocs=@ExternalDocumentation(description="Accounting Codes",
+                    url="https://egeria-project.org/types/7/0715-Digital-Business/"))
+
+    public VoidResponse clearAccountingCodes(@PathVariable String          serverName,
+                                             @PathVariable String                    urlMarker,
+                                             @PathVariable String          elementGUID,
+                                             @RequestBody(required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAccountingCodes(serverName, urlMarker, elementGUID, requestBody);
     }
 
 

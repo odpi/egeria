@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Digit
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AccountingCodesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -1733,6 +1734,57 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Add the accounting codes for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param properties details of the accounting codes
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addAccountingCodes(String                     userId,
+                                    String                     elementGUID,
+                                    AccountingCodesProperties properties,
+                                    MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.ACCOUNTING_CODES_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the accounting codes classification from an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element where the accounting codes need to be removed.
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void clearAccountingCodes(String                userId,
+                                     String                elementGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.ACCOUNTING_CODES_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 
