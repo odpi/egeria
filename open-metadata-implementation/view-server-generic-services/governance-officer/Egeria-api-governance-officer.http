@@ -1152,7 +1152,7 @@ Authorization: Bearer {{token}}
 #
 # Governance Definitions: https://egeria-project.org/types/4/0401-Governance-Definitions/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1177,12 +1177,12 @@ Content-Type: application/json
 #
 # Governance Definition: https://egeria-project.org/types/4/0401-Governance-Definitions/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -1365,6 +1365,197 @@ Content-Type: application/json
 # Detach an governance metric from its measurements data set. Request body is optional.
 # https://egeria-project.org/concepts/governance-definition/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-metrics/{{governanceMetricGUID}}/measurements/{{dataAssetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Licenses
+
+@licenseTypeGUID=add guid here
+@licenseGUID=add guid here
+
+###
+# @name licenseElement
+# Link an element to a license type and include details of the license in the relationship properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/license-types/{{licenseTypeGUID}}/license
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class" : "LicenseProperties",
+    "licenseId" : "add license id here",
+    "coverageStart" : "{{$isoTimestamp}}",
+    "coverageEnd" : "{{$isoTimestamp}}",
+    "conditions" : "add conditions here",
+    "licensedBy" : "add value here",
+    "licensedByTypeName" : "add value here",
+    "licensedByPropertyName" : "add value here",
+    "custodian" : "add value here",
+    "custodianTypeName" : "add value here",
+    "custodianPropertyName" : "add value here",
+    "licensee" : "add value here",
+    "licenseeTypeName" : "add value here",
+    "licenseePropertyName" : "add value here",
+    "entitlements" : {},
+    "restrictions" : {},
+    "obligations" : {},
+    "notes" : "add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateLicense
+# Update the properties of a license.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/licenses/{{licenseGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate" : true,
+  "properties" : {
+    "class" : "LicenseProperties",
+    "licenseId" : "add license id here",
+    "coverageStart" : "{{$isoTimestamp}}",
+    "coverageEnd" : "{{$isoTimestamp}}",
+    "conditions" : "add conditions here",
+    "licensedBy" : "add value here",
+    "licensedByTypeName" : "add value here",
+    "licensedByPropertyName" : "add value here",
+    "custodian" : "add value here",
+    "custodianTypeName" : "add value here",
+    "custodianPropertyName" : "add value here",
+    "licensee" : "add value here",
+    "licenseeTypeName" : "add value here",
+    "licenseePropertyName" : "add value here",
+    "entitlements" : {},
+    "restrictions" : {},
+    "obligations" : {},
+    "notes" : "add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name unlicenseElement
+# Remove the license for an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/licenses/{{licenseGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# =====================================================================================================================
+# Certifications
+
+@certificationTypeGUID=add guid here
+@certificationGUID=add guid here
+
+###
+# @name certifyElement
+# Link an element to a certification type and include details of the certification in the relationship properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/certification-types/{{certificationTypeGUID}}/certify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class" : "CertificationProperties",
+    "certificateId" : "add certificate id here",
+    "coverageStart" : "{{$isoTimestamp}}",
+    "coverageEnd" : "{{$isoTimestamp}}",
+    "conditions" : "add conditions here",
+    "certifiedBy" : "add value here",
+    "certifiedByTypeName" : "add value here",
+    "certifiedByPropertyName" : "add value here",
+    "custodian" : "add value here",
+    "custodianTypeName" : "add value here",
+    "custodianPropertyName" : "add value here",
+    "recipient" : "add value here",
+    "recipientTypeName" : "add value here",
+    "recipientPropertyName" : "add value here",
+    "notes" : "add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateCertification
+# Update the properties of a certification.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/certifications/{{certificationGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate" : true,
+  "properties" : {
+    "class" : "CertificationProperties",
+    "certificateId" : "add certificate id here",
+    "coverageStart" : "{{$isoTimestamp}}",
+    "coverageEnd" : "{{$isoTimestamp}}",
+    "conditions" : "add conditions here",
+    "certifiedBy" : "add value here",
+    "certifiedByTypeName" : "add value here",
+    "certifiedByPropertyName" : "add value here",
+    "custodian" : "add value here",
+    "custodianTypeName" : "add value here",
+    "custodianPropertyName" : "add value here",
+    "recipient" : "add value here",
+    "recipientTypeName" : "add value here",
+    "recipientPropertyName" : "add value here",
+    "notes" : "add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name decertifyElement
+# Remove the certification for an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/certifications/{{certificationGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

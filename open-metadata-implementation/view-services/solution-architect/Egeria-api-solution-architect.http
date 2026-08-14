@@ -1496,6 +1496,34 @@ Content-Type: application/json
 
 
 ###
+# @name updateSolutionLinkingWire
+# Update the solution linking wire relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/relationships/{{relationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties" : {
+     "class" : "SolutionLinkingWireProperties",
+     "label" : "",
+     "oneWay" : true,
+     "description" : "",
+     "frequency" : "",
+     "protocol" : "",
+     "dataExchanged" : "",
+     "iscQualifiedNames" : []
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
 # @name deleteSolutionComponent
 # Delete a solution component. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/delete

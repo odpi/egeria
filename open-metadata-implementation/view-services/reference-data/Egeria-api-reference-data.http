@@ -268,6 +268,269 @@ Content-Type: application/json
 
 ###
 
+@elementGUID=add guid here
+
+###
+# @name linkReferenceValueAssignment
+# Attach a valid value to an element to be used as a tag/classification to help retrieve and organize the element.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/elements/{{elementGUID}}/reference-value-assignment/{{validValueDefinitionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ReferenceValueAssignmentProperties",
+    "attributeName": "add attribute name here",
+    "confidence": 100,
+    "steward": "add steward here",
+    "stewardTypeName": "add steward type name here",
+    "stewardPropertyName": "add steward property name here",
+    "notes": "add notes here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachReferenceValueAssignment
+# Remove a reference value assignment relationship between an element and a valid value. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/elements/{{elementGUID}}/reference-value-assignment/{{validValueDefinitionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkValidValuesAssignment
+# Attach a valid value definition (typically a valid value set) to an element as its list of allowed values.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/elements/{{elementGUID}}/valid-values-assignment/{{validValueDefinitionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ValidValuesAssignmentProperties",
+    "strictRequirement": true,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachValidValuesAssignment
+# Remove a valid values assignment relationship between an element and a valid value definition. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/elements/{{elementGUID}}/valid-values-assignment/{{validValueDefinitionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkValidValueImplementation
+# Link a valid value to an implementation element (typically an asset) that supports it. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionGUID}}/implementation/elements/{{elementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ValidValuesImplementationProperties",
+    "symbolicName": "add symbolic name here",
+    "implementationValue": "add implementation value here",
+    "additionalValues": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachValidValueImplementation
+# Remove the link between a valid value and an implementation element. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionGUID}}/implementation/elements/{{elementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+@validValueDefinitionOneGUID=add guid here
+@validValueDefinitionTwoGUID=add guid here
+
+###
+# @name linkAssociatedValidValues
+# Create an association between two valid values (that may be in different valid value sets). Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/associated-valid-values/{{validValueDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ValidValueAssociationProperties",
+    "associationName": "add association name here",
+    "associationType": "add association type here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachAssociatedValidValues
+# Remove an association between two valid values. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/associated-valid-values/{{validValueDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkConsistentValidValues
+# Link two valid values from different valid value sets that represent the same real-world value. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/consistent-valid-values/{{validValueDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachConsistentValidValues
+# Remove the consistent valid values relationship between two valid values. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/consistent-valid-values/{{validValueDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkMappedValidValues
+# Create a mapping relationship between two valid values (for example between two different reference data sets).
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/mapped-valid-values/{{validValueDefinitionTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ValidValuesMappingProperties",
+    "associationDescription": "add description here",
+    "confidence": 100,
+    "steward": "add steward here",
+    "stewardTypeName": "add steward type name here",
+    "stewardPropertyName": "add steward property name here",
+    "notes": "add notes here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachMappedValidValues
+# Remove a mapping relationship between two valid values. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-values/{{validValueDefinitionOneGUID}}/mapped-valid-values/{{validValueDefinitionTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name deleteValidValueDefinition

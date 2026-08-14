@@ -751,7 +751,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -798,7 +798,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -832,6 +832,37 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getConnectorTypesByConnectorProviderClassName
+# Returns the list of connectorTypes with a particular connector provider class name.
+# Provide the name of the connector provider's class name (including package; but without .class) in the filter.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-connector-provider-class-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add connector provider class name here",
   "startFrom": 0,
   "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -889,7 +920,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/retrieve"})
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/{{connectorTypeGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

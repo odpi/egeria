@@ -387,6 +387,29 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+
+@metadataElementAtEnd1GUID=add guid here
+@metadataElementAtEnd2GUID=add guid here
+
+###
+# @name detachRelatedElementsInStore
+# Delete all relationships of a specific type between two metadata elements. Request body is optional.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{metadataElementAtEnd1GUID}}/{{relationshipTypeName}}/{{metadataElementAtEnd2GUID}}/detach-all
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataDeleteRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 ###
 # @name getMetadataElementByGUID
 # Retrieve the metadata element using its unique identifier.
@@ -593,6 +616,27 @@ Content-Type: application/json
   "asOfTime" : "{{$isoTimestamp}}",
   "sequencingOrder": "PROPERTY_ASCENDING",
   "sequencingProperty": "preferredValue"
+}
+
+
+###
+
+@relationshipTypeName=add relationship type name here
+
+###
+# @name getRelatedMetadataElements
+# Retrieve the metadata elements connected to the supplied element via a specific relationship type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{metadataElementGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
 }
 
 

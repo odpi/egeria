@@ -952,7 +952,7 @@ Content-Type: application/json
 #
 # Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1060,7 +1060,7 @@ Content-Type: application/json
 #
 # Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1082,7 +1082,7 @@ Content-Type: application/json
 #
 # Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/related-elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1509,10 +1509,105 @@ Content-Type: application/json
 
 ###
 #==================================================
-# MoreInformation
+# ResourceList
 #==================================================
 
 @resourceGUID=add guid here
+
+###
+# @name addResourceListToElement
+# Link a resource to an element using the ResourceList relationship. Request body is optional.
+#
+# Resource Lists: https://egeria-project.org/types/0/0019-More-Information/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/resource-list/{{resourceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties": {
+      "class" : "ResourceListProperties",
+      "resourceUse" : "Add resource use identifier here",
+      "label" : "Add label here",
+      "description" : "Add description here",
+      "additionalProperties" : {
+        "property1" : "Add value here",
+        "property2" : "Add value here"
+      }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name removeResourceListFromElement
+# Remove the ResourceList relationship between a resource and an element. Request body is optional.
+#
+# Resource Lists: https://egeria-project.org/types/0/0019-More-Information/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/resource-list/{{resourceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getResourceList
+# Retrieve the elements linked via a ResourceList relationship to the requested element. Request body is optional.
+#
+# Resource Lists: https://egeria-project.org/types/0/0019-More-Information/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/resource-list
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name getSupportedByResource
+# Retrieve the elements linked via a ResourceList relationship to the requested resource. Request body is optional.
+#
+# Resource Lists: https://egeria-project.org/types/0/0019-More-Information/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/resource-list/{{resourceGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+#==================================================
+# MoreInformation
+#==================================================
 
 ###
 # @name addMoreInformationToElement

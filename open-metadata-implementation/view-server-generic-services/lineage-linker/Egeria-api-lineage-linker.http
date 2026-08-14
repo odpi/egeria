@@ -295,6 +295,72 @@ Content-Type: application/json
 }
 
 
+###
+
+@lineageRelationshipGUID=add guid here
+
+###
+# @name updateLineage
+# Update the lineage relationship.  The properties class should match the type of lineage relationship
+# identified by lineageRelationshipGUID (for example DataFlowProperties, ControlFlowProperties, ProcessCallProperties,
+# LineageMappingProperties, DataMappingProperties, UltimateSourceProperties or UltimateDestinationProperties).
+#
+# param serverName name of the server instance to connect to
+# param lineageRelationshipGUID unique identifier for the relationship
+# param requestBody the properties of the relationship
+# Returns void or
+#  InvalidParameterException one of the properties is invalid
+#  PropertyServerException problem accessing property server
+#  UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/lineage-linker/relationships/{{lineageRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "DataFlowProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "formula": "add formula here",
+    "formulaType": "add type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachLineage
+# Remove a lineage relationship between two elements. Request body is optional.
+#
+# param serverName name of the server instance to connect to
+# param lineageRelationshipGUID unique identifier of the lineage relationship
+# param requestBody external source information.
+# Returns void or
+#  InvalidParameterException one of the properties is invalid
+#  PropertyServerException problem accessing property server
+#  UserNotAuthorizedException security access problem
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/lineage-linker/relationships/{{lineageRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 
 ###

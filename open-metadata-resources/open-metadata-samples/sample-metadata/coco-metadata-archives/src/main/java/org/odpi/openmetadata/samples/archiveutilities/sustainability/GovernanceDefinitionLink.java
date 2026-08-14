@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
  */
 public enum GovernanceDefinitionLink
 {
-    HANDLE_THREAT(GovernanceDefinition.SUSTAINABILITY_TREAT,
+    HANDLE_THREAT(GovernanceDefinition.SUSTAINABILITY_THREAT,
                   OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
                   GovernanceDefinition.SUSTAINABILITY_IMPERATIVE),
 

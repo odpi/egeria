@@ -274,9 +274,9 @@ Content-Type: application/json
 
 ###
 # @name shutdownAndUnregisterServer
-# Shutdown the named OMAG server.  The server will also be removed from any open metadata repository cohorts it has registered with.
+# Permanently deactivate any active servers and unregister from any cohorts.
 
-DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance
+DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -350,6 +350,20 @@ Content-Type: application/json
 
 
 ###
+# @name restartConnectors
+# Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/restart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "add optional name here"
+}
+
+
+###
 # @name refreshIntegrationGroupConfig
 # Request that the integration group refresh its configuration by calling the metadata access server. " +
 # Changes to the connector configuration will result in the affected connectors being restarted. " +
@@ -363,14 +377,36 @@ Authorization: Bearer {{token}}
 
 ###
 # @name publishOpenLineageEvent
-# Pass an open lineage event to the integration daemon.  The event is the request body.  It will pass it on to the
-# integration connectors that have registered a listener for open lineage events.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/open-lineage-events/publish
+# Pass an open lineage event to the integration daemon.  The event (in OpenLineage RunEvent format) is the request body.
+# It will pass it on to the integration connectors that have registered a listener for open lineage events.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/open-lineage-events/publish-event
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "eventType" : "START",
+  "eventTime" : "{{$isoTimestamp}}",
+  "producer" : "add producer URI here",
+  "schemaURL" : "https://openlineage.io/spec/1-0-5/OpenLineage.json#/$defs/RunEvent",
+  "run" : {
+    "runId" : "add run id here"
+  },
+  "job" : {
+    "namespace" : "add job namespace here",
+    "name" : "add job name here"
+  }
 }
+
+
+###
+# @name publishOpenLineageEventString
+# Pass an open lineage event, expressed as a raw JSON string, to the integration daemon.  It will pass it on to the
+# integration connectors that have registered a listener for open lineage events.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/open-lineage-events/publish-event-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+"{ \"eventType\": \"START\", \"eventTime\": \"{{$isoTimestamp}}\", \"producer\": \"add producer URI here\", \"run\": { \"runId\": \"add run id here\" }, \"job\": { \"namespace\": \"add job namespace here\", \"name\": \"add job name here\" } }"
 
 
 ###
@@ -772,6 +808,17 @@ Authorization: Bearer {{token}}
 
 
 ###
+# @name connectToCohortGet
+# A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+# open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+# event has been sent.
+# If the server has already registered in the past, it sends a reregistration request.
+# See https://egeria-project.org/concepts/cohort-member/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/connect
+Authorization: Bearer {{token}}
+
+
+###
 # @name disconnectFromCohort
 # Disconnect communications from a specific cohort.
 # See https://egeria-project.org/concepts/cohort-member/
@@ -780,9 +827,25 @@ Authorization: Bearer {{token}}
 
 
 ###
+# @name disconnectFromCohortGet
+# Disconnect communications from a specific cohort.
+# See https://egeria-project.org/concepts/cohort-member/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/disconnect
+Authorization: Bearer {{token}}
+
+
+###
 # @name unregisterFromCohort
 # Unregister from a specific cohort and disconnect from cohort communications.
 # See https://egeria-project.org/concepts/cohort-member/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/unregister
+Authorization: Bearer {{token}}
+
+
+###
+# @name unregisterFromCohortGet
+# Unregister from a specific cohort and disconnect from cohort communications.
+# See https://egeria-project.org/concepts/cohort-member/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/unregister
 Authorization: Bearer {{token}}
 
