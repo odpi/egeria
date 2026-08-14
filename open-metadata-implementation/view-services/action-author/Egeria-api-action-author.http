@@ -142,6 +142,7 @@ Authorization: Bearer {{token}}
 #
 
 @processStepGUID=guid
+@firstProcessStepGUID=guid
 @nextProcessStepGUID=guid
 @relationshipGUID=guid
 
@@ -168,7 +169,19 @@ Content-Type: application/json
 ###
 # @name removeFirstActionProcessStep
 # Remove the link between a governance process and that governance action process step that defines its first step.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/first-process-step/detach
+# The request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/first-process-step/{{firstProcessStepGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 
 ###

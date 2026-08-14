@@ -19,6 +19,15 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+# @name=getAssetTypes
+# Return the subtypes for asset.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/types
+Authorization: Bearer {{token}}
+
+
+###
 # =====================================================================================================================
 # Asset search requests
 

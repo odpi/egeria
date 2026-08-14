@@ -978,7 +978,7 @@ Content-Type: application/json
 # PropertyServerException the server is not available
 # UserNotAuthorizedException the calling user is not authorized to issue the call
 #/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions/{{actionGUID}}/reassign/{{actorGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/actions/{{actionGUID}}/unassign/{{actorGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1740,6 +1740,19 @@ Content-Type: application/json
 # Unregister a catalog target from the integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/catalog-targets/{{relationshipGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody"
+}
+
+
+###
+# @name removeCatalogTarget (by integration connector and metadata element GUID)
+# Unregister a catalog target from the integration connector. Request body is optional.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

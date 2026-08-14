@@ -23,6 +23,20 @@ Content-Type: application/json
 
 
 ###
+# @name getMyProfile
+# Return the personal profile of the logged on user (details of the user is extracted from the bearer token).
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{token}}
+
+
+###
 # @name Get My Profile
 # Return the profile for this user.
 #

@@ -143,6 +143,12 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projec
 Authorization: Bearer {{token}}
 
 ###
+# @name getProjectHierarchy
+# Returns the hierarchy of managed projects and resources starting with a supplied project guid. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/hierarchy
+Authorization: Bearer {{token}}
+
+###
 # =====================================================================================================================
 # Create Projects: https://egeria-project.org/concepts/project
 # These requests use the following parameters:
@@ -420,6 +426,79 @@ Content-Type: application/json
 
 {
   "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+@dependsOnProjectGUID=add guid here
+@managedProjectGUID=add guid here
+
+###
+# @name setupProjectDependency
+# Create a project dependency relationship between two projects. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-dependencies/{{dependsOnProjectGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name clearProjectDependency
+# Remove a project dependency relationship between two projects. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-dependencies/{{dependsOnProjectGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name setupProjectHierarchy
+# Create a project hierarchy relationship between two projects. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-hierarchies/{{managedProjectGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name clearProjectHierarchy
+# Remove a project hierarchy relationship between two projects. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-hierarchies/{{managedProjectGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
