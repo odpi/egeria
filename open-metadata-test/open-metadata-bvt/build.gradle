@@ -1,0 +1,74 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Build Verification Test (BVT) suite.  It runs the OMAG Server Platform in-process
+// (no separate JVM, no Kafka, no PostgreSQL) to check that:
+//  - the platform starts up
+//  - a metadata access store server can be configured (in-memory repository, console audit log,
+//    access services with no event topics) and started
+//  - the connector context clients can create/update/find/get/delete metadata through it
+//
+// It is run automatically as part of the normal build.  Add -PskipBvt to skip it, for example when
+// iterating quickly on an unrelated module.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth BVT platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run a minimal metadata access store server
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // Clients used to configure, start and exercise the server
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this BVT platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Build Verification Tests (BVT)'
+
+test {
+    useJUnitPlatform()
+    onlyIf { !project.hasProperty('skipBvt') }
+
+    // This suite starts an in-process platform and exercises the repository through it - keep it
+    // to a single JVM fork and give it enough headroom to complete comfortably inside the 5 minute budget.
+    maxParallelForks = 1
+    timeout = java.time.Duration.ofMinutes(5)
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}
