@@ -69,7 +69,7 @@ public enum IntegrationConnectorDefinition
                            null,
                            "loading-bay/sample-data",
                            getAllFileCataloguerConfigProperties(),
-                           1440,
+                           5*24*7, // Every 5 days
                            new DeployedImplementationTypeDefinition[]{DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
                            "acebfa6f-f3a6-4fe3-a467-963a4e5bf0d6",
                            "Sample Data Files Monitor",
@@ -374,7 +374,7 @@ public enum IntegrationConnectorDefinition
                    null,
                    null,
                    null,
-                   60,
+                   7*24*60, // Weekly
                    new DeployedImplementationTypeDefinition[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM},
                    "22bcb015-84ab-4503-9619-231896c33828",
                    "Open API Cataloguer",
