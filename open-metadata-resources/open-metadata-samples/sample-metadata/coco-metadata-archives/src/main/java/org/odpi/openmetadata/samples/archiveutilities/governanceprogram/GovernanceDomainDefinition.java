@@ -12,7 +12,8 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 
 /**
  * The GovernanceDomainDefinition is used to feed the definition of the governance domains for
- * Coco Pharmaceuticals.
+ * Coco Pharmaceuticals.  This includes new domains unique to Coco Pharmaceuticals as well as
+ * the governance officer and community for all known domains.
  */
 public enum GovernanceDomainDefinition
 {
@@ -97,6 +98,15 @@ public enum GovernanceDomainDefinition
                      ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDescription(),
                      "Drug Development Community",
                      PersonDefinition.TESSA_TUBE),
+
+    /**
+     * Development of new treatments by Coco Pharmaceuticals. (Unique to Coco Pharmaceuticals)
+     */
+    MANUFACTURING(21,
+                  "Manufacturing",
+                  "The governance of manufacturing Coco Pharmaceuticals products.",
+                  "Manufacturing Community",
+                  PersonDefinition.STEW_FASTER),
 
     ;
 

@@ -6726,7 +6726,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Add a valid value definition/set.
+     * Add a valid value definition/set if it does not already exist.
      *
      * @param suppliedValidValueGUID optional unique identifier for the valid value instance
      * @param setGUID unique identifier of parent set
