@@ -89,6 +89,7 @@ ext {
     oracleJdbcVersion = '23.5.0.24.07'
     plexusVersion = '4.0.2'
     postgresVersion = '42.7.8' // already there
+    hikariVersion = '5.1.0'
     nettyVersion = '4.2.7.Final'
     prometheusVersion = '1.15.5'
     quartzVersion = '2.5.0'
@@ -152,6 +153,7 @@ dependencies {
         api("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
         api("com.oracle.database.jdbc:ojdbc11:${oracleJdbcVersion}")
         api("com.sleepycat:je:${sleepycatVersion}")
+        api("com.zaxxer:HikariCP:${hikariVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
         api("commons-cli:commons-cli:${commonscliVersion}")

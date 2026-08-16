@@ -38,7 +38,6 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
     private   String schemaDescription = null;
 
     private JDBCResourceConnector jdbcResourceConnector = null;
-    private java.sql.Connection   databaseConnection    = null;
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -75,7 +74,6 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         try
         {
             jdbcResourceConnector = this.getDatabaseConnection();
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
         }
         catch (Exception exception)
         {
@@ -179,7 +177,10 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         {
             propertyHelper.validateMandatoryName(tableName, MSSQLConfigurationProperty.TABLE_NAME.name, methodName);
 
-            return jdbcResourceConnector.getRowCount(databaseConnection, getQualifiedTableName());
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                return jdbcResourceConnector.getRowCount(databaseConnection, getQualifiedTableName());
+            }
         }
         catch (Exception exception)
         {
@@ -226,7 +227,11 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
                                                                    schemaDescription,
                                                                    Collections.singletonList(mssqlTable));
 
-                jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, mssqlSchemaDDL.getDDLStatements());
+                try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+                {
+                    jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, mssqlSchemaDDL.getDDLStatements());
+                    databaseConnection.commit();
+                }
             }
         }
         catch (Exception exception)
@@ -264,7 +269,11 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {
@@ -332,7 +341,11 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {

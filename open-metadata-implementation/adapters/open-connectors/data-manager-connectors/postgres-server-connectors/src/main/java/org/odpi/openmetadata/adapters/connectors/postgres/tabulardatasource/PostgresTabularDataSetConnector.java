@@ -38,7 +38,6 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
     private   String schemaDescription = null;
 
     private JDBCResourceConnector jdbcResourceConnector = null;
-    private java.sql.Connection   databaseConnection    = null;
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -75,7 +74,6 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
         try
         {
             jdbcResourceConnector = this.getDatabaseConnection();
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
         }
         catch (Exception exception)
         {
@@ -165,7 +163,10 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
         {
             propertyHelper.validateMandatoryName(tableName, PostgresConfigurationProperty.TABLE_NAME.name, methodName);
 
-            return jdbcResourceConnector.getRowCount(databaseConnection, tableName);
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                return jdbcResourceConnector.getRowCount(databaseConnection, tableName);
+            }
         }
         catch (Exception exception)
         {
@@ -212,7 +213,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
                                                                                   schemaDescription,
                                                                                   Collections.singletonList(postgreSQLTable));
 
-                jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, postgreSQLSchemaDDL.getDDLStatements());
+                try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+                {
+                    jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, postgreSQLSchemaDDL.getDDLStatements());
+                    databaseConnection.commit();
+                }
             }
         }
         catch (Exception exception)
@@ -250,7 +255,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {
@@ -318,7 +327,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {

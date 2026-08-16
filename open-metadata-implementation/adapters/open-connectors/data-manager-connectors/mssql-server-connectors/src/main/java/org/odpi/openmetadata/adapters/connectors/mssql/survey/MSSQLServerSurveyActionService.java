@@ -65,89 +65,92 @@ public class MSSQLServerSurveyActionService extends SurveyActionServiceConnector
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
             DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            /*
-             * database_id > 4 excludes the four fixed Microsoft SQL Server system databases
-             * (master=1, tempdb=2, model=3, msdb=4) - the direct equivalent of PostgreSQL's
-             * datistemplate/datallowconn filters on pg_database.
-             */
-            final String sqlCommand1 = "SELECT name, state_desc FROM sys.databases WHERE database_id > 4;";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<String> validDatabases = new ArrayList<>();
-
-            while (resultSet.next())
+            try (Connection jdbcConnection = jdbcDataSource.getConnection())
             {
+
                 /*
-                 * This test removes databases that are not currently able to be connected to.
+                 * database_id > 4 excludes the four fixed Microsoft SQL Server system databases
+                 * (master=1, tempdb=2, model=3, msdb=4) - the direct equivalent of PostgreSQL's
+                 * datistemplate/datallowconn filters on pg_database.
                  */
-                if ("ONLINE".equals(resultSet.getString("state_desc")))
+                final String sqlCommand1 = "SELECT name, state_desc FROM sys.databases WHERE database_id > 4;";
+
+                PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                List<String> validDatabases = new ArrayList<>();
+
+                while (resultSet.next())
                 {
-                    String databaseName = resultSet.getString("name");
-
-                    validDatabases.add(databaseName);
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            if (validDatabases.isEmpty())
-            {
-                auditLog.logMessage(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                  assetStore.getQualifiedName(),
-                                                                                                  assetStore.getAssetGUID()));
-            }
-            else
-            {
-                List<String> excludedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionBean.getConfigurationProperties(),
-                                                                                     Collections.emptyList());
-
-                List<String> includedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionBean.getConfigurationProperties());
-
-                List<String> surveyDatabases = new ArrayList<>();
-
-                for (String databaseName : validDatabases)
-                {
-                    if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
+                    /*
+                     * This test removes databases that are not currently able to be connected to.
+                     */
+                    if ("ONLINE".equals(resultSet.getString("state_desc")))
                     {
-                        surveyDatabases.add(databaseName);
+                        String databaseName = resultSet.getString("name");
+
+                        validDatabases.add(databaseName);
                     }
                 }
 
-                MSSQLDatabaseStatsExtractor statsExtractor = new MSSQLDatabaseStatsExtractor(surveyDatabases,
-                                                                                             this);
+                resultSet.close();
+                preparedStatement.close();
 
-                statsExtractor.getDatabaseStatistics(jdbcConnection);
-
-                jdbcConnection.commit();
-
-                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
-
-                for (String databaseName : surveyDatabases)
+                if (validDatabases.isEmpty())
                 {
-                    java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName);
-
-                    if (databaseSpecificConnection != null)
-                    {
-                        statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
-                    }
+                    auditLog.logMessage(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                                      assetStore.getQualifiedName(),
+                                                                                                      assetStore.getAssetGUID()));
                 }
-
-                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
-                if (annotations != null)
+                else
                 {
-                    for (AnnotationProperties annotation : annotations)
+                    List<String> excludedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                         connectionBean.getConfigurationProperties(),
+                                                                                         Collections.emptyList());
+
+                    List<String> includedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                         connectionBean.getConfigurationProperties());
+
+                    List<String> surveyDatabases = new ArrayList<>();
+
+                    for (String databaseName : validDatabases)
                     {
-                        if (super.isActive())
+                        if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
                         {
-                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            surveyDatabases.add(databaseName);
+                        }
+                    }
+
+                    MSSQLDatabaseStatsExtractor statsExtractor = new MSSQLDatabaseStatsExtractor(surveyDatabases,
+                                                                                                 this);
+
+                    statsExtractor.getDatabaseStatistics(jdbcConnection);
+
+                    jdbcConnection.commit();
+
+                    annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+                    for (String databaseName : surveyDatabases)
+                    {
+                        try (java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName))
+                        {
+                            if (databaseSpecificConnection != null)
+                            {
+                                statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                            }
+                        }
+                    }
+
+                    List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
+                    if (annotations != null)
+                    {
+                        for (AnnotationProperties annotation : annotations)
+                        {
+                            if (super.isActive())
+                            {
+                                annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            }
                         }
                     }
                 }

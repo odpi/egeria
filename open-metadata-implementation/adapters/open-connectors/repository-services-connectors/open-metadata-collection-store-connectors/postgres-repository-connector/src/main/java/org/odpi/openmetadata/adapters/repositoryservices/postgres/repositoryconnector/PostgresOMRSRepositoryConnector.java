@@ -222,12 +222,13 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         auditLog.logMessage(methodName, PostgresAuditCode.CONFIRMING_REPOSITORY_SCHEMA.getMessageDefinition(repositoryName, schemaName));
 
-        java.sql.Connection jdbcConnection = null;
-
-        try
+        /*
+         * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
+         * disabled, the pool rolls back any transaction the DDL statements left open if the commit below is not
+         * reached.
+         */
+        try (java.sql.Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection())
         {
-            jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
-
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               repositoryName,
                                                                               RepositoryTable.getTables());
@@ -236,13 +237,6 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         }
         catch (Exception error)
         {
-            /*
-             * The DDL statements have opened a transaction that the commit above did not reach.  It must be ended
-             * here, otherwise this thread's connection is left idle-in-transaction and is eventually terminated by
-             * the database.
-             */
-            this.rollbackAfterException(jdbcConnection, methodName);
-
             auditLog.logException(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                           error.getClass().getName(),
                                                                                                           methodName,
@@ -260,38 +254,6 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
     }
 
 
-    /**
-     * Roll back the transaction on a connection that is being abandoned because of an error.  The connection itself
-     * is not closed since it is owned - and reused - by the resource connector; only the transaction is ended.
-     * <br><br>
-     * A failure to roll back is logged rather than thrown so that it does not mask the original error that caused
-     * the unit of work to be abandoned.
-     *
-     * @param jdbcConnection connection to roll back - may be null if it was never successfully obtained
-     * @param callingMethodName method reporting the original error
-     */
-    private void rollbackAfterException(java.sql.Connection jdbcConnection,
-                                        String              callingMethodName)
-    {
-        if (jdbcConnection == null)
-        {
-            return;
-        }
-
-        try
-        {
-            jdbcConnection.rollback();
-        }
-        catch (Exception rollbackFailed)
-        {
-            auditLog.logException(callingMethodName,
-                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                              rollbackFailed.getClass().getName(),
-                                                                                              callingMethodName,
-                                                                                              rollbackFailed.getMessage()),
-                                  rollbackFailed);
-        }
-    }
 
 
     /**

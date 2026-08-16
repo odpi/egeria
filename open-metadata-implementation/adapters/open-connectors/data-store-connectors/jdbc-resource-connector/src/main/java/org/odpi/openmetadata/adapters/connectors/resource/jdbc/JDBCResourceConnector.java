@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCErrorCode;
@@ -28,18 +30,35 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * JDBCResourceConnector provides a resource connector to work with JDBC Databases.  The JDBC interface works using
- * JDBC Connections.  These connections are single threaded.  Therefore, the JDBCResourceConnector is responsible for
- * dispensing connectors via a data source object. This object implements the  {@link DataSource} interface in order
- * to get a {@link Connection} to target database. This is done via a static inner class,
- * since {@link DataSource#getConnection()} clashes with {@link ConnectorBase#getConnection()}.
+ * JDBCResourceConnector provides a resource connector to work with JDBC Databases.  A JDBC {@link Connection} carries
+ * a single database transaction and must not be used by two threads at once, so the connector dispenses connections
+ * from a pool via a data source object.  The data source is a separate object rather than this connector itself
+ * because {@link DataSource#getConnection()} clashes with {@link ConnectorBase#getConnection()} - two methods with
+ * the same signature cannot differ only by return type.
+ * <br><br>
+ * The pool is a {@link HikariDataSource}.  Callers therefore obtain a connection for the duration of one unit of work
+ * and <b>must close it</b> when that unit of work ends - ideally with try-with-resources:
+ * <pre>
+ *     try (Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection())
+ *     {
+ *         ... statements ...
+ *
+ *         jdbcConnection.commit();   // only if the unit of work made changes
+ *     }
+ * </pre>
+ * Closing returns the connection to the pool; it does not close the network connection.  Because the connector runs
+ * with auto-commit disabled, the pool rolls back any transaction still open when a connection is returned, so a
+ * caller that forgets to commit loses its changes rather than leaving the connection idle-in-transaction.
+ * <br><br>
+ * A caller that never closes will exhaust the pool.  Set the jdbcConnectionLeakThreshold configuration property to
+ * have the pool log a stack trace naming any caller that holds a connection for too long.
  */
 public class JDBCResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
     private AuditLog                        auditLog           = null;
     private String                          jdbcDatabaseName   = null;
     private String                          jdbcDatabaseURL    = null;
-    private JDBCConnectorAsDataSource       jdbcDataSource     = null;
+    private HikariDataSource                jdbcDataSource     = null;
     private final Properties                jdbcConnectionProperties = new Properties();
 
 
@@ -164,7 +183,174 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                                                                            jdbcConnectionProperties);
         }
 
-        jdbcDataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
+        jdbcDataSource = this.createConnectionPool(configurationProperties);
+    }
+
+
+    /**
+     * Build the connection pool for this database.
+     *
+     * @param configurationProperties the connector's configuration properties - may be null
+     * @return configured pool
+     */
+    private HikariDataSource createConnectionPool(Map<String, Object> configurationProperties)
+    {
+        HikariConfig poolConfig = new HikariConfig();
+
+        poolConfig.setPoolName(jdbcDatabaseName);
+        poolConfig.setJdbcUrl(jdbcDatabaseURL);
+
+        if ((connectionBean.getUserId() != null) && (connectionBean.getClearPassword() != null))
+        {
+            poolConfig.setUsername(connectionBean.getUserId());
+            poolConfig.setPassword(connectionBean.getClearPassword());
+        }
+
+        /*
+         * Turn on socket-level keepalive before the caller's own properties are applied, so that an explicit
+         * setting in additionalConnectionProperties always wins.
+         *
+         * Without this, a connection whose peer disappears silently - a dropped network, a firewall idle timeout -
+         * leaves the pool holding a socket that will never be read from again.  HikariCP calls this out as the
+         * cause of a pool that drains to zero and does not recover.  The property name is driver specific, so it is
+         * only set for drivers whose spelling of it is known; for anything else, keepalive has to come from the
+         * operating system's own TCP settings.
+         */
+        this.addKeepAliveProperty(poolConfig.getDataSourceProperties());
+
+        /*
+         * Any additional driver properties are passed straight through on every connection the pool opens.
+         */
+        poolConfig.getDataSourceProperties().putAll(jdbcConnectionProperties);
+
+        /*
+         * Egeria manages its transactions explicitly, so auto-commit stays off.  This is also what makes the pool
+         * roll back an unfinished transaction when a connection is returned.
+         */
+        poolConfig.setAutoCommit(false);
+
+        poolConfig.setMaximumPoolSize((int) this.getLongConfigurationProperty(configurationProperties,
+                                                                             JDBCConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName(),
+                                                                             5L));
+        poolConfig.setMinimumIdle((int) this.getLongConfigurationProperty(configurationProperties,
+                                                                         JDBCConfigurationProperty.JDBC_MINIMUM_IDLE.getName(),
+                                                                         1L));
+        poolConfig.setConnectionTimeout(this.getLongConfigurationProperty(configurationProperties,
+                                                                         JDBCConfigurationProperty.JDBC_CONNECTION_WAIT_TIMEOUT.getName(),
+                                                                         30000L));
+        poolConfig.setMaxLifetime(this.getLongConfigurationProperty(configurationProperties,
+                                                                    JDBCConfigurationProperty.JDBC_MAXIMUM_CONNECTION_LIFETIME.getName(),
+                                                                    1800000L));
+
+        /*
+         * This is the pool's own liveness probe on idle connections, which is a different mechanism from the
+         * socket-level keepalive set above: it retires a connection the database has quietly dropped, rather than
+         * keeping the socket alive in the first place.  Both are wanted.  Zero disables it.
+         */
+        long keepAlive = this.getLongConfigurationProperty(configurationProperties,
+                                                          JDBCConfigurationProperty.JDBC_CONNECTION_KEEPALIVE.getName(),
+                                                          120000L);
+        if (keepAlive > 0)
+        {
+            poolConfig.setKeepaliveTime(keepAlive);
+        }
+
+        long leakThreshold = this.getLongConfigurationProperty(configurationProperties,
+                                                              JDBCConfigurationProperty.JDBC_CONNECTION_LEAK_THRESHOLD.getName(),
+                                                              0L);
+        if (leakThreshold > 0)
+        {
+            poolConfig.setLeakDetectionThreshold(leakThreshold);
+        }
+
+        return new HikariDataSource(poolConfig);
+    }
+
+
+    /**
+     * Switch on the JDBC driver's socket-level TCP keepalive, where the property name for this driver is known.
+     * <br><br>
+     * The property is driver specific and an unrecognised property can be rejected outright by some drivers, so
+     * nothing is set for a database whose spelling of it is not known here.  Those deployments need keepalive
+     * configured at the operating system level instead, or the property supplied through the
+     * additionalConnectionProperties configuration property.
+     *
+     * @param dataSourceProperties driver properties being assembled for the pool
+     */
+    private void addKeepAliveProperty(Properties dataSourceProperties)
+    {
+        final String methodName = "addKeepAliveProperty";
+
+        if (jdbcDatabaseURL == null)
+        {
+            return;
+        }
+
+        String keepAlivePropertyName = null;
+
+        if (jdbcDatabaseURL.startsWith("jdbc:postgresql:"))
+        {
+            keepAlivePropertyName = "tcpKeepAlive";
+        }
+        else if (jdbcDatabaseURL.startsWith("jdbc:oracle:"))
+        {
+            keepAlivePropertyName = "oracle.net.keepAlive";
+        }
+
+        if (keepAlivePropertyName != null)
+        {
+            dataSourceProperties.setProperty(keepAlivePropertyName, "true");
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    JDBCAuditCode.CONNECTION_KEEPALIVE_ENABLED.getMessageDefinition(jdbcDatabaseName,
+                                                                                                    keepAlivePropertyName));
+            }
+        }
+    }
+
+
+    /**
+     * Retrieve a numeric configuration property, falling back to the supplied default if it is absent or unreadable.
+     *
+     * @param configurationProperties the connector's configuration properties - may be null
+     * @param propertyName name of the property to retrieve
+     * @param defaultValue value to use when the property is not usable
+     * @return configured value or the default
+     */
+    private long getLongConfigurationProperty(Map<String, Object> configurationProperties,
+                                              String              propertyName,
+                                              long                defaultValue)
+    {
+        final String methodName = "getLongConfigurationProperty";
+
+        if (configurationProperties != null)
+        {
+            Object propertyValue = configurationProperties.get(propertyName);
+
+            if (propertyValue != null)
+            {
+                try
+                {
+                    return Long.parseLong(propertyValue.toString());
+                }
+                catch (NumberFormatException notANumber)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logException(methodName,
+                                              JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                      notANumber.getClass().getName(),
+                                                                                                      methodName,
+                                                                                                      notANumber.getMessage()),
+                                              notANumber);
+                    }
+                }
+            }
+        }
+
+        return defaultValue;
     }
 
 
@@ -1017,313 +1203,33 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
-     * This ensures the connections for each requested data source are closed before the connector quits.
+     * This shuts down the connection pool, closing every connection it holds, before the connector quits.
      */
     private synchronized void disconnectKnownDataSources()
     {
-        try
+        final String methodName = "disconnectKnownDataSources";
+
+        if (jdbcDataSource != null)
         {
-            jdbcDataSource.disconnect();
-        }
-        catch (Exception error)
-        {
-            /*
-             * Ignore error - in shutdown and the caller may have closed the connection already.
-             */
-        }
-    }
-
-
-    /**
-     * JDBCConnectorAsDataSource provides the inner class for DataSource.
-     */
-    private class JDBCConnectorAsDataSource implements DataSource
-    {
-        private final String   databaseName;
-        private final AuditLog auditLog;
-
-        private final Map<Long, Connection> knownConnections = new HashMap<>();
-
-
-        /**
-         * Construct the data source wrapper.
-         *
-         * @param databaseName database name to use in messages
-         * @param auditLog logging destination
-         */
-        JDBCConnectorAsDataSource(String   databaseName,
-                                  AuditLog auditLog)
-        {
-            this.databaseName = databaseName;
-            this.auditLog = auditLog;
-        }
-
-
-        /**
-         * Attempts to establish a connection with the data source that this DataSource object represents.
-         *
-         * @return a JDBC connection to the data source
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public synchronized Connection getConnection() throws SQLException
-        {
-            final String methodName = "dataSource.getConnection";
-
-            Connection jdbcConnection = null;
-            try
-            {
-                jdbcConnection = this.knownConnections.get(Thread.currentThread().getId());
-
-                if ((jdbcConnection == null) || (jdbcConnection.isClosed()))
-                {
-                    Properties connectionProperties = new Properties();
-                    connectionProperties.putAll(jdbcConnectionProperties);
-
-                    if ((connectionBean.getUserId() != null) && (connectionBean.getClearPassword() != null))
-                    {
-                        connectionProperties.setProperty("user", connectionBean.getUserId());
-                        connectionProperties.setProperty("password", connectionBean.getClearPassword());
-                    }
-
-                    jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), connectionProperties);
-
-                    jdbcConnection.setAutoCommit(false);
-
-                    this.knownConnections.put(Thread.currentThread().getId(), jdbcConnection);
-
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName, Long.toString(Thread.currentThread().getId()), Thread.currentThread().getName()));
-                    }
-                }
-
-                return jdbcConnection;
-            }
-            catch (SQLException error)
-            {
-                if (jdbcConnection != null)
-                {
-                    rollbackAfterException(jdbcConnection, error);
-                }
-
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(databaseName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  error.getMessage()),
-                                          error);
-                }
-
-                throw error;
-            }
-        }
-
-
-        /**
-         * Attempts to establish a connection with the data source that this DataSource object represents.
-         * The caller is responsible for managing the connection lifecycle
-         *
-         * @param username the username for connecting to the database that overrides the configured userId
-         * @param password the password for connecting to the database that overrides the configured clearPassword
-         * @return a JDBC connection to the data source
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public Connection getConnection(String username, String password) throws SQLException
-        {
-            final String methodName = "dataSource.getConnection(supplied security)";
-
-            Connection jdbcConnection = null;
-
-            try
-            {
-                Properties connectionProperties = new Properties();
-                connectionProperties.putAll(jdbcConnectionProperties);
-                connectionProperties.setProperty("user", username);
-                connectionProperties.setProperty("password", password);
-
-                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), connectionProperties);
-
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName, Long.toString(Thread.currentThread().getId()), Thread.currentThread().getName()));
-                }
-
-                return jdbcConnection;
-            }
-            catch (SQLException error)
-            {
-                if (jdbcConnection != null)
-                {
-                    rollbackAfterException(jdbcConnection, error);
-                }
-
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(databaseName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  error.getMessage()),
-                                          error);
-                }
-
-                throw error;
-            }
-        }
-
-
-        /**
-         * Retrieves the log writer for this DataSource object.
-         * The log writer is a character output stream to which all logging and tracing messages for this data source will be printed.
-         * This includes messages printed by the methods of this object, messages printed by methods of other objects manufactured by this object,
-         * and so on. Messages printed to a data source specific log writer are not printed to the log writer associated with the
-         * java.sql.DriverManager class. When a DataSource object is created, the log writer is initially null; in other words,
-         * the default is for logging to be disabled.
-         *
-         * @return log writer
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public PrintWriter getLogWriter() throws SQLException
-        {
-            return DriverManager.getLogWriter();
-        }
-
-
-        /**
-         * Sets the log writer for this DataSource object to the given java.io.PrintWriter object.
-         * The log writer is a character output stream to which all logging and tracing messages for this data source will be printed.
-         * This includes messages printed by the methods of this object, messages printed by methods of other objects manufactured by this object,
-         * and so on. Messages printed to a data source - specific log writer are not printed to the log writer associated with the
-         * java.sql.DriverManager class. When a DataSource object is created the log writer is initially null; in other words,
-         * the default is for logging to be disabled
-         *
-         * @param out the new log writer; to disable logging, set to null
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public void setLogWriter(PrintWriter out) throws SQLException
-        {
-            DriverManager.setLogWriter(out);
-        }
-
-
-        /**
-         * Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.
-         * A value of zero specifies that the timeout is the default system timeout if there is one; otherwise, it specifies that there is no timeout.
-         * When a DataSource object is created, the login timeout is initially zero.
-         *
-         * @param seconds the data source login time limit
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public void setLoginTimeout(int seconds) throws SQLException
-        {
-            DriverManager.setLoginTimeout(seconds);
-        }
-
-
-        /**
-         * Gets the maximum time in seconds that this data source can wait while attempting to connect to a database.
-         * A value of zero means that the timeout is the default system timeout if there is one; otherwise, it means that there is no timeout.
-         * When a DataSource object is created, the login timeout is initially zero.
-         *
-         * @return seconds
-         * @throws SQLException if a database access error occurs
-         */
-        @Override
-        public int getLoginTimeout() throws SQLException
-        {
-            return DriverManager.getLoginTimeout();
-        }
-
-
-        /**
-         * Return the parent Logger of all the Loggers used by this data source. This should be the Logger farthest from the root Logger
-         * that is still an ancestor of all the Loggers used by this data source. Configuring this Logger will affect all the
-         * log messages generated by the data source. In the worst case, this may be the root Logger.
-         *
-         * @return the parent Logger for this data source
-         * @throws SQLFeatureNotSupportedException – if the data source does not use java.util.logging
-         */
-        @Override
-        public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException
-        {
-            throw new SQLFeatureNotSupportedException();
-        }
-
-
-        /**
-         * Returns an object that implements the given interface to allow access to non-standard methods, or standard methods not exposed by
-         * the proxy. If the receiver implements the interface then the result is the receiver or a proxy for the receiver.
-         * If the receiver is a wrapper and the wrapped object implements the interface then the result is the wrapped object or a proxy for the
-         * wrapped object. Otherwise, return the result of calling unwrap recursively on the wrapped object or a proxy for that result.
-         * If the receiver is not a wrapper and does not implement the interface, then an SQLException is thrown.
-         *
-         * @param requestedInterface A Class defining an interface that the result must implement.
-         * @return an object that implements the interface. Maybe a proxy for the actual implementing object.
-         * @param <T> class
-         * @throws SQLException If no object found that implements the interface
-         */
-        @Override
-        public <T> T unwrap(Class<T> requestedInterface) throws SQLException
-        {
-            return null;
-        }
-
-
-        /**
-         * Returns true if this either implements the interface argument or is directly or indirectly a wrapper for an object that does.
-         * Returns false otherwise. If this implements the interface then return true, else if this is a wrapper then return the result of
-         * recursively calling isWrapperFor on the wrapped object. If this does not implement the interface and is not a wrapper,
-         * return false. This method should be implemented as a low-cost operation compared to unwrap so that callers can use this method to avoid
-         * expensive unwrap calls that may fail. If this method returns true then calling unwrap with the same argument should succeed.
-         *
-         * @param requestedInterface a Class defining an interface.
-         * @return true if this implements the interface or directly or indirectly wraps an object that does
-         * @throws SQLException if an error occurs while determining whether this is a wrapper for an object with the given interface.
-         */
-        @Override
-        public boolean isWrapperFor(Class<?> requestedInterface) throws SQLException
-        {
-            return false;
-        }
-
-
-        /**
-         * Free up any connections held since the data source is no longer needed.
-         */
-        public  void disconnect()
-        {
-            final String methodName = "disconnect";
-
             if (auditLog != null)
             {
-                String numberOfConnections = "zero";
-
-                if (! knownConnections.isEmpty())
-                {
-                    numberOfConnections = Integer.toString(knownConnections.size());
-                }
-
-                auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_STOPPING.getMessageDefinition(jdbcDatabaseName, numberOfConnections));
+                auditLog.logMessage(methodName,
+                                    JDBCAuditCode.CONNECTOR_STOPPING.getMessageDefinition(jdbcDatabaseName,
+                                                                                          Integer.toString(jdbcDataSource.getHikariPoolMXBean() == null ? 0 : jdbcDataSource.getHikariPoolMXBean().getTotalConnections())));
             }
 
-            for (Connection connection : this.knownConnections.values())
+            try
             {
-                try
-                {
-                    connection.close();
-                }
-                catch (Exception error)
-                {
-                    // Ignore error - in shutdown and the connection may be in error already.
-                }
+                jdbcDataSource.close();
+            }
+            catch (Exception error)
+            {
+                /*
+                 * Ignore error - in shutdown and the pool may already be closed.
+                 */
             }
         }
     }
+
+
 }

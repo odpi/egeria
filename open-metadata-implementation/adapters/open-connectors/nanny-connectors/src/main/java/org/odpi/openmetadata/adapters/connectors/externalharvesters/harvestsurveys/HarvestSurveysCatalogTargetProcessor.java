@@ -110,12 +110,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "loadDDL";
 
-        java.sql.Connection databaseConnection = null;
-
-        try
+        /*
+         * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
+         * disabled, the pool rolls back the transaction if the commit below is not reached.
+         */
+        try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
         {
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
-
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               "Survey records for a cohort of OMAG Servers.",
                                                                               HarvestSurveysTable.getTables());
@@ -124,23 +124,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  rollbackError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                            rollbackError.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            rollbackError.getMessage()),
-                                          error);
-                }
-            }
-
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(schemaName,
                                                                                                                   error.getClass().getName(),
                                                                                                                   methodName,
@@ -167,14 +150,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     @Override
     public void refresh() throws ConnectorCheckedException
     {
-        java.sql.Connection databaseConnection = null;
-
         final String methodName = "refresh";
 
-        try
+        /*
+         * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
+         * disabled, the pool rolls back the transaction if the commit below is not reached.
+         */
+        try (java.sql.Connection databaseConnection = databaseClient.getDataSource().getConnection())
         {
-            databaseConnection = databaseClient.getDataSource().getConnection();
-
             int startFrom = 0;
             List<OpenMetadataElement> surveyReportElements = openMetadataStore.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
                                                                                                      null,
@@ -204,30 +187,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                  error);
-
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  rollbackError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              rollbackError.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              rollbackError.getMessage()),
-                                          error);
-                }
-            }
-
             auditLog.logException(methodName,
                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                     error.getClass().getName(),
@@ -2250,40 +2209,26 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "processEvent";
 
-        java.sql.Connection databaseConnection = null;
-
         try
         {
             OpenMetadataElement surveyReportElement = openMetadataStore.getMetadataElementByGUID(event.getElementHeader().getGUID());
 
             if (surveyReportElement != null)
             {
-                databaseConnection = databaseClient.getDataSource().getConnection();
+                /*
+                 * The connection is returned to the pool when this block exits.  Because the connector runs with
+                 * auto-commit disabled, the pool rolls back the transaction if the commit below is not reached.
+                 */
+                try (java.sql.Connection databaseConnection = databaseClient.getDataSource().getConnection())
+                {
+                    processSurveyReport(databaseConnection, surveyReportElement);
 
-                processSurveyReport(databaseConnection, surveyReportElement);
-
-                databaseConnection.commit();
+                    databaseConnection.commit();
+                }
             }
         }
         catch (Exception error)
         {
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  rollbackError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                            rollbackError.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            rollbackError.getMessage()),
-                                          error);
-                }
-            }
-
             auditLog.logException(methodName,
                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                     error.getClass().getName(),

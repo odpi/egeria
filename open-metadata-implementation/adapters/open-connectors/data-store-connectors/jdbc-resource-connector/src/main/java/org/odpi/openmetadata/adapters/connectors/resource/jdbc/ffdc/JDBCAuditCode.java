@@ -66,6 +66,15 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                        "The connector has been requested to disconnect from the database and is ensuring all connections are closed.  This message is output by each data source that was created by the connector.  Therefore the number of times that this message is emitted indicates the number of data sources were created by the connector.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
+    /**
+     * JDBC-RESOURCE-CONNECTOR-0010 - The JDBC resource connector for database {0} has enabled TCP keepalive using driver property {1}
+     */
+    CONNECTION_KEEPALIVE_ENABLED("JDBC-RESOURCE-CONNECTOR-0010",
+                                 AuditLogRecordSeverityLevel.INFO,
+                                 "The JDBC resource connector for database {0} has enabled TCP keepalive using driver property {1}",
+                                 "The connector has switched on socket level keepalive for the connections in its pool.  This stops the pool from filling up with connections whose network peer has disappeared silently, which would otherwise drain the pool to zero without it recovering.",
+                                 "No action is required.  If the database is reached through a firewall or load balancer that drops idle connections, check that its idle timeout is longer than the keepalive interval configured in the operating system."),
+
 
 
 

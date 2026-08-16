@@ -38,7 +38,6 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
     private   String schemaDescription = null;
 
     private JDBCResourceConnector jdbcResourceConnector = null;
-    private java.sql.Connection   databaseConnection    = null;
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -75,7 +74,6 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         try
         {
             jdbcResourceConnector = this.getDatabaseConnection();
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
         }
         catch (Exception exception)
         {
@@ -179,7 +177,10 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         {
             propertyHelper.validateMandatoryName(tableName, DB2LUWConfigurationProperty.TABLE_NAME.name, methodName);
 
-            return jdbcResourceConnector.getRowCount(databaseConnection, getQualifiedTableName());
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                return jdbcResourceConnector.getRowCount(databaseConnection, getQualifiedTableName());
+            }
         }
         catch (Exception exception)
         {
@@ -226,7 +227,11 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
                                                                        schemaDescription,
                                                                        Collections.singletonList(db2luwTable));
 
-                jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, db2luwSchemaDDL.getDDLStatements());
+                try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+                {
+                    jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, db2luwSchemaDDL.getDDLStatements());
+                    databaseConnection.commit();
+                }
             }
         }
         catch (Exception exception)
@@ -264,7 +269,11 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {
@@ -333,7 +342,11 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                databaseConnection.commit();
+            }
         }
         catch (Exception exception)
         {

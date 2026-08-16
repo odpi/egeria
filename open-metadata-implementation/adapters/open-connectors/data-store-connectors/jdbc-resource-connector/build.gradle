@@ -14,6 +14,8 @@ description = 'JDBC Resource Connector for Egeria'
 
 dependencies {
     runtimeOnly 'org.postgresql:postgresql'
+    // Connection pool - needed at both compile and run time, so it is bundled into the shadow jar
+    implementation 'com.zaxxer:HikariCP'
     compileOnly 'org.slf4j:slf4j-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
