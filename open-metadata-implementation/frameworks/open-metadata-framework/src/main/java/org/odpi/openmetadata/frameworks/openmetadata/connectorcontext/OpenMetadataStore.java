@@ -793,6 +793,11 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      *
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param searchProperties Optional list of relationship property conditions to match.
      * @param queryOptions multiple options to control the query
      *
@@ -802,7 +807,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                 List<String>     relationshipSubtypeGUIDs,
+                                                                                 List<String>     relationshipSubtypeNames,
                                                                                  List<String>     end1EntityGUIDs,
                                                                                  List<String>     end2EntityGUIDs,
                                                                                  EndMatchCriteria endMatchCriteria,
@@ -813,7 +818,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         return openMetadataClient.findRelationshipsBetweenMetadataElements(connectorUserId,
                                                                            relationshipTypeName,
-                                                                           relationshipSubtypeGUIDs,
+                                                                           relationshipSubtypeNames,
                                                                            end1EntityGUIDs,
                                                                            end2EntityGUIDs,
                                                                            endMatchCriteria,
@@ -829,7 +834,8 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      *
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -842,7 +848,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws PropertyServerException a problem accessing the metadata store
      */
     public long countRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                          List<String>     relationshipSubtypeGUIDs,
+                                                          List<String>     relationshipSubtypeNames,
                                                           List<String>     end1EntityGUIDs,
                                                           List<String>     end2EntityGUIDs,
                                                           EndMatchCriteria endMatchCriteria,
@@ -853,7 +859,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         return openMetadataClient.countRelationshipsBetweenMetadataElements(connectorUserId,
                                                                             relationshipTypeName,
-                                                                            relationshipSubtypeGUIDs,
+                                                                            relationshipSubtypeNames,
                                                                             end1EntityGUIDs,
                                                                             end2EntityGUIDs,
                                                                             endMatchCriteria,

@@ -2157,7 +2157,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -2189,6 +2191,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
+                                           boolean                   skipSubtypes,
                                            SearchProperties searchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -2229,6 +2232,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         resultList = realMetadataCollection.findEntities(userId,
                                                          entityTypeGUID,
                                                          entitySubtypeGUIDs,
+                                                         skipSubtypes,
                                                          searchProperties,
                                                          fromEntityElement,
                                                          limitResultsByStatus,
@@ -2259,7 +2263,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
@@ -2286,6 +2292,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public long countEntities(String                    userId,
                               String                    entityTypeGUID,
                               List<String>              entitySubtypeGUIDs,
+                              boolean                   skipSubtypes,
                               SearchProperties          searchProperties,
                               int                       fromEntityElement,
                               List<InstanceStatus>      limitResultsByStatus,
@@ -2322,6 +2329,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return realMetadataCollection.countEntities(userId,
                                                     entityTypeGUID,
                                                     entitySubtypeGUIDs,
+                                                    skipSubtypes,
                                                     searchProperties,
                                                     fromEntityElement,
                                                     limitResultsByStatus,
@@ -2709,7 +2717,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 1 of the relationship.
      * @param end2EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 2 of the relationship.
      * @param endMatchCriteria criteria for matching the ends of the relationship.
@@ -2743,6 +2754,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
+                                                 boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
                                                  List<String>              end2EntityGUIDs,
                                                  EndMatchCriteria          endMatchCriteria,
@@ -2786,6 +2798,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         resultList = realMetadataCollection.findRelationships(userId,
                                                               relationshipTypeGUID,
                                                               relationshipSubtypeGUIDs,
+                                                              skipSubtypes,
                                                               end1EntityGUIDs,
                                                               end2EntityGUIDs,
                                                               endMatchCriteria,
@@ -2813,7 +2826,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -2843,6 +2859,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public  long countRelationships(String                    userId,
                                     String                    relationshipTypeGUID,
                                     List<String>              relationshipSubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
                                     List<String>              end2EntityGUIDs,
                                     EndMatchCriteria          endMatchCriteria,
@@ -2884,6 +2901,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return realMetadataCollection.countRelationships(userId,
                                                          relationshipTypeGUID,
                                                          relationshipSubtypeGUIDs,
+                                                         skipSubtypes,
                                                          end1EntityGUIDs,
                                                          end2EntityGUIDs,
                                                          endMatchCriteria,

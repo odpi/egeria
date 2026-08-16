@@ -343,7 +343,9 @@ class PostgresOMRSMetadataStore
      *
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -365,6 +367,7 @@ class PostgresOMRSMetadataStore
      */
     List<EntityDetail> findEntities(String                    entityTypeGUID,
                                     List<String>              entitySubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     SearchProperties          matchProperties,
                                     int                       fromEntityElement,
                                     List<InstanceStatus>      limitResultsByStatus,
@@ -383,7 +386,7 @@ class PostgresOMRSMetadataStore
                                                            repositoryName);
         QueryBuilder classificationQueryBuilder = null;
 
-        entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, entitySubtypeGUIDsParameterName);
+        entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, skipSubtypes, entitySubtypeGUIDsParameterName);
         entityQueryBuilder.setSearchProperties(matchProperties);
         entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         entityQueryBuilder.setAsOfTime(asOfTime);
@@ -417,7 +420,9 @@ class PostgresOMRSMetadataStore
      *
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
@@ -430,6 +435,7 @@ class PostgresOMRSMetadataStore
      */
     long countEntities(String                    entityTypeGUID,
                        List<String>              entitySubtypeGUIDs,
+                       boolean                   skipSubtypes,
                        SearchProperties          matchProperties,
                        List<InstanceStatus>      limitResultsByStatus,
                        SearchClassifications     matchClassifications,
@@ -444,7 +450,7 @@ class PostgresOMRSMetadataStore
                                                            repositoryName);
         QueryBuilder classificationQueryBuilder = null;
 
-        entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, entitySubtypeGUIDsParameterName);
+        entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, skipSubtypes, entitySubtypeGUIDsParameterName);
         entityQueryBuilder.setSearchProperties(matchProperties);
         entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         entityQueryBuilder.setAsOfTime(asOfTime);
@@ -713,7 +719,10 @@ class PostgresOMRSMetadataStore
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -737,6 +746,7 @@ class PostgresOMRSMetadataStore
      */
     List<Relationship> findRelationships(String                    relationshipTypeGUID,
                                          List<String>              relationshipSubtypeGUIDs,
+                                         boolean                   skipSubtypes,
                                          List<String>              end1EntityGUIDs,
                                          List<String>              end2EntityGUIDs,
                                          EndMatchCriteria          endMatchCriteria,
@@ -756,7 +766,7 @@ class PostgresOMRSMetadataStore
                                                      repositoryHelper,
                                                      repositoryName);
 
-        queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, relationshipSubtypeGUIDsParameterName);
+        queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, skipSubtypes, relationshipSubtypeGUIDsParameterName);
         queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria);
         queryBuilder.setSearchProperties(matchProperties);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
@@ -780,7 +790,10 @@ class PostgresOMRSMetadataStore
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -796,6 +809,7 @@ class PostgresOMRSMetadataStore
      */
     long countRelationships(String                    relationshipTypeGUID,
                             List<String>              relationshipSubtypeGUIDs,
+                            boolean                   skipSubtypes,
                             List<String>              end1EntityGUIDs,
                             List<String>              end2EntityGUIDs,
                             EndMatchCriteria          endMatchCriteria,
@@ -811,7 +825,7 @@ class PostgresOMRSMetadataStore
                                                      repositoryHelper,
                                                      repositoryName);
 
-        queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, relationshipSubtypeGUIDsParameterName);
+        queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, skipSubtypes, relationshipSubtypeGUIDsParameterName);
         queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria);
         queryBuilder.setSearchProperties(matchProperties);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);

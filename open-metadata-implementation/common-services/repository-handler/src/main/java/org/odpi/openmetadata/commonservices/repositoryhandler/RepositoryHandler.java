@@ -3508,6 +3508,75 @@ public class RepositoryHandler
                                            String                methodName) throws UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        return this.findEntities(userId,
+                                 entityTypeGUID,
+                                 entitySubtypeGUIDs,
+                                 false,
+                                 searchProperties,
+                                 limitResultsByStatus,
+                                 searchClassifications,
+                                 asOfTime,
+                                 sequencingProperty,
+                                 sequencingOrder,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 startingFrom,
+                                 pageSize,
+                                 effectiveTime,
+                                 methodName);
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection; list (even if empty) means more to receive
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                entityTypeGUID,
+                                           List<String>          entitySubtypeGUIDs,
+                                           boolean               skipSubtypes,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           Date                  effectiveTime,
+                                           String                methodName) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
         final String localMethodName = "findEntities";
 
         try
@@ -3515,6 +3584,7 @@ public class RepositoryHandler
             List<EntityDetail> retrievedEntities = metadataCollection.findEntities(userId,
                                                                                    entityTypeGUID,
                                                                                    entitySubtypeGUIDs,
+                                                                                   skipSubtypes,
                                                                                    searchProperties,
                                                                                    startingFrom,
                                                                                    limitResultsByStatus,
@@ -3591,6 +3661,68 @@ public class RepositoryHandler
                               String                methodName) throws UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        return this.countEntities(userId,
+                                  entityTypeGUID,
+                                  entitySubtypeGUIDs,
+                                  false,
+                                  searchProperties,
+                                  limitResultsByStatus,
+                                  searchClassifications,
+                                  asOfTime,
+                                  sequencingProperty,
+                                  sequencingOrder,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), but returns the number of matching entities rather than the entities themselves.  Note that,
+     * unlike findEntities(), the count returned is not passed through validateEntities() - it reflects the raw
+     * repository count, since applying the lineage/duplicate-processing/security filtering that validateEntities()
+     * performs would require fetching every matching entity, which defeats the purpose of an efficient count.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used - the count is not affected by sequencing.
+     * @param sequencingOrder not used - the count is not affected by sequencing.
+     * @param forLineage not used - accepted for call-site parity with findEntities().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findEntities().
+     * @param effectiveTime not used - accepted for call-site parity with findEntities().
+     * @param methodName calling method
+     * @return the number of entities matching the supplied criteria.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public long countEntities(String                userId,
+                              String                entityTypeGUID,
+                              List<String>          entitySubtypeGUIDs,
+                              boolean               skipSubtypes,
+                              SearchProperties      searchProperties,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              String                sequencingProperty,
+                              SequencingOrder       sequencingOrder,
+                              boolean               forLineage,
+                              boolean               forDuplicateProcessing,
+                              Date                  effectiveTime,
+                              String                methodName) throws UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
         final String localMethodName = "countEntities";
 
         try
@@ -3598,6 +3730,7 @@ public class RepositoryHandler
             return metadataCollection.countEntities(userId,
                                                     entityTypeGUID,
                                                     entitySubtypeGUIDs,
+                                                    skipSubtypes,
                                                     searchProperties,
                                                     0,
                                                     limitResultsByStatus,
@@ -3627,7 +3760,9 @@ public class RepositoryHandler
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the relationshipTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -3654,6 +3789,7 @@ public class RepositoryHandler
     public List<Relationship> findRelationships(String                userId,
                                                 String                relationshipTypeGUID,
                                                 List<String>          relationshipSubtypeGUIDs,
+                                                boolean               skipSubtypes,
                                                 List<String>          end1EntityGUIDs,
                                                 List<String>          end2EntityGUIDs,
                                                 EndMatchCriteria      endMatchCriteria,
@@ -3676,6 +3812,7 @@ public class RepositoryHandler
             List<Relationship> relationships = metadataCollection.findRelationships(userId,
                                                                                     relationshipTypeGUID,
                                                                                     relationshipSubtypeGUIDs,
+                                                                                    skipSubtypes,
                                                                                     end1EntityGUIDs,
                                                                                     end2EntityGUIDs,
                                                                                     endMatchCriteria,
@@ -3724,7 +3861,9 @@ public class RepositoryHandler
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the relationshipTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -3745,6 +3884,7 @@ public class RepositoryHandler
     public long countRelationships(String                userId,
                                    String                relationshipTypeGUID,
                                    List<String>          relationshipSubtypeGUIDs,
+                                   boolean               skipSubtypes,
                                    List<String>          end1EntityGUIDs,
                                    List<String>          end2EntityGUIDs,
                                    EndMatchCriteria      endMatchCriteria,
@@ -3765,6 +3905,7 @@ public class RepositoryHandler
             return metadataCollection.countRelationships(userId,
                                                           relationshipTypeGUID,
                                                           relationshipSubtypeGUIDs,
+                                                          skipSubtypes,
                                                           end1EntityGUIDs,
                                                           end2EntityGUIDs,
                                                           endMatchCriteria,

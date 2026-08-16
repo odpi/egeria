@@ -29,6 +29,8 @@ public class QueryOptions extends PagingOptions
     private List<String>        skipClassifiedElements        = null;
     private List<String>        includeOnlyClassifiedElements = null;
     private List<String>        governanceZoneFilter          = null;
+    private List<String>        metadataElementSubtypeNames   = null;
+    private boolean             skipSubtypes                  = false;
 
 
     /**
@@ -60,6 +62,8 @@ public class QueryOptions extends PagingOptions
             skipClassifiedElements        = template.getSkipClassifiedElements();
             includeOnlyClassifiedElements = template.getIncludeOnlyClassifiedElements();
             governanceZoneFilter          = template.getGovernanceZoneFilter();
+            metadataElementSubtypeNames   = template.getMetadataElementSubtypeNames();
+            skipSubtypes                  = template.getSkipSubtypes();
         }
     }
 
@@ -301,6 +305,54 @@ public class QueryOptions extends PagingOptions
 
 
     /**
+     * Return the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+     * is set to true, must not belong to).
+     *
+     * @return open metadata type names
+     */
+    public List<String> getMetadataElementSubtypeNames()
+    {
+        return metadataElementSubtypeNames;
+    }
+
+
+    /**
+     * Set up the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+     * is set to true, must not belong to).
+     *
+     * @param metadataElementSubtypeNames open metadata type names
+     */
+    public void setMetadataElementSubtypeNames(List<String> metadataElementSubtypeNames)
+    {
+        this.metadataElementSubtypeNames = metadataElementSubtypeNames;
+    }
+
+
+    /**
+     * Return whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+     * query results (true) rather than the only subtypes to include in the query results (false, the default).
+     *
+     * @return boolean flag (default is false)
+     */
+    public boolean getSkipSubtypes()
+    {
+        return skipSubtypes;
+    }
+
+
+    /**
+     * Set up whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+     * query results (true) rather than the only subtypes to include in the query results (false, the default).
+     *
+     * @param skipSubtypes boolean flag (default is false)
+     */
+    public void setSkipSubtypes(boolean skipSubtypes)
+    {
+        this.skipSubtypes = skipSubtypes;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -318,6 +370,8 @@ public class QueryOptions extends PagingOptions
                 ", skipClassifiedElements=" + skipClassifiedElements +
                 ", includeOnlyClassifiedElements=" + includeOnlyClassifiedElements +
                 ", governanceZoneFilter=" + governanceZoneFilter +
+                ", metadataElementSubtypeNames=" + metadataElementSubtypeNames +
+                ", skipSubtypes=" + skipSubtypes +
                 "} " + super.toString();
     }
 
@@ -343,7 +397,9 @@ public class QueryOptions extends PagingOptions
                 Objects.equals(sequencingProperty, that.sequencingProperty) &&
                 Objects.equals(skipClassifiedElements, that.skipClassifiedElements) &&
                 Objects.equals(includeOnlyClassifiedElements, that.includeOnlyClassifiedElements) &&
-                Objects.equals(governanceZoneFilter, that.governanceZoneFilter);
+                Objects.equals(governanceZoneFilter, that.governanceZoneFilter) &&
+                Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
+                skipSubtypes == that.skipSubtypes;
     }
 
 
@@ -355,6 +411,6 @@ public class QueryOptions extends PagingOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, anchorDomainName, anchorScopeGUID, limitResultsByStatus, sequencingOrder, sequencingProperty, skipClassifiedElements, includeOnlyClassifiedElements, governanceZoneFilter);
+        return Objects.hash(super.hashCode(), anchorGUID, anchorDomainName, anchorScopeGUID, limitResultsByStatus, sequencingOrder, sequencingProperty, skipClassifiedElements, includeOnlyClassifiedElements, governanceZoneFilter, metadataElementSubtypeNames, skipSubtypes);
     }
 }

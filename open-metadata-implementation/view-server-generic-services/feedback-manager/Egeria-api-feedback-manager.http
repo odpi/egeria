@@ -713,7 +713,7 @@ Content-Type: application/json
 ###
 # @name updateNote
 # Update an existing note.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/notes/{{noteGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/assets/{{noteGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -2584,7 +2584,7 @@ public enum OpenMetadataProperty
     QUERY_ID("queryId", DataType.STRING, DataType.STRING.getDisplayName(), "Placeholder for a query.", null, "4a480cb0-b87d-47a5-8a68-660c2a144c9b"),
 
     /**
-     * Query used to extract data, can include placeholders.
+     * Query used to extract data - can include placeholders.
      */
     QUERY("query", DataType.STRING, DataType.STRING.getDisplayName(), "Query used to extract data, can include placeholders.", null, "62b8678e-a414-4bab-91c7-ca2f53397833"),
 

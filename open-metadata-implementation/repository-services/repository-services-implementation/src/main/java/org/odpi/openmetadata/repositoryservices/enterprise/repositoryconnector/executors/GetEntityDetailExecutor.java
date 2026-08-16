@@ -291,15 +291,27 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
                                                          FunctionNotSupportedException,
                                                          UserNotAuthorizedException
     {
-        EntityDetail entity = this.getEntityDetail();
+        /*
+         * Unlike getEntityDetail() (which is also used for "give me the current value" requests, and is
+         * therefore right to reject a soft-deleted entity), this is a historical query - the entity's state
+         * at the requested time can legitimately be "it was deleted at that time", so a DELETED status must
+         * not be rejected here.
+         */
+        EntityDetail entity = this.isEntityKnown(false);
 
         if (entity != null)
         {
             return entity;
         }
 
+        accumulator.throwCapturedEntityProxyOnlyException();
+        accumulator.throwCapturedEntityNotKnownException();
         accumulator.throwCapturedFunctionNotSupportedException();
 
-        return null;
+        throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID,
+                                                                                              methodName,
+                                                                                              repositoryName),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 }

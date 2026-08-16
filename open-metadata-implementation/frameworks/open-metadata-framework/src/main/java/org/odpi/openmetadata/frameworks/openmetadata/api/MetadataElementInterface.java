@@ -366,7 +366,8 @@ public interface MetadataElementInterface
      * @param userId                   caller's userId
      * @param relationshipTypeName     relationship's type.  Null means all types
      *                                 (but may be slow so not recommended).
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -379,7 +380,7 @@ public interface MetadataElementInterface
      */
     OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
                                                                           String           relationshipTypeName,
-                                                                          List<String>     relationshipSubtypeGUIDs,
+                                                                          List<String>     relationshipSubtypeNames,
                                                                           List<String>     end1EntityGUIDs,
                                                                           List<String>     end2EntityGUIDs,
                                                                           EndMatchCriteria endMatchCriteria,
@@ -397,7 +398,8 @@ public interface MetadataElementInterface
      * @param userId                   caller's userId
      * @param relationshipTypeName     relationship's type.  Null means all types
      *                                 (but may be slow so not recommended).
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -410,7 +412,7 @@ public interface MetadataElementInterface
      */
     long countRelationshipsBetweenMetadataElements(String           userId,
                                                    String           relationshipTypeName,
-                                                   List<String>     relationshipSubtypeGUIDs,
+                                                   List<String>     relationshipSubtypeNames,
                                                    List<String>     end1EntityGUIDs,
                                                    List<String>     end2EntityGUIDs,
                                                    EndMatchCriteria endMatchCriteria,

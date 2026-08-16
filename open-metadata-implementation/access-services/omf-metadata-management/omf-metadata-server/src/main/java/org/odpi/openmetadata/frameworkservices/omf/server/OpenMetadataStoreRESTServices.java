@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -1145,6 +1146,7 @@ public class OpenMetadataStoreRESTServices
         List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                    searchOptions.getMetadataElementTypeName(),
                                                                    searchOptions.getMetadataElementSubtypeNames(),
+                                                                   searchOptions.getSkipSubtypes(),
                                                                    searchProperties,
                                                                    handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
                                                                    searchClassifications,
@@ -1206,6 +1208,7 @@ public class OpenMetadataStoreRESTServices
         List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                    searchOptions.getMetadataElementTypeName(),
                                                                    searchOptions.getMetadataElementSubtypeNames(),
+                                                                   searchOptions.getSkipSubtypes(),
                                                                    searchProperties,
                                                                    handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
                                                                    null,
@@ -1395,6 +1398,7 @@ public class OpenMetadataStoreRESTServices
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
                                                                            requestBody.getMetadataElementSubtypeNames(),
+                                                                           requestBody.getSkipSubtypes(),
                                                                            searchProperties,
                                                                            handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
@@ -1467,6 +1471,7 @@ public class OpenMetadataStoreRESTServices
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
                                                                            requestBody.getMetadataElementSubtypeNames(),
+                                                                           requestBody.getSkipSubtypes(),
                                                                            searchProperties,
                                                                            handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
@@ -1539,6 +1544,7 @@ public class OpenMetadataStoreRESTServices
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
                                                                            requestBody.getMetadataElementSubtypeNames(),
+                                                                           requestBody.getSkipSubtypes(),
                                                                            searchProperties,
                                                                            handler.getInstanceStatuses(requestBody.getLimitResultsByStatus()),
                                                                            searchClassifications,
@@ -1980,39 +1986,32 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                if ((requestBody.getSearchProperties() != null) || (requestBody.getMatchClassifications() != null))
-                {
-                    response.setElements(handler.findMetadataElements(userId,
-                                                                      requestBody.getMetadataElementTypeName(),
-                                                                      requestBody.getMetadataElementSubtypeNames(),
-                                                                      requestBody.getSearchProperties(),
-                                                                      requestBody.getLimitResultsByStatus(),
-                                                                      requestBody.getMatchClassifications(),
-                                                                      requestBody.getAsOfTime(),
-                                                                      requestBody.getSequencingProperty(),
-                                                                      requestBody.getSequencingOrder(),
-                                                                      requestBody.getForLineage(),
-                                                                      requestBody.getForDuplicateProcessing(),
-                                                                      requestBody.getEffectiveTime(),
-                                                                      requestBody.getStartFrom(),
-                                                                      requestBody.getPageSize(),
-                                                                      methodName));
-                }
-                else
-                {
-                    response.setElements(handler.getMetadataElementsByType(userId,
-                                                                           requestBody.getMetadataElementTypeName(),
-                                                                           requestBody.getForLineage(),
-                                                                           requestBody.getForDuplicateProcessing(),
-                                                                           requestBody.getLimitResultsByStatus(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getSequencingProperty(),
-                                                                           requestBody.getSequencingOrder(),
-                                                                           requestBody.getEffectiveTime(),
-                                                                           requestBody.getStartFrom(),
-                                                                           requestBody.getPageSize(),
-                                                                           methodName));
-                }
+                /*
+                 * Always route through the general search method - it already handles null searchProperties/
+                 * matchClassifications (meaning "no property/classification filter") correctly, and unlike the
+                 * getMetadataElementsByType() fast path this once special-cased for that situation, it also
+                 * honours metadataElementSubtypeNames/skipSubtypes, which the old fast path silently dropped
+                 * whenever the caller had no property or classification conditions to supply.
+                 * countMetadataElements() below already calls the general method unconditionally for the same
+                 * search semantics - see also the equivalent fix applied to
+                 * findRelationshipsBetweenMetadataElements() above.
+                 */
+                response.setElements(handler.findMetadataElements(userId,
+                                                                  requestBody.getMetadataElementTypeName(),
+                                                                  requestBody.getMetadataElementSubtypeNames(),
+                                                                  requestBody.getSkipSubtypes(),
+                                                                  requestBody.getSearchProperties(),
+                                                                  requestBody.getLimitResultsByStatus(),
+                                                                  requestBody.getMatchClassifications(),
+                                                                  requestBody.getAsOfTime(),
+                                                                  requestBody.getSequencingProperty(),
+                                                                  requestBody.getSequencingOrder(),
+                                                                  requestBody.getForLineage(),
+                                                                  requestBody.getForDuplicateProcessing(),
+                                                                  requestBody.getEffectiveTime(),
+                                                                  requestBody.getStartFrom(),
+                                                                  requestBody.getPageSize(),
+                                                                  methodName));
             }
             else
             {
@@ -2065,6 +2064,7 @@ public class OpenMetadataStoreRESTServices
                 response.setCount(handler.countMetadataElements(userId,
                                                                 requestBody.getMetadataElementTypeName(),
                                                                 requestBody.getMetadataElementSubtypeNames(),
+                                                                requestBody.getSkipSubtypes(),
                                                                 requestBody.getSearchProperties(),
                                                                 requestBody.getLimitResultsByStatus(),
                                                                 requestBody.getMatchClassifications(),
@@ -2348,41 +2348,33 @@ public class OpenMetadataStoreRESTServices
 
                 OpenMetadataRelationshipList relationshipList = new OpenMetadataRelationshipList();
 
-                if (requestBody.getSearchProperties() != null)
-                {
-                    relationshipList.setRelationships(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                                       requestBody.getRelationshipTypeName(),
-                                                                                                       requestBody.getRelationshipSubtypeGUIDs(),
-                                                                                                       requestBody.getEnd1EntityGUIDs(),
-                                                                                                       requestBody.getEnd2EntityGUIDs(),
-                                                                                                       requestBody.getEndMatchCriteria(),
-                                                                                                       requestBody.getSearchProperties(),
-                                                                                                       requestBody.getLimitResultsByStatus(),
-                                                                                                       requestBody.getAsOfTime(),
-                                                                                                       requestBody.getSequencingProperty(),
-                                                                                                       requestBody.getSequencingOrder(),
-                                                                                                       requestBody.getForLineage(),
-                                                                                                       requestBody.getForDuplicateProcessing(),
-                                                                                                       requestBody.getEffectiveTime(),
-                                                                                                       requestBody.getStartFrom(),
-                                                                                                       requestBody.getPageSize(),
-                                                                                                       methodName));
-                }
-                else
-                {
-                    relationshipList.setRelationships(handler.getRelationshipsByType(userId,
-                                                                                     requestBody.getRelationshipTypeName(),
-                                                                                     requestBody.getForLineage(),
-                                                                                     requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getLimitResultsByStatus(),
-                                                                                     requestBody.getAsOfTime(),
-                                                                                     requestBody.getSequencingProperty(),
-                                                                                     requestBody.getSequencingOrder(),
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     requestBody.getStartFrom(),
-                                                                                     requestBody.getPageSize(),
-                                                                                     methodName));
-                }
+                /*
+                 * Always route through the general search method - it already handles a null searchProperties
+                 * (meaning "no property filter") correctly, and unlike the getRelationshipsByType() fast path
+                 * this once special-cased for that situation, it also honours relationshipSubtypeNames,
+                 * skipSubtypes, end1EntityGUIDs/end2EntityGUIDs and endMatchCriteria - all of which the old
+                 * fast path silently dropped whenever the caller had no property conditions to supply.
+                 * countRelationshipsBetweenMetadataElements() below already calls the general method
+                 * unconditionally for the same search semantics.
+                 */
+                relationshipList.setRelationships(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                   requestBody.getRelationshipTypeName(),
+                                                                                                   requestBody.getRelationshipSubtypeNames(),
+                                                                                                   requestBody.getSkipSubtypes(),
+                                                                                                   requestBody.getEnd1EntityGUIDs(),
+                                                                                                   requestBody.getEnd2EntityGUIDs(),
+                                                                                                   requestBody.getEndMatchCriteria(),
+                                                                                                   requestBody.getSearchProperties(),
+                                                                                                   requestBody.getLimitResultsByStatus(),
+                                                                                                   requestBody.getAsOfTime(),
+                                                                                                   requestBody.getSequencingProperty(),
+                                                                                                   requestBody.getSequencingOrder(),
+                                                                                                   requestBody.getForLineage(),
+                                                                                                   requestBody.getForDuplicateProcessing(),
+                                                                                                   requestBody.getEffectiveTime(),
+                                                                                                   requestBody.getStartFrom(),
+                                                                                                   requestBody.getPageSize(),
+                                                                                                   methodName));
 
                 if (relationshipList.getRelationships() != null)
                 {
@@ -2442,7 +2434,8 @@ public class OpenMetadataStoreRESTServices
 
                 response.setCount(handler.countRelationshipsBetweenMetadataElements(userId,
                                                                                     requestBody.getRelationshipTypeName(),
-                                                                                    requestBody.getRelationshipSubtypeGUIDs(),
+                                                                                    requestBody.getRelationshipSubtypeNames(),
+                                                                                    requestBody.getSkipSubtypes(),
                                                                                     requestBody.getEnd1EntityGUIDs(),
                                                                                     requestBody.getEnd2EntityGUIDs(),
                                                                                     requestBody.getEndMatchCriteria(),
@@ -3023,7 +3016,20 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Delete a specific metadata element.
+     * Delete a specific metadata element.  The deleteMethod in the request body determines how the delete is
+     * actioned:
+     * <ul>
+     *     <li>SOFT_DELETE - the element is soft-deleted - this is also what happens if there is no request body
+     *     at all.</li>
+     *     <li>ARCHIVE - the element is archived using the Memento classification so it remains available for
+     *     lineage queries.</li>
+     *     <li>PURGE - the element is permanently removed.  This is only valid if the element has already been
+     *     soft-deleted.</li>
+     *     <li>LOOK_FOR_LINEAGE (the default deleteMethod on the request body, when one is supplied) - if the
+     *     element has any relationships attached to it that are a subtype of LineageRelationship, it is archived
+     *     (so it remains available to lineage queries); otherwise it is soft-deleted.</li>
+     * </ul>
+     * Any other deleteMethod value results in an InvalidParameterException.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -3031,7 +3037,8 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody delete request body
      *
      * @return void or
-     *  InvalidParameterException the unique identifier is null or invalid in some way
+     *  InvalidParameterException the unique identifier is null or invalid in some way, or the deleteMethod is
+     *  not one that applies to a metadata element
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException a problem with the metadata store
      */
@@ -3053,29 +3060,73 @@ public class OpenMetadataStoreRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
+            String       externalSourceGUID     = null;
+            String       externalSourceName     = null;
+            boolean      cascadedDelete         = false;
+            boolean      forLineage             = false;
+            boolean      forDuplicateProcessing = false;
+            Date         effectiveTime          = new Date();
+            DeleteMethod deleteMethod           = DeleteMethod.SOFT_DELETE;
+
             if (requestBody != null)
             {
-                handler.deleteMetadataElementInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     metadataElementGUID,
-                                                     requestBody.getCascadedDelete(),
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime(),
-                                                     methodName);
+                externalSourceGUID     = requestBody.getExternalSourceGUID();
+                externalSourceName     = requestBody.getExternalSourceName();
+                cascadedDelete         = requestBody.getCascadedDelete();
+                forLineage             = requestBody.getForLineage();
+                forDuplicateProcessing = requestBody.getForDuplicateProcessing();
+                effectiveTime          = requestBody.getEffectiveTime();
+
+                if (requestBody.getDeleteMethod() != null)
+                {
+                    deleteMethod = requestBody.getDeleteMethod();
+                }
             }
-            else
+
+            if (deleteMethod == DeleteMethod.LOOK_FOR_LINEAGE)
             {
-                handler.deleteMetadataElementInStore(userId,
-                                                     null,
-                                                     null,
-                                                     metadataElementGUID,
-                                                     false,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName);
+                if (handler.hasLineageRelationships(userId, metadataElementGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName))
+                {
+                    deleteMethod = DeleteMethod.ARCHIVE;
+                }
+                else
+                {
+                    deleteMethod = DeleteMethod.SOFT_DELETE;
+                }
+            }
+
+            switch (deleteMethod)
+            {
+                case SOFT_DELETE -> handler.deleteMetadataElementInStore(userId,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         metadataElementGUID,
+                                                                         cascadedDelete,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime,
+                                                                         methodName);
+
+                case ARCHIVE -> handler.archiveMetadataElementInStore(userId,
+                                                                      externalSourceGUID,
+                                                                      externalSourceName,
+                                                                      metadataElementGUID,
+                                                                      requestBody,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      methodName);
+
+                case PURGE -> handler.purgeMetadataElementInStore(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  metadataElementGUID,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveTime,
+                                                                  methodName);
+
+                default -> invalidParameterHandler.throwInvalidParameter(deleteMethod, "deleteMethod", methodName);
             }
         }
         catch (Throwable error)
@@ -3589,15 +3640,20 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Delete a relationship between two metadata elements.
+     * Delete a relationship between two metadata elements.  The deleteMethod in the request body determines how
+     * the delete is actioned: SOFT_DELETE soft-deletes the relationship; PURGE permanently removes it (only
+     * valid if the relationship has already been soft-deleted).  ARCHIVE and LOOK_FOR_LINEAGE do not make sense
+     * for a relationship (there is no relationship equivalent of the Memento classification used to archive a
+     * metadata element), so those - and any other value - result in an InvalidParameterException.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param relationshipGUID unique identifier of the relationship to delete
-     * @param requestBody null request body
+     * @param requestBody delete request body
      *
      * @return void or
-     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way, or
+     *  the deleteMethod is not one that applies to a relationship
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException a problem with the metadata store
      */
@@ -3621,15 +3677,34 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                // todo delete Options
-                handler.deleteRelationshipInStore(userId,
-                                                  requestBody.getExternalSourceGUID(),
-                                                  requestBody.getExternalSourceName(),
-                                                  relationshipGUID,
-                                                  requestBody.getForLineage(),
-                                                  requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getEffectiveTime(),
-                                                  methodName);
+                DeleteMethod deleteMethod = requestBody.getDeleteMethod();
+
+                if (deleteMethod == DeleteMethod.SOFT_DELETE)
+                {
+                    handler.deleteRelationshipInStore(userId,
+                                                      requestBody.getExternalSourceGUID(),
+                                                      requestBody.getExternalSourceName(),
+                                                      relationshipGUID,
+                                                      requestBody.getForLineage(),
+                                                      requestBody.getForDuplicateProcessing(),
+                                                      requestBody.getEffectiveTime(),
+                                                      methodName);
+                }
+                else if (deleteMethod == DeleteMethod.PURGE)
+                {
+                    handler.purgeRelationshipInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
+                                                     relationshipGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
+                }
+                else
+                {
+                    invalidParameterHandler.throwInvalidParameter(deleteMethod, "deleteMethod", methodName);
+                }
             }
             else
             {

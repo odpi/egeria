@@ -222,15 +222,24 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
                                                          FunctionNotSupportedException,
                                                          UserNotAuthorizedException
     {
-        Relationship relationship = this.getRelationship();
-
-        if (relationship != null)
+        /*
+         * Unlike getRelationship() (which is also used for "give me the current value" requests, and is
+         * therefore right to reject a soft-deleted relationship), this is a historical query - the
+         * relationship's state at the requested time can legitimately be "it was deleted at that time", so a
+         * DELETED status must not be rejected here.
+         */
+        if (retrievedRelationship != null)
         {
-            return relationship;
+            return retrievedRelationship;
         }
 
+        accumulator.throwCapturedRelationshipNotKnownException();
         accumulator.throwCapturedFunctionNotSupportedException();
 
-        return null;
+        throw new RelationshipNotKnownException(OMRSErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID,
+                                                                                                          methodName,
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
     }
 }

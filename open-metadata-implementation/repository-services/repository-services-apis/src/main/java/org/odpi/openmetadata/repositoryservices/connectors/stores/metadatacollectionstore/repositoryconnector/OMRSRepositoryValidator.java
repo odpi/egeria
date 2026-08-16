@@ -1043,9 +1043,33 @@ public interface OMRSRepositoryValidator
      * @param instance  instance to test.
      * @return boolean
      */
+    default boolean verifyInstanceType(String         sourceName,
+                                       String         instanceTypeGUID,
+                                       List<String>   subtypeGUIDs,
+                                       InstanceHeader instance)
+    {
+        return verifyInstanceType(sourceName, instanceTypeGUID, subtypeGUIDs, false, instance);
+    }
+
+
+    /**
+     * Verify whether the instance passed to this method is of the type indicated by the type guid and restricted by
+     * the list of subtype guids.
+     * A null type guid matches all instances (ie result is true).  A null instance returns false.
+     *
+     * @param sourceName  name of caller.
+     * @param instanceTypeGUID  unique identifier of the type (or null).
+     * @param subtypeGUIDs  list of unique identifiers of the subtypes to include (or, if skipSubtypes is true, exclude)
+     *                      (or null).
+     * @param skipSubtypes if true, subtypeGUIDs is treated as the list of subtypes to exclude rather than the only
+     *                     subtypes to include.  Ignored if subtypeGUIDs is null.
+     * @param instance  instance to test.
+     * @return boolean
+     */
     boolean verifyInstanceType(String         sourceName,
                                String         instanceTypeGUID,
                                List<String>   subtypeGUIDs,
+                               boolean        skipSubtypes,
                                InstanceHeader instance);
 
 

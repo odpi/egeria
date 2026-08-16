@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.E
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,10 @@ import java.util.Map;
  */
 public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 {
-    private final Map<String, Relationship> accumulatedRelationships   = new HashMap<>();
+    // LinkedHashMap (not HashMap) so that getResults() - which iterates accumulatedRelationships.values() -
+    // preserves the order relationships were added in, matching the ordering the originating query requested
+    // (see the equivalent comment in EntitiesAccumulator).
+    private final Map<String, Relationship> accumulatedRelationships   = new LinkedHashMap<>();
 
 
     /**
