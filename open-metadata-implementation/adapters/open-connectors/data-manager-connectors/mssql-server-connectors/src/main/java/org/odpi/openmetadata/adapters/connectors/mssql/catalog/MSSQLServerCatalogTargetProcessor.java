@@ -123,6 +123,8 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
 
         if (propertyHelper.isTypeOf(this.getCatalogTargetElement().getElementHeader(), MSSQLDeployedImplementationType.MSSQL_SERVER.getAssociatedTypeName()))
         {
+            JDBCResourceConnector assetConnector = null;
+
             try
             {
                 String                  databaseServerGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
@@ -130,7 +132,7 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
 
                 Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseServerGUID, auditLog);
 
-                JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
+                assetConnector = (JDBCResourceConnector)connector;
 
                 assetConnector.start();
 
@@ -139,8 +141,6 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                  this.getTemplates(),
                                  this.getConfigurationProperties(),
                                  assetConnector);
-
-                assetConnector.disconnect();
             }
             catch (Exception exception)
             {
@@ -151,11 +151,49 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                                                                               exception.getMessage()),
                                       exception);
             }
+            finally
+            {
+                this.releaseAssetConnector(assetConnector, methodName);
+            }
         }
         else
         {
             super.throwWrongTypeOfCatalogTarget(MSSQLDeployedImplementationType.MSSQL_SERVER.getAssociatedTypeName(),
                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Release the resource connector that refresh() created for this pass.  A new connector is created on every
+     * refresh, so it must be released on both the success and the failure path; otherwise each failed refresh
+     * leaks the connector along with the JDBC connections it has cached - and those are left idle-in-transaction
+     * until the database times them out.
+     * <br><br>
+     * A failure to disconnect is logged rather than thrown so that it does not mask the error that caused the
+     * cataloguing work to be abandoned.
+     *
+     * @param assetConnector connector to release - may be null if it was never successfully created
+     * @param callingMethodName method reporting the original error
+     */
+    private void releaseAssetConnector(JDBCResourceConnector assetConnector,
+                                       String                callingMethodName)
+    {
+        if ((assetConnector != null) && (assetConnector.isActive()))
+        {
+            try
+            {
+                assetConnector.disconnect();
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(callingMethodName,
+                                      MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                              exception.getClass().getName(),
+                                                                                              callingMethodName,
+                                                                                              exception.getMessage()),
+                                      exception);
+            }
         }
     }
 

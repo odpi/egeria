@@ -21,8 +21,28 @@ import java.util.*;
 /**
  * Manages the connection between the repository connector and the database.
  * Note, a single JDBC Connection can only be used from a single thread.
+ * <br><br>
+ * The JDBC connection is supplied by {@link JDBCResourceConnector}, which caches one connection per thread and
+ * runs with auto-commit turned off.  This means every statement issued through a DatabaseStore opens a database
+ * transaction that stays open until it is explicitly ended.  A DatabaseStore is therefore a single unit of work
+ * and must be managed with try-with-resources so that the transaction is always ended, even when an exception is
+ * thrown part way through:
+ * <pre>
+ *     try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+ *     {
+ *         ... read and write operations ...
+ *
+ *         databaseStore.commit();   // only needed if the unit of work made changes
+ *     }
+ * </pre>
+ * Callers that only read do not need to call {@link #commit()}: {@link #close()} rolls the read transaction back,
+ * which releases the snapshot the database is holding on their behalf.  Callers that make changes must call
+ * {@link #commit()} as the last action of the unit of work; if they do not, {@link #close()} discards those changes.
+ * <br><br>
+ * Note that {@link #close()} deliberately does not close the underlying JDBC connection since it is owned - and
+ * reused - by the resource connector.  It only ends the transaction.
  */
-public class DatabaseStore
+public class DatabaseStore implements AutoCloseable
 {
     private final JDBCResourceConnector jdbcResourceConnector;
     private final java.sql.Connection   jdbcConnection;
@@ -30,6 +50,11 @@ public class DatabaseStore
     private final OMRSRepositoryHelper  repositoryHelper;
 
     private final BaseMapper baseMapper;
+
+    /*
+     * Set to true once the unit of work has been committed so that close() knows there is nothing left to roll back.
+     */
+    private boolean committed = false;
 
     /**
      * Create access to the entity store.
@@ -1958,16 +1983,21 @@ public class DatabaseStore
 
 
     /**
-     * Free up the connection since the request is over.
+     * Commit the changes made by this unit of work.  This must be called as the last action of any unit of work
+     * that has made changes; otherwise {@link #close()} discards them.  Units of work that only read do not need
+     * to call this method.
      *
-     * @throws RepositoryErrorException problem closing connection
+     * @throws RepositoryErrorException problem committing the transaction
      */
-    public void disconnect() throws RepositoryErrorException
+    public void commit() throws RepositoryErrorException
     {
-        final String methodName = "disconnect";
+        final String methodName = "commit";
+
         try
         {
             jdbcConnection.commit();
+
+            committed = true;
         }
         catch (Exception sqlException)
         {
@@ -1977,6 +2007,48 @@ public class DatabaseStore
                                                                                                            sqlException.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
-                                               sqlException);        }
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * End the database transaction started by this unit of work so that the shared JDBC connection is left idle
+     * rather than idle-in-transaction.  If {@link #commit()} has not been called then any changes made by this
+     * unit of work are rolled back - this is what ends the transaction when the unit of work is read-only, and
+     * what discards a partial update when the unit of work failed part way through.
+     * <br><br>
+     * The underlying JDBC connection is not closed because it is owned by the resource connector and is reused by
+     * subsequent requests running on this thread.
+     *
+     * @throws RepositoryErrorException problem ending the transaction
+     */
+    @Override
+    public void close() throws RepositoryErrorException
+    {
+        final String methodName = "close";
+
+        if (committed)
+        {
+            /*
+             * commit() has already ended the transaction - there is nothing left to do.
+             */
+            return;
+        }
+
+        try
+        {
+            jdbcConnection.rollback();
+        }
+        catch (Exception sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
     }
 }

@@ -137,51 +137,53 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         {
             loadDDL(jdbcResourceConnector, schemaName);
 
-            DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector,
-                                                            repositoryName,
-                                                            repositoryHelper);
-
-            ControlMapper controlMapper = databaseStore.getControlTable();
-
-            if (controlMapper == null)
+            try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector,
+                                                                 repositoryName,
+                                                                 repositoryHelper))
             {
-                if (metadataCollectionId == null)
+                ControlMapper controlMapper = databaseStore.getControlTable();
+
+                if (controlMapper == null)
                 {
-                    metadataCollectionId = UUID.randomUUID().toString();
+                    if (metadataCollectionId == null)
+                    {
+                        metadataCollectionId = UUID.randomUUID().toString();
+                    }
+
+                    controlMapper = new ControlMapper(repositoryName, serverName, metadataCollectionId, supportedSchemaVersion);
+
+                    databaseStore.saveControlTable(controlMapper);
+                    databaseStore.commit();
                 }
-
-                controlMapper = new ControlMapper(repositoryName, serverName, metadataCollectionId, supportedSchemaVersion);
-
-                databaseStore.saveControlTable(controlMapper);
-            }
-            else if (! serverName.equals(controlMapper.getServerName()))
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SERVER_MISMATCH.getMessageDefinition(repositoryName,
-                                                                                                                  schemaName,
-                                                                                                                  controlMapper.getServerName()),
-                                                   this.getClass().getName(),
-                                                   methodName);
-            }
-            else if (! supportedSchemaVersion.equals(controlMapper.getSchemaVersion()))
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SCHEMA_VERSION_MISMATCH.getMessageDefinition(repositoryName,
-                                                                                                                          schemaName,
-                                                                                                                          controlMapper.getSchemaVersion()),
-                                                   this.getClass().getName(),
-                                                   methodName);
-            }
-            else if (metadataCollectionId == null)
-            {
-                metadataCollectionId = controlMapper.getLocalMetadataCollectionGUID();
-            }
-            else if (! metadataCollectionId.equals(controlMapper.getLocalMetadataCollectionGUID()))
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.CONTROL_MC_ID_MISMATCH.getMessageDefinition(repositoryName,
-                                                                                                                 schemaName,
-                                                                                                                 controlMapper.getLocalMetadataCollectionGUID(),
-                                                                                                                 metadataCollectionId),
-                                                   this.getClass().getName(),
-                                                   methodName);
+                else if (! serverName.equals(controlMapper.getServerName()))
+                {
+                    throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SERVER_MISMATCH.getMessageDefinition(repositoryName,
+                                                                                                                      schemaName,
+                                                                                                                      controlMapper.getServerName()),
+                                                       this.getClass().getName(),
+                                                       methodName);
+                }
+                else if (! supportedSchemaVersion.equals(controlMapper.getSchemaVersion()))
+                {
+                    throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SCHEMA_VERSION_MISMATCH.getMessageDefinition(repositoryName,
+                                                                                                                              schemaName,
+                                                                                                                              controlMapper.getSchemaVersion()),
+                                                       this.getClass().getName(),
+                                                       methodName);
+                }
+                else if (metadataCollectionId == null)
+                {
+                    metadataCollectionId = controlMapper.getLocalMetadataCollectionGUID();
+                }
+                else if (! metadataCollectionId.equals(controlMapper.getLocalMetadataCollectionGUID()))
+                {
+                    throw new RepositoryErrorException(PostgresErrorCode.CONTROL_MC_ID_MISMATCH.getMessageDefinition(repositoryName,
+                                                                                                                     schemaName,
+                                                                                                                     controlMapper.getLocalMetadataCollectionGUID(),
+                                                                                                                     metadataCollectionId),
+                                                       this.getClass().getName(),
+                                                       methodName);
+                }
             }
         }
         catch (RepositoryErrorException error)
@@ -220,9 +222,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         auditLog.logMessage(methodName, PostgresAuditCode.CONFIRMING_REPOSITORY_SCHEMA.getMessageDefinition(repositoryName, schemaName));
 
+        java.sql.Connection jdbcConnection = null;
+
         try
         {
-            java.sql.Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
+            jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
 
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               repositoryName,
@@ -232,6 +236,13 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         }
         catch (Exception error)
         {
+            /*
+             * The DDL statements have opened a transaction that the commit above did not reach.  It must be ended
+             * here, otherwise this thread's connection is left idle-in-transaction and is eventually terminated by
+             * the database.
+             */
+            this.rollbackAfterException(jdbcConnection, methodName);
+
             auditLog.logException(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                           error.getClass().getName(),
                                                                                                           methodName,
@@ -245,6 +256,40 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                                                this.getClass().getName(),
                                                methodName,
                                                error);
+        }
+    }
+
+
+    /**
+     * Roll back the transaction on a connection that is being abandoned because of an error.  The connection itself
+     * is not closed since it is owned - and reused - by the resource connector; only the transaction is ended.
+     * <br><br>
+     * A failure to roll back is logged rather than thrown so that it does not mask the original error that caused
+     * the unit of work to be abandoned.
+     *
+     * @param jdbcConnection connection to roll back - may be null if it was never successfully obtained
+     * @param callingMethodName method reporting the original error
+     */
+    private void rollbackAfterException(java.sql.Connection jdbcConnection,
+                                        String              callingMethodName)
+    {
+        if (jdbcConnection == null)
+        {
+            return;
+        }
+
+        try
+        {
+            jdbcConnection.rollback();
+        }
+        catch (Exception rollbackFailed)
+        {
+            auditLog.logException(callingMethodName,
+                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                              rollbackFailed.getClass().getName(),
+                                                                                              callingMethodName,
+                                                                                              rollbackFailed.getMessage()),
+                                  rollbackFailed);
         }
     }
 

@@ -94,9 +94,12 @@ class PostgresOMRSMetadataStore
         final String methodName = "getEntity";
         final String guidParameterName = "guid";
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        EntityMapper storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(asOfTime));
-        databaseStore.disconnect();
+        EntityMapper storedEntity;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(asOfTime));
+        }
 
         if (storedEntity != null)
         {
@@ -143,9 +146,12 @@ class PostgresOMRSMetadataStore
      */
     EntitySummary  getEntitySummary(String guid) throws RepositoryErrorException
     {
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        EntityMapper storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(null));
-        databaseStore.disconnect();
+        EntityMapper storedEntity;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(null));
+        }
 
         if (storedEntity != null)
         {
@@ -172,9 +178,12 @@ class PostgresOMRSMetadataStore
      */
     EntityProxy  getEntityProxy(String guid, Date asOfTime) throws RepositoryErrorException
     {
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        EntityMapper storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(asOfTime));
-        databaseStore.disconnect();
+        EntityMapper storedEntity;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(asOfTime));
+        }
 
         if (storedEntity != null)
         {
@@ -254,11 +263,14 @@ class PostgresOMRSMetadataStore
             classificationQueryBuilder.setAsOfTime(asOfTime);
         }
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
-                                                                                      classificationQueryBuilder,
-                                                                                      asOfTime);
-        databaseStore.disconnect();
+        List<EntityMapper> entityMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
+                                                                      classificationQueryBuilder,
+                                                                      asOfTime);
+        }
 
         return this.getEntitiesFromMappers(entityMappers);
     }
@@ -329,10 +341,14 @@ class PostgresOMRSMetadataStore
             classificationQueryBuilder.setAsOfTime(asOfTime);
         }
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
-                                                                                      classificationQueryBuilder,
-                                                                                      asOfTime);
+        List<EntityMapper> entityMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
+                                                                      classificationQueryBuilder,
+                                                                      asOfTime);
+        }
 
         return this.getEntitiesFromMappers(entityMappers);
     }
@@ -404,10 +420,14 @@ class PostgresOMRSMetadataStore
             classificationQueryBuilder.setAsOfTime(asOfTime);
         }
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
-                                                                                      classificationQueryBuilder,
-                                                                                      asOfTime);
+        List<EntityMapper> entityMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
+                                                                      classificationQueryBuilder,
+                                                                      asOfTime);
+        }
 
         return this.getEntitiesFromMappers(entityMappers);
     }
@@ -466,11 +486,10 @@ class PostgresOMRSMetadataStore
             classificationQueryBuilder.setAsOfTime(asOfTime);
         }
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        long count = databaseStore.countEntitiesByProperties(entityQueryBuilder, classificationQueryBuilder, localMetadataCollectionId);
-        databaseStore.disconnect();
-
-        return count;
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            return databaseStore.countEntitiesByProperties(entityQueryBuilder, classificationQueryBuilder, localMetadataCollectionId);
+        }
     }
 
 
@@ -533,11 +552,14 @@ class PostgresOMRSMetadataStore
         classificationQueryBuilder.setMatchProperties(matchClassificationProperties, matchCriteria);
         classificationQueryBuilder.setAsOfTime(asOfTime);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
-                                                                                      classificationQueryBuilder,
-                                                                                      asOfTime);
-        databaseStore.disconnect();
+        List<EntityMapper> entityMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            entityMappers = databaseStore.retrieveEntitiesByProperties(entityQueryBuilder,
+                                                                      classificationQueryBuilder,
+                                                                      asOfTime);
+        }
 
         return this.getEntitiesFromMappers(entityMappers);
     }
@@ -591,9 +613,12 @@ class PostgresOMRSMetadataStore
      */
     Relationship getRelationship(String guid) throws RepositoryErrorException
     {
-        DatabaseStore      databaseStore      = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        RelationshipMapper storedRelationship = databaseStore.getRelationshipFromStore(guid, getAsOfTime(null));
-        databaseStore.disconnect();
+        RelationshipMapper storedRelationship;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationship = databaseStore.getRelationshipFromStore(guid, getAsOfTime(null));
+        }
 
         if (storedRelationship != null)
         {
@@ -615,9 +640,12 @@ class PostgresOMRSMetadataStore
     Relationship  getRelationship(String guid,
                                   Date   asOfTime) throws RepositoryErrorException
     {
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        RelationshipMapper storedRelationship = databaseStore.getRelationshipFromStore(guid, asOfTime);
-        databaseStore.disconnect();
+        RelationshipMapper storedRelationship;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationship = databaseStore.getRelationshipFromStore(guid, asOfTime);
+        }
 
         if (storedRelationship != null)
         {
@@ -673,9 +701,12 @@ class PostgresOMRSMetadataStore
         queryBuilder.setPaging(fromRelationshipElement, pageSize);
         queryBuilder.setRelationshipEndGUID(entityGUID);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationships(queryBuilder, getAsOfTime(asOfTime));
-        databaseStore.disconnect();
+        List<RelationshipMapper> storedRelationships;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationships = databaseStore.retrieveRelationships(queryBuilder, getAsOfTime(asOfTime));
+        }
 
         return getRelationshipsFromMappers(storedRelationships);
     }
@@ -774,9 +805,12 @@ class PostgresOMRSMetadataStore
         queryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
         queryBuilder.setPaging(fromRelationshipElement, pageSize);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
-        databaseStore.disconnect();
+        List<RelationshipMapper> storedRelationships;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
+        }
 
         return getRelationshipsFromMappers(storedRelationships);
     }
@@ -831,11 +865,10 @@ class PostgresOMRSMetadataStore
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         queryBuilder.setAsOfTime(asOfTime);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        long count = databaseStore.countRelationshipsByProperties(queryBuilder, localMetadataCollectionId);
-        databaseStore.disconnect();
-
-        return count;
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            return databaseStore.countRelationshipsByProperties(queryBuilder, localMetadataCollectionId);
+        }
     }
 
 
@@ -890,9 +923,12 @@ class PostgresOMRSMetadataStore
         queryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
         queryBuilder.setPaging(fromRelationshipElement, pageSize);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
-        databaseStore.disconnect();
+        List<RelationshipMapper> storedRelationships;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
+        }
 
         return getRelationshipsFromMappers(storedRelationships);
     }
@@ -952,9 +988,12 @@ class PostgresOMRSMetadataStore
         queryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
         queryBuilder.setPaging(fromRelationshipElement, pageSize);
 
-        DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
-        databaseStore.disconnect();
+        List<RelationshipMapper> storedRelationships;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationships = databaseStore.retrieveRelationshipsByProperties(queryBuilder, asOfTime);
+        }
 
         return getRelationshipsFromMappers(storedRelationships);
     }
@@ -975,26 +1014,31 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-
-        EntityMapper storedEntity = databaseStore.getEntityForUpdate(entityDetail.getGUID());
-
-        if (storedEntity == null)
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
         {
-            databaseStore.addEntityToStore(new EntityMapper(entityDetail, repositoryHelper, repositoryName));
-            databaseStore.disconnect();
-            return entityDetail;
-        }
-        else if (entityDetail.getVersion() > storedEntity.getEntityDetail().getVersion())
-        {
-            databaseStore.updatePreviousEntityVersionEndTime(storedEntity, databaseStore.getVersionEndDate(entityDetail.getUpdateTime()));
+            EntityMapper storedEntity = databaseStore.getEntityForUpdate(entityDetail.getGUID());
 
-            databaseStore.addEntityToStore(new EntityMapper(entityDetail, repositoryHelper, repositoryName));
-            databaseStore.disconnect();
-            return entityDetail;
-        }
+            if (storedEntity == null)
+            {
+                databaseStore.addEntityToStore(new EntityMapper(entityDetail, repositoryHelper, repositoryName));
+                databaseStore.commit();
+                return entityDetail;
+            }
+            else if (entityDetail.getVersion() > storedEntity.getEntityDetail().getVersion())
+            {
+                databaseStore.updatePreviousEntityVersionEndTime(storedEntity, databaseStore.getVersionEndDate(entityDetail.getUpdateTime()));
 
-        return storedEntity.getEntityDetail();
+                databaseStore.addEntityToStore(new EntityMapper(entityDetail, repositoryHelper, repositoryName));
+                databaseStore.commit();
+                return entityDetail;
+            }
+
+            /*
+             * The stored entity is already at this version (or later) so there is nothing to save.  Nothing has
+             * been changed, so the read is simply rolled back as the store closes.
+             */
+            return storedEntity.getEntityDetail();
+        }
     }
 
 
@@ -1013,9 +1057,11 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        databaseStore.addEntityProxyToStore(new EntityMapper(entityProxy, repositoryHelper, repositoryName));
-        databaseStore.disconnect();
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            databaseStore.addEntityProxyToStore(new EntityMapper(entityProxy, repositoryHelper, repositoryName));
+            databaseStore.commit();
+        }
     }
 
 
@@ -1035,25 +1081,30 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-
-        RelationshipMapper storedRelationship = databaseStore.getRelationshipForUpdate(relationship.getGUID());
-
-        if (storedRelationship == null)
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
         {
-            databaseStore.addRelationshipToStore(new RelationshipMapper(relationship, repositoryHelper, repositoryName));
-            databaseStore.disconnect();
-            return relationship;
-        }
-        else if (relationship.getVersion() > storedRelationship.getRelationship().getVersion())
-        {
-            databaseStore.updatePreviousRelationshipVersionEndTime(storedRelationship, databaseStore.getVersionEndDate(relationship.getUpdateTime()));
-            databaseStore.addRelationshipToStore(new RelationshipMapper(relationship, repositoryHelper, repositoryName));
-            databaseStore.disconnect();
-            return relationship;
-        }
+            RelationshipMapper storedRelationship = databaseStore.getRelationshipForUpdate(relationship.getGUID());
 
-        return storedRelationship.getRelationship();
+            if (storedRelationship == null)
+            {
+                databaseStore.addRelationshipToStore(new RelationshipMapper(relationship, repositoryHelper, repositoryName));
+                databaseStore.commit();
+                return relationship;
+            }
+            else if (relationship.getVersion() > storedRelationship.getRelationship().getVersion())
+            {
+                databaseStore.updatePreviousRelationshipVersionEndTime(storedRelationship, databaseStore.getVersionEndDate(relationship.getUpdateTime()));
+                databaseStore.addRelationshipToStore(new RelationshipMapper(relationship, repositoryHelper, repositoryName));
+                databaseStore.commit();
+                return relationship;
+            }
+
+            /*
+             * The stored relationship is already at this version (or later) so there is nothing to save.  Nothing
+             * has been changed, so the read is simply rolled back as the store closes.
+             */
+            return storedRelationship.getRelationship();
+        }
     }
 
 
@@ -1074,58 +1125,59 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-
-        ClassificationMapper storedClassification = databaseStore.getClassificationForUpdate(entityGUID, classification.getName());
-
-        if ((storedClassification == null) || (storedClassification.getClassification() == null))
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
         {
-            databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
-        }
-        else if (classification.getVersion() > storedClassification.getClassification().getVersion())
-        {
-            /*
-             * Update the previous version of the classification to the end time of the current version
-             */
-            databaseStore.updatePreviousClassificationVersionEndTime(storedClassification, databaseStore.getVersionEndDate(classification.getUpdateTime()));
-            databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
-        }
-        else
-        {
-            /*
-             * Has the classification been deleted and now a new one is being created?
-             */
-            Classification originallyStoredClassification = storedClassification.getClassification();
+            ClassificationMapper storedClassification = databaseStore.getClassificationForUpdate(entityGUID, classification.getName());
 
-            if ((classification.getVersion() == 1) &&
-                    (originallyStoredClassification.getStatus() == InstanceStatus.DELETED) &&
-                    (originallyStoredClassification.getUpdateTime().getTime() < classification.getCreateTime().getTime()))
+            if ((storedClassification == null) || (storedClassification.getClassification() == null))
             {
-                Set<String> modifiedByList = new HashSet<>();
-                modifiedByList.add(classification.getCreatedBy());
-                modifiedByList.add(originallyStoredClassification.getCreatedBy());
-                if (originallyStoredClassification.getMaintainedBy() != null)
-                {
-                    modifiedByList.addAll(originallyStoredClassification.getMaintainedBy());
-                }
-                if (originallyStoredClassification.getUpdatedBy() != null)
-                {
-                    modifiedByList.add(originallyStoredClassification.getUpdatedBy());
-                }
-                classification.setMaintainedBy(new ArrayList<>(modifiedByList));
-                classification.setVersion(originallyStoredClassification.getVersion() + 1);
-                classification.setUpdatedBy(classification.getCreatedBy());
-                classification.setUpdateTime(new Date());
-
-                classification.setCreatedBy(originallyStoredClassification.getCreatedBy());
-                classification.setCreateTime(originallyStoredClassification.getCreateTime());
-
+                databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
+            }
+            else if (classification.getVersion() > storedClassification.getClassification().getVersion())
+            {
+                /*
+                 * Update the previous version of the classification to the end time of the current version
+                 */
                 databaseStore.updatePreviousClassificationVersionEndTime(storedClassification, databaseStore.getVersionEndDate(classification.getUpdateTime()));
                 databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
             }
-        }
+            else
+            {
+                /*
+                 * Has the classification been deleted and now a new one is being created?
+                 */
+                Classification originallyStoredClassification = storedClassification.getClassification();
 
-        databaseStore.disconnect();
+                if ((classification.getVersion() == 1) &&
+                        (originallyStoredClassification.getStatus() == InstanceStatus.DELETED) &&
+                        (originallyStoredClassification.getUpdateTime().getTime() < classification.getCreateTime().getTime()))
+                {
+                    Set<String> modifiedByList = new HashSet<>();
+                    modifiedByList.add(classification.getCreatedBy());
+                    modifiedByList.add(originallyStoredClassification.getCreatedBy());
+                    if (originallyStoredClassification.getMaintainedBy() != null)
+                    {
+                        modifiedByList.addAll(originallyStoredClassification.getMaintainedBy());
+                    }
+                    if (originallyStoredClassification.getUpdatedBy() != null)
+                    {
+                        modifiedByList.add(originallyStoredClassification.getUpdatedBy());
+                    }
+                    classification.setMaintainedBy(new ArrayList<>(modifiedByList));
+                    classification.setVersion(originallyStoredClassification.getVersion() + 1);
+                    classification.setUpdatedBy(classification.getCreatedBy());
+                    classification.setUpdateTime(new Date());
+
+                    classification.setCreatedBy(originallyStoredClassification.getCreatedBy());
+                    classification.setCreateTime(originallyStoredClassification.getCreateTime());
+
+                    databaseStore.updatePreviousClassificationVersionEndTime(storedClassification, databaseStore.getVersionEndDate(classification.getUpdateTime()));
+                    databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
+                }
+            }
+
+            databaseStore.commit();
+        }
     }
 
 
@@ -1139,9 +1191,12 @@ class PostgresOMRSMetadataStore
      */
     Relationship retrievePreviousVersionOfRelationship(Relationship currentRelationship) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> storedRelationships = databaseStore.getRelationshipHistoryFromStore(currentRelationship.getGUID(), null, null, true);
-        databaseStore.disconnect();
+        List<RelationshipMapper> storedRelationships;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedRelationships = databaseStore.getRelationshipHistoryFromStore(currentRelationship.getGUID(), null, null, true);
+        }
 
         if ((storedRelationships != null) && (storedRelationships.size() > 1))
         {
@@ -1167,12 +1222,15 @@ class PostgresOMRSMetadataStore
      */
     EntityDetail retrievePreviousVersionOfEntity(EntityDetail  currentEntity) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> storedEntities = databaseStore.getEntityHistoryFromStore(currentEntity.getGUID(),
-                                                                                    null,
-                                                                                    null,
-                                                                                    true);
-        databaseStore.disconnect();
+        List<EntityMapper> storedEntities;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            storedEntities = databaseStore.getEntityHistoryFromStore(currentEntity.getGUID(),
+                                                                    null,
+                                                                    null,
+                                                                    true);
+        }
 
         if ((storedEntities != null) && (storedEntities.size() > 1))
         {
@@ -1207,9 +1265,12 @@ class PostgresOMRSMetadataStore
      */
     List<Classification> getHomeClassifications(String guid) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<ClassificationMapper> classificationMappers = databaseStore.getHomeClassifications(guid, localMetadataCollectionId, getAsOfTime(null));
-        databaseStore.disconnect();
+        List<ClassificationMapper> classificationMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            classificationMappers = databaseStore.getHomeClassifications(guid, localMetadataCollectionId, getAsOfTime(null));
+        }
 
         if (classificationMappers != null)
         {
@@ -1245,9 +1306,12 @@ class PostgresOMRSMetadataStore
                                         Date    toTime,
                                         boolean oldestFirst) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<EntityMapper> entityMappers = databaseStore.getEntityHistoryFromStore(guid, fromTime, toTime, oldestFirst);
-        databaseStore.disconnect();
+        List<EntityMapper> entityMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            entityMappers = databaseStore.getEntityHistoryFromStore(guid, fromTime, toTime, oldestFirst);
+        }
 
         if (entityMappers != null)
         {
@@ -1288,9 +1352,12 @@ class PostgresOMRSMetadataStore
                                                   Date    toTime,
                                                   boolean oldestFirst) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<ClassificationMapper> classificationMappers = databaseStore.getClassificationHistoryFromStore(guid, classificationName, fromTime, toTime, oldestFirst);
-        databaseStore.disconnect();
+        List<ClassificationMapper> classificationMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            classificationMappers = databaseStore.getClassificationHistoryFromStore(guid, classificationName, fromTime, toTime, oldestFirst);
+        }
 
         if (classificationMappers != null)
         {
@@ -1326,9 +1393,12 @@ class PostgresOMRSMetadataStore
                                               Date    toTime,
                                               boolean oldestFirst) throws RepositoryErrorException
     {
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        List<RelationshipMapper> relationshipMappers = databaseStore.getRelationshipHistoryFromStore(guid, fromTime, toTime, oldestFirst);
-        databaseStore.disconnect();
+        List<RelationshipMapper> relationshipMappers;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            relationshipMappers = databaseStore.getRelationshipHistoryFromStore(guid, fromTime, toTime, oldestFirst);
+        }
 
         if (relationshipMappers != null)
         {
@@ -1365,9 +1435,11 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        databaseStore.purgeClassification(entityGUID, classificationName);
-        databaseStore.disconnect();
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            databaseStore.purgeClassification(entityGUID, classificationName);
+            databaseStore.commit();
+        }
     }
 
 
@@ -1386,9 +1458,11 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        databaseStore.purgeEntity(guid);
-        databaseStore.disconnect();
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            databaseStore.purgeEntity(guid);
+            databaseStore.commit();
+        }
     }
 
 
@@ -1407,8 +1481,10 @@ class PostgresOMRSMetadataStore
             throw new RepositoryErrorException(PostgresErrorCode.READ_ONLY_MODE.getMessageDefinition(repositoryName), this.getClass().getName(), methodName);
         }
 
-        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        databaseStore.purgeRelationship(guid);
-        databaseStore.disconnect();
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            databaseStore.purgeRelationship(guid);
+            databaseStore.commit();
+        }
     }
 }

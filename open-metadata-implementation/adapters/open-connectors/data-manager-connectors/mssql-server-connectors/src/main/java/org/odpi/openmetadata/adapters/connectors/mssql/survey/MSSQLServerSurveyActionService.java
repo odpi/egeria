@@ -203,9 +203,13 @@ public class MSSQLServerSurveyActionService extends SurveyActionServiceConnector
 
             JDBCResourceConnector newConnector = (JDBCResourceConnector) connectorBroker.getConnector(databaseConnectionDetails);
 
-            newConnector.start();
-
+            /*
+             * Track the connector before it is started so that a connector whose start() fails is still released
+             * by disconnect().
+             */
             jdbcResourceConnectors.add(newConnector);
+
+            newConnector.start();
 
             return newConnector.getDataSource().getConnection();
         }
