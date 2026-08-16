@@ -121,12 +121,12 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     {
         final String methodName = "loadDDL";
 
-        java.sql.Connection databaseConnection = null;
-
-        try
+        /*
+         * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
+         * disabled, the pool rolls back the transaction if the commit below is not reached.
+         */
+        try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
         {
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
-
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               "Audit log records for one or more OMAG Servers.",
                                                                               AuditLogTable.getTables());
@@ -136,18 +136,6 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
         }
         catch (Exception error)
         {
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  rollbackError)
-                {
-                    // ignore
-                }
-            }
-
             throw new RepositoryErrorException(PostgreSQLAuditLogErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(schemaName,
                                                                                                                      error.getClass().getName(),
                                                                                                                      methodName,
@@ -175,12 +163,12 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
         if (super.isSupportedSeverity(logRecord))
         {
-            java.sql.Connection databaseConnection = null;
-
-            try
+            /*
+             * The connection is returned to the pool when this block exits.  Because the connector runs with
+             * auto-commit disabled, the pool rolls back the transaction if the commit at the end is not reached.
+             */
+            try (java.sql.Connection databaseConnection = databaseClient.getDataSource().getConnection())
             {
-                databaseConnection = databaseClient.getDataSource().getConnection();
-
                 String messageParameters = "";
                 String additionalInformation = "";
 

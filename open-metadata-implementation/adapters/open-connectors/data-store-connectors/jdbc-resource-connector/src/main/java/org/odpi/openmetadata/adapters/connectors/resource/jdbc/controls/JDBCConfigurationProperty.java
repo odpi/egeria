@@ -61,6 +61,47 @@ public enum JDBCConfigurationProperty
      */
     ADDITIONAL_CONNECTION_PROPERTIES("additionalConnectionProperties", "Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without it they are silently omitted.", DataType.MAP_STRING_STRING.getDisplayName(), "{\"remarksReporting\": \"true\"}"),
 
+    /**
+     * The maximum number of database connections this connector will hold open at once.  Note that a separate pool is
+     * created for each connector instance - and one connector instance is created per catalog target - so this value
+     * is multiplied by the number of catalog targets when sizing the database server.
+     */
+    JDBC_MAXIMUM_POOL_SIZE("jdbcMaximumPoolSize", "The maximum number of database connections this connector will hold open at once. Note that a separate pool is created for each connector instance - and one connector instance is created per catalog target - so this value is multiplied by the number of catalog targets when sizing the database server.", DataType.INT.getDisplayName(), "5"),
+
+    /**
+     * The minimum number of idle connections the pool keeps ready.  Setting this equal to jdbcMaximumPoolSize gives a
+     * fixed-size pool, which is the recommended configuration for steady workloads.
+     */
+    JDBC_MINIMUM_IDLE("jdbcMinimumIdle", "The minimum number of idle connections the pool keeps ready. Setting this equal to jdbcMaximumPoolSize gives a fixed-size pool, which is the recommended configuration for steady workloads.", DataType.INT.getDisplayName(), "1"),
+
+    /**
+     * The number of milliseconds a caller waits for a free connection from the pool before failing.  This is distinct
+     * from jdbcConnectionTimeout, which limits how long the driver waits when opening a new network connection.
+     */
+    JDBC_CONNECTION_WAIT_TIMEOUT("jdbcConnectionWaitTimeout", "The number of milliseconds a caller waits for a free connection from the pool before failing. This is distinct from jdbcConnectionTimeout, which limits how long the driver waits when opening a new network connection.", DataType.LONG.getDisplayName(), "30000"),
+
+    /**
+     * The maximum number of milliseconds a connection may live before the pool retires and replaces it.  This must be
+     * set comfortably below any idle or lifetime limit imposed by the database server or intervening infrastructure,
+     * otherwise the pool will hand out connections that have already been closed at the far end.
+     */
+    JDBC_MAXIMUM_CONNECTION_LIFETIME("jdbcMaximumConnectionLifetime", "The maximum number of milliseconds a connection may live before the pool retires and replaces it. This must be set comfortably below any idle or lifetime limit imposed by the database server or intervening infrastructure, otherwise the pool will hand out connections that have already been closed at the far end.", DataType.LONG.getDisplayName(), "1800000"),
+
+    /**
+     * How often, in milliseconds, the pool probes an idle connection to check it is still usable, retiring it if it
+     * is not.  Zero disables the probe.  This must be smaller than jdbcMaximumConnectionLifetime.  Note that this is
+     * the pool's own liveness check and is separate from socket level TCP keepalive, which the connector switches on
+     * automatically for the drivers whose property name for it is known.
+     */
+    JDBC_CONNECTION_KEEPALIVE("jdbcConnectionKeepAlive", "How often, in milliseconds, the pool probes an idle connection to check it is still usable, retiring it if it is not. Zero disables the probe. This must be smaller than jdbcMaximumConnectionLifetime. Note that this is the pool's own liveness check and is separate from socket level TCP keepalive, which the connector switches on automatically for the drivers whose property name for it is known.", DataType.LONG.getDisplayName(), "120000"),
+
+    /**
+     * How long, in milliseconds, a connection may be held by a caller before the connector logs a stack trace of
+     * whoever took it out.  Zero disables the check.  This is a diagnostic aid for finding code that fails to close
+     * the connections it obtains; it does not itself reclaim the connection.
+     */
+    JDBC_CONNECTION_LEAK_THRESHOLD("jdbcConnectionLeakThreshold", "How long, in milliseconds, a connection may be held by a caller before the connector logs a stack trace of whoever took it out. Zero disables the check. This is a diagnostic aid for finding code that fails to close the connections it obtains; it does not itself reclaim the connection.", DataType.LONG.getDisplayName(), "0"),
+
 
     ;
 

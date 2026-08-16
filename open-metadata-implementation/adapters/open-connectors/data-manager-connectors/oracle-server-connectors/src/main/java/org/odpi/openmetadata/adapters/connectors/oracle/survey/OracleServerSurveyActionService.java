@@ -65,90 +65,93 @@ public class OracleServerSurveyActionService extends SurveyActionServiceConnecto
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
             DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            /*
-             * The asset connection is expected to be to the CDB root of a multitenant Oracle Database Server.
-             * v$pdbs lists the pluggable databases (PDBs) hosted in the CDB, excluding the seed PDB used as
-             * a template for creating new PDBs - the direct equivalent of PostgreSQL's datistemplate/datallowconn
-             * filters on pg_database.
-             */
-            final String sqlCommand1 = "SELECT name, open_mode FROM v$pdbs WHERE name != 'PDB$SEED';";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<String> validDatabases = new ArrayList<>();
-
-            while (resultSet.next())
+            try (Connection jdbcConnection = jdbcDataSource.getConnection())
             {
+
                 /*
-                 * This test removes PDBs that are not currently open for read/write connections.
+                 * The asset connection is expected to be to the CDB root of a multitenant Oracle Database Server.
+                 * v$pdbs lists the pluggable databases (PDBs) hosted in the CDB, excluding the seed PDB used as
+                 * a template for creating new PDBs - the direct equivalent of PostgreSQL's datistemplate/datallowconn
+                 * filters on pg_database.
                  */
-                if ("READ WRITE".equals(resultSet.getString("open_mode")))
+                final String sqlCommand1 = "SELECT name, open_mode FROM v$pdbs WHERE name != 'PDB$SEED';";
+
+                PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                List<String> validDatabases = new ArrayList<>();
+
+                while (resultSet.next())
                 {
-                    String databaseName = resultSet.getString("name");
-
-                    validDatabases.add(databaseName);
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            if (validDatabases.isEmpty())
-            {
-                auditLog.logMessage(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
-            }
-            else
-            {
-                List<String> excludedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                      connectionBean.getConfigurationProperties(),
-                                                                                      Collections.emptyList());
-
-                List<String> includedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                      connectionBean.getConfigurationProperties());
-
-                List<String> surveyDatabases = new ArrayList<>();
-
-                for (String databaseName : validDatabases)
-                {
-                    if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
+                    /*
+                     * This test removes PDBs that are not currently open for read/write connections.
+                     */
+                    if ("READ WRITE".equals(resultSet.getString("open_mode")))
                     {
-                        surveyDatabases.add(databaseName);
+                        String databaseName = resultSet.getString("name");
+
+                        validDatabases.add(databaseName);
                     }
                 }
 
-                OracleDatabaseStatsExtractor statsExtractor = new OracleDatabaseStatsExtractor(surveyDatabases,
-                                                                                                this);
+                resultSet.close();
+                preparedStatement.close();
 
-                statsExtractor.getDatabaseStatistics(jdbcConnection);
-
-                jdbcConnection.commit();
-
-                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
-
-                for (String databaseName : surveyDatabases)
+                if (validDatabases.isEmpty())
                 {
-                    java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName);
-
-                    if (databaseSpecificConnection != null)
-                    {
-                        statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
-                    }
+                    auditLog.logMessage(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                                        assetStore.getQualifiedName(),
+                                                                                                        assetStore.getAssetGUID()));
                 }
-
-                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
-                if (annotations != null)
+                else
                 {
-                    for (AnnotationProperties annotation : annotations)
+                    List<String> excludedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                          connectionBean.getConfigurationProperties(),
+                                                                                          Collections.emptyList());
+
+                    List<String> includedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                          connectionBean.getConfigurationProperties());
+
+                    List<String> surveyDatabases = new ArrayList<>();
+
+                    for (String databaseName : validDatabases)
                     {
-                        if (super.isActive())
+                        if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
                         {
-                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            surveyDatabases.add(databaseName);
+                        }
+                    }
+
+                    OracleDatabaseStatsExtractor statsExtractor = new OracleDatabaseStatsExtractor(surveyDatabases,
+                                                                                                    this);
+
+                    statsExtractor.getDatabaseStatistics(jdbcConnection);
+
+                    jdbcConnection.commit();
+
+                    annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+                    for (String databaseName : surveyDatabases)
+                    {
+                        try (java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName))
+                        {
+                            if (databaseSpecificConnection != null)
+                            {
+                                statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                            }
+                        }
+                    }
+
+                    List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
+                    if (annotations != null)
+                    {
+                        for (AnnotationProperties annotation : annotations)
+                        {
+                            if (super.isActive())
+                            {
+                                annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            }
                         }
                     }
                 }

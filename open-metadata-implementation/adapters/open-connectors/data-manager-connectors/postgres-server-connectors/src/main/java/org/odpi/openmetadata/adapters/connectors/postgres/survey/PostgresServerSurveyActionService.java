@@ -64,85 +64,88 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
             DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            final String sqlCommand1 = "SELECT oid, datname, datistemplate, datallowconn from pg_database;";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<String> validDatabases = new ArrayList<>();
-
-            while (resultSet.next())
+            try (Connection jdbcConnection = jdbcDataSource.getConnection())
             {
-                /*
-                 * This first test removes databases that are templates or do not allow connections.
-                 */
-                if ((! resultSet.getBoolean("datistemplate")) &&
-                        (resultSet.getBoolean("datallowconn")))
+
+                final String sqlCommand1 = "SELECT oid, datname, datistemplate, datallowconn from pg_database;";
+
+                PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                List<String> validDatabases = new ArrayList<>();
+
+                while (resultSet.next())
                 {
-                    String databaseName = resultSet.getString("datname");
-
-                    validDatabases.add(databaseName);
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            if (validDatabases.isEmpty())
-            {
-                auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
-            }
-            else
-            {
-                List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionBean.getConfigurationProperties(),
-                                                                                     Collections.singletonList("postgres"));
-
-                List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                     connectionBean.getConfigurationProperties());
-
-                List<String> surveyDatabases = new ArrayList<>();
-
-                for (String databaseName : validDatabases)
-                {
-                    if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
+                    /*
+                     * This first test removes databases that are templates or do not allow connections.
+                     */
+                    if ((! resultSet.getBoolean("datistemplate")) &&
+                            (resultSet.getBoolean("datallowconn")))
                     {
-                        surveyDatabases.add(databaseName);
+                        String databaseName = resultSet.getString("datname");
+
+                        validDatabases.add(databaseName);
                     }
                 }
 
-                PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(surveyDatabases,
-                                                                                                   this);
+                resultSet.close();
+                preparedStatement.close();
 
-                statsExtractor.getDatabaseStatistics(jdbcConnection);
-
-                jdbcConnection.commit();
-
-                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
-
-                for (String databaseName : surveyDatabases)
+                if (validDatabases.isEmpty())
                 {
-                    java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName);
-
-                    if (databaseSpecificConnection != null)
-                    {
-                        statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
-                    }
+                    auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                                        assetStore.getQualifiedName(),
+                                                                                                        assetStore.getAssetGUID()));
                 }
-
-                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
-                if (annotations != null)
+                else
                 {
-                    for (AnnotationProperties annotation : annotations)
+                    List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                         connectionBean.getConfigurationProperties(),
+                                                                                         Collections.singletonList("postgres"));
+
+                    List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                         connectionBean.getConfigurationProperties());
+
+                    List<String> surveyDatabases = new ArrayList<>();
+
+                    for (String databaseName : validDatabases)
                     {
-                        if (super.isActive())
+                        if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
                         {
-                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            surveyDatabases.add(databaseName);
+                        }
+                    }
+
+                    PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(surveyDatabases,
+                                                                                                       this);
+
+                    statsExtractor.getDatabaseStatistics(jdbcConnection);
+
+                    jdbcConnection.commit();
+
+                    annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+                    for (String databaseName : surveyDatabases)
+                    {
+                        try (java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName))
+                        {
+                            if (databaseSpecificConnection != null)
+                            {
+                                statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                            }
+                        }
+                    }
+
+                    List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
+                    if (annotations != null)
+                    {
+                        for (AnnotationProperties annotation : annotations)
+                        {
+                            if (super.isActive())
+                            {
+                                annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            }
                         }
                     }
                 }

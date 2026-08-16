@@ -189,8 +189,14 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                                                                                                                   exception.getMessage()),
                                       exception);
             }
-
-            close(connection);
+            finally
+            {
+                /*
+                 * The connection must go back to the pool on every path, including one where an error escapes the
+                 * catch blocks above.
+                 */
+                close(connection);
+            }
         }
     }
 

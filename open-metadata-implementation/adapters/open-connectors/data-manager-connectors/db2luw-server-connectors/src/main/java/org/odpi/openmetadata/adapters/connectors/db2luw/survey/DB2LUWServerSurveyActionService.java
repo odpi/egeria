@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigura
 import org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode;
 import org.odpi.openmetadata.adapters.connectors.db2luw.utilities.DB2LUWUtils;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -18,8 +17,6 @@ import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -120,12 +117,13 @@ public class DB2LUWServerSurveyActionService extends SurveyActionServiceConnecto
                  */
                 for (String databaseName : surveyDatabases)
                 {
-                    java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName);
-
-                    if (databaseSpecificConnection != null)
+                    try (java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName))
                     {
-                        statsExtractor.getDatabaseStatistics(databaseName, databaseSpecificConnection);
-                        statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                        if (databaseSpecificConnection != null)
+                        {
+                            statsExtractor.getDatabaseStatistics(databaseName, databaseSpecificConnection);
+                            statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                        }
                     }
                 }
 

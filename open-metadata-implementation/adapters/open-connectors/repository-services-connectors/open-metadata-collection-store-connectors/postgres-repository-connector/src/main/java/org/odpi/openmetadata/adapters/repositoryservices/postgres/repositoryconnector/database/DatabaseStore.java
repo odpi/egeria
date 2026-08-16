@@ -2013,13 +2013,12 @@ public class DatabaseStore implements AutoCloseable
 
 
     /**
-     * End the database transaction started by this unit of work so that the shared JDBC connection is left idle
-     * rather than idle-in-transaction.  If {@link #commit()} has not been called then any changes made by this
-     * unit of work are rolled back - this is what ends the transaction when the unit of work is read-only, and
-     * what discards a partial update when the unit of work failed part way through.
+     * End the unit of work and return the JDBC connection to the pool.  If {@link #commit()} has not been called
+     * then any changes made by this unit of work are rolled back - this is what ends the transaction when the unit
+     * of work is read-only, and what discards a partial update when the unit of work failed part way through.
      * <br><br>
-     * The underlying JDBC connection is not closed because it is owned by the resource connector and is reused by
-     * subsequent requests running on this thread.
+     * The connection is always released, even if the rollback fails, so that a broken connection cannot strand a
+     * slot in the pool.
      *
      * @throws RepositoryErrorException problem ending the transaction
      */
@@ -2028,17 +2027,12 @@ public class DatabaseStore implements AutoCloseable
     {
         final String methodName = "close";
 
-        if (committed)
-        {
-            /*
-             * commit() has already ended the transaction - there is nothing left to do.
-             */
-            return;
-        }
-
         try
         {
-            jdbcConnection.rollback();
+            if (! committed)
+            {
+                jdbcConnection.rollback();
+            }
         }
         catch (Exception sqlException)
         {
@@ -2049,6 +2043,20 @@ public class DatabaseStore implements AutoCloseable
                                                this.getClass().getName(),
                                                methodName,
                                                sqlException);
+        }
+        finally
+        {
+            try
+            {
+                jdbcConnection.close();
+            }
+            catch (Exception sqlException)
+            {
+                /*
+                 * The connection is already being discarded; a failure to hand it back must not mask the outcome
+                 * of the unit of work itself.
+                 */
+            }
         }
     }
 }

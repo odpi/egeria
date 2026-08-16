@@ -107,12 +107,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     {
         final String methodName = "loadDDL";
 
-        java.sql.Connection databaseConnection = null;
-
-        try
+        /*
+         * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
+         * disabled, the pool rolls back the transaction if the commit below is not reached.
+         */
+        try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
         {
-            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
-
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               "Observability data for a cohort of OMAG Servers.",
                                                                               HarvestOpenMetadataTable.getTables());
@@ -121,23 +121,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  rollbackError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 rollbackError.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 rollbackError.getMessage()),
-                                          error);
-                }
-            }
-
             throw new ConnectorCheckedException(HarvestOpenMetadataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(schemaName,
                                                                                                                        error.getClass().getName(),
                                                                                                                        methodName,
@@ -166,15 +149,13 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     {
         final String methodName = "refresh";
 
-        java.sql.Connection databaseConnection = null;
-
-        try
+        /*
+         * This is the connection to the database schema used to store the harvested metadata.  It is returned to the
+         * pool when this block exits; because the connector runs with auto-commit disabled, the pool rolls back the
+         * transaction if the commit at the end is not reached.
+         */
+        try (java.sql.Connection databaseConnection = databaseClient.getDataSource().getConnection())
         {
-            /*
-             * This is the connection to the database schema used to store the harvested metadata
-             */
-            databaseConnection = databaseClient.getDataSource().getConnection();
-
             /*
              * These clients provide access to open metadata.
              */
@@ -372,23 +353,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.rollback();
-                }
-                catch (Exception  closeError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 closeError.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 closeError.getMessage()),
-                                          error);
-                }
-            }
-
             auditLog.logException(methodName,
                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                           error.getClass().getName(),
