@@ -2810,7 +2810,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -2842,6 +2844,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
+                                           boolean                   skipSubtypes,
                                            SearchProperties searchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -2889,7 +2892,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
@@ -2916,6 +2921,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     public long countEntities(String                    userId,
                               String                    entityTypeGUID,
                               List<String>              entitySubtypeGUIDs,
+                              boolean                   skipSubtypes,
                               SearchProperties          searchProperties,
                               int                       fromEntityElement,
                               List<InstanceStatus>      limitResultsByStatus,
@@ -2952,6 +2958,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         List<EntityDetail> entities = this.findEntities(userId,
                                                         entityTypeGUID,
                                                         entitySubtypeGUIDs,
+                                                        skipSubtypes,
                                                         searchProperties,
                                                         0,
                                                         limitResultsByStatus,
@@ -3406,6 +3413,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
+                                                 boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
                                                  List<String>              end2EntityGUIDs,
                                                  EndMatchCriteria          endMatchCriteria,
@@ -3486,6 +3494,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     public  long countRelationships(String                    userId,
                                     String                    relationshipTypeGUID,
                                     List<String>              relationshipSubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
                                     List<String>              end2EntityGUIDs,
                                     EndMatchCriteria          endMatchCriteria,
@@ -3523,6 +3532,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         List<Relationship> relationships = this.findRelationships(userId,
                                                                    relationshipTypeGUID,
                                                                    relationshipSubtypeGUIDs,
+                                                                   skipSubtypes,
                                                                    end1EntityGUIDs,
                                                                    end2EntityGUIDs,
                                                                    endMatchCriteria,

@@ -27,6 +27,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
     private final SearchProperties      matchProperties;
     private final SearchClassifications matchClassifications;
     private final List<String>          instanceSubtypeGUIDs;
+    private final boolean               skipSubtypes;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and
@@ -35,7 +36,9 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -58,6 +61,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
     public FindEntitiesExecutor(String                  userId,
                                 String                  entityTypeGUID,
                                 List<String>            entitySubtypeGUIDs,
+                                boolean                 skipSubtypes,
                                 SearchProperties        matchProperties,
                                 int                     fromEntityElement,
                                 List<InstanceStatus>    limitResultsByStatus,
@@ -74,6 +78,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
         this(userId,
              entityTypeGUID,
              entitySubtypeGUIDs,
+             skipSubtypes,
              matchProperties,
              fromEntityElement,
              limitResultsByStatus,
@@ -94,7 +99,9 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -115,6 +122,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
     private FindEntitiesExecutor(String                userId,
                                  String                entityTypeGUID,
                                  List<String>          entitySubtypeGUIDs,
+                                 boolean               skipSubtypes,
                                  SearchProperties      matchProperties,
                                  int                   fromEntityElement,
                                  List<InstanceStatus>  limitResultsByStatus,
@@ -140,6 +148,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
         this.matchProperties = matchProperties;
         this.matchClassifications = matchClassifications;
         this.instanceSubtypeGUIDs = entitySubtypeGUIDs;
+        this.skipSubtypes = skipSubtypes;
         this.accumulator = accumulator;
 
     }
@@ -157,6 +166,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
         return new FindEntitiesExecutor(userId,
                                         instanceTypeGUID,
                                         instanceSubtypeGUIDs,
+                                        skipSubtypes,
                                         matchProperties,
                                         startingElement,
                                         limitResultsByStatus,
@@ -188,6 +198,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
             List<EntityDetail> results = metadataCollection.findEntities(userId,
                                                                          instanceTypeGUID,
                                                                          instanceSubtypeGUIDs,
+                                                                         skipSubtypes,
                                                                          matchProperties,
                                                                          startingElement,
                                                                          limitResultsByStatus,

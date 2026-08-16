@@ -288,6 +288,7 @@ include(':open-metadata-test:open-metadata-bvt')
 //include(':open-metadata-test:open-metadata-fvt:access-services-fvt:governance-program-fvt')
 //include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
+include(':open-metadata-test:open-metadata-fvt:query-fvt')
 
 
 // These are not required if the project name == the directory name but are included for clarity - for example

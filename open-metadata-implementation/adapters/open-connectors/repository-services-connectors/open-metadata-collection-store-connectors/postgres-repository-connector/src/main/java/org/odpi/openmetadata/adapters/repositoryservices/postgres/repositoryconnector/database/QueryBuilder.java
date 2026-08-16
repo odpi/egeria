@@ -12,8 +12,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -52,6 +55,7 @@ public class QueryBuilder
     private String                typeGUIDParameterName        = "typeGUID";
     private List<String>          subtypeGUIDs                 = null;
     private String                subTypeGUIDsParameterName    = "subTypeGUIDs";
+    private boolean               skipSubtypes                 = false;
     private List<InstanceStatus>  limitResultsByStatus         = null;
     private List<String>          guidList                     = null;
     private Date                  asOfTime                     = null;
@@ -791,17 +795,18 @@ public class QueryBuilder
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-            boolean firstGUID = true;
 
             if (end1EntityGUIDs != null)
             {
                 stringBuilder.append(" (");
 
+                boolean firstEnd1GUID = true;
+
                 for (String end1EntityGUID : end1EntityGUIDs)
                 {
-                    if (firstGUID)
+                    if (firstEnd1GUID)
                     {
-                        firstGUID = false;
+                        firstEnd1GUID = false;
                     }
                     else
                     {
@@ -827,11 +832,13 @@ public class QueryBuilder
             {
                 stringBuilder.append(" (");
 
+                boolean firstEnd2GUID = true;
+
                 for (String end2EntityGUID : end2EntityGUIDs)
                 {
-                    if (firstGUID)
+                    if (firstEnd2GUID)
                     {
-                        firstGUID = false;
+                        firstEnd2GUID = false;
                     }
                     else
                     {
@@ -1223,9 +1230,31 @@ public class QueryBuilder
                             List<String> subTypeGUIDs,
                             String       subTypeGUIDsParameterName)
     {
+        this.setTypeGUID(typeGUID, typeGUIDParameterName, subTypeGUIDs, false, subTypeGUIDsParameterName);
+    }
+
+
+    /**
+     * Set up the type information for the query.
+     *
+     * @param typeGUID unique identifier of desired type.
+     * @param typeGUIDParameterName parameter name use to pass the type guid
+     * @param subTypeGUIDs list of unique identifiers for the subtypes to include in (or, if skipSubtypes is true,
+     *                     exclude from) the query results.
+     * @param skipSubtypes if true, subTypeGUIDs is treated as the list of subtypes to exclude from the query
+     *                     results rather than the only subtypes to include.  Ignored if subTypeGUIDs is null or empty.
+     * @param subTypeGUIDsParameterName parameter name use to pass the subtype guid list
+     */
+    public void setTypeGUID(String       typeGUID,
+                            String       typeGUIDParameterName,
+                            List<String> subTypeGUIDs,
+                            boolean      skipSubtypes,
+                            String       subTypeGUIDsParameterName)
+    {
         this.typeGUID = typeGUID;
         this.typeGUIDParameterName = typeGUIDParameterName;
         this.subtypeGUIDs = subTypeGUIDs;
+        this.skipSubtypes = skipSubtypes;
         this.subTypeGUIDsParameterName = subTypeGUIDsParameterName;
     }
 
@@ -1240,8 +1269,27 @@ public class QueryBuilder
     {
         if ((subtypeGUIDs != null) && (! subtypeGUIDs.isEmpty()))
         {
-            StringBuilder stringBuffer = new StringBuilder(" and (");
-            boolean       firstType    = true;
+            StringBuilder stringBuffer = new StringBuilder();
+
+            if (skipSubtypes)
+            {
+                if (typeGUID != null)
+                {
+                    stringBuffer.append(" and (");
+                    stringBuffer.append(RepositoryColumn.TYPE_NAME.getColumnName());
+                    stringBuffer.append(" like '%:");
+                    stringBuffer.append(this.lookUpTypeName(typeGUID, typeGUIDParameterName));
+                    stringBuffer.append(":%')");
+                }
+
+                stringBuffer.append(" and not (");
+            }
+            else
+            {
+                stringBuffer.append(" and (");
+            }
+
+            boolean firstType = true;
 
             for (String subTypeGUID: subtypeGUIDs)
             {
@@ -1396,7 +1444,13 @@ public class QueryBuilder
         }
         else
         {
-            return " (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "')) ";
+            // java.util.Date's own toString() (what plain string concatenation of a Date would produce here)
+            // has no sub-second precision at all, unlike the millisecond-precision timestamps this same
+            // asOfTime is compared against (version_start_time/version_end_time) - wrapping in
+            // java.sql.Timestamp keeps the millisecond component in the generated SQL literal.
+            String asOfTimeLiteral = new java.sql.Timestamp(asOfTime.getTime()).toString();
+
+            return " (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTimeLiteral + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTimeLiteral + "')) ";
         }
     }
 
@@ -1448,20 +1502,138 @@ public class QueryBuilder
                 }
                 case PROPERTY_DESCENDING ->
                 {
-                    // todo temporary restriction
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " desc ";
-                    // return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " desc ";
+                    return " order by " + this.getSequencingPropertyOrderClause(principleTableName) + " desc ";
                 }
                 case PROPERTY_ASCENDING ->
                 {
-                    // todo temporary restriction
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " asc ";
-                    // return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " asc ";
+                    return " order by " + this.getSequencingPropertyOrderClause(principleTableName) + " asc ";
                 }
             }
         }
 
         return " ";
+    }
+
+
+    /**
+     * Return the SQL fragment to sort by for PROPERTY_ASCENDING/PROPERTY_DESCENDING sequencing - either a
+     * dedicated header column (for the small set of properties that map onto one, eg guid, metadataCollectionId -
+     * see mapPropertyNameToColumn()) or a correlated subquery that looks up the requested property's value from
+     * this query's property table (eg entity_attribute_value) for the current row's instance/version. This
+     * mirrors the "property in a dedicated column" vs "EAV property" split that getNestedPropertyComparisonClause()
+     * already uses for property comparisons in the WHERE clause - the same sequencingProperty name has to resolve
+     * to the same place it would be compared against.
+     * <br><br>
+     * The subquery is capped with "limit 1": sequencingProperty is expected to name a single-valued property
+     * (its EAV row's attribute_name and property_name coincide), but an array/map/struct property would have
+     * several property_table rows sharing that attribute_name, and a scalar subquery that could return more than
+     * one row would fail the whole query at execution time rather than degrade gracefully.
+     * <br><br>
+     * property_value is stored as text regardless of the property's real type (the same is true of every other
+     * property comparison in this class, eg the LT/GT operators in getNestedPropertyComparisonClause()). Left
+     * alone this would sort a numeric or date property lexicographically rather than by numeric/chronological
+     * value (eg "10" sorting before "9"), so the subquery result is cast to numeric whenever sequencingProperty's
+     * declared type is one of the numeric primitives - see isNumericProperty().
+     *
+     * @param principleTableName main table that the ordering will occur on
+     * @return SQL fragment naming or computing the value to sort on - does not include "order by" or asc/desc
+     */
+    private String getSequencingPropertyOrderClause(String principleTableName)
+    {
+        if (sequencingProperty == null)
+        {
+            /*
+             * No property named to sort by - fall back to creation date rather than producing invalid SQL.
+             */
+            return RepositoryColumn.CREATE_TIME.getColumnName(principleTableName);
+        }
+
+        String propertyColumn = this.mapPropertyNameToColumn(sequencingProperty, null);
+
+        if (RepositoryColumn.ATTRIBUTE_NAME.getColumnName().equals(propertyColumn))
+        {
+            String subSelect = "(select " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " from " + propertyTableName +
+                    " where " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) +
+                    " and " + RepositoryColumn.VERSION.getColumnName(propertyTableName) + " = " + RepositoryColumn.VERSION.getColumnName(principleTableName) +
+                    " and " + RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + escapePropertyValue(sequencingProperty) + "'" +
+                    " limit 1)";
+
+            if (this.isNumericProperty(sequencingProperty))
+            {
+                return "cast(" + subSelect + " as numeric)";
+            }
+
+            return subSelect;
+        }
+
+        return principleTableName + "." + propertyColumn;
+    }
+
+
+    /**
+     * Determine whether sequencingProperty is declared with a numeric primitive type (byte, short, int, long,
+     * float, double, biginteger, bigdecimal, or date - date properties are stored as epoch-millisecond longs,
+     * see RepositoryMapper.extractValuesFromInstanceAuditHeader()) on the type this query is filtering to.  All
+     * of these are stored in property_value as their plain numeric string form (Number.toString()), so ordering
+     * by them can use a numeric rather than lexical (text) comparison.
+     * <br><br>
+     * Returns false - lexical ordering, the pre-existing behaviour - if the property's type can't be determined
+     * (no type filter was supplied on this query, the type lookup fails, or the property isn't declared on that
+     * type) rather than guessing; a query should never fail just because numeric sequencing could not be confirmed.
+     *
+     * @param propertyName name of the property that sequencing is requested on
+     * @return true if the property's declared type is one of the numeric primitives
+     */
+    private boolean isNumericProperty(String propertyName)
+    {
+        if (typeGUID == null)
+        {
+            return false;
+        }
+
+        final String methodName = "isNumericProperty";
+
+        try
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, typeGUIDParameterName, typeGUID, methodName);
+
+            if (typeDef == null)
+            {
+                return false;
+            }
+
+            List<TypeDefAttribute> typeDefAttributes = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
+
+            if (typeDefAttributes != null)
+            {
+                for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
+                {
+                    if ((typeDefAttribute != null) && propertyName.equals(typeDefAttribute.getAttributeName()))
+                    {
+                        AttributeTypeDef attributeTypeDef = typeDefAttribute.getAttributeType();
+
+                        if (attributeTypeDef instanceof PrimitiveDef primitiveDef)
+                        {
+                            return switch (primitiveDef.getPrimitiveDefCategory())
+                            {
+                                case OM_PRIMITIVE_TYPE_BYTE, OM_PRIMITIVE_TYPE_SHORT, OM_PRIMITIVE_TYPE_INT,
+                                     OM_PRIMITIVE_TYPE_LONG, OM_PRIMITIVE_TYPE_FLOAT, OM_PRIMITIVE_TYPE_DOUBLE,
+                                     OM_PRIMITIVE_TYPE_BIGINTEGER, OM_PRIMITIVE_TYPE_BIGDECIMAL, OM_PRIMITIVE_TYPE_DATE -> true;
+                                default -> false;
+                            };
+                        }
+
+                        return false;
+                    }
+                }
+            }
+        }
+        catch (TypeErrorException error)
+        {
+            // Fall through to lexical ordering.
+        }
+
+        return false;
     }
 
 
@@ -1790,6 +1962,7 @@ public class QueryBuilder
                 ", typeGUID='" + typeGUID + '\'' +
                 ", typeGUIDParameterName='" + typeGUIDParameterName + '\'' +
                 ", subtypeGUIDs=" + subtypeGUIDs +
+                ", skipSubtypes=" + skipSubtypes +
                 ", subTypeGUIDsParameterName='" + subTypeGUIDsParameterName + '\'' +
                 ", limitResultsByStatus=" + limitResultsByStatus +
                 ", asOfTime=" + asOfTime +

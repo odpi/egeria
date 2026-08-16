@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.E
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,14 @@ import java.util.Map;
 public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 {
     /*
-     * Map of entityGUID to entity detail retrieved from the repositories
+     * Map of entityGUID to entity detail retrieved from the repositories.  accumulatedEntities is a
+     * LinkedHashMap (not HashMap) so that getResults() - which iterates accumulatedEntities.values() -
+     * preserves the order entities were added in.  Since addEntities() is called with each repository's
+     * results in the order that repository returned them (itself following whatever sequencing the caller
+     * requested, e.g. GUID/creation date/property value ordering), a plain HashMap here would silently
+     * discard that ordering by the time it reaches the caller.
      */
-    private final Map<String, EntityDetail>         accumulatedEntities        = new HashMap<>();
+    private final Map<String, EntityDetail>         accumulatedEntities        = new LinkedHashMap<>();
     private final Map<String, List<Classification>> accumulatedClassifications = new HashMap<>();
     private final Map<String, List<String>>         accumulatedEntitySources   = new HashMap<>();
 

@@ -1875,7 +1875,7 @@ public class MetadataExpertRESTServices extends TokenController
 
                 response.setRelationshipList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                               requestBody.getRelationshipTypeName(),
-                                                                                              requestBody.getRelationshipSubtypeGUIDs(),
+                                                                                              requestBody.getRelationshipSubtypeNames(),
                                                                                               requestBody.getEnd1EntityGUIDs(),
                                                                                               requestBody.getEnd2EntityGUIDs(),
                                                                                               requestBody.getEndMatchCriteria(),
@@ -1936,7 +1936,7 @@ public class MetadataExpertRESTServices extends TokenController
 
                 response.setCount(handler.countRelationshipsBetweenMetadataElements(userId,
                                                                                     requestBody.getRelationshipTypeName(),
-                                                                                    requestBody.getRelationshipSubtypeGUIDs(),
+                                                                                    requestBody.getRelationshipSubtypeNames(),
                                                                                     requestBody.getEnd1EntityGUIDs(),
                                                                                     requestBody.getEnd2EntityGUIDs(),
                                                                                     requestBody.getEndMatchCriteria(),

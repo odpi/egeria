@@ -977,9 +977,79 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws FunctionNotSupportedException the repository does not support this optional method.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          searchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     searchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        return this.findEntities(userId,
+                                 entityTypeGUID,
+                                 entitySubtypeGUIDs,
+                                 false,
+                                 searchProperties,
+                                 fromEntityElement,
+                                 limitResultsByStatus,
+                                 searchClassifications,
+                                 asOfTime,
+                                 sequencingProperty,
+                                 sequencingOrder,
+                                 pageSize);
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
     public  abstract List<EntityDetail> findEntities(String                    userId,
                                                      String                    entityTypeGUID,
                                                      List<String>              entitySubtypeGUIDs,
+                                                     boolean                   skipSubtypes,
                                                      SearchProperties          searchProperties,
                                                      int                       fromEntityElement,
                                                      List<InstanceStatus>      limitResultsByStatus,
@@ -1029,9 +1099,78 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws FunctionNotSupportedException the repository does not support this optional method.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    public long countEntities(String                    userId,
+                              String                    entityTypeGUID,
+                              List<String>              entitySubtypeGUIDs,
+                              SearchProperties          searchProperties,
+                              int                       fromEntityElement,
+                              List<InstanceStatus>      limitResultsByStatus,
+                              SearchClassifications     searchClassifications,
+                              Date                      asOfTime,
+                              String                    sequencingProperty,
+                              SequencingOrder           sequencingOrder,
+                              int                       pageSize) throws InvalidParameterException,
+                                                                         RepositoryErrorException,
+                                                                         TypeErrorException,
+                                                                         PropertyErrorException,
+                                                                         PagingErrorException,
+                                                                         FunctionNotSupportedException,
+                                                                         UserNotAuthorizedException
+    {
+        return this.countEntities(userId,
+                                  entityTypeGUID,
+                                  entitySubtypeGUIDs,
+                                  false,
+                                  searchProperties,
+                                  fromEntityElement,
+                                  limitResultsByStatus,
+                                  searchClassifications,
+                                  asOfTime,
+                                  sequencingProperty,
+                                  sequencingOrder,
+                                  pageSize);
+    }
+
+
+    /**
+     * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
+     * findEntities(), but returns the number of entities that would be returned rather than the entities
+     * themselves.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement not used by this method - the count is not affected by paging - present only for
+     *                          parameter parity with findEntities().
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty not used by this method - present only for parameter parity with findEntities().
+     * @param sequencingOrder not used by this method - present only for parameter parity with findEntities().
+     * @param pageSize not used by this method - the count is not affected by paging - present only for parameter
+     *                 parity with findEntities().
+     * @return the number of entities matching the supplied criteria.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support this optional method.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
     public  abstract long countEntities(String                    userId,
                                         String                    entityTypeGUID,
                                         List<String>              entitySubtypeGUIDs,
+                                        boolean                   skipSubtypes,
                                         SearchProperties          searchProperties,
                                         int                       fromEntityElement,
                                         List<InstanceStatus>      limitResultsByStatus,
@@ -1353,9 +1492,88 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    public List<Relationship> findRelationships(String                    userId,
+                                                String                    relationshipTypeGUID,
+                                                List<String>              relationshipSubtypeGUIDs,
+                                                List<String>              end1EntityGUIDs,
+                                                List<String>              end2EntityGUIDs,
+                                                EndMatchCriteria          endMatchCriteria,
+                                                SearchProperties          matchProperties,
+                                                int                       fromRelationshipElement,
+                                                List<InstanceStatus>      limitResultsByStatus,
+                                                Date                      asOfTime,
+                                                String                    sequencingProperty,
+                                                SequencingOrder           sequencingOrder,
+                                                int                       pageSize) throws InvalidParameterException,
+                                                                                           TypeErrorException,
+                                                                                           RepositoryErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           PagingErrorException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
+    {
+        return this.findRelationships(userId,
+                                      relationshipTypeGUID,
+                                      relationshipSubtypeGUIDs,
+                                      false,
+                                      end1EntityGUIDs,
+                                      end2EntityGUIDs,
+                                      endMatchCriteria,
+                                      matchProperties,
+                                      fromRelationshipElement,
+                                      limitResultsByStatus,
+                                      asOfTime,
+                                      sequencingProperty,
+                                      sequencingOrder,
+                                      pageSize);
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
     public  abstract List<Relationship> findRelationships(String                    userId,
                                                           String                    relationshipTypeGUID,
                                                           List<String>              relationshipSubtypeGUIDs,
+                                                          boolean                   skipSubtypes,
                                                           List<String>              end1EntityGUIDs,
                                                           List<String>              end2EntityGUIDs,
                                                           EndMatchCriteria          endMatchCriteria,
@@ -1411,9 +1629,87 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    public long countRelationships(String                    userId,
+                                   String                    relationshipTypeGUID,
+                                   List<String>              relationshipSubtypeGUIDs,
+                                   List<String>              end1EntityGUIDs,
+                                   List<String>              end2EntityGUIDs,
+                                   EndMatchCriteria          endMatchCriteria,
+                                   SearchProperties          matchProperties,
+                                   int                       fromRelationshipElement,
+                                   List<InstanceStatus>      limitResultsByStatus,
+                                   Date                      asOfTime,
+                                   String                    sequencingProperty,
+                                   SequencingOrder           sequencingOrder,
+                                   int                       pageSize) throws InvalidParameterException,
+                                                                              TypeErrorException,
+                                                                              RepositoryErrorException,
+                                                                              PropertyErrorException,
+                                                                              PagingErrorException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
+    {
+        return this.countRelationships(userId,
+                                       relationshipTypeGUID,
+                                       relationshipSubtypeGUIDs,
+                                       false,
+                                       end1EntityGUIDs,
+                                       end2EntityGUIDs,
+                                       endMatchCriteria,
+                                       matchProperties,
+                                       fromRelationshipElement,
+                                       limitResultsByStatus,
+                                       asOfTime,
+                                       sequencingProperty,
+                                       sequencingOrder,
+                                       pageSize);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions.  This has the same search semantics
+     * as findRelationships(), but returns the number of relationships that would be returned rather than the
+     * relationships themselves.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement not used by this method - the count is not affected by paging - present only
+     *                                for parameter parity with findRelationships().
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty not used by this method - present only for parameter parity with findRelationships().
+     * @param sequencingOrder not used by this method - present only for parameter parity with findRelationships().
+     * @param pageSize not used by this method - the count is not affected by paging - present only for parameter
+     *                 parity with findRelationships().
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
     public  abstract long countRelationships(String                    userId,
                                              String                    relationshipTypeGUID,
                                              List<String>              relationshipSubtypeGUIDs,
+                                             boolean                   skipSubtypes,
                                              List<String>              end1EntityGUIDs,
                                              List<String>              end2EntityGUIDs,
                                              EndMatchCriteria          endMatchCriteria,

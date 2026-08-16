@@ -783,28 +783,31 @@ public class OpenMetadataHandlerBase
      * Many calls do this filtering at the repository level, but not all - yet :)
      *
      * @param element header of the element
-     * @param getOptions options from the caller
+     * @param queryOptions options from the caller
      * @return boolean - true to return the element
      */
     private boolean filterBySubtypes(OpenMetadataElement element,
-                                     GetOptions          getOptions)
+                                     QueryOptions        queryOptions)
     {
         if (element == null)
         {
             return false;
         }
 
-        if ((getOptions != null) && (getOptions.getMetadataElementSubtypeNames() != null))
+        if ((queryOptions != null) && (queryOptions.getMetadataElementSubtypeNames() != null))
         {
-            for (String typeName : getOptions.getMetadataElementSubtypeNames())
+            boolean matchesSubtype = false;
+
+            for (String typeName : queryOptions.getMetadataElementSubtypeNames())
             {
                 if ((typeName != null) && (propertyHelper.isTypeOf(element, typeName)))
                 {
-                    return true;
+                    matchesSubtype = true;
+                    break;
                 }
             }
 
-            return false;
+            return matchesSubtype != queryOptions.getSkipSubtypes();
         }
 
         return true;

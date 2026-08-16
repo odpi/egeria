@@ -28,6 +28,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
 {
     private final SearchProperties matchProperties;
     private final List<String>     instanceSubtypeGUIDs;
+    private final boolean          skipSubtypes;
     private final List<String>     end1EntityGUIDs;
     private final List<String>     end2EntityGUIDs;
     private final EndMatchCriteria endMatchCriteria;
@@ -41,7 +42,10 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -67,6 +71,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
     public FindRelationshipsExecutor(String                  userId,
                                      String                  relationshipTypeGUID,
                                      List<String>            relationshipSubtypeGUIDs,
+                                     boolean                 skipSubtypes,
                                      List<String>            end1EntityGUIDs,
                                      List<String>            end2EntityGUIDs,
                                      EndMatchCriteria        endMatchCriteria,
@@ -85,6 +90,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
         this(userId,
              relationshipTypeGUID,
              relationshipSubtypeGUIDs,
+             skipSubtypes,
              end1EntityGUIDs,
              end2EntityGUIDs,
              endMatchCriteria,
@@ -108,7 +114,10 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -132,6 +141,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
     private FindRelationshipsExecutor(String                  userId,
                                       String                  relationshipTypeGUID,
                                       List<String>            relationshipSubtypeGUIDs,
+                                      boolean                 skipSubtypes,
                                       List<String>            end1EntityGUIDs,
                                       List<String>            end2EntityGUIDs,
                                       EndMatchCriteria        endMatchCriteria,
@@ -158,6 +168,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
 
         this.matchProperties = matchProperties;
         this.instanceSubtypeGUIDs = relationshipSubtypeGUIDs;
+        this.skipSubtypes = skipSubtypes;
         this.end1EntityGUIDs = end1EntityGUIDs;
         this.end2EntityGUIDs = end2EntityGUIDs;
         this.endMatchCriteria = endMatchCriteria;
@@ -178,6 +189,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
         return new FindRelationshipsExecutor(userId,
                                              instanceTypeGUID,
                                              instanceSubtypeGUIDs,
+                                             skipSubtypes,
                                              end1EntityGUIDs,
                                              end2EntityGUIDs,
                                              endMatchCriteria,
@@ -211,6 +223,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
             List<Relationship> results = metadataCollection.findRelationships(userId,
                                                                               instanceTypeGUID,
                                                                               instanceSubtypeGUIDs,
+                                                                              skipSubtypes,
                                                                               end1EntityGUIDs,
                                                                               end2EntityGUIDs,
                                                                               endMatchCriteria,

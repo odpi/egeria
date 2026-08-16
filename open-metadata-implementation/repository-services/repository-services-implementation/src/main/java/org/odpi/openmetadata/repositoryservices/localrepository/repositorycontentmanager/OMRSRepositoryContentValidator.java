@@ -2052,17 +2052,16 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                          SearchProperties matchProperties,
                                          String           methodName) throws InvalidParameterException
     {
-        if (matchProperties == null)
+        if ((matchProperties == null) || (matchProperties.getConditions() == null))
         {
+            /*
+             * A SearchProperties object with no conditions is a legitimate "no property filter" request - the
+             * same semantics already applied to matchProperties == null, and matching the equivalent null-check
+             * in validateSearchClassifications() below.  Callers combining property conditions with other
+             * structural filters (e.g. end1/end2 entity GUIDs on a relationship search) should not be forced to
+             * fabricate a dummy condition just to pass a non-null SearchProperties through.
+             */
             return;
-        }
-
-        if (matchProperties.getConditions() == null)
-        {
-            throw new InvalidParameterException(OMRSErrorCode.INVALID_PROPERTY_SEARCH.getMessageDefinition(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                parameterName + ".matchProperties.getConditions()");
         }
 
         for (PropertyCondition condition : matchProperties.getConditions())
@@ -2533,6 +2532,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean verifyInstanceType(String         sourceName,
                                       String         instanceTypeGUID,
                                       List<String>   subtypeGUIDs,
+                                      boolean        skipSubtypes,
                                       InstanceHeader instance)
     {
         boolean soFar = verifyInstanceType(sourceName, instanceTypeGUID, instance);
@@ -2550,7 +2550,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         break;
                     }
                 }
-                soFar = matchesASubtype;
+                soFar = (matchesASubtype != skipSubtypes);
             }
         }
         return soFar;

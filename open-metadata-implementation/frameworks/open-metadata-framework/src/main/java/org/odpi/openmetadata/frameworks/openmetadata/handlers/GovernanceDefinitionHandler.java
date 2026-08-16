@@ -710,8 +710,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
-                                                        dataSourceGUID,
                                                         governanceMetricGUID,
+                                                        dataSourceGUID,
                                                         makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
@@ -746,8 +746,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
-                                                        dataSourceGUID,
                                                         governanceMetricGUID,
+                                                        dataSourceGUID,
                                                         deleteOptions);
     }
 

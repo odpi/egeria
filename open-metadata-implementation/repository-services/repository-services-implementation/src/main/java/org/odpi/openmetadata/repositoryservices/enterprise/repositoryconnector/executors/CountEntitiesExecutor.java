@@ -28,6 +28,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
     private final SearchProperties      matchProperties;
     private final SearchClassifications matchClassifications;
     private final List<String>          instanceSubtypeGUIDs;
+    private final boolean               skipSubtypes;
     private final CountAccumulator      accumulator;
 
     /**
@@ -37,7 +38,9 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
@@ -56,6 +59,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
     public CountEntitiesExecutor(String                  userId,
                                  String                  entityTypeGUID,
                                  List<String>            entitySubtypeGUIDs,
+                                 boolean                 skipSubtypes,
                                  SearchProperties        matchProperties,
                                  int                     fromEntityElement,
                                  List<InstanceStatus>    limitResultsByStatus,
@@ -72,6 +76,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
         this(userId,
              entityTypeGUID,
              entitySubtypeGUIDs,
+             skipSubtypes,
              matchProperties,
              fromEntityElement,
              limitResultsByStatus,
@@ -92,7 +97,9 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
@@ -109,6 +116,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
     private CountEntitiesExecutor(String                userId,
                                   String                entityTypeGUID,
                                   List<String>          entitySubtypeGUIDs,
+                                  boolean               skipSubtypes,
                                   SearchProperties      matchProperties,
                                   int                   fromEntityElement,
                                   List<InstanceStatus>  limitResultsByStatus,
@@ -134,6 +142,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
         this.matchProperties = matchProperties;
         this.matchClassifications = matchClassifications;
         this.instanceSubtypeGUIDs = entitySubtypeGUIDs;
+        this.skipSubtypes = skipSubtypes;
         this.accumulator = accumulator;
     }
 
@@ -150,6 +159,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
         return new CountEntitiesExecutor(userId,
                                          instanceTypeGUID,
                                          instanceSubtypeGUIDs,
+                                         skipSubtypes,
                                          matchProperties,
                                          startingElement,
                                          limitResultsByStatus,
@@ -181,6 +191,7 @@ public class CountEntitiesExecutor extends PageableRepositoryExecutorBase
             long result = metadataCollection.countEntities(userId,
                                                             instanceTypeGUID,
                                                             instanceSubtypeGUIDs,
+                                                            skipSubtypes,
                                                             matchProperties,
                                                             startingElement,
                                                             limitResultsByStatus,

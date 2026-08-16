@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class FindRelationshipRequestBody extends ResultsRequestBody
 {
     private String           relationshipTypeName     = null;
-    private List<String>     relationshipSubtypeGUIDs = null;
+    private List<String>     relationshipSubtypeNames = null;
     private List<String>     end1EntityGUIDs          = null;
     private List<String>     end2EntityGUIDs          = null;
     private EndMatchCriteria endMatchCriteria         = null;
@@ -54,7 +54,7 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
         if (template != null)
         {
             this.relationshipTypeName     = template.getRelationshipTypeName();
-            this.relationshipSubtypeGUIDs = template.getRelationshipSubtypeGUIDs();
+            this.relationshipSubtypeNames = template.getRelationshipSubtypeNames();
             this.searchProperties         = template.getSearchProperties();
             this.end1EntityGUIDs          = template.getEnd1EntityGUIDs();
             this.end2EntityGUIDs          = template.getEnd2EntityGUIDs();
@@ -97,24 +97,24 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
 
 
     /**
-     * Return the subtype guids to limit the results of the find request.
+     * Return the subtype names to limit the results of the find request.
      *
-     * @return {@code List<String>} guids
+     * @return {@code List<String>} open metadata type names
      */
-    public List<String> getRelationshipSubtypeGUIDs()
+    public List<String> getRelationshipSubtypeNames()
     {
-        return relationshipSubtypeGUIDs;
+        return relationshipSubtypeNames;
     }
 
 
     /**
-     * Set up the subtype guids to limit the results of the find request.
+     * Set up the subtype names to limit the results of the find request.
      *
-     * @param relationshipSubtypeGUIDs {@code List<String>} guids
+     * @param relationshipSubtypeNames {@code List<String>} open metadata type names
      */
-    public void setRelationshipSubtypeGUIDs(List<String> relationshipSubtypeGUIDs)
+    public void setRelationshipSubtypeNames(List<String> relationshipSubtypeNames)
     {
-        this.relationshipSubtypeGUIDs = relationshipSubtypeGUIDs;
+        this.relationshipSubtypeNames = relationshipSubtypeNames;
     }
 
 
@@ -218,7 +218,7 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
     {
         return "FindRelationshipRequestBody{" +
                 "relationshipTypeName='" + relationshipTypeName + '\'' +
-                ", subtypeGUIDs=" + relationshipSubtypeGUIDs +
+                ", relationshipSubtypeNames=" + relationshipSubtypeNames +
                 ", end1EntityGUIDs=" + end1EntityGUIDs +
                 ", end2EntityGUIDs=" + end2EntityGUIDs +
                 ", endMatchCriteria=" + endMatchCriteria +
@@ -240,7 +240,7 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
         if (!super.equals(objectToCompare)) return false;
         FindRelationshipRequestBody that = (FindRelationshipRequestBody) objectToCompare;
         return Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
-                Objects.equals(relationshipSubtypeGUIDs, that.relationshipSubtypeGUIDs) &&
+                Objects.equals(relationshipSubtypeNames, that.relationshipSubtypeNames) &&
                 Objects.equals(end1EntityGUIDs, that.end1EntityGUIDs) &&
                 Objects.equals(end2EntityGUIDs, that.end2EntityGUIDs) &&
                 endMatchCriteria == that.endMatchCriteria &&
@@ -255,7 +255,7 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipTypeName, relationshipSubtypeGUIDs,
+        return Objects.hash(super.hashCode(), relationshipTypeName, relationshipSubtypeNames,
                             end1EntityGUIDs, end2EntityGUIDs,
                             endMatchCriteria, searchProperties);
     }

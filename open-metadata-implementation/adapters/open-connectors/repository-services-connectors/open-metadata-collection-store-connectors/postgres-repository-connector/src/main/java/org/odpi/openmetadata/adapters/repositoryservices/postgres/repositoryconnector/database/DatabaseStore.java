@@ -375,7 +375,12 @@ public class DatabaseStore
     {
         final String methodName = "retrieveEntitiesByProperties";
 
-        String sqlEntityQuery = "select distinct * from " + RepositoryTable.ENTITY.getTableName() + " where " + entityQueryBuilder.getAsOfTimeWhereClause();
+        // No "distinct" - the entity table's primary key is (instance_guid, version) and the where clause built
+        // by getAsOfTimeWhereClause() only ever narrows rows via EXISTS/IN subqueries, never a join, so this
+        // query cannot return duplicate rows on its own. "distinct" is more than redundant here: postgres
+        // rejects "order by <expression not in the select list>" on a "select distinct" query, which would
+        // otherwise block PROPERTY_ASCENDING/PROPERTY_DESCENDING sequencing (see QueryBuilder.getSequencingPropertyOrderClause()).
+        String sqlEntityQuery = "select * from " + RepositoryTable.ENTITY.getTableName() + " where " + entityQueryBuilder.getAsOfTimeWhereClause();
 
         try
         {
@@ -491,7 +496,10 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationships";
 
-        String sqQuery = "select distinct * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
+        // See the equivalent comment in retrieveEntitiesByProperties() - no "distinct" needed (the where clause
+        // only narrows rows via EXISTS/IN subqueries, never a join), and it would otherwise block
+        // PROPERTY_ASCENDING/PROPERTY_DESCENDING sequencing.
+        String sqQuery = "select * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
         try
         {
             List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
@@ -531,7 +539,10 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationshipsByProperties";
 
-        String sqlQuery = "select distinct * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
+        // See the equivalent comment in retrieveEntitiesByProperties() - no "distinct" needed (the where clause
+        // only narrows rows via EXISTS/IN subqueries, never a join), and it would otherwise block
+        // PROPERTY_ASCENDING/PROPERTY_DESCENDING sequencing.
+        String sqlQuery = "select * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
 
         try
         {
@@ -776,7 +787,10 @@ public class DatabaseStore
     {
         final String methodName = "getCompleteEntitiesFromGUIDs";
 
-        Map<String, EntityMapper> entities = new HashMap<>();
+        // LinkedHashMap (not HashMap) so that the order in which entities were found in the database - which,
+        // for callers that care about it, is the order the requested ORDER BY clause put them in - survives
+        // being funnelled through this map rather than being scrambled by HashMap's unspecified iteration order.
+        Map<String, EntityMapper> entities = new LinkedHashMap<>();
 
         if ((entityGUIDs != null) && (!entityGUIDs.isEmpty()))
         {
@@ -853,7 +867,11 @@ public class DatabaseStore
              */
             if (! databaseResultRowsMap.isEmpty())
             {
-                Map<String, EntityMapper> entityMappers = new HashMap<>();
+                // LinkedHashMap so the ORDER BY-established order from the originating SQL query (preserved by
+                // databaseResultRowsMap being a LinkedHashMap too - see getAttributesDatabaseResults) survives
+                // through to retrieveEntitiesByProperties()'s `new ArrayList<>(entityMappers.values())`, rather
+                // than being scrambled by HashMap's unspecified iteration order.
+                Map<String, EntityMapper> entityMappers = new LinkedHashMap<>();
 
                 for (String instanceGUID : databaseResultRowsMap.keySet())
                 {
@@ -958,7 +976,13 @@ public class DatabaseStore
 
         try
         {
-            Map<String, DatabaseResultRows> databaseResultRowsMap = new HashMap<>();
+            // LinkedHashMap (not HashMap) so that the row order the originating SQL query's ORDER BY clause
+            // established (instanceRows is iterated below in that order) is preserved when this map's entries
+            // are later iterated by callers such as getCompleteEntitiesFromStore() and
+            // getCompleteRelationshipsFromStore() - HashMap's iteration order bears no relation to insertion
+            // order, so any requested sequencing (GUID, creation date, property value, ...) would otherwise be
+            // silently lost between the database returning correctly-ordered rows and the client receiving them.
+            Map<String, DatabaseResultRows> databaseResultRowsMap = new LinkedHashMap<>();
 
             QueryBuilder queryBuilder = new QueryBuilder(principleTable.getTableName(),
                                                          attributesTable.getTableName(),
@@ -1415,7 +1439,13 @@ public class DatabaseStore
         }
         else
         {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " <= '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
+            // java.util.Date's own toString() (what plain string concatenation of a Date would produce here)
+            // has no sub-second precision at all, unlike the millisecond-precision timestamps this same
+            // asOfTime is compared against (version_start_time/version_end_time) - wrapping in
+            // java.sql.Timestamp keeps the millisecond component in the generated SQL literal.
+            String asOfTimeLiteral = new java.sql.Timestamp(asOfTime.getTime()).toString();
+
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " <= '" + asOfTimeLiteral + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTimeLiteral + "'))";
         }
     }
 
@@ -1706,9 +1736,16 @@ public class DatabaseStore
 
         try
         {
+            // java.util.Date's own toString() (what plain string concatenation of versionEndTime would produce
+            // here) has no sub-second precision, unlike version_start_time/create_time/update_time which are
+            // all bound as proper JDBC parameters elsewhere and so keep their millisecond component - that
+            // mismatch left a gap immediately after every update/delete where asOfTime queries landing in it
+            // found no matching version at all. java.sql.Timestamp's toString() keeps the milliseconds.
+            String versionEndTimeLiteral = new java.sql.Timestamp(versionEndTime.getTime()).toString();
+
             jdbcResourceConnector.issueSQLCommand(jdbcConnection,
                                                   "update " + RepositoryTable.ENTITY.getTableName() +
-                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
+                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTimeLiteral +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityMapper.getEntityDetail().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + entityMapper.getEntityDetail().getVersion() + ";");
         }
         catch (PropertyServerException sqlException)
@@ -1738,9 +1775,13 @@ public class DatabaseStore
 
         try
         {
+            // See the equivalent comment in updatePreviousEntityVersionEndTime() - java.sql.Timestamp's
+            // toString() is used instead of versionEndTime's own toString() to keep millisecond precision.
+            String versionEndTimeLiteral = new java.sql.Timestamp(versionEndTime.getTime()).toString();
+
             jdbcResourceConnector.issueSQLCommand(jdbcConnection,
                                                   "update " + RepositoryTable.CLASSIFICATION.getTableName() +
-                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
+                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTimeLiteral +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + classificationMapper.getEntityGUID() +
                                                           "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationMapper.getClassification().getName() +
                                                           "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + classificationMapper.getClassification().getVersion() + ";");
@@ -1772,9 +1813,13 @@ public class DatabaseStore
 
         try
         {
+            // See the equivalent comment in updatePreviousEntityVersionEndTime() - java.sql.Timestamp's
+            // toString() is used instead of versionEndTime's own toString() to keep millisecond precision.
+            String versionEndTimeLiteral = new java.sql.Timestamp(versionEndTime.getTime()).toString();
+
             jdbcResourceConnector.issueSQLCommand(jdbcConnection,
                                                   "update " + RepositoryTable.RELATIONSHIP.getTableName() +
-                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
+                                                          " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTimeLiteral +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + relationshipMapper.getRelationship().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + relationshipMapper.getRelationship().getVersion() + ";");
         }
         catch (PropertyServerException sqlException)

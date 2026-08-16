@@ -253,7 +253,13 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        /*
+         * Unlike getEntityDetail(userId, guid) (the "give me the current value" overload, which is right to
+         * reject a deleted entity), this overload's whole purpose is retrieving the entity's state as of a
+         * particular moment - that state can legitimately be "it was deleted at that time", so it must not be
+         * rejected here.  The caller can check entity.getStatus() itself if it needs to know.
+         */
 
         return entity;
     }
@@ -419,7 +425,9 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -450,6 +458,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
+                                           boolean                   skipSubtypes,
                                            SearchProperties searchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -482,7 +491,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        return repositoryStore.findEntities(entityTypeGUID, entitySubtypeGUIDs, searchProperties, fromEntityElement, limitResultsByStatus, searchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findEntities(entityTypeGUID, entitySubtypeGUIDs, skipSubtypes, searchProperties, fromEntityElement, limitResultsByStatus, searchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -493,7 +502,9 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
@@ -519,6 +530,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     public long countEntities(String                    userId,
                               String                    entityTypeGUID,
                               List<String>              entitySubtypeGUIDs,
+                              boolean                   skipSubtypes,
                               SearchProperties          searchProperties,
                               int                       fromEntityElement,
                               List<InstanceStatus>      limitResultsByStatus,
@@ -551,7 +563,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        return repositoryStore.countEntities(entityTypeGUID, entitySubtypeGUIDs, searchProperties, limitResultsByStatus, searchClassifications, asOfTime);
+        return repositoryStore.countEntities(entityTypeGUID, entitySubtypeGUIDs, skipSubtypes, searchProperties, limitResultsByStatus, searchClassifications, asOfTime);
     }
 
 
@@ -813,7 +825,13 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         Relationship  relationship = repositoryStore.getRelationship(guid, asOfTime);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
-        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
+
+        /*
+         * Unlike getRelationship(userId, guid) (the "give me the current value" overload, which is right to
+         * reject a deleted relationship), this overload's whole purpose is retrieving the relationship's state
+         * as of a particular moment - that state can legitimately be "it was deleted at that time", so it must
+         * not be rejected here.  The caller can check relationship.getStatus() itself if it needs to know.
+         */
 
         return relationship;
     }
@@ -902,7 +920,10 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -936,6 +957,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
+                                                 boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
                                                  List<String>              end2EntityGUIDs,
                                                  EndMatchCriteria          endMatchCriteria,
@@ -974,7 +996,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        return repositoryStore.findRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria, matchProperties, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, skipSubtypes, end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria, matchProperties, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -987,7 +1009,10 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -1017,6 +1042,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     public  long countRelationships(String                    userId,
                                     String                    relationshipTypeGUID,
                                     List<String>              relationshipSubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
                                     List<String>              end2EntityGUIDs,
                                     EndMatchCriteria          endMatchCriteria,
@@ -1055,7 +1081,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        return repositoryStore.countRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria, matchProperties, limitResultsByStatus, asOfTime);
+        return repositoryStore.countRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, skipSubtypes, end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria, matchProperties, limitResultsByStatus, asOfTime);
     }
 
 

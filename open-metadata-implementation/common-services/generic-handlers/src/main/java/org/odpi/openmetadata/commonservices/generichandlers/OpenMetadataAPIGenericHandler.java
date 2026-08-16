@@ -368,7 +368,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             final String connectToGUIDParameterName = "retrievedEntity.getGUID";
 
-            Map<String, EntityDetail>      visibleEntities = new HashMap<>();
+            // LinkedHashMap (not HashMap) so that the "for (EntityDetail connectToEntity : visibleEntities.values())"
+            // loop below - which builds the entities list this method returns - preserves the order retrievedEntities
+            // arrived in, rather than a HashMap's unspecified iteration order silently discarding whatever
+            // sequencing (GUID, creation date, property value, ...) the originating query established.
+            Map<String, EntityDetail>      visibleEntities = new LinkedHashMap<>();
 
             List<String>                   extractedAnchorGUIDs = new ArrayList<>();
             Map<String, AnchorIdentifiers> extractedAnchors = new HashMap<>();
@@ -3003,6 +3007,109 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                 effectiveTime,
                                                 methodName);
         }
+    }
+
+
+    /**
+     * Permanently remove an entity from the repository.  This is only possible on an entity that has already
+     * been soft-deleted - that is the classic OMRS lifecycle (soft-delete, then purge) enforced by
+     * repositoryHandler.purgeEntity()/the underlying repository connector.
+     * <br><br>
+     * The entity is retrieved "as of now" (rather than through the usual active-only lookup, which would reject
+     * an already-deleted entity outright) purely so its visibility/security can be checked before the purge is
+     * allowed to proceed.  entityTypeGUID/entityTypeName passed to purgeEntity() itself are expected to be a
+     * generic placeholder (eg OpenMetadataRoot) rather than the entity's own specific type, exactly as
+     * deleteBeanInRepository() already does, since purgeEntity()'s own type-compatibility check accepts any
+     * ancestor of the entity's real type.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of object to purge
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeGUID unique identifier of the entity's type (or a generic placeholder such as OpenMetadataRoot)
+     * @param entityTypeName unique name of the entity's type (or a generic placeholder such as OpenMetadataRoot)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem removing the properties from the repositories, or the entity has
+     *                                  not already been deleted.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void purgeBeanInRepository(String  userId,
+                                      String  entityGUID,
+                                      String  entityGUIDParameterName,
+                                      String  entityTypeGUID,
+                                      String  entityTypeName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 new Date(),
+                                                                 effectiveTime,
+                                                                 methodName);
+
+        securityVerifier.validateUserForElementDelete(userId, entity, repositoryHelper, serviceName, methodName);
+
+        repositoryHandler.purgeEntity(userId, entityGUID, entityTypeGUID, entityTypeName, methodName);
+    }
+
+
+    /**
+     * Permanently remove a relationship from the repository.  This is only possible on a relationship that has
+     * already been soft-deleted - that is the classic OMRS lifecycle (soft-delete, then purge) enforced by
+     * repositoryHandler.purgeRelationship()/the underlying repository connector.
+     * <br><br>
+     * purgeRelationship() needs the relationship's actual type (it validates the supplied type against the
+     * stored relationship's own type, and there is no generic "any relationship" type to substitute, unlike
+     * entity purges which can use OpenMetadataRoot), so the relationship is retrieved "as of now" first.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship to purge
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid, or the relationship is not known.
+     * @throws PropertyServerException a problem removing the relationship from the repositories, or the
+     *                                  relationship has not already been deleted.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void purgeRelationshipInRepository(String userId,
+                                              String relationshipGUID,
+                                              String relationshipGUIDParameterName,
+                                              Date   effectiveTime,
+                                              String methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            null,
+                                                                            new Date(),
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        repositoryHandler.purgeRelationship(userId,
+                                            relationship.getType().getTypeDefGUID(),
+                                            relationship.getType().getTypeDefName(),
+                                            relationshipGUID,
+                                            methodName);
     }
 
 
@@ -5658,7 +5765,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @param userId caller's userId
      * @param relationshipTypeName type of interest (null means any element type)
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -5683,7 +5793,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      */
     public List<Relationship> findAttachmentLinks(String                userId,
                                                   String                relationshipTypeName,
-                                                  List<String>          relationshipSubtypeGUIDs,
+                                                  List<String>          relationshipSubtypeNames,
+                                                  boolean               skipSubtypes,
                                                   List<String>          end1EntityGUIDs,
                                                   List<String>          end2EntityGUIDs,
                                                   EndMatchCriteria      endMatchCriteria,
@@ -5716,9 +5827,34 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                             repositoryHelper);
         }
 
+        List<String> relationshipSubtypeGUIDs = null;
+
+        if (relationshipSubtypeNames != null)
+        {
+            relationshipSubtypeGUIDs = new ArrayList<>();
+
+            for (String subTypeName : relationshipSubtypeNames)
+            {
+                if (subTypeName != null)
+                {
+                    String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
+                                                                                   relationshipTypeName,
+                                                                                   serviceName,
+                                                                                   methodName,
+                                                                                   repositoryHelper);
+
+                    if (subTypeGUID != null)
+                    {
+                        relationshipSubtypeGUIDs.add(subTypeGUID);
+                    }
+                }
+            }
+        }
+
         List<Relationship> retrievedRelationships = repositoryHandler.findRelationships(userId,
                                                                                         relationshipTypeGUID,
                                                                                         relationshipSubtypeGUIDs,
+                                                                                        skipSubtypes,
                                                                                         end1EntityGUIDs,
                                                                                         end2EntityGUIDs,
                                                                                         endMatchCriteria,
@@ -5774,7 +5910,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @param userId caller's userId
      * @param relationshipTypeName type of interest (null means any element type)
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -5794,7 +5933,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      */
     public long countAttachmentLinks(String                userId,
                                      String                relationshipTypeName,
-                                     List<String>          relationshipSubtypeGUIDs,
+                                     List<String>          relationshipSubtypeNames,
+                                     boolean               skipSubtypes,
                                      List<String>          end1EntityGUIDs,
                                      List<String>          end2EntityGUIDs,
                                      EndMatchCriteria      endMatchCriteria,
@@ -5821,9 +5961,34 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                             repositoryHelper);
         }
 
+        List<String> relationshipSubtypeGUIDs = null;
+
+        if (relationshipSubtypeNames != null)
+        {
+            relationshipSubtypeGUIDs = new ArrayList<>();
+
+            for (String subTypeName : relationshipSubtypeNames)
+            {
+                if (subTypeName != null)
+                {
+                    String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
+                                                                                   relationshipTypeName,
+                                                                                   serviceName,
+                                                                                   methodName,
+                                                                                   repositoryHelper);
+
+                    if (subTypeGUID != null)
+                    {
+                        relationshipSubtypeGUIDs.add(subTypeGUID);
+                    }
+                }
+            }
+        }
+
         return repositoryHandler.countRelationships(userId,
                                                      relationshipTypeGUID,
                                                      relationshipSubtypeGUIDs,
+                                                     skipSubtypes,
                                                      end1EntityGUIDs,
                                                      end2EntityGUIDs,
                                                      endMatchCriteria,
@@ -7566,9 +7731,77 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
+        return this.findBeans(userId,
+                              metadataElementTypeName,
+                              metadataElementSubtypeName,
+                              false,
+                              searchProperties,
+                              limitResultsByStatus,
+                              searchClassifications,
+                              asOfTime,
+                              sequencingProperty,
+                              sequencingOrder,
+                              forLineage,
+                              forDuplicateProcessing,
+                              startingFrom,
+                              pageSize,
+                              effectiveTime,
+                              methodName);
+    }
+
+
+    /**
+     * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, metadataElementSubtypeName is treated as the list of subtypes to exclude from the
+     *                      search results rather than the only subtypes to include.  Ignored if metadataElementSubtypeName is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public List<B> findBeans(String                userId,
+                             String                metadataElementTypeName,
+                             List<String>          metadataElementSubtypeName,
+                             boolean               skipSubtypes,
+                             SearchProperties      searchProperties,
+                             List<InstanceStatus>  limitResultsByStatus,
+                             SearchClassifications searchClassifications,
+                             Date                  asOfTime,
+                             String                sequencingProperty,
+                             SequencingOrder       sequencingOrder,
+                             boolean               forLineage,
+                             boolean               forDuplicateProcessing,
+                             int                   startingFrom,
+                             int                   pageSize,
+                             Date                  effectiveTime,
+                             String                methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
         List<EntityDetail> entities = this.findEntities(userId,
                                                         metadataElementTypeName,
                                                         metadataElementSubtypeName,
+                                                        skipSubtypes,
                                                         searchProperties,
                                                         limitResultsByStatus,
                                                         searchClassifications,
@@ -7650,6 +7883,73 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        return this.findEntities(userId,
+                                 metadataElementTypeName,
+                                 metadataElementSubtypeNames,
+                                 false,
+                                 searchProperties,
+                                 limitResultsByStatus,
+                                 searchClassifications,
+                                 asOfTime,
+                                 sequencingProperty,
+                                 sequencingOrder,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 startingFrom,
+                                 pageSize,
+                                 effectiveTime,
+                                 methodName);
+    }
+
+
+    /**
+     * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, metadataElementSubtypeNames is treated as the list of subtypes to exclude from the
+     *                      search results rather than the only subtypes to include.  Ignored if metadataElementSubtypeNames is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                metadataElementTypeName,
+                                           List<String>          metadataElementSubtypeNames,
+                                           boolean               skipSubtypes,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           Date                  effectiveTime,
+                                           String                methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
@@ -7710,6 +8010,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
                                                                               typeGUID,
                                                                               subTypeGUIDs,
+                                                                              skipSubtypes,
                                                                               searchProperties,
                                                                               limitResultsByStatus,
                                                                               searchClassifications,
@@ -7760,6 +8061,62 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
     public long countEntities(String                userId,
                               String                metadataElementTypeName,
                               List<String>          metadataElementSubtypeNames,
+                              SearchProperties      searchProperties,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              boolean               forLineage,
+                              boolean               forDuplicateProcessing,
+                              Date                  effectiveTime,
+                              String                methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return this.countEntities(userId,
+                                  metadataElementTypeName,
+                                  metadataElementSubtypeNames,
+                                  false,
+                                  searchProperties,
+                                  limitResultsByStatus,
+                                  searchClassifications,
+                                  asOfTime,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Return a count of the entities of the requested type that match the supplied criteria.  This has the same
+     * search semantics as findEntities(), but returns the number of matching entities rather than the entities
+     * themselves.
+     *
+     * @param userId the calling user
+     * @param metadataElementTypeName type of interest (null means any type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, metadataElementSubtypeNames is treated as the list of subtypes to exclude from the
+     *                      search results rather than the only subtypes to include.  Ignored if metadataElementSubtypeNames is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage not used - accepted for call-site parity with findEntities().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findEntities().
+     * @param effectiveTime not used - accepted for call-site parity with findEntities().
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countEntities(String                userId,
+                              String                metadataElementTypeName,
+                              List<String>          metadataElementSubtypeNames,
+                              boolean               skipSubtypes,
                               SearchProperties      searchProperties,
                               List<InstanceStatus>  limitResultsByStatus,
                               SearchClassifications searchClassifications,
@@ -7829,6 +8186,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         return repositoryHandler.countEntities(userId,
                                                typeGUID,
                                                subTypeGUIDs,
+                                               skipSubtypes,
                                                searchProperties,
                                                limitResultsByStatus,
                                                searchClassifications,

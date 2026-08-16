@@ -23,7 +23,6 @@ public class GetOptions extends BasicOptions
 {
     private Date         asOfTime                      = null;
     private String       metadataElementTypeName       = null;
-    private List<String> metadataElementSubtypeNames   = null;
     private List<String> skipRelationships             = null;
     private List<String> includeOnlyRelationships      = null;
     private int          relationshipsPageSize         = 0;
@@ -52,7 +51,6 @@ public class GetOptions extends BasicOptions
         {
             asOfTime                      = template.getAsOfTime();
             metadataElementTypeName       = template.getMetadataElementTypeName();
-            metadataElementSubtypeNames   = template.getMetadataElementSubtypeNames();
             skipRelationships             = template.getSkipRelationships();
             includeOnlyRelationships      = template.getIncludeOnlyRelationships();
             relationshipsPageSize         = template.getRelationshipsPageSize();
@@ -114,28 +112,6 @@ public class GetOptions extends BasicOptions
     public void setMetadataElementTypeName(String metadataElementTypeName)
     {
         this.metadataElementTypeName = metadataElementTypeName;
-    }
-
-
-    /**
-     * Return the list of valid subtypes that the returned metadata elements must belong to.
-     *
-     * @return open metadata type names
-     */
-    public List<String> getMetadataElementSubtypeNames()
-    {
-        return metadataElementSubtypeNames;
-    }
-
-
-    /**
-     * Set up the list of valid subtypes that the returned metadata elements must belong to.
-     *
-     * @param metadataElementSubtypeNames open metadata type names
-     */
-    public void setMetadataElementSubtypeNames(List<String> metadataElementSubtypeNames)
-    {
-        this.metadataElementSubtypeNames = metadataElementSubtypeNames;
     }
 
 
@@ -269,7 +245,6 @@ public class GetOptions extends BasicOptions
         return "GetOptions{" +
                 "asOfTime=" + asOfTime +
                 ", metadataElementTypeName='" + metadataElementTypeName + '\'' +
-                ", metadataElementSubtypeNames=" + metadataElementSubtypeNames +
                 ", skipRelationships=" + skipRelationships +
                 ", includeOnlyRelationships=" + includeOnlyRelationships +
                 ", relationshipsPageSize=" + relationshipsPageSize +
@@ -297,7 +272,6 @@ public class GetOptions extends BasicOptions
                 maxMermaidNodeCount == that.maxMermaidNodeCount &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
-                Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
                 Objects.equals(skipRelationships, that.skipRelationships) &&
                 Objects.equals(includeOnlyRelationships, that.includeOnlyRelationships) &&
                 Objects.equals(relationshipsPageSize, that.relationshipsPageSize);
@@ -311,7 +285,7 @@ public class GetOptions extends BasicOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames,
+        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName,
                             skipRelationships, includeOnlyRelationships, relationshipsPageSize,
                             graphQueryDepth, maxMermaidNodeCount);
     }

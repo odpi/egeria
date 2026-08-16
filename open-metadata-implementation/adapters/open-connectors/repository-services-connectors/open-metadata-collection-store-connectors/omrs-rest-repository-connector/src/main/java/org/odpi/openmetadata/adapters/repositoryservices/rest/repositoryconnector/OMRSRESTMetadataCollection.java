@@ -1131,7 +1131,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     *                     Since the remote repository's REST protocol only understands an inclusion list, this case
+     *                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+     *                     excluded ones locally.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -1163,6 +1168,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
+                                           boolean                   skipSubtypes,
                                            SearchProperties searchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -1181,17 +1187,55 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String       methodName = "findEntities";
 
         validateClient(methodName);
-        return omrsClient.findEntities(userId,
-                                       entityTypeGUID,
-                                       entitySubtypeGUIDs,
-                                       searchProperties,
-                                       fromEntityElement,
-                                       limitResultsByStatus,
-                                       searchClassifications,
-                                       asOfTime,
-                                       sequencingProperty,
-                                       sequencingOrder,
-                                       pageSize);
+
+        if ((! skipSubtypes) || (entitySubtypeGUIDs == null) || (entitySubtypeGUIDs.isEmpty()))
+        {
+            return omrsClient.findEntities(userId,
+                                           entityTypeGUID,
+                                           entitySubtypeGUIDs,
+                                           searchProperties,
+                                           fromEntityElement,
+                                           limitResultsByStatus,
+                                           searchClassifications,
+                                           asOfTime,
+                                           sequencingProperty,
+                                           sequencingOrder,
+                                           pageSize);
+        }
+
+        /*
+         * The remote repository's REST protocol only supports an inclusion list of subtypes, so an exclusion
+         * request is satisfied by retrieving all subtypes of entityTypeGUID and filtering out the excluded ones
+         * locally.
+         */
+        List<EntityDetail> retrievedEntities = omrsClient.findEntities(userId,
+                                                                       entityTypeGUID,
+                                                                       null,
+                                                                       searchProperties,
+                                                                       fromEntityElement,
+                                                                       limitResultsByStatus,
+                                                                       searchClassifications,
+                                                                       asOfTime,
+                                                                       sequencingProperty,
+                                                                       sequencingOrder,
+                                                                       pageSize);
+
+        if (retrievedEntities == null)
+        {
+            return null;
+        }
+
+        List<EntityDetail> filteredEntities = new ArrayList<>();
+
+        for (EntityDetail entity : retrievedEntities)
+        {
+            if ((entity != null) && (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, true, entity)))
+            {
+                filteredEntities.add(entity);
+            }
+        }
+
+        return filteredEntities;
     }
 
 
@@ -1229,6 +1273,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public long countEntities(String                    userId,
                               String                    entityTypeGUID,
                               List<String>              entitySubtypeGUIDs,
+                              boolean                   skipSubtypes,
                               SearchProperties          searchProperties,
                               int                       fromEntityElement,
                               List<InstanceStatus>      limitResultsByStatus,
@@ -1244,6 +1289,28 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                          FunctionNotSupportedException,
                                                                          UserNotAuthorizedException
     {
+        if ((skipSubtypes) && (entitySubtypeGUIDs != null) && (! entitySubtypeGUIDs.isEmpty()))
+        {
+            /*
+             * The remote repository's REST protocol does not support an efficient exclusion count, so fall back
+             * to counting the locally filtered results of findEntities().
+             */
+            List<EntityDetail> entities = this.findEntities(userId,
+                                                             entityTypeGUID,
+                                                             entitySubtypeGUIDs,
+                                                             true,
+                                                             searchProperties,
+                                                             fromEntityElement,
+                                                             limitResultsByStatus,
+                                                             searchClassifications,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
+
+            return (entities == null) ? 0L : entities.size();
+        }
+
         final String       methodName = "countEntities";
 
         validateClient(methodName);
@@ -1618,7 +1685,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from) the search results.
+     *                                 Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
+     *                     Since the remote repository's REST protocol only understands an inclusion list, this case
+     *                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+     *                     excluded ones locally.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -1652,6 +1725,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
+                                                 boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
                                                  List<String>              end2EntityGUIDs,
                                                  EndMatchCriteria          endMatchCriteria,
@@ -1672,19 +1746,59 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "findRelationships";
 
         validateClient(methodName);
-        return omrsClient.findRelationships(userId,
-                                            relationshipTypeGUID,
-                                            relationshipSubtypeGUIDs,
-                                            end1EntityGUIDs,
-                                            end2EntityGUIDs,
-                                            endMatchCriteria,
-                                            matchProperties,
-                                            fromRelationshipElement,
-                                            limitResultsByStatus,
-                                            asOfTime,
-                                            sequencingProperty,
-                                            sequencingOrder,
-                                            pageSize);
+
+        if ((! skipSubtypes) || (relationshipSubtypeGUIDs == null) || (relationshipSubtypeGUIDs.isEmpty()))
+        {
+            return omrsClient.findRelationships(userId,
+                                                relationshipTypeGUID,
+                                                relationshipSubtypeGUIDs,
+                                                end1EntityGUIDs,
+                                                end2EntityGUIDs,
+                                                endMatchCriteria,
+                                                matchProperties,
+                                                fromRelationshipElement,
+                                                limitResultsByStatus,
+                                                asOfTime,
+                                                sequencingProperty,
+                                                sequencingOrder,
+                                                pageSize);
+        }
+
+        /*
+         * The remote repository's REST protocol only supports an inclusion list of subtypes, so an exclusion
+         * request is satisfied by retrieving all subtypes of relationshipTypeGUID and filtering out the excluded
+         * ones locally.
+         */
+        List<Relationship> retrievedRelationships = omrsClient.findRelationships(userId,
+                                                                                  relationshipTypeGUID,
+                                                                                  null,
+                                                                                  end1EntityGUIDs,
+                                                                                  end2EntityGUIDs,
+                                                                                  endMatchCriteria,
+                                                                                  matchProperties,
+                                                                                  fromRelationshipElement,
+                                                                                  limitResultsByStatus,
+                                                                                  asOfTime,
+                                                                                  sequencingProperty,
+                                                                                  sequencingOrder,
+                                                                                  pageSize);
+
+        if (retrievedRelationships == null)
+        {
+            return null;
+        }
+
+        List<Relationship> filteredRelationships = new ArrayList<>();
+
+        for (Relationship relationship : retrievedRelationships)
+        {
+            if ((relationship != null) && (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, true, relationship)))
+            {
+                filteredRelationships.add(relationship);
+            }
+        }
+
+        return filteredRelationships;
     }
 
 
@@ -1727,6 +1841,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public  long countRelationships(String                    userId,
                                     String                    relationshipTypeGUID,
                                     List<String>              relationshipSubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
                                     List<String>              end2EntityGUIDs,
                                     EndMatchCriteria          endMatchCriteria,
@@ -1744,6 +1859,30 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                FunctionNotSupportedException,
                                                                                UserNotAuthorizedException
     {
+        if ((skipSubtypes) && (relationshipSubtypeGUIDs != null) && (! relationshipSubtypeGUIDs.isEmpty()))
+        {
+            /*
+             * The remote repository's REST protocol does not support an efficient exclusion count, so fall back
+             * to counting the locally filtered results of findRelationships().
+             */
+            List<Relationship> relationships = this.findRelationships(userId,
+                                                                       relationshipTypeGUID,
+                                                                       relationshipSubtypeGUIDs,
+                                                                       true,
+                                                                       end1EntityGUIDs,
+                                                                       end2EntityGUIDs,
+                                                                       endMatchCriteria,
+                                                                       matchProperties,
+                                                                       fromRelationshipElement,
+                                                                       limitResultsByStatus,
+                                                                       asOfTime,
+                                                                       sequencingProperty,
+                                                                       sequencingOrder,
+                                                                       pageSize);
+
+            return (relationships == null) ? 0L : relationships.size();
+        }
+
         final String methodName  = "countRelationships";
 
         validateClient(methodName);

@@ -703,9 +703,77 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeName,
+                                         false,
+                                         searchProperties,
+                                         limitResultsByStatus,
+                                         searchClassifications,
+                                         asOfTime,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startingFrom,
+                                         pageSize,
+                                         methodName);
+    }
+
+
+    /**
+     * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, metadataElementSubtypeName is treated as the list of subtypes to exclude from the
+     *                      search results rather than the only subtypes to include.  Ignored if metadataElementSubtypeName is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public List<B> findMetadataElements(String                userId,
+                                        String                metadataElementTypeName,
+                                        List<String>          metadataElementSubtypeName,
+                                        boolean               skipSubtypes,
+                                        SearchProperties      searchProperties,
+                                        List<ElementStatus>   limitResultsByStatus,
+                                        SearchClassifications searchClassifications,
+                                        Date                  asOfTime,
+                                        String                sequencingProperty,
+                                        SequencingOrder       sequencingOrder,
+                                        boolean               forLineage,
+                                        boolean               forDuplicateProcessing,
+                                        Date                  effectiveTime,
+                                        int                   startingFrom,
+                                        int                   pageSize,
+                                        String                methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
         return super.findBeans(userId,
                                metadataElementTypeName,
                                metadataElementSubtypeName,
+                               skipSubtypes,
                                this.getSearchProperties(searchProperties),
                                this.getInstanceStatuses(limitResultsByStatus),
                                this.getSearchClassifications(searchClassifications),
@@ -759,9 +827,66 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        return this.countMetadataElements(userId,
+                                          metadataElementTypeName,
+                                          metadataElementSubtypeName,
+                                          false,
+                                          searchProperties,
+                                          limitResultsByStatus,
+                                          searchClassifications,
+                                          asOfTime,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+    }
+
+
+    /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements(), but returns the number of matching elements rather than the elements
+     * themselves.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, metadataElementSubtypeName is treated as the list of subtypes to exclude from the
+     *                      search results rather than the only subtypes to include.  Ignored if metadataElementSubtypeName is null.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage not used - accepted for call-site parity with findMetadataElements().
+     * @param forDuplicateProcessing not used - accepted for call-site parity with findMetadataElements().
+     * @param effectiveTime not used - accepted for call-site parity with findMetadataElements().
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countMetadataElements(String                userId,
+                                      String                metadataElementTypeName,
+                                      List<String>          metadataElementSubtypeName,
+                                      boolean               skipSubtypes,
+                                      SearchProperties      searchProperties,
+                                      List<ElementStatus>   limitResultsByStatus,
+                                      SearchClassifications searchClassifications,
+                                      Date                  asOfTime,
+                                      boolean               forLineage,
+                                      boolean               forDuplicateProcessing,
+                                      Date                  effectiveTime,
+                                      String                methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
         return super.countEntities(userId,
                                    metadataElementTypeName,
                                    metadataElementSubtypeName,
+                                   skipSubtypes,
                                    this.getSearchProperties(searchProperties),
                                    this.getInstanceStatuses(limitResultsByStatus),
                                    this.getSearchClassifications(searchClassifications),
@@ -1369,7 +1494,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param userId caller's userId
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -1394,7 +1522,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public  List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
                                                                                     String              relationshipTypeName,
-                                                                                    List<String>        relationshipSubtypeGUIDs,
+                                                                                    List<String>        relationshipSubtypeNames,
+                                                                                    boolean             skipSubtypes,
                                                                                     List<String>        end1EntityGUIDs,
                                                                                     List<String>        end2EntityGUIDs,
                                                                                     EndMatchCriteria    endMatchCriteria,
@@ -1416,7 +1545,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         List<Relationship> relationships = this.findAttachmentLinks(userId,
                                                                     relationshipTypeName,
-                                                                    relationshipSubtypeGUIDs,
+                                                                    relationshipSubtypeNames,
+                                                                    skipSubtypes,
                                                                     end1EntityGUIDs,
                                                                     end2EntityGUIDs,
                                                                     this.getEndMatchCriteria(endMatchCriteria),
@@ -1464,7 +1594,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param userId caller's userId
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param relationshipSubtypeGUIDs optional list of the GUIDs for subtypes of the requested type to include in the search results.
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
@@ -1484,7 +1617,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public  long countRelationshipsBetweenMetadataElements(String              userId,
                                                            String              relationshipTypeName,
-                                                           List<String>        relationshipSubtypeGUIDs,
+                                                           List<String>        relationshipSubtypeNames,
+                                                           boolean             skipSubtypes,
                                                            List<String>        end1EntityGUIDs,
                                                            List<String>        end2EntityGUIDs,
                                                            EndMatchCriteria    endMatchCriteria,
@@ -1502,7 +1636,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         return this.countAttachmentLinks(userId,
                                          relationshipTypeName,
-                                         relationshipSubtypeGUIDs,
+                                         relationshipSubtypeNames,
+                                         skipSubtypes,
                                          end1EntityGUIDs,
                                          end2EntityGUIDs,
                                          this.getEndMatchCriteria(endMatchCriteria),
@@ -2467,6 +2602,95 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Permanently remove a specific metadata element.  This is only possible on an element that has already been
+     * soft-deleted - see OpenMetadataAPIGenericHandler.purgeBeanInRepository() for details.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param metadataElementGUID unique identifier of the metadata element to purge
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to purge this element
+     * @throws PropertyServerException a problem with the metadata store, or the element has not already been deleted
+     */
+    public  void purgeMetadataElementInStore(String       userId,
+                                             String       externalSourceGUID,
+                                             String       externalSourceName,
+                                             String       metadataElementGUID,
+                                             boolean      forLineage,
+                                             boolean      forDuplicateProcessing,
+                                             Date         effectiveTime,
+                                             String       methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        super.purgeBeanInRepository(userId,
+                                    metadataElementGUID,
+                                    guidParameterName,
+                                    OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * Determine whether a metadata element has any relationships attached to it that are a subtype of
+     * LineageRelationship.  Used to decide, for the LOOK_FOR_LINEAGE delete method, whether a delete request
+     * should be routed to archiveMetadataElementInStore() (if lineage relationships are present, so the element
+     * needs to remain available for lineage queries) or deleteMetadataElementInStore() (otherwise).
+     *
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to check
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return true if at least one relationship that is a LineageRelationship (or subtype) is attached to the element
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to retrieve information about this element
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    public boolean hasLineageRelationships(String  userId,
+                                           String  metadataElementGUID,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        List<Relationship> lineageRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                            metadataElementGUID,
+                                                                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                            OpenMetadataType.LINEAGE_RELATIONSHIP.typeGUID,
+                                                                                            OpenMetadataType.LINEAGE_RELATIONSHIP.typeName,
+                                                                                            methodName);
+
+        return (lineageRelationships != null) && (! lineageRelationships.isEmpty());
+    }
+
+
+    /**
      * Archive a specific metadata element.
      *
      * @param userId caller's userId
@@ -3158,5 +3382,48 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                              null,
                                              relationshipGUID,
                                              methodName);
+    }
+
+
+    /**
+     * Permanently remove a relationship between two metadata elements.  This is only possible on a relationship
+     * that has already been soft-deleted - see OpenMetadataAPIGenericHandler.purgeRelationshipInRepository() for
+     * details.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param relationshipGUID unique identifier of the relationship to purge
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to purge this relationship
+     * @throws PropertyServerException a problem with the metadata store, or the relationship has not already been deleted
+     */
+    @SuppressWarnings(value = "unused")
+    public void purgeRelationshipInStore(String       userId,
+                                         String       externalSourceGUID,
+                                         String       externalSourceName,
+                                         String       relationshipGUID,
+                                         boolean      forLineage,
+                                         boolean      forDuplicateProcessing,
+                                         Date         effectiveTime,
+                                         String       methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String guidParameterName = "relationshipGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
+
+        super.purgeRelationshipInRepository(userId,
+                                            relationshipGUID,
+                                            guidParameterName,
+                                            effectiveTime,
+                                            methodName);
     }
 }
