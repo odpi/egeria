@@ -154,8 +154,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">End the database transaction started by this unit of work so that the shared JDBC connection is left idle
- rather than idle-in-transaction.</div>
+<div class="block">End the unit of work and return the JDBC connection to the pool.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#commit()" class="member-name-link">commit</a>()</code></div>
@@ -938,13 +937,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>close</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">close</span>()
            throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">End the database transaction started by this unit of work so that the shared JDBC connection is left idle
- rather than idle-in-transaction.  If <a href="#commit()"><code>commit()</code></a> has not been called then any changes made by this
- unit of work are rolled back - this is what ends the transaction when the unit of work is read-only, and
- what discards a partial update when the unit of work failed part way through.
+<div class="block">End the unit of work and return the JDBC connection to the pool.  If <a href="#commit()"><code>commit()</code></a> has not been called
+ then any changes made by this unit of work are rolled back - this is what ends the transaction when the unit
+ of work is read-only, and what discards a partial update when the unit of work failed part way through.
  <br><br>
- The underlying JDBC connection is not closed because it is owned by the resource connector and is reused by
- subsequent requests running on this thread.</div>
+ The connection is always released, even if the rollback fails, so that a broken connection cannot strand a
+ slot in the pool.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html#close()" title="class or interface in java.lang" class="external-link">close</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a></code></dd>

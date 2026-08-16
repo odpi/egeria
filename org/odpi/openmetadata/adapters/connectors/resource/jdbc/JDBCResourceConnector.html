@@ -87,11 +87,28 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">JDBCResourceConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
 implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></span></div>
-<div class="block">JDBCResourceConnector provides a resource connector to work with JDBC Databases.  The JDBC interface works using
- JDBC Connections.  These connections are single threaded.  Therefore, the JDBCResourceConnector is responsible for
- dispensing connectors via a data source object. This object implements the  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link"><code>DataSource</code></a> interface in order
- to get a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link"><code>Connection</code></a> to target database. This is done via a static inner class,
- since <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#getConnection()" title="class or interface in javax.sql" class="external-link"><code>DataSource.getConnection()</code></a> clashes with <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()"><code>ConnectorBase.getConnection()</code></a>.</div>
+<div class="block">JDBCResourceConnector provides a resource connector to work with JDBC Databases.  A JDBC <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link"><code>Connection</code></a> carries
+ a single database transaction and must not be used by two threads at once, so the connector dispenses connections
+ from a pool via a data source object.  The data source is a separate object rather than this connector itself
+ because <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#getConnection()" title="class or interface in javax.sql" class="external-link"><code>DataSource.getConnection()</code></a> clashes with <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()"><code>ConnectorBase.getConnection()</code></a> - two methods with
+ the same signature cannot differ only by return type.
+ <br><br>
+ The pool is a <code>HikariDataSource</code>.  Callers therefore obtain a connection for the duration of one unit of work
+ and <b>must close it</b> when that unit of work ends - ideally with try-with-resources:
+ <pre>
+     try (Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection())
+     {
+         ... statements ...
+
+         jdbcConnection.commit();   // only if the unit of work made changes
+     }
+ </pre>
+ Closing returns the connection to the pool; it does not close the network connection.  Because the connector runs
+ with auto-commit disabled, the pool rolls back any transaction still open when a connection is returned, so a
+ caller that forgets to commit loses its changes rather than leaving the connection idle-in-transaction.
+ <br><br>
+ A caller that never closes will exhaust the pool.  Set the jdbcConnectionLeakThreshold configuration property to
+ have the pool log a stack trace naming any caller that holds a connection for too long.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

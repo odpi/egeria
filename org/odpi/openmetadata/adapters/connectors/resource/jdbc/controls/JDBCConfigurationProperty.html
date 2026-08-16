@@ -121,13 +121,39 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Connection string for the database where the schema is located.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#JDBC_CONNECTION_KEEPALIVE" class="member-name-link">JDBC_CONNECTION_KEEPALIVE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">How often, in milliseconds, the pool probes an idle connection to check it is still usable, retiring it if it
+ is not.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#JDBC_CONNECTION_LEAK_THRESHOLD" class="member-name-link">JDBC_CONNECTION_LEAK_THRESHOLD</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How long, in milliseconds, a connection may be held by a caller before the connector logs a stack trace of
+ whoever took it out.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#JDBC_CONNECTION_TIMEOUT" class="member-name-link">JDBC_CONNECTION_TIMEOUT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#JDBC_DRIVER_MANAGER_CLASS_NAME" class="member-name-link">JDBC_DRIVER_MANAGER_CLASS_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#JDBC_CONNECTION_WAIT_TIMEOUT" class="member-name-link">JDBC_CONNECTION_WAIT_TIMEOUT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The number of milliseconds a caller waits for a free connection from the pool before failing.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#JDBC_DRIVER_MANAGER_CLASS_NAME" class="member-name-link">JDBC_DRIVER_MANAGER_CLASS_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">An optional configuration property that causes the named class to be loaded and registered as a driver.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#JDBC_MAXIMUM_CONNECTION_LIFETIME" class="member-name-link">JDBC_MAXIMUM_CONNECTION_LIFETIME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The maximum number of milliseconds a connection may live before the pool retires and replaces it.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#JDBC_MAXIMUM_POOL_SIZE" class="member-name-link">JDBC_MAXIMUM_POOL_SIZE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The maximum number of database connections this connector will hold open at once.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#JDBC_MINIMUM_IDLE" class="member-name-link">JDBC_MINIMUM_IDLE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The minimum number of idle connections the pool keeps ready.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SECRETS_COLLECTION_NAME" class="member-name-link">SECRETS_COLLECTION_NAME</a></code></div>
 <div class="col-last even-row-color">
@@ -305,6 +331,59 @@ the order they are declared.</div>
 <div class="block">Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's
  driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without
  it they are silently omitted.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_MAXIMUM_POOL_SIZE">
+<h3>JDBC_MAXIMUM_POOL_SIZE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_MAXIMUM_POOL_SIZE</span></div>
+<div class="block">The maximum number of database connections this connector will hold open at once.  Note that a separate pool is
+ created for each connector instance - and one connector instance is created per catalog target - so this value
+ is multiplied by the number of catalog targets when sizing the database server.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_MINIMUM_IDLE">
+<h3>JDBC_MINIMUM_IDLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_MINIMUM_IDLE</span></div>
+<div class="block">The minimum number of idle connections the pool keeps ready.  Setting this equal to jdbcMaximumPoolSize gives a
+ fixed-size pool, which is the recommended configuration for steady workloads.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_CONNECTION_WAIT_TIMEOUT">
+<h3>JDBC_CONNECTION_WAIT_TIMEOUT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_CONNECTION_WAIT_TIMEOUT</span></div>
+<div class="block">The number of milliseconds a caller waits for a free connection from the pool before failing.  This is distinct
+ from jdbcConnectionTimeout, which limits how long the driver waits when opening a new network connection.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_MAXIMUM_CONNECTION_LIFETIME">
+<h3>JDBC_MAXIMUM_CONNECTION_LIFETIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_MAXIMUM_CONNECTION_LIFETIME</span></div>
+<div class="block">The maximum number of milliseconds a connection may live before the pool retires and replaces it.  This must be
+ set comfortably below any idle or lifetime limit imposed by the database server or intervening infrastructure,
+ otherwise the pool will hand out connections that have already been closed at the far end.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_CONNECTION_KEEPALIVE">
+<h3>JDBC_CONNECTION_KEEPALIVE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_CONNECTION_KEEPALIVE</span></div>
+<div class="block">How often, in milliseconds, the pool probes an idle connection to check it is still usable, retiring it if it
+ is not.  Zero disables the probe.  This must be smaller than jdbcMaximumConnectionLifetime.  Note that this is
+ the pool's own liveness check and is separate from socket level TCP keepalive, which the connector switches on
+ automatically for the drivers whose property name for it is known.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="JDBC_CONNECTION_LEAK_THRESHOLD">
+<h3>JDBC_CONNECTION_LEAK_THRESHOLD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></span>&nbsp;<span class="element-name">JDBC_CONNECTION_LEAK_THRESHOLD</span></div>
+<div class="block">How long, in milliseconds, a connection may be held by a caller before the connector logs a stack trace of
+ whoever took it out.  Zero disables the check.  This is a diagnostic aid for finding code that fails to close
+ the connections it obtains; it does not itself reclaim the connection.</div>
 </section>
 </li>
 </ul>
