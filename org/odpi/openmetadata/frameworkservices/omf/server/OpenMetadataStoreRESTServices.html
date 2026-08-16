@@ -1387,7 +1387,20 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../rest/OpenMetadataDeleteRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataDeleteRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete a specific metadata element.</div>
+<div class="block">Delete a specific metadata element.  The deleteMethod in the request body determines how the delete is
+ actioned:
+ <ul>
+     <li>SOFT_DELETE - the element is soft-deleted - this is also what happens if there is no request body
+     at all.</li>
+     <li>ARCHIVE - the element is archived using the Memento classification so it remains available for
+     lineage queries.</li>
+     <li>PURGE - the element is permanently removed.  This is only valid if the element has already been
+     soft-deleted.</li>
+     <li>LOOK_FOR_LINEAGE (the default deleteMethod on the request body, when one is supplied) - if the
+     element has any relationships attached to it that are a subtype of LineageRelationship, it is archived
+     (so it remains available to lineage queries); otherwise it is soft-deleted.</li>
+ </ul>
+ Any other deleteMethod value results in an InvalidParameterException.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
@@ -1396,7 +1409,8 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - delete request body</dd>
 <dt>Returns:</dt>
 <dd>void or
-  InvalidParameterException the unique identifier is null or invalid in some way
+  InvalidParameterException the unique identifier is null or invalid in some way, or the deleteMethod is
+  not one that applies to a metadata element
   UserNotAuthorizedException the governance action service is not authorized to delete this element
   PropertyServerException a problem with the metadata store</dd>
 </dl>
@@ -1600,16 +1614,21 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="../rest/OpenMetadataDeleteRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataDeleteRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete a relationship between two metadata elements.</div>
+<div class="block">Delete a relationship between two metadata elements.  The deleteMethod in the request body determines how
+ the delete is actioned: SOFT_DELETE soft-deletes the relationship; PURGE permanently removes it (only
+ valid if the relationship has already been soft-deleted).  ARCHIVE and LOOK_FOR_LINEAGE do not make sense
+ for a relationship (there is no relationship equivalent of the Memento classification used to archive a
+ metadata element), so those - and any other value - result in an InvalidParameterException.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
-<dd><code>requestBody</code> - null request body</dd>
+<dd><code>requestBody</code> - delete request body</dd>
 <dt>Returns:</dt>
 <dd>void or
-  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+  InvalidParameterException the unique identifier of the relationship is null or invalid in some way, or
+  the deleteMethod is not one that applies to a relationship
   UserNotAuthorizedException the governance action service is not authorized to delete this relationship
   PropertyServerException a problem with the metadata store</dd>
 </dl>

@@ -170,20 +170,32 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of statuses that should be used to restrict the elements returned by their status.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">SequencingOrder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSequencingOrder()" class="member-name-link">getSequencingOrder</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementSubtypeNames()" class="member-name-link">getMetadataElementSubtypeNames</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+ is set to true, must not belong to).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">SequencingOrder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSequencingOrder()" class="member-name-link">getSequencingOrder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the order that results should be returned in.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSequencingProperty()" class="member-name-link">getSequencingProperty</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSequencingProperty()" class="member-name-link">getSequencingProperty</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the property that should be used to order the results.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSkipClassifiedElements()" class="member-name-link">getSkipClassifiedElements</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSkipClassifiedElements()" class="member-name-link">getSkipClassifiedElements</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of classification names that should not be found on any returned elements.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSkipSubtypes()" class="member-name-link">getSkipSubtypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+ query results (true) rather than the only subtypes to include in the query results (false, the default).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -222,19 +234,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the optional list of statuses that should be used to restrict the elements returned by their status.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSequencingOrder(org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder)" class="member-name-link">setSequencingOrder</a><wbr>(<a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">SequencingOrder</a>&nbsp;sequencingOrder)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMetadataElementSubtypeNames(java.util.List)" class="member-name-link">setMetadataElementSubtypeNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;metadataElementSubtypeNames)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the order that results should be returned in.</div>
+<div class="block">Set up the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+ is set to true, must not belong to).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSequencingProperty(java.lang.String)" class="member-name-link">setSequencingProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSequencingOrder(org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder)" class="member-name-link">setSequencingOrder</a><wbr>(<a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">SequencingOrder</a>&nbsp;sequencingOrder)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the property that should be used to order the results.</div>
+<div class="block">Set up the order that results should be returned in.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSkipClassifiedElements(java.util.List)" class="member-name-link">setSkipClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;skipClassifiedElements)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSequencingProperty(java.lang.String)" class="member-name-link">setSequencingProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the property that should be used to order the results.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSkipClassifiedElements(java.util.List)" class="member-name-link">setSkipClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;skipClassifiedElements)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of classification names that should not be found on any returned elements.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSkipSubtypes(boolean)" class="member-name-link">setSkipSubtypes</a><wbr>(boolean&nbsp;skipSubtypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+ query results (true) rather than the only subtypes to include in the query results (false, the default).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -249,7 +273,7 @@ loadScripts(document, 'script');</script>
 <code><a href="PagingOptions.html#getPageSize()">getPageSize</a>, <a href="PagingOptions.html#getStartFrom()">getStartFrom</a>, <a href="PagingOptions.html#setPageSize(int)">setPageSize</a>, <a href="PagingOptions.html#setStartFrom(int)">setStartFrom</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a></h3>
-<code><a href="GetOptions.html#getAsOfTime()">getAsOfTime</a>, <a href="GetOptions.html#getGraphQueryDepth()">getGraphQueryDepth</a>, <a href="GetOptions.html#getIncludeOnlyRelationships()">getIncludeOnlyRelationships</a>, <a href="GetOptions.html#getMaxMermaidNodeCount()">getMaxMermaidNodeCount</a>, <a href="GetOptions.html#getMetadataElementSubtypeNames()">getMetadataElementSubtypeNames</a>, <a href="GetOptions.html#getMetadataElementTypeName()">getMetadataElementTypeName</a>, <a href="GetOptions.html#getRelationshipsPageSize()">getRelationshipsPageSize</a>, <a href="GetOptions.html#getSkipRelationships()">getSkipRelationships</a>, <a href="GetOptions.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="GetOptions.html#setGraphQueryDepth(int)">setGraphQueryDepth</a>, <a href="GetOptions.html#setIncludeOnlyRelationships(java.util.List)">setIncludeOnlyRelationships</a>, <a href="GetOptions.html#setMaxMermaidNodeCount(int)">setMaxMermaidNodeCount</a>, <a href="GetOptions.html#setMetadataElementSubtypeNames(java.util.List)">setMetadataElementSubtypeNames</a>, <a href="GetOptions.html#setMetadataElementTypeName(java.lang.String)">setMetadataElementTypeName</a>, <a href="GetOptions.html#setRelationshipsPageSize(int)">setRelationshipsPageSize</a>, <a href="GetOptions.html#setSkipRelationships(java.util.List)">setSkipRelationships</a></code></div>
+<code><a href="GetOptions.html#getAsOfTime()">getAsOfTime</a>, <a href="GetOptions.html#getGraphQueryDepth()">getGraphQueryDepth</a>, <a href="GetOptions.html#getIncludeOnlyRelationships()">getIncludeOnlyRelationships</a>, <a href="GetOptions.html#getMaxMermaidNodeCount()">getMaxMermaidNodeCount</a>, <a href="GetOptions.html#getMetadataElementTypeName()">getMetadataElementTypeName</a>, <a href="GetOptions.html#getRelationshipsPageSize()">getRelationshipsPageSize</a>, <a href="GetOptions.html#getSkipRelationships()">getSkipRelationships</a>, <a href="GetOptions.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="GetOptions.html#setGraphQueryDepth(int)">setGraphQueryDepth</a>, <a href="GetOptions.html#setIncludeOnlyRelationships(java.util.List)">setIncludeOnlyRelationships</a>, <a href="GetOptions.html#setMaxMermaidNodeCount(int)">setMaxMermaidNodeCount</a>, <a href="GetOptions.html#setMetadataElementTypeName(java.lang.String)">setMetadataElementTypeName</a>, <a href="GetOptions.html#setRelationshipsPageSize(int)">setRelationshipsPageSize</a>, <a href="GetOptions.html#setSkipRelationships(java.util.List)">setSkipRelationships</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.search.BasicOptions">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.search.<a href="BasicOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">BasicOptions</a></h3>
 <code><a href="BasicOptions.html#getEffectiveTime()">getEffectiveTime</a>, <a href="BasicOptions.html#getForDuplicateProcessing()">getForDuplicateProcessing</a>, <a href="BasicOptions.html#getForLineage()">getForLineage</a>, <a href="BasicOptions.html#getRequestId()">getRequestId</a>, <a href="BasicOptions.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="BasicOptions.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="BasicOptions.html#setForLineage(boolean)">setForLineage</a>, <a href="BasicOptions.html#setRequestId(java.lang.String)">setRequestId</a></code></div>
@@ -526,6 +550,54 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>includeOnlyClassifiedElements</code> - list of classification names or null.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementSubtypeNames()">
+<h3>getMetadataElementSubtypeNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMetadataElementSubtypeNames</span>()</div>
+<div class="block">Return the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+ is set to true, must not belong to).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>open metadata type names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMetadataElementSubtypeNames(java.util.List)">
+<h3>setMetadataElementSubtypeNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataElementSubtypeNames</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;metadataElementSubtypeNames)</span></div>
+<div class="block">Set up the list of valid subtypes that the returned metadata elements must belong to (or, if skipSubtypes
+ is set to true, must not belong to).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>metadataElementSubtypeNames</code> - open metadata type names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSkipSubtypes()">
+<h3>getSkipSubtypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getSkipSubtypes</span>()</div>
+<div class="block">Return whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+ query results (true) rather than the only subtypes to include in the query results (false, the default).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean flag (default is false)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSkipSubtypes(boolean)">
+<h3>setSkipSubtypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSkipSubtypes</span><wbr><span class="parameters">(boolean&nbsp;skipSubtypes)</span></div>
+<div class="block">Set up whether the metadataElementSubtypeNames list should be treated as the subtypes to exclude from the
+ query results (true) rather than the only subtypes to include in the query results (false, the default).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>skipSubtypes</code> - boolean flag (default is false)</dd>
 </dl>
 </section>
 </li>
