@@ -1238,7 +1238,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      relationshipGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(properties));
+                                                     relationshipBuilder.getElementProperties(properties));
     }
 
 
@@ -1315,7 +1315,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      licenseGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(properties));
+                                                     relationshipBuilder.getElementProperties(properties));
     }
 
 
@@ -1393,7 +1393,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      certificationGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(properties));
+                                                     relationshipBuilder.getElementProperties(properties));
     }
 
 

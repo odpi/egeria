@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -256,6 +257,104 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
                                                         assetGUID,
                                                         softwareCapabilityGUID,
                                                         deleteOptions);
+    }
+
+
+    /**
+     * Create a relationship that registers a governance service with a governance engine.  This is a multi-link
+     * relationship, which means a governance engine may call the same governance service many times, each with
+     * a different request type.  The unique identifier of the new relationship is returned so it can be updated
+     * or removed later.
+     *
+     * @param userId                 userId of the user making the request
+     * @param governanceEngineGUID   unique identifier of the governance engine at end 1
+     * @param governanceServiceGUID  unique identifier of the governance service at end 2
+     * @param makeAnchorOptions      options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkSupportedGovernanceService(String                               userId,
+                                                 String                               governanceEngineGUID,
+                                                 String                               governanceServiceGUID,
+                                                 MakeAnchorOptions                    makeAnchorOptions,
+                                                 SupportedGovernanceServiceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName            = "linkSupportedGovernanceService";
+        final String end1GUIDParameterName = "governanceEngineGUID";
+        final String end2GUIDParameterName = "governanceServiceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceEngineGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(governanceServiceGUID, end2GUIDParameterName, methodName);
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
+                                                              governanceEngineGUID,
+                                                              governanceServiceGUID,
+                                                              makeAnchorOptions,
+                                                              relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Update the properties of a SupportedGovernanceService relationship.
+     *
+     * @param userId                               userId of the user making the request
+     * @param supportedGovernanceServiceGUID       unique identifier of the relationship
+     * @param updateOptions                        provides a structure for the additional options when updating a relationship
+     * @param relationshipProperties               description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateSupportedGovernanceService(String                               userId,
+                                                 String                               supportedGovernanceServiceGUID,
+                                                 UpdateOptions                        updateOptions,
+                                                 SupportedGovernanceServiceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName            = "updateSupportedGovernanceService";
+        final String guidParameterName     = "supportedGovernanceServiceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(supportedGovernanceServiceGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                    supportedGovernanceServiceGUID,
+                                                    updateOptions,
+                                                    relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a SupportedGovernanceService relationship.
+     *
+     * @param userId                               userId of the user making the request.
+     * @param supportedGovernanceServiceGUID       unique identifier of the relationship
+     * @param deleteOptions                        options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSupportedGovernanceService(String        userId,
+                                                 String        supportedGovernanceServiceGUID,
+                                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "detachSupportedGovernanceService";
+        final String guidParameterName = "supportedGovernanceServiceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(supportedGovernanceServiceGUID, guidParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, supportedGovernanceServiceGUID, deleteOptions);
     }
 
 

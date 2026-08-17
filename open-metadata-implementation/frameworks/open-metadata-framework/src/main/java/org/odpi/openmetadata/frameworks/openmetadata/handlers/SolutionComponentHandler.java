@@ -276,7 +276,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      relationshipGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(properties));
+                                                     relationshipBuilder.getElementProperties(properties));
     }
 
 

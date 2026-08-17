@@ -1738,6 +1738,98 @@ public class AssetMakerResource
 
 
     /**
+     * Create a relationship that registers a governance service with a governance engine.  This is a multi-link
+     * relationship so the unique identifier of the new relationship is returned.
+     *
+     * @param serverName            name of the service to route the request to
+     * @param urlMarker             view service URL marker
+     * @param governanceEngineGUID  unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     * @param requestBody           properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-engines/{governanceEngineGUID}/supported-governance-services/{governanceServiceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="linkSupportedGovernanceService",
+            description="Create a relationship that registers a governance service with a governance engine.  This is a multi-link relationship so the unique identifier of the new relationship is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine"))
+
+    public GUIDResponse linkSupportedGovernanceService(@PathVariable String                     serverName,
+                                                       @PathVariable String                     urlMarker,
+                                                       @PathVariable String                     governanceEngineGUID,
+                                                       @PathVariable String                     governanceServiceGUID,
+                                                       @RequestBody (required = false)
+                                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSupportedGovernanceService(serverName, urlMarker, governanceEngineGUID, governanceServiceGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a SupportedGovernanceService relationship.
+     *
+     * @param serverName                     name of the service to route the request to
+     * @param urlMarker                      view service URL marker
+     * @param supportedGovernanceServiceGUID unique identifier of the relationship
+     * @param requestBody                    new properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/supported-governance-services/{supportedGovernanceServiceGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="updateSupportedGovernanceService",
+            description="Update the properties of a SupportedGovernanceService relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine"))
+
+    public VoidResponse updateSupportedGovernanceService(@PathVariable String                        serverName,
+                                                         @PathVariable String                        urlMarker,
+                                                         @PathVariable String                        supportedGovernanceServiceGUID,
+                                                         @RequestBody  UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateSupportedGovernanceService(serverName, urlMarker, supportedGovernanceServiceGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a SupportedGovernanceService relationship.
+     *
+     * @param serverName                     name of the service to route the request to
+     * @param urlMarker                      view service URL marker
+     * @param supportedGovernanceServiceGUID unique identifier of the relationship
+     * @param requestBody                    external source information
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/supported-governance-services/{supportedGovernanceServiceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+    @Operation(summary="detachSupportedGovernanceService",
+            description="Remove a SupportedGovernanceService relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine"))
+
+    public VoidResponse detachSupportedGovernanceService(@PathVariable String serverName,
+                                                         @PathVariable String urlMarker,
+                                                         @PathVariable String supportedGovernanceServiceGUID,
+                                                         @RequestBody (required = false)
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSupportedGovernanceService(serverName, urlMarker, supportedGovernanceServiceGUID, requestBody);
+    }
+
+
+    /**
      * Retrieve the governance engines connected to a particular governance service.
      *
      * @param serverName            name of called server

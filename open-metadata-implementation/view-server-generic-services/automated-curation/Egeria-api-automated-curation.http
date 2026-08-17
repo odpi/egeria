@@ -898,6 +898,8 @@ Content-Type: application/json
 # Asset Maker OMVS.  These are the special requests provided by Automated Curation OMVS
 
 @engineActionGUID=add guid here
+@governanceEngineGUID=add guid here
+@actionTargetGUID=add guid here
 
 ###
 # @name cancelEngineAction
@@ -911,4 +913,83 @@ Authorization: Bearer {{token}}
 # Retrieve the engine actions that are still in process.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
+
+
+###
+# ================================================
+# Used by governance services to claim engine actions and report on their progress and completion.
+
+###
+# @name updateEngineActionStatus
+# Update the status of the engine action - providing the caller is permitted.
+# The status attribute may be "Requested", "Approved", "Waiting", "Activating", "In Progress", "Paused",
+# "For Information", "Completed", "Invalid", "Ignored", "Failed", "Cancelled", "Abandoned" or "Other".
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/status/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EngineActionStatusRequestBody",
+  "status" : "IN_PROGRESS"
+}
+
+
+###
+# @name claimEngineAction
+# Request that execution of an engine action is allocated to the caller.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/claim
+Authorization: Bearer {{token}}
+
+
+###
+# @name getActiveClaimedEngineActions
+# Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
+# This call is used when the caller restarts.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-engines/{{governanceEngineGUID}}/engine-actions/active-claimed?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+###
+# @name updateActionTargetStatus
+# Update the status of a specific action target.  By default, these values are derived from the values for the
+# governance action service.  However, if the governance action service has to process many target elements,
+# then setting the status on each individual target will show the progress of the governance action service.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/action-targets/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionTargetStatusRequestBody",
+  "actionTargetGUID" : "{{actionTargetGUID}}",
+  "status" : "COMPLETED",
+  "startDate" : "{{$isoTimestamp}}",
+  "completionDate" : "{{$isoTimestamp}}",
+  "completionMessage" : "add completion message here"
+}
+
+
+###
+# @name recordCompletionStatus
+# Declare that all the processing for the governance action service is finished and the status of the work.
+# The status attribute may be "Actioned", "Invalid", "Failed" or "Other".
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/completion-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "CompletionStatusRequestBody",
+  "status" : "ACTIONED",
+  "requestParameters" : {
+    "propertyName1" : "propertyValue1",
+    "propertyName2" : "propertyValue2"
+  },
+  "outputGuards" : [ "add guard here" ],
+  "newActionTargets" : [
+    {
+      "actionTargetName" : "add action target name here",
+      "actionTargetGUID" : "add guid here"
+    }
+  ],
+  "completionMessage" : "add completion message here"
+}
 

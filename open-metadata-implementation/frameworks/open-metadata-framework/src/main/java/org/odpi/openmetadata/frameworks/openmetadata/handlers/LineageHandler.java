@@ -92,7 +92,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      lineageRelationshipGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(properties));
+                                                     relationshipBuilder.getElementProperties(properties));
     }
 
 

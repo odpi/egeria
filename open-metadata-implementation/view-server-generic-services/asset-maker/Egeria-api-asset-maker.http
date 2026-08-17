@@ -29,6 +29,8 @@ Content-Type: application/json
 @softwareCapabilityGUID=add guid here
 @infrastructureGUID=add guid here
 @governanceServiceGUID=add guid here
+@governanceEngineGUID=add guid here
+@supportedGovernanceServiceGUID=add guid here
 
 
 ###
@@ -1935,6 +1937,84 @@ Content-Type: application/json
   "class" : "ResultsRequestBody",
   "startFrom": 0,
   "pageSize": 10
+}
+
+
+###
+# @name linkSupportedGovernanceService
+# Create a relationship that registers a governance service with a governance engine.  This is a multi-link
+# relationship, which means the same governance engine may call the same governance service many times, each
+# with a different request type.  The unique identifier of the new relationship is returned so it can be
+# updated or removed later.
+# The deleteMethod attribute may be "ARCHIVE", "SOFT_DELETE", "LOOK_FOR_LINEAGE", "PURGE" or "OTHER".
+# Further Information: https://egeria-project.org/concepts/governance-engine
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/governance-engines/{{governanceEngineGUID}}/supported-governance-services/{{governanceServiceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "SupportedGovernanceServiceProperties",
+    "requestType": "add request type here",
+    "serviceRequestType": "add service request type here",
+    "requestParameters": {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    },
+    "generateConnectorActivityReports": true,
+    "deleteMethod": "LOOK_FOR_LINEAGE",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name updateSupportedGovernanceService
+# Update the properties of a SupportedGovernanceService relationship.
+# Further Information: https://egeria-project.org/concepts/governance-engine
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/supported-governance-services/{{supportedGovernanceServiceGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "properties" : {
+    "class": "SupportedGovernanceServiceProperties",
+    "requestType": "add request type here",
+    "serviceRequestType": "add service request type here",
+    "requestParameters": {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    },
+    "generateConnectorActivityReports": true,
+    "deleteMethod": "LOOK_FOR_LINEAGE"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name detachSupportedGovernanceService
+# Remove a SupportedGovernanceService relationship.  Request body is optional.
+# Further Information: https://egeria-project.org/concepts/governance-engine
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/supported-governance-services/{{supportedGovernanceServiceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody"
 }
 
 

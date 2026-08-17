@@ -6,15 +6,19 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +28,7 @@ import java.util.Map;
  * OpenGovernanceClientBase provides common governance services that originate in the Open Governance Framework (OGF).
  * This includes the ability to define and execute governance action processes as well as manage duplicates.
  */
-public class OpenGovernanceClientBase extends OpenGovernanceClient
+public class OpenGovernanceClientBase extends OpenGovernanceClient implements GovernanceCompletionInterface
 {
     protected final GAFRESTClient           restClient;               /* Initialized in constructor */
 
@@ -383,10 +387,229 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
 
 
     /* =====================================================================================================================
+     * Used by Governance Engines to control the engine actions.
+     */
+
+
+    /**
+     * Update the status of the governance action - providing the caller is permitted.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the governance action request
+     * @param activityStatus new status enum
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public void updateEngineActionStatus(String         userId,
+                                         String         engineActionGUID,
+                                         ActivityStatus activityStatus) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "updateEngineActionStatus";
+        final String guidParameterName = "engineActionGUID";
+        final String statusParameterName = "activityStatus";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/status/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateEnum(activityStatus, statusParameterName, methodName);
+
+        EngineActionStatusRequestBody requestBody = new EngineActionStatusRequestBody();
+
+        requestBody.setStatus(activityStatus);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        engineActionGUID);
+    }
+
+
+    /**
+     * Request that execution of a governance action is allocated to the caller.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the governance action request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public void claimEngineAction(String userId,
+                                  String engineActionGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String methodName = "claimEngineAction";
+        final String guidParameterName = "engineActionGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/claim";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new GAFAPIRequest(),
+                                        serverName,
+                                        userId,
+                                        engineActionGUID);
+    }
+
+
+    /**
+     * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
+     * This call is used when the caller restarts.
+     *
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     * @return list of governance action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<EngineActionElement>  getActiveClaimedEngineActions(String userId,
+                                                                    String governanceEngineGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "getActiveClaimedEngineActions";
+        final String guidParameterName = "governanceEngineGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/governance-engines/{2}/active-engine-actions?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          governanceEngineGUID,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Update the status of a specific action target. By default, these values are derived from
+     * the values for the governance action service.  However, if the governance action service has to process name
+     * target elements, then setting the status on each individual target will show the progress of the
+     * governance action service.
+     *
+     * @param userId caller's userId
+     * @param actionTargetGUID unique identifier of the governance action service.
+     * @param status status enum to show its progress
+     * @param startDate date/time that the governance action service started processing the target
+     * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
+     *
+     * @throws InvalidParameterException the action target GUID is not recognized
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
+     * @throws PropertyServerException a problem connecting to the metadata store
+     */
+    @Override
+    public void updateActionTargetStatus(String         userId,
+                                         String         actionTargetGUID,
+                                         ActivityStatus status,
+                                         Date           startDate,
+                                         Date           completionDate,
+                                         String         completionMessage) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "updateActionTargetStatus";
+        final String guidParameterName = "actionTargetGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/action-targets/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(actionTargetGUID, guidParameterName, methodName);
+
+        ActionTargetStatusRequestBody requestBody = new ActionTargetStatusRequestBody();
+
+        requestBody.setActionTargetGUID(actionTargetGUID);
+        requestBody.setStatus(status);
+        requestBody.setStartDate(startDate);
+        requestBody.setCompletionDate(completionDate);
+        requestBody.setCompletionMessage(completionMessage);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
+    }
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param userId caller's userId
+     * @param engineActionGUID unique identifier of the governance action to update
+     * @param requestParameters request properties from the caller (will be passed onto any follow-on actions)
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws PropertyServerException a problem connecting to the metadata store
+     */
+    @Override
+    public void recordCompletionStatus(String                userId,
+                                       String                engineActionGUID,
+                                       Map<String, String>   requestParameters,
+                                       CompletionStatus status,
+                                       List<String>          outputGuards,
+                                       List<NewActionTarget> newActionTargets,
+                                       String                completionMessage) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName = "recordCompletionStatus";
+        final String statusParameterName = "status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/completion-status";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateEnum(status, statusParameterName, methodName);
+
+        CompletionStatusRequestBody requestBody = new CompletionStatusRequestBody();
+
+        requestBody.setRequestParameters(requestParameters);
+        requestBody.setStatus(status);
+        requestBody.setOutputGuards(outputGuards);
+        requestBody.setNewActionTargets(newActionTargets);
+        requestBody.setCompletionMessage(completionMessage);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        engineActionGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
      * A governance action process describes a well-defined series of steps that gets something done.
      * The steps are defined using GovernanceActionProcessSteps.
      */
-
 
 
     /**

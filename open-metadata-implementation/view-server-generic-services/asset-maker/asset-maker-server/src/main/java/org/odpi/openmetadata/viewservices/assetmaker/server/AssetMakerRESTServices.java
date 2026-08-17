@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastru
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
@@ -3053,6 +3054,193 @@ public class AssetMakerRESTServices extends TokenController
             SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.getCapabilityUse(userId, assetGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a relationship that registers a governance service with a governance engine.  This is a multi-link
+     * relationship so the unique identifier of the new relationship is returned.
+     *
+     * @param serverName            name of the server to route the request to
+     * @param urlMarker             view service URL marker
+     * @param governanceEngineGUID  unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     * @param requestBody           properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException problem storing the relationship.
+     */
+    public GUIDResponse linkSupportedGovernanceService(String                     serverName,
+                                                       String                     urlMarker,
+                                                       String                     governanceEngineGUID,
+                                                       String                     governanceServiceGUID,
+                                                       NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSupportedGovernanceService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SupportedGovernanceServiceProperties supportedGovernanceServiceProperties)
+                {
+                    response.setGUID(handler.linkSupportedGovernanceService(userId,
+                                                                            governanceEngineGUID,
+                                                                            governanceServiceGUID,
+                                                                            requestBody,
+                                                                            supportedGovernanceServiceProperties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.linkSupportedGovernanceService(userId,
+                                                                            governanceEngineGUID,
+                                                                            governanceServiceGUID,
+                                                                            requestBody,
+                                                                            null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SupportedGovernanceServiceProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a SupportedGovernanceService relationship.
+     *
+     * @param serverName                     name of the server to route the request to
+     * @param urlMarker                      view service URL marker
+     * @param supportedGovernanceServiceGUID unique identifier of the relationship
+     * @param requestBody                    new properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException problem storing the relationship.
+     */
+    public VoidResponse updateSupportedGovernanceService(String                        serverName,
+                                                         String                        urlMarker,
+                                                         String                        supportedGovernanceServiceGUID,
+                                                         UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateSupportedGovernanceService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof SupportedGovernanceServiceProperties supportedGovernanceServiceProperties)
+                {
+                    handler.updateSupportedGovernanceService(userId,
+                                                             supportedGovernanceServiceGUID,
+                                                             requestBody,
+                                                             supportedGovernanceServiceProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SupportedGovernanceServiceProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a SupportedGovernanceService relationship.
+     *
+     * @param serverName                     name of the server to route the request to
+     * @param urlMarker                      view service URL marker
+     * @param supportedGovernanceServiceGUID unique identifier of the relationship
+     * @param requestBody                    external source information
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException problem removing the relationship.
+     */
+    public VoidResponse detachSupportedGovernanceService(String                        serverName,
+                                                         String                        urlMarker,
+                                                         String                        supportedGovernanceServiceGUID,
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSupportedGovernanceService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSupportedGovernanceService(userId, supportedGovernanceServiceGUID, requestBody);
         }
         catch (Throwable error)
         {
