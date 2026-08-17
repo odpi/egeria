@@ -271,8 +271,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConfigurationProperty(java.lang.String,java.lang.Object)" class="member-name-link">setConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Supply a configuration property value on behalf of this connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -352,6 +358,29 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setConfigurationProperty(java.lang.String,java.lang.Object)">
+<h3>setConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</span></div>
+<div class="block">Supply a configuration property value on behalf of this connector.  This allows a connector that embeds a
+ JDBCResourceConnector to pass a matching property from its own configuration straight through, so that a
+ setting such as <a href="controls/JDBCConfigurationProperty.html#JDBC_MAXIMUM_POOL_SIZE"><code>JDBCConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE</code></a> can be tuned where the hosting
+ connector is configured rather than only on the embedded connection.
+ <br><br>
+ This must be called before <a href="#start()"><code>start()</code></a>, since that is when the pool is built from these properties.
+ <br><br>
+ A value passed down by the host replaces any value already on this connector's own connection.  The value on
+ the connection is typically supplied by a template or content pack and acts as the default; the host's
+ configuration is where a deployment can be tuned, so it has to be able to override that default.  Passing
+ null changes nothing, so a host that does not set the property leaves the connection's own value in place.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the configuration property</dd>
+<dd><code>propertyValue</code> - value to use - ignored if null</dd>
 </dl>
 </section>
 </li>
