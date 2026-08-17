@@ -90,9 +90,9 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceContextClientBase</span>
 <span class="extends-implements">extends <a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a>
-implements <a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a>, <a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></span></div>
+implements <a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></span></div>
 <div class="block">GovernanceContextClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
- It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
+ It is, however, shared by all the governance action services running in an engine service so that we only need one connector to the topic
  listener for the watchdog governance services.</div>
 </section>
 <section class="summary">
@@ -153,72 +153,30 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#claimEngineAction(java.lang.String,java.lang.String)" class="member-name-link">claimEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnectListener(java.lang.String)" class="member-name-link">disconnectListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Request that execution of a governance action is allocated to the caller.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnectListener(java.lang.String)" class="member-name-link">disconnectListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called during the disconnect processing of the watchdog governance action service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/opengovernance/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveClaimedEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveClaimedEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus,java.util.List,java.util.List,java.lang.String)" class="member-name-link">recordCompletionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="../../../frameworks/openmetadata/refdata/CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">CompletionStatus</a>&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;outputGuards,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)" class="member-name-link">registerListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;listenerId,
  <a href="../../../frameworks/opengovernance/WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">WatchdogGovernanceListener</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/events/OpenMetadataEventType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata store.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager)" class="member-name-link">setListenerManager</a><wbr>(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the listener manager.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../../../frameworks/openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setListenerManager(org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager)" class="member-name-link">setListenerManager</a><wbr>(<a href="GovernanceListenerManager.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceListenerManager</a>&nbsp;governanceListenerManager)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the status of a specific action target.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)" class="member-name-link">updateEngineActionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="../../../frameworks/openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the status of the governance action - providing the caller is permitted.</div>
+<div class="block">Set up the listener manager.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
-<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String)">initiateGovernanceActionType</a></code></div>
+<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#claimEngineAction(java.lang.String,java.lang.String)">claimEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveClaimedEngineActions(java.lang.String,java.lang.String,int,int)">getActiveClaimedEngineActions</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String)">initiateGovernanceActionType</a>, <a href="OpenGovernanceClientBase.html#recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus,java.util.List,java.util.List,java.lang.String)">recordCompletionStatus</a>, <a href="OpenGovernanceClientBase.html#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,java.util.Date,java.util.Date,java.lang.String)">updateActionTargetStatus</a>, <a href="OpenGovernanceClientBase.html#updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">updateEngineActionStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
 <code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#toString()">toString</a></code></div>
@@ -341,146 +299,6 @@ implements <a href="../../../frameworks/opengovernance/client/GovernanceCompleti
 <dd><code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html#disconnectListener(java.lang.String)">disconnectListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/WatchdogEventInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">WatchdogEventInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>listenerId</code> - identifier used to maintain topic event pointer in event manager</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">
-<h3>updateEngineActionStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateEngineActionStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="../../../frameworks/openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;activityStatus)</span>
-                              throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the status of the governance action - providing the caller is permitted.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html#updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">updateEngineActionStatus</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of calling user</dd>
-<dd><code>engineActionGUID</code> - identifier of the governance action request</dd>
-<dd><code>activityStatus</code> - new status enum</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="claimEngineAction(java.lang.String,java.lang.String)">
-<h3>claimEngineAction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">claimEngineAction</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</span>
-                       throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Request that execution of a governance action is allocated to the caller.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html#claimEngineAction(java.lang.String,java.lang.String)">claimEngineAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of calling user</dd>
-<dd><code>engineActionGUID</code> - identifier of the governance action request.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getActiveClaimedEngineActions(java.lang.String,java.lang.String,int,int)">
-<h3>getActiveClaimedEngineActions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/opengovernance/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">EngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">getActiveClaimedEngineActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
-                                                        throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
- This call is used when the caller restarts.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html#getActiveClaimedEngineActions(java.lang.String,java.lang.String,int,int)">getActiveClaimedEngineActions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>userId</code> - userId of caller</dd>
-<dd><code>governanceEngineGUID</code> - unique identifier of governance engine</dd>
-<dd><code>startFrom</code> - starting from position</dd>
-<dd><code>pageSize</code> - maximum elements to return</dd>
-<dt>Returns:</dt>
-<dd>list of governance action elements</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request.</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,java.util.Date,java.util.Date,java.lang.String)">
-<h3>updateActionTargetStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateActionTargetStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../../../frameworks/openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</span>
-                              throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the status of a specific action target. By default, these values are derived from
- the values for the governance action service.  However, if the governance action service has to process name
- target elements, then setting the status on each individual target will show the progress of the
- governance action service.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus,java.util.Date,java.util.Date,java.lang.String)">updateActionTargetStatus</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>actionTargetGUID</code> - unique identifier of the governance action service.</dd>
-<dd><code>status</code> - status enum to show its progress</dd>
-<dd><code>startDate</code> - date/time that the governance action service started processing the target</dd>
-<dd><code>completionDate</code> - date/time that the governance process completed processing this target.</dd>
-<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the action target GUID is not recognized</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the action target properties</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to the metadata store</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus,java.util.List,java.util.List,java.lang.String)">
-<h3>recordCompletionStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">recordCompletionStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="../../../frameworks/openmetadata/refdata/CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">CompletionStatus</a>&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;outputGuards,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</span>
-                            throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html#recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus,java.util.List,java.util.List,java.lang.String)">recordCompletionStatus</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/opengovernance/client/GovernanceCompletionInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceCompletionInterface</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>engineActionGUID</code> - unique identifier of the governance action to update</dd>
-<dd><code>requestParameters</code> - request properties from the caller (will be passed onto any follow-on actions)</dd>
-<dd><code>status</code> - completion status enum value</dd>
-<dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
-<dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
-<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the completion status is null</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance action service status</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to the metadata store</dd>
 </dl>
 </section>
 </li>
