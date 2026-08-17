@@ -30,8 +30,8 @@ public interface GovernanceCompletionInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    void updateEngineActionStatus(String             userId,
-                                  String             engineActionGUID,
+    void updateEngineActionStatus(String         userId,
+                                  String         engineActionGUID,
                                   ActivityStatus activityStatus) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
@@ -92,14 +92,14 @@ public interface GovernanceCompletionInterface
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException a problem connecting to the metadata store
      */
-    void updateActionTargetStatus(String             userId,
-                                  String             actionTargetGUID,
+    void updateActionTargetStatus(String         userId,
+                                  String         actionTargetGUID,
                                   ActivityStatus status,
-                                  Date               startDate,
-                                  Date               completionDate,
-                                  String             completionMessage) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                  Date           startDate,
+                                  Date           completionDate,
+                                  String         completionMessage) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
 

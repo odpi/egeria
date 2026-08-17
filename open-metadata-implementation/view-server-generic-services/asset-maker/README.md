@@ -17,6 +17,7 @@ properties, such as software capabilities, deployment relationships, and governa
 - **Data Asset Management**: Organize data assets into data sets and manage their content relationships.
 - **Governance Action Management**: Create and track governance actions, assign them to actors, and manage their targets.
 - **Catalog Target Management**: Manage the association between integration connectors and the metadata elements they are responsible for cataloguing.
+- **Governance Service Registration**: Register governance services with the governance engines that call them, controlling the request types each engine supports, and maintain or remove those registrations.
 - **Search and Exploration**: Find assets, processes, and software capabilities using search strings and filters.
 
 ## Further information
@@ -29,6 +30,7 @@ properties, such as software capabilities, deployment relationships, and governa
 ----
 Sample REST API requests:
 - [Egeria-api-asset-maker.http](Egeria-api-asset-maker.http)
+- [Egeria-catalog-calls.http](Egeria-catalog-calls.http)
 - [Egeria-jacquard-actions.http](Egeria-jacquard-actions.http)
 - [Egeria-metadata-collections.http](Egeria-metadata-collections.http)
 

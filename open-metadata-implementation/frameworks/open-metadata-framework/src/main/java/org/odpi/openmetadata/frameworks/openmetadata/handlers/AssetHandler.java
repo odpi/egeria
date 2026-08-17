@@ -1204,7 +1204,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         openMetadataClient.updateRelationshipInStore(userId,
                                                      actionTargetGUID,
                                                      updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(actionTargetProperties));
+                                                     relationshipBuilder.getElementProperties(actionTargetProperties));
     }
 
 

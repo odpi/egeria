@@ -10,10 +10,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateEngineActionRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionTypeRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
@@ -443,5 +446,161 @@ public class AutomatedCurationResource
                                                                @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
         return restAPI.getActiveEngineActions(serverName, urlMarker, startFrom, pageSize);
+    }
+
+
+    /* =====================================================================================================================
+     * Used by governance services to report on their progress and completion.
+     */
+
+    /**
+     * Update the status of the engine action - providing the caller is permitted.
+     *
+     * @param serverName       name of server instance to route request to
+     * @param urlMarker        view service URL marker
+     * @param engineActionGUID identifier of the engine action request
+     * @param requestBody      new status enum
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/engine-actions/{engineActionGUID}/status/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateEngineActionStatus",
+            description="Update the status of the engine action - providing the caller is permitted.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse updateEngineActionStatus(@PathVariable String                        serverName,
+                                                 @PathVariable String                        urlMarker,
+                                                 @PathVariable String                        engineActionGUID,
+                                                 @RequestBody  EngineActionStatusRequestBody requestBody)
+    {
+        return restAPI.updateEngineActionStatus(serverName, urlMarker, engineActionGUID, requestBody);
+    }
+
+
+    /**
+     * Request that execution of an engine action is allocated to the caller.
+     *
+     * @param serverName       name of server instance to route request to
+     * @param urlMarker        view service URL marker
+     * @param engineActionGUID identifier of the engine action request
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/engine-actions/{engineActionGUID}/claim")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="claimEngineAction",
+            description="Request that execution of an engine action is allocated to the caller.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse claimEngineAction(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String engineActionGUID)
+    {
+        return restAPI.claimEngineAction(serverName, urlMarker, engineActionGUID);
+    }
+
+
+    /**
+     * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
+     * This call is used when the caller restarts.
+     *
+     * @param serverName           name of server instance to route request to
+     * @param urlMarker            view service URL marker
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom            starting from position
+     * @param pageSize             maximum elements to return
+     *
+     * @return list of engine action elements or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @GetMapping(path = "/governance-engines/{governanceEngineGUID}/engine-actions/active-claimed")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getActiveClaimedEngineActions",
+            description="Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.  This call is used when the caller restarts.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public EngineActionElementsResponse getActiveClaimedEngineActions(@PathVariable String serverName,
+                                                                      @PathVariable String urlMarker,
+                                                                      @PathVariable String governanceEngineGUID,
+                                                                      @RequestParam(required = false, defaultValue = "0") int startFrom,
+                                                                      @RequestParam(required = false, defaultValue = "0") int pageSize)
+    {
+        return restAPI.getActiveClaimedEngineActions(serverName, urlMarker, governanceEngineGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Update the status of a specific action target.  By default, these values are derived from
+     * the values for the governance action service.  However, if the governance action service has to process
+     * many target elements, then setting the status on each individual target will show the progress of the
+     * governance action service.
+     *
+     * @param serverName  name of server instance to route request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody the action target and its new status
+     *
+     * @return void or
+     *  InvalidParameterException the action target GUID is not recognized.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/engine-actions/action-targets/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateActionTargetStatus",
+            description="Update the status of a specific action target.  By default, these values are derived from the values for the governance action service.  However, if the governance action service has to process many target elements, then setting the status on each individual target will show the progress of the governance action service.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse updateActionTargetStatus(@PathVariable String                        serverName,
+                                                 @PathVariable String                        urlMarker,
+                                                 @RequestBody  ActionTargetStatusRequestBody requestBody)
+    {
+        return restAPI.updateActionTargetStatus(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param serverName       name of server instance to route request to
+     * @param urlMarker        view service URL marker
+     * @param engineActionGUID unique identifier of the associated engine action
+     * @param requestBody      completion status, output guards, new action targets and completion message
+     *
+     * @return void or
+     *  InvalidParameterException the completion status is null.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/engine-actions/{engineActionGUID}/completion-status")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="recordCompletionStatus",
+            description="Declare that all the processing for the governance action service is finished and the status of the work.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse recordCompletionStatus(@PathVariable String                      serverName,
+                                               @PathVariable String                      urlMarker,
+                                               @PathVariable String                      engineActionGUID,
+                                               @RequestBody  CompletionStatusRequestBody requestBody)
+    {
+        return restAPI.recordCompletionStatus(serverName, urlMarker, engineActionGUID, requestBody);
     }
 }
