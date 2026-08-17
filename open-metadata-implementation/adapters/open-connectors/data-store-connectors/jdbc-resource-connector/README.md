@@ -23,7 +23,7 @@ try (Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnec
 
 Two rules follow from this, and both matter:
 
-**Always close the connection.**  Closing returns it to the pool; it does not close the network connection.  A caller that holds on to a connection is holding a slot in a pool that defaults to five, so code that forgets will exhaust the pool and subsequent callers will fail after `jdbcConnectionWaitTimeout`.  Use try-with-resources and the problem does not arise.
+**Always close the connection.**  Closing returns it to the pool; it does not close the network connection.  A caller that holds on to a connection is holding a slot in a pool of bounded size, so code that forgets will exhaust the pool and subsequent callers will fail after `jdbcConnectionWaitTimeout`.  Use try-with-resources and the problem does not arise.
 
 **Commit your own writes.**  The connector runs with auto-commit disabled, and none of its helper methods - `issueSQLCommand`, `addDatabaseDefinitions`, `insertRowIntoTable` and the rest - commit on your behalf.  When a connection goes back to the pool with a transaction still open, the pool rolls it back.  So a write path that does not call `commit()` does not leave a dangling transaction; it silently loses its changes.  This is deliberate: an abandoned unit of work should discard its work rather than leave a connection idle-in-transaction until the database kills it.
 
@@ -43,16 +43,37 @@ The connector is initialized using the connection information attached to the [R
 
 ### Sizing and managing the pool
 
-* `jdbcMaximumPoolSize` - the maximum number of database connections this connector holds open at once.  Default 5.
+* `jdbcMaximumPoolSize` - the maximum number of database connections this connector holds open at once.  Default 10.  See *Choosing a pool size* below, because the right value depends on what the connector instance is serving.
 * `jdbcMinimumIdle` - the minimum number of idle connections kept ready.  Default 1.  Setting this equal to `jdbcMaximumPoolSize` gives a fixed-size pool, which is the recommended configuration for steady workloads.
 * `jdbcConnectionWaitTimeout` - milliseconds a caller waits for a free connection from the pool before failing.  Default 30000.
 * `jdbcMaximumConnectionLifetime` - milliseconds a connection may live before the pool retires and replaces it.  Default 1800000 (30 minutes).
 * `jdbcConnectionKeepAlive` - how often, in milliseconds, the pool probes an idle connection to check it is still usable.  Default 120000 (2 minutes); zero disables it.  Must be smaller than `jdbcMaximumConnectionLifetime`.
 * `jdbcConnectionLeakThreshold` - how long, in milliseconds, a connection may be held by a caller before the connector logs a stack trace naming whoever took it out.  Default 0 (disabled).  This is a diagnostic aid for finding code that fails to close its connections; it does not itself reclaim the connection.
 
-**A pool exists per connector instance, and Egeria creates one connector instance per catalog target.**  So `jdbcMaximumPoolSize` is multiplied by the number of catalog targets when sizing the database server.  Twenty catalog targets at the default of five is a hundred connections against that server.
-
 `jdbcMaximumConnectionLifetime` must be set comfortably below any idle or lifetime limit imposed by the database server or by intervening infrastructure such as a firewall or load balancer.  If it is not, the pool will hand out connections that have already been closed at the far end.
+
+#### Choosing a pool size
+
+A pool exists per connector instance, and connector instances play two quite different roles.  One `jdbcMaximumPoolSize` value does not suit both.
+
+**Embedded in a repository or audit log destination.**  Here the connector is the single route to the database for an entire server, shared by every request it handles, and there is exactly one instance.  It needs a pool sized for the server's concurrency - the default of 10 or more.  These hosts accept `jdbcMaximumPoolSize` on their *own* configuration properties and pass it straight through, so it can be tuned where the repository is configured rather than only on the embedded connection:
+
+```json
+{
+    "class": "Connection",
+    "connectorType": { "...": "PostgresOMRSRepositoryConnectorProvider" },
+    "configurationProperties": {
+      "databaseSchema": "repository_myserver",
+      "jdbcMaximumPoolSize": "20"
+    }
+}
+```
+
+A value passed down by the host overrides one set on the embedded JDBC connection.  The connection's own value is normally supplied by a template or content pack and acts as the default; the host's configuration is where a particular deployment is tuned, so it needs to be able to override that default without editing the template.
+
+**Created per catalog target.**  Here each instance serves one target and there may be many, so the value is multiplied by the number of catalog targets when sizing the database server: twenty catalog targets at the default of 10 is two hundred connections. Set it lower - often 2 to 5 is plenty for a cataloguing pass.
+
+Resist sizing either case against the servlet container's thread count.  HikariCP's own guidance is that pools should be small - roughly `(cores * 2) + effective spindles` - and that a queue in front of a small pool outperforms a large one.
 
 ### Keeping connections alive
 

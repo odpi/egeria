@@ -82,6 +82,17 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                 {
                     try
                     {
+                        /*
+                         * Pass any pool sizing supplied on this destination's own configuration down to the embedded
+                         * connector, overriding whatever the embedded connection itself says.  This must happen
+                         * before it is started, since that is when the pool is built.
+                         */
+                        if (connectionBean.getConfigurationProperties() != null)
+                        {
+                            jdbcResourceConnector.setConfigurationProperty(JDBCConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName(),
+                                                                           connectionBean.getConfigurationProperties().get(JDBCConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName()));
+                        }
+
                         if (! jdbcResourceConnector.isActive())
                         {
                             jdbcResourceConnector.start();
