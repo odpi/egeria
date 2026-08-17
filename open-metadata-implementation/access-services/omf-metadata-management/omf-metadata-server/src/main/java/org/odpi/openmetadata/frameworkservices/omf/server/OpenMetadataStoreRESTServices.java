@@ -3679,7 +3679,9 @@ public class OpenMetadataStoreRESTServices
 
                 DeleteMethod deleteMethod = requestBody.getDeleteMethod();
 
-                if (deleteMethod == DeleteMethod.SOFT_DELETE)
+                if ((deleteMethod == DeleteMethod.SOFT_DELETE) ||
+                    (deleteMethod == DeleteMethod.LOOK_FOR_LINEAGE) ||
+                    (deleteMethod == DeleteMethod.ARCHIVE))
                 {
                     handler.deleteRelationshipInStore(userId,
                                                       requestBody.getExternalSourceGUID(),
