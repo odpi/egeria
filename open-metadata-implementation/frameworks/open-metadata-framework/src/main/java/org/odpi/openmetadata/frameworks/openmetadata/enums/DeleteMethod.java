@@ -64,7 +64,7 @@ public enum DeleteMethod implements OpenMetadataEnum
 
     private final String descriptionGUID;
 
-    private final boolean        isDefault;
+    private final boolean isDefault;
 
 
     /**
@@ -82,11 +82,11 @@ public enum DeleteMethod implements OpenMetadataEnum
                  String  description,
                  boolean isDefault)
     {
-        this.ordinal = ordinal;
+        this.ordinal         = ordinal;
         this.name            = name;
         this.descriptionGUID = descriptionGUID;
         this.description     = description;
-        this.isDefault = isDefault;
+        this.isDefault       = isDefault;
     }
 
 

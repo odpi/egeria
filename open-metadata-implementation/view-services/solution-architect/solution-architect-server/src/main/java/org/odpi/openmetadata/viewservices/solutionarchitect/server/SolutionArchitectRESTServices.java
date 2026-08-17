@@ -260,7 +260,6 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-
                 if (requestBody.getProperties() instanceof InformationSupplyChainLinkProperties properties)
                 {
                     handler.linkPeersInInformationSupplyChain(userId,
@@ -1988,20 +1987,31 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
-
-            DesignPatternProperties properties = null;
-
-            if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+            if (requestBody != null)
             {
-                properties = designPatternProperties;
-            }
+                DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDesignPattern(userId,
-                                                         requestBody,
-                                                         requestBody.getInitialClassifications(),
-                                                         properties,
-                                                         requestBody.getParentRelationshipProperties()));
+                DesignPatternProperties properties = null;
+
+                if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+                {
+                    properties = designPatternProperties;
+
+                    response.setGUID(handler.createDesignPattern(userId,
+                                                                 requestBody,
+                                                                 requestBody.getInitialClassifications(),
+                                                                 properties,
+                                                                 requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -2042,15 +2052,22 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDesignPatternFromTemplate(userId,
-                                                                     requestBody,
-                                                                     requestBody.getTemplateGUID(),
-                                                                     requestBody.getReplacementProperties(),
-                                                                     requestBody.getReplacementClassifications(),
-                                                                     requestBody.getPlaceholderPropertyValues(),
-                                                                     requestBody.getParentRelationshipProperties()));
+                response.setGUID(handler.createDesignPatternFromTemplate(userId,
+                                                                         requestBody,
+                                                                         requestBody.getTemplateGUID(),
+                                                                         requestBody.getReplacementProperties(),
+                                                                         requestBody.getReplacementClassifications(),
+                                                                         requestBody.getPlaceholderPropertyValues(),
+                                                                         requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -2093,16 +2110,23 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
-
-            DesignPatternProperties properties = null;
-
-            if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+            if (requestBody != null)
             {
-                properties = designPatternProperties;
-            }
+                DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            response.setFlag(handler.updateDesignPattern(userId, designPatternGUID, requestBody, properties));
+                DesignPatternProperties properties = null;
+
+                if (requestBody.getProperties() instanceof DesignPatternProperties designPatternProperties)
+                {
+                    properties = designPatternProperties;
+                }
+
+                response.setFlag(handler.updateDesignPattern(userId, designPatternGUID, requestBody, properties));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
@@ -2149,18 +2173,29 @@ public class SolutionArchitectRESTServices extends TokenController
 
             DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            NestedDesignPatternProperties properties = null;
-
-            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            if (requestBody != null)
             {
-                properties = relationshipProperties;
-            }
+                NestedDesignPatternProperties properties = null;
 
-            handler.linkNestedDesignPatterns(userId,
-                                             parentDesignPatternGUID,
-                                             nestedDesignPatternGUID,
-                                             requestBody,
-                                             properties);
+                if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+                {
+                    properties = relationshipProperties;
+                }
+
+                handler.linkNestedDesignPatterns(userId,
+                                                 parentDesignPatternGUID,
+                                                 nestedDesignPatternGUID,
+                                                 requestBody,
+                                                 properties);
+            }
+            else
+            {
+                handler.linkNestedDesignPatterns(userId,
+                                                 parentDesignPatternGUID,
+                                                 nestedDesignPatternGUID,
+                                                 null,
+                                                 null);
+            }
         }
         catch (Throwable error)
         {
@@ -2254,18 +2289,29 @@ public class SolutionArchitectRESTServices extends TokenController
 
             DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            NestedDesignPatternProperties properties = null;
-
-            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            if (requestBody != null)
             {
-                properties = relationshipProperties;
-            }
+                NestedDesignPatternProperties properties = null;
 
-            handler.linkSpecializedDesignPatterns(userId,
-                                                  generalizedDesignPatternGUID,
-                                                  specializedDesignPatternGUID,
-                                                  requestBody,
-                                                  properties);
+                if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+                {
+                    properties = relationshipProperties;
+                }
+
+                handler.linkSpecializedDesignPatterns(userId,
+                                                      generalizedDesignPatternGUID,
+                                                      specializedDesignPatternGUID,
+                                                      requestBody,
+                                                      properties);
+            }
+            else
+            {
+                handler.linkSpecializedDesignPatterns(userId,
+                                                      generalizedDesignPatternGUID,
+                                                      specializedDesignPatternGUID,
+                                                      null,
+                                                      null);
+            }
         }
         catch (Throwable error)
         {
@@ -2359,18 +2405,25 @@ public class SolutionArchitectRESTServices extends TokenController
 
             DesignPatternHandler handler = instanceHandler.getDesignPatternHandler(userId, serverName, methodName);
 
-            NestedDesignPatternProperties properties = null;
-
-            if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+            if (requestBody != null)
             {
-                properties = relationshipProperties;
-            }
+                NestedDesignPatternProperties properties = null;
 
-            handler.linkRelatedDesignPatterns(userId,
-                                              designPatternOneGUID,
-                                              designPatternTwoGUID,
-                                              requestBody,
-                                              properties);
+                if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+                {
+                    properties = relationshipProperties;
+                }
+
+                handler.linkRelatedDesignPatterns(userId,
+                                                  designPatternOneGUID,
+                                                  designPatternTwoGUID,
+                                                  requestBody,
+                                                  properties);
+            }
+            else
+            {
+                handler.linkRelatedDesignPatterns(userId, designPatternOneGUID, designPatternTwoGUID, null, null);
+            }
         }
         catch (Throwable error)
         {
