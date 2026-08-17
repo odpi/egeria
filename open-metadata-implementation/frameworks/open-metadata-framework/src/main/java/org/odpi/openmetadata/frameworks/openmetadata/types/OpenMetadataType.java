@@ -4228,6 +4228,26 @@ public enum OpenMetadataType
                             WatchdogActionServiceProperties.class),
 
     /**
+     * A governance engine that is supported by tools such as the Resource Explorer.
+     */
+    EXPLORER_ACTION_ENGINE("594db30b-a767-493b-af75-ab9ce9d86408",
+                           "ExplorerActionEngine",
+                           OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                           "0cbcd128-1642-4006-b746-01423ea8c892",
+                           "A governance engine that is supported by tools such as the Resource Explorer.  It is typically part of a process to scout, discover and select digital resources for a particular purpose.",
+                           ExplorerActionEngineProperties.class),
+
+    /**
+     * A governance service representing an action that can be executed by Resource Explorer.
+     */
+    EXPLORER_ACTION_SERVICE("fe4ccfbc-a581-4135-80e6-f06479ba7c15",
+                            "ExplorerActionService",
+                            OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                            "43aa9fe2-5043-45e9-bf3a-d1212d32d66e",
+                            "A governance service representing an action that can be executed by Resource Explorer.",
+                            ExplorerActionServiceProperties.class),
+
+    /**
      * A governance engine for open metadata repositories.
      */
     REPOSITORY_GOVERNANCE_ENGINE("2b3bed05-c227-47d7-87a3-139ab0568361",

@@ -8,7 +8,7 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-api'
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
-    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    // open-metadata-framework is exposed transitively via open-connector-framework's api dependency
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
@@ -18,7 +18,7 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    // open-metadata-framework is exposed transitively via open-connector-framework's api dependency
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly 'commons-io:commons-io'
     testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
