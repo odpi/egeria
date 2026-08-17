@@ -6,7 +6,7 @@
 
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
-    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    // open-metadata-framework is exposed transitively via open-connector-framework's api dependency
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
@@ -15,7 +15,7 @@ dependencies {
     testImplementation project(':open-metadata-implementation:adapters:open-connectors')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    // open-metadata-framework is exposed transitively via open-connector-framework's api dependency
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')

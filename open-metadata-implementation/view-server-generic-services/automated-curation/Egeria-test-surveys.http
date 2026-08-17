@@ -33,13 +33,14 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "processQualifiedName": "Egeria::DailyGovernanceActionProcess",
+  "processQualifiedName": "FileDirectory:CreateAndSurveyGovernanceActionProcess",
   "requestParameters" : {
     "fileSystemName" : "Egeria Deployment",
-    "directoryPathName" : ".",
-    "directoryName" : "platform",
+    "directoryPathName" : "/deployments/coco-data-lake",
+    "directoryAddress" : "./coco-data-lake",
+    "directoryName" : "coco-data-lake",
     "versionIdentifier" : "1.0",
-    "description" : "Files used to deploy Egeria."
+    "description" : "Files in the Coco Pharmaceuticals Data Lake."
   }
 }
 

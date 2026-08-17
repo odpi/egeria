@@ -188,6 +188,47 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
+     * Supply a configuration property value on behalf of this connector.  This allows a connector that embeds a
+     * JDBCResourceConnector to pass a matching property from its own configuration straight through, so that a
+     * setting such as {@link JDBCConfigurationProperty#JDBC_MAXIMUM_POOL_SIZE} can be tuned where the hosting
+     * connector is configured rather than only on the embedded connection.
+     * <br><br>
+     * This must be called before {@link #start()}, since that is when the pool is built from these properties.
+     * <br><br>
+     * A value passed down by the host replaces any value already on this connector's own connection.  The value on
+     * the connection is typically supplied by a template or content pack and acts as the default; the host's
+     * configuration is where a deployment can be tuned, so it has to be able to override that default.  Passing
+     * null changes nothing, so a host that does not set the property leaves the connection's own value in place.
+     *
+     * @param propertyName name of the configuration property
+     * @param propertyValue value to use - ignored if null
+     */
+    public void setConfigurationProperty(String propertyName,
+                                         Object propertyValue)
+    {
+        if ((propertyName == null) || (propertyValue == null))
+        {
+            return;
+        }
+
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        if (configurationProperties == null)
+        {
+            configurationProperties = new HashMap<>();
+        }
+        else
+        {
+            configurationProperties = new HashMap<>(configurationProperties);
+        }
+
+        configurationProperties.put(propertyName, propertyValue);
+
+        connectionBean.setConfigurationProperties(configurationProperties);
+    }
+
+
+    /**
      * Build the connection pool for this database.
      *
      * @param configurationProperties the connector's configuration properties - may be null
@@ -231,7 +272,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         poolConfig.setMaximumPoolSize((int) this.getLongConfigurationProperty(configurationProperties,
                                                                              JDBCConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName(),
-                                                                             5L));
+                                                                             10L));
         poolConfig.setMinimumIdle((int) this.getLongConfigurationProperty(configurationProperties,
                                                                          JDBCConfigurationProperty.JDBC_MINIMUM_IDLE.getName(),
                                                                          1L));

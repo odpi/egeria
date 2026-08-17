@@ -3,13 +3,23 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+// Adds the 'api' configuration (not available under the plain 'java' plugin applied to all subprojects)
+// so that open-metadata-framework, which is part of this module's public API, can be exposed transitively.
+plugins {
+    id 'java-library'
+}
 
 dependencies {
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // jackson-databind's ObjectMapper isn't referenced directly in OCF source - only needed at runtime
+    runtimeOnly 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    // api, not implementation - AuditLog is part of the public constructor/method signatures of OCF's
+    // connector base classes, so consumers need it on their own compile classpath too
+    api project(':open-metadata-implementation:frameworks:audit-log-framework')
+    // api, not implementation - ConnectorCheckedException and other public OCF classes extend/expose
+    // types from open-metadata-framework, so consumers need it on their own compile classpath too
+    api project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation 'org.testng:testng'
 }
 

@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = ExplorerActionServiceProperties.class, name = "ExplorerActionServiceProperties"),
         @JsonSubTypes.Type(value = GovernanceActionServiceProperties.class, name = "GovernanceActionServiceProperties"),
         @JsonSubTypes.Type(value = RepositoryGovernanceServiceProperties.class, name = "RepositoryGovernanceServiceProperties"),
         @JsonSubTypes.Type(value = SurveyActionServiceProperties.class, name = "SurveyActionServiceProperties"),

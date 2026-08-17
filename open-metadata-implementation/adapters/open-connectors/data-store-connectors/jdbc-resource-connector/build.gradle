@@ -27,6 +27,8 @@ dependencies {
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     testCompileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    // open-metadata-framework is exposed transitively via open-connector-framework's api dependency
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
 }

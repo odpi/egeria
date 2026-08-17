@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeExcept
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -66,6 +67,13 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
                         try
                         {
+                            /*
+                             * Pass any pool sizing supplied on this repository's own configuration down to the
+                             * embedded connector.  This must happen before it is started, since that is when the
+                             * pool is built.
+                             */
+                            this.passThroughConfigurationProperty(PostgresConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName());
+
                             if (! jdbcResourceConnector.isActive())
                             {
                                 jdbcResourceConnector.start();
@@ -109,6 +117,25 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                     }
                 }
             }
+        }
+    }
+
+
+    /**
+     * Copy a configuration property from this repository's configuration to the embedded JDBC resource connector,
+     * so that it can be tuned where the repository is configured rather than only on the embedded connection.
+     * Nothing is passed if this repository does not set the property; the embedded connector then uses its own
+     * value or its default.
+     *
+     * @param propertyName name of the property, which must be spelled the same in both connectors
+     */
+    private void passThroughConfigurationProperty(String propertyName)
+    {
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        if (configurationProperties != null)
+        {
+            jdbcResourceConnector.setConfigurationProperty(propertyName, configurationProperties.get(propertyName));
         }
     }
 

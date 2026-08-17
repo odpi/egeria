@@ -62,11 +62,16 @@ public enum JDBCConfigurationProperty
     ADDITIONAL_CONNECTION_PROPERTIES("additionalConnectionProperties", "Additional properties passed straight through to the JDBC driver on every connection. For example, Oracle's driver needs remarksReporting=true to return table/column REMARKS (comments) via DatabaseMetaData - without it they are silently omitted.", DataType.MAP_STRING_STRING.getDisplayName(), "{\"remarksReporting\": \"true\"}"),
 
     /**
-     * The maximum number of database connections this connector will hold open at once.  Note that a separate pool is
-     * created for each connector instance - and one connector instance is created per catalog target - so this value
-     * is multiplied by the number of catalog targets when sizing the database server.
+     * The maximum number of database connections this connector will hold open at once.  A separate pool is created
+     * for each connector instance, so the right value depends on what the connector instance is serving.  A connector
+     * embedded in a repository or audit log destination is the single route to the database for a whole server and
+     * wants the default or more; a connector created per catalog target serves one target, so its value is multiplied
+     * by the number of catalog targets when sizing the database server and is usually better set lower.
+     * <br><br>
+     * A hosting connector may pass its own value for this property straight through to the connector it embeds, and
+     * that value takes precedence over one set on the embedded connection.
      */
-    JDBC_MAXIMUM_POOL_SIZE("jdbcMaximumPoolSize", "The maximum number of database connections this connector will hold open at once. Note that a separate pool is created for each connector instance - and one connector instance is created per catalog target - so this value is multiplied by the number of catalog targets when sizing the database server.", DataType.INT.getDisplayName(), "5"),
+    JDBC_MAXIMUM_POOL_SIZE("jdbcMaximumPoolSize", "The maximum number of database connections this connector will hold open at once. A separate pool is created for each connector instance, so the right value depends on what the connector instance is serving. A connector embedded in a repository or audit log destination is the single route to the database for a whole server and wants the default or more; a connector created per catalog target serves one target, so its value is multiplied by the number of catalog targets when sizing the database server and is usually better set lower. A hosting connector may pass its own value for this property straight through to the connector it embeds, and that value takes precedence over one set on the embedded connection.", DataType.INT.getDisplayName(), "10"),
 
     /**
      * The minimum number of idle connections the pool keeps ready.  Setting this equal to jdbcMaximumPoolSize gives a

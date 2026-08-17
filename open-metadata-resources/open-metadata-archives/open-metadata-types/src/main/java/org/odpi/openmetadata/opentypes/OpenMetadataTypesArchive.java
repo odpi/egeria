@@ -177,6 +177,7 @@ public class OpenMetadataTypesArchive
         update0424GovernanceZones();
         update0451Notifications();
         update0455ExceptionManagement();
+        update0461GovernanceEngines();
         update0463EngineActions();
         update0485DataProcessingPurposes();
         update0505SchemaAttributes();
@@ -1244,6 +1245,35 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0461GovernanceEngines()
+    {
+        this.archiveBuilder.addEntityDef(getExplorerActionEngine());
+        this.archiveBuilder.addEntityDef(getExplorerActionService());
+
+
+    }
+
+    private EntityDef getExplorerActionEngine()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXPLORER_ACTION_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName));
+    }
+
+
+    private EntityDef getExplorerActionService()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXPLORER_ACTION_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName));
+    }
+
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

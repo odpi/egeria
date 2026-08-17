@@ -16941,7 +16941,11 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_SERVICE.typeName))
                                 {
-                                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName))
+                                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXPLORER_ACTION_SERVICE.typeName))
+                                    {
+                                        beanProperties = new ExplorerActionServiceProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName))
                                     {
                                         beanProperties = new GovernanceActionServiceProperties();
                                     }
@@ -17269,7 +17273,11 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ENGINE.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXPLORER_ACTION_ENGINE.typeName))
+                            {
+                                beanProperties = new ExplorerActionEngineProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName))
                             {
                                 beanProperties = new GovernanceActionEngineProperties();
                             }
