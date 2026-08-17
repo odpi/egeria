@@ -834,7 +834,7 @@ public class ElementHeader extends ElementControlHeader
      */
     public List<ElementClassification> getGlossaryTermKinds()
     {
-        return locationKinds;
+        return glossaryTermKinds;
     }
 
 
