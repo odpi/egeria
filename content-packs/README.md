@@ -62,19 +62,19 @@ templates, connectors and governance services for working with a PostgreSQL Serv
 PostgreSQL services, databases and tables, along with the function to survey the contents of PostgreSQL databases and
 catalog their schemas.
 
-* **MSSQLContentPack** - reference data, templates, connectors and governance services for working with a Microsoft
+* **[MSSQLContentPack](https://egeria-project.org/content-packs/mssql-content-pack/overview)** - reference data, templates, connectors and governance services for working with a Microsoft
 SQL Server.  It provides templates for Microsoft SQL Server services and databases, along with the function to survey
 the contents of Microsoft SQL Server databases and catalog their schemas.
 
-* **OracleContentPack** - reference data, templates, connectors and governance services for working with an Oracle
+* **[OracleContentPack](https://egeria-project.org/content-packs/oracle-content-pack/overview)** - reference data, templates, connectors and governance services for working with an Oracle
 Database Server.  It provides templates for Oracle Database servers and pluggable databases, along with the function
 to survey the contents of Oracle pluggable databases and catalog their schemas.
 
-* **DB2LUWContentPack** - reference data, templates, connectors and governance services for working with an IBM Db2
+* **[DB2LUWContentPack](https://egeria-project.org/content-packs/db2luw-content-pack/overview)** - reference data, templates, connectors and governance services for working with an IBM Db2
 for Linux, UNIX and Windows (LUW / UDB) Server.  It provides templates for Db2 servers and databases, along with the
 function to survey the contents of Db2 databases and catalog their schemas.
 
-* **DuckDBContentPack** - reference data, templates, connectors and governance services for working with a DuckDB
+* **[DuckDBContentPack](https://egeria-project.org/content-packs/duckdb-content-pack/overview)** - reference data, templates, connectors and governance services for working with a DuckDB
 database.  It provides a template for DuckDB databases, along with the function to survey the contents of a DuckDB
 database - including its attached and federated data sources - and catalog its schemas.
 

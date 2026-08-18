@@ -13,7 +13,8 @@ import java.util.List;
 
 
 /**
- * BigGlossariesArchiveWriter creates 10 glossaries, each containing 10,000 unique terms.
+ * BigGlossariesArchiveWriter creates 26 glossaries (BigGlossaryA to BigGlossaryZ), each containing 3,000 unique
+ * terms, and writes each one to its own open metadata archive file.
  */
 public class BigGlossariesArchiveWriter extends OMRSArchiveWriter
 {
