@@ -204,7 +204,7 @@ public class AssetCatalogInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the main Asset Consumer OMAS client.
+     * Return the main Asset Maker client.
      *
      * @return client
      */

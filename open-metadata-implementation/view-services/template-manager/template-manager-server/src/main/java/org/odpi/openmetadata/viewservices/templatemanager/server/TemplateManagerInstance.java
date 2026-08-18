@@ -68,8 +68,7 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the template manager client.  This client is from the Digital Architecture OMAS and is for maintaining
-     * template classifications and associated specifications.
+     * Return the template manager client.  This client is for maintaining template classifications and associated specifications.
      *
      * @return client
      */
@@ -80,8 +79,7 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open metadata store client.  This client is from the Digital Architecture OMAS and
-     * provides a generic interface to open metadata.
+     * Return the open metadata store client.  This client provides a generic interface to open metadata.
      *
      * @return client
      */

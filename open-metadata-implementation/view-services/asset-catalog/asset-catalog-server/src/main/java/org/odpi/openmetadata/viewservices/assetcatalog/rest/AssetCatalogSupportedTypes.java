@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AssetCatalogSupportedTypes is the response structure used on the Asset Catalog OMAS REST API calls that returns
+ * AssetCatalogSupportedTypes is the response structure used on the Open Metadata Framework REST API calls that returns
  * the Open Metadata Types supported for search as a response.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)

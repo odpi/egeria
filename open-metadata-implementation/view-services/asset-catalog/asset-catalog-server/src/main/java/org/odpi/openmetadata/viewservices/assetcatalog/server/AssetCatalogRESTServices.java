@@ -261,7 +261,7 @@ public class AssetCatalogRESTServices extends TokenController
      * The list is deduplicated.
      *
      * @param serverName name of the server to route the request to
-     * @return the supported types from Asset Consumer OMAS or
+     * @return the supported types from open metadata or
      * PropertyServerException if a configuration on the backend
      * InvalidParameterException if parameter validation fails
      * UserNotAuthorizedException security access problem

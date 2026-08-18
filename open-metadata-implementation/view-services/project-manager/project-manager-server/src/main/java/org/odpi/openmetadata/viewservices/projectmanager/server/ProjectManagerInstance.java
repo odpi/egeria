@@ -71,7 +71,7 @@ public class ProjectManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the project management client.  This client is from Project Management OMAS and is for maintaining projects.
+     * Return the project management client.  This client is for maintaining projects.
      *
      * @return client
      */
