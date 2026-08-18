@@ -5,9 +5,11 @@
   
 The open metadata samples illustrate how to use the various APIs of Egeria.
 
-* [Open Metadata Access Services (OMASs) samples](access-services-samples) - illustrations of how to call some of the access services.
+* [Governance Action Samples](governance-action-samples) - sample [governance services](https://egeria-project.org/concepts/governance-service/)
+  used in the [Coco Pharmaceuticals](https://egeria-project.org/practices/coco-pharmaceuticals/) scenarios.
 
-* [Admin Services samples](admin-services-samples) - illustrations of how to call some of the admin services.
+* [Sample Data](sample-data) - sample data files, databases and directory content used by the demos.
+  These are shipped in the `opt/sample-data` directory of the OMAG Server Platform assembly.
 
 * [Sample Metadata](sample-metadata) - illustrations of how to implement Open Metadata Archives.
 

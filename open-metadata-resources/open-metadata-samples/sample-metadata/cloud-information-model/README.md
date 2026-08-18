@@ -6,8 +6,10 @@
 This module builds the Cloud Information Model open metadata archive from the `jsonld` model that is downloadable 
 from the [Egeria GitHub Repository](https://raw.githubusercontent.com/odpi/egeria/refs/heads/main/cloud-information-model.jsonld).
 
-The resulting open metadata archive can be found at [content-packs/CloudInformationModel.omarchive](https://raw.githubusercontent.com/odpi/egeria/refs/heads/main/content-packs/CloudInformationModel.omarchive).
-It is included in the standard Egeria distribution so it can be loaded through the [Runtime Manager OMVS](https://egeria-project.org/services/omvs/runtime-manager/overview/).
+Running the archive writer creates `CloudInformationModel.omarchive` in the repository's `content-packs`
+directory.  Unlike the other content packs, it is not committed to the repository, so build it yourself when
+you want it.  Once built, it can be loaded into a running server through the
+[Runtime Manager OMVS](https://egeria-project.org/services/omvs/runtime-manager/overview/).
 
 ## Construction process
 

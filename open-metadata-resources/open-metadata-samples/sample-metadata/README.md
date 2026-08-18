@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-## Sample Metadata
+# Sample Metadata
 
 Sample metadata provides the utilities to load a metadata server with a variety of sample
 metadata which can be used for demos.  This metadata may then be exported into an
@@ -24,7 +24,7 @@ The utilities that load metadata into a repository are as follows:
   definitions, its business systems catalog and lineage (intended for **cocoMDS5**), and its sustainability
   initiative definitions.
 
-* [Big Glossaries](big-glossaries) creates 10 glossaries of 10,000 unique terms each in their own archive
+* [Big Glossaries](big-glossaries) creates 26 glossaries of 3,000 unique terms each in their own archive
   file, used for testing that a deployment environment has enough resources to manage a large repository.
 
 * [Cloud Information Model](cloud-information-model) builds the Cloud Information Model open metadata
@@ -34,7 +34,7 @@ The utilities that load metadata into a repository are as follows:
 
 ----
 
-* Return to the [open metadata samples](.)
+* Return to the [open metadata samples](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

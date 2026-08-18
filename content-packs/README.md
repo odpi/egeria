@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project 2024. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Content Packs
 
@@ -9,86 +9,160 @@ and can be loaded using the Administration Services
 [at server start up](https://egeria-project.org/guides/admin/servers/configuring-the-startup-archives)
 or [while the server is running](https://egeria-project.org/guides/operations/adding-archive-to-running-server).
 
-They are as follows:
+This directory holds the archives that are built by the Egeria build and shipped in the *omag-server-platform*
+assembly, where they are found in the `platform/content-packs` directory.
 
-* **[CoreContentPack](https://egeria-project.org/content-packs/core-content-pack/overview)** - contains the definitions for the file and open lineage connectors supplied in this distribution along with the valid metadata values for the technologies they support and useful governance action processes.
+## Technology content packs
+
+These archives contain the metadata descriptions of the connectors supplied by Egeria, along with the associated
+templates, reference data, governance engines and integration groups needed to use them.  They are all built by the
+[core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+
+* **[CoreContentPack](https://egeria-project.org/content-packs/core-content-pack/overview)** - base connector types
+and categories for the connectors from the Egeria project, along with metadata valid values, templates, and
+connectors for the basic types of technology that these connectors support.
 This content pack is designed to provide a good starting point for a new Egeria deployment.
-It is loaded automatically in the *active-metadata-store* sample server.
-As it loads, the integration connectors defined in its content start up in the *integration-daemon* server, and the governance engines it defines will start up in the *engine-host*.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+It is loaded automatically in the *active-metadata-store* sample server.  As it loads, the integration connectors
+defined in its content start up in the *integration-daemon* server, and the governance engines it defines start up
+in the *engine-host* server.
 
-* **[ApacheAtlasContentPack](https://egeria-project.org/content-packs/apache-atlas-content-pack/overview)** - contains the connector definitions for the Apache Atlas connectors and governance services supplied in the *omag-server-platform* distribution along with the valid metadata values for the technologies they support. This content pack is designed to provide a good starting point for connecting Egeria to Apache Atlas.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[EgeriaContentPack](https://egeria-project.org/content-packs/egeria-content-pack/overview)** - cataloguing and
+monitoring the Egeria infrastructure itself.
 
-* **[ApacheKafkaContentPack](https://egeria-project.org/content-packs/apache-kafka-content-pack/overview)** - contains the connector definitions for the Apache Kafka connectors and governance services supplied in the *omag-server-platform* distribution along with the valid metadata values for the technologies they support. This content pack is designed to provide a good starting point for connecting Egeria to Apache Kafka.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[FilesContentPack](https://egeria-project.org/content-packs/files-content-pack/overview)** - surveying and
+cataloguing files in the file system.
 
-* **[APIsContentPack](https://egeria-project.org/content-packs/apis-content-pack/overview)** - contains the connector definitions for the connector the catalogs an open API through its swagger REST API.  This connector is supplied in the *omag-server-platform* distribution. This content pack is designed to provide a good starting point for connecting Egeria to applications supporting the open API specification in order to build an API catalog.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[APIsContentPack](https://egeria-project.org/content-packs/apis-content-pack/overview)** - reference data,
+templates, connectors and governance services for working with REST APIs via their swagger interface.  This is a
+good starting point for building an API catalog.
 
-* **[ObservabilityContentPack](https://egeria-project.org/content-packs/observability-content-pack/overview)** - contains the connector definitions for the connectors that capture observations about the open metadata ecosystem.  These connectors are supplied in the *omag-server-platform* distribution. This content pack is designed to load a PostgreSQL database with key observations that can be used for building a dashboard.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[OpenLineageContentPack](https://egeria-project.org/content-packs/open-lineage-content-pack/overview)** - capture
+open lineage events and harvest assets and relationships from them; generate open lineage from running governance
+action processes; and save and distribute open lineage events, both those received from third parties and those
+generated by Egeria.
 
-* **[PostgreSQLContentPack](https://egeria-project.org/content-packs/postgres-content-pack/overview)** - contains the connector definitions for the PostgreSQL connectors and governance services supplied in the *omag-server-platform* distribution along with the valid metadata values for the technologies they support. This content pack is designed to provide a good starting point for connecting Egeria to PostgreSQL databases.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[OrganizationInsightContentPack](https://egeria-project.org/content-packs/observability-content-pack/overview)** -
+monitoring, analysis and capture of insight into organization activity and effectiveness.  This content pack is
+designed to load a PostgreSQL database with key observations that can be used for building a dashboard.
 
-* **[UnityCatalogContentPack](https://egeria-project.org/content-packs/unity-catalog-content-pack/overview)** - contains the connector definitions for the Unity Catalog connectors and governance services supplied in the *omag-server-platform* distribution along with the valid metadata values for the technologies they support. This content pack is designed to provide a good starting point for connecting Egeria to Unity Catalog.
-This content pack is built by the [core-content-pack](../open-metadata-resources/open-metadata-archives/core-content-pack) module.
+* **[OpenMetadataDigitalProductsContentPack](https://egeria-project.org/content-packs/products-content-pack/overview)** -
+open metadata collections packaged into dynamic digital products.
 
-* **[CloudInformationModel](https://egeria-project.org/content-packs/cim-content-pack/overview)** - glossary from the **Cloud Information Model**'s
-[JSONLD formatted model](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/master/dist/model.jsonld).
-The content covers basic commerce concepts such as Party, Product, Invoice and Shipping.
-The cloud information project has been archived.  However, this is a useful starter set glossary,
-This content pack is built by the [cloud-information-model](../open-metadata-resources/open-metadata-samples/sample-metadata/cloud-information-model) module.
+* **[ApacheAtlasContentPack](https://egeria-project.org/content-packs/apache-atlas-content-pack/overview)** -
+reference data, templates, connectors and governance services for working with Apache Atlas.
 
-* **[OpenMetadataTypes](https://egeria-project.org/content-packs/types-content-pack/overview)** - Archive of the open metadata types defined by Egeria.
-This archive contains all the open metadata type definitions provided by Egeria.
-It is supplied for external utilities since each OMAG server capable of being a cohort member will load these types on start up.
-This content pack is built by the [open-metadata-types-utility](../open-metadata-resources/open-metadata-archives/open-metadata-types-utility) module using the definitions in the [open-metadata-types](../open-metadata-resources/open-metadata-archives/open-metadata-types) module.
+* **[ApacheKafkaContentPack](https://egeria-project.org/content-packs/apache-kafka-content-pack/overview)** -
+reference data, templates, connectors and governance services for working with an Apache Kafka Server.
 
-* **[CocoComboArchive](https://egeria-project.org/content-packs/coco-content-pack/overview)** - supplies metadata to support the [Coco Pharmaceuticals scenarios](https://egeria-project.org/practices/coco-pharmaceuticals/).  
+* **[UnityCatalogContentPack](https://egeria-project.org/content-packs/unity-catalog-content-pack/overview)** -
+reference data, templates, connectors and governance services for working with Unity Catalog.
+
+* **[PostgresContentPack](https://egeria-project.org/content-packs/postgres-content-pack/overview)** - reference data,
+templates, connectors and governance services for working with a PostgreSQL Server.  It provides templates for
+PostgreSQL services, databases and tables, along with the function to survey the contents of PostgreSQL databases and
+catalog their schemas.
+
+* **MSSQLContentPack** - reference data, templates, connectors and governance services for working with a Microsoft
+SQL Server.  It provides templates for Microsoft SQL Server services and databases, along with the function to survey
+the contents of Microsoft SQL Server databases and catalog their schemas.
+
+* **OracleContentPack** - reference data, templates, connectors and governance services for working with an Oracle
+Database Server.  It provides templates for Oracle Database servers and pluggable databases, along with the function
+to survey the contents of Oracle pluggable databases and catalog their schemas.
+
+* **DB2LUWContentPack** - reference data, templates, connectors and governance services for working with an IBM Db2
+for Linux, UNIX and Windows (LUW / UDB) Server.  It provides templates for Db2 servers and databases, along with the
+function to survey the contents of Db2 databases and catalog their schemas.
+
+* **DuckDBContentPack** - reference data, templates, connectors and governance services for working with a DuckDB
+database.  It provides a template for DuckDB databases, along with the function to survey the contents of a DuckDB
+database - including its attached and federated data sources - and catalog its schemas.
+
+## Open metadata types
+
+* **[OpenMetadataTypes](https://egeria-project.org/content-packs/types-content-pack/overview)** - an archive of all
+the open metadata type definitions provided by Egeria.
+It is supplied for external utilities, since each OMAG server capable of being a cohort member loads these types on
+start up.
+This archive is built by the
+[open-metadata-types-utility](../open-metadata-resources/open-metadata-archives/open-metadata-types-utility) module
+using the definitions in the
+[open-metadata-types](../open-metadata-resources/open-metadata-archives/open-metadata-types) module.
+
+## Sample metadata
+
+* **[CocoComboArchive](https://egeria-project.org/content-packs/coco-content-pack/overview)** - supplies metadata to
+support the [Coco Pharmaceuticals scenarios](https://egeria-project.org/practices/coco-pharmaceuticals/).
 It is a useful content pack to load when experimenting with Egeria's capabilities since it provides examples of many
-types of open metadata.  In addition, this metadata is also available in the following archives that are used in the
-[Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/)
-where different subsets of this metadata are loading into each of the servers.
+types of open metadata.  It is loaded automatically in the *active-metadata-store* sample server.
+The same metadata is also available in the following individual archives, which are used in the
+[Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/) where different subsets of
+this metadata are loaded into each of the servers:
 
-  * **CocoBusinessSystemsArchive** provides a catalog of the business systems and the lineage between
+  * **CocoBusinessSystemsArchive** - provides a catalog of the business systems and the lineage between
   them and the load of their data into the data lake.  This archive simulates the type of metadata expected from
   an ETL tool suite.  It is intended for **cocoMDS5** in the open metadata labs but can be used in any server.
 
-  * **CocoOrganizationArchive** - provides the profiles, user identifies and team of the featured
+  * **CocoOrganizationArchive** - provides the profiles, user identities and teams of the featured
   personas of Coco Pharmaceuticals.
 
-  * **CocoClinicalTrialsTemplatesArchive** - provides the template assets used for onboarding weekly patient measurements during a clinical trial.
+  * **CocoClinicalTrialsTemplatesArchive** - provides the template assets used for onboarding weekly patient
+  measurements during a clinical trial.
 
-  * **CocoGovernanceProgramArchive** - provides the metadata to describe Coco Pharmaceuticals governance program.
+  * **CocoGovernanceProgramArchive** - provides the metadata to describe Coco Pharmaceuticals' governance program.
 
-  * **CocoGovernanceEngineDefinitionsArchive** - provides the metadata to describe Coco Pharmaceuticals three governance engines:
-  `AssetGovernance`, `AssetDiscovery` and `AssetQuality`.
+  * **CocoGovernanceEngineDefinitionsArchive** - provides the metadata to describe Coco Pharmaceuticals' three
+  governance engines: `AssetGovernance`, `AssetDiscovery` and `AssetQuality`.
 
-  * **CocoSustainabilityArchive** - provides the base definitions for Coco Pharmaceutical's sustainability initiative.
+  * **CocoSustainabilityArchive** - provides the base definitions for Coco Pharmaceuticals' sustainability initiative.
 
-  * **CocoTypesArchive** - provides additional types for Coco Pharmaceuticals.  These are `BiopsyScope` Enum, `BiopsyReport` Entity, `BiopsySupportingEvidence` Relationship and
-  `ReviewedByClinicalTrials` Classification.
+  * **CocoTypesArchive** - provides additional types for Coco Pharmaceuticals.  These are the `BiopsyScope` enum,
+  the `BiopsyReport` entity, the `BiopsySupportingEvidence` relationship and the `ReviewedByClinicalTrials`
+  classification.
 
-  These content packs are built by the [coco-metadata-archives](../open-metadata-resources/open-metadata-samples/sample-metadata/coco-metadata-archives) module.
+  These archives are built by the
+  [coco-metadata-archives](../open-metadata-resources/open-metadata-samples/sample-metadata/coco-metadata-archives)
+  module.
 
-* **SimpleCatalog** - provides an example of a database, an API and an event structure linked to a glossary term.
+* **[SimpleCatalog](https://egeria-project.org/content-packs/simple-content-pack/overview)** - provides an example of
+a database, an API and an event structure linked to a glossary term.
 It is loaded automatically in the *simple-metadata-store* sample server.
-SimpleCatalog is also supplied as four archives for use in a demo showing 4 metadata access servers connected together in a single cohort.
-The archives are each loaded into a different server.
-It is then possible to show how the cohort integrates metadata from different catalogs.
-These archives are used in the *Development labs* which are part of the [Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
+SimpleCatalog is also supplied as four archives for use in a demo showing four metadata access servers connected
+together in a single cohort.
+Each archive is loaded into a different server, making it possible to show how the cohort integrates metadata from
+different catalogs.
+These archives are used in the *Development labs*, which are part of the
+[Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
   * **SimpleAPICatalog** - API metadata typically found in an API catalog.
 
-  * **SimpleDataCatalog** - Database metadata typically found in an Data catalog.
+  * **SimpleDataCatalog** - database metadata typically found in a data catalog.
 
-  * **SimpleEventCatalog** - Event metadata typically found in an API catalog.
+  * **SimpleEventCatalog** - event metadata typically found in an event catalog.
 
-  * **SimpleGovernanceCatalog** - A glossary term linked to metadata elements in the API, Event, Data catalogs.
+  * **SimpleGovernanceCatalog** - a glossary term linked to metadata elements in the API, event and data catalogs.
 
-  These content packs are built by the [simple-catalogs](../open-metadata-resources/open-metadata-samples/sample-metadata/simple-catalogs) module.
+  These archives are built by the
+  [simple-catalogs](../open-metadata-resources/open-metadata-samples/sample-metadata/simple-catalogs) module.
+
+## Archives that are built on demand
+
+These archives are not committed to this directory, and so are not part of the standard distribution.  Run the
+utility in the module named below to create them here, after which they are picked up by the next build.
+
+* **[CloudInformationModel](https://egeria-project.org/content-packs/cim-content-pack/overview)** - a glossary, data
+dictionary and concept model extracted from the **Cloud Information Model**'s
+[JSONLD formatted model](../cloud-information-model.jsonld).
+The content covers basic commerce concepts such as Party, Product, Invoice and Shipping.
+The cloud information model project has been archived, but this remains a useful starter set glossary.
+Built by the
+[cloud-information-model](../open-metadata-resources/open-metadata-samples/sample-metadata/cloud-information-model)
+module.
+
+* **BigGlossaryA** to **BigGlossaryZ** - 26 archives, each containing a glossary of 3,000 unique terms.  They are
+used to test that a deployment environment has enough resources to manage a large repository.
+Built by the
+[big-glossaries](../open-metadata-resources/open-metadata-samples/sample-metadata/big-glossaries) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

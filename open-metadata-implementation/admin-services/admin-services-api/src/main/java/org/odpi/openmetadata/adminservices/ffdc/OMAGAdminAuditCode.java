@@ -31,73 +31,6 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
               "Determine if this service is needed in the server.  Remove it from the configuration is it is not.  If it is needed, add the jar file for the service into the platform's lib (or extra) directory to ensure it is picked up.  If the jar file is in the correct place then examine its implementation to ensure it registers with the runtime."),
 
     /**
-     * OMAG-ADMIN-0201 - The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones
-     */
-    ALL_ZONES("OMAG-ADMIN-0201",
-              AuditLogRecordSeverityLevel.STARTUP,
-              "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",
-              "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                      "This means it is providing access to all Assets irrespective of the zone(s) they are assigned to.",
-              "No action is required if this access service should be giving access to all assets in the open metadata ecosystem.  " +
-                      "If this scope is too broad then set up a list of zones in the SupportedZones property for this access service."),
-
-    /**
-     * OMAG-ADMIN-0202 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}
-     */
-    SUPPORTED_ZONES("OMAG-ADMIN-0202",
-                    AuditLogRecordSeverityLevel.STARTUP,
-                    "The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}",
-                    "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                            "This means it is only providing access to the Assets from these zone(s).",
-                    "Verify that these zones are the right set for this service."),
-
-    /**
-     * OMAG-ADMIN-0203 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}
-     */
-    DEFAULT_ZONES("OMAG-ADMIN-0203",
-                  AuditLogRecordSeverityLevel.STARTUP,
-                  "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}",
-                  "The access service was passed a list of governance zones in the DefaultZones property of the access services options.",
-                  "Verify that this is the intended value for this service."),
-
-    /**
-     * OMAG-ADMIN-0204 - The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata
-     */
-    KARMA_POINT_COLLECTION_INCREMENT("OMAG-ADMIN-0204",
-                                     AuditLogRecordSeverityLevel.STARTUP,
-                                     "The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata",
-                                     "The access service was passed this value in the KarmaPointInterval property of the access service's options.",
-                                     "Verify that this interval is correct for your organization."),
-
-    /**
-     * OMAG-ADMIN-0205 - The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server
-     */
-    NO_KARMA_POINT_COLLECTION("OMAG-ADMIN-0205",
-                              AuditLogRecordSeverityLevel.STARTUP,
-                              "The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server",
-                              "The access service can be configured to collect karma points by setting the KarmaPointIncrement property of the access service's options.",
-                              "Verify that karma points are not required for your organization.  They are intended to reward individuals " +
-                                      "who contribute to the open metadata ecosystem."),
-
-    /**
-     * OMAG-ADMIN-0206 - The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}
-     */
-    PLATEAU_THRESHOLD("OMAG-ADMIN-0206",
-                      AuditLogRecordSeverityLevel.STARTUP,
-                      "The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}",
-                      "The access service was passed this value in the KarmaPointThreshold property of the access service's options.",
-                      "Verify that this threshold is correct for your organization."),
-
-    /**
-     * OMAG-ADMIN-0207 - The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}
-     */
-    DEFAULT_PLATEAU_THRESHOLD("OMAG-ADMIN-0207",
-                              AuditLogRecordSeverityLevel.STARTUP,
-                              "The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}",
-                              "This default value can be overridden with the KarmaPointThreshold property of the access service's options.",
-                              "Verify that this default threshold is correct for your organization."),
-
-    /**
      * OMAG-ADMIN-0208 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property
      */
     BAD_CONFIG_PROPERTY("OMAG-ADMIN-0208",
@@ -147,36 +80,6 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                  "This is an internal error.  The access service is not using a valid connector provider.",
                                  "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
 
-    /**
-     * OMAG-ADMIN-0213 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}
-     */
-    PUBLISH_ZONES("OMAG-ADMIN-0213",
-                  AuditLogRecordSeverityLevel.STARTUP,
-                  "The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}",
-                  "The access service was passed a list of governance zones in the PublishZones property of the access services options " +
-                          "and will use it to set the zones for an asset that is published from this access service.",
-                  "Verify that this is the intended value for this service (null means that the published " +
-                          "asset will be visible in all zones."),
-
-    /**
-     * OMAG-ADMIN-0214 - The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}
-     */
-    RESOURCE_ENDPOINTS("OMAG-ADMIN-0214",
-                  AuditLogRecordSeverityLevel.STARTUP,
-                  "The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}",
-                  "The view service was passed a list of resource endpoints in the resourceEndpoints property of the view services options " +
-                          "and will use it to set the endpoints that the view service may query.",
-                  "Verify that this is the intended value for this service (null means that the view service will not be able to perform queries."),
-
-
-    /**
-     * OMAG-ADMIN-0215 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}
-     */
-    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW("OMAG-ADMIN-0215",
-                                       AuditLogRecordSeverityLevel.STARTUP,
-                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
-                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
-                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
     /**
      * OMAG-ADMIN-0216 - The {0} Open Metadata View Service (OMAS) is supporting the access to all types of assets
