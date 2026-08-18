@@ -198,7 +198,6 @@ org.odpi.openmetadata.adminservices.ffdc.exception
 org.odpi.openmetadata.adminservices.properties
 org.odpi.openmetadata.adminservices.registration
 org.odpi.openmetadata.adminservices.rest
-org.odpi.openmetadata.adminservices.samples.configure
 org.odpi.openmetadata.adminservices.server
 org.odpi.openmetadata.adminservices.spring
 org.odpi.openmetadata.adminservices.store
@@ -423,9 +422,6 @@ org.odpi.openmetadata.frameworkservices.omf.outtopic
 org.odpi.openmetadata.frameworkservices.omf.rest
 org.odpi.openmetadata.frameworkservices.omf.server
 org.odpi.openmetadata.frameworkservices.omf.server.spring
-org.odpi.openmetadata.fvt.utilities
-org.odpi.openmetadata.fvt.utilities.auditlog
-org.odpi.openmetadata.fvt.utilities.exceptions
 org.odpi.openmetadata.governanceservers.enginehostservices.admin
 org.odpi.openmetadata.governanceservers.enginehostservices.api
 org.odpi.openmetadata.governanceservers.enginehostservices.client
@@ -538,8 +534,6 @@ org.odpi.openmetadata.tokenmanager.http
 org.odpi.openmetadata.userauthn
 org.odpi.openmetadata.userauthn.auth
 org.odpi.openmetadata.utilities.guidgenerator
-org.odpi.openmetadata.utilities.serverconfig
-org.odpi.openmetadata.utilities.serverops
 org.odpi.openmetadata.viewservices.actionauthor.admin
 org.odpi.openmetadata.viewservices.actionauthor.ffdc
 org.odpi.openmetadata.viewservices.actionauthor.server
