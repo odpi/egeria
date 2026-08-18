@@ -15,9 +15,6 @@ deployment configurations of Egeria and other integrated technology.
 that help developers work with different features of the
 [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/).
 
-* **[open-metadata-reports](open-metadata-reports)** - the open metadata reports extract information from the
-OMAG Server Platform and the open metadata repositories.
-
 * **[open-metadata-samples](open-metadata-samples)** - provides samples of different types of plugin components.
 
 ----

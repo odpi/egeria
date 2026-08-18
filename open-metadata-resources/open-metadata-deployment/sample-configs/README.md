@@ -3,13 +3,13 @@
 
 # Default server configurations
 
-This directory contains the server configurations for the five [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that make up the default configuration:
+This directory contains the server configurations for the six [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that make up the default configuration:
 
 * **simple-metadata-store** is a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store/)
   that provides REST APIs for retrieving and maintaining open metadata.
   This server is set up to use a repository that keeps its metadata in memory.
-  It loads the [Simple Catalog Content Pack](https://egeria-project.org/content-packs/simple-content-pack/overview/).
-  This means that each time the server is restarted, it starts with just the content of the Simple Catalog Content Pack
+  It loads the *SimpleCatalog* archive.
+  This means that each time the server is restarted, it starts with just the content of the *SimpleCatalog* archive
   in its repository.  
 
 The `simple-metadata-store` server is not configured to use Apache Kafka and so it does not produce events
@@ -21,27 +21,35 @@ The Apache Kafka broker should be listening at `localhost:9092`.
   event notifications each time there is change in the metadata.  It is also storing its
   metadata in memory.
   
-  This server automatically loads the
-  [Core Content Pack](https://egeria-project.org/content-packs/core-content-pack/overview/),
-  [Egeria Content Pack](https://egeria-project.org/content-packs/egeria-content-pack/overview/),
-  [Files Content Pack](https://egeria-project.org/content-packs/files-content-pack/overview/),
-  [Open Lineage Content Pack](https://egeria-project.org/content-packs/open-lineage-content-pack/overview/),
-  [PostgreSQL Content Pack](https://egeria-project.org/content-packs/postgres-content-pack/overview/),
-  [Jacquard Harvester Content Pack](https://egeria-project.org/content-packs/jacquard-harvester-content-pack/overview/) and
-  [Organization Insight Content Pack](https://egeria-project.org/content-packs/organization-insight-content-pack/overview/).
+  This server automatically loads the following archives from the platform's `content-packs` directory
+  (see the [Content Pack Catalog](https://egeria-project.org/content-packs/) for what each one contains):
+
+  | Archive | Archive | Archive |
+  |---|---|---|
+  | `CoreContentPack` | `EgeriaContentPack` | `OrganizationInsightContentPack` |
+  | `FilesContentPack` | `APIsContentPack` | `OpenLineageContentPack` |
+  | `PostgresContentPack` | `MSSQLContentPack` | `OracleContentPack` |
+  | `DB2LUWContentPack` | `DuckDBContentPack` | `UnityCatalogContentPack` |
+  | `OpenMetadataDigitalProductsContentPack` | `CocoComboArchive` | `SimpleCatalog` |
 
 * **integration-daemon** is an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/) that
   runs [Integration Connectors](https://egeria-project.org/concepts/integration-connectors/).
   These integration connectors are responsible for cataloguing metadata from external (third party) systems.
-  The configuration of these integration connectors is found in the qs-metadata-store.
+  The configuration of these integration connectors is found in the active-metadata-store.
   For example, it has an integration connector that catalogs files stored on the filesystem.
   It is set up to catalog any file located in `sample-data/data-files`
   under the `platform` directory. It is also looking for additional configuration added to active-metadata-store
-  under the **Egeria:IntegrationGroup:DefaultIntegrationGroup** 
-  [integration group](https://egeria-project.org/concepts/integration-group/).
+  under the **Egeria:IntegrationGroup:Default**
+  [integration group](https://egeria-project.org/concepts/integration-group/), along with the technology-specific
+  integration groups for Apache Atlas, Apache Kafka, databases, DB2 for LUW, DuckDB, files, Microsoft SQL Server,
+  open APIs, open lineage, Oracle, PostgreSQL and Unity Catalog.
 
 * **engine-host** is an [Engine Host](https://egeria-project.org/concepts/engine-host/) that is running the [governance engines](https://egeria-project.org/concepts/governance-engine/)
   used to create and manage metadata.  The configuration of these governance engines is found in the active-metadata-store.
+
+* **nanny-daemon** is a second [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/).
+  Where `integration-daemon` catalogs external systems, `nanny-daemon` runs the integration connectors that
+  monitor the open metadata ecosystem itself, building analytics and new definitions from what they observe.
 
 The final server provides the services for Egeria's python capabilities built around pyegeria.
 
@@ -50,7 +58,15 @@ The final server provides the services for Egeria's python capabilities built ar
   support calls from non-Java environments such as python and javascript.
  Egeria's user interfaces make calls to the view server.
 
-These server configurations can be (re)created using the `BuildSampleconfigs.http` script.
+These server configurations can be (re)created using the `BuildDefaultConfigs.http` script.
+
+The other scripts in this directory adjust the default configuration:
+
+* `AddInMemoryRepository.http` and `AddPostgreSQLRepository.http` switch the local repository used by a
+  metadata access store between the in-memory repository and a PostgreSQL repository.
+* `AddPostgreSQLAuditLogs.http` adds a PostgreSQL audit log destination to the servers.
+* `AddCocoMetadata.http` adds the Coco Pharmaceuticals metadata (see below).
+* `ConnectCohort.http` connects the two metadata stores via a cohort (see below).
 
 ## Starting the servers
 
@@ -59,7 +75,7 @@ Ensure the OMAG Server Platform is running at `https://localhost:7443`.  The ser
 You can edit the `application.properties` file in the `platform` directory and change the `startup.server.list` property to list the servers that should be automatically started when the platform is started:
 ```properties
 # Comma separated names of servers to be started.  The server names should be unquoted.
-startup.server.list=active-metadata-store,engine-host,integration-daemon,view-server
+startup.server.list=active-metadata-store,engine-host,integration-daemon,view-server,nanny-daemon,simple-metadata-store
 ```
 When the platform is restarted the servers start in the order listed.  
 More information on the `application.properties` file can be found in the
@@ -83,11 +99,13 @@ activating the `ClinicalTrials@CocoPharmaceuticals` engine to the `engine-host` 
 
 ## Connecting the metadata stores via a cohort
 
-Running the `ConnectCohort.http` script connects `simple-metadata-store`, `active-metadata-store` and a new [Metadata Access Point](https://egeria-project.org/concepts/metadata-access-point/) server called `metadata-access-point` together in a 
-cohort.  It rewires `view-server` to call `metadata-access-point` to show that it is possible to have a cohort member without a repository, since `view-server` can query the metadata in both `active-metadata-store` and  `simple-metadata-store` when you use the services of `view-server`.
+Running the `ConnectCohort.http` script connects `simple-metadata-store` and `active-metadata-store` together in a
+cohort called `sampleCohort`.  The cohort uses Apache Kafka, so the script also adds the event bus configuration to
+`simple-metadata-store`, which does not have it by default.
 
-(`view-server` is connected to `metadata-access-point`.  The cohort turns requests to `active-metadata-store` into
-a federated query across both `active-metadata-store` and `simple-metadata-store`.
+`view-server` continues to call `active-metadata-store`.  Once the cohort is running, the cohort turns requests to
+`active-metadata-store` into a federated query across both `active-metadata-store` and `simple-metadata-store`, so
+metadata from both repositories is returned through `view-server`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

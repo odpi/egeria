@@ -3,47 +3,54 @@
 
 # docker
 
-This directory contains docker build scripts & assets for creating any images
-needed for Egeria demos & deployments, where such assets do not exist on known
-repositories.
+This directory contains the docker build assets for the images needed by Egeria demos and deployments,
+where such assets do not exist on known repositories.
+
+* **[platform](platform)** - the `Dockerfile` and start up script (`dist/entrypoint.sh`) for the
+  *OMAG Server Platform* image that is published to
+  [DockerHub](https://hub.docker.com/r/odpi/egeria-platform) and
+  [Quay.io](https://quay.io/repository/odpi/egeria-platform?tab=tags&tag=latest).
 
 ## Building
 
-Docker images are not built by default. They can be built manually.
+The docker image is not built by the Gradle build.  Instead, the `Dockerfile` and its start up script are
+copied into the root of the *omag-server-platform* distribution by the
+[omag-server-platform](../../../open-metadata-distribution/omag-server-platform) assembly, alongside the
+`assembly` directory that holds the files to package.
 
-To build, run the following *from within this same directory* (running it at the root level of the
-project will needlessly build the entire Egeria project first):
+To build the image, unpack the distribution tar file, change to its root directory - the one containing
+both `Dockerfile` and `assembly` - and run:
 
 ```bash
-$ mvn -Ddocker -Ddocker.repo=odpi -Ddocker.registry=localhost:5000 clean install
+docker build -t egeria-platform:{tagName} -f Dockerfile .
 ```
 
-In this example:
+replacing `{tagName}` with a name or date to tag this version of the image.  The build packages everything
+under `assembly/platform` into `/deployments` in the image, so add or remove files there first if you want to
+tailor the image - for example, to add your own connectors under `assembly/platform/lib`.
 
-- The `-Ddocker` tells maven (indirectly) to activate the docker profile. This is how the build is enabled since it is
-    disabled by default, since many will not have docker or want to incur the time to rebuild the images. Indirectly
-    refers to the fact we are setting a property, which then causes the profile activation in a submodule.
-- The `-Ddocker.repo=` specifies the repository to use, for docker hub this is usually your username (for individuals).
-    There is no default and if this is not supplied the build will exit with an error.
-- `deploy` is needed since the pushing of images is currently bound to this stage of the maven lifecycle.
-- The `-Ddocker.registry=` can be used to specify an alternative container registry. For example, a local or
-    corporate registry, or perhaps a public cloud service. The value in the example above uses a
-    [local Docker registry](https://docs.docker.com/registry/deploying/); you could also use `registry-1.docker.io`
-    for the public docker hub when you also change the `docker.repo` setting to a resource to which you have write
-    access.
+To run the resulting image:
+
+```bash
+docker run -p 7443:7443 egeria-platform:{tagName}
+```
+
+See [platform/README.md](platform) for the runtime parameters the image supports, how to persist data
+across container restarts, and how to add extra libraries.
 
 ## Limitations
 
-- All docker builds will currently set the tag (version) to be the same as the maven version (eg. 6.1-SNAPSHOT). This
-    means that when testing it is imperative to always force-pull fresh images, or an old version may be used. For
-    example, when using kubernetes ensure `imagePullPolicy = 'Always'`. Previously every single change was versioned,
-    but this led to significant overhead in storage as well as constant changes in the source code just to do a rebuild.
-- If `DOCKER_HOST` is set to a remote host connecton using ssh, the docker build may fail. Refer to
-    https://github.com/spotify/dockerfile-maven/issues/272 for further information.
-- If building on MacOS, the OSX credential store is not supported for docker logins (which is needed to push an image
-    to the repo). To workaround this remove the line `"credsStore": "osxkeychain",` from `~/.docker/config.json` and
-    reissue `docker login`. See https://github.com/spotify/dockerfile-maven/issues/273 for further information.
+- The published images are tagged with the Egeria version (for example `6.1-SNAPSHOT`).  This means that when
+  testing against a snapshot build it is important to always force-pull fresh images, or an old version may be
+  used.  For example, when using Kubernetes ensure `imagePullPolicy = 'Always'`.
 
+## Kubernetes
+
+Helm charts to deploy Egeria along with supporting infrastructure can be found at
+https://github.com/odpi/egeria-charts .
+
+----
+* Return to [open-metadata-deployment](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

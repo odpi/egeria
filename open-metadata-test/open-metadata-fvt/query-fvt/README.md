@@ -6,7 +6,7 @@
 The query-fvt module is a functional verification test suite that gives the repository query surface -
 paging, sorting, subtype filtering, status (soft-delete) filtering, complex property/classification
 search, `asOfTime` historical queries, and `graphQueryDepth` - a thorough workout against a real
-[PostgreSQL repository](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector)
+[PostgreSQL repository](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector)
 loaded with the (nearly) full set of open metadata archives from the top-level
 [content-packs](../../../content-packs) directory.
 

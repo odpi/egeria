@@ -10,7 +10,7 @@ prime Coco Pharmaceuticals' metadata repositories.
 Open metadata archives are JSON files that contain open metadata types and instances.  They are loaded into
 an Egeria Metadata Server either at start up or once the server is running. 
 
-It does not matter how many times an archive are loaded into a metadata server - nor if the same archive is
+It does not matter how many times an archive is loaded into a metadata server - nor if the same archive is
 loaded into different metadata servers in the same cohort.  The content of the archive is shared without resulting
 in duplicates.
 
@@ -18,7 +18,7 @@ There are 7 archives used in the Coco Pharmaceuticals labs and demos:
 
 * **Additional open metadata types** - provides additional types for Coco Pharmaceuticals.
 
-* **Coco Pharmaceuticals Organizations** - provides the profiles, user identifies and team of the featured
+* **Coco Pharmaceuticals Organizations** - provides the profiles, user identities and teams of the featured
   personas of Coco Pharmaceuticals.
 
 ![Coco Organization](docs/coco-metadata-archives-organization.png)
@@ -30,7 +30,8 @@ There are 7 archives used in the Coco Pharmaceuticals labs and demos:
 * **Templates for the Drop Foot Clinical Trials** - provides the template assets
   used for onboarding weekly patient measurements during a clinical trial.
 
-* **Governance Engine Definition** - provides the metadata to describe Coco Pharmaceuticals quality governance engine: `AssetQuality`.
+* **Governance Engine Definitions** - provides the metadata to describe Coco Pharmaceuticals' three governance
+  engines: `AssetGovernance`, `AssetDiscovery` and `AssetQuality`.
 
 * **Coco Pharmaceuticals Business Systems** provides a catalog of the business systems and the lineage between
   them and the load of their data into the data lake.  This archive simulates the type of metadata expected from
@@ -44,7 +45,7 @@ There are 7 archives used in the Coco Pharmaceuticals labs and demos:
 ## Further reading
 
 * [Open Metadata Archives](https://egeria-project.org/concepts/open-metadata-archive/)
-* [Egeria Metadata Access Stores](https://egeria-project.org/egeria-docs/concepts/metadata-access-store/)
+* [Egeria Metadata Access Stores](https://egeria-project.org/concepts/metadata-access-store/)
 
 ----
 * Return to [sample metadata](..)

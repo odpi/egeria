@@ -1,35 +1,16 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# ODPi Egeria Functional Verification Test (FVT) Suite
+# Egeria Functional Verification Test (FVT) Suite
   
 Functional Verification Tests (FVTs) test multiple components together to
-ensure they function correctly.   Typically they load test data into the in-memory repository and drive the
-external APIs of the components under test to ensure they are robust enough to support the range of functions
-needed by their consumers.
+ensure they function correctly.   Each test uses a different technology stack
+to ensure that we achieve good coverage of the components.
 
-* **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS).
-  They each focus on the functional correctness of a specific OMAS.  
+* **[query-fvt](query-fvt)** - provides an FVT test suite for executing different types of queries against the PostgreSQL repository.  
 
-* **[fvt-utilities](fvt-utilities)** - provides utilities used by the FVTs.
 
-# NOTE
 
-It is important that unique ports are used for each test, to prevent concurrency issues - this is particularly true of gradle
-
-This is a current list of known port usage
-
-* 10441 Community Profile
-* 10442 Data Engine
-* 10443 Asset Consumer
-* 10444 Asset Manager
-* 10445 Asset Owner
-* 10446 Data Manager
-* 10447 Digital Architecture
-* 10451 Governance Engine
-* 10452 Governance Program
-* 10453 Analytics Modeling 
-* 10455 Stewardship Action
 
 ----
 Return to [open-metadata-test](..)

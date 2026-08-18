@@ -9,39 +9,44 @@ and used to install Egeria's OMAG Server Platform.   For further information see
 
 ## Default configuration
 
-When the platform is started, five servers are automatically initialized:
+When the platform is started, six servers are automatically initialized (the list is held in the `startup.server.list` property of the platform's `application.properties` file):
 
-* *active-metadata-store* is a [metadata access store](https://egeria-project.org/concepts/metadata-access-store/) using the [in-memory repository](https://egeria-project.org/connectors/repository/in-memory/overview/).  It is activated with support for the [out-topic](https://egeria-project.org/concepts/out-topic/) which means it can send notification to other servers.  It also loads the [Core Content Pack](https://egeria-project.org/content-packs/core-content-pack/overview/).
-* *simple-metadata-store* is also a [metadata access store](https://egeria-project.org/concepts/metadata-access-store/) using the [in-memory repository](https://egeria-project.org/connectors/repository/in-memory/overview/).  However, it has no configured event notification support.  It does load the [Simple Content Pack](https://egeria-project.org/content-packs/simple-content-pack/overview/).
+* *active-metadata-store* is a [metadata access store](https://egeria-project.org/concepts/metadata-access-store/) using the [in-memory repository](https://egeria-project.org/connectors/repository/in-memory/overview/).  It is activated with support for the [out-topic](https://egeria-project.org/concepts/out-topic/) which means it can send notification to other servers.  It also loads the [Core Content Pack](https://egeria-project.org/content-packs/core-content-pack/overview/), along with the other [content packs](https://egeria-project.org/content-packs/) that describe the connectors shipped with this assembly, and the *Coco Pharmaceuticals* sample metadata.
+* *simple-metadata-store* is also a [metadata access store](https://egeria-project.org/concepts/metadata-access-store/) using the [in-memory repository](https://egeria-project.org/connectors/repository/in-memory/overview/).  However, it has no configured event notification support.  It loads the *SimpleCatalog* archive, which supplies a database, an API and an event structure linked to a glossary term.
 * *integration-daemon* is an [integration daemon](https://egeria-project.org/concepts/integration-daemon/) that runs the [integration connectors](https://egeria-project.org/concepts/integration-connector/) configured in any of the following [integration groups](https://egeria-project.org/concepts/integration-group/):
 
     * *Egeria:IntegrationGroup:Default*
     * *Egeria:IntegrationGroup:ApacheAtlas*
     * *Egeria:IntegrationGroup:ApacheKafka*
+    * *Egeria:IntegrationGroup:Database*
+    * *Egeria:IntegrationGroup:DB2LUW*
+    * *Egeria:IntegrationGroup:DuckDB*
+    * *Egeria:IntegrationGroup:Files*
+    * *Egeria:IntegrationGroup:MSSQL*
     * *Egeria:IntegrationGroup:OpenAPIs*
-    * *Egeria:IntegrationGroup:OpenMetadataObservability*
+    * *Egeria:IntegrationGroup:OpenLineage*
+    * *Egeria:IntegrationGroup:Oracle*
     * *Egeria:IntegrationGroup:PostgreSQL*
     * *Egeria:IntegrationGroup:UnityCatalog*
-    * *Egeria:IntegrationGroup:OpenMetadataDigitalProducts*
   
 * *engine-host* is an [engine host](https://egeria-project.org/concepts/engine-host/) that runs requests to [governance services](https://egeria-project.org/concepts/governance-service/) that are configured in any of the following [governance engines](https://egeria-project.org/concepts/governance-engine/):
 
     * *AssetOnboarding*
     * *Stewardship*
-    * *FileSurvey*
-    * *FileGovernance*
-    * *UnityCatalogSurvey*
-    * *UnityCatalogGovernance*
-    * *PostgreSQLSurvey*
-    * *PostgreSQLGovernance*
-    * *ApacheAtlasSurvey*
-    * *ApacheAtlasGovernance*
-    * *EgeriaSurvey*
-    * *EgeriaGovernance*
-    * *ApacheKafkaSurvey*
-    * *ApacheKafkaGovernance*
     * *EgeriaWatchdog*
     * *MetadataObservability*
+    * *FileSurvey* and *FileGovernance*
+    * *ApacheAtlasSurvey* and *ApacheAtlasGovernance*
+    * *ApacheKafkaSurvey* and *ApacheKafkaGovernance*
+    * *DB2LUWSurvey* and *DB2LUWGovernance*
+    * *DuckDBSurvey* and *DuckDBGovernance*
+    * *EgeriaSurvey* and *EgeriaGovernance*
+    * *MSSQLSurvey* and *MSSQLGovernance*
+    * *OracleSurvey* and *OracleGovernance*
+    * *PostgreSQLSurvey* and *PostgreSQLGovernance*
+    * *UnityCatalogSurvey* and *UnityCatalogGovernance*
+
+* *nanny-daemon* is a second [integration daemon](https://egeria-project.org/concepts/integration-daemon/) that runs the integration connectors that monitor the open metadata ecosystem itself, building analytics and new definitions from what they observe.
 
 * *view-server* is a [view server](https://egeria-project.org/concepts/view-server/) that supports the Open Metadata and Governance REST APIs that access/maintain the open metadata in the repositories and control the governance operations running in the engine host and integration daemon.
 
@@ -49,7 +54,7 @@ The capability of these servers is enabled/enhanced when the [content packs](htt
 
 ![Default Configuration](docs/default-egeria-config.svg)
 
-In the default configuration, the *simple-metadata-store* is running but is not accessible via the Open Metadata and Governance REST APIs.  It can be recreated using the `BuildSampleConfigs.http` script.
+In the default configuration, the *simple-metadata-store* is running but is not accessible via the Open Metadata and Governance REST APIs.  It can be recreated using the `BuildDefaultConfigs.http` script.
 
 The `ConnectCohort.http` script contains the administration commands to connect *active-metadata-store*
 with *simple-metadata-store* via an [Open Metadata Repository Cohort](https://egeria-project.org/features/cohort-operation/overview/).
@@ -68,7 +73,7 @@ The diagram below shows the file layout for the OMAG Server Platform runtime env
 
 Each of the directories created by the assembly includes a `README.md` file that describes its content and how to use it.
 
-You can add/remove files under the `assembly` directory and then run the `Dockerfile` script to create your own custom Docker contain for Egeria.
+You can add/remove files under the `assembly` directory and then run the `Dockerfile` script to create your own custom Docker container for Egeria.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

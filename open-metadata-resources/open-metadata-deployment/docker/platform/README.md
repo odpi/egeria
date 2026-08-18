@@ -13,7 +13,7 @@ type system, frameworks, APIs, event payloads and interchange protocols to enabl
 engines and platforms to exchange metadata in order to get the best
 value from data whilst ensuring it is properly governed.
 
-* [Egeria Home Page](https://egeria.odpi.org)
+* [Egeria Home Page](https://egeria-project.org)
 * [Github](https://github.com/odpi/egeria)
 * [Slack discussions](https://slack.lfai.foundation)
 
@@ -27,7 +27,7 @@ It's recommended you use the Egeria tutorials to get started. Below are some exa
 
 These instructions should work whether you built your own image, or used the image directly from quay.io or docker.io - _though you will need to use the correct tag in the commands below_ (odpi/egeria-platform:latest will default to the latest egeria release on Docker Hub)
 
-### Launch a container running the latest version of egeria in the background (version 2.0 and above)
+### Launch a container running the latest version of egeria
 
 ```
 $ docker run  -p 7443:7443  odpi/egeria-platform:latest
@@ -47,27 +47,21 @@ Mon Jun 10 09:12:09 BST 2024 OMAG server platform ready for more configuration
 
 All requests to egeria should be via https on port 7443
 
-### Launch a container running the latest version of egeria in the background
-
-Use
-```
-$ docker run  -p 7443:7443  odpi/egeria-platform:latest
-```
-
 ### Run an interactive shell
 ```
-$ docker run  -it -p 8443:8443  odpi/egeria:latest /bin/bash -
+$ docker run -it -p 7443:7443 odpi/egeria-platform:latest /bin/bash
 bash-4.4$ pwd
-/opt/egeria
+/deployments
 bash-4.4$ ls
-LICENSE            NOTICE             clients            conformance-suite  server             user-interface     utilities
+LICENSE   NOTICE   application.properties   content-packs   data   extra   keystore.p12   landing-area
+lib   loading-bay   logs   omag-server-platform-*.jar   secrets   truststore.p12
 bash-4.4$
 ```
 ### Persisting data
 
 By default, any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [Docker docs](https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.).
 
-Egeria saves all data when running to the `data` directory. In the docker image this is at `/deployments/platform/data`
+Egeria saves all data when running to the `data` directory. In the docker image this is at `/deployments/data`
 
 Similarly when using this image within kubernetes you should ensure persistent storage is mounted over this directory.
 
@@ -104,10 +98,10 @@ $ docker volume inspect egeria-data
 
 With that in place we can now run our docker image, this time making use of the volume above to persist data ie:
 ```
-$ docker run -p 7443:7443 -v source=egeria-data,target=/deployments/platform/data odpi/egeria-platform:latest 
+$ docker run -p 7443:7443 -v source=egeria-data,target=/deployments/data odpi/egeria-platform:latest 
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/platform/omag-server-platform-6.1-SNAPSHOT.jar
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/omag-server-platform-6.1-SNAPSHOT.jar
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -134,13 +128,14 @@ Additional parameters can be specified at runtime by setting in the environment 
 | -- |-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | JAVA_OPTS |                                                                                                                                                             | Passes only these options to the java command used to launch egeria                                                                 |
 | JAVA_OPTS_APPEND | -XX:MaxMetaspaceSize=1g                                                                                                                                     | Similar to JAVA_OPTS but appends to any options already set in image                                                                |
-| JAVA_APP_JAR | platform/omag-server-platform-${version}.jar                                                                                                                 | Launches a different jar file -- use with caution as this must exist in the egeria assembly                                         |
-| LOADER_PATH | /deployments/platform/lib | Specifies a comma seperated list of directories to load additional libraries from ie adding to CLASSPATH used by spring classloader |
+| JAVA_APP_JAR | omag-server-platform-${version}.jar                                                                                                                          | Launches a different jar file -- use with caution as this must exist in the egeria assembly                                         |
+| LOADER_PATH | /deployments/lib,/deployments/extra | Specifies a comma seperated list of directories to load additional libraries from ie adding to CLASSPATH used by spring classloader |
 
 ### Extending the image to include additional libraries, such as connectors
 
-By default, the docker image is setup to install the OMAG Server Platform jar into `/deployments/platform/`
-The `/deployments/platform/lib` directly is also set up in the classpath via Spring's loader.path property - set via LOADER_PATH in Docker
+By default, the docker image is set up to install the OMAG Server Platform jar into `/deployments`.
+The `/deployments/lib` and `/deployments/extra` directories are also set up in the classpath via Spring's
+`loader.path` property - set via `LOADER_PATH` in Docker.
 
 Egeria's capability can be extended through connectors. These will take the form of a java jar
 which needs to be dynamically loaded at runtime. As such follow one of the following methods
@@ -148,8 +143,8 @@ to deploy any additional connectors
 
 #### Adding to the image using a volume
 
-In docker, or kubernetes mount an additional volume in the image - for example at `/deployments/platform/extlib`
-Then ensure the variable 'LOADER.PATH' is set to include this directory in addition to '/deployments/platform/lib' which is
+In docker, or kubernetes mount an additional volume in the image - for example at `/deployments/extlib`.
+Then ensure the variable `LOADER_PATH` is set to include this directory in addition to `/deployments/lib`, which is
 required for the OMAG Server Platform to work.
 
 This example will:
@@ -167,7 +162,7 @@ $ docker cp ~/src/egeria-database-connectors/postgres-connector/build/libs/postg
 $ docker exec copyutil chown -R 185 /mnt                                                                                                                          [14:50:25]
 $ docker stop copyutil                                                                                                                                            [14:50:44]
 copyutil
-$ docker run --env LOADER_PATH=/deployments/extralibs:/deployments/platform/lib:/deployments/platform/extra -v extralibs:/deployments/extralibs -p 7443:7443 egeria:latest
+$ docker run --env LOADER_PATH=/deployments/extralibs:/deployments/lib:/deployments/extra -v extralibs:/deployments/extralibs -p 7443:7443 odpi/egeria-platform:latest
 ```
 
 There are many ways of achieving the same result. If working locally you may wish to use a docker 'bind-mount', whilst in kubernetes
@@ -179,10 +174,10 @@ Use the egeria image as a base, for example begin your custom Dockerfile with
 `FROM odpi/egeria-platform:6.1-SNAPSHOT`
 
 Then add in the files you need, as well as customize the LOADER_PATH variable ie
-`COPY myextralib.jar /deployments/platform/extra`
+`COPY myextralib.jar /deployments/extra`
 
-If you use the platform/extra directory you do not need to change the value of the LOADER_PATH variable as this directory
-is already included.
+If you use the `/deployments/extra` directory you do not need to change the value of the `LOADER_PATH` variable as this
+directory is already included.
 
 ---
 

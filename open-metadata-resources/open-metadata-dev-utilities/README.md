@@ -8,15 +8,17 @@ when you are working on new connectors for Egeria.
 They have hard-coded defaults at the top that you can change for your deployment.
 Also, feel free to extend them to match your specific deployment.
 
-* **egeria-config-utility** - issues commands to configure different types of OMAG servers.
-  It has a list of default values at the top of the file and that you can update for your environment
-  and you can extend with new commands and options.
+* **[guid-generator](guid-generator)** - generates random unique identifiers (GUIDs).
 
-* **egeria-ops-utility** - issues commands to start and stop different types of OMAG servers.
-  It has a list of default values at the top of the file and that you can update for your environment
-  and you can extend with new commands and options.
+* **[component-id-report](component-id-report)** - list the component ids in use in your Egeria deployment.  
+  these component ids are used when registering with the audit log and are included in
+  each audit log message from the component.  Using unique component ids helps to pinpoint
+  exactly which component produced a specific audit log record.
 
-* **guid-generator** - generates random unique identifiers (GUIDs).
+  Code starts with the components that are shipped with Egeria.  Update to include your
+  connector implementation.
+
+* **[report-utilities](report-utilities)** - provide common formatting functions used in the reports.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

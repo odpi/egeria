@@ -4,26 +4,30 @@
 
 # Big glossaries
 
-This utility creates 10 glossaries of 10,000 unique terms each in their own archive file.  They are named as follows:
+This utility creates 26 glossaries of 3,000 unique terms each, one glossary per archive file.  Each archive is
+written to the repository's `content-packs` directory and is named for the glossary it holds:
 
-* BigGlossaryA.omarchive
+* `BigGlossaryA.omarchive`
   * BigGlossaryA
      * TermA00001
      *  :
-     * TermA10000
+     * TermA03000
+* `BigGlossaryB.omarchive`
   * BigGlossaryB
-      * TermB00001
-      *  :
-      * TermB10000
-  *    :
-  * BigGlossaryJ
-      * TermJ00001
-      *  :
-      * TermJ10000
+     * TermB00001
+     *  :
+     * TermB03000
+*    :
+* `BigGlossaryZ.omarchive`
+  * BigGlossaryZ
+     * TermZ00001
+     *  :
+     * TermZ03000
 
 They are used for testing a deployment environment to make sure it has enough resources to manage a large repository.
 
-The utility is easily extended to create more terms per glossary, or create additional glossaries.
+The archives are not committed to the repository - run the utility when you need them.  It is easily extended to
+create more terms per glossary, or to create additional glossaries.
 
 ----
 
