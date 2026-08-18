@@ -50,7 +50,7 @@ public class AssetCatalogResource
      * Return the subtypes for asset.
      *
      * @param serverName name of the server to route the request to
-     * @return the supported types from Asset Consumer OMAS or
+     * @return the supported types from egeria or
      *  PropertyServerException if a configuration on the backend
      *  InvalidParameterException if parameter validation fails
      *  UserNotAuthorizedException security access problem

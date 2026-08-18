@@ -31,7 +31,7 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Digital Architecture OMAS client.
+     * This method returns a Template handler client.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -59,7 +59,7 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Digital Architecture OMAS client.
+     * This method returns an open metadata client.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

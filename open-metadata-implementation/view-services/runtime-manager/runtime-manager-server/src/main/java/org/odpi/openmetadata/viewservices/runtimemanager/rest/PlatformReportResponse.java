@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * PlatformReportResponse is the response structure used on the OMAS REST API calls that return a
+ * PlatformReportResponse is the response structure used on the REST API calls that return a
  * OMAGServerPlatformProperties object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
