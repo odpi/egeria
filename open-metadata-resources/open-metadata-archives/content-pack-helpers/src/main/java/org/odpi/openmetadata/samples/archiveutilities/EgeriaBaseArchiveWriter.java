@@ -39,7 +39,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     /*
      * Specific values for initializing TypeDefs
      */
-    protected static final String versionName   = "6.1-SNAPSHOT";
+    protected static final String versionName   = "6.1";
 
     private final Map<String, String> parentValidValueQNameToGUIDMap = new HashMap<>();
 
