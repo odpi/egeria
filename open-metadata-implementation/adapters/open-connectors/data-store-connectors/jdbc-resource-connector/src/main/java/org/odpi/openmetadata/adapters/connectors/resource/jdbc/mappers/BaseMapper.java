@@ -365,20 +365,51 @@ public class BaseMapper
     }
 
 
-    /**
-     * Ensure any single quote in a property value is escaped.
+    /*
+     * Note: the values placed in a table row by the setUp*ValueInRow() methods below are not escaped in
+     * any way.  Every row built here is written through a PreparedStatement, with each value bound to a
+     * placeholder rather than pasted into the SQL text (see JDBCResourceConnector's insert/update
+     * methods), so the database driver takes care of any characters that are significant to SQL.
+     * Escaping single quotes here as if the value were being embedded in a SQL literal would store the
+     * doubled quotes verbatim, and - since nothing reverses it on the read path - each subsequent
+     * update of the same value would double them again.
      *
-     * @param propertyValue supplied property value
-     * @return escaped property value
+     * There is one character a text column genuinely cannot hold, however - see
+     * checkForNullCharacter() below.
      */
-    private String escapePropertyValue(Object propertyValue)
+
+
+    /**
+     * Check that a value about to be stored in a text column does not contain a null (U+0000) character.
+     * <br><br>
+     * This is the one character that cannot survive the round trip: PostgreSQL rejects the whole
+     * statement with "null character not permitted", and other databases silently truncate the value at
+     * the null instead.  Catching it here names the column and the mapper that were involved, which the
+     * database's own error does not.
+     *
+     * @param propertyValue value about to be stored
+     * @param columnName column the value is destined for
+     * @param methodName calling method
+     * @throws RepositoryErrorException the value contains a null character
+     */
+    private void checkForNullCharacter(String propertyValue,
+                                       String columnName,
+                                       String methodName) throws RepositoryErrorException
     {
         if (propertyValue != null)
         {
-            return propertyValue.toString().replaceAll("'", "''");
-        }
+            int nullCharacterPosition = propertyValue.indexOf('\u0000');
 
-        return null;
+            if (nullCharacterPosition >= 0)
+            {
+                throw new RepositoryErrorException(JDBCErrorCode.NULL_CHARACTER_IN_VALUE.getMessageDefinition(columnName,
+                                                                                                             Integer.toString(nullCharacterPosition),
+                                                                                                             methodName,
+                                                                                                             this.getClass().getName()),
+                                                   this.getClass().getName(),
+                                                   methodName);
+            }
+        }
     }
 
 
@@ -409,7 +440,9 @@ public class BaseMapper
 
         if (propertyValue != null)
         {
-            instanceTableRow.put(columnName, new JDBCDataValue(escapePropertyValue(propertyValue), ColumnType.STRING.getJdbcType()));
+            this.checkForNullCharacter(propertyValue, columnName, methodName);
+
+            instanceTableRow.put(columnName, new JDBCDataValue(propertyValue, ColumnType.STRING.getJdbcType()));
         }
     }
 
@@ -457,7 +490,9 @@ public class BaseMapper
                         propertyValueAsString.append(",");
                     }
 
-                    propertyValueAsString.append(escapePropertyValue(propertyValue));
+                    this.checkForNullCharacter(propertyValue, columnName, methodName);
+
+                    propertyValueAsString.append(propertyValue);
                 }
             }
 

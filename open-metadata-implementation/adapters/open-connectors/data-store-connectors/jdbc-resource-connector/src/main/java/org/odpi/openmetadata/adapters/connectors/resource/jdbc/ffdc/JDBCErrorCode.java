@@ -50,6 +50,14 @@ public enum JDBCErrorCode implements ExceptionMessageSet
              "Update the connection's configuration properties to include the schema name needed to connect to the desired database schema."),
 
     /**
+     * JDBC-RESOURCE-CONNECTOR-400-004 - The value supplied for column {0} contains a null (U+0000) character at position {1}; the value was being stored by method {2} in mapper {3}
+     */
+    NULL_CHARACTER_IN_VALUE(400, "JDBC-RESOURCE-CONNECTOR-400-004",
+             "The value supplied for column {0} contains a null (U+0000) character at position {1}; the value was being stored by method {2} in mapper {3}",
+             "The connector rejects the request rather than attempting to store the value.  A text column cannot hold a null character - PostgreSQL, for example, refuses the whole statement with \"null character not permitted\" - so the request would fail in the database anyway, with an error that says nothing about which property was at fault.",
+             "Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property."),
+
+    /**
      * JDBC-RESOURCE-CONNECTOR-500-001 - The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-001",
