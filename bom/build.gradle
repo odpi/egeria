@@ -155,7 +155,6 @@ dependencies {
         api("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
         api("org.mockito:mockito-core:${mockitoVersion}")
         api("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
-        api("org.testng:testng:${testngVersion}")
         api("org.hamcrest:hamcrest:${hamcrestVersion}")
         api("org.yaml:snakeyaml:${snakeYamlVersion}")
 
