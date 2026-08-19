@@ -80,9 +80,21 @@ jobs:
           OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
           OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
           OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_mavenRepoUrl: https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
           ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
+      # Uploading to the OSSRH staging API only leaves an open staging repository behind - it must be
+      # transferred to the Central Portal before it can be published. This request MUST come from the
+      # same IP address as the upload, so it has to stay in this job.
+      # publishing_type=user_managed means the deployment waits for a manual 'Publish' in the Portal;
+      # change to 'automatic' to release without review.
+      # Skipped for SNAPSHOT versions (eg a manual workflow_dispatch run from main) - those go
+      # straight to the snapshot repo and never create a staging repository to transfer.
+      - name: Transfer staging repository to the Central Portal
+        if: ${{ !endsWith(env.VERSION, 'SNAPSHOT') }}
+        run: |
+          curl -sS --fail-with-body -X POST \
+            -u "${{ secrets.OSSRH_USERNAME }}:${{ secrets.OSSRH_TOKEN }}" \
+            "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/org.odpi.egeria?publishing_type=user_managed"
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
         uses: actions/upload-artifact@v4.4.0

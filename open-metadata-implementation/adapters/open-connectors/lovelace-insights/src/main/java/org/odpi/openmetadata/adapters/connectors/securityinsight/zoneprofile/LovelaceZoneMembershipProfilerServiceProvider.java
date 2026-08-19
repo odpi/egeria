@@ -5,17 +5,17 @@ package org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile;
 
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
-import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceProvider;
 
 import java.util.List;
 
 
 /**
  * LovelaceZoneMembershipProfilerServiceProvider is the OCF connector provider for the LovelaceZoneMembershipProfilerService.
- * This is a WatchDog Action Service.
+ * This is a Governance Action Service.
  */
-public class LovelaceZoneMembershipProfilerServiceProvider extends WatchdogActionServiceProvider
+public class LovelaceZoneMembershipProfilerServiceProvider extends GovernanceActionServiceProviderBase
 {
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
