@@ -11,65 +11,26 @@ description = 'Egeria BOM (Bill of materials). Egeria provides the standards, fr
 
 apply plugin: 'java-platform'
 
-// Allow this platform to include other platforms - but removes error checking
-// for direct dependencies here - which we do not want to include. be careful!
-javaPlatform {
-    allowDependencies()
-}
-
 // Assign variables for any constraints
 ext {
-    lombokVersion = '1.18.36'
-    // TODO: version 4 under new package name
-    antlrVersion = '3.5.3'
-    ST4Version = '4.3.4'
-    avroVersion = '1.12.0'
-    xtdbVersion = '1.24.4'
-    clojureVersion = '1.12.0'
-
-    classgraphVersion = '4.8.192'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
-    // TODO: Version 1.17.0 breaks XTDB because of a change in lucene's library names
     commonscodecVersion = '1.22.0'
-    commonsconfiguration2Version = '2.15.1'
-    commonsconfigurationVersion = '1.10'
 
     commonsioVersion = '2.22.0'
-    commonsloggingVersion = '1.4.0'
-    // TODO: Version 1.12.0 breaks XTDB because of a change in lucene's library names
-    commonstextVersion = '1.11.0'
 
-    commonscliVersion = '1.9.0'
     db2JdbcVersion = '12.1.5.0'
     duckdbJdbcVersion = '1.5.5.1'
-    elasticsearchVersion = '8.7.1'
     findbugsVersion = '3.0.2'
-    glassfishVersion = '1.1.4'
-    // TODO: Held back for compatability
-    gremlinVersion = '3.5.6'
-    // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
-    groovyVersion = '3.0.15'
-    guavaVersion = '33.3.1-jre'
     hamcrestVersion = '3.0'
-    hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.5.Final'
     jacksonVersion = '2.15.0'
     jacksonDatabindVersion = '2.22.1'
-//    TODO: jacksonDatabindVersion = '2.18.2' monday - failed at runtime
-    jacksonaslVersion = '1.9.14-atlassian-6'
-    jakartaannotationVersion = '2.1.1'
-    jakartapersistenceVersion = '3.2.0'
     jakartavalidationVersion = '3.1.0'
-    janusVersion = '0.6.4'
-    javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
-    jenaVersion = '6.1.0'
-    jodatimeVersion = '2.14.3'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.11.3'
-    junitplatformVersion = '1.9.2'
     jwtVersion = '10.9.1'
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
@@ -79,10 +40,7 @@ ext {
 //    TODO: logbackVersion = '1.5.8' build break
     logbackVersion = '1.6.2'
     lettuceVersion = '7.6.0.RELEASE'
-    //      TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
-    luceneVersion = '8.11.3'
     openlineageVersion = '1.52.0'
-    ossVersion = '4.17.0'
     //      TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     mssqlVersion = '12.8.1.jre11'
@@ -92,75 +50,44 @@ ext {
     hikariVersion = '5.1.0'
     nettyVersion = '4.2.17.Final'
     prometheusVersion = '1.17.0'
-    quartzVersion = '2.5.0'
-    // TODO: May be able to remove as moving to jakarta servlet
-    servletVersion = '4.0.1'
     jakartaServletVersion = '6.1.0'
-    sleepycatVersion = '18.3.12'
     slf4jVersion = '2.0.6'
     snappyVersion = '1.1.10.7'
 
     // This must be kept in step with the version of the springboot plugin in settings.gradle
     springbootVersion = '3.1.4'
 
-    spotbugsVersion = '4.10.3'
     springdataVersion = '3.0.3'
-    springldapVersion = '3.0.1'
     springsecurityVersion = '6.1.4'
-    springsecurityJwtVersion = '1.1.1.RELEASE'
     testngVersion = '7.10.2'
     swaggerVersion = '2.2.52'
     springwebVersion = '6.0.6'
-    tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
-    validationVersion = '2.0.1.Final'
-    gsonVersion = '2.14.0'
-    antVersion = '1.10.17'
-     jnrVersion = '3.2.1'
-    //  TODO: cassandraVersion 5.0.1 and 5.0.2 don't work
-    cassandraVersion = '4.1.5'
-    protobufVersion = '3.25.9' //ok working
     log4jVersion = '2.26.1'
 //    TODO: log4jVersion = '2.24.3' Monday - doesn't build'
     jacksonjdk8Version = '2.22.1'
 //    TODO: jacksonjdk8Version = '2.18.2'monday - failed at runtime
     springdocStarterVersion = '2.2.0'
-    jacocoVersion = '0.8.8'
     snakeYamlVersion = '2.5'
 }
 
 dependencies {
-    // Only use this to bring in platforms, which are *constraints*
-    dependencies {
-        api(platform('net.openhft:chronicle-bom:2.27ea81'))
-    }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
         api("ch.qos.logback:logback-core:${logbackVersion}")
-        api("com.datastax.oss:java-driver-core:${ossVersion}")
         api("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
         api("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
         api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-        api("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
         api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
         api("com.fasterxml:classmate:${classmateVersion}")
         api("com.github.jsonld-java:jsonld-java:${jsonldVersion}")
-        //api("com.google.crypto.tink:tink:${tinkVersion}")
-        api("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
-        //api("com.google.guava:guava:${guavaVersion}")
         api("com.ibm.db2:jcc:${db2JdbcVersion}")
         api("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
         api("com.oracle.database.jdbc:ojdbc11:${oracleJdbcVersion}")
-        api("com.sleepycat:je:${sleepycatVersion}")
         api("com.zaxxer:HikariCP:${hikariVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
-        api("commons-cli:commons-cli:${commonscliVersion}")
-        api("commons-logging:commons-logging:${commonsloggingVersion}")
-        api("org.apache.commons:commons-text:${commonstextVersion}")
-        api("io.github.classgraph:classgraph:${classgraphVersion}")
-//            api("io.jsonwebtoken:jjwt:${jwtVersion}")
         api("com.nimbusds:nimbus-jose-jwt:${jwtVersion}")
         api("io.jsonwebtoken:jjwt-api:${jwtApiVersion}")
         api("io.lettuce:lettuce-core:${lettuceVersion}")
@@ -168,52 +95,20 @@ dependencies {
         api("io.netty:netty-handler:${nettyVersion}")
         api("io.netty:netty-common:${nettyVersion}")
         api("io.netty:netty-buffer:${nettyVersion}")
-        api("io.netty:netty-codec:${nettyVersion}")
-        api("io.netty:netty-all:${nettyVersion}")
         api("io.netty:netty-transport:${nettyVersion}")
         api("io.netty:netty-resolver:${nettyVersion}")
         api("io.swagger.core.v3:swagger-annotations:${swaggerVersion}")
         api("io.openlineage:openlineage-java:${openlineageVersion}")
-        api("jakarta.persistence:jakarta.persistence-api:${jakartapersistenceVersion}")
         api("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
         api("javax.xml.bind:jaxb-api:${jaxbVersion}")
-        api("org.apache.avro:avro:${avroVersion}")
         api("org.apache.commons:commons-collections4:${collections4Version}")
         api("org.apache.commons:commons-lang3:${lang3Version}")
-        api("org.apache.jena:jena-core:${jenaVersion}")
         api("org.apache.kafka:kafka-clients:${kafkaVersion}")
-       // api("org.apache.lucene:lucene-core:${luceneVersion}")
-       // api("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
-       // api("org.apache.lucene:lucene-queryparser:${luceneVersion}")
-      //  api("org.apache.lucene:lucene-spatial:${luceneVersion}")
-      //  api("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
-      //  api("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
-     //   api("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
-      //  api("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
-     //   api("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
-    //    api("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
         api("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}")
         //TODO May need to exclude tomcat-annotations-api
-        api("org.apache.tomcat:tomcat-coyote:${tomcatVersion}")
-        //TODO May need to exclude tomcat-annotations-api
-    //    api("org.codehaus.groovy:groovy:${groovyVersion}")
-    //    api("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
-    //    api("org.codehaus.groovy:groovy-console:${groovyVersion}")
-    //    api("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
-    //    api("org.codehaus.groovy:groovy-templates:${groovyVersion}")
-    //    api("org.codehaus.groovy:groovysh:${groovyVersion}")
-    //    api("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
-    //    api("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
-   //     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
         api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
         api("org.duckdb:duckdb_jdbc:${duckdbJdbcVersion}")
-    //    api("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
-    //    api("org.janusgraph:janusgraph-core:${janusVersion}")
-    //    api("org.janusgraph:janusgraph-inmemory:${janusVersion}")
-   //     api("org.janusgraph:janusgraph-driver:${janusVersion}")
-        api("org.javassist:${javassistVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")
-        api("org.quartz-scheduler:quartz:${quartzVersion}")
         api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
         api("org.slf4j:slf4j-api:${slf4jVersion}")
         api("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
@@ -231,28 +126,18 @@ dependencies {
         api("org.springframework.security:spring-security-core:${springsecurityVersion}")
         api("org.springframework.security:spring-security-ldap:${springsecurityVersion}")
         api("org.springframework.security:spring-security-web:${springsecurityVersion}")
-        api("org.springframework.security:spring-security-jwt:${springsecurityJwtVersion}")
         api("org.springframework.security:spring-security-oauth2-jose:${springsecurityVersion}")
         api("org.springframework:spring-aop:${springwebVersion}")
         api("org.springframework:spring-beans:${springwebVersion}")
         api("org.springframework:spring-context:${springwebVersion}")
         api("org.springframework:spring-expression:${springwebVersion}")
         api("org.springframework:spring-test:${springwebVersion}")
-        api("org.springframework:spring-jdbc:${springwebVersion}")
         api("org.springframework:spring-web:${springwebVersion}")
         api("org.springframework:spring-webmvc:${springwebVersion}")
         api("org.springframework:spring-tx:${springwebVersion}")
         api("org.springframework:spring-core:${springwebVersion}")
-        api("org.springframework.ldap:ldap-core:${springldapVersion}")
-        api("javax.servlet:javax.servlet-api:${servletVersion}")
         api("jakarta.servlet:jakarta.servlet-api:${jakartaServletVersion}")
-        api("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
-        api("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
         api("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
-        api("org.apache.ant:ant:${antVersion}")
-        api("com.google.protobuf:protobuf-java:${protobufVersion}")
-        api("com.google.code.gson:gson:${gsonVersion}")
-        api("com.github.jnr:jnr-posix:${jnrVersion}")
         api("org.apache.logging.log4j:log4j-api:${log4jVersion}")
         api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
 
@@ -261,60 +146,23 @@ dependencies {
 
         // testng also used in our 'source' code to support unit tests
         api("org.testng:testng:${testngVersion}")
-        api("joda-time:joda-time:${jodatimeVersion}")
-        api("org.antlr:antlr-runtime:${antlrVersion}")
-        api("org.antlr:ST4:${ST4Version}")
-        api("org.apache.jena:jena-arq:${jenaVersion}")
-        api("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
-        api("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
-    //    api("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
-    //    api("org.janusgraph:janusgraph-cql:${janusVersion}")
-    //    api("org.janusgraph:janusgraph-lucene:${janusVersion}")
-    //    api("org.janusgraph:janusgraph-es:${janusVersion}")
-    //    api("org.janusgraph:janusgraph-hbase:${janusVersion}")
         api("org.xerial.snappy:snappy-java:${snappyVersion}")
-        api("javax.servlet:javax.servlet-api:${servletVersion}")
         api("io.jsonwebtoken:jjwt-impl:${jwtImplVersion}")
         api("io.jsonwebtoken:jjwt-jackson:${jwtJacksonVersion}")
         api("junit:junit:${junitVersion}")
-        api("org.glassfish:javax.json:${glassfishVersion}")
         api("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
         api("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
         api("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
-        api("org.junit.jupiter:junit-platform-runner:${junitplatformVersion}")
-        api("org.junit.jupiter:junit-platform-suite-api:${junitplatformVersion}")
-        api("org.junit.vintage:junit-vintage-engine:${junitplatformVersion}")
         api("org.mockito:mockito-core:${mockitoVersion}")
         api("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
-        api("org.mockito:mockito-inline:${mockitoVersion}")
-        api("org.slf4j:slf4j-simple:${slf4jVersion}")
-        api("org.testng:testng:${testngVersion}")
         api("org.hamcrest:hamcrest:${hamcrestVersion}")
         api("org.yaml:snakeyaml:${snakeYamlVersion}")
 
         // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
         api("com.beust:jcommander:1.82")
-        api("org.antlr:antlr4:4.13.1")
-        api("org.apache.ivy:ivy:2.6.0")
-
-        // XTDB Additions
-     //   api("com.xtdb:xtdb-core:${xtdbVersion}")
-      //  api("org.clojure:clojure:${clojureVersion}")
-        // Dependencies only required if configured to run with these extras: they will be included in the
-        // 'jar-with-dependencies' by default, but if you do not need them you can remove them and re-build
-        // to get a smaller footprint with less potential CVE exposure.
-        // runtimeOnly("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
-     //   api("com.xtdb:xtdb-lucene:${xtdbVersion}")
-   //     api("com.xtdb:xtdb-rocksdb:${xtdbVersion}")
-    //    api("com.xtdb:xtdb-lmdb:${xtdbVersion}")
-    //    api("com.xtdb:xtdb-kafka:${xtdbVersion}")
-    //    api("com.xtdb:xtdb-jdbc:${xtdbVersion}")
-    //    api("com.xtdb:xtdb-s3:${xtdbVersion}")
-    //    api("com.xtdb:xtdb-metrics:${xtdbVersion}")
 
         // Add in Egeria's own projects -- not for us, but for our users
-        //subprojects.forEach { subProject ->
         rootProject.subprojects.forEach { subProject ->
             // TODO what do we want to exclude from our BOM?
             if (subProject.name != 'bom') {
