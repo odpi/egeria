@@ -109,7 +109,7 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "6.1-SNAPSHOT";
+        return "6.1";
     }
 
 

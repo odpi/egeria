@@ -40,7 +40,7 @@ across container restarts, and how to add extra libraries.
 
 ## Limitations
 
-- The published images are tagged with the Egeria version (for example `6.1-SNAPSHOT`).  This means that when
+- The published images are tagged with the Egeria version (for example `6.1`).  This means that when
   testing against a snapshot build it is important to always force-pull fresh images, or an old version may be
   used.  For example, when using Kubernetes ensure `imagePullPolicy = 'Always'`.
 
