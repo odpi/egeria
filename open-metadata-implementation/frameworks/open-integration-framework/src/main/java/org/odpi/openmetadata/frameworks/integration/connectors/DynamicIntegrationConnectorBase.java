@@ -53,8 +53,8 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
         if (this instanceof OpenMetadataEventListener openMetadataEventListener)
         {
             if ((integrationContext.noListenerRegistered()) &&
-                    (integrationContext.getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
-                    (integrationContext.getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
+                    ((integrationContext.getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
+                     (integrationContext.getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY)))
             {
                 try
                 {
