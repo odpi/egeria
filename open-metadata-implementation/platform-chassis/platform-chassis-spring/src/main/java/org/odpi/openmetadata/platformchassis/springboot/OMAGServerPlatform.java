@@ -51,7 +51,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "6.1-SNAPSHOT",
+                version = "6.2-SNAPSHOT",
                 description = """
                         The OMAG Server Platform provides a runtime process and platform for Egeria's Open Metadata and Governance (OMAG) REST API Services. These services support the maintenance and querying of open metadata, along with the ability to define and run actions to govern the metadata itself and the connected systems.
                         
@@ -141,7 +141,7 @@ public class OMAGServerPlatform
     {
         return () ->
         {
-            log.info("Platform release: version 6.1-SNAPSHOT");
+            log.info("Platform release: version 6.2-SNAPSHOT");
             log.info("Working directory is: " + System.getProperty("user.dir"));
 
             if (buildProperties != null)
