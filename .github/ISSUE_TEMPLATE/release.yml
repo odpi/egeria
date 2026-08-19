@@ -64,10 +64,9 @@ body:
         - [ ] Update release notes in [egeria-docs](https://github.com/odpi/egeria-docs/tree/main/site/docs/release-notes)
 
         Final build and publish
-        - [ ] Check if the Release pipeline release artifacts are shown in staging repo in [OSS Repository Manager](https://oss.sonatype.org/#welcome)
-        - [ ] Close staging repo & validate artifacts ok (number, structure, validations) on oss.sonatype.org 
-        - [ ] Check 'release' repo on oss.sonatype.org has artifacts
-        - [ ] Release the repo (takes time for the operation to complete and for the artifacts to be visible in maven central repository)
+        - [ ] Check the Release pipeline transferred the staging repo - the deployment should appear under [Deployments](https://central.sonatype.com/publishing/deployments) in the Central Portal
+        - [ ] Validate artifacts ok (number, structure, validations) - the deployment must reach 'VALIDATED' state
+        - [ ] Publish the deployment from the Central Portal (takes time for the operation to complete and for the artifacts to be visible in maven central repository)
         - [ ] Create final [github release](https://github.com/odpi/egeria/releases) (add link to egeria docs)
         - [ ] Update final versions of egeria-charts to release ie x.y
         - [ ] Publish that release is now shipped via slack #egeria-announce

@@ -205,8 +205,8 @@ subprojects {
         repositories {
             maven {
                 name = mavenRepoName
-                url = mavenRepoUrl
-                // User token (under profile) on oss.sonatype.org
+                url = version.toString().endsWith('SNAPSHOT') ? mavenSnapshotRepoUrl : mavenRepoUrl
+                // User token generated at https://central.sonatype.com/usertoken
                 credentials {
                     username = mavenRepoUser
                     password = mavenRepoPass

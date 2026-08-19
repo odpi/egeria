@@ -109,6 +109,8 @@ jobs:
           path: build/reports/jacoco/codeCoverageReport
           if-no-files-found: ignore
       # Build and publish to Maven central for main branch only - this often fails which is why it is done last
+      # main carries a -SNAPSHOT version, so build.gradle routes this to the Central Portal snapshot repo
+      # (https://central.sonatype.com/repository/maven-snapshots/) rather than the release staging area
       - name: build and publish to maven central
         if: ${{ github.ref == 'refs/heads/main'}}
         uses: gradle/gradle-build-action@v3
@@ -120,6 +122,5 @@ jobs:
           OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
           OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
           OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_mavenRepoUrl: https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
           ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
           ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}

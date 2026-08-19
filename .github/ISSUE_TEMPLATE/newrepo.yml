@@ -101,7 +101,7 @@ body:
           - Dependabot dependency updates will be set up
           - nominated owner will be responsible for managing the repo content
           - repo is public with same group/permissions as the main Egeria repo
-          - If using maven/gradle, snapshots will be published to oss.sonatype.org and releases to maven central
+          - If using maven/gradle, snapshots will be published to the Sonatype Central Portal snapshot repo and releases to maven central
           - If using containers, they will be published to quay.io & docker.io & built for arm64 + amd64 with same release versions as other artifacts
           - If using maven, versioning should follow 1.1 / 1.1-SNAPSHOT convention. For javascript etc use semver, ie 1.1.1 / 1.1.1-rc.0
           - Follows egeria branching-strategy ie branch just before release
