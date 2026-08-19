@@ -105,6 +105,16 @@ natural fit - for example creating elements to query, or checking `graphQueryDep
   and a purged relationship is genuinely gone, not just historically deleted, as shown by an `asOfTime`
   query for "now" still finding it after a soft-delete but not after a purge; and `findRelationshipsBetweenMetadataElements`
   honours `end1EntityGUIDs`/`end2EntityGUIDs` whether or not property conditions are also supplied.
+* [SpecialCharacterFVT](src/test/java/org/odpi/openmetadata/queryfvt/SpecialCharacterFVT.java) - string
+  property values containing characters that are significant to SQL round-trip unchanged and can still be
+  found. A single quote (as in "Coco Pharmaceutical's Database") does not accumulate extra quotes as the
+  same element is updated over and over, and is still matched by an exact property comparison, a unique
+  name lookup and a "contains this string" search; the LIKE wildcards `%` and `_` and the LIKE escape
+  character `\` are all matched literally rather than changing what the pattern means (or, when a value
+  ends in a backslash, making the pattern invalid); a property *name* containing a quote returns no
+  results rather than failing the query; and a value containing a null (U+0000) character - the one
+  character a text column genuinely cannot hold - is rejected up front with an FFDC message naming the
+  column, rather than being passed down to the database.
 
 ## Test data hygiene
 

@@ -108,8 +108,8 @@ public class QueryBuilder
     {
         if (relationshipEndGUID != null)
         {
-            return " and (" + RepositoryColumn.END_1_GUID.getColumnName() + " = '" + relationshipEndGUID +
-                    "' or " + RepositoryColumn.END_2_GUID.getColumnName() + " = '" + relationshipEndGUID + "')";
+            return " and (" + RepositoryColumn.END_1_GUID.getColumnName() + " = '" + escapePropertyValue(relationshipEndGUID) +
+                    "' or " + RepositoryColumn.END_2_GUID.getColumnName() + " = '" + escapePropertyValue(relationshipEndGUID) + "')";
         }
 
         return " ";
@@ -184,7 +184,7 @@ public class QueryBuilder
                 searchStringBuilder.append("%");
             }
 
-            searchStringBuilder.append(getSafePostgreSQLRegex(searchString));
+            searchStringBuilder.append(getSafeLikePattern(searchString));
 
             if (! endsWith)
             {
@@ -229,7 +229,7 @@ public class QueryBuilder
 
         if (propertyName != null)
         {
-            subSelect = subSelect + propertyColumn + "='" + propertyName + "'";
+            subSelect = subSelect + propertyColumn + "='" + escapePropertyValue(propertyName) + "'";
 
             if (propertyValue != null)
             {
@@ -264,19 +264,32 @@ public class QueryBuilder
 
 
     /**
-     * Escape unsupported characters in a string to avoid being interpreted as a regular expression.
+     * Escape the characters that PostgreSQL's LIKE/ILIKE operators treat as special, so that a value
+     * supplied by the caller only ever matches itself: the two wildcards ("%" matches any run of
+     * characters, "_" matches any single character) and the backslash that escapes them.
+     * <br><br>
+     * The backslash matters in both directions.  Left alone, it swallows whatever character follows it -
+     * so a search for "C:\temp" would silently look for "C:temp" and find nothing - and a value that
+     * ends in a backslash leaves the pattern ending in a lone escape character, which PostgreSQL rejects
+     * outright ("LIKE pattern must not end with escape character") rather than simply not matching.
+     * <br><br>
+     * This is independent of {@link #escapePropertyValue(Object)}, which handles the separate job of
+     * making a value safe to embed in a SQL string literal: neither escaper introduces characters the
+     * other one acts on, so a value needing both can have them applied in either order.
      *
-     * @param suppliedSearchString the string to escape to avoid being interpreted as a regular expression
-     * @return string  that is a safe regular expression
+     * @param suppliedSearchString the string to escape so that it is matched literally
+     * @return string that is safe to use as (part of) a LIKE pattern
      */
-    private String getSafePostgreSQLRegex(Object suppliedSearchString)
+    private String getSafeLikePattern(Object suppliedSearchString)
     {
         if (suppliedSearchString != null)
         {
             StringBuilder searchStringBuilder = new StringBuilder();
             for (int i = 0; i < suppliedSearchString.toString().length(); i++)
             {
-                if ((suppliedSearchString.toString().charAt(i) == '%') || (suppliedSearchString.toString().charAt(i) == '_'))
+                if ((suppliedSearchString.toString().charAt(i) == '%') ||
+                    (suppliedSearchString.toString().charAt(i) == '_') ||
+                    (suppliedSearchString.toString().charAt(i) == '\\'))
                 {
                     searchStringBuilder.append('\\');
                 }
@@ -598,39 +611,39 @@ public class QueryBuilder
                     }
                     case LIKE ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case NOT_LIKE ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not like '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case CASE_INSENSITIVE_LIKE ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case CASE_INSENSITIVE_NOT_LIKE ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case STARTS_WITH ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case ENDS_WITH ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "') ";
                     }
                     case CASE_INSENSITIVE_STARTS_WITH ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "%') ";
                     }
                     case CASE_INSENSITIVE_ENDS_WITH ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "') ";
                     }
                     case CASE_INSENSITIVE_EQ ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "') ";
                     }
                     case NOT_NULL ->
                     {
@@ -677,39 +690,39 @@ public class QueryBuilder
                 }
                 case LIKE ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " like '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case NOT_LIKE ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " not like '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " not like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case CASE_INSENSITIVE_LIKE ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case CASE_INSENSITIVE_NOT_LIKE ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " not ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " not ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case STARTS_WITH ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " like '" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " like '" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case ENDS_WITH ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " like '%" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " like '%" + this.getSafeLikePattern(propertyValue) + "') ";
                 }
                 case CASE_INSENSITIVE_STARTS_WITH ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " ilike '" + this.getSafePostgreSQLRegex(propertyValue) + "%') ";
+                    return " (" + principleTableName + "." + propertyColumn + " ilike '" + this.getSafeLikePattern(propertyValue) + "%') ";
                 }
                 case CASE_INSENSITIVE_ENDS_WITH ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " ilike '%" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " ilike '%" + this.getSafeLikePattern(propertyValue) + "') ";
                 }
                 case CASE_INSENSITIVE_EQ ->
                 {
-                    return " (" + principleTableName + "." + propertyColumn + " ilike '" + this.getSafePostgreSQLRegex(propertyValue) + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " ilike '" + this.getSafeLikePattern(propertyValue) + "') ";
                 }
             }
         }
@@ -743,13 +756,13 @@ public class QueryBuilder
             }
             else
             {
-                return RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + leafPropertyName + "'";
+                return RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + escapePropertyValue(leafPropertyName) + "'";
             }
         }
         else
         {
-            return RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + topLevelPropertyName + "' and " +
-                   RepositoryColumn.PROPERTY_NAME.getColumnName(propertyTableName) + " like '%:" + leafPropertyName + "'";
+            return RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + escapePropertyValue(topLevelPropertyName) + "' and " +
+                   RepositoryColumn.PROPERTY_NAME.getColumnName(propertyTableName) + " like '%:" + escapePropertyValue(getSafeLikePattern(leafPropertyName)) + "'";
         }
     }
 
@@ -1189,7 +1202,7 @@ public class QueryBuilder
 
                 stringBuilder.append(RepositoryColumn.TYPE_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
                 stringBuilder.append(" like '%:");
-                stringBuilder.append(classificationName);
+                stringBuilder.append(escapePropertyValue(getSafeLikePattern(classificationName)));
                 stringBuilder.append(":%'");
             }
 
@@ -1783,7 +1796,7 @@ public class QueryBuilder
 
                 stringBuilder.append(RepositoryColumn.INSTANCE_GUID.getColumnName());
                 stringBuilder.append(" = '");
-                stringBuilder.append(guid);
+                stringBuilder.append(escapePropertyValue(guid));
                 stringBuilder.append("' ");
             }
 
